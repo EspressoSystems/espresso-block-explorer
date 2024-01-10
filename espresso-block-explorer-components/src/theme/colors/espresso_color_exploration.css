@@ -1,0 +1,31 @@
+:root {
+  --color--coffee: #451f17ff;
+  --on-color--coffee: #fff7efff;
+  --color--chocolate: #270903ff;
+  --on-color--chocolate: var(--color--text-white);
+  --color--chili: #ff792eff;
+  --on-color--chili: var(--color--text-white);
+
+  /* Other Colors / color explorations */
+  --color--caramel: #de9e67ff;
+  --on-color--caramel: var(--color--coffee);
+  --color--cookie: #b67237ff;
+  --on-color--cookie: var(--color--coffee);
+  --color--vanilla: #fcebdeff;
+  --on-color--vanilla: var(--color--coffee);
+  --color--azure: #1eb6f8ff;
+  --on-color--azure: var(--color--coffee);
+  --color--blueberry: #0c81b4ff;
+  --on-color--blueberry: var(--color--coffee);
+  --color--sky: #d0e8f4ff;
+  --on-color--blueberry: var(--color--coffee);
+
+  --color--pistachio: #b9ad3eff;
+  --on-color--pistachio: var(--color--text-white);
+  --color--herb: #605812ff;
+  --on-color--herb: var(--color--text-white);
+  --color--citrus: #f0e89dff;
+  --on-color--citrus: #605812ff;
+
+  /* Block of White */
+}
