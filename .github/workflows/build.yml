@@ -24,3 +24,14 @@ jobs:
           npm ci --workspaces
           npm run lint --workspaces
           npm run test --workspaces
+
+      - name: Generate Storybook Static Files for Espresso Block Explorer Components
+        run: |
+          npm --workspace=packages/espresso-block-explorer-components run build-storybook
+
+      - name: Deploy Espresso Block Explorer Components Storybook
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./packages/espresso-block-explorer-comnponents/storybook-static
