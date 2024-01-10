@@ -7,6 +7,6 @@ help to realize the end product.
 
 ## Espresso Block Explorer Components
 
-The the moment this only contains the [Espresso Block Explorer Components]()
+The the moment this only contains the [Espresso Block Explorer Components](espresso-block-explorer-components/README.md)
 package to make it easier to create, test, and design components separately
 from the main product that will be utilizing them.
