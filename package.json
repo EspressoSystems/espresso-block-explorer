@@ -1,0 +1,6 @@
+{
+  "name": "espresso-block-explorer",
+  "workspaces": [
+    "packages/espresso-block-explorer-components"
+  ]
+}

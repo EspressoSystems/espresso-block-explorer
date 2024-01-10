@@ -21,6 +21,6 @@ jobs:
 
       - name: Run Tests
         run: |
-          cd espresso-block-explorer-components
-          npm ci
-          npm run test
+          npm ci --workspaces
+          npm run lint --workspaces
+          npm run test --workspaces
