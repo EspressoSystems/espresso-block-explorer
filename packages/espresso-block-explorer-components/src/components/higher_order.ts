@@ -34,11 +34,14 @@ export function addClassNameToComponent<
   component: React.ComponentType<Props> | string,
   className: string
 ): React.FC<Props> {
-  return (props: Props) =>
+  const WrappedComponent = (props: Props) =>
     React.createElement(component, {
       ...props,
       className: addClassToClassName(props.className, className),
     });
+
+  WrappedComponent.displayName = 'WrappedClassAdded';
+  return WrappedComponent;
 }
 
 export function addClassToClassName(
