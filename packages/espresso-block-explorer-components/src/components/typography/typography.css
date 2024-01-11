@@ -1,0 +1,100 @@
+@import url(../../styles/main.css);
+
+.type--paragraph--text-100 {
+  --text--font-weight: 700;
+  --text--font-size: 32px;
+  --text--line-height: 44px;
+}
+
+.type--paragraph--text-300 {
+  --text--font-weight: 600;
+  --text--font-size: 18px;
+  --text--line-height: 24px;
+}
+
+.type--paragraph--text-500 {
+  --text--font-weight: 500;
+  --text--font-size: 16px;
+  --text--line-height: 24px;
+}
+
+.type--paragraph--text-600 {
+  --text--font-weight: 500;
+  --text--font-size: 14px;
+  --text--line-height: 20px;
+}
+
+.type--paragraph--base {
+  --text--font-weight: 400;
+  --text--font-size: 16px;
+  --text--line-height: 24px;
+}
+
+.type--paragraph--small {
+  --text--font-weight: 400;
+  --text--font-size: 14px;
+  --text--line-height: 20px;
+}
+
+.type--ui--text-100 {
+  --text--font-weight: 700;
+  --text--font-size: 32px;
+  --text--line-height: 32px;
+}
+
+.type--ui--text-300 {
+  --text--font-weight: 600;
+  --text--font-size: 18px;
+  --text--line-height: 18px;
+}
+
+.type--ui--text-500 {
+  --text--font-weight: 500;
+  --text--font-size: 16px;
+  --text--line-height: 16px;
+}
+
+.type--ui--text-600 {
+  --text--font-weight: 500;
+  --text--font-size: 14px;
+  --text--line-height: 14px;
+}
+
+.type--ui--base {
+  --text--font-weight: 400;
+  --text--font-size: 16px;
+  --text--line-height: 16px;
+}
+
+.type--ui--small {
+  --text--font-weight: 400;
+  --text--font-size: 14px;
+  --text--line-height: 14px;
+}
+
+.type--ui--button {
+  --text--font-weight: 600;
+  --text--font-size: 14px;
+  --text--line-height: 14px;
+}
+
+.type--paragraph--text-100,
+.type--paragraph--text-300,
+.type--paragraph--text-500,
+.type--paragraph--text-600,
+.type--paragraph--base,
+.type--paragraph--small,
+.type--ui--text-100,
+.type--ui--text-300,
+.type--ui--text-500,
+.type--ui--text-600,
+.type--ui--base,
+.type--ui--small,
+.type--ui--button {
+  font-family: var(--text--font-family);
+  letter-spacing: var(--text--letter-spacing);
+  background-color: var(--text--background-color);
+  font-weight: var(--text--font-weight);
+  line-height: var(--text--line-height);
+  font-size: var(--text--font-size);
+}

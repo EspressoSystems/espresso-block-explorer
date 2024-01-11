@@ -1,0 +1,24 @@
+:root {
+  /* Espresso Typography */
+  --espresso--text--font-family: system-ui;
+  --espresso--text--letter-spacing: 1;
+
+  /* Default Text Styles */
+  --text--font-family: var(--espresso--text--font-family);
+  --text--letter-spacing: var(--espresso--text--letter-spacing);
+  --text--background-color: var(--color--transparent);
+  --text--color: var(--color--slate-700);
+  --text--font-weight: 400;
+  --text--font-size: 16px;
+  --text--line-height: 24px;
+}
+
+html,
+body {
+  font-family: var(--text--font-family);
+  letter-spacing: var(--text--letter-spacing);
+  background-color: var(--text--background-color);
+  font-weight: var(--text--font-weight);
+  line-height: var(--text--line-height);
+  font-size: var(--text--font-size);
+}
