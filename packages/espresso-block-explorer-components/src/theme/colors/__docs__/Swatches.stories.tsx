@@ -24,7 +24,7 @@ const Swatch: React.FC<{ swatch: string }> = ({ swatch }) => (
   </div>
 );
 
-const Example: React.FC<{}> = ({}) => {
+const Example: React.FC = () => {
   return (
     <div
       style={{
