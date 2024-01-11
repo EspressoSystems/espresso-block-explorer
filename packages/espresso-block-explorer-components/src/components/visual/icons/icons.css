@@ -1,0 +1,34 @@
+@import url(../../../styles/main.css);
+
+:root {
+  --icon--fill-color: var(--color--slate-950);
+  --icon--stroke-color: var(--color--transparent);
+
+  --icon--transition-duration: 240ms;
+}
+
+svg.icon {
+  fill: var(--icon--fill-color);
+  stroke: var(--icon--stroke-color);
+
+  will-change: fill, stroke, stroke-width, stroke-linecap, stroke-linejoin;
+  transition:
+    fill ease-in-out var(--icon--transition-duration),
+    stroke ease-in-out var(--icon--transition-duration),
+    stroke-width ease-in-out var(--icon--transition-duration),
+    stroke-linecap ease-in-out var(--icon--transition-duration),
+    stroke-linejoin ease-in-out var(--icon--transition-duration);
+}
+
+svg.icon.stroked {
+  fill: var(--color--transparent);
+  stroke: var(--icon--fill-color);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+svg.icon--logo {
+  fill: var(--icon--fill-color);
+  stroke: var(--icon--stroke-color);
+}
