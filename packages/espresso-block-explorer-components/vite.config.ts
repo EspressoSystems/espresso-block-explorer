@@ -28,6 +28,7 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'json-summary', 'json'],
       reportOnFailure: true,
+      exclude: ['**/__docs__/**', '**/__test__/**', '**/.storybook/**'],
     },
   },
 });
