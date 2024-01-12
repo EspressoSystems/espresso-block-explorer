@@ -1,0 +1,40 @@
+@import url(../../../styles/main.css);
+
+:root {
+  --link--default--color: var(--color--sky-700);
+  --link--default--outline-style: solid;
+  --link--visited--color: var(--color--slate-700);
+  --link--focused--outline-color: var(--color--sky-700);
+  --link--focused--outline-width: 4px;
+  --link--transition--duration: 240ms;
+}
+
+a.link {
+  --text--color: var(--link--default--color);
+  --icon--color: var(--link--default--color);
+
+  outline-style: var(--link--default--outline-style);
+  outline-color: var(--color--transparent);
+  outline-width: 0;
+  color: var(--link--default--color);
+  text-decoration: none;
+
+  transition:
+    color ease-in-out var(--link--transition--duration),
+    outline-color ease-in-out var(--link--transition--duration),
+    outline-width ease-in-out var(--link--transition--duration);
+  will-change: color, outline-color, outline-width;
+}
+
+a.link:hover {
+  text-decoration: underline;
+}
+
+a.link:focus-visible {
+  outline-color: var(--link--focused--outline-color);
+  outline-width: var(--link--focused--outline-width);
+}
+
+a.link:visited {
+  color: var(--link--visited--color);
+}
