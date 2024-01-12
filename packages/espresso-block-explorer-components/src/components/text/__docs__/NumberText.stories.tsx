@@ -2,7 +2,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import NumberText from '../NumberText';
 import { OverrideLocale } from '../../contexts/LocaleProvider';
-import { ProvideDerivedNumberFormatters } from '../../contexts/NumberFormatterProviders';
+import { ProvideDerivedNumberFormatters } from '../../contexts/NumberFormattersProvider';
 
 interface ExampleProps {
   locale: string;
