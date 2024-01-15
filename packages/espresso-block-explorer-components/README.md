@@ -16,6 +16,33 @@ are used for functionality and aesthetics.  In order to achieve such a goal
 we attempt to separate the concerns and take advantage of the cascading nature
 of CSS to allow us to overwrite sub-tree component style inheritance.
 
+## Running Storybook in Development Mode
+
+In order to run the project and do development on the components library you
+must execute the project using the appropriate workspace.
+
+First ensure that the dependencies are installed / updated by running the
+following command:
+
+```sh
+npm ci --workspaces
+```
+
+After completing this step successfully you should be able to run the Storybook
+by running the following command:
+
+```sh
+npm run storybook --workspace=packages/espresso-block-explorer-components
+```
+
+## Building the Components Library
+
+In order to build the library you should just need to run the following command:
+
+```sh
+npm run build --workspace=packages/espresso-block-explorer-components
+```
+
 ## CSS Variables
 
 This project makes heavy use of CSS Variables in order to allow us the maximum
