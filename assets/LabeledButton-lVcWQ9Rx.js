@@ -1,1 +1,0 @@
-import{j as e}from"./jsx-runtime-5BUNAZ9W.js";import{a as s}from"./higher_order-VtSBvwoq.js";import{B as r}from"./Button-I3bbD5ni.js";const t=({className:a,...o})=>e(r,{className:s(a,"label type--ui--button"),...o});try{t.displayName="LabeledButton",t.__docgenInfo={description:"",displayName:"LabeledButton",props:{}}}catch{}export{t as L};

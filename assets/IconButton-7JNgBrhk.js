@@ -1,1 +1,0 @@
-import{j as s}from"./jsx-runtime-5BUNAZ9W.js";import{a as r}from"./higher_order-VtSBvwoq.js";import{B as n}from"./Button-I3bbD5ni.js";const t=({className:o,...a})=>s(n,{className:r(o,"icon type--ui--button"),...a});try{t.displayName="IconButton",t.__docgenInfo={description:"",displayName:"IconButton",props:{}}}catch{}export{t as I};

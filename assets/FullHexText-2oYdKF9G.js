@@ -1,2 +1,0 @@
-import{m as t,a as n}from"./functional-Sf3DWwwq.js";const a=r=>`0x${Array.from(t(t(n(new Uint8Array(r.value),Number),e=>e.toString(16)),e=>e.padStart(2,"0"))).join("")}`;try{a.displayName="FullHexText",a.__docgenInfo={description:`FullHexText is a simple Text component that renders the given ArrayBuffer as
-a hex string`,displayName:"FullHexText",props:{value:{defaultValue:null,description:"",name:"value",required:!0,type:{name:"ArrayBuffer"}}}}}catch{}export{a as F};

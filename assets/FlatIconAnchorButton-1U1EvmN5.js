@@ -1,2 +1,0 @@
-import{j as o}from"./jsx-runtime-5BUNAZ9W.js";import{a as n}from"./higher_order-VtSBvwoq.js";const t=a=>o("a",{...a,className:n(a.className,"btn--flat"),href:a.disabled?void 0:a.href,children:a.children});try{t.displayName="FlatIconAnchorButton",t.__docgenInfo={description:`FlatIconAnchorButton is a simple Anchor Button that is meant to wrap an
-icon without imposing any colors to the icon or text contained within.`,displayName:"FlatIconAnchorButton",props:{disabled:{defaultValue:null,description:"",name:"disabled",required:!1,type:{name:"boolean"}}}}}catch{}export{t as F};
