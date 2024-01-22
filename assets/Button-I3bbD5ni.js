@@ -1,0 +1,1 @@
+import{j as r}from"./jsx-runtime-5BUNAZ9W.js";import{a as e}from"./higher_order-VtSBvwoq.js";const o=({className:t,children:a,...s})=>r("button",{className:e(t,"btn"),...s,children:a});try{o.displayName="Button",o.__docgenInfo={description:"",displayName:"Button",props:{}}}catch{}export{o as B};

@@ -11,7 +11,7 @@
 import React from 'react';
 export interface HigherOrderComponentWithClassNameProps {
     className?: string;
-    children: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode | React.ReactNode[];
 }
 /**
  * addClassNameToComponent is a utility function that automatically adds
