@@ -26,9 +26,16 @@ export default defineConfig({
     setupFiles: './setupTests.ts',
     css: true,
     coverage: {
-      reporter: ['text', 'json-summary', 'json'],
+      reporter: ['text', 'json-summary', 'json', 'lcov'],
       reportOnFailure: true,
-      exclude: ['**/__docs__/**', '**/__test__/**', '**/.storybook/**'],
+      exclude: [
+        '**/__docs__/**',
+        '**/__test__/**',
+        '**/.storybook/**',
+        '**/storybook-static/**',
+        '**/index.ts',
+        '**/*.d.ts',
+      ],
     },
   },
 });
