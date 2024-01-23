@@ -1,0 +1,31 @@
+picture.avatar {
+  display: inline-flex;
+}
+
+picture.avatar > img {
+  object-fit: contain;
+}
+
+picture.avatar.avatar-24x24 > img {
+  height: 24px;
+  width: 24px;
+}
+
+picture.avatar.avatar-32x32 > img {
+  height: 32px;
+  width: 32px;
+}
+
+picture.avatar.avatar-40x40 > img {
+  height: 40px;
+  width: 40px;
+}
+
+picture.avatar.avatar-circle {
+  background-color: var(--color-white);
+}
+
+picture.avatar.avatar-circle > img {
+  border: 1px solid var(--color--slate-300);
+  border-radius: 100%;
+}

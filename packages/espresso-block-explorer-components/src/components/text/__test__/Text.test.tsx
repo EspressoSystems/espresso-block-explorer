@@ -9,7 +9,7 @@ describe('Text Component', () => {
     render(
       <div data-testid="1">
         <Text text="Hello" />
-      </div>
+      </div>,
     );
     const text = screen.getByTestId('1');
     expect(text).toBeInTheDocument();

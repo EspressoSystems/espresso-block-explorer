@@ -15,7 +15,7 @@ describe('Number Text Component', () => {
             <NumberText number={1234567.89} />
           </ProvideDerivedNumberFormatters>
         </OverrideLocale>
-      </div>
+      </div>,
     );
     const text = screen.getByTestId('1');
     expect(text).toBeInTheDocument();
