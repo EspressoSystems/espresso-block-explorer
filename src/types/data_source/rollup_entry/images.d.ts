@@ -55,7 +55,7 @@ export declare const VistaraAvatarLogo: React.FC<PreFedSrcAvatarLogoProps>;
  *
  * @note This is expected to wrap a picture element with the avatar class.
  */
-export declare function With24PxSquare<Props extends PreFedSrcAvatarLogoProps>(component: React.ComponentType<Props> | string): React.FC<import("../../../components/higher_order").HigherOrderComponentWithClassNameProps>;
+export declare function With24PxSquare<Props extends PreFedSrcAvatarLogoProps>(component: React.ComponentType<Props> | string): React.FC<Props>;
 /**
  * With24PxSquare is a higher order component that adds the class
  * avatar-32x32 to the given component.
@@ -65,7 +65,7 @@ export declare function With24PxSquare<Props extends PreFedSrcAvatarLogoProps>(c
  *
  * @note This is expected to wrap a picture element with the avatar class.
  */
-export declare function With32PxSquare<Props extends PreFedSrcAvatarLogoProps>(component: React.ComponentType<Props> | string): React.FC<import("../../../components/higher_order").HigherOrderComponentWithClassNameProps>;
+export declare function With32PxSquare<Props extends PreFedSrcAvatarLogoProps>(component: React.ComponentType<Props> | string): React.FC<Props>;
 /**
  * With40PxSquare is a higher order component that adds the class
  * avatar-40x40 to the given component.
@@ -75,7 +75,7 @@ export declare function With32PxSquare<Props extends PreFedSrcAvatarLogoProps>(c
  *
  * @note This is expected to wrap a picture element with the avatar class.
  */
-export declare function With40PxSquare<Props extends PreFedSrcAvatarLogoProps>(component: React.ComponentType<Props> | string): React.FC<import("../../../components/higher_order").HigherOrderComponentWithClassNameProps>;
+export declare function With40PxSquare<Props extends PreFedSrcAvatarLogoProps>(component: React.ComponentType<Props> | string): React.FC<Props>;
 /**
  * WithCircleBorder is a higher order component that adds the class
  * avatar-circle to the given component.
@@ -84,4 +84,4 @@ export declare function With40PxSquare<Props extends PreFedSrcAvatarLogoProps>(c
  *
  * @note This is expected to wrap a picture element with the avatar class.
  */
-export declare function WithCircleBorder<Props extends PreFedSrcAvatarLogoProps>(component: React.ComponentType<Props> | string): React.FC<import("../../../components/higher_order").HigherOrderComponentWithClassNameProps>;
+export declare function WithCircleBorder<Props extends PreFedSrcAvatarLogoProps>(component: React.ComponentType<Props> | string): React.FC<Props>;
