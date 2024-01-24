@@ -54,12 +54,12 @@ describe('Locale Provider', () => {
 
       render(
         <ProvideNavigatorLanguage>
-          <OverrideLocale locale="en-FR">
+          <OverrideLocale locale="fr-FR">
             <ConsumeLocaleComponent />
           </OverrideLocale>
         </ProvideNavigatorLanguage>,
       );
-      expect(localLocale).toEqual('en-FR');
+      expect(localLocale).toEqual('fr-FR');
     });
   });
 });

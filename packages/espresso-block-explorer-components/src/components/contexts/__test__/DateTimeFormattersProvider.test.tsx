@@ -3,15 +3,16 @@ import { render } from '@testing-library/react';
 import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
-  CurrentNumberFormatters,
-  OverrideNumberFormatterProps,
-  OverrideNumberFormatters,
-  ProvideDerivedNumberFormatters,
-} from '../NumberFormattersProvider';
+  CurrentDateTimeFormatters,
+  OverrideDateTimeFormatters,
+  OverrideDateTimeFormattersProps,
+  ProvideDerivedDateTimeFormatters,
+} from '../DateTimeFormattersProvider';
 
-let localFormatters: null | OverrideNumberFormatterProps['formatters'] = null;
+let localFormatters: null | OverrideDateTimeFormattersProps['formatters'] =
+  null;
 const ConsumeNumberFormattersComponent: React.FC = () => {
-  const formatters = React.useContext(CurrentNumberFormatters);
+  const formatters = React.useContext(CurrentDateTimeFormatters);
   localFormatters = formatters;
   return <div />;
 };
@@ -20,7 +21,7 @@ beforeEach(() => {
   localFormatters = null;
 });
 
-describe('Number Formatters Provider', () => {
+describe('Date Time Formatters Provider', () => {
   describe('No Provider', () => {
     it('should match navigator.languages', () => {
       expect(localFormatters).toEqual(null);
@@ -33,9 +34,9 @@ describe('Number Formatters Provider', () => {
     it('should match navigator.language', () => {
       expect(localFormatters).toEqual(null);
       render(
-        <ProvideDerivedNumberFormatters>
+        <ProvideDerivedDateTimeFormatters>
           <ConsumeNumberFormattersComponent />
-        </ProvideDerivedNumberFormatters>,
+        </ProvideDerivedDateTimeFormatters>,
       );
       expect(localFormatters).not.toBeNull();
     });
@@ -45,38 +46,37 @@ describe('Number Formatters Provider', () => {
     it('should match navigator.language', () => {
       expect(localFormatters).toEqual(null);
       render(
-        <ProvideDerivedNumberFormatters>
-          <OverrideNumberFormatters
-            formatters={{
-              default: new Intl.NumberFormat('en-US', {}),
-              bytes: new Intl.NumberFormat('en-US', {}),
-            }}
-          >
-            <ConsumeNumberFormattersComponent />
-          </OverrideNumberFormatters>
-        </ProvideDerivedNumberFormatters>,
+        <ProvideDerivedDateTimeFormatters>
+          <ConsumeNumberFormattersComponent />
+        </ProvideDerivedDateTimeFormatters>,
       );
       const formatters1 = localFormatters;
       expect(localFormatters).not.toBeNull();
 
       render(
-        <ProvideDerivedNumberFormatters>
-          <OverrideNumberFormatters
+        <ProvideDerivedDateTimeFormatters>
+          <OverrideDateTimeFormatters
             formatters={{
-              default: new Intl.NumberFormat('de-DE', {}),
-              bytes: new Intl.NumberFormat('en-US', {}),
+              default: new Intl.DateTimeFormat('en-US', {}),
+              time: new Intl.DateTimeFormat('en-US', {}),
+              relative: new Intl.RelativeTimeFormat('en-US', {}),
+
+              numDays: new Intl.NumberFormat('en-US', {}),
+              numHours: new Intl.NumberFormat('en-US', {}),
+              numMinutes: new Intl.NumberFormat('en-US', {}),
             }}
           >
             <ConsumeNumberFormattersComponent />
-          </OverrideNumberFormatters>
-        </ProvideDerivedNumberFormatters>,
+          </OverrideDateTimeFormatters>
+        </ProvideDerivedDateTimeFormatters>,
       );
       const formatters2 = localFormatters;
       expect(localFormatters).not.toBeNull();
 
       expect(formatters1).toStrictEqual(formatters2);
-      expect(formatters1?.default.format(12345.67)).to.not.equal(
-        formatters2?.default.format(12345.67),
+      const now = new Date();
+      expect(formatters1?.time.format(now)).to.not.equal(
+        formatters2?.time.format(now),
       );
       expect(formatters1?.default).not.toBe(formatters2?.default);
     });

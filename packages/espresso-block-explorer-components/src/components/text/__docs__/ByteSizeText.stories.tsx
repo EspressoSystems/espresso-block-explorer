@@ -1,17 +1,17 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
+import ByteSizeText from '../ByteSizeText';
 import { OverrideLocale } from '../../contexts/LocaleProvider';
 import { ProvideDerivedNumberFormatters } from '../../contexts/NumberFormattersProvider';
-import NumberText from '../NumberText';
 
 interface ExampleProps {
   locale: string;
-  number: number;
+  bytes: number;
 }
-const Example: React.FC<ExampleProps> = ({ locale, number }) => (
-  <OverrideLocale locale={locale}>
+const Example: React.FC<ExampleProps> = (props) => (
+  <OverrideLocale locale={props.locale}>
     <ProvideDerivedNumberFormatters>
-      <NumberText number={number} />
+      <ByteSizeText bytes={props.bytes} />
     </ProvideDerivedNumberFormatters>
   </OverrideLocale>
 );
@@ -24,7 +24,7 @@ const Locales = {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'Components/Text/Number',
+  title: 'Components/Text/Bytes',
   component: Example,
   argTypes: {
     locale: {
@@ -41,23 +41,23 @@ const meta: Meta<typeof Example> = {
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const SmallNumber: Story = {
+export const SmallBytes: Story = {
   args: {
-    number: 0.04824,
+    bytes: 200,
     locale: 'en-US',
   },
 };
 
-export const NormalNumber: Story = {
+export const NormalBytes: Story = {
   args: {
-    number: 6.25,
+    bytes: 2048,
     locale: 'en-US',
   },
 };
 
-export const LargeNumber: Story = {
+export const LargeBytes: Story = {
   args: {
-    number: 123456789.05,
+    bytes: 4096 * 1024,
     locale: 'en-US',
   },
 };

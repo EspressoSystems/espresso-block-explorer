@@ -2,16 +2,16 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { OverrideLocale } from '../../contexts/LocaleProvider';
 import { ProvideDerivedNumberFormatters } from '../../contexts/NumberFormattersProvider';
-import NumberText from '../NumberText';
+import DateTimeText from '../DateTimeText';
 
 interface ExampleProps {
   locale: string;
-  number: number;
+  date: string;
 }
-const Example: React.FC<ExampleProps> = ({ locale, number }) => (
+const Example: React.FC<ExampleProps> = ({ locale, date }) => (
   <OverrideLocale locale={locale}>
     <ProvideDerivedNumberFormatters>
-      <NumberText number={number} />
+      <DateTimeText date={new Date(date)} />
     </ProvideDerivedNumberFormatters>
   </OverrideLocale>
 );
@@ -24,15 +24,15 @@ const Locales = {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'Components/Text/Number',
+  title: 'Components/Text/Date Time',
   component: Example,
   argTypes: {
     locale: {
-      options: Object.keys(Locales),
+      options: Object.values(Locales),
       mapping: Locales,
       control: {
         type: 'select',
-        labels: Locales,
+        labels: Object.keys(Locales),
       },
     },
   },
@@ -41,23 +41,9 @@ const meta: Meta<typeof Example> = {
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const SmallNumber: Story = {
+export const DateTime: Story = {
   args: {
-    number: 0.04824,
-    locale: 'en-US',
-  },
-};
-
-export const NormalNumber: Story = {
-  args: {
-    number: 6.25,
-    locale: 'en-US',
-  },
-};
-
-export const LargeNumber: Story = {
-  args: {
-    number: 123456789.05,
+    date: new Date().toISOString(),
     locale: 'en-US',
   },
 };

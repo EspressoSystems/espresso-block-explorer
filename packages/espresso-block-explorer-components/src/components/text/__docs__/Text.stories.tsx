@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Text from '../Text';
+import TextComponent from '../Text';
 
-const meta: Meta<typeof Text> = {
+const meta: Meta<typeof TextComponent> = {
   title: 'Components/Text',
-  component: Text,
+  component: TextComponent,
 };
 
 export default meta;
-type Story = StoryObj<typeof Text>;
+type Story = StoryObj<typeof TextComponent>;
 
-export const Simple: Story = {
+export const Text: Story = {
   args: {
     text: 'Hello, World!',
   },

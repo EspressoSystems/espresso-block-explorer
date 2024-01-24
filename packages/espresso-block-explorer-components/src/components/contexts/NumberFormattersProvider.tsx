@@ -17,6 +17,12 @@ import { CurrentLocale } from './LocaleProvider';
 function createDefaultNumberFormatters(locale: string) {
   return {
     default: new Intl.NumberFormat(locale),
+    bytes: new Intl.NumberFormat(locale, {
+      style: 'unit',
+      unit: 'byte',
+      notation: 'standard',
+      unitDisplay: 'long',
+    }),
   };
 }
 
