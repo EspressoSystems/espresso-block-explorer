@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import ButtonComp from '../button/Button';
 import Text from '../../../text/Text';
+import ButtonComp from '../button/Button';
 
 interface ExampleProps {
   disabled: boolean;

@@ -45,7 +45,7 @@ const PromiseResolver: React.FC<PromiseBuilderProps<unknown>> = (props) => {
         setState({
           promise,
           state: AsyncSnapshot.withError(AsyncState.done, error),
-        })
+        }),
     );
   }
 

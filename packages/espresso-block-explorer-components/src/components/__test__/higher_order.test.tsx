@@ -23,7 +23,7 @@ describe('Higher Order Components', () => {
       render(
         <Comp1 data-testid="1">
           <Text text="test" />
-        </Comp1>
+        </Comp1>,
       );
       const element = screen.getByTestId('1');
       expect(element).toBeInTheDocument();
@@ -46,7 +46,7 @@ describe('Higher Order Components', () => {
           <Comp2 data-testid="2">
             <Text text="2" />
           </Comp2>
-        </div>
+        </div>,
       );
 
       const element1 = screen.getByTestId('1');

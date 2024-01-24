@@ -26,7 +26,7 @@ function createDefaultNumberFormatters(locale: string) {
  * provided by `navigator.language`.
  */
 const CurrentNumberFormatters = createContext(
-  createDefaultNumberFormatters(navigator.language)
+  createDefaultNumberFormatters(navigator.language),
 );
 export { CurrentNumberFormatters };
 

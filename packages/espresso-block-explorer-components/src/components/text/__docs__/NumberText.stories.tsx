@@ -1,8 +1,8 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import NumberText from '../NumberText';
+import React from 'react';
 import { OverrideLocale } from '../../contexts/LocaleProvider';
 import { ProvideDerivedNumberFormatters } from '../../contexts/NumberFormattersProvider';
+import NumberText from '../NumberText';
 
 interface ExampleProps {
   locale: string;

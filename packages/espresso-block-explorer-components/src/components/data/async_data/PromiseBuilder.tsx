@@ -20,7 +20,7 @@ export interface PromiseBuilderProps<T> {
 }
 
 function consumeSnapshot(
-  component: React.ComponentType<PromiseBuilderBuilderProps<unknown>>
+  component: React.ComponentType<PromiseBuilderBuilderProps<unknown>>,
 ): React.FC {
   return function ConsumeSnapshot() {
     const snapshot = React.useContext(AsyncSnapshotContext);

@@ -19,13 +19,13 @@ describe('Promise Resolver Component', () => {
     const { rerender } = render(
       <PromiseResolver promise={Promise.resolve(1)}>
         <Comp data-testid="1" />
-      </PromiseResolver>
+      </PromiseResolver>,
     );
 
     await waitFor(() => {
       expect(screen.getByTestId('1')).toHaveAttribute(
         'data-async-state',
-        String(AsyncState.done)
+        String(AsyncState.done),
       );
     });
 
@@ -52,13 +52,13 @@ describe('Promise Resolver Component', () => {
     rerender(
       <PromiseResolver promise={Promise.resolve(2)}>
         <Comp data-testid="1" />
-      </PromiseResolver>
+      </PromiseResolver>,
     );
 
     await waitFor(() => {
       expect(screen.getByTestId('1')).toHaveAttribute(
         'data-async-state',
-        String(AsyncState.done)
+        String(AsyncState.done),
       );
     });
 
@@ -95,13 +95,13 @@ describe('Promise Resolver Component', () => {
     render(
       <PromiseResolver promise={Promise.reject(1)}>
         <Comp data-testid="1" />
-      </PromiseResolver>
+      </PromiseResolver>,
     );
 
     await waitFor(() => {
       expect(screen.getByTestId('1')).toHaveAttribute(
         'data-async-state',
-        String(AsyncState.done)
+        String(AsyncState.done),
       );
     });
 

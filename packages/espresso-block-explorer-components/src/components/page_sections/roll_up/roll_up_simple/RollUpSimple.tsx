@@ -1,11 +1,11 @@
 import React from 'react';
 import { curatedRollupMap } from '../../../../types/data_source/rollup_entry/data';
+import { addClassToClassName } from '../../../higher_order';
 import NumberText from '../../../text/NumberText';
 import Text from '../../../text/Text';
 import RollUpAvatar24 from './RollUpAvatar24';
 import RollUpName from './RollUpName';
 import './roll_up_simple.css';
-import { addClassToClassName } from '../../../higher_order';
 
 export interface RollUpSimpleProps {
   className?: string;

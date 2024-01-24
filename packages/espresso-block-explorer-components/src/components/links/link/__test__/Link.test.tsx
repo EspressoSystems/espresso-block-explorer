@@ -10,7 +10,7 @@ describe('Link Component', () => {
     render(
       <Link data-testid="1" href="https://example.com/">
         <Text text="Click Me!" />
-      </Link>
+      </Link>,
     );
 
     const link = screen.getByTestId('1');

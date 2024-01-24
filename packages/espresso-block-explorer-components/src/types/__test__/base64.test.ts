@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { describe, expect, it } from 'vitest';
-import { stdEncoding, rawURLEncoding } from '../base64';
+import { rawURLEncoding, stdEncoding } from '../base64';
 
 function* charCodes(str: string): Generator<number> {
   const l = str.length;

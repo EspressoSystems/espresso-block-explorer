@@ -28,7 +28,7 @@ const SVGIconBase: React.FC<SVGIconBaseProps> = (props) =>
       viewBox: props.viewBox ?? '0 0 24 24',
       className: addClassToClassName(props.className, 'icon'),
     },
-    props.children
+    props.children,
   );
 
 export default SVGIconBase;

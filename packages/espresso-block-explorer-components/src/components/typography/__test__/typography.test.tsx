@@ -2,22 +2,22 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, it } from 'vitest';
+import Text from '../../text/Text';
 import {
+  WithParagraphBase,
+  WithParagraphSmall,
   WithParagraphText100,
   WithParagraphText300,
   WithParagraphText500,
   WithParagraphText600,
-  WithParagraphBase,
-  WithParagraphSmall,
+  WithUiBase,
+  WithUiButton,
+  WithUiSmall,
   WithUiText100,
   WithUiText300,
   WithUiText500,
   WithUiText600,
-  WithUiBase,
-  WithUiSmall,
-  WithUiButton,
 } from '../typography';
-import Text from '../../text/Text';
 
 const ParagraphText100Div = WithParagraphText100('div');
 const ParagraphText300Div = WithParagraphText300('div');
@@ -39,7 +39,7 @@ describe('Paragraph Text Styles', () => {
       render(
         <ParagraphText100Div data-testid="1">
           <Text text="Text 100" />
-        </ParagraphText100Div>
+        </ParagraphText100Div>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();
@@ -53,7 +53,7 @@ describe('Paragraph Text Styles', () => {
       render(
         <ParagraphText300Div data-testid="1">
           <Text text="Text 300" />
-        </ParagraphText300Div>
+        </ParagraphText300Div>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();
@@ -67,7 +67,7 @@ describe('Paragraph Text Styles', () => {
       render(
         <ParagraphText500Div data-testid="1">
           <Text text="Text 500" />
-        </ParagraphText500Div>
+        </ParagraphText500Div>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();
@@ -81,7 +81,7 @@ describe('Paragraph Text Styles', () => {
       render(
         <ParagraphText600Div data-testid="1">
           <Text text="Text 600" />
-        </ParagraphText600Div>
+        </ParagraphText600Div>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();
@@ -95,7 +95,7 @@ describe('Paragraph Text Styles', () => {
       render(
         <ParagraphBaseDiv data-testid="1">
           <Text text="Base" />
-        </ParagraphBaseDiv>
+        </ParagraphBaseDiv>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();
@@ -109,7 +109,7 @@ describe('Paragraph Text Styles', () => {
       render(
         <ParagraphSmallDiv data-testid="1">
           <Text text="Small" />
-        </ParagraphSmallDiv>
+        </ParagraphSmallDiv>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();
@@ -125,7 +125,7 @@ describe('UI Text Styles', () => {
       render(
         <UiText100Div data-testid="1">
           <Text text="Text 100" />
-        </UiText100Div>
+        </UiText100Div>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();
@@ -139,7 +139,7 @@ describe('UI Text Styles', () => {
       render(
         <UiText300Div data-testid="1">
           <Text text="Text 300" />
-        </UiText300Div>
+        </UiText300Div>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();
@@ -153,7 +153,7 @@ describe('UI Text Styles', () => {
       render(
         <UiText500Div data-testid="1">
           <Text text="Text 500" />
-        </UiText500Div>
+        </UiText500Div>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();
@@ -167,7 +167,7 @@ describe('UI Text Styles', () => {
       render(
         <UiText600Div data-testid="1">
           <Text text="Text 600" />
-        </UiText600Div>
+        </UiText600Div>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();
@@ -181,7 +181,7 @@ describe('UI Text Styles', () => {
       render(
         <UiBaseDiv data-testid="1">
           <Text text="Base" />
-        </UiBaseDiv>
+        </UiBaseDiv>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();
@@ -195,7 +195,7 @@ describe('UI Text Styles', () => {
       render(
         <UiSmallDiv data-testid="1">
           <Text text="Small" />
-        </UiSmallDiv>
+        </UiSmallDiv>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();
@@ -209,7 +209,7 @@ describe('UI Text Styles', () => {
       render(
         <UiButtonDiv data-testid="1">
           <Text text="Button" />
-        </UiButtonDiv>
+        </UiButtonDiv>,
       );
       const text = screen.getByTestId('1');
       expect(text).toBeInTheDocument();

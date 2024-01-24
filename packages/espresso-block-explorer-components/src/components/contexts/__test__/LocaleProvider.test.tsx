@@ -34,7 +34,7 @@ describe('Locale Provider', () => {
       render(
         <ProvideNavigatorLanguage>
           <ConsumeLocaleComponent />
-        </ProvideNavigatorLanguage>
+        </ProvideNavigatorLanguage>,
       );
       expect(localLocale).toEqual(navigator.language);
     });
@@ -48,7 +48,7 @@ describe('Locale Provider', () => {
           <OverrideLocale locale="hi">
             <ConsumeLocaleComponent />
           </OverrideLocale>
-        </ProvideNavigatorLanguage>
+        </ProvideNavigatorLanguage>,
       );
       expect(localLocale).toEqual('hi');
 
@@ -57,7 +57,7 @@ describe('Locale Provider', () => {
           <OverrideLocale locale="en-FR">
             <ConsumeLocaleComponent />
           </OverrideLocale>
-        </ProvideNavigatorLanguage>
+        </ProvideNavigatorLanguage>,
       );
       expect(localLocale).toEqual('en-FR');
     });

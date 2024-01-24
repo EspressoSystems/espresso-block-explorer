@@ -1,6 +1,6 @@
 import React from 'react';
-import SVGIconBase from './SVGIconBase';
 import { addClassToClassName } from '../../higher_order';
+import SVGIconBase from './SVGIconBase';
 
 /**
  * SearchGlass represents an icon of a search glass angled up to the left.
@@ -22,7 +22,7 @@ const SearchGlass: React.FC<React.SVGProps<SVGElement>> = (props) =>
       d="M21.0004 20.9984L16.6504 16.6484"
       strokeLinecap="round"
       strokeLinejoin="round"
-    />
+    />,
   );
 
 export default SearchGlass;

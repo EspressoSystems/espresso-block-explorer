@@ -4,8 +4,8 @@ import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   CurrentNumberFormatters,
-  OverrideNumberFormatters,
   OverrideNumberFormatterProps,
+  OverrideNumberFormatters,
   ProvideDerivedNumberFormatters,
 } from '../NumberFormattersProvider';
 
@@ -35,7 +35,7 @@ describe('Number Formatters Provider', () => {
       render(
         <ProvideDerivedNumberFormatters>
           <ConsumeNumberFormattersComponent />
-        </ProvideDerivedNumberFormatters>
+        </ProvideDerivedNumberFormatters>,
       );
       expect(localFormatters).not.toBeNull();
     });
@@ -51,7 +51,7 @@ describe('Number Formatters Provider', () => {
           >
             <ConsumeNumberFormattersComponent />
           </OverrideNumberFormatters>
-        </ProvideDerivedNumberFormatters>
+        </ProvideDerivedNumberFormatters>,
       );
       const formatters1 = localFormatters;
       expect(localFormatters).not.toBeNull();
@@ -63,14 +63,14 @@ describe('Number Formatters Provider', () => {
           >
             <ConsumeNumberFormattersComponent />
           </OverrideNumberFormatters>
-        </ProvideDerivedNumberFormatters>
+        </ProvideDerivedNumberFormatters>,
       );
       const formatters2 = localFormatters;
       expect(localFormatters).not.toBeNull();
 
       expect(formatters1).toStrictEqual(formatters2);
       expect(formatters1?.default.format(12345.67)).to.not.equal(
-        formatters2?.default.format(12345.67)
+        formatters2?.default.format(12345.67),
       );
       expect(formatters1?.default).not.toBe(formatters2?.default);
     });

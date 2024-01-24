@@ -6,5 +6,5 @@ import { AsyncSnapshot } from './AsyncSnapshot';
  * This is useful for passing AsyncSnapshots down the component tree.
  */
 export const AsyncSnapshotContext = React.createContext<AsyncSnapshot<unknown>>(
-  AsyncSnapshot.nothing()
+  AsyncSnapshot.nothing(),
 );

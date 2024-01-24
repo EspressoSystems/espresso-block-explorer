@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import AnchorButtonComp from '../AnchorButton';
 import Text from '../../../../text/Text';
+import AnchorButtonComp from '../AnchorButton';
 
 interface ExampleProps {
   href: string;

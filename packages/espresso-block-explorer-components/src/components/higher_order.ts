@@ -13,7 +13,7 @@ import React from 'react';
 
 export interface HigherOrderComponentWithClassNameProps {
   className?: string;
-  children: React.ReactNode | React.ReactNode[];
+  children?: React.ReactNode | React.ReactNode[];
 }
 
 /**
@@ -32,7 +32,7 @@ export function addClassNameToComponent<
   Props extends HigherOrderComponentWithClassNameProps,
 >(
   component: React.ComponentType<Props> | string,
-  className: string
+  className: string,
 ): React.FC<Props> {
   const WrappedComponent = (props: Props) =>
     React.createElement(component, {
@@ -46,7 +46,7 @@ export function addClassNameToComponent<
 
 export function addClassToClassName(
   existingClassName: undefined | string,
-  newClassName: string
+  newClassName: string,
 ): string {
   if (!existingClassName) {
     return newClassName;

@@ -1,7 +1,7 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import RollUpSimpleComp from '../RollUpSimple';
+import React from 'react';
 import { curatedRollupMap } from '../../../../../types/data_source/rollup_entry/data';
+import RollUpSimpleComp from '../RollUpSimple';
 
 interface ExampleProps {
   namespace: number;

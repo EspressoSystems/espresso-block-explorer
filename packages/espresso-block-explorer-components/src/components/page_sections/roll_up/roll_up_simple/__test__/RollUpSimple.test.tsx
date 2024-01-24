@@ -2,8 +2,8 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, it } from 'vitest';
-import RollUpSimple from '../RollUpSimple';
 import { curatedRollupMap } from '../../../../../types/data_source/rollup_entry/data';
+import RollUpSimple from '../RollUpSimple';
 
 describe('RollUpSimple Component', () => {
   describe('All Rollups', () => {

@@ -1,9 +1,9 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import PromiseResolverComp from '../PromiseResolver';
-import { AsyncSnapshotContext } from '../AsyncSnapshotContext';
-import { AsyncState } from '../AsyncSnapshot';
+import React from 'react';
 import Text from '../../../text/Text';
+import { AsyncState } from '../AsyncSnapshot';
+import { AsyncSnapshotContext } from '../AsyncSnapshotContext';
+import PromiseResolverComp from '../PromiseResolver';
 
 async function sleep(milliseconds: number): Promise<void> {
   return new Promise((resolve) => {
