@@ -14,6 +14,7 @@ import React from 'react';
  */
 declare function createDefaultNumberFormatters(locale: string): {
     default: Intl.NumberFormat;
+    bytes: Intl.NumberFormat;
 };
 /**
  * CurrentNumberFormatters is the current context of number formatters.  It
@@ -22,6 +23,7 @@ declare function createDefaultNumberFormatters(locale: string): {
  */
 declare const CurrentNumberFormatters: React.Context<{
     default: Intl.NumberFormat;
+    bytes: Intl.NumberFormat;
 }>;
 export { CurrentNumberFormatters };
 export interface ProvideCurrencyFormatterProps {
