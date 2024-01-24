@@ -1,0 +1,60 @@
+@import url(../../../styles/main.css);
+
+table.data-table {
+  width: 100%;
+  border-spacing: 0;
+}
+
+table.data-table td {
+  padding: 16px 4px;
+  text-align: start;
+}
+
+table.data-table table {
+  width: 100%;
+}
+
+table.data-table thead.type--ui--small th {
+  --text--font-weight: 500;
+  font-weight: 500;
+}
+
+table.data-table th:not(:nth-last-child(1)),
+table.data-table td:not(:nth-last-child(1)) {
+  border-right: 1px solid var(--color--slate-100);
+}
+
+table.data-table th,
+table.data-table tr:not(:nth-last-child(1)) td {
+  border-bottom: 1px solid var(--color--slate-100);
+}
+
+table.data-table th {
+  padding: 0;
+}
+
+table.data-table th div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+table.data-table th svg.icon--sort {
+  opacity: 100%;
+  transform: rotateZ(0deg);
+  transition:
+    opacity ease-in-out 240ms,
+    transform ease-in-out 240ms;
+  will-change: opacity, transform;
+}
+
+table.data-table th[data-sort-column-active='false'] svg.icon--sort {
+  opacity: 0;
+}
+
+table.data-table th[data-sort-column-dir='1'] svg.icon--sort {
+  transform: rotateZ(180deg);
+}
