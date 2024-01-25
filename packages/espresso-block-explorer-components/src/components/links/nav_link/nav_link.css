@@ -1,0 +1,7 @@
+a.nav-link {
+  text-decoration: none;
+}
+
+a.active.active {
+  text-decoration: underline;
+}

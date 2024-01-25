@@ -1,0 +1,43 @@
+@import url(../../../styles/main.css);
+
+nav.nav--main-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color--white);
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 1;
+
+  transform: translateX(100%);
+  transition: transform ease-in-out 240ms;
+  will-change: transform;
+}
+
+nav.nav--main-drawer ul {
+  padding: 0;
+  margin: 0;
+  align-self: flex-start;
+}
+
+nav.nav--main-drawer.active {
+  transform: translateX(0);
+}
+
+nav.nav--main-drawer li {
+  list-style-type: none;
+  display: block;
+  margin-top: 26px;
+  margin-bottom: 32px;
+}
+
+nav.nav--main-drawer li a {
+  display: block;
+  padding: 8px 16px;
+  color: var(--color--slate-950);
+}
