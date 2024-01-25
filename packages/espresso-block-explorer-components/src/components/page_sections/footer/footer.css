@@ -1,0 +1,101 @@
+footer {
+  background-color: var(--color--coffee);
+  --icon--fill-color: var(--color--caramel);
+
+  border-radius: 24px;
+  padding: 40px;
+  display: grid;
+}
+
+footer > hr {
+  display: none;
+  width: 100%;
+  margin: 40px 0;
+
+  border-style: solid;
+  border-color: var(--on-color--coffee);
+  opacity: 40%;
+  border-width: 0;
+  border-bottom-width: 1px;
+}
+
+/* Mobile Layout */
+footer {
+  padding: 40px 24px;
+  margin: 40px 10px 16px;
+  grid-template-areas:
+    'newsletter'
+    'espresso-logo'
+    'external-links'
+    'social-links';
+  grid-template-rows: auto auto auto auto;
+  grid-template-columns: auto;
+  align-items: center;
+}
+
+footer > .form--newsletter {
+  grid-area: newsletter;
+}
+
+footer > .icon--logo {
+  grid-area: espresso-logo;
+  margin: 40px auto;
+}
+
+footer > .social-media-links {
+  grid-area: social-links;
+  display: flex;
+  justify-content: center;
+}
+
+footer > .external-links {
+  grid-area: external-links;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+footer > hr {
+  grid-area: hr;
+}
+
+/* Medium */
+@media screen and (min-width: 768px) {
+  footer {
+    padding: 16px;
+    margin: 40px 16px 16px;
+  }
+
+  footer > .social-media-links {
+    justify-content: start;
+  }
+}
+
+/* Large */
+@media screen and (min-width: 1024px) {
+  footer {
+    padding: 40px;
+    margin: 40px 12px 16px;
+    grid-template-columns: 3fr 2fr 3fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+      'newsletter social-links external-links' 'hr hr hr'
+      'espresso-logo espresso-logo espresso-logo';
+  }
+
+  footer > hr {
+    display: block;
+  }
+
+  footer > .social-media-links {
+    justify-content: center;
+  }
+
+  footer > .external-links {
+    justify-content: flex-end;
+  }
+
+  footer > .icon--logo {
+    /* padding-top: 170px; */
+    margin-top: 130px;
+  }
+}

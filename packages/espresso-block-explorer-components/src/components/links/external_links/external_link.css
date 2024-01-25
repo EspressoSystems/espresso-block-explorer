@@ -1,0 +1,15 @@
+a.link.link--external {
+  color: var(--on-color--coffee);
+  padding: 4px 8px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+a.link.link--external:visited {
+  color: var(--on-color--coffee);
+}
+
+a.link.link--external:hover {
+  color: var(--color--caramel);
+  text-decoration: underline;
+}
