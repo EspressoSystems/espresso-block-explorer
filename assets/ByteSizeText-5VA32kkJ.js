@@ -1,2 +1,0 @@
-import{r}from"./index-4g5l5LRQ.js";import{C as o}from"./NumberFormattersProvider-u1NSqINj.js";const t=e=>r.useContext(o).bytes.format(e.bytes);try{t.displayName="ByteSizeText",t.__docgenInfo={description:`ByteSizeText is a simple Text element for rendering the bytes given
-in a localized format.`,displayName:"ByteSizeText",props:{bytes:{defaultValue:null,description:"",name:"bytes",required:!0,type:{name:"number"}}}}}catch{}export{t as B};

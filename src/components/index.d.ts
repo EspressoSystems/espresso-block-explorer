@@ -3,6 +3,7 @@ export * from './data';
 export * from './hid';
 export * from './layout';
 export * from './links';
+export * from './page_sections';
 export * from './text';
 export * from './typography';
 export * from './visual';
