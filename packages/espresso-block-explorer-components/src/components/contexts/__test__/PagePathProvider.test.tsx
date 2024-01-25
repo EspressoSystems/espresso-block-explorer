@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import {
   CurrentPagePathContext,
   OverridePagePath,
+  PageType,
   ProvideDerivedPagePath,
 } from '../PagePathProvider';
 
@@ -43,13 +44,13 @@ describe('Page Path Provider Context', () => {
     it('should change every second', async () => {
       expect(localPathResolver).toEqual(null);
       render(
-        <OverridePagePath pathname="/hello">
+        <OverridePagePath page={PageType.unknown}>
           <ConsumePagePathProvider />
         </OverridePagePath>,
       );
       const path = localPathResolver;
       expect(path).not.toBeNull();
-      expect(path).equals('/hello');
+      expect(path).equals('unknown');
     });
   });
 });
