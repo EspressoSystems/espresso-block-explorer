@@ -1,0 +1,29 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+  margin-bottom: 40px;
+
+  color: var(--color--slate-950);
+  --icon--fill-color: var(--color--slate-950);
+}
+
+/* Mobile Size */
+header {
+  padding: 10px 16px;
+}
+
+/* Medium */
+@media screen and (min-width: 768px) {
+  header > nav {
+    display: initial;
+  }
+}
+
+/* Large */
+@media screen and (min-width: 1024px) {
+  header {
+    padding: 10px 24px;
+  }
+}
