@@ -24,7 +24,7 @@ import TimeText from '../../text/TimeText';
 import { WithUiSmall } from '../../typography/typography';
 import HexDump from '../hex_dump/HexDump';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
-import './transaction_Detail_content.css';
+import './transaction_detail_content.css';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const LabelUiSmall = WithUiSmall('label');
