@@ -1,1 +1,0 @@
-function*a(e){for(let n=e.next();!n.done;n=e.next())yield n.value}function*l(e,n){for(let t=e.next();!t.done;t=e.next())yield n(t.value)}function o(e,n){return l(e[Symbol.iterator](),n)}export{o as a,l as m,a as y};

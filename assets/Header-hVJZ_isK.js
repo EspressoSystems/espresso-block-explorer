@@ -1,0 +1,2 @@
+import{a as o,j as r}from"./jsx-runtime-5BUNAZ9W.js";import{N as s}from"./NavBar-5ZfW7IMA.js";import{E as d}from"./EspressoLogoAndTitle-S8HsCgCD.js";const a=e=>o("header",{...e,children:[r(d,{}),r(s,{})]});try{a.displayName="Header",a.__docgenInfo={description:`Header is a component for creating and display a consistent Header for
+every Block Explorer Page.`,displayName:"Header",props:{}}}catch{}export{a as H};
