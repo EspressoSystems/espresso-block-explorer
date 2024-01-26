@@ -36,6 +36,7 @@ export default defineConfig({
         '**/storybook-static/**',
         '**/index.ts',
         '**/*.d.ts',
+        '**/vitest.global-setup.ts',
       ],
     },
   },
