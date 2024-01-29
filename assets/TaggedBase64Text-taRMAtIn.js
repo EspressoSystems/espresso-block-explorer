@@ -1,2 +1,0 @@
-import{a as r}from"./jsx-runtime-5BUNAZ9W.js";import{r as n}from"./TaggedBase64-ByXDuNC9.js";const t=a=>{const e=n.encodeToString(a.value.data);return e.length<=16?e:r("span",{title:e,children:[e.substring(0,8),"...",e.substring(e.length-8,e.length)]})};try{t.displayName="TaggedBase64Text",t.__docgenInfo={description:`TaggedBase64Text is a simple Text component that renders a TaggedBase64 value
-in it's own way.`,displayName:"TaggedBase64Text",props:{value:{defaultValue:null,description:"",name:"value",required:!0,type:{name:"TaggedBase64"}}}}}catch{}export{t as T};
