@@ -15,9 +15,9 @@ import { SortDirection } from '../../data/types';
 import Card from '../../layout/card/Card';
 import Link from '../../links/link/Link';
 import ByteSizeText from '../../text/ByteSizeText';
+import DateTimeText from '../../text/DateTimeText';
 import NumberText from '../../text/NumberText';
 import TaggedBase64Text from '../../text/TaggedBase64Text';
-import TimeText from '../../text/TimeText';
 
 export interface BlockSummary {
   block: number;
@@ -80,7 +80,7 @@ const SizeCell: React.FC = () => {
 const TimeCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as BlockSummary;
 
-  return <TimeText date={row.time} />;
+  return <DateTimeText date={row.time} />;
 };
 
 /**
