@@ -1,4 +1,5 @@
 import React from 'react';
+import { BlockDetailAsyncRetriever } from '../../../types/data_source/block_detail/types';
 export declare const BlockNumberContext: React.Context<number>;
 /**
  * BlockNavigation is a component that displays the current BlockID

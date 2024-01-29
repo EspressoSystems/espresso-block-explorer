@@ -1,5 +1,5 @@
 import React from 'react';
-interface BlocksPageProps {
+interface TransactionsPageProps {
 }
-declare const BlocksPage: React.FC<BlocksPageProps>;
-export default BlocksPage;
+declare const TransactionsPage: React.FC<TransactionsPageProps>;
+export default TransactionsPage;

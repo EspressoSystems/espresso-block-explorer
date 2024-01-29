@@ -11,6 +11,11 @@ export interface TransactionSummary {
  * TransactionSummaryAsyncRetriever
  */
 export declare const RetrieverContext: React.Context<TransactionSummaryAsyncRetriever>;
+/**
+ * TransactionsSummaryDataTable is a DataTable that contains Transaction
+ * Summary State.
+ */
+export declare const TransactionsSummaryDataTable: React.FC;
 interface TransactionsSummaryProps {
 }
 /**

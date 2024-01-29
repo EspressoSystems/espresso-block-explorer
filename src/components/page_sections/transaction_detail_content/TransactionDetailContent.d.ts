@@ -1,4 +1,5 @@
 import React from 'react';
+import { TransactionDetailAsyncRetriever } from '../../../types/data_source/transaction_detail/types';
 /**
  * TransactionCommitContext represents the current hash for a Transaction.
  */
