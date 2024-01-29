@@ -1,13 +1,16 @@
 import React from 'react';
 import { TaggedBase64 } from '../../../types/TaggedBase64';
+import { urlEncoding } from '../../../types/base64';
 import {
   TransactionDetail,
   TransactionDetailAsyncRetriever,
   TransactionTreeData,
 } from '../../../types/data_source/transaction_detail/types';
+import { encodeNumberIterableToHexits } from '../../../types/hex';
 import { DataContext } from '../../contexts/DataProvider';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
+import LabeledButton from '../../hid/buttons/labeled_button/LabeledButton';
 import Card from '../../layout/card/Card';
 import Heading2 from '../../layout/heading/Heading2';
 import { WithEdgeMargin } from '../../layout/margin/margins';
@@ -188,7 +191,31 @@ const TransactionDataContents: React.FC = () => {
             </TableLabeledValue>
             <TableLabeledValue>
               <Text text="Transaction data" />
-              <HexDump value={data.data} />
+              <>
+                <HexDump value={data.data} />
+                <br />
+                <LabeledButton
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      Array.from(
+                        encodeNumberIterableToHexits(new Uint8Array(data.data)),
+                      ).join(''),
+                    );
+                  }}
+                >
+                  <Text text="Copy as Hex" />
+                </LabeledButton>
+                &nbsp;
+                <LabeledButton
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      urlEncoding.encodeToString(data.data),
+                    );
+                  }}
+                >
+                  <Text text="Copy as Base64" />
+                </LabeledButton>
+              </>
             </TableLabeledValue>
           </>
         </EdgeMarginCard>
