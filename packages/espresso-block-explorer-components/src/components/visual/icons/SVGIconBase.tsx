@@ -21,11 +21,11 @@ const SVGIconBase: React.FC<SVGIconBaseProps> = (props) =>
   React.createElement(
     'svg',
     {
-      ...props,
       xmlns: props.xmlns ?? 'http://www.w3.org/2000/svg',
       width: props.width ?? '24',
       height: props.height ?? '24',
       viewBox: props.viewBox ?? '0 0 24 24',
+      ...props,
       className: addClassToClassName(props.className, 'icon'),
     },
     props.children,

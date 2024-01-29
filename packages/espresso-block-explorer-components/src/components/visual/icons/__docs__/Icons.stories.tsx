@@ -5,6 +5,7 @@ import ArrowRight from '../ArrowRight';
 import CheckCircle from '../CheckCircle';
 import ChevronDown from '../ChevronDown';
 import ChevronUp from '../ChevronUp';
+import Copy from '../Copy';
 import DiscordIcon from '../DiscordIcon';
 import EspressoLogo from '../EspressoLogo';
 import EspressoLogoAndTitle from '../EspressoLogoAndTitle';
@@ -24,6 +25,7 @@ const Example: React.FC = () => (
     <CheckCircle />
     <ChevronDown />
     <ChevronUp />
+    <Copy />
     <DiscordIcon />
     <InfoCircle />
     <MediumIcon />

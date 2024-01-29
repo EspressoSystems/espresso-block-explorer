@@ -195,7 +195,10 @@ const TransactionDataContents: React.FC = () => {
                 <HexDump value={data.data} />
                 <br />
                 <LabeledButton
-                  onClick={() => {
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+
                     navigator.clipboard.writeText(
                       Array.from(
                         encodeNumberIterableToHexits(new Uint8Array(data.data)),
@@ -207,7 +210,10 @@ const TransactionDataContents: React.FC = () => {
                 </LabeledButton>
                 &nbsp;
                 <LabeledButton
-                  onClick={() => {
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+
                     navigator.clipboard.writeText(
                       urlEncoding.encodeToString(data.data),
                     );

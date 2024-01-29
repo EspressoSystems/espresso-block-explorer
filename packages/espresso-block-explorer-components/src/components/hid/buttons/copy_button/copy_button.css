@@ -1,0 +1,15 @@
+@import url(../../../../styles/main.css);
+button.btn--copy {
+  appearance: none;
+  box-sizing: border-box;
+  margin: 0 1em;
+  padding: 2px;
+  background-color: var(--color--transparent);
+  border: none;
+  cursor: pointer;
+}
+
+button.btn--copy > svg {
+  width: 18px;
+  height: 18px;
+}

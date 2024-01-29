@@ -1,5 +1,7 @@
 import React from 'react';
 import { mapIterable, mapIterator } from '../../types/functional';
+import CopyButton from '../hid/buttons/copy_button/CopyButton';
+import './inline.css';
 
 export interface HexTextProps {
   value: ArrayBuffer;
@@ -24,8 +26,18 @@ const HexText: React.FC<HexTextProps> = (props) => {
   }
 
   return (
-    <span title={`0x${hexBytes}`}>
-      0x{hexBytes.substring(0, 6)}...{hexBytes.substring(hexBytes.length - 6)}
+    <span className="inline">
+      <span title={`0x${hexBytes}`}>
+        0x{hexBytes.substring(0, 6)}...{hexBytes.substring(hexBytes.length - 6)}
+      </span>
+      <CopyButton
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+
+          navigator.clipboard.writeText(hexBytes);
+        }}
+      />
     </span>
   );
 };
