@@ -15,12 +15,12 @@ import ParagraphTextSmall from '../../layout/paragraph/ParagraphTextSmall';
 import TableLabeledValue from '../../layout/table_labeled_value/TabledLabeledValue';
 import Link from '../../links/link/Link';
 import ByteSizeText from '../../text/ByteSizeText';
+import DateTimeText from '../../text/DateTimeText';
 import FullHexText from '../../text/FullHexText';
 import HexText from '../../text/HexText';
 import NumberText from '../../text/NumberText';
 import TaggedBase64Text from '../../text/TaggedBase64Text';
 import Text from '../../text/Text';
-import TimeText from '../../text/TimeText';
 import { WithUiSmall } from '../../typography/typography';
 import HexDump from '../hex_dump/HexDump';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
@@ -114,7 +114,7 @@ const TransactionDetailsContent: React.FC<TransactionDetailsContentProps> = (
     </TableLabeledValue>,
     <TableLabeledValue>
       <Text text="Time" />
-      <TimeText date={details.time} />
+      <DateTimeText date={details.time} />
     </TableLabeledValue>,
     <TableLabeledValue>
       <Text text="Sender" />
@@ -160,6 +160,7 @@ const WithEdgeMarginHeading2 = WithEdgeMargin(Heading2);
  */
 const TransactionDataContents: React.FC = () => {
   const details = React.useContext(TransactionDetailContext);
+  const pathResolver = React.useContext(PathResolverContext);
 
   const tree = details.tree;
   if (tree.length <= 0) {
@@ -179,6 +180,10 @@ const TransactionDataContents: React.FC = () => {
               <Text text="Rollup" />
               <>
                 <RollUpSimple namespace={data.namespace} />
+                <br />
+                <Link href={pathResolver.rollUp(data.namespace)}>
+                  <NumberText number={data.namespace} />
+                </Link>
               </>
             </TableLabeledValue>
             <TableLabeledValue>

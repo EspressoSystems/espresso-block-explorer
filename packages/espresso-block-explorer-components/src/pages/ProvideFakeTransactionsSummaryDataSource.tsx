@@ -11,10 +11,12 @@ import {
 } from '../types/functional_async';
 
 async function* getAllBlocks(): AsyncGenerator<TransactionSummary> {
-  for await (const transaction of expandAsyncIterator(
+  const iterable = expandAsyncIterator(
     reverseAsyncIterator(generateAllBlocks()),
     (block) => reverseAsyncIterable(block.transactions),
-  )) {
+  );
+
+  for await (const transaction of iterable) {
     yield {
       hash: transaction.hash,
       block: transaction.block,

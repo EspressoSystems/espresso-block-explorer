@@ -13,7 +13,10 @@ export interface DateTimeTextProps {
 const DateTimeText: React.FC<DateTimeTextProps> = (props) => {
   const formatters = useContext(CurrentDateTimeFormatters);
   return (
-    <time dateTime={props.date.toISOString()}>
+    <time
+      title={formatters.utcFullDateTime.format(props.date)}
+      dateTime={props.date.toISOString()}
+    >
       {formatters.default.format(props.date)}
     </time>
   );

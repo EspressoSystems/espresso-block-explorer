@@ -16,6 +16,16 @@ function createDefaultDateTimeFormatters(locale: string) {
       second: '2-digit',
       timeZoneName: 'short',
     }),
+    utcFullDateTime: new Intl.DateTimeFormat(locale, {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZoneName: 'short',
+      timeZone: 'UTC',
+    }),
     time: new Intl.DateTimeFormat(locale, {
       hour: 'numeric',
       minute: '2-digit',

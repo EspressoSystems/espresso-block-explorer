@@ -14,9 +14,9 @@ import DataTable, {
 import { SortDirection } from '../../data/types';
 import Card from '../../layout/card/Card';
 import Link from '../../links/link/Link';
+import DateTimeText from '../../text/DateTimeText';
 import HexText from '../../text/HexText';
 import NumberText from '../../text/NumberText';
-import TimeText from '../../text/TimeText';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
 
 export interface TransactionSummary {
@@ -86,14 +86,14 @@ const BlockCell: React.FC = () => {
 const TimeCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as TransactionSummary;
 
-  return <TimeText date={row.time} />;
+  return <DateTimeText date={row.time} />;
 };
 
 /**
  * TransactionsSummaryDataTable is a DataTable that contains Transaction
  * Summary State.
  */
-const TransactionsSummaryDataTable: React.FC = () => {
+export const TransactionsSummaryDataTable: React.FC = () => {
   // Maintain the starting arguments.
   return (
     <DataTable

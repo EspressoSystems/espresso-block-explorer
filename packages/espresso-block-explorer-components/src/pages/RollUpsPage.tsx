@@ -1,4 +1,5 @@
 import React from 'react';
+import { NumberText } from '..';
 import {
   OverridePagePath,
   PageType,
@@ -8,28 +9,33 @@ import { WithEdgeMargin } from '../components/layout/margin/margins';
 import Footer from '../components/page_sections/footer/Footer';
 import Header from '../components/page_sections/header/Header';
 import PageTitle from '../components/page_sections/page_title/PageTitle';
-import TransactionsSummary from '../components/page_sections/transaction_summary_data_table/TransactionSummaryDataTable';
+import RollUpsSummaryDataTable from '../components/page_sections/rollups_summary_data_table/RollUpsSummaryDataTable';
 import Text from '../components/text/Text';
+import { curatedRollupMap } from '../types/data_source/rollup_entry/data';
 
-const EdgeMarginTransactionsSummary = WithEdgeMargin(TransactionsSummary);
+const EdgeMarginRollUpsSummary = WithEdgeMargin(RollUpsSummaryDataTable);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 
-interface TransactionsPageProps {}
+interface RollUpsPageProps {}
 
-const TransactionsPage: React.FC<TransactionsPageProps> = (props) => (
-  <OverridePagePath page={PageType.transactions}>
+const RollUpsPage: React.FC<RollUpsPageProps> = (props) => (
+  <OverridePagePath page={PageType.rollups}>
     <Header />
 
     <EdgeMarginPageTitle>
       <Heading1>
-        <Text text="Transactions" />
+        <Text text="Rollups" />
       </Heading1>
+      <label>
+        <NumberText number={curatedRollupMap.size} />{' '}
+        <Text text="Participating Rollups" />
+      </label>
     </EdgeMarginPageTitle>
 
-    {React.createElement(EdgeMarginTransactionsSummary, props)}
+    {React.createElement(EdgeMarginRollUpsSummary, props)}
 
     <Footer />
   </OverridePagePath>
 );
 
-export default TransactionsPage;
+export default RollUpsPage;

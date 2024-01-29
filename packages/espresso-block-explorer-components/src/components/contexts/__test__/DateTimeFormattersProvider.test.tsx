@@ -58,6 +58,7 @@ describe('Date Time Formatters Provider', () => {
           <OverrideDateTimeFormatters
             formatters={{
               default: new Intl.DateTimeFormat('en-US', {}),
+              utcFullDateTime: new Intl.DateTimeFormat('en-US', {}),
               time: new Intl.DateTimeFormat('en-US', {}),
               relative: new Intl.RelativeTimeFormat('en-US', {}),
 

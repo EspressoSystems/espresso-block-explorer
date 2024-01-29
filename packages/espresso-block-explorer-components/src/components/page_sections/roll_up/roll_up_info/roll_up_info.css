@@ -1,0 +1,46 @@
+.rollup-info {
+  display: grid;
+  margin-block-end: 40px;
+}
+
+div.rollup-info.card {
+  padding-block-start: 16px;
+  padding-block-end: 16px;
+}
+
+/* Mobile */
+
+.rollup-info {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 16px;
+}
+
+/* Small */
+@media screen and (min-width: 640px) {
+}
+
+/* Medium */
+@media screen and (min-width: 768px) {
+  .rollup-info {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 16px;
+  }
+
+  .rollup-info > .value-labeled:not(:nth-last-child(1)) {
+    border-inline-end: 1px solid var(--color--slate-100);
+  }
+}
+
+/* Large */
+@media screen and (min-width: 1024px) {
+}
+
+/* Extra Large */
+@media screen and (min-width: 1280px) {
+}
+
+/* 2 Extra Large */
+@media screen and (min-width: 1536px) {
+}
