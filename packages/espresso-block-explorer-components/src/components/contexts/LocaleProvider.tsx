@@ -10,7 +10,9 @@ import React, { createContext } from 'react';
  *  Need to provide a number formatter, you'd only want to have to instantiate
  *  a single copy, and then make it available to every consumer within the tree.
  */
-const CurrentLocale = createContext(navigator.language);
+const CurrentLocale = createContext(
+  typeof window === 'undefined' || !navigator ? 'en-US' : navigator.language,
+);
 export { CurrentLocale };
 
 export interface ProvideLocaleProps {
@@ -36,8 +38,14 @@ export const OverrideLocale: React.FC<ProvideLocaleProps> = (props) => (
  */
 export const ProvideNavigatorLanguage: React.FC<
   Omit<ProvideLocaleProps, 'locale'>
-> = (props) => (
-  <CurrentLocale.Provider value={navigator.language}>
-    {props.children}
-  </CurrentLocale.Provider>
-);
+> = (props) => {
+  if (typeof window === 'undefined' || !navigator) {
+    return props.children;
+  }
+
+  return (
+    <CurrentLocale.Provider value={navigator.language}>
+      {props.children}
+    </CurrentLocale.Provider>
+  );
+};

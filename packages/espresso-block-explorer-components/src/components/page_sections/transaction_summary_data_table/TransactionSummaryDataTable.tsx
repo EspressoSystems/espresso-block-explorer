@@ -123,6 +123,11 @@ export const TransactionsSummaryDataTable: React.FC = () => {
   );
 };
 
+interface TransactionSummaryDataTableState
+  extends DataTableState<TransactionSummaryColumn> {
+  startAfterTransaction?: ArrayBuffer;
+}
+
 /**
  * createDataRetrieverFromRetriever converts a TransactionSummaryAsyncRetriever
  * into an AsyncRetriever of the correct data format.
@@ -132,12 +137,10 @@ function createDataRetrieverFromRetriever(
 ) {
   return {
     async retrieve(state: DataTableState<unknown>) {
-      const resolvedState = state as DataTableState<TransactionSummaryColumn>;
+      const resolvedState = state as TransactionSummaryDataTableState;
       const data = await retriever.retrieve({
-        page: resolvedState.page,
-        resultsPerPage: 20,
-        sortColumn: resolvedState.sortColumn,
-        sortDir: resolvedState.sortDir,
+        startAfterTransaction: resolvedState.startAfterTransaction,
+        transactionsPerPage: 20,
       });
 
       return data.map(
@@ -184,12 +187,10 @@ interface TransactionsSummaryProps {}
  */
 const TransactionsSummary: React.FC<TransactionsSummaryProps> = (props) => {
   // Create the Data Table State
-  const [initialState] = React.useState<
-    DataTableState<TransactionSummaryColumn>
-  >({
+  const [initialState] = React.useState<TransactionSummaryDataTableState>({
     sortColumn: TransactionSummaryColumn.block,
     sortDir: SortDirection.desc,
-    page: 0,
+    startAfterTransaction: undefined,
   });
 
   return (

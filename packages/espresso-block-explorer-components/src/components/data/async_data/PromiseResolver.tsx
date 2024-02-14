@@ -33,28 +33,39 @@ const PromiseResolver: React.FC<PromiseBuilderProps<unknown>> = (props) => {
   });
 
   const snapshot = state.state;
+  React.useEffect(() => {
+    // We declare a function to allow us to change the function when the
+    // component becomes unmounted.  This allows us to not call setState
+    // needlessly.
+    let setTheState = setState;
+    if (snapshot.asyncState == AsyncState.waiting) {
+      promise.then(
+        (data) => {
+          setTheState({
+            promise,
+            state: AsyncSnapshot.withData(AsyncState.done, data),
+          });
+        },
+        (error) => {
+          setTheState({
+            promise,
+            state: AsyncSnapshot.withError(AsyncState.done, error),
+          });
+        },
+      );
+    }
 
-  if (snapshot.asyncState == AsyncState.waiting) {
-    promise.then(
-      (data) =>
-        setState({
-          promise,
-          state: AsyncSnapshot.withData(AsyncState.done, data),
-        }),
-      (error) =>
-        setState({
-          promise,
-          state: AsyncSnapshot.withError(AsyncState.done, error),
-        }),
-    );
-  }
+    if (state.promise !== promise) {
+      setTheState({
+        promise,
+        state: AsyncSnapshot.waiting(),
+      });
+    }
 
-  if (state.promise !== promise) {
-    setState({
-      promise,
-      state: AsyncSnapshot.waiting(),
-    });
-  }
+    return () => {
+      setTheState = () => {};
+    };
+  }, [promise, snapshot.asyncState, state.promise]);
 
   return (
     <AsyncSnapshotContext.Provider value={snapshot}>

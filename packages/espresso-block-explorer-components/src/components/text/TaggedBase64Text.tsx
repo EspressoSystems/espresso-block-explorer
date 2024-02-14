@@ -34,6 +34,14 @@ const TaggedBase64Text: React.FC<TaggedBase64TextProps> = (props) => {
           event.stopPropagation();
           event.preventDefault();
 
+          if (
+            typeof window === 'undefined' ||
+            !navigator ||
+            !navigator.clipboard
+          ) {
+            return;
+          }
+
           navigator.clipboard.writeText(props.value.toString());
         }}
       />

@@ -35,6 +35,14 @@ const HexText: React.FC<HexTextProps> = (props) => {
           event.preventDefault();
           event.stopPropagation();
 
+          if (
+            typeof window === 'undefined' ||
+            !navigator ||
+            !navigator.clipboard
+          ) {
+            return;
+          }
+
           navigator.clipboard.writeText(hexBytes);
         }}
       />

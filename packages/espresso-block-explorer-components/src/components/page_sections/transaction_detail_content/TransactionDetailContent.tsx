@@ -2,8 +2,8 @@ import React from 'react';
 import { TaggedBase64 } from '../../../types/TaggedBase64';
 import { urlEncoding } from '../../../types/base64';
 import {
-  TransactionDetail,
   TransactionDetailAsyncRetriever,
+  TransactionDetailEntry,
   TransactionTreeData,
 } from '../../../types/data_source/transaction_detail/types';
 import { encodeNumberIterableToHexits } from '../../../types/hex';
@@ -56,7 +56,7 @@ export const TransactionSubHeading: React.FC = () => {
  * TransactionDetail to make available to the descendants of the component
  * tree.
  */
-const TransactionDetailContext: React.Context<TransactionDetail> =
+const TransactionDetailContext: React.Context<TransactionDetailEntry> =
   React.createContext({
     block: 0,
     index: 0,
@@ -137,7 +137,9 @@ interface ProvideTransactionDetailsProps {
 const ProvideTransactionDetails: React.FC<ProvideTransactionDetailsProps> = (
   props,
 ) => {
-  const data = React.useContext(DataContext) as undefined | TransactionDetail;
+  const data = React.useContext(DataContext) as
+    | undefined
+    | TransactionDetailEntry;
 
   if (!data) {
     // Missing Data
@@ -199,6 +201,14 @@ const TransactionDataContents: React.FC = () => {
                     event.stopPropagation();
                     event.preventDefault();
 
+                    if (
+                      typeof window === 'undefined' ||
+                      !navigator ||
+                      !navigator.clipboard
+                    ) {
+                      return;
+                    }
+
                     navigator.clipboard.writeText(
                       Array.from(
                         encodeNumberIterableToHexits(new Uint8Array(data.data)),
@@ -213,6 +223,14 @@ const TransactionDataContents: React.FC = () => {
                   onClick={(event) => {
                     event.stopPropagation();
                     event.preventDefault();
+
+                    if (
+                      typeof window === 'undefined' ||
+                      !navigator ||
+                      !navigator.clipboard
+                    ) {
+                      return;
+                    }
 
                     navigator.clipboard.writeText(
                       urlEncoding.encodeToString(data.data),

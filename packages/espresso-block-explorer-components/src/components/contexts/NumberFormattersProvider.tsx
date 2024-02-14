@@ -32,7 +32,9 @@ function createDefaultNumberFormatters(locale: string) {
  * provided by `navigator.language`.
  */
 const CurrentNumberFormatters = createContext(
-  createDefaultNumberFormatters(navigator.language),
+  createDefaultNumberFormatters(
+    typeof window === 'undefined' || !navigator ? 'en-US' : navigator.language,
+  ),
 );
 export { CurrentNumberFormatters };
 

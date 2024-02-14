@@ -1,9 +1,9 @@
 import { AsyncRetriever } from '../../AsyncRetriever';
 
-export interface RollUpSummary {
+export interface RollUpSummaryEntry {
   readonly namespace: number;
   readonly transactions: number;
 }
 
 export interface RollUpSummaryAsyncRetriever
-  extends AsyncRetriever<number, RollUpSummary[]> {}
+  extends AsyncRetriever<number, RollUpSummaryEntry[]> {}

@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import NewsLetterSignUp from '../../interaction/news_letter_sign_up/NewsLetterSignUp';
 import ExternalLinks from '../../links/external_links/ExternalLinks';

@@ -1,7 +1,7 @@
 import { AsyncRetriever } from '../../AsyncRetriever';
-import { TransactionSummary } from '../transaction_summary/types';
+import { TransactionSummaryEntry } from '../transaction_summary/types';
 
-export interface RollUpDetail extends TransactionSummary {}
+export interface RollUpDetailEntry extends TransactionSummaryEntry {}
 
 export interface RollupDetailRequest {
   namespace: number;
@@ -10,4 +10,4 @@ export interface RollupDetailRequest {
 }
 
 export interface RollUpDetailAsyncRetriever
-  extends AsyncRetriever<RollupDetailRequest, RollUpDetail[]> {}
+  extends AsyncRetriever<RollupDetailRequest, RollUpDetailEntry[]> {}

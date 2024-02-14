@@ -1,9 +1,7 @@
-'use client';
-
 import React, { useState } from 'react';
-import './news_letter_sign_up.css';
-import ArrowRight from '../../visual/icons/ArrowRight';
 import { IconButton } from '../../hid/buttons';
+import ArrowRight from '../../visual/icons/ArrowRight';
+import './news_letter_sign_up.css';
 
 /**
  * NewsLetterSignUp component is a component that is meant to wrap the

@@ -61,7 +61,9 @@ function createDefaultDateTimeFormatters(locale: string) {
  * within the application.
  */
 const CurrentDateTimeFormatters = createContext(
-  createDefaultDateTimeFormatters(navigator.language),
+  createDefaultDateTimeFormatters(
+    typeof window === 'undefined' || !navigator ? 'en-US' : navigator.language,
+  ),
 );
 export { CurrentDateTimeFormatters };
 
