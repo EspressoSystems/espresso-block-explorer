@@ -45,6 +45,8 @@ export declare function dropAsyncIterator<T>(iterator: AsyncIterator<T>, count: 
  * with an AsyncIterable instead.
  */
 export declare function dropAsyncIterable<T>(iterable: AsyncIterable<T>, count: number): AsyncGenerator<T>;
+export declare function dropWhileAsyncIterator<T>(iterator: AsyncIterator<T>, predicate: (value: T) => boolean): AsyncGenerator<T>;
+export declare function dropWhileAsyncIterable<T>(iterable: AsyncIterable<T>, predicate: (value: T) => boolean): AsyncGenerator<T>;
 /**
  * firstAsyncIterator returns the first element emitted from an AsyncIterator.
  * If no element is found, this throws an error.

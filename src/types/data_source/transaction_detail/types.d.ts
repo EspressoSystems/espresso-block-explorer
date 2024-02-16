@@ -4,7 +4,7 @@ export interface TransactionTreeData {
     readonly namespace: number;
     readonly data: ArrayBuffer;
 }
-export interface TransactionDetail {
+export interface TransactionDetailEntry {
     readonly block: number;
     readonly index: number;
     readonly total: number;
@@ -14,5 +14,5 @@ export interface TransactionDetail {
     readonly sender: TaggedBase64;
     readonly tree: TransactionTreeData[];
 }
-export interface TransactionDetailAsyncRetriever extends AsyncRetriever<ArrayBuffer, TransactionDetail> {
+export interface TransactionDetailAsyncRetriever extends AsyncRetriever<ArrayBuffer, TransactionDetailEntry> {
 }

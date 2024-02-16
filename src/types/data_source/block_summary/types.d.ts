@@ -1,7 +1,6 @@
-import { SortDirection } from '../../../components/data/types';
 import { AsyncRetriever } from '../../AsyncRetriever';
-import { BlockDetail } from '../block_detail/types';
-export type BlockSummary = Pick<BlockDetail, 'height' | 'proposer' | 'size' | 'time' | 'transactions'>;
+import { BlockDetailEntry } from '../block_detail/types';
+export type BlockSummaryEntry = Pick<BlockDetailEntry, 'height' | 'proposer' | 'size' | 'time' | 'transactions'>;
 export declare enum BlockSummaryColumn {
     height = "height",
     proposer = "proposer",
@@ -10,10 +9,8 @@ export declare enum BlockSummaryColumn {
     transactions = "transaction"
 }
 export interface BlockSummaryRequest {
-    page: number;
-    resultsPerPage: number;
-    sortColumn: BlockSummaryColumn;
-    sortDir: SortDirection;
+    startAtBlock?: number;
+    blocksPerPage: number;
 }
-export interface BlockSummaryAsyncRetriever extends AsyncRetriever<BlockSummaryRequest, BlockSummary[]> {
+export interface BlockSummaryAsyncRetriever extends AsyncRetriever<BlockSummaryRequest, BlockSummaryEntry[]> {
 }

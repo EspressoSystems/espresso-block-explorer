@@ -14,6 +14,8 @@ export interface BlockSummary {
  */
 export declare const RetrieverContext: React.Context<BlockSummaryAsyncRetriever>;
 export interface BlocksSummaryProps {
+    startAtBlock?: number;
+    children?: React.ReactNode | React.ReactNode[];
 }
 /**
  * BlocksSummary is a component that provides the initial state of the Block

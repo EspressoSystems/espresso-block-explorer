@@ -9,7 +9,6 @@ import { SortDirection } from '../types';
 export interface DataTableState<ColumnType> {
     sortColumn: ColumnType;
     sortDir: SortDirection;
-    page: number;
 }
 /**
  * DataTableStateContext is a Context for passing the DataTableState.

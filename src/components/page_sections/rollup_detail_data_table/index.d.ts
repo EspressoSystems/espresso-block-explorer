@@ -1,1 +1,1 @@
-export { default as RollUpDetailDataTable } from './RollUpDetailDataTable';
+export { NamespaceContext, default as RollUpDetailDataTable, } from './RollUpDetailDataTable';
