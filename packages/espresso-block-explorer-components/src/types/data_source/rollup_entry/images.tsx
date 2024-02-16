@@ -24,7 +24,7 @@ const AvatarLogo: React.FC<AvatarLogoProps> = (props) => {
       {...props}
       className={addClassToClassName(props.className, 'avatar')}
     >
-      <img src={new URL(props.src, import.meta.url).toString()} />
+      <img src={props.src} />
     </picture>
   );
 };

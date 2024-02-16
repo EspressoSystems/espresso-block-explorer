@@ -1,8 +1,8 @@
 import { RetrieverContext } from '../components/page_sections/block_detail_content/BlockDetailContent';
-import { BlockSummary } from '../types/data_source/block_summary/types';
+import { BlockSummaryEntry } from '../types/data_source/block_summary/types';
 import { generateAllBlocks } from '../types/fake_data_source/generateFakeData';
 import { firstWhereIterable } from '../types/functional';
-let allBlocks: null | Promise<Iterable<BlockSummary>> = null;
+let allBlocks: null | Promise<Iterable<BlockSummaryEntry>> = null;
 
 function ensureAllBlocksArePopulated() {
   if (allBlocks === null) {
@@ -12,8 +12,8 @@ function ensureAllBlocksArePopulated() {
   return allBlocks;
 }
 
-async function getAllBlocks(): Promise<Iterable<BlockSummary>> {
-  const results: BlockSummary[] = [];
+async function getAllBlocks(): Promise<Iterable<BlockSummaryEntry>> {
+  const results: BlockSummaryEntry[] = [];
   for await (const block of generateAllBlocks()) {
     results.push({
       height: block.height,

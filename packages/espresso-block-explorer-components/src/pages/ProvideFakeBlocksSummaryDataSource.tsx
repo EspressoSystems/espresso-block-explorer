@@ -1,14 +1,14 @@
 import { RetrieverContext } from '../components/page_sections/block_summary_data_table/BlockSummaryDataTable';
-import { BlockSummary } from '../types/data_source/block_summary/types';
+import { BlockSummaryEntry } from '../types/data_source/block_summary/types';
 import { generateAllBlocks } from '../types/fake_data_source/generateFakeData';
 import {
-  dropAsyncIterable,
+  dropWhileAsyncIterable,
   foldRAsyncIterator,
   reverseAsyncIterator,
   takeAsyncIterable,
 } from '../types/functional_async';
 
-async function* getAllBlocks(): AsyncGenerator<BlockSummary> {
+async function* getAllBlocks(): AsyncGenerator<BlockSummaryEntry> {
   for await (const block of reverseAsyncIterator(generateAllBlocks())) {
     yield {
       height: block.height,
@@ -32,24 +32,24 @@ const ProvideFakeBlocksSummaryDataSource: React.FC<
       {...props}
       value={{
         async retrieve(key) {
-          console.log('<<< HERE FakeBlocksSummaryDataSource start', key);
-
           const iterable = takeAsyncIterable(
-            dropAsyncIterable(getAllBlocks(), key.page * key.resultsPerPage),
-            key.resultsPerPage,
+            dropWhileAsyncIterable(
+              getAllBlocks(),
+              (block) =>
+                key.startAtBlock !== undefined &&
+                block.height > key.startAtBlock,
+            ),
+            key.blocksPerPage,
           );
 
           const results = await foldRAsyncIterator(
             (acc, next) => {
-              console.log('<<< HERE FakeBlocksSummaryDataSource fold', next);
               acc.push(next);
               return Promise.resolve(acc);
             },
-            Promise.resolve([] as BlockSummary[]),
+            Promise.resolve([] as BlockSummaryEntry[]),
             iterable,
           );
-
-          console.log('<<< HERE FakeBlocksSummaryDataSource', key, results);
 
           return results;
         },

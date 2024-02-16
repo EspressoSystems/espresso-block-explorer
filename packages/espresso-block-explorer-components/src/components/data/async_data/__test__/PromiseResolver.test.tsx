@@ -62,10 +62,21 @@ describe('Promise Resolver Component', () => {
       );
     });
 
-    expect(resolutionStack.length).equals(4);
+    // We get a duplicate of the previous state when we rerender the
+    // component.
+    expect(resolutionStack.length).equals(5);
+    {
+      // second state (again)
+      const entry = resolutionStack[2];
+      expect(entry.asyncState).equals(AsyncState.done);
+      expect(entry.hasData).equals(true);
+      expect(entry.hasError).equals(false);
+      expect(entry.data).equals(1);
+      expect(entry.error).equals(undefined);
+    }
     {
       // third state
-      const entry = resolutionStack[2];
+      const entry = resolutionStack[3];
       expect(entry.asyncState).equals(AsyncState.waiting);
       expect(entry.hasData).equals(false);
       expect(entry.hasError).equals(false);
@@ -74,7 +85,7 @@ describe('Promise Resolver Component', () => {
     }
     {
       // fourth state
-      const entry = resolutionStack[3];
+      const entry = resolutionStack[4];
       expect(entry.asyncState).equals(AsyncState.done);
       expect(entry.hasData).equals(true);
       expect(entry.hasError).equals(false);

@@ -8,7 +8,9 @@ import FakeDataNotice from '../FakeDataNotice';
 import ProvideFakeBlocksSummaryDataSource from '../ProvideFakeBlocksSummaryDataSource';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
-interface ExampleProps {}
+interface ExampleProps {
+  startAtBlock?: number;
+}
 
 const Example: React.FC<ExampleProps> = (props) => (
   <>
@@ -35,5 +37,13 @@ export default meta;
 type Story = StoryObj<typeof Example>;
 
 export const Blocks: Story = {
-  args: {},
+  args: {
+    startAtBlock: undefined,
+  },
+
+  argTypes: {
+    startAtBlock: {
+      control: 'number',
+    },
+  },
 };

@@ -1,8 +1,9 @@
+import { compareArrayBuffer } from '..';
 import { RetrieverContext } from '../components/page_sections/transaction_summary_data_table/TransactionSummaryDataTable';
-import { TransactionSummary } from '../types/data_source/transaction_summary/types';
+import { TransactionSummaryEntry } from '../types/data_source/transaction_summary/types';
 import { generateAllBlocks } from '../types/fake_data_source/generateFakeData';
 import {
-  dropAsyncIterable,
+  dropWhileAsyncIterable,
   expandAsyncIterator,
   foldRAsyncIterator,
   reverseAsyncIterable,
@@ -10,7 +11,7 @@ import {
   takeAsyncIterable,
 } from '../types/functional_async';
 
-async function* getAllBlocks(): AsyncGenerator<TransactionSummary> {
+async function* getAllBlocks(): AsyncGenerator<TransactionSummaryEntry> {
   const iterable = expandAsyncIterator(
     reverseAsyncIterator(generateAllBlocks()),
     (block) => reverseAsyncIterable(block.transactions),
@@ -39,8 +40,13 @@ const ProvideFakeTransactionsSummaryDataSource: React.FC<
       value={{
         async retrieve(key) {
           const iterable = takeAsyncIterable(
-            dropAsyncIterable(getAllBlocks(), key.page * key.resultsPerPage),
-            key.resultsPerPage,
+            dropWhileAsyncIterable(getAllBlocks(), (txn) =>
+              Boolean(
+                key.startAfterTransaction &&
+                  compareArrayBuffer(txn.hash, key.startAfterTransaction) !== 0,
+              ),
+            ),
+            key.transactionsPerPage,
           );
 
           const data = await foldRAsyncIterator(
@@ -48,10 +54,9 @@ const ProvideFakeTransactionsSummaryDataSource: React.FC<
               acc.push(next);
               return Promise.resolve(acc);
             },
-            Promise.resolve([] as TransactionSummary[]),
+            Promise.resolve([] as TransactionSummaryEntry[]),
             iterable,
           );
-          console.log('<<< HERE data.length', data.length);
 
           return data;
         },

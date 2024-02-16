@@ -1,6 +1,5 @@
-import { SortDirection } from '../../../components/data/types';
 import { AsyncRetriever } from '../../AsyncRetriever';
-import { TransactionDetail } from '../transaction_detail/types';
+import { TransactionDetailEntry } from '../transaction_detail/types';
 
 export enum TransactionSummaryColumn {
   hash = 'hash',
@@ -9,17 +8,18 @@ export enum TransactionSummaryColumn {
   time = 'time',
 }
 
-export type TransactionSummary = Pick<
-  TransactionDetail,
+export type TransactionSummaryEntry = Pick<
+  TransactionDetailEntry,
   'hash' | 'block' | 'time'
 > & { namespaces: number[] };
 
 export interface TransactionSummaryRequest {
-  page: number;
-  resultsPerPage: number;
-  sortColumn: TransactionSummaryColumn;
-  sortDir: SortDirection;
+  startAfterTransaction?: ArrayBuffer;
+  transactionsPerPage: number;
 }
 
 export interface TransactionSummaryAsyncRetriever
-  extends AsyncRetriever<TransactionSummaryRequest, TransactionSummary[]> {}
+  extends AsyncRetriever<
+    TransactionSummaryRequest,
+    TransactionSummaryEntry[]
+  > {}

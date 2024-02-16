@@ -8,6 +8,7 @@ import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import DataTable, {
   DataTableRowContext,
+  DataTableSetStateContext,
   DataTableState,
   DataTableStateContext,
 } from '../../data/data_table/DataTable';
@@ -17,6 +18,7 @@ import Link from '../../links/link/Link';
 import ByteSizeText from '../../text/ByteSizeText';
 import DateTimeText from '../../text/DateTimeText';
 import NumberText from '../../text/NumberText';
+
 import TaggedBase64Text from '../../text/TaggedBase64Text';
 
 export interface BlockSummary {
@@ -120,6 +122,13 @@ const BlockSummaryDataTable: React.FC = () => {
   );
 };
 
+interface BlockSummaryDataTableState
+  extends DataTableState<BlockSummaryColumn> {
+  startAtBlock?: number;
+}
+
+const kBlocksPerPage = 20;
+
 /**
  * createDataRetrieverFromRetriever converts the given
  * BlockSummaryAsyncRetriever into a function that can satisfy the
@@ -129,12 +138,10 @@ function createDataRetrieverFromRetriever(
   retriever: BlockSummaryAsyncRetriever,
 ) {
   return async (state: DataTableState<unknown>) => {
-    const resolvedState = state as DataTableState<BlockSummaryColumn>;
+    const resolvedState = state as BlockSummaryDataTableState;
     const data = await retriever.retrieve({
-      page: resolvedState.page,
-      resultsPerPage: 20,
-      sortColumn: resolvedState.sortColumn,
-      sortDir: resolvedState.sortDir,
+      startAtBlock: resolvedState.startAtBlock,
+      blocksPerPage: kBlocksPerPage,
     });
 
     return data.map(
@@ -180,29 +187,55 @@ const LoadBlockSummaryDataTableData: React.FC<
 
   return (
     <PromiseResolver promise={nextRetriever(dataTableState)}>
-      {React.createElement(Card, props, <BlockSummaryDataTable />)}
+      <DataTableSetStateContext.Provider value={() => {}}>
+        {React.createElement(Card, props, <BlockSummaryDataTable />)}
+      </DataTableSetStateContext.Provider>
     </PromiseResolver>
   );
 };
 
-export interface BlocksSummaryProps {}
+export interface BlocksSummaryProps {
+  startAtBlock?: number;
+  children?: React.ReactNode | React.ReactNode[];
+}
 
 /**
  * BlocksSummary is a component that provides the initial state of the Block
  * Summary state, and loads the data.
  * @returns
  */
-const BlocksSummary: React.FC<BlocksSummaryProps> = (props) => {
+const BlocksSummary: React.FC<BlocksSummaryProps> = ({
+  startAtBlock,
+  ...props
+}) => {
   // Create the Data Table State
-  const [initialState] = React.useState<DataTableState<BlockSummaryColumn>>({
+  const [initialState, setState] = React.useState<BlockSummaryDataTableState>({
     sortColumn: BlockSummaryColumn.height,
     sortDir: SortDirection.desc,
-    page: 0,
+    startAtBlock: startAtBlock,
   });
+
+  if (
+    startAtBlock !== undefined &&
+    initialState.startAtBlock !== startAtBlock
+  ) {
+    setState({
+      ...initialState,
+      startAtBlock: startAtBlock,
+    });
+  }
 
   return (
     <DataTableStateContext.Provider value={initialState}>
-      {React.createElement(LoadBlockSummaryDataTableData, props)}
+      <DataTableSetStateContext.Provider
+        value={
+          setState as React.Dispatch<
+            React.SetStateAction<DataTableState<unknown>>
+          >
+        }
+      >
+        {React.createElement(LoadBlockSummaryDataTableData, props)}
+      </DataTableSetStateContext.Provider>
     </DataTableStateContext.Provider>
   );
 };

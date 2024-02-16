@@ -18,7 +18,6 @@ const TextSmallTbody = WithUiSmall('tbody');
 export interface DataTableState<ColumnType> {
   sortColumn: ColumnType;
   sortDir: SortDirection;
-  page: number;
 }
 
 /**
@@ -29,7 +28,6 @@ export const DataTableStateContext = React.createContext<
 >({
   sortColumn: null,
   sortDir: SortDirection.asc,
-  page: 0,
 });
 
 /**

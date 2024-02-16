@@ -137,6 +137,23 @@ const polygon = new RollUpEntry(
   WithCircleBorder(With40PxSquare(PolygonAvatarLogo)),
 );
 
+/**
+ * milan is populated with data taken from
+ * https://docs.espressosys.com/sequencer/releases/gibraltar-testnet-release/interacting-with-gibraltar
+ *
+ * Chain ID: 83782
+ * Namespace: 263
+ */
+const milan = new RollUpEntry(
+  263,
+  'Milan',
+  new URL('https://milan.caldera.dev/'),
+  new URL('https://milan-devnet.explorer.caldera.xyz/'),
+  WithCircleBorder(With24PxSquare(CalderaAvatarLogo)),
+  WithCircleBorder(With32PxSquare(CalderaAvatarLogo)),
+  WithCircleBorder(With40PxSquare(CalderaAvatarLogo)),
+);
+
 export const curatedRollupMap = new Map(
   [
     vienna,
@@ -148,5 +165,6 @@ export const curatedRollupMap = new Map(
     altLayer,
     caldera,
     vistara,
+    milan,
   ].map((entry) => [entry.namespace, entry]),
 );

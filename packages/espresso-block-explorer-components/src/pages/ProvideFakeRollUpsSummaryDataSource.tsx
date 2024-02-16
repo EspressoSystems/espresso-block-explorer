@@ -1,10 +1,10 @@
 import { RetrieverContext } from '../components/page_sections/rollups_summary_data_table/RollUpsSummaryDataTable';
-import { RollUpSummary } from '../types/data_source/rollup_summary/types';
+import { RollUpSummaryEntry } from '../types/data_source/rollup_summary/types';
 import { generateAllBlocks } from '../types/fake_data_source/generateFakeData';
 import { mapIterable } from '../types/functional';
 import { expandAsyncIterator } from '../types/functional_async';
 
-async function getRollUpsSummary(): Promise<RollUpSummary[]> {
+async function getRollUpsSummary(): Promise<RollUpSummaryEntry[]> {
   const rollUpMap: Map<number, number> = new Map();
 
   for await (const transaction of expandAsyncIterator(

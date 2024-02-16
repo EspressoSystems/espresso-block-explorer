@@ -1,5 +1,5 @@
 import { RetrieverContext } from '../components/page_sections/transaction_detail_content/TransactionDetailContent';
-import { TransactionDetail } from '../types/data_source/transaction_detail/types';
+import { TransactionDetailEntry } from '../types/data_source/transaction_detail/types';
 import { generateAllBlocks } from '../types/fake_data_source/generateFakeData';
 import { compareArrayBuffer } from '../types/functional';
 import {
@@ -8,13 +8,13 @@ import {
   mapAsyncIterable,
 } from '../types/functional_async';
 
-async function* getAllBlocks(): AsyncGenerator<TransactionDetail> {
+async function* getAllBlocks(): AsyncGenerator<TransactionDetailEntry> {
   for await (const transaction of expandAsyncIterator(
     generateAllBlocks(),
     (block) =>
       mapAsyncIterable(
         block.transactions,
-        (transaction): Promise<TransactionDetail> =>
+        (transaction): Promise<TransactionDetailEntry> =>
           Promise.resolve({
             block: transaction.block,
             index: transaction.index,

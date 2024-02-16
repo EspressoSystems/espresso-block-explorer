@@ -1,7 +1,7 @@
 import { TaggedBase64 } from '../..';
 import { AsyncRetriever } from '../../AsyncRetriever';
 
-export interface BlockDetail {
+export interface BlockDetailEntry {
   readonly height: number;
   readonly time: Date;
   readonly transactions: number;
@@ -12,4 +12,4 @@ export interface BlockDetail {
 }
 
 export interface BlockDetailAsyncRetriever
-  extends AsyncRetriever<number, BlockDetail> {}
+  extends AsyncRetriever<number, BlockDetailEntry> {}

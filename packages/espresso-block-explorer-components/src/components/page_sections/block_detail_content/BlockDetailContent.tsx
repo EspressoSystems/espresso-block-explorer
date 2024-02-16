@@ -1,10 +1,8 @@
-'use client';
-
 import React from 'react';
 import { TaggedBase64 } from '../../../types/TaggedBase64';
 import {
-  BlockDetail,
   BlockDetailAsyncRetriever,
+  BlockDetailEntry,
 } from '../../../types/data_source/block_detail/types';
 import { DataContext } from '../../contexts/DataProvider';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
@@ -93,13 +91,15 @@ export const BlockNavigation: React.FC = () => {
  * It is useful for making BlockDetail information available to descendent
  * components.
  */
-const BlockDetailContext: React.Context<BlockDetail> = React.createContext({
-  height: 0,
-  time: new Date(),
-  transactions: 0,
-  proposer: new TaggedBase64('PUBKEY', new ArrayBuffer(0)),
-  size: 0,
-});
+const BlockDetailContext: React.Context<BlockDetailEntry> = React.createContext(
+  {
+    height: 0,
+    time: new Date(),
+    transactions: 0,
+    proposer: new TaggedBase64('PUBKEY', new ArrayBuffer(0)),
+    size: 0,
+  },
+);
 
 /**
  * RetrieverContext is a React Context for retrieving a BlockDetail from a
@@ -158,7 +158,7 @@ interface ProvideBlockDetailsProps {
  * BlockDetailContext.  If no data is found, it will indicate as such.
  */
 const ProvideBlockDetails: React.FC<ProvideBlockDetailsProps> = (props) => {
-  const data = React.useContext(DataContext) as undefined | BlockDetail;
+  const data = React.useContext(DataContext) as undefined | BlockDetailEntry;
 
   if (!data) {
     // Missing Data

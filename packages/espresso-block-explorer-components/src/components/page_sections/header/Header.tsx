@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import NavBar from '../../links/nav_bar/NavBar';
 import EspressoLogoAndTitle from '../../visual/icons/EspressoLogoAndTitle';

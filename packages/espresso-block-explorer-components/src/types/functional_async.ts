@@ -146,6 +146,28 @@ export function dropAsyncIterable<T>(
   return dropAsyncIterator(iterable[Symbol.asyncIterator](), count);
 }
 
+export async function* dropWhileAsyncIterator<T>(
+  iterator: AsyncIterator<T>,
+  predicate: (value: T) => boolean,
+): AsyncGenerator<T> {
+  for (let i = await iterator.next(); !i.done; i = await iterator.next()) {
+    if (predicate(i.value)) {
+      continue;
+    }
+
+    yield i.value;
+  }
+
+  yield* yieldAllAsync(iterator);
+}
+
+export function dropWhileAsyncIterable<T>(
+  iterable: AsyncIterable<T>,
+  predicate: (value: T) => boolean,
+): AsyncGenerator<T> {
+  return dropWhileAsyncIterator(iterable[Symbol.asyncIterator](), predicate);
+}
+
 /**
  * firstAsyncIterator returns the first element emitted from an AsyncIterator.
  * If no element is found, this throws an error.

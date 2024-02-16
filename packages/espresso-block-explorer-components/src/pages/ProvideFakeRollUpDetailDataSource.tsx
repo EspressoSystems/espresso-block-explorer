@@ -1,5 +1,5 @@
 import { RetrieverContext } from '../components/page_sections/rollup_detail_data_table/RollUpDetailDataTable';
-import { RollUpDetail } from '../types/data_source/rollup_detail/types';
+import { RollUpDetailEntry } from '../types/data_source/rollup_detail/types';
 import { generateAllBlocks } from '../types/fake_data_source/generateFakeData';
 import { firstWhereIterable } from '../types/functional';
 import {
@@ -14,7 +14,7 @@ import {
 
 async function* getAllTransactions(
   namespace: number,
-): AsyncGenerator<RollUpDetail> {
+): AsyncGenerator<RollUpDetailEntry> {
   const iterable = filterAsyncIterable(
     expandAsyncIterator(reverseAsyncIterator(generateAllBlocks()), (block) =>
       reverseAsyncIterable(block.transactions),
@@ -45,7 +45,6 @@ const ProvideFakeRollUpDetailDataSource: React.FC<
       {...props}
       value={{
         async retrieve(key) {
-          console.log('<<< ProvideFakeRollUpDetailDataSource namespace', key);
           const iterable = takeAsyncIterable(
             dropAsyncIterable(
               getAllTransactions(key.namespace),
@@ -59,13 +58,8 @@ const ProvideFakeRollUpDetailDataSource: React.FC<
               acc.push(next);
               return Promise.resolve(acc);
             },
-            Promise.resolve([] as RollUpDetail[]),
+            Promise.resolve([] as RollUpDetailEntry[]),
             iterable,
-          );
-
-          console.log(
-            '<<< HERE ProvideFakeRollUpDetailDataSource data.length',
-            data.length,
           );
 
           return data;
