@@ -28,6 +28,8 @@ jobs:
       - name: Run Tests
         run: |
           npm ci --workspaces
+          npm run build --workspace=packages/espresso-block-explorer-components
+          npm ci --workspaces 
           npm run lint --workspaces
           npm run test --workspaces
           npm run coverage --workspaces
