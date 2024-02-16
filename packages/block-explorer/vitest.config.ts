@@ -1,0 +1,19 @@
+import { defineConfig } from 'vitest/config'
+import react from '@vitejs/plugin-react'
+ 
+export default defineConfig({
+  plugins: [react()],
+  test: {
+    environment: 'jsdom',
+    coverage: {
+      reporter: ['text', 'json-summary', 'json', 'lcov'],
+      reportOnFailure: true,
+      exclude: [
+        '**/*.config.js',
+        '**/*.config.ts',
+        '**/__test__/**',
+        '**/*.d.ts',
+      ],
+    },
+  },
+})
