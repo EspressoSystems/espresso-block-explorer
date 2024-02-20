@@ -1,4 +1,2 @@
-export {
-  NamespaceContext,
-  default as RollUpDetailDataTable,
-} from './RollUpDetailDataTable';
+export * from './RollUpDetailDataTable';
+export * from './RollUpDetailLoader';

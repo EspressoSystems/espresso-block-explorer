@@ -1,33 +1,15 @@
 import React from 'react';
-import { TaggedBase64 } from '../../../types/TaggedBase64';
-import {
-  BlockSummaryAsyncRetriever,
-  BlockSummaryColumn,
-} from '../../../types/data_source/block_summary/types';
+import { BlockSummaryColumn } from '../../../types/data_source/block_summary/types';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
-import PromiseResolver from '../../data/async_data/PromiseResolver';
 import DataTable, {
   DataTableRowContext,
-  DataTableSetStateContext,
-  DataTableState,
-  DataTableStateContext,
 } from '../../data/data_table/DataTable';
-import { SortDirection } from '../../data/types';
-import Card from '../../layout/card/Card';
 import Link from '../../links/link/Link';
 import ByteSizeText from '../../text/ByteSizeText';
 import DateTimeText from '../../text/DateTimeText';
 import NumberText from '../../text/NumberText';
-
 import TaggedBase64Text from '../../text/TaggedBase64Text';
-
-export interface BlockSummary {
-  block: number;
-  proposer: TaggedBase64;
-  transactions: number;
-  size: number;
-  time: Date;
-}
+import { BlockSummary } from './BlockSummaryDataLoader';
 
 /**
  * BlockCell is a cell for containing reference information about the block
@@ -88,7 +70,7 @@ const TimeCell: React.FC = () => {
 /**
  * BlockSummaryDataTable is the DataTable for the Blocks Summary display
  */
-const BlockSummaryDataTable: React.FC = () => {
+export const BlockSummaryDataTable: React.FC = () => {
   return (
     <DataTable
       columns={[
@@ -121,123 +103,3 @@ const BlockSummaryDataTable: React.FC = () => {
     />
   );
 };
-
-interface BlockSummaryDataTableState
-  extends DataTableState<BlockSummaryColumn> {
-  startAtBlock?: number;
-}
-
-const kBlocksPerPage = 20;
-
-/**
- * createDataRetrieverFromRetriever converts the given
- * BlockSummaryAsyncRetriever into a function that can satisfy the
- * BlockSummary type.
- */
-function createDataRetrieverFromRetriever(
-  retriever: BlockSummaryAsyncRetriever,
-) {
-  return async (state: DataTableState<unknown>) => {
-    const resolvedState = state as BlockSummaryDataTableState;
-    const data = await retriever.retrieve({
-      startAtBlock: resolvedState.startAtBlock,
-      blocksPerPage: kBlocksPerPage,
-    });
-
-    return data.map(
-      (data) =>
-        ({
-          block: data.height,
-          proposer: data.proposer,
-          transactions: data.transactions,
-          size: data.size,
-          time: data.time,
-        }) satisfies BlockSummary,
-    );
-  };
-}
-
-/**
- * RetrieverContext represents the retriever to be utilized for retrieving
- * the BlockSummary data.
- */
-export const RetrieverContext = React.createContext<BlockSummaryAsyncRetriever>(
-  {
-    async retrieve() {
-      throw new Error('unimplemented');
-    },
-  },
-);
-
-interface LoadBlocksSummaryDataTableData {}
-
-/**
- * LoadBlockSummaryDataTableData kicks of the process of retrieving the
- * current block page. It grabs the details from the RetrieverContext using
- * the state retrieved from DataTableStateContext.
- */
-const LoadBlockSummaryDataTableData: React.FC<
-  LoadBlocksSummaryDataTableData
-> = (props) => {
-  // Need to retrieve the actual data source
-  const retriever = React.useContext(RetrieverContext);
-  const dataTableState = React.useContext(DataTableStateContext);
-
-  const nextRetriever = createDataRetrieverFromRetriever(retriever);
-
-  return (
-    <PromiseResolver promise={nextRetriever(dataTableState)}>
-      <DataTableSetStateContext.Provider value={() => {}}>
-        {React.createElement(Card, props, <BlockSummaryDataTable />)}
-      </DataTableSetStateContext.Provider>
-    </PromiseResolver>
-  );
-};
-
-export interface BlocksSummaryProps {
-  startAtBlock?: number;
-  children?: React.ReactNode | React.ReactNode[];
-}
-
-/**
- * BlocksSummary is a component that provides the initial state of the Block
- * Summary state, and loads the data.
- * @returns
- */
-const BlocksSummary: React.FC<BlocksSummaryProps> = ({
-  startAtBlock,
-  ...props
-}) => {
-  // Create the Data Table State
-  const [initialState, setState] = React.useState<BlockSummaryDataTableState>({
-    sortColumn: BlockSummaryColumn.height,
-    sortDir: SortDirection.desc,
-    startAtBlock: startAtBlock,
-  });
-
-  if (
-    startAtBlock !== undefined &&
-    initialState.startAtBlock !== startAtBlock
-  ) {
-    setState({
-      ...initialState,
-      startAtBlock: startAtBlock,
-    });
-  }
-
-  return (
-    <DataTableStateContext.Provider value={initialState}>
-      <DataTableSetStateContext.Provider
-        value={
-          setState as React.Dispatch<
-            React.SetStateAction<DataTableState<unknown>>
-          >
-        }
-      >
-        {React.createElement(LoadBlockSummaryDataTableData, props)}
-      </DataTableSetStateContext.Provider>
-    </DataTableStateContext.Provider>
-  );
-};
-
-export default BlocksSummary;
