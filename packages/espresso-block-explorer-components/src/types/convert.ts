@@ -101,6 +101,5 @@ export function isRecord<Key extends string, Value>(
 export class InvalidInputError extends Error {
   constructor(message = 'invalid input') {
     super(message);
-    debugger;
   }
 }
