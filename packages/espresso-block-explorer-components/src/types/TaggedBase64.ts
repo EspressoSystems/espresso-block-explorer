@@ -1,4 +1,5 @@
 import { rawURLEncoding } from './base64';
+import { Codec, Converter } from './convert';
 import InvalidTypeError from './errors/InvalidTypeError';
 
 /**
@@ -45,11 +46,7 @@ export class TaggedBase64 {
   }
 
   public static inflate(value: unknown): TaggedBase64 {
-    if (typeof value !== 'string') {
-      throw new InvalidTypeError(typeof value, 'string');
-    }
-
-    return TaggedBase64.fromString(value);
+    return taggedBase64Codec.decode(value);
   }
 
   public toString(): string {
@@ -68,3 +65,26 @@ export class TaggedBase64 {
 export function isTaggedBase64(a: unknown): a is TaggedBase64 {
   return a instanceof TaggedBase64;
 }
+
+export class TaggedBase64Decoder implements Converter<unknown, TaggedBase64> {
+  convert(input: unknown): TaggedBase64 {
+    if (typeof input !== 'string') {
+      throw new InvalidTypeError(typeof input, 'string');
+    }
+
+    return TaggedBase64.fromString(input);
+  }
+}
+
+export class TaggedBase64Encoder implements Converter<TaggedBase64, string> {
+  convert(input: TaggedBase64): string {
+    return input.toString();
+  }
+}
+
+export class TaggedBase64Codec extends Codec<TaggedBase64, unknown> {
+  encoder: Converter<TaggedBase64, unknown> = new TaggedBase64Encoder();
+  decoder: Converter<unknown, TaggedBase64> = new TaggedBase64Decoder();
+}
+
+export const taggedBase64Codec = new TaggedBase64Codec();

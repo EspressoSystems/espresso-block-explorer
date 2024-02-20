@@ -2,34 +2,52 @@ import React from 'react';
 
 export interface PathResolver {
   explorer(): string;
-  blocks(): string;
+  blocks(startAtBlock?: number): string;
   block(height: number): string;
-  transactions(): string;
-  transaction(hash: string): string;
+  transactions(startAtBlock?: number, offset?: number): string;
+  transaction(height: number, offset: number): string;
   rollUps(): string;
-  rollUp(namespace: number): string;
+  rollUp(namespace: number, startAtBlock?: number, offset?: number): string;
 }
 
 class DefaultPathResolver implements PathResolver {
   explorer(): string {
     return '/';
   }
-  blocks(): string {
+
+  blocks(startAtBlock?: number): string {
+    if (startAtBlock !== undefined) {
+      return `/blocks?height=${startAtBlock}`;
+    }
+
     return '/blocks';
   }
+
   block(height: number): string {
     return `/block/${height}`;
   }
-  transactions(): string {
+
+  transactions(startAtBlock?: number, offset?: number): string {
+    if (startAtBlock !== undefined) {
+      return `/transactions?height=${startAtBlock}&offset=${offset ?? 0}`;
+    }
     return '/transactions';
   }
-  transaction(hash: string): string {
-    return `/transaction/${hash}`;
+
+  transaction(height: number, offset: number): string {
+    return `/transaction/${height}-${offset}`;
   }
+
   rollUps(): string {
     return '/rollups';
   }
-  rollUp(namespace: number): string {
+
+  rollUp(namespace: number, startAtBlock?: number, offset?: number): string {
+    if (startAtBlock !== undefined) {
+      return `/rollup/${namespace}?height=${startAtBlock}&offset=${
+        offset ?? 0
+      }`;
+    }
     return `/rollup/${namespace}`;
   }
 }

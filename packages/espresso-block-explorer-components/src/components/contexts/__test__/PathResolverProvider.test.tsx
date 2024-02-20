@@ -30,8 +30,8 @@ describe('Path Resolver Provider Context', () => {
         expect(localPathResolver.blocks()).equals('/blocks');
         expect(localPathResolver.block(0)).equals('/block/0');
         expect(localPathResolver.transactions()).equals('/transactions');
-        expect(localPathResolver.transaction('0xdeadbeef')).equals(
-          '/transaction/0xdeadbeef',
+        expect(localPathResolver.transaction(10, 2)).equals(
+          '/transaction/10-2',
         );
         expect(localPathResolver.rollUps()).equals('/rollups');
         expect(localPathResolver.rollUp(1234)).equals('/rollup/1234');

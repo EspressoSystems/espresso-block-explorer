@@ -1,28 +1,31 @@
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import { ProvideTickEverySecond } from '../../components';
+import { ProvideTickEverySecond } from '../../components/contexts/NowProvider';
 import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
-import { TransactionCommitContext } from '../../components/page_sections/transaction_detail_content/TransactionDetailContent';
-import { parseHexString } from '../../types/hex';
+import { BlockNumberContext } from '../../components/page_sections/block_detail_content';
+import { TransactionOffsetContext } from '../../components/page_sections/transaction_detail_content/TransactionDetailLoader';
 import FakeDataNotice from '../FakeDataNotice';
-import ProvideFakeTransactionDetailDataSource from '../ProvideFakeTransactionDetailDataSource';
+import { ProvideGibraltarTransactionDetailDataSource } from '../GibraltarHotShotQueryServiceAdapters';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 import TransactionPage from '../TransactionPage';
 
 interface ExampleProps {
-  hash: string;
+  height: number;
+  offset: number;
 }
 
-const Example: React.FC<ExampleProps> = ({ hash, ...props }) => (
+const Example: React.FC<ExampleProps> = ({ height, offset, ...props }) => (
   <>
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <TransactionCommitContext.Provider value={parseHexString(hash)}>
-          <ProvideFakeTransactionDetailDataSource>
-            <TransactionPage {...props} />
-          </ProvideFakeTransactionDetailDataSource>
-        </TransactionCommitContext.Provider>
+        <BlockNumberContext.Provider value={height}>
+          <TransactionOffsetContext.Provider value={offset}>
+            <ProvideGibraltarTransactionDetailDataSource>
+              <TransactionPage {...props} />
+            </ProvideGibraltarTransactionDetailDataSource>
+          </TransactionOffsetContext.Provider>
+        </BlockNumberContext.Provider>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </>
@@ -41,6 +44,7 @@ type Story = StoryObj<typeof Example>;
 
 export const Transaction: Story = {
   args: {
-    hash: '0xdeadbeef',
+    height: 0,
+    offset: 0,
   },
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  ProvideFakeRollUpsSummaryDataSource,
+  ProvideGibraltarRollUpsSummaryDataSource,
   RollUpsPage,
 } from 'espresso-block-explorer-components';
 
@@ -12,8 +12,8 @@ import {
  */
 export default function RollUps() {
   return (
-    <ProvideFakeRollUpsSummaryDataSource>
+    <ProvideGibraltarRollUpsSummaryDataSource>
       <RollUpsPage />
-    </ProvideFakeRollUpsSummaryDataSource>
+    </ProvideGibraltarRollUpsSummaryDataSource>
   );
 }

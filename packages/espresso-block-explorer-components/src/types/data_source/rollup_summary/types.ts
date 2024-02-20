@@ -6,4 +6,4 @@ export interface RollUpSummaryEntry {
 }
 
 export interface RollUpSummaryAsyncRetriever
-  extends AsyncRetriever<number, RollUpSummaryEntry[]> {}
+  extends AsyncRetriever<void, RollUpSummaryEntry[]> {}

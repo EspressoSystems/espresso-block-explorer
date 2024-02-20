@@ -2,14 +2,14 @@
 import {
   BlockNumberContext,
   BlockPage,
-  ProvideFakeBlockDetailDataSource,
+  ProvideGibraltarBlockDetailDataSource,
 } from 'espresso-block-explorer-components';
 import { notFound, useParams } from 'next/navigation';
 
 /**
  * Block is a Page for an individual Block.  It's blockID is provided by
  * the path parameter in the URL.
- * 
+ *
  * Using this, it will attempt to display information concerning this Block ID.
  */
 export default function Block() {
@@ -33,9 +33,9 @@ export default function Block() {
 
   return (
     <BlockNumberContext.Provider value={Number(blockID)}>
-      <ProvideFakeBlockDetailDataSource>
+      <ProvideGibraltarBlockDetailDataSource>
         <BlockPage />
-      </ProvideFakeBlockDetailDataSource>
+      </ProvideGibraltarBlockDetailDataSource>
     </BlockNumberContext.Provider>
   );
 }

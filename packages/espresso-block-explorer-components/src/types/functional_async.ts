@@ -1,5 +1,20 @@
+import MissingElementError from './errors/MissingElementError';
 import { iota } from './functional';
 import LinkedList, { iterateLinkedList, pushLinkedList } from './linked_list';
+
+export async function* convertIteratorToAsyncIterator<T>(
+  iterator: Iterator<T>,
+): AsyncGenerator<T> {
+  for (let next = iterator.next(); !next.done; next = iterator.next()) {
+    yield next.value;
+  }
+}
+
+export function convertIterableToAsyncIterable<T>(
+  iterable: Iterable<T>,
+): AsyncGenerator<T> {
+  return convertIteratorToAsyncIterator(iterable[Symbol.iterator]());
+}
 
 /**
  * yieldAllAsync is a convenience function for converting an AsyncIterator
@@ -115,6 +130,26 @@ export function takeAsyncIterable<T>(
   return takeAsyncIterator(iterable[Symbol.asyncIterator](), count);
 }
 
+export async function* takeWhileAsyncIterator<T>(
+  iterator: AsyncIterator<T>,
+  predicate: (value: T) => boolean,
+): AsyncGenerator<T> {
+  for (let i = await iterator.next(); !i.done; i = await iterator.next()) {
+    if (!predicate(i.value)) {
+      break;
+    }
+
+    yield i.value;
+  }
+}
+
+export function takeWhileAsyncIterable<T>(
+  iterable: AsyncIterable<T>,
+  predicate: (value: T) => boolean,
+): AsyncGenerator {
+  return takeWhileAsyncIterator(iterable[Symbol.asyncIterator](), predicate);
+}
+
 /**
  * dropAsyncIterator is a drop function, but operating on Javascript
  * AsyncIterators.
@@ -179,10 +214,19 @@ export async function firstAsyncIterator<T>(
 ): Promise<T> {
   const next = await iterator.next();
   if (next.done) {
-    throw new TypeError('missing element');
+    throw new MissingElementError();
   }
 
   return next.value;
+}
+
+/**
+ * firstAsyncIterable is a convenience function for invoking firstAsyncIterator
+ */
+export async function firstAsyncIterable<T>(
+  iterable: AsyncIterable<T>,
+): Promise<T> {
+  return firstAsyncIterator(iterable[Symbol.asyncIterator]());
 }
 
 /**
@@ -233,6 +277,37 @@ export async function firstWhereAsyncIterable<T>(
   predicate: (value: T) => unknown,
 ): Promise<undefined | T> {
   return firstWhereAsyncIterator(iterable[Symbol.asyncIterator](), predicate);
+}
+
+/**
+ * lastAsyncIterator returns the last element emitted from an AsyncIterator.
+ * If no element is found, this throws an error.
+ *
+ * @throws an error when no element is returned from the AsyncIterator.
+ */
+export async function lastAsyncIterator<T>(
+  iterator: AsyncIterator<T>,
+): Promise<T> {
+  let last: T | undefined = undefined;
+  for (
+    let next = await iterator.next();
+    !next.done;
+    next = await iterator.next()
+  ) {
+    last = next.value;
+  }
+
+  if (last === undefined) {
+    throw new MissingElementError();
+  }
+
+  return last;
+}
+
+export async function lastAsyncIterable<T>(
+  iterable: AsyncIterable<T>,
+): Promise<T> {
+  return lastAsyncIterator(iterable[Symbol.asyncIterator]());
 }
 
 /**
@@ -313,4 +388,23 @@ export function reverseAsyncIterable<T>(
   iterable: AsyncIterable<T>,
 ): AsyncGenerator<T> {
   return reverseAsyncIterator(iterable[Symbol.asyncIterator]());
+}
+
+export function collectAsyncIterator<T>(
+  iterator: AsyncIterator<T>,
+): Promise<T[]> {
+  return foldRAsyncIterator(
+    async (acc: T[], element: T) => {
+      acc.push(element);
+      return acc;
+    },
+    Promise.resolve([]),
+    iterator,
+  );
+}
+
+export async function collectAsyncIterable<T>(
+  iterable: AsyncIterable<T>,
+): Promise<T[]> {
+  return collectAsyncIterator(iterable[Symbol.asyncIterator]());
 }

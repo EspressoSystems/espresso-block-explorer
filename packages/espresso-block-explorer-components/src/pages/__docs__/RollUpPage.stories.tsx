@@ -2,9 +2,9 @@ import React from 'react';
 import { Meta, StoryObj } from 'storybook';
 import { ProvideTickEverySecond } from '../../components';
 import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
-import { NamespaceContext } from '../../components/page_sections/rollup_detail_data_table/RollUpDetailDataTable';
+import { NamespaceContext } from '../../components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
 import FakeDataNotice from '../FakeDataNotice';
-import ProvideFakeRollUpDetailDataSource from '../ProvideFakeRollUpDetailDataSource';
+import { ProvideGibraltarRollUpDetailDataSource } from '../GibraltarHotShotQueryServiceAdapters';
 import RollUpPage from '../RollUpPage';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
@@ -17,11 +17,11 @@ const Example: React.FC<ExampleProps> = ({ namespace, ...props }) => (
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <NamespaceContext.Provider value={namespace}>
-          <ProvideFakeRollUpDetailDataSource>
+        <ProvideGibraltarRollUpDetailDataSource>
+          <NamespaceContext.Provider value={namespace}>
             <RollUpPage {...props} />
-          </ProvideFakeRollUpDetailDataSource>
-        </NamespaceContext.Provider>
+          </NamespaceContext.Provider>
+        </ProvideGibraltarRollUpDetailDataSource>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </>
@@ -41,5 +41,19 @@ type Story = StoryObj<typeof Example>;
 export const Rollup: Story = {
   args: {
     namespace: 0xc0ffee1,
+    startAtBlock: undefined,
+    offset: undefined,
+  },
+
+  argTypes: {
+    namespace: {
+      control: 'number',
+    },
+    startAtBlock: {
+      control: 'number',
+    },
+    offset: {
+      control: 'number',
+    },
   },
 };

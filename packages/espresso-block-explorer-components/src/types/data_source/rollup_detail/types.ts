@@ -5,8 +5,9 @@ export interface RollUpDetailEntry extends TransactionSummaryEntry {}
 
 export interface RollupDetailRequest {
   namespace: number;
-  page: number;
-  resultsPerPage: number;
+  height?: number;
+  offset?: number;
+  transactionsPerPage: number;
 }
 
 export interface RollUpDetailAsyncRetriever

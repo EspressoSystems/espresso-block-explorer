@@ -154,6 +154,16 @@ const milan = new RollUpEntry(
   WithCircleBorder(With40PxSquare(CalderaAvatarLogo)),
 );
 
+const kyoto = new RollUpEntry(
+  41234687,
+  'Kyoto',
+  new URL('https://example.com/'),
+  new URL('https://kyoto-explorer.altlayer.io/'),
+  With24PxSquare(AltLayerAvatarLogo),
+  With32PxSquare(AltLayerAvatarLogo),
+  With40PxSquare(AltLayerAvatarLogo),
+);
+
 export const curatedRollupMap = new Map(
   [
     vienna,
@@ -166,5 +176,6 @@ export const curatedRollupMap = new Map(
     caldera,
     vistara,
     milan,
+    kyoto,
   ].map((entry) => [entry.namespace, entry]),
 );
