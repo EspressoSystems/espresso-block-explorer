@@ -2,6 +2,46 @@ import { charCodesFromString } from './base64';
 import { mapIterator } from './functional';
 
 /**
+ * InvalidHexStringError is an error that indicates that the hex string provided
+ * is invalid as it doesn't meet the requirements of a hex encoded string.
+ */
+export class InvalidHexStringError extends Error {
+  constructor(message: string = 'invalid hex string') {
+    super(message);
+    Object.freeze(this);
+  }
+
+  toJSON() {
+    return {
+      name: InvalidHexStringError.name,
+      message: this.message,
+    };
+  }
+}
+
+/**
+ * InvalidHexValueError is an error that indicates that the encountered value
+ * isn't valid for a hex representation.
+ */
+export class InvalidHexValueError extends Error {
+  readonly value: number;
+
+  constructor(value: number, message: string = `invalid hex value "${value}"`) {
+    super(message);
+    this.value = value;
+    Object.freeze(this);
+  }
+
+  toJSON() {
+    return {
+      name: InvalidHexValueError.name,
+      value: this.value,
+      message: this.message,
+    };
+  }
+}
+
+/**
  * parseHexString is a helper function for decoding a hex string with
  * an optional '0x' prefix;
  */
@@ -11,7 +51,7 @@ export function parseHexString(input: string): ArrayBuffer {
   }
 
   if ((input.length & 0x01) !== 0) {
-    throw new Error('Hex string invalid, not a multiple of 2');
+    throw new InvalidHexStringError();
   }
 
   const ab = new ArrayBuffer(input.length / 2);
@@ -33,7 +73,7 @@ function decodeHex(it: Iterator<number>, ab: ArrayBuffer): void {
 
     if (b0Next.done || b1Next.done) {
       // This shouldn't occur as we have a multiple of 2 check above
-      throw new Error('hex encoding terminated early');
+      throw new InvalidHexStringError();
     }
 
     const b0 = decodeHexit(b0Next.value);
@@ -64,7 +104,7 @@ function decodeHexit(o: number) {
     return o - 0x41 + 10;
   }
 
-  throw new TypeError(`invalid hex value "${o}"`);
+  throw new InvalidHexValueError(o);
 }
 
 /**

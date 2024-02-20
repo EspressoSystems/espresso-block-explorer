@@ -1,4 +1,23 @@
 import { rawURLEncoding } from './base64';
+import InvalidTypeError from './errors/InvalidTypeError';
+
+/**
+ * InvalidTaggedBase64EncodingError is an error that indicates that the
+ * encountered string encoding of a supposed TaggedBase64 is invalid.
+ */
+export class InvalidTaggedBase64EncodingError extends Error {
+  constructor(message: string = 'invalid tagged base64 encoding') {
+    super(message);
+    Object.freeze(this);
+  }
+
+  toJSON() {
+    return {
+      name: InvalidTaggedBase64EncodingError.name,
+      message: this.message,
+    };
+  }
+}
 
 /**
  * TaggedBase64 is an implementation of the server side type of TaggedBase64.
@@ -17,7 +36,7 @@ export class TaggedBase64 {
   public static fromString(input: string): TaggedBase64 {
     const idx = input.indexOf('~');
     if (idx < 0) {
-      throw new TypeError('unable to find ~ within string');
+      throw new InvalidTaggedBase64EncodingError();
     }
 
     const tag = input.substring(0, idx);
@@ -27,9 +46,7 @@ export class TaggedBase64 {
 
   public static inflate(value: unknown): TaggedBase64 {
     if (typeof value !== 'string') {
-      throw new TypeError(
-        `expected a string, instead received ${typeof value}`,
-      );
+      throw new InvalidTypeError(typeof value, 'string');
     }
 
     return TaggedBase64.fromString(value);

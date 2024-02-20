@@ -26,6 +26,7 @@
  * functions to apply to many more Javascript types.
  */
 
+import MissingElementError from './errors/MissingElementError';
 /**
  * yieldAll is a convenience function for converting an Iterator into
  * a generator.
@@ -166,7 +167,7 @@ export function dropIterable<T>(
 export function firstIterator<T>(iterator: Iterator<T>): T {
   const next = iterator.next();
   if (next.done) {
-    throw new TypeError('missing element');
+    throw new MissingElementError();
   }
 
   return next.value;

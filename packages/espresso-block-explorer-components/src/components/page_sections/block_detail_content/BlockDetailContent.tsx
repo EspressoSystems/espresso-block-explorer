@@ -107,7 +107,7 @@ const BlockDetailContext: React.Context<BlockDetailEntry> = React.createContext(
  */
 export const RetrieverContext = React.createContext<BlockDetailAsyncRetriever>({
   async retrieve() {
-    throw new Error('unimplemented');
+      throw new UnimplementedError();
   },
 });
 
