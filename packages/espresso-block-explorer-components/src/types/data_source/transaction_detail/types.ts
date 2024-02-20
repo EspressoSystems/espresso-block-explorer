@@ -1,5 +1,5 @@
-import { TaggedBase64 } from '../..';
 import { AsyncRetriever } from '../../AsyncRetriever';
+import { TaggedBase64 } from '../../TaggedBase64';
 
 export interface TransactionTreeData {
   readonly namespace: number;
@@ -11,13 +11,18 @@ export interface TransactionDetailEntry {
   readonly index: number;
   readonly total: number;
   readonly size: number;
-  readonly hash: ArrayBuffer;
+  readonly hash: TaggedBase64;
   readonly time: Date;
   readonly sender: TaggedBase64;
 
-  readonly tree: TransactionTreeData[];
+  readonly tree: TransactionTreeData;
   // TODO: Sequencing Fees
 }
 
+export interface TransactionDetailRequest {
+  height: number;
+  offset: number;
+}
+
 export interface TransactionDetailAsyncRetriever
-  extends AsyncRetriever<ArrayBuffer, TransactionDetailEntry> {}
+  extends AsyncRetriever<TransactionDetailRequest, TransactionDetailEntry> {}

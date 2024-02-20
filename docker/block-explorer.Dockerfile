@@ -26,6 +26,16 @@ RUN NODE_ENV=production npm ci --only=production
 COPY --from=builder /app/packages/block-explorer/.next /app/packages/block-explorer/.next
 COPY --from=builder /app/packages/block-explorer/public/ /app/packages/block-explorer/public/
 
+# The configuration for the pre-built block-explorer is specified by
+# a file named config.json contained within the public folder of the
+# docker image.  By default the value `hotshot_query_service_url` is
+# stored as `null` which will indicate to use the fake generated data.
+# To use the real data, the `hotshot_query_service_url` should be set
+# to a valid URL of the hotshot query service.
+#
+# Example:
+#   "https://query.gibraltar.aws.espresso.network/"
+
 EXPOSE 3000
 ENV HOST=0.0.0.0
 

@@ -2,10 +2,10 @@ import React from 'react';
 import { Meta, StoryObj } from 'storybook';
 import { ProvideTickEverySecond } from '../../components';
 import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
-import FakeDataNotice from '../FakeDataNotice';
-import ProvideFakeTransactionsSummaryDataSource from '../ProvideFakeTransactionsSummaryDataSource';
+import { ProvideGibraltarTransactionsSummaryDataSource } from '../GibraltarHotShotQueryServiceAdapters';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 import TransactionsPage from '../TransactionsPage';
+import FakeDataNotice from '../FakeDataNotice';
 
 interface ExampleProps {}
 
@@ -14,9 +14,9 @@ const Example: React.FC<ExampleProps> = (props) => (
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideFakeTransactionsSummaryDataSource>
+        <ProvideGibraltarTransactionsSummaryDataSource>
           <TransactionsPage {...props} />
-        </ProvideFakeTransactionsSummaryDataSource>
+        </ProvideGibraltarTransactionsSummaryDataSource>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </>
@@ -34,5 +34,17 @@ export default meta;
 type Story = StoryObj<typeof Example>;
 
 export const Transactions: Story = {
-  args: {},
+  args: {
+    startAtBlock: undefined,
+    offset: undefined,
+  },
+
+  argTypes: {
+    startAtBlock: {
+      control: 'number',
+    },
+    offset: {
+      control: 'number',
+    },
+  },
 };

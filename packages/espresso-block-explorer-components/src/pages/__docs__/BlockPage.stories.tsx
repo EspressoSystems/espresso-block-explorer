@@ -1,12 +1,11 @@
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-
 import { ProvideTickEverySecond } from '../../components/contexts/NowProvider';
 import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
 import { BlockNumberContext } from '../../components/page_sections/block_detail_content/BlockDetailContent';
 import BlockPage from '../BlockPage';
 import FakeDataNotice from '../FakeDataNotice';
-import ProvideFakeBlockDetailDataSource from '../ProvideFakeBlockDetailDataSource';
+import { ProvideGibraltarBlockDetailDataSource } from '../GibraltarHotShotQueryServiceAdapters';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
 interface ExampleProps {
@@ -19,9 +18,9 @@ const Example: React.FC<ExampleProps> = ({ block, ...props }) => (
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
         <BlockNumberContext.Provider value={block}>
-          <ProvideFakeBlockDetailDataSource>
+          <ProvideGibraltarBlockDetailDataSource>
             <BlockPage {...props} />
-          </ProvideFakeBlockDetailDataSource>
+          </ProvideGibraltarBlockDetailDataSource>
         </BlockNumberContext.Provider>
       </OverridePathResolver>
     </ProvideTickEverySecond>

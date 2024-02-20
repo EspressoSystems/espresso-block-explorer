@@ -11,10 +11,11 @@ export enum TransactionSummaryColumn {
 export type TransactionSummaryEntry = Pick<
   TransactionDetailEntry,
   'hash' | 'block' | 'time'
-> & { namespaces: number[] };
+> & { offset: number; namespaces: number[] };
 
 export interface TransactionSummaryRequest {
-  startAfterTransaction?: ArrayBuffer;
+  startAtBlock?: number;
+  offset?: number;
   transactionsPerPage: number;
 }
 

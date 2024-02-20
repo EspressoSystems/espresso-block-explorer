@@ -26,6 +26,9 @@
  * functions to apply to many more Javascript types.
  */
 
+import MissingElementError from './errors/MissingElementError';
+import LinkedList, { iterateLinkedList, pushLinkedList } from './linked_list';
+
 /**
  * yieldAll is a convenience function for converting an Iterator into
  * a generator.
@@ -166,7 +169,7 @@ export function dropIterable<T>(
 export function firstIterator<T>(iterator: Iterator<T>): T {
   const next = iterator.next();
   if (next.done) {
-    throw new TypeError('missing element');
+    throw new MissingElementError();
   }
 
   return next.value;
@@ -343,4 +346,19 @@ export function inf(): Generator<number> {
  */
 export function iota(count: number) {
   return takeIterable(zeroAndGreater(), Math.ceil(count));
+}
+
+export function* reverseIterator<T>(iterator: Iterator<T>): Generator<T> {
+  // Iterative method instead of recursive... FILO
+  let stack: null | LinkedList<T> = null;
+
+  for (let next = iterator.next(); !next.done; next = iterator.next()) {
+    stack = pushLinkedList(stack, next.value);
+  }
+
+  yield* iterateLinkedList(stack);
+}
+
+export function reverseIterable<T>(iterable: Iterable<T>): Generator<T> {
+  return reverseIterator(iterable[Symbol.iterator]());
 }

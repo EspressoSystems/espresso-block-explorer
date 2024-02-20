@@ -23,6 +23,67 @@ export const noPadding = -1;
 export const stdPadding = '='.charCodeAt(0);
 
 /**
+ * InvalidAlphabetLengthError is an error that indicates the the Base64 alphabet
+ * provided does not meet the required criteria.
+ */
+export class InvalidBase64AlphabetLengthError extends Error {
+  readonly length: number;
+
+  constructor(
+    length: number,
+    message: string = `alphabet needs to be 64 characters, received ${length}`,
+  ) {
+    super(message);
+    this.length = length;
+    Object.freeze(this);
+  }
+
+  toJSON() {
+    return {
+      name: InvalidBase64AlphabetLengthError.name,
+      length: this.length,
+      message: this.message,
+    };
+  }
+}
+
+/**
+ * CorruptBase64InputError is an error that indicates that the input provided
+ * at the given offset is invalid.
+ */
+export class CorruptBase64InputError extends Error {
+  readonly offset: number;
+
+  constructor(
+    offset: number,
+    message: string = `corrupt input error at ${offset}`,
+  ) {
+    super(message);
+    this.offset = offset;
+    Object.freeze(this);
+  }
+
+  toJSON() {
+    return {
+      name: CorruptBase64InputError.name,
+      offset: this.offset,
+      message: this.message,
+    };
+  }
+}
+
+/**
+ * IncorrectPaddingError is an error that indicates that the padding provided
+ * is not correct.
+ */
+export class IncorrectPaddingError extends Error {
+  constructor(message: string = 'incorrect padding') {
+    super(message);
+    Object.freeze(this);
+  }
+}
+
+/**
  * Encoding represents a Base64 Encoding type. This class allows for the
  * creation of new Base64 Encodings with different alphabets of non standard
  * ordering.
@@ -48,7 +109,7 @@ export class Encoding {
   static withAlphabet(alphabet: string): Encoding {
     const l = alphabet.length;
     if (l !== 64) {
-      throw new TypeError(`alphabet needs to be 64 chars, got ${l}`);
+      throw new InvalidBase64AlphabetLengthError(l);
     }
 
     const encodeMap = Array.from(charCodesFromString(alphabet));
@@ -159,7 +220,7 @@ export class Encoding {
 
           if (j === 1 || this.padChar !== noPadding) {
             // n, false, error
-            throw new TypeError(`corrupted input error at ${si - j}`);
+            throw new CorruptBase64InputError(si - j);
           }
 
           dinc = j - 1;
@@ -190,7 +251,7 @@ export class Encoding {
             case 1:
               // incorrect padding
               // n, false, error
-              throw new Error('Incorrect padding');
+              throw new IncorrectPaddingError();
 
             case 2:
               // two paddings are expected, the first padding is already
@@ -204,12 +265,7 @@ export class Encoding {
               }
               if (si === l) {
                 // not enough padding
-                throw new TypeError(`corrupt input error at ${l}`);
-              }
-
-              if (src.getUint8(si) !== this.padChar) {
-                // incorrect padding
-                throw new Error(`corrupt input error at ${si - 1}`);
+                throw new CorruptBase64InputError(l);
               }
 
               si++;
@@ -225,7 +281,7 @@ export class Encoding {
 
           if (si < l) {
             // trailing garbage
-            throw new TypeError(`corrupt input error at ${si}`);
+            throw new CorruptBase64InputError(si);
           }
           dinc = 3;
           dlen = j;
@@ -233,7 +289,7 @@ export class Encoding {
           break;
         }
 
-        throw new TypeError(`corrupt input error ${si - 1}`);
+        throw new CorruptBase64InputError(si - 1);
       }
 
       // Convert 4x 6bit source bytes into 3 bytes
@@ -256,9 +312,8 @@ export class Encoding {
         case 3:
           dst.setUint8(di + 1, dBuf.getUint8(1));
           if (this.strict && dBuf.getUint8(2) !== 0) {
-            throw new TypeError(`corrupt input error at ${si - 1}`);
+            throw new CorruptBase64InputError(si - 1);
           }
-          dBuf.setUint8(1, 0);
         /* falls through */
 
         case 2:
@@ -267,7 +322,7 @@ export class Encoding {
             this.strict &&
             (dBuf.getUint8(1) !== 0 || dBuf.getUint8(2) !== 0)
           ) {
-            throw new TypeError(`corrupt input error at ${si - 2}`);
+            throw new CorruptBase64InputError(si - 2);
           }
       }
 

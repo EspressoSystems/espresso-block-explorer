@@ -104,13 +104,13 @@ type GeneratedTransaction = {
   block: number;
   index: number;
   size: number;
-  hash: ArrayBuffer;
+  hash: TaggedBase64;
   time: Date;
   sender: TaggedBase64;
   tree: {
     namespace: number;
     data: ArrayBuffer;
-  }[];
+  };
 };
 
 export async function* generateTransactionsForBlock(
@@ -131,16 +131,14 @@ export async function* generateTransactionsForBlock(
       block: height,
       index,
       size,
-      hash: prng.fillBytes(32),
+      hash: new TaggedBase64('COMMIT', prng.fillBytes(32)),
       time: new Date(ms),
       sender: new TaggedBase64('PUBKEY', prng.fillBytes(32)),
 
-      tree: [
-        {
-          namespace,
-          data: prng.fillBytes(size),
-        },
-      ],
+      tree: {
+        namespace,
+        data: prng.fillBytes(size),
+      },
     };
   }
 }

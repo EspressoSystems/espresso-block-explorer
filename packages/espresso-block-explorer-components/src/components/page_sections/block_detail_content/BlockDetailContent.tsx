@@ -4,13 +4,17 @@ import {
   BlockDetailAsyncRetriever,
   BlockDetailEntry,
 } from '../../../types/data_source/block_detail/types';
+import UnimplementedError from '../../../types/errors/UnimplementedError';
 import { DataContext } from '../../contexts/DataProvider';
+import { ErrorContext } from '../../contexts/ErrorProvider';
+import { LoadingContext } from '../../contexts/LoadingProvider';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import { IconAnchorButton } from '../../hid/buttons';
 import { Card } from '../../layout/card';
 import ParagraphTextSmall from '../../layout/paragraph/ParagraphTextSmall';
 import TableLabeledValue from '../../layout/table_labeled_value/TabledLabeledValue';
+import { CircularProgressIndicator } from '../../loading/Loading';
 import ByteSizeText from '../../text/ByteSizeText';
 import DateTimeText from '../../text/DateTimeText';
 import NumberText from '../../text/NumberText';
@@ -105,11 +109,12 @@ const BlockDetailContext: React.Context<BlockDetailEntry> = React.createContext(
  * RetrieverContext is a React Context for retrieving a BlockDetail from a
  * BlockDetailAsyncRetriever.
  */
-export const RetrieverContext = React.createContext<BlockDetailAsyncRetriever>({
-  async retrieve() {
-    throw new Error('unimplemented');
-  },
-});
+export const BlockDetailAsyncRetrieverContext =
+  React.createContext<BlockDetailAsyncRetriever>({
+    async retrieve() {
+      throw new UnimplementedError();
+    },
+  });
 
 interface BlockDetailsContentProps {}
 
@@ -158,7 +163,23 @@ interface ProvideBlockDetailsProps {
  * BlockDetailContext.  If no data is found, it will indicate as such.
  */
 const ProvideBlockDetails: React.FC<ProvideBlockDetailsProps> = (props) => {
+  const loading = React.useContext(LoadingContext);
+  const error = React.useContext(ErrorContext);
   const data = React.useContext(DataContext) as undefined | BlockDetailEntry;
+
+  if (error) {
+    return (
+      <>
+        <Text text="Encountered Error" />
+        <br />
+        <Text text={error.toString()} />
+      </>
+    );
+  }
+
+  if (loading) {
+    return <CircularProgressIndicator />;
+  }
 
   if (!data) {
     // Missing Data
@@ -184,7 +205,7 @@ export interface BlockDetailsProp {}
  */
 const BlockDetails: React.FC<BlockDetailsProp> = (props) => {
   const blockID = React.useContext(BlockNumberContext);
-  const retriever = React.useContext(RetrieverContext);
+  const retriever = React.useContext(BlockDetailAsyncRetrieverContext);
 
   return (
     <PromiseResolver promise={retriever.retrieve(blockID)}>

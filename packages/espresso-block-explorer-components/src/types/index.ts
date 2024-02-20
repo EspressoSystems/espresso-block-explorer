@@ -2,6 +2,7 @@ export * from './AsyncRetriever';
 export * from './TaggedBase64';
 export * from './base64';
 export * from './data_source';
+export * from './errors';
 export * from './fake_data_source';
 export * from './functional';
 export * from './functional_async';

@@ -3,7 +3,7 @@ import { Meta, StoryObj } from 'storybook';
 import { ProvideTickEverySecond } from '../../components';
 import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
 import FakeDataNotice from '../FakeDataNotice';
-import ProvideFakeRollUpsSummaryDataSource from '../ProvideFakeRollUpsSummaryDataSource';
+import { ProvideGibraltarRollUpsSummaryDataSource } from '../GibraltarHotShotQueryServiceAdapters';
 import RollUpsPage from '../RollUpsPage';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
@@ -14,9 +14,9 @@ const Example: React.FC<ExampleProps> = (props) => (
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideFakeRollUpsSummaryDataSource>
+        <ProvideGibraltarRollUpsSummaryDataSource>
           <RollUpsPage {...props} />
-        </ProvideFakeRollUpsSummaryDataSource>
+        </ProvideGibraltarRollUpsSummaryDataSource>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </>

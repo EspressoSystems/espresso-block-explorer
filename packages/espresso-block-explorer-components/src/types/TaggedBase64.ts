@@ -1,4 +1,24 @@
 import { rawURLEncoding } from './base64';
+import { Codec, Converter } from './convert';
+import InvalidTypeError from './errors/InvalidTypeError';
+
+/**
+ * InvalidTaggedBase64EncodingError is an error that indicates that the
+ * encountered string encoding of a supposed TaggedBase64 is invalid.
+ */
+export class InvalidTaggedBase64EncodingError extends Error {
+  constructor(message: string = 'invalid tagged base64 encoding') {
+    super(message);
+    Object.freeze(this);
+  }
+
+  toJSON() {
+    return {
+      name: InvalidTaggedBase64EncodingError.name,
+      message: this.message,
+    };
+  }
+}
 
 /**
  * TaggedBase64 is an implementation of the server side type of TaggedBase64.
@@ -17,7 +37,7 @@ export class TaggedBase64 {
   public static fromString(input: string): TaggedBase64 {
     const idx = input.indexOf('~');
     if (idx < 0) {
-      throw new TypeError('unable to find ~ within string');
+      throw new InvalidTaggedBase64EncodingError();
     }
 
     const tag = input.substring(0, idx);
@@ -26,13 +46,7 @@ export class TaggedBase64 {
   }
 
   public static inflate(value: unknown): TaggedBase64 {
-    if (typeof value !== 'string') {
-      throw new TypeError(
-        `expected a string, instead received ${typeof value}`,
-      );
-    }
-
-    return TaggedBase64.fromString(value);
+    return taggedBase64Codec.decode(value);
   }
 
   public toString(): string {
@@ -51,3 +65,26 @@ export class TaggedBase64 {
 export function isTaggedBase64(a: unknown): a is TaggedBase64 {
   return a instanceof TaggedBase64;
 }
+
+export class TaggedBase64Decoder implements Converter<unknown, TaggedBase64> {
+  convert(input: unknown): TaggedBase64 {
+    if (typeof input !== 'string') {
+      throw new InvalidTypeError(typeof input, 'string');
+    }
+
+    return TaggedBase64.fromString(input);
+  }
+}
+
+export class TaggedBase64Encoder implements Converter<TaggedBase64, string> {
+  convert(input: TaggedBase64): string {
+    return input.toString();
+  }
+}
+
+export class TaggedBase64Codec extends Codec<TaggedBase64, unknown> {
+  encoder: Converter<TaggedBase64, unknown> = new TaggedBase64Encoder();
+  decoder: Converter<unknown, TaggedBase64> = new TaggedBase64Decoder();
+}
+
+export const taggedBase64Codec = new TaggedBase64Codec();

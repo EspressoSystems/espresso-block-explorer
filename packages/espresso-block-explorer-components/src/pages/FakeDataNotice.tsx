@@ -1,6 +1,6 @@
 import React from 'react';
-import { WithEdgeMargin } from '..';
 import { addClassToClassName } from '../components/higher_order';
+import { WithEdgeMargin } from '../components/layout/margin/margins';
 import ParagraphTextSmall from '../components/layout/paragraph/ParagraphTextSmall';
 import './fake_data_notice.css';
 

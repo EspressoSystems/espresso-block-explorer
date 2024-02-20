@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { CircularProgressIndicator } from '../../../loading/Loading';
 import Text from '../../../text/Text';
 import { AsyncState } from '../AsyncSnapshot';
 import { AsyncSnapshotContext } from '../AsyncSnapshotContext';
@@ -24,7 +25,7 @@ const ConsumeSnapshot: React.FC = () => {
   const snapshot = React.useContext(AsyncSnapshotContext);
 
   if (snapshot.asyncState === AsyncState.waiting) {
-    return <Text text="Loading..." />;
+    return <CircularProgressIndicator />;
   }
 
   const data = snapshot.data;
