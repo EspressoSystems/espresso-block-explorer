@@ -14,13 +14,13 @@ type GeneratedTransaction = {
     block: number;
     index: number;
     size: number;
-    hash: ArrayBuffer;
+    hash: TaggedBase64;
     time: Date;
     sender: TaggedBase64;
     tree: {
         namespace: number;
         data: ArrayBuffer;
-    }[];
+    };
 };
 export declare function generateTransactionsForBlock(prng: PseudoRandomNumberGenerator, height: number, start: number, end: number, numTransactions: number): AsyncGenerator<GeneratedTransaction>;
 export {};

@@ -1,5 +1,5 @@
-import { TaggedBase64 } from '../..';
 import { AsyncRetriever } from '../../AsyncRetriever';
+import { TaggedBase64 } from '../../TaggedBase64';
 export interface BlockDetailEntry {
     readonly height: number;
     readonly time: Date;

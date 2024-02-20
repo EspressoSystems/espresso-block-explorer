@@ -134,3 +134,5 @@ export declare function inf(): Generator<number>;
  * @param count the number to bound the ending of the sequence.
  */
 export declare function iota(count: number): Generator<number, any, unknown>;
+export declare function reverseIterator<T>(iterator: Iterator<T>): Generator<T>;
+export declare function reverseIterable<T>(iterable: Iterable<T>): Generator<T>;

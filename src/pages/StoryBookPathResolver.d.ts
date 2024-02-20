@@ -1,10 +1,10 @@
 import { PathResolver } from '../components/contexts/PathResolverProvider';
 export declare class StoryBookPathResolver implements PathResolver {
     explorer(): string;
-    blocks(): string;
+    blocks(startAtBlock?: number): string;
     block(height: number): string;
-    transactions(): string;
-    transaction(hash: string): string;
+    transactions(startAtBlock?: number, offset?: number): string;
+    transaction(height: number, offset: number): string;
     rollUps(): string;
-    rollUp(namespace: number): string;
+    rollUp(namespace: number, startAtBlock?: number, offset?: number): string;
 }

@@ -1,5 +1,0 @@
-import{j as r}from"./jsx-runtime-5BUNAZ9W.js";import{R as m,c as n}from"./RollUpSimple-x68as8uQ.js";import"./index-4g5l5LRQ.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./higher_order-VtSBvwoq.js";import"./NumberText-1F_WTjXR.js";import"./NumberFormattersProvider-cE5btn2g.js";import"./LocaleProvider-VrOFDinN.js";import"./Text-qj7igP2-.js";const c=s=>r(m,{namespace:s.namespace});function*l(){for(const s of n)yield[s[1].name,s[0]]}const e={...Object.fromEntries(l()),"Unregistered Rollup (1)":1},O={title:"Components/Page Sections/Roll Up Simple",component:c,argTypes:{namespace:{options:Object.keys(e),mapping:e,control:{type:"select",labels:Object.keys(e)}}}},o={args:{namespace:e[Object.keys(e)[0]]}};var p,t,a;o.parameters={...o.parameters,docs:{...(p=o.parameters)==null?void 0:p.docs,source:{originalSource:`{
-  args: {
-    namespace: namespaces[Object.keys(namespaces)[0]]
-  }
-}`,...(a=(t=o.parameters)==null?void 0:t.docs)==null?void 0:a.source}}};const S=["RollUpSimple"];export{o as RollUpSimple,S as __namedExportsOrder,O as default};

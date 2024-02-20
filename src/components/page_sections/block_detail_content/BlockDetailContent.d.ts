@@ -11,7 +11,7 @@ export declare const BlockNavigation: React.FC;
  * RetrieverContext is a React Context for retrieving a BlockDetail from a
  * BlockDetailAsyncRetriever.
  */
-export declare const RetrieverContext: React.Context<BlockDetailAsyncRetriever>;
+export declare const BlockDetailAsyncRetrieverContext: React.Context<BlockDetailAsyncRetriever>;
 export interface BlockDetailsProp {
 }
 /**

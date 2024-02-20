@@ -1,3 +1,5 @@
+export declare function convertIteratorToAsyncIterator<T>(iterator: Iterator<T>): AsyncGenerator<T>;
+export declare function convertIterableToAsyncIterable<T>(iterable: Iterable<T>): AsyncGenerator<T>;
 /**
  * yieldAllAsync is a convenience function for converting an AsyncIterator
  * into an AsyncGenerator.
@@ -35,6 +37,8 @@ export declare function takeAsyncIterator<T>(iterator: AsyncIterator<T>, count: 
  * with an AsyncIterable instead.
  */
 export declare function takeAsyncIterable<T>(iterable: AsyncIterable<T>, count: number): AsyncGenerator<T>;
+export declare function takeWhileAsyncIterator<T>(iterator: AsyncIterator<T>, predicate: (value: T) => boolean): AsyncGenerator<T>;
+export declare function takeWhileAsyncIterable<T>(iterable: AsyncIterable<T>, predicate: (value: T) => boolean): AsyncGenerator;
 /**
  * dropAsyncIterator is a drop function, but operating on Javascript
  * AsyncIterators.
@@ -55,6 +59,10 @@ export declare function dropWhileAsyncIterable<T>(iterable: AsyncIterable<T>, pr
  */
 export declare function firstAsyncIterator<T>(iterator: AsyncIterator<T>): Promise<T>;
 /**
+ * firstAsyncIterable is a convenience function for invoking firstAsyncIterator
+ */
+export declare function firstAsyncIterable<T>(iterable: AsyncIterable<T>): Promise<T>;
+/**
  * firstWhereAsyncIterator is a find function, but operating on Javascript
  * AsyncIterators.
  */
@@ -68,6 +76,14 @@ export declare function firstWhereAsyncIterator<T>(iterator: AsyncIterator<T>, p
  */
 export declare function firstWhereAsyncIterable<T, S extends T>(iterable: AsyncIterable<T>, predicate: (value: T) => value is S): Promise<undefined | S>;
 export declare function firstWhereAsyncIterable<T>(iterable: AsyncIterable<T>, predicate: (value: T) => unknown): Promise<undefined | T>;
+/**
+ * lastAsyncIterator returns the last element emitted from an AsyncIterator.
+ * If no element is found, this throws an error.
+ *
+ * @throws an error when no element is returned from the AsyncIterator.
+ */
+export declare function lastAsyncIterator<T>(iterator: AsyncIterator<T>): Promise<T>;
+export declare function lastAsyncIterable<T>(iterable: AsyncIterable<T>): Promise<T>;
 /**
  * expandAsyncIterator is a flatMap function, but operating on Javascript
  * AsyncIterators.
@@ -93,3 +109,5 @@ export declare function iotaAsync(count: number): AsyncGenerator<number>;
 export declare function foldRAsyncIterator<T, U>(combiner: (acc: U, element: T) => Promise<U>, seed: Promise<U>, list: AsyncIterator<T>): Promise<U>;
 export declare function reverseAsyncIterator<T>(iterator: AsyncIterator<T>): AsyncGenerator<T>;
 export declare function reverseAsyncIterable<T>(iterable: AsyncIterable<T>): AsyncGenerator<T>;
+export declare function collectAsyncIterator<T>(iterator: AsyncIterator<T>): Promise<T[]>;
+export declare function collectAsyncIterable<T>(iterable: AsyncIterable<T>): Promise<T[]>;

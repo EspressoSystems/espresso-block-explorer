@@ -1,0 +1,17 @@
+import { GibraltarAPIBlock, GibraltarAPILeafResponse, GibraltarAPITransactionResponse, GibraltarDerivedBlockSummary, GibraltarDerivedTransactionSummary, GibraltarExtendedHotShotQueryService, GibraltarExtendedHotShotQueryServiceAvailabilityAPI, GibraltarHotShotQueryService, GibraltarHotShotQueryServiceAvailabilityAPI, GibraltarHotShotQueryServiceStatusAPI } from './types';
+export declare class FakeDataGibraltarExtendedHotShotQueryServiceAvailabilityAPI implements GibraltarExtendedHotShotQueryServiceAvailabilityAPI, GibraltarHotShotQueryServiceAvailabilityAPI {
+    getLeafFromHeight(height: number): Promise<GibraltarAPILeafResponse>;
+    getTransactionFromHeightAndOffset(height: number, offset: number): Promise<GibraltarAPITransactionResponse>;
+    getBlockSummaries(from: number, until: number): Promise<GibraltarDerivedBlockSummary[]>;
+    getBlockFromHeight(height: number): Promise<GibraltarAPIBlock>;
+    private streamTransactionSummaries;
+    getTransactionSummaryRange(height: number, offset: number, limit: number): Promise<GibraltarDerivedTransactionSummary[]>;
+    getTransactionSummaryRangeForRollup(namespace: number, height: number, offset: number, limit: number): Promise<GibraltarDerivedTransactionSummary[]>;
+}
+export declare class FakeDataGibraltarHotShotQueryServiceStatusAPI implements GibraltarHotShotQueryServiceStatusAPI {
+    blockHeight(): Promise<number>;
+}
+export declare class FakeDataGibraltarHotShotQueryService implements GibraltarExtendedHotShotQueryService, GibraltarHotShotQueryService {
+    readonly availability: GibraltarExtendedHotShotQueryServiceAvailabilityAPI & GibraltarHotShotQueryServiceAvailabilityAPI;
+    readonly status: GibraltarHotShotQueryServiceStatusAPI;
+}

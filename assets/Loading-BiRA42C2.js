@@ -1,0 +1,3 @@
+import{j as a}from"./jsx-runtime-5BUNAZ9W.js";import{a as t}from"./higher_order-VtSBvwoq.js";import{T as i}from"./Text-qj7igP2-.js";const e=r=>{const{className:s,...o}=r;return a("div",{className:t(s,"circular-progress-indicator"),...o,children:a(i,{text:"Loading..."})})};try{e.displayName="CircularProgressIndicator",e.__docgenInfo={description:`Circular Progress Indicator is a progress indicator that is used to
+represent the idea that progress is being made, but we are uncertain about
+how much progress has been made, or remains.`,displayName:"CircularProgressIndicator",props:{className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}}}}}catch{}export{e as C};

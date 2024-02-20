@@ -7,10 +7,12 @@ export declare enum TransactionSummaryColumn {
     time = "time"
 }
 export type TransactionSummaryEntry = Pick<TransactionDetailEntry, 'hash' | 'block' | 'time'> & {
+    offset: number;
     namespaces: number[];
 };
 export interface TransactionSummaryRequest {
-    startAfterTransaction?: ArrayBuffer;
+    startAtBlock?: number;
+    offset?: number;
     transactionsPerPage: number;
 }
 export interface TransactionSummaryAsyncRetriever extends AsyncRetriever<TransactionSummaryRequest, TransactionSummaryEntry[]> {
