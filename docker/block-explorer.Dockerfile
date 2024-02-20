@@ -17,6 +17,7 @@ RUN npm install --all-workspaces
 RUN npm run build --workspace=packages/block-explorer
 
 FROM node:20-alpine
+RUN apk add --no-cache bash jq
 
 WORKDIR /app
 
@@ -25,6 +26,7 @@ COPY --from=builder /app/packages/block-explorer/package.json /app/packages/bloc
 RUN NODE_ENV=production npm ci --only=production
 COPY --from=builder /app/packages/block-explorer/.next /app/packages/block-explorer/.next
 COPY --from=builder /app/packages/block-explorer/public/ /app/packages/block-explorer/public/
+COPY docker/init.sh /app/init.sh
 
 # The configuration for the pre-built block-explorer is specified by
 # a file named config.json contained within the public folder of the
@@ -39,4 +41,4 @@ COPY --from=builder /app/packages/block-explorer/public/ /app/packages/block-exp
 EXPOSE 3000
 ENV HOST=0.0.0.0
 
-ENTRYPOINT ["npm", "run", "start", "--workspace=packages/block-explorer"]
+CMD ./init.sh
