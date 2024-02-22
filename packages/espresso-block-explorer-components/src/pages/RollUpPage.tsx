@@ -1,9 +1,10 @@
 import React from 'react';
+import { LoadingContext } from '..';
 import {
   OverridePagePath,
   PageType,
 } from '../components/contexts/PagePathProvider';
-import { BasicAsyncDataHandler } from '../components/data/async_data/BasicAsyncDataHandler';
+import ErrorContextGuard from '../components/data/async_data/ErrorContextGuard';
 import Card from '../components/layout/card/Card';
 import Heading1 from '../components/layout/heading/Heading1';
 import { WithEdgeMargin } from '../components/layout/margin/margins';
@@ -12,16 +13,37 @@ import Header from '../components/page_sections/header/Header';
 import PageTitle from '../components/page_sections/page_title/PageTitle';
 import RollUpInfo from '../components/page_sections/roll_up/roll_up_info/RollUpInfo';
 import RollUpTitle from '../components/page_sections/roll_up/roll_up_title/RollUpTitle';
-import { RollUpDetailDataTable } from '../components/page_sections/rollup_detail_data_table/RollUpDetailDataTable';
+import {
+  RollUpDetailDataTable,
+  RollUpDetailDataTablePlaceholder,
+} from '../components/page_sections/rollup_detail_data_table/RollUpDetailDataTable';
 import {
   NamespaceContext,
   RollUpDetailsDataLoader,
 } from '../components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
 
-const EdgeMarginRollUpDetailDataTable = WithEdgeMargin(RollUpDetailDataTable);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginRollUpInfo = WithEdgeMargin(RollUpInfo);
 const EdgeMarginCard = WithEdgeMargin(Card);
+
+/**
+ * GuardRollUpPageDetailDataTable is a component that guards the rendering
+ * of the RollUp Detail Data Table so long as the component is not in a loading
+ * state.
+ */
+const GuardRollUpPageDetailDataTable: React.FC = () => {
+  const loading = React.useContext(LoadingContext);
+
+  if (loading) {
+    return <RollUpDetailDataTablePlaceholder />;
+  }
+
+  return (
+    <ErrorContextGuard>
+      <RollUpDetailDataTable />
+    </ErrorContextGuard>
+  );
+};
 
 const RolUpSection: React.FC = () => {
   const namespace = React.useContext(NamespaceContext);
@@ -38,6 +60,9 @@ const RollUpHeading: React.FC = () => {
   return <RollUpTitle namespace={namespace} />;
 };
 
+/**
+ * RollUpPage is a component that renders the RollUpPage.
+ */
 const RollUpPage: React.FC<RollUpPageProps> = ({
   startAtBlock,
   offset,
@@ -55,11 +80,9 @@ const RollUpPage: React.FC<RollUpPageProps> = ({
     <RolUpSection />
 
     <RollUpDetailsDataLoader startAtBlock={startAtBlock} offset={offset}>
-      <BasicAsyncDataHandler>
-        <EdgeMarginCard {...rest}>
-          <EdgeMarginRollUpDetailDataTable />
-        </EdgeMarginCard>
-      </BasicAsyncDataHandler>
+      <EdgeMarginCard {...rest}>
+        <GuardRollUpPageDetailDataTable />
+      </EdgeMarginCard>
     </RollUpDetailsDataLoader>
 
     <Footer />

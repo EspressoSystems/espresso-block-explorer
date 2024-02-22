@@ -1,0 +1,42 @@
+:root {
+    --container-loading--background-color: var(--color--slate-100);
+    --container-loading--highlight-color: var(--color--slate-50);
+    --container-loading--border-radius: 0.25em;
+    --container-loading--animation-duration: 1s;
+}
+
+.container-loading {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--container-loading--background-color);
+    border-radius: var(--container-loading--border-radius);
+    height: 2em;
+}
+
+.container-loading::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 100%;
+
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        var(--container-loading--highlight-color) 50%,
+        transparent 100%
+    );
+
+    animation: container-loading--slide var(--container-loading--animation-duration) infinite linear;
+}
+
+@keyframes container-loading--slide {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}

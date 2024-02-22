@@ -5,6 +5,7 @@ import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import LabeledButton from '../../hid/buttons/labeled_button/LabeledButton';
 import TableLabeledValue from '../../layout/table_labeled_value/TabledLabeledValue';
 import Link from '../../links/link/Link';
+import { ContainerLoading } from '../../loading';
 import ByteSizeText from '../../text/ByteSizeText';
 import DateTimeText from '../../text/DateTimeText';
 import HexText from '../../text/HexText';
@@ -12,7 +13,7 @@ import NumberText from '../../text/NumberText';
 import TaggedBase64Text from '../../text/TaggedBase64Text';
 import Text from '../../text/Text';
 import { WithUiSmall } from '../../typography/typography';
-import { BlockNumberContext } from '../block_detail_content/BlockDetailContent';
+import { BlockNumberContext } from '../block_detail_content/BlockDetailContentLoader';
 import HexDump from '../hex_dump/HexDump';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
 import {
@@ -37,6 +38,43 @@ export const TransactionSubHeading: React.FC = () => {
       {/* <FullHexText value={hash} /> */}
       <NumberText number={height} /> - <NumberText number={offset} />
     </LabelUiSmall>
+  );
+};
+
+/**
+ * TransactionDetailsContentPlaceholder is a placeholder for the Transaction
+ * Details content.
+ */
+export const TransactionDetailsContentPlaceholder: React.FC<
+  TransactionDetailsContentProps
+> = () => {
+  return (
+    <>
+      <TableLabeledValue>
+        <Text text="Block" />
+        <ContainerLoading />
+      </TableLabeledValue>
+      <TableLabeledValue>
+        <Text text="Transaction index in block" />
+        <ContainerLoading />
+      </TableLabeledValue>
+      <TableLabeledValue>
+        <Text text="Transaction Size" />
+        <ContainerLoading />
+      </TableLabeledValue>
+      <TableLabeledValue>
+        <Text text="Espresso Sequencer Hash" />
+        <ContainerLoading />
+      </TableLabeledValue>
+      <TableLabeledValue>
+        <Text text="Time" />
+        <ContainerLoading />
+      </TableLabeledValue>
+      <TableLabeledValue>
+        <Text text="Sender" />
+        <ContainerLoading />
+      </TableLabeledValue>
+    </>
   );
 };
 
@@ -81,6 +119,21 @@ export const TransactionDetailsContent: React.FC<
       <TableLabeledValue>
         <Text text="Sender" />
         <TaggedBase64Text value={details.sender} />
+      </TableLabeledValue>
+    </>
+  );
+};
+
+export const TransactionDataContentsPlaceholder: React.FC = () => {
+  return (
+    <>
+      <TableLabeledValue>
+        <Text text="Rollup" />
+        <ContainerLoading />
+      </TableLabeledValue>
+      <TableLabeledValue>
+        <Text text="Transaction data" />
+        <ContainerLoading />
       </TableLabeledValue>
     </>
   );

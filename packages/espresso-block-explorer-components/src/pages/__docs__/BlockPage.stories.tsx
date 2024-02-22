@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, StoryObj } from 'storybook';
 import { ProvideTickEverySecond } from '../../components/contexts/NowProvider';
 import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
-import { BlockNumberContext } from '../../components/page_sections/block_detail_content/BlockDetailContent';
+import { BlockNumberContext } from '../../components/page_sections/block_detail_content/BlockDetailContentLoader';
 import BlockPage from '../BlockPage';
 import FakeDataNotice from '../FakeDataNotice';
 import { ProvideGibraltarBlockDetailDataSource } from '../GibraltarHotShotQueryServiceAdapters';

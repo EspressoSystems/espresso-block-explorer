@@ -1,10 +1,13 @@
 import React from 'react';
 import { TransactionSummaryColumn } from '../../../types/data_source/transaction_summary/types';
+import { iota } from '../../../types/functional';
+import { DataContext } from '../../contexts/DataProvider';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
 import Link from '../../links/link/Link';
+import { ContainerLoading } from '../../loading';
 import DateTimeText from '../../text/DateTimeText';
 import HexText from '../../text/HexText';
 import NumberText from '../../text/NumberText';
@@ -73,6 +76,42 @@ const TimeCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as TransactionSummary;
 
   return <DateTimeText date={row.time} />;
+};
+
+/**
+ * TransactionsSummaryDataTablePlaceholder is a DataTable that contains
+ * Transaction Summary State.
+ */
+export const TransactionsSummaryDataTablePlaceholder: React.FC = () => {
+  // Maintain the starting arguments.
+  return (
+    <DataContext.Provider value={Array.from(iota(20))}>
+      <DataTable
+        columns={[
+          {
+            label: 'Transaction',
+            columnType: TransactionSummaryColumn.hash,
+            buildCell: ContainerLoading,
+          },
+          {
+            label: 'Rollups',
+            columnType: TransactionSummaryColumn.rollup,
+            buildCell: ContainerLoading,
+          },
+          {
+            label: 'Block',
+            columnType: TransactionSummaryColumn.block,
+            buildCell: ContainerLoading,
+          },
+          {
+            label: 'Time',
+            columnType: TransactionSummaryColumn.time,
+            buildCell: ContainerLoading,
+          },
+        ]}
+      />
+    </DataContext.Provider>
+  );
 };
 
 /**

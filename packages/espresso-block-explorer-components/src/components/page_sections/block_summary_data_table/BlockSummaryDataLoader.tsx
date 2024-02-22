@@ -5,6 +5,8 @@ import {
   BlockSummaryColumn,
 } from '../../../types/data_source/block_summary/types';
 import UnimplementedError from '../../../types/errors/UnimplementedError';
+import { DataContext } from '../../contexts/DataProvider';
+import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import {
   DataTableSetStateContext,
@@ -12,11 +14,9 @@ import {
   DataTableStateContext,
 } from '../../data/data_table/DataTable';
 import { SortDirection } from '../../data/types';
-import { DataContext } from '../../contexts/DataProvider';
+import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
 import { addClassToClassName } from '../../higher_order';
 import Text from '../../text/Text';
-import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
 
 export interface BlockSummary {
   block: number;
@@ -171,7 +171,7 @@ export const BlocksNavigation: React.FC<BlocksNavigationProps> = (props) => {
     );
   }
 
-  if (data[data.length - 1].block > 0) {
+  if (data.length > 0 && data[data.length - 1].block > 0) {
     previous.push(
       <LabeledAnchorButton
         key={1}

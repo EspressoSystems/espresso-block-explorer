@@ -1,5 +1,5 @@
 import React from 'react';
-import { BlockDetailAsyncRetrieverContext } from '../components/page_sections/block_detail_content/BlockDetailContent';
+import { BlockDetailAsyncRetrieverContext } from '../components/page_sections/block_detail_content/BlockDetailContentLoader';
 import { BlockSummaryAsyncRetrieverContext } from '../components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
 import { RollUpDetailAsyncRetrieverContext } from '../components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
 import { RollUpSummaryAsyncRetrieverContext } from '../components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
@@ -21,6 +21,10 @@ export interface ProvideGibraltarBlockDetailDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * ProvideGibraltarBlockDetailDataSource is a component that converts
+ * the HotShot Query Service for Gibraltar into a BlockDetailAsyncRetriever.
+ */
 export const ProvideGibraltarBlockDetailDataSource: React.FC<
   ProvideGibraltarBlockDetailDataSourceProps
 > = (props) => {
@@ -55,6 +59,10 @@ export interface ProvideGibraltarBlocksSummaryDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * ProvideGibraltarBlocksSummaryDataSource is a component that converts
+ * the HotShot Query Service for Gibraltar into a BlockSummaryAsyncRetriever.
+ */
 export const ProvideGibraltarBlocksSummaryDataSource: React.FC<
   ProvideGibraltarBlocksSummaryDataSourceProps
 > = (props) => {
@@ -98,6 +106,11 @@ export interface ProvideGibraltarTransactionsSummaryDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * ProvideGibraltarTransactionsSummaryDataSource is a component that converts
+ * the HotShot Query Service for Gibraltar into a
+ * TransactionSummaryAsyncRetriever.
+ */
 export const ProvideGibraltarTransactionsSummaryDataSource: React.FC<
   ProvideGibraltarTransactionsSummaryDataSourceProps
 > = (props) => {
@@ -142,6 +155,11 @@ export interface ProvideGibraltarTransactionDetailDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * ProvideGibraltarTransactionDetailDataSource is a component that converts
+ * the HotShot Query Service for Gibraltar into a
+ * TransactionDetailAsyncRetriever.
+ */
 export const ProvideGibraltarTransactionDetailDataSource: React.FC<
   ProvideGibraltarTransactionDetailDataSourceProps
 > = (props) => {
@@ -187,6 +205,10 @@ export interface ProvideGibraltarTransactionsSummaryDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * ProvideGibraltarRollUpDetailDataSource is a component that converts
+ * the HotShot Query Service for Gibraltar into a RollUpDetailAsyncRetriever.
+ */
 export const ProvideGibraltarRollUpDetailDataSource: React.FC<
   ProvideGibraltarTransactionsSummaryDataSourceProps
 > = (props) => {
@@ -232,6 +254,10 @@ export interface ProvideGibraltarTransactionsSummaryDataSourceProps {
 
 export const kNumberOfSampleBlocks = 30;
 
+/**
+ * ProvideGibraltarRollUpsSummaryDataSource is a component that converts
+ * the HotShot Query Service for Gibraltar into a RollUpSummaryAsyncRetriever.
+ */
 export const ProvideGibraltarRollUpsSummaryDataSource: React.FC<
   ProvideGibraltarTransactionsSummaryDataSourceProps
 > = (props) => {

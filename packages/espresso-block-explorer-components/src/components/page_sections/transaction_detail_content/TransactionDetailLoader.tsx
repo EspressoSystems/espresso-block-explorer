@@ -7,7 +7,7 @@ import {
 import UnimplementedError from '../../../types/errors/UnimplementedError';
 import { DataContext } from '../../contexts/DataProvider';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
-import { BlockNumberContext } from '../block_detail_content/BlockDetailContent';
+import { BlockNumberContext } from '../block_detail_content/BlockDetailContentLoader';
 import './transaction_detail_content.css';
 
 /**

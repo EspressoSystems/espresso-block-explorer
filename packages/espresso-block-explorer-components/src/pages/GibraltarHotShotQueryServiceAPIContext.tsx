@@ -19,6 +19,10 @@ function getFetch(): typeof fetch {
   return fetch.bind(window);
 }
 
+/**
+ * ProvideGibraltarLiveService is a component that provides a Gibraltar
+ * HotShot Query Service API targeting the given URL.
+ */
 export const ProvideGibraltarLiveService: React.FC<
   ProviderGibraltarLiveServiceProps
 > = ({ url, children }) => {

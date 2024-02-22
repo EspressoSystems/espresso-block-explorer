@@ -1,11 +1,14 @@
 import React from 'react';
+import { DataContext } from '../..';
 import { BlockSummaryColumn } from '../../../types/data_source/block_summary/types';
 import { curatedRollupMap } from '../../../types/data_source/rollup_entry/data';
+import { iota } from '../../../types/functional';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
 import Link from '../../links/link/Link';
+import ContainerLoading from '../../loading/ContainerLoading';
 import NumberText from '../../text/NumberText';
 import Text from '../../text/Text';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
@@ -39,7 +42,7 @@ const TransactionsCell: React.FC = () => {
   return <NumberText number={row.transactions} />;
 };
 
-const OfficalSiteCell: React.FC = () => {
+const OfficialSiteCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as RollUpSummary;
   const rollUp = curatedRollupMap.get(row.namespace);
 
@@ -69,6 +72,46 @@ const BlockExplorerCell: React.FC = () => {
   );
 };
 
+/**
+ * RollupsSummaryDataTablePlaceholder is a placeholder for the
+ * RollupsSummaryDataTable component.
+ */
+export const RollUpsSummaryDataTablePlaceholder: React.FC = () => {
+  return (
+    <DataContext.Provider value={Array.from(iota(20))}>
+      <DataTable
+        columns={[
+          {
+            label: 'Rollup',
+            columnType: BlockSummaryColumn.height,
+            buildCell: ContainerLoading,
+          },
+          {
+            label: 'Namespace',
+            columnType: BlockSummaryColumn.proposer,
+            buildCell: ContainerLoading,
+          },
+          {
+            label: 'Sequencer Transaction',
+            columnType: BlockSummaryColumn.transactions,
+            buildCell: ContainerLoading,
+          },
+          {
+            label: 'Official Site',
+            columnType: BlockSummaryColumn.size,
+            buildCell: ContainerLoading,
+          },
+          {
+            label: 'Block Explorer',
+            columnType: BlockSummaryColumn.time,
+            buildCell: ContainerLoading,
+          },
+        ]}
+      />
+    </DataContext.Provider>
+  );
+};
+
 export const RollUpsSummaryDataTable: React.FC = () => {
   return (
     <DataTable
@@ -91,7 +134,7 @@ export const RollUpsSummaryDataTable: React.FC = () => {
         {
           label: 'Official Site',
           columnType: BlockSummaryColumn.size,
-          buildCell: OfficalSiteCell,
+          buildCell: OfficialSiteCell,
         },
         {
           label: 'Block Explorer',

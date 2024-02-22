@@ -2,6 +2,7 @@ export * from './contexts';
 export * from './data';
 export * from './hid';
 export * from './layout';
+export * from './loading';
 export * from './links';
 export * from './page_sections';
 export * from './text';

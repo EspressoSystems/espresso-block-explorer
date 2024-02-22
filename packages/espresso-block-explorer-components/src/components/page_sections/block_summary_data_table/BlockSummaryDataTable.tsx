@@ -1,10 +1,13 @@
 import React from 'react';
 import { BlockSummaryColumn } from '../../../types/data_source/block_summary/types';
+import { iota } from '../../../types/functional';
+import { DataContext } from '../../contexts/DataProvider';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
 import Link from '../../links/link/Link';
+import ContainerLoading from '../../loading/ContainerLoading';
 import ByteSizeText from '../../text/ByteSizeText';
 import DateTimeText from '../../text/DateTimeText';
 import NumberText from '../../text/NumberText';
@@ -65,6 +68,46 @@ const TimeCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as BlockSummary;
 
   return <DateTimeText date={row.time} />;
+};
+
+/**
+ * BlockSummaryDataTablePlaceholder is a placeholder that acts like a
+ * normal BlockSummaryDataTable, but with loading indicator placeholders.
+ */
+export const BlockSummaryDataTablePlaceholder: React.FC = () => {
+  return (
+    <DataContext.Provider value={Array.from(iota(20))}>
+      <DataTable
+        columns={[
+          {
+            label: 'Blocks',
+            columnType: BlockSummaryColumn.height,
+            buildCell: ContainerLoading,
+          },
+          {
+            label: 'Proposer',
+            columnType: BlockSummaryColumn.proposer,
+            buildCell: ContainerLoading,
+          },
+          {
+            label: 'Transaction',
+            columnType: BlockSummaryColumn.transactions,
+            buildCell: ContainerLoading,
+          },
+          {
+            label: 'Size',
+            columnType: BlockSummaryColumn.size,
+            buildCell: ContainerLoading,
+          },
+          {
+            label: 'Time',
+            columnType: BlockSummaryColumn.time,
+            buildCell: ContainerLoading,
+          },
+        ]}
+      />
+    </DataContext.Provider>
+  );
 };
 
 /**
