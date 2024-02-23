@@ -21,6 +21,7 @@ import {
   TransactionOffsetContext,
 } from './TransactionDetailLoader';
 import './transaction_detail_content.css';
+import SkeletonContent from '../../loading/SkeletonContent';
 
 const LabelUiSmall = WithUiSmall('label');
 
@@ -52,27 +53,27 @@ export const TransactionDetailsContentPlaceholder: React.FC<
     <>
       <TableLabeledValue>
         <Text text="Block" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Transaction index in block" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Transaction Size" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Espresso Sequencer Hash" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Time" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Sender" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
     </>
   );
@@ -129,11 +130,11 @@ export const TransactionDataContentsPlaceholder: React.FC = () => {
     <>
       <TableLabeledValue>
         <Text text="Rollup" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Transaction data" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
     </>
   );

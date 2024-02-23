@@ -9,6 +9,7 @@ import ErrorContextGuard from '../components/data/async_data/ErrorContextGuard';
 import Card from '../components/layout/card/Card';
 import Heading1 from '../components/layout/heading/Heading1';
 import { WithEdgeMargin } from '../components/layout/margin/margins';
+import { WithLoadingShimmer } from '../components/loading/LoadingShimmer';
 import {
   BlockSummaryDataLoader,
   BlocksNavigation,
@@ -23,6 +24,7 @@ import PageTitle from '../components/page_sections/page_title/PageTitle';
 import Text from '../components/text/Text';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
+const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginBlocksNavigation = WithEdgeMargin(BlocksNavigation);
 
@@ -42,17 +44,27 @@ const GuardEdgeMarginBlocksNavigation: React.FC = () => {
   return <EdgeMarginBlocksNavigation />;
 };
 
-const GuardedBlocksSummaryDataTable: React.FC = () => {
+interface GuardedBlocksSummaryDataTableProps {}
+
+const GuardedBlocksSummaryDataTable: React.FC<
+  GuardedBlocksSummaryDataTableProps
+> = (props) => {
   const loading = React.useContext(LoadingContext);
 
   if (loading) {
-    return <BlockSummaryDataTablePlaceholder />;
+    return (
+      <EdgeMarginShimmerCard {...props}>
+        <BlockSummaryDataTablePlaceholder />
+      </EdgeMarginShimmerCard>
+    );
   }
 
   return (
-    <ErrorContextGuard>
-      <BlockSummaryDataTable />
-    </ErrorContextGuard>
+    <EdgeMarginCard {...props}>
+      <ErrorContextGuard>
+        <BlockSummaryDataTable />
+      </ErrorContextGuard>
+    </EdgeMarginCard>
   );
 };
 
@@ -78,9 +90,7 @@ const BlocksPage: React.FC<BlocksPageProps> = ({ startAtBlock, ...rest }) => (
       {/* Navigation Area */}
       <GuardEdgeMarginBlocksNavigation />
 
-      <EdgeMarginCard {...rest}>
-        <GuardedBlocksSummaryDataTable />
-      </EdgeMarginCard>
+      <GuardedBlocksSummaryDataTable {...rest} />
     </BlockSummaryDataLoader>
 
     <Footer />

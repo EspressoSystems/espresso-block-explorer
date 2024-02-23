@@ -1,0 +1,10 @@
+:root {
+    --skeleton-content--background-color: var(--color--slate-100);
+}
+
+.skeleton-content {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--skeleton-content--background-color);
+    height: 2em;
+}

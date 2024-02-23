@@ -9,6 +9,7 @@ import ErrorContextGuard from '../components/data/async_data/ErrorContextGuard';
 import Card from '../components/layout/card/Card';
 import Heading1 from '../components/layout/heading/Heading1';
 import { WithEdgeMargin } from '../components/layout/margin/margins';
+import { WithLoadingShimmer } from '../components/loading/LoadingShimmer';
 import Footer from '../components/page_sections/footer/Footer';
 import Header from '../components/page_sections/header/Header';
 import PageTitle from '../components/page_sections/page_title/PageTitle';
@@ -23,6 +24,7 @@ import {
 import Text from '../components/text/Text';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
+const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginTransactionsNavigation = WithEdgeMargin(TransactionsNavigation);
 
@@ -41,20 +43,31 @@ const GuardedEdgeMarginTransactionsNavigation: React.FC = () => {
   return <EdgeMarginTransactionsNavigation />;
 };
 
+interface GuardedTransactionsSummaryDataTableProps {}
+
 /**
  * GuardedTransactionsSummaryDataTable is a component that guards rendering the
  * Transactions Summary DataTable so long as the component is not in a loading
  * or in an error state.
  */
-const GuardedTransactionsSummaryDataTable: React.FC = () => {
+const GuardedTransactionsSummaryDataTable: React.FC<
+  GuardedTransactionsSummaryDataTableProps
+> = (props) => {
   const loading = React.useContext(LoadingContext);
   if (loading) {
-    return <TransactionsSummaryDataTablePlaceholder />;
+    return (
+      <EdgeMarginShimmerCard {...props}>
+        <TransactionsSummaryDataTablePlaceholder />
+      </EdgeMarginShimmerCard>
+    );
   }
+
   return (
-    <ErrorContextGuard>
-      <TransactionsSummaryDataTable />
-    </ErrorContextGuard>
+    <EdgeMarginCard {...props}>
+      <ErrorContextGuard>
+        <TransactionsSummaryDataTable />
+      </ErrorContextGuard>
+    </EdgeMarginCard>
   );
 };
 
@@ -83,9 +96,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({
     <TransactionSummaryDataLoader startAtBlock={startAtBlock} offset={offset}>
       <GuardedEdgeMarginTransactionsNavigation />
 
-      <EdgeMarginCard {...rest}>
-        <GuardedTransactionsSummaryDataTable />
-      </EdgeMarginCard>
+      <GuardedTransactionsSummaryDataTable {...rest} />
     </TransactionSummaryDataLoader>
 
     <Footer />

@@ -8,7 +8,7 @@ import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
 import Link from '../../links/link/Link';
-import ContainerLoading from '../../loading/ContainerLoading';
+import SkeletonContent from '../../loading/SkeletonContent';
 import NumberText from '../../text/NumberText';
 import Text from '../../text/Text';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
@@ -84,27 +84,27 @@ export const RollUpsSummaryDataTablePlaceholder: React.FC = () => {
           {
             label: 'Rollup',
             columnType: BlockSummaryColumn.height,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
           {
             label: 'Namespace',
             columnType: BlockSummaryColumn.proposer,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
           {
             label: 'Sequencer Transaction',
             columnType: BlockSummaryColumn.transactions,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
           {
             label: 'Official Site',
             columnType: BlockSummaryColumn.size,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
           {
             label: 'Block Explorer',
             columnType: BlockSummaryColumn.time,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
         ]}
       />

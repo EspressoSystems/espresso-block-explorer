@@ -9,6 +9,7 @@ import Card from '../components/layout/card/Card';
 import Heading1 from '../components/layout/heading/Heading1';
 import Heading2 from '../components/layout/heading/Heading2';
 import { WithEdgeMargin } from '../components/layout/margin/margins';
+import { WithLoadingShimmer } from '../components/loading/LoadingShimmer';
 import Footer from '../components/page_sections/footer/Footer';
 import Header from '../components/page_sections/header/Header';
 import PageTitle from '../components/page_sections/page_title/PageTitle';
@@ -23,43 +24,64 @@ import { TransactionDetailContentLoader } from '../components/page_sections/tran
 import Text from '../components/text/Text';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
+const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginHeading2 = WithEdgeMargin(Heading2);
+
+interface GuardedTransactionDetailsContentProps {}
 
 /**
  * GuardedTransactionDetailsContent is a component that guards rendering the
  * Transaction Details content so long as the component is not in a loading or
  * in an error state.
  */
-const GuardedTransactionDetailsContent: React.FC = () => {
+const GuardedTransactionDetailsContent: React.FC<
+  GuardedTransactionDetailsContentProps
+> = (props) => {
   const loading = React.useContext(LoadingContext);
   if (loading) {
-    return <TransactionDetailsContentPlaceholder />;
+    return (
+      <EdgeMarginShimmerCard {...props}>
+        <TransactionDetailsContentPlaceholder />
+      </EdgeMarginShimmerCard>
+    );
   }
 
   return (
-    <ErrorContextGuard>
-      <TransactionDetailsContent />
-    </ErrorContextGuard>
+    <EdgeMarginCard {...props}>
+      <ErrorContextGuard>
+        <TransactionDetailsContent />
+      </ErrorContextGuard>
+    </EdgeMarginCard>
   );
 };
+
+interface GuardedTransactionDataContentsProps {}
 
 /**
  * GuardedTransactionDataContents is a component that guards rendering the
  * Transaction Data content so long as the component is not in a loading or
  * in an error state.
  */
-const GuardedTransactionDataContents: React.FC = () => {
+const GuardedTransactionDataContents: React.FC<
+  GuardedTransactionDataContentsProps
+> = (props) => {
   const loading = React.useContext(LoadingContext);
 
   if (loading) {
-    return <TransactionDataContentsPlaceholder />;
+    return (
+      <EdgeMarginShimmerCard {...props}>
+        <TransactionDataContentsPlaceholder />
+      </EdgeMarginShimmerCard>
+    );
   }
 
   return (
-    <ErrorContextGuard>
-      <TransactionDataContents />
-    </ErrorContextGuard>
+    <EdgeMarginCard {...props}>
+      <ErrorContextGuard>
+        <TransactionDataContents />
+      </ErrorContextGuard>
+    </EdgeMarginCard>
   );
 };
 
@@ -80,17 +102,14 @@ const TransactionPage: React.FC<TransactionPageProps> = (props) => (
     </EdgeMarginPageTitle>
 
     <TransactionDetailContentLoader>
-      <EdgeMarginCard {...props}>
-        <GuardedTransactionDetailsContent />
-      </EdgeMarginCard>
+      <GuardedTransactionDetailsContent {...props} />
 
       {/* For Each Payload within the Transaction */}
       <EdgeMarginHeading2>
         <Text text="Data" />
       </EdgeMarginHeading2>
-      <EdgeMarginCard>
-        <GuardedTransactionDataContents />
-      </EdgeMarginCard>
+
+      <GuardedTransactionDataContents />
     </TransactionDetailContentLoader>
 
     <Footer />

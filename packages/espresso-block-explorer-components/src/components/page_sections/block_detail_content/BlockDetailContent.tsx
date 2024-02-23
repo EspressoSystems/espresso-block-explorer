@@ -5,7 +5,6 @@ import { DataContext } from '../../contexts/DataProvider';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import { IconAnchorButton } from '../../hid/buttons';
 import TableLabeledValue from '../../layout/table_labeled_value/TabledLabeledValue';
-import { ContainerLoading } from '../../loading';
 import ByteSizeText from '../../text/ByteSizeText';
 import DateTimeText from '../../text/DateTimeText';
 import NumberText from '../../text/NumberText';
@@ -17,6 +16,7 @@ import ArrowLeft from '../../visual/icons/ArrowLeft';
 import ArrowRight from '../../visual/icons/ArrowRight';
 import { BlockNumberContext } from './BlockDetailContentLoader';
 import './block_detail_content.css';
+import SkeletonContent from '../../loading/SkeletonContent';
 
 /**
  * BackABlock creates a navigation item that will point to the preceding
@@ -102,23 +102,23 @@ export const BlockDetailsContentPlaceholder: React.FC<
     <>
       <TableLabeledValue>
         <Text text="Block Height" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Timestamp" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Transactions" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Proposer" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Size" />
-        <ContainerLoading />
+        <SkeletonContent />
       </TableLabeledValue>
     </>
   );

@@ -7,7 +7,7 @@ import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
 import Link from '../../links/link/Link';
-import { ContainerLoading } from '../../loading';
+import SkeletonContent from '../../loading/SkeletonContent';
 import DateTimeText from '../../text/DateTimeText';
 import HexText from '../../text/HexText';
 import NumberText from '../../text/NumberText';
@@ -91,22 +91,22 @@ export const TransactionsSummaryDataTablePlaceholder: React.FC = () => {
           {
             label: 'Transaction',
             columnType: TransactionSummaryColumn.hash,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
           {
             label: 'Rollups',
             columnType: TransactionSummaryColumn.rollup,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
           {
             label: 'Block',
             columnType: TransactionSummaryColumn.block,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
           {
             label: 'Time',
             columnType: TransactionSummaryColumn.time,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
         ]}
       />

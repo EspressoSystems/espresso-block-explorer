@@ -8,6 +8,7 @@ import ErrorContextGuard from '../components/data/async_data/ErrorContextGuard';
 import Card from '../components/layout/card/Card';
 import Heading1 from '../components/layout/heading/Heading1';
 import { WithEdgeMargin } from '../components/layout/margin/margins';
+import { WithLoadingShimmer } from '../components/loading/LoadingShimmer';
 import Footer from '../components/page_sections/footer/Footer';
 import Header from '../components/page_sections/header/Header';
 import PageTitle from '../components/page_sections/page_title/PageTitle';
@@ -25,23 +26,34 @@ import {
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginRollUpInfo = WithEdgeMargin(RollUpInfo);
 const EdgeMarginCard = WithEdgeMargin(Card);
+const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
+
+interface GuardRollUpPageDetailDataTableProps {}
 
 /**
  * GuardRollUpPageDetailDataTable is a component that guards the rendering
  * of the RollUp Detail Data Table so long as the component is not in a loading
  * state.
  */
-const GuardRollUpPageDetailDataTable: React.FC = () => {
+const GuardRollUpPageDetailDataTable: React.FC<
+  GuardRollUpPageDetailDataTableProps
+> = (props) => {
   const loading = React.useContext(LoadingContext);
 
   if (loading) {
-    return <RollUpDetailDataTablePlaceholder />;
+    return (
+      <EdgeMarginShimmerCard {...props}>
+        <RollUpDetailDataTablePlaceholder />
+      </EdgeMarginShimmerCard>
+    );
   }
 
   return (
-    <ErrorContextGuard>
-      <RollUpDetailDataTable />
-    </ErrorContextGuard>
+    <EdgeMarginCard {...props}>
+      <ErrorContextGuard>
+        <RollUpDetailDataTable />
+      </ErrorContextGuard>
+    </EdgeMarginCard>
   );
 };
 
@@ -80,9 +92,7 @@ const RollUpPage: React.FC<RollUpPageProps> = ({
     <RolUpSection />
 
     <RollUpDetailsDataLoader startAtBlock={startAtBlock} offset={offset}>
-      <EdgeMarginCard {...rest}>
-        <GuardRollUpPageDetailDataTable />
-      </EdgeMarginCard>
+      <GuardRollUpPageDetailDataTable {...rest} />
     </RollUpDetailsDataLoader>
 
     <Footer />

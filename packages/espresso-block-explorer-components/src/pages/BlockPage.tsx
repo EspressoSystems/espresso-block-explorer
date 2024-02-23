@@ -8,6 +8,7 @@ import ErrorContextGuard from '../components/data/async_data/ErrorContextGuard';
 import Card from '../components/layout/card/Card';
 import Heading1 from '../components/layout/heading/Heading1';
 import { WithEdgeMargin } from '../components/layout/margin/margins';
+import { WithLoadingShimmer } from '../components/loading/LoadingShimmer';
 import {
   BlockDetailsContent,
   BlockDetailsContentPlaceholder,
@@ -21,25 +22,34 @@ import PageTitle from '../components/page_sections/page_title/PageTitle';
 import Text from '../components/text/Text';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
+const GuardBlockDetailsProps = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
+
+interface GuardBlockDetailsProps {}
 
 /**
  * GuardBlockDetails is a component that guards rendering the Block Details
  * content so long as the component is not in a loading or error state.
  */
-const GuardBlockDetails: React.FC = () => {
+const GuardBlockDetails: React.FC<GuardBlockDetailsProps> = (props) => {
   const loading = React.useContext(LoadingContext);
 
   if (loading) {
-    return <BlockDetailsContentPlaceholder />;
+    return (
+      <GuardBlockDetailsProps {...props}>
+        <BlockDetailsContentPlaceholder />
+      </GuardBlockDetailsProps>
+    );
   }
 
   return (
-    <ErrorContextGuard>
-      <ProvideBlockDetails>
-        <BlockDetailsContent />
-      </ProvideBlockDetails>
-    </ErrorContextGuard>
+    <EdgeMarginCard {...props}>
+      <ErrorContextGuard>
+        <ProvideBlockDetails>
+          <BlockDetailsContent />
+        </ProvideBlockDetails>
+      </ErrorContextGuard>
+    </EdgeMarginCard>
   );
 };
 
@@ -59,9 +69,7 @@ const BlockPage: React.FC<BlockPageProps> = (props) => (
       <BlockNavigation />
     </EdgeMarginPageTitle>
     <BlockDetailsLoader>
-      <EdgeMarginCard {...props}>
-        <GuardBlockDetails />
-      </EdgeMarginCard>
+      <GuardBlockDetails {...props} />
     </BlockDetailsLoader>
 
     <Footer />

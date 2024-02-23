@@ -7,7 +7,7 @@ import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
 import Link from '../../links/link/Link';
-import ContainerLoading from '../../loading/ContainerLoading';
+import SkeletonContent from '../../loading/SkeletonContent';
 import ByteSizeText from '../../text/ByteSizeText';
 import DateTimeText from '../../text/DateTimeText';
 import NumberText from '../../text/NumberText';
@@ -82,27 +82,27 @@ export const BlockSummaryDataTablePlaceholder: React.FC = () => {
           {
             label: 'Blocks',
             columnType: BlockSummaryColumn.height,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
           {
             label: 'Proposer',
             columnType: BlockSummaryColumn.proposer,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
           {
             label: 'Transaction',
             columnType: BlockSummaryColumn.transactions,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
           {
             label: 'Size',
             columnType: BlockSummaryColumn.size,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
           {
             label: 'Time',
             columnType: BlockSummaryColumn.time,
-            buildCell: ContainerLoading,
+            buildCell: SkeletonContent,
           },
         ]}
       />

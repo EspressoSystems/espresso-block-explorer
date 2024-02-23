@@ -9,6 +9,7 @@ import Card from '../components/layout/card/Card';
 import Heading1 from '../components/layout/heading/Heading1';
 import Heading2 from '../components/layout/heading/Heading2';
 import { WithEdgeMargin } from '../components/layout/margin/margins';
+import { WithLoadingShimmer } from '../components/loading/LoadingShimmer';
 import Footer from '../components/page_sections/footer/Footer';
 import Header from '../components/page_sections/header/Header';
 import PageTitle from '../components/page_sections/page_title/PageTitle';
@@ -23,25 +24,36 @@ import { curatedRollupMap } from '../types/data_source/rollup_entry/data';
 import { kNumberOfSampleBlocks } from './GibraltarHotShotQueryServiceAdapters';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
+const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginHeading2 = WithEdgeMargin(Heading2);
+
+interface GuardedRollUpsSummaryDataTableProps {}
 
 /**
  * GuardedRollUpsSummaryDataTable is a component that guards rendering the
  * RollUps Summary DataTable so long as the component is not in a loading or
  * in an error state.
  */
-const GuardedRollUpsSummaryDataTable: React.FC = () => {
+const GuardedRollUpsSummaryDataTable: React.FC<
+  GuardedRollUpsSummaryDataTableProps
+> = (props) => {
   const loading = React.useContext(LoadingContext);
 
   if (loading) {
-    return <RollUpsSummaryDataTablePlaceholder />;
+    return (
+      <EdgeMarginShimmerCard {...props}>
+        <RollUpsSummaryDataTablePlaceholder />
+      </EdgeMarginShimmerCard>
+    );
   }
 
   return (
-    <ErrorContextGuard>
-      <RollUpsSummaryDataTable />
-    </ErrorContextGuard>
+    <EdgeMarginCard {...props}>
+      <ErrorContextGuard>
+        <RollUpsSummaryDataTable />
+      </ErrorContextGuard>
+    </EdgeMarginCard>
   );
 };
 
@@ -68,9 +80,7 @@ const RollUpsPage: React.FC<RollUpsPageProps> = (props) => (
       <EdgeMarginHeading2>
         <Text text={`Over the latest ${kNumberOfSampleBlocks} Blocks`} />
       </EdgeMarginHeading2>
-      <EdgeMarginCard {...props}>
-        <GuardedRollUpsSummaryDataTable />
-      </EdgeMarginCard>
+      <GuardedRollUpsSummaryDataTable {...props} />
     </RollUpsSummaryLoader>
 
     <Footer />
