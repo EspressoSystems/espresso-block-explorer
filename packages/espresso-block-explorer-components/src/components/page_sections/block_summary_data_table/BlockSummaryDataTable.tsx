@@ -46,9 +46,14 @@ const ProposerCell: React.FC = () => {
  * are in the block in question.
  */
 const TransactionsCell: React.FC = () => {
+  const pathResolver = React.useContext(PathResolverContext);
   const row = React.useContext(DataTableRowContext) as BlockSummary;
 
-  return <NumberText number={row.transactions} />;
+  return (
+    <Link href={pathResolver.transactionsForBlock(row.block)}>
+      <NumberText number={row.transactions} />
+    </Link>
+  );
 };
 
 /**

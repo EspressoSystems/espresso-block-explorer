@@ -1,8 +1,11 @@
 'use client';
 
 import {
+  ProvideGibraltarBlockDetailDataSource,
+  ProvideGibraltarTransactionsForBlockSummaryDataSource,
   ProvideGibraltarTransactionsSummaryDataSource,
   TransactionsPage,
+  TransactionsForBlockPage,
 } from 'espresso-block-explorer-components';
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 
@@ -29,6 +32,17 @@ export default function Transactions() {
 
   const startAtBlock = getNumberFromParams(searchParams, 'height');
   const offset = getNumberFromParams(searchParams, 'offset');
+  const block = getNumberFromParams(searchParams, 'block');
+
+  if (block !== undefined) {
+    return (
+      <ProvideGibraltarTransactionsForBlockSummaryDataSource>
+        <ProvideGibraltarBlockDetailDataSource>
+          <TransactionsForBlockPage block={block} offset={offset} />
+        </ProvideGibraltarBlockDetailDataSource>
+      </ProvideGibraltarTransactionsForBlockSummaryDataSource>
+    );
+  }
 
   return (
     <ProvideGibraltarTransactionsSummaryDataSource>

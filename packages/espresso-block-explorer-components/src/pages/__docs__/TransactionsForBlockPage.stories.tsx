@@ -2,13 +2,16 @@ import React from 'react';
 import { Meta, StoryObj } from 'storybook';
 import { ProvideTickEverySecond } from '../../components';
 import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
-import { ProvideGibraltarTransactionsSummaryDataSource } from '../GibraltarHotShotQueryServiceAdapters';
-import { StoryBookPathResolver } from '../StoryBookPathResolver';
-import TransactionsPage from '../TransactionsPage';
 import FakeDataNotice from '../FakeDataNotice';
+import {
+  ProvideGibraltarBlockDetailDataSource,
+  ProvideGibraltarTransactionsForBlockSummaryDataSource,
+} from '../GibraltarHotShotQueryServiceAdapters';
+import { StoryBookPathResolver } from '../StoryBookPathResolver';
+import TransactionsForBlockPage from '../TransactionsForBlockPage';
 
 interface ExampleProps {
-  startAtBlock?: number;
+  block: number;
   offset?: number;
 }
 
@@ -17,16 +20,18 @@ const Example: React.FC<ExampleProps> = (props) => (
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideGibraltarTransactionsSummaryDataSource>
-          <TransactionsPage {...props} />
-        </ProvideGibraltarTransactionsSummaryDataSource>
+        <ProvideGibraltarBlockDetailDataSource>
+          <ProvideGibraltarTransactionsForBlockSummaryDataSource>
+            <TransactionsForBlockPage {...props} />
+          </ProvideGibraltarTransactionsForBlockSummaryDataSource>
+        </ProvideGibraltarBlockDetailDataSource>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </>
 );
 
 const meta: Meta = {
-  title: 'Pages/Transactions',
+  title: 'Pages/Transactions For Block',
   component: Example,
   parameters: {
     layout: 'fullscreen',
@@ -36,9 +41,9 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const Transactions: Story = {
+export const TransactionsForBlock: Story = {
   args: {
-    startAtBlock: undefined,
+    block: 0,
     offset: undefined,
   },
 

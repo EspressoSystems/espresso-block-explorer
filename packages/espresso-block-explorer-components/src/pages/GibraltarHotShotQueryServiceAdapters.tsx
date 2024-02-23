@@ -8,9 +8,12 @@ import { TransactionSummaryAsyncRetrieverContext } from '../components/page_sect
 import { BlockSummaryEntry } from '../types/data_source/block_summary/types';
 import { mapIterable } from '../types/functional';
 import {
+  collectAsyncIterator,
+  dropAsyncIterator,
   foldRAsyncIterator,
   iotaAsync,
   mapAsyncIterator,
+  takeAsyncIterator,
 } from '../types/functional_async';
 import { GibraltarHotShotQueryServiceAPIContext } from './GibraltarHotShotQueryServiceAPIContext';
 
@@ -145,6 +148,55 @@ export const ProvideGibraltarTransactionsSummaryDataSource: React.FC<
               time: new Date(txn.header.timestamp * 1000),
             };
           });
+        },
+      }}
+    />
+  );
+};
+
+export const ProvideGibraltarTransactionsForBlockSummaryDataSource: React.FC<
+  ProvideGibraltarTransactionsSummaryDataSourceProps
+> = (props) => {
+  const hotShotQueryService = React.useContext(
+    GibraltarHotShotQueryServiceAPIContext,
+  );
+
+  return (
+    <TransactionSummaryAsyncRetrieverContext.Provider
+      {...props}
+      value={{
+        async retrieve(key) {
+          const {
+            startAtBlock = (await hotShotQueryService.status.blockHeight()) - 1,
+            offset = 0,
+            transactionsPerPage = 20,
+          } = key;
+
+          const block =
+            await hotShotQueryService.availability.getBlockFromHeight(
+              startAtBlock,
+            );
+
+          const step1 = iotaAsync(block.payload.transaction_nmt.length);
+          const step2 = mapAsyncIterator(step1, async (index) => {
+            const txn =
+              await hotShotQueryService.availability.getTransactionFromHeightAndOffset(
+                block.header.height,
+                index,
+              );
+
+            return {
+              hash: txn.hash,
+              block: block.header.height,
+              offset: index,
+              namespaces: [txn.transaction.vm],
+              time: new Date(block.header.timestamp * 1000),
+            };
+          });
+          const step3 = dropAsyncIterator(step2, offset);
+          const step4 = takeAsyncIterator(step3, transactionsPerPage);
+
+          return await collectAsyncIterator(step4);
         },
       }}
     />

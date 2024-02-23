@@ -21,6 +21,9 @@ export class StoryBookPathResolver implements PathResolver {
     }
     return '/?path=/story/pages-transactions--transactions';
   }
+  transactionsForBlock(block: number): string {
+    return `?path=/story/pages-transactions-for-block--transactions-for-block&args=block:${block}`;
+  }
   transaction(height: number, offset: number): string {
     return `/?path=/story/pages-transaction--transaction&args=height:${height};offset:${offset}`;
   }

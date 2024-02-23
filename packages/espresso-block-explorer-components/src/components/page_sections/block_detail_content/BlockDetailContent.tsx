@@ -5,6 +5,8 @@ import { DataContext } from '../../contexts/DataProvider';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import { IconAnchorButton } from '../../hid/buttons';
 import TableLabeledValue from '../../layout/table_labeled_value/TabledLabeledValue';
+import Link from '../../links/link/Link';
+import SkeletonContent from '../../loading/SkeletonContent';
 import ByteSizeText from '../../text/ByteSizeText';
 import DateTimeText from '../../text/DateTimeText';
 import NumberText from '../../text/NumberText';
@@ -16,7 +18,6 @@ import ArrowLeft from '../../visual/icons/ArrowLeft';
 import ArrowRight from '../../visual/icons/ArrowRight';
 import { BlockNumberContext } from './BlockDetailContentLoader';
 import './block_detail_content.css';
-import SkeletonContent from '../../loading/SkeletonContent';
 
 /**
  * BackABlock creates a navigation item that will point to the preceding
@@ -132,6 +133,7 @@ interface BlockDetailsContentProps {}
  */
 export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
   const details = React.useContext(BlockDetailContext);
+  const pathResolver = React.useContext(PathResolverContext);
 
   return (
     <>
@@ -148,7 +150,9 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Transactions" />
-        <NumberText number={details.transactions} />
+        <Link href={pathResolver.transactionsForBlock(details.height)}>
+          <NumberText number={details.transactions} />
+        </Link>
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Proposer" />
