@@ -5,7 +5,7 @@ import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import LabeledButton from '../../hid/buttons/labeled_button/LabeledButton';
 import TableLabeledValue from '../../layout/table_labeled_value/TabledLabeledValue';
 import Link from '../../links/link/Link';
-import { ContainerLoading } from '../../loading';
+import SkeletonContent from '../../loading/SkeletonContent';
 import ByteSizeText from '../../text/ByteSizeText';
 import DateTimeText from '../../text/DateTimeText';
 import HexText from '../../text/HexText';
@@ -21,7 +21,6 @@ import {
   TransactionOffsetContext,
 } from './TransactionDetailLoader';
 import './transaction_detail_content.css';
-import SkeletonContent from '../../loading/SkeletonContent';
 
 const LabelUiSmall = WithUiSmall('label');
 
