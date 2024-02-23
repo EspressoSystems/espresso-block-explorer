@@ -1,0 +1,1 @@
+import{j as n}from"./jsx-runtime-5BUNAZ9W.js";const o=a=>n("div",{className:"container-loading",...a});try{o.displayName="ContainerLoading",o.__docgenInfo={description:"",displayName:"ContainerLoading",props:{}}}catch{}export{o as C};

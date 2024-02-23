@@ -3,5 +3,8 @@ interface TransactionsPageProps {
     startAtBlock?: number;
     offset?: number;
 }
+/**
+ * TransactionsPage is a component that renders the Transactions Page.
+ */
 declare const TransactionsPage: React.FC<TransactionsPageProps>;
 export default TransactionsPage;

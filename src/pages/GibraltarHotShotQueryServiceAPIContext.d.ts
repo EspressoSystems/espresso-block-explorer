@@ -5,4 +5,8 @@ export interface ProviderGibraltarLiveServiceProps {
     url: URL;
     children: React.ReactNode | React.ReactNode[];
 }
+/**
+ * ProvideGibraltarLiveService is a component that provides a Gibraltar
+ * HotShot Query Service API targeting the given URL.
+ */
 export declare const ProvideGibraltarLiveService: React.FC<ProviderGibraltarLiveServiceProps>;

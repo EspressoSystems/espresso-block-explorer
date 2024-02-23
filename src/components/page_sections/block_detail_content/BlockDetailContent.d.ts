@@ -1,22 +1,24 @@
 import React from 'react';
-import { BlockDetailAsyncRetriever } from '../../../types/data_source/block_detail/types';
-export declare const BlockNumberContext: React.Context<number>;
 /**
  * BlockNavigation is a component that displays the current BlockID
  * and provides the corresponding Previous and Next block navigation
  * components.
  */
 export declare const BlockNavigation: React.FC;
-/**
- * RetrieverContext is a React Context for retrieving a BlockDetail from a
- * BlockDetailAsyncRetriever.
- */
-export declare const BlockDetailAsyncRetrieverContext: React.Context<BlockDetailAsyncRetriever>;
-export interface BlockDetailsProp {
+export declare const BlockDetailsContentPlaceholder: React.FC<BlockDetailsContentProps>;
+interface BlockDetailsContentProps {
 }
 /**
- * BlockDetails kicks off the retrieval of the details for the individual
- * Block, and ensures that the data is available for BlockDetailsContent
+ * BlockDetailsContext represents the component that displays all of the
+ * information about the Block Detail.
  */
-declare const BlockDetails: React.FC<BlockDetailsProp>;
-export default BlockDetails;
+export declare const BlockDetailsContent: React.FC<BlockDetailsContentProps>;
+interface ProvideBlockDetailsProps {
+    children: React.ReactNode | React.ReactNode[];
+}
+/**
+ * ProvideBlockDetails consumes the DataContext in order to provide the
+ * BlockDetailContext.  If no data is found, it will indicate as such.
+ */
+export declare const ProvideBlockDetails: React.FC<ProvideBlockDetailsProps>;
+export {};
