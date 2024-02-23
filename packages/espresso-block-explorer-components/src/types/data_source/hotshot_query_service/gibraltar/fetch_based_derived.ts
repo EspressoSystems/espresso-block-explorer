@@ -90,7 +90,10 @@ export class FetchBasedGibraltarHotShotQueryServiceAvailabilityAPI
     );
   }
 
-  private async *streamBlocksFromHeightRange(height: number) {
+  private async *streamBlocksFromHeightRange(
+    height: number,
+    maxBlocks?: number,
+  ) {
     const step1 = iotaAsync(height);
     const step2 = mapAsyncIterator(step1, (i) =>
       this.getLeafFromHeight(height - i),
@@ -112,7 +115,12 @@ export class FetchBasedGibraltarHotShotQueryServiceAvailabilityAPI
       ),
     );
 
-    yield* step3;
+    if (maxBlocks === undefined) {
+      yield* step3;
+      return;
+    }
+
+    yield* takeAsyncIterator(step3, maxBlocks);
   }
 
   async getTransactionSummaryRange(
@@ -123,7 +131,7 @@ export class FetchBasedGibraltarHotShotQueryServiceAvailabilityAPI
     // We can currently retrieve the individual transactions from the blocks
     // themselves.
 
-    const step3 = this.streamBlocksFromHeightRange(height);
+    const step3 = this.streamBlocksFromHeightRange(height, 50);
     const step4 = dropAsyncIterator(step3, offset);
     const step5 = takeAsyncIterator(step4, limit);
     return await collectAsyncIterator(step5);
@@ -138,7 +146,7 @@ export class FetchBasedGibraltarHotShotQueryServiceAvailabilityAPI
     // We can currently retrieve the individual transactions from the blocks
     // themselves.
 
-    const step3 = this.streamBlocksFromHeightRange(height);
+    const step3 = this.streamBlocksFromHeightRange(height, 50);
     const step4 = filterAsyncIterator(
       step3,
       (summary) => summary.transaction.vm === namespace,
