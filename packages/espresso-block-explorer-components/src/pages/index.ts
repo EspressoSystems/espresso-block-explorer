@@ -6,5 +6,5 @@ export * from './GibraltarHotShotQueryServiceAdapters';
 export { default as RollUpPage } from './RollUpPage';
 export { default as RollUpsPage } from './RollUpsPage';
 export { default as TransactionPage } from './TransactionPage';
-export { default as TransactionsPage } from './TransactionsPage';
 export { default as TransactionsForBlockPage } from './TransactionsForBlockPage';
+export { default as TransactionsPage } from './TransactionsPage';

@@ -1,10 +1,9 @@
 import React from 'react';
-import { TaggedBase64 } from '../../../types/TaggedBase64';
+import UnimplementedError from '../../../errors/UnimplementedError';
 import {
   BlockSummaryAsyncRetriever,
   BlockSummaryColumn,
-} from '../../../types/data_source/block_summary/types';
-import UnimplementedError from '../../../types/errors/UnimplementedError';
+} from '../../../models/block_explorer/block_summary';
 import { DataContext } from '../../contexts/DataProvider';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import PromiseResolver from '../../data/async_data/PromiseResolver';

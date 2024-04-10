@@ -1,9 +1,9 @@
 import React from 'react';
-import { FakeDataGibraltarHotShotQueryService } from '../types/data_source/hotshot_query_service/gibraltar/fake_data_derived';
-import { FetchBasedGibraltarHotShotQueryService } from '../types/data_source/hotshot_query_service/gibraltar/fetch_based_derived';
+import { FetchBasedGibraltarHotShotQueryService } from '../service/hotshot_query_service/gibraltar/implementations/remote_api';
+import { WebWorkerClientBasedGibraltarHotShotQueryService } from '../service/hotshot_query_service/gibraltar/web_worker_client_based';
 
 export const GibraltarHotShotQueryServiceAPIContext = React.createContext(
-  new FakeDataGibraltarHotShotQueryService(),
+  new WebWorkerClientBasedGibraltarHotShotQueryService(),
 );
 
 export interface ProviderGibraltarLiveServiceProps {

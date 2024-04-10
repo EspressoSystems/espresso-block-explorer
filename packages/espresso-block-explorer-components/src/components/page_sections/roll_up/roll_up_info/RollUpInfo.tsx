@@ -1,5 +1,5 @@
 import React from 'react';
-import { curatedRollupMap } from '../../../../types/data_source/rollup_entry/data';
+import { curatedRollupMap } from '../../../../models/block_explorer/rollup_entry/data';
 import { addClassToClassName } from '../../../higher_order';
 import Card from '../../../layout/card/Card';
 import ValueLabeled from '../../../layout/value_labeled/ValueLabeled';

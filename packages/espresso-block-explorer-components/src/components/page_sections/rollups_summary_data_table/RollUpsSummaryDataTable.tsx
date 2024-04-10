@@ -1,8 +1,8 @@
 import React from 'react';
 import { DataContext } from '../..';
-import { BlockSummaryColumn } from '../../../types/data_source/block_summary/types';
-import { curatedRollupMap } from '../../../types/data_source/rollup_entry/data';
-import { iota } from '../../../types/functional';
+import { iota } from '../../../functional/functional';
+import { BlockSummaryColumn } from '../../../models/block_explorer/block_summary';
+import { curatedRollupMap } from '../../../models/block_explorer/rollup_entry/data';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import DataTable, {
   DataTableRowContext,

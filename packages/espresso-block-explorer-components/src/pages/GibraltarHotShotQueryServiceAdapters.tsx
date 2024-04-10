@@ -5,8 +5,7 @@ import { RollUpDetailAsyncRetrieverContext } from '../components/page_sections/r
 import { RollUpSummaryAsyncRetrieverContext } from '../components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
 import { TransactionDetailAsyncRetrieverContext } from '../components/page_sections/transaction_detail_content/TransactionDetailLoader';
 import { TransactionSummaryAsyncRetrieverContext } from '../components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
-import { BlockSummaryEntry } from '../types/data_source/block_summary/types';
-import { mapIterable } from '../types/functional';
+import { foldRIterator, mapIterable } from '../functional/functional';
 import {
   collectAsyncIterator,
   dropAsyncIterator,
@@ -14,7 +13,7 @@ import {
   iotaAsync,
   mapAsyncIterator,
   takeAsyncIterator,
-} from '../types/functional_async';
+} from '../functional/functional_async';
 import { GibraltarHotShotQueryServiceAPIContext } from './GibraltarHotShotQueryServiceAPIContext';
 
 // We need to create adapters between the HotShotQueryService and the

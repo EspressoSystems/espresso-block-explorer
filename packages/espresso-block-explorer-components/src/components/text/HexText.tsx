@@ -1,6 +1,5 @@
 import React from 'react';
-import { mapIterable, mapIterator } from '../../types/functional';
-import CopyButton from '../hid/buttons/copy_button/CopyButton';
+import { hexArrayBufferCodec } from '../../convert/codec/array_buffer';
 import './inline.css';
 
 export interface HexTextProps {
@@ -12,40 +11,15 @@ export interface HexTextProps {
  * a hex string
  */
 const HexText: React.FC<HexTextProps> = (props) => {
-  const hexBytes = Array.from(
-    mapIterator(
-      mapIterator(mapIterable(new Uint8Array(props.value), Number), (byte) =>
-        byte.toString(16),
-      ),
-      (byte) => byte.padStart(2, '0'),
-    ),
-  ).join('');
+  const string = hexArrayBufferCodec.encode(props.value);
 
-  if (hexBytes.length <= 12) {
-    return `0x${hexBytes}`;
+  if (string.length <= 14) {
+    return string;
   }
 
   return (
-    <span className="inline">
-      <span title={`0x${hexBytes}`}>
-        0x{hexBytes.substring(0, 6)}...{hexBytes.substring(hexBytes.length - 6)}
-      </span>
-      <CopyButton
-        onClick={(event) => {
-          event.preventDefault();
-          event.stopPropagation();
-
-          if (
-            typeof window === 'undefined' ||
-            !navigator ||
-            !navigator.clipboard
-          ) {
-            return;
-          }
-
-          navigator.clipboard.writeText(hexBytes);
-        }}
-      />
+    <span title={string}>
+      {string.substring(0, 8)}...{string.substring(string.length - 6)}
     </span>
   );
 };

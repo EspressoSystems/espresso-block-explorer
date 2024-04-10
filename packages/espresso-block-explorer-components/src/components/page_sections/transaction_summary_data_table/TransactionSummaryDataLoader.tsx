@@ -1,21 +1,21 @@
 import React from 'react';
-import { TaggedBase64 } from '../../../types/TaggedBase64';
+import UnimplementedError from '../../../errors/UnimplementedError';
 import {
   TransactionSummaryAsyncRetriever,
   TransactionSummaryColumn,
-} from '../../../types/data_source/transaction_summary/types';
-import UnimplementedError from '../../../types/errors/UnimplementedError';
+} from '../../../models/block_explorer/transaction_summary';
+import { TaggedBase64 } from '../../../models/espresso/tagged_base64/TaggedBase64';
+import { DataContext } from '../../contexts/DataProvider';
+import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import {
   DataTableState,
   DataTableStateContext,
 } from '../../data/data_table/DataTable';
 import { SortDirection } from '../../data/types';
-import { DataContext } from '../../contexts/DataProvider';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
-import Text from '../../text/Text';
 import { addClassToClassName } from '../../higher_order';
+import Text from '../../text/Text';
 
 const kTransactionsPerPage = 20;
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { TransactionSummaryColumn } from '../../../types/data_source/transaction_summary/types';
-import { iota } from '../../../types/functional';
+import { iota } from '../../../functional/functional';
+import { TransactionSummaryColumn } from '../../../models/block_explorer/transaction_summary';
 import { DataContext } from '../../contexts/DataProvider';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import DataTable, {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { TaggedBase64 } from '../../../types/TaggedBase64';
-import { BlockDetailEntry } from '../../../types/data_source/block_detail/types';
+import { BlockDetailEntry } from '../../../models/block_explorer/block_detail';
+import { TaggedBase64 } from '../../../models/espresso/tagged_base64/TaggedBase64';
 import { DataContext } from '../../contexts/DataProvider';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import { IconAnchorButton } from '../../hid/buttons';
@@ -11,7 +11,6 @@ import ByteSizeText from '../../text/ByteSizeText';
 import DateTimeText from '../../text/DateTimeText';
 import NumberText from '../../text/NumberText';
 import RelativeTimeText from '../../text/RelativeTimeText';
-import TaggedBase64Text from '../../text/TaggedBase64Text';
 import Text from '../../text/Text';
 import { WithUiSmall } from '../../typography/typography';
 import ArrowLeft from '../../visual/icons/ArrowLeft';

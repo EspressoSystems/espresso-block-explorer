@@ -1,6 +1,6 @@
 import React from 'react';
-import { urlEncoding } from '../../../types/base64';
-import { encodeNumberIterableToHexits } from '../../../types/hex';
+import { urlEncoding } from '../../../convert/base64/base64';
+import { encodeNumberIterableToHexits } from '../../../convert/hex/hex';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import LabeledButton from '../../hid/buttons/labeled_button/LabeledButton';
 import TableLabeledValue from '../../layout/table_labeled_value/TabledLabeledValue';

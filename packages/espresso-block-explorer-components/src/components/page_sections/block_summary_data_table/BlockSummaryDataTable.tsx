@@ -1,6 +1,6 @@
 import React from 'react';
-import { BlockSummaryColumn } from '../../../types/data_source/block_summary/types';
-import { iota } from '../../../types/functional';
+import { iota } from '../../../functional/functional';
+import { BlockSummaryColumn } from '../../../models/block_explorer/block_summary';
 import { DataContext } from '../../contexts/DataProvider';
 import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import DataTable, {

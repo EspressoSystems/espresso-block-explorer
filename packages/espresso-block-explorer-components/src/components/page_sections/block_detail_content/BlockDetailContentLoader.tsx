@@ -1,10 +1,10 @@
 import React from 'react';
-import { TaggedBase64 } from '../../../types/TaggedBase64';
+import UnimplementedError from '../../../errors/UnimplementedError';
 import {
   BlockDetailAsyncRetriever,
   BlockDetailEntry,
-} from '../../../types/data_source/block_detail/types';
-import UnimplementedError from '../../../types/errors/UnimplementedError';
+} from '../../../models/block_explorer/block_detail';
+import { TaggedBase64 } from '../../../models/espresso/tagged_base64/TaggedBase64';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import './block_detail_content.css';
 
