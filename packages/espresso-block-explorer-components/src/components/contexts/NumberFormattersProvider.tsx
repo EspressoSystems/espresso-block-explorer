@@ -147,6 +147,58 @@ function createDefaultNumberFormatters(locale: string) {
     transactionsPerSecond: new TransactionPerSecondNumberFormat(locale, {
       maximumFractionDigits: 2,
     }) as unknown as Intl.NumberFormat,
+
+    wei: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'WEI',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }),
+    gwei: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'XXX',
+      minimumFractionDigits: 2,
+      maximumSignificantDigits: 9,
+      maximumFractionDigits: 9,
+    }),
+
+    USD: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 2,
+    }),
+    JPY: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'JPY',
+      maximumFractionDigits: 0,
+    }),
+    ETH: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currencyDisplay: 'code',
+      currency: 'ETH',
+      notation: 'standard',
+      maximumSignificantDigits: 18,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 18,
+    }),
+    ESP: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currencyDisplay: 'code',
+      currency: 'ESP',
+      notation: 'standard',
+      maximumSignificantDigits: 18,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 18,
+    }),
+    BTC: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currencyDisplay: 'code',
+      currency: 'XBT',
+      notation: 'standard',
+      maximumSignificantDigits: 8,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 8,
+    }),
   };
 }
 
