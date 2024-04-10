@@ -1,0 +1,19 @@
+import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability/availability_api';
+import { FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability/implementations/fake_data';
+import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer/exporer_api';
+import { FakeDataCappuccinoHotShotQueryServiceExplorerAPI } from '../explorer/implementations/fake_data';
+import { CappuccinoHotShotQueryService } from '../hot_shot_query_service_api';
+import { FakeDataCappuccinoHotShotQueryServiceStatusAPI } from '../status/implementations/fake_api';
+import { CappuccinoHotShotQueryServiceStatusAPI } from '../status/status_api';
+
+export class FakeDataCappuccinoHotShotQueryService
+  implements CappuccinoHotShotQueryService
+{
+  public readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI &
+    CappuccinoHotShotQueryServiceAvailabilityAPI =
+    new FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI();
+  public readonly status: CappuccinoHotShotQueryServiceStatusAPI =
+    new FakeDataCappuccinoHotShotQueryServiceStatusAPI();
+  public readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI =
+    new FakeDataCappuccinoHotShotQueryServiceExplorerAPI();
+}

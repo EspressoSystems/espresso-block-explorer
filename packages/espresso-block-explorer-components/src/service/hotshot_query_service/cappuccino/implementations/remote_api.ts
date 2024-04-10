@@ -1,0 +1,31 @@
+import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability/availability_api';
+import { FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability/implementations/remote_api';
+import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer/exporer_api';
+import { FetchBasedCappuccinoHotShotQueryServiceExplorerAPI } from '../explorer/implementations/remote_api';
+import { CappuccinoHotShotQueryService } from '../hot_shot_query_service_api';
+import { FetchBasedCappuccinoHotShotQueryServiceStatusAPI } from '../status/implementations/remote_api';
+import { CappuccinoHotShotQueryServiceStatusAPI } from '../status/status_api';
+
+export class FetchBasedCappuccinoHotShotQueryService
+  implements CappuccinoHotShotQueryService
+{
+  public readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI;
+  public readonly status: CappuccinoHotShotQueryServiceStatusAPI;
+  public readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;
+
+  constructor(fetcher: typeof fetch, baseURL: URL) {
+    this.availability =
+      new FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI(
+        fetcher,
+        new URL('availability/', baseURL),
+      );
+    this.status = new FetchBasedCappuccinoHotShotQueryServiceStatusAPI(
+      fetcher,
+      new URL('status/', baseURL),
+    );
+    this.explorer = new FetchBasedCappuccinoHotShotQueryServiceExplorerAPI(
+      fetcher,
+      new URL('explorer/', baseURL),
+    );
+  }
+}

@@ -1,14 +1,15 @@
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import { ProvideTickEverySecond } from '../../components';
+import { ProvideTickEverySecond } from '../../components/contexts/NowProvider';
 import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
-import BlocksPage from '../BlocksPage';
-import { ProvideCappuccinoBlocksSummaryDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
+import { ExplorerSummaryLoader } from '../../components/page_sections/explorer_summary/ExplorerSummaryLoader';
+import { ProvideCappuccinoExplorerSummary } from '../CappuccinoHotShotQueryServiceAdapters';
+import ExplorerPage from '../ExplorerPage';
 import FakeDataNotice from '../FakeDataNotice';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
 interface ExampleProps {
-  startAtBlock?: number;
+  block: number;
 }
 
 const Example: React.FC<ExampleProps> = (props) => (
@@ -16,16 +17,18 @@ const Example: React.FC<ExampleProps> = (props) => (
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideCappuccinoBlocksSummaryDataSource>
-          <BlocksPage {...props} />
-        </ProvideCappuccinoBlocksSummaryDataSource>
+        <ProvideCappuccinoExplorerSummary>
+          <ExplorerSummaryLoader>
+            <ExplorerPage {...props} />
+          </ExplorerSummaryLoader>
+        </ProvideCappuccinoExplorerSummary>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </>
 );
 
 const meta: Meta = {
-  title: 'Pages/Blocks',
+  title: 'Pages/Explorer',
   component: Example,
   parameters: {
     layout: 'fullscreen',
@@ -35,14 +38,8 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const Blocks: Story = {
+export const Explorer: Story = {
   args: {
-    startAtBlock: undefined,
-  },
-
-  argTypes: {
-    startAtBlock: {
-      control: 'number',
-    },
+    block: 0,
   },
 };

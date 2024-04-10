@@ -1,5 +1,6 @@
 export { default as BlockPage } from './BlockPage';
 export { default as BlocksPage } from './BlocksPage';
+export { default as ExplorerPage } from './ExplorerPage';
 export { default as FakeDataNotice } from './FakeDataNotice';
 export * from './GibraltarHotShotQueryServiceAPIContext';
 export * from './GibraltarHotShotQueryServiceAdapters';

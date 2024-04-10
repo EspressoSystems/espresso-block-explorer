@@ -1,0 +1,61 @@
+import {
+  Converter,
+  InvalidInputError,
+  TypeCheckingCodec,
+  isRecord,
+  isUnknown,
+} from '../../../../convert/codec/convert';
+import { numberCodec } from '../../../../convert/codec/number';
+
+export class CappuccinoAPIBitVecHead {
+  readonly width: number;
+  readonly index: number;
+
+  constructor(width: number, index: number) {
+    this.width = width;
+    this.index = index;
+  }
+
+  toJSON() {
+    return cappuccinoAPIBitVecHeadCodec.encode(this);
+  }
+}
+
+export class CappuccinoAPIBitVecHeadDecoder
+  implements Converter<unknown, CappuccinoAPIBitVecHead>
+{
+  convert(input: unknown): CappuccinoAPIBitVecHead {
+    if (
+      !isRecord(input, 'width', isUnknown) ||
+      !isRecord(input, 'index', isUnknown)
+    ) {
+      throw new InvalidInputError();
+    }
+
+    return new CappuccinoAPIBitVecHead(
+      numberCodec.decode(input.width),
+      numberCodec.decode(input.index),
+    );
+  }
+}
+
+export class CappuccinoAPIBitVecHeadEncoder
+  implements Converter<CappuccinoAPIBitVecHead>
+{
+  convert(input: CappuccinoAPIBitVecHead) {
+    return {
+      width: numberCodec.encode(input.width),
+      index: numberCodec.encode(input.index),
+    };
+  }
+}
+
+export class CappuccinoAPIBitVecHeadCodec extends TypeCheckingCodec<
+  CappuccinoAPIBitVecHead,
+  ReturnType<InstanceType<new () => CappuccinoAPIBitVecHeadEncoder>['convert']>
+> {
+  readonly encoder = new CappuccinoAPIBitVecHeadEncoder();
+  readonly decoder = new CappuccinoAPIBitVecHeadDecoder();
+}
+
+export const cappuccinoAPIBitVecHeadCodec = new CappuccinoAPIBitVecHeadCodec();
