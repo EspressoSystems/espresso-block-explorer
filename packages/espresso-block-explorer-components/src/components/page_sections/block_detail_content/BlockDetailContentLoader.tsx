@@ -4,6 +4,7 @@ import {
   BlockDetailAsyncRetriever,
   BlockDetailEntry,
 } from '../../../models/block_explorer/block_detail';
+import MonetaryValue from '../../../models/block_explorer/monetary_value';
 import { TaggedBase64 } from '../../../models/espresso/tagged_base64/TaggedBase64';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import './block_detail_content.css';
@@ -17,11 +18,14 @@ export const BlockNumberContext = React.createContext(0);
  */
 export const BlockDetailContext: React.Context<BlockDetailEntry> =
   React.createContext({
+    hash: new TaggedBase64('', new ArrayBuffer(0)),
     height: 0,
     time: new Date(),
     transactions: 0,
-    proposer: new TaggedBase64('PUBKEY', new ArrayBuffer(0)),
+    proposer: new ArrayBuffer(0),
+    recipient: new ArrayBuffer(0),
     size: 0,
+    rewards: [] as MonetaryValue[],
   });
 
 /**

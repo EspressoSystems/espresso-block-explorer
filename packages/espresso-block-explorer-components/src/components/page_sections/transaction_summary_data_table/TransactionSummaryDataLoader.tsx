@@ -17,8 +17,6 @@ import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/Labeled
 import { addClassToClassName } from '../../higher_order';
 import Text from '../../text/Text';
 
-const kTransactionsPerPage = 20;
-
 export interface TransactionSummary {
   hash: TaggedBase64;
   rollups: number[];
@@ -57,7 +55,6 @@ function createDataRetrieverFromRetriever(
       const data = await retriever.retrieve({
         startAtBlock: resolvedState.height,
         offset: resolvedState.offset,
-        transactionsPerPage: kTransactionsPerPage,
       });
 
       return data.map(

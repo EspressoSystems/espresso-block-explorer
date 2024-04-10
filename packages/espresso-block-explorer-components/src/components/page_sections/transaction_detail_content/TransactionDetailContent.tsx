@@ -7,10 +7,10 @@ import TableLabeledValue from '../../layout/table_labeled_value/TabledLabeledVal
 import Link from '../../links/link/Link';
 import SkeletonContent from '../../loading/SkeletonContent';
 import ByteSizeText from '../../text/ByteSizeText';
+import CopyTaggedBase64 from '../../text/CopyTaggedBase64';
 import DateTimeText from '../../text/DateTimeText';
-import HexText from '../../text/HexText';
+import FullTaggedBase64Text from '../../text/FullTaggedBase64Text';
 import NumberText from '../../text/NumberText';
-import TaggedBase64Text from '../../text/TaggedBase64Text';
 import Text from '../../text/Text';
 import { WithUiSmall } from '../../typography/typography';
 import { BlockNumberContext } from '../block_detail_content/BlockDetailContentLoader';
@@ -110,7 +110,9 @@ export const TransactionDetailsContent: React.FC<
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Espresso Sequencer Hash" />
-        <HexText value={details.hash.data} />
+        <CopyTaggedBase64 value={details.hash}>
+          <FullTaggedBase64Text value={details.hash} />
+        </CopyTaggedBase64>
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Time" />
@@ -118,7 +120,9 @@ export const TransactionDetailsContent: React.FC<
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Sender" />
-        <TaggedBase64Text value={details.sender} />
+        <CopyTaggedBase64 value={details.sender}>
+          <FullTaggedBase64Text value={details.sender} />
+        </CopyTaggedBase64>
       </TableLabeledValue>
     </>
   );

@@ -10,8 +10,6 @@ import {
 import { SortDirection } from '../../data/types';
 import { TransactionSummary } from '../transaction_summary_data_table/TransactionSummaryDataLoader';
 
-const kTransactionsPerPage = 20;
-
 /**
  * NamespaceContext is a React Context that holds a reference to the
  * current Namespace
@@ -50,7 +48,6 @@ function createDataRetrieverFromRetriever(
         namespace,
         height: resolvedState.height,
         offset: resolvedState.offset,
-        transactionsPerPage: kTransactionsPerPage,
       });
 
       return data.map(
