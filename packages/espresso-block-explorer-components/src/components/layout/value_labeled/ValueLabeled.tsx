@@ -3,8 +3,8 @@ import { addClassToClassName } from '../../higher_order';
 import { WithUiSmall, WithUiText600 } from '../../typography/typography';
 import './value_labeled.css';
 
-const LabelText600 = WithUiText600('label');
-const DivTextSmall = WithUiSmall('div');
+const LabelSmall = WithUiSmall('label');
+const DivText600 = WithUiText600('div');
 
 interface LabelProps {
   className?: string;
@@ -16,7 +16,7 @@ interface LabelProps {
  * It ensures that text rendered within the label has the correct typography.
  */
 const Label: React.FC<LabelProps> = (props) => (
-  <LabelText600>{props.children}</LabelText600>
+  <LabelSmall>{props.children}</LabelSmall>
 );
 
 interface ValueProps {
@@ -29,7 +29,7 @@ interface ValueProps {
  * It ensures that text rendered within the value has the correct typography.
  */
 const Value: React.FC<ValueProps> = (props) => (
-  <DivTextSmall className="value">{props.children}</DivTextSmall>
+  <DivText600 className="value">{props.children}</DivText600>
 );
 
 export interface TableLabeledValueProps {

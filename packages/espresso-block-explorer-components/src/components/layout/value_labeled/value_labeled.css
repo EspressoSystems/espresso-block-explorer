@@ -15,4 +15,6 @@
 .value-labeled > div.value {
   box-sizing: border-box;
   grid-area: value;
+  color: var(--color--slate-950);
+  --text--color: var(--color--slate-950);
 }
