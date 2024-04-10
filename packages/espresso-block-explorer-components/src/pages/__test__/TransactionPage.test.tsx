@@ -3,9 +3,9 @@ import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, it } from 'vitest';
-import { generateAllBlocks } from '../../types/fake_data_source/generateFakeData';
-import { firstAsyncIterator } from '../../types/functional_async';
-import { encodeNumberIterableToHexits } from '../../types/hex';
+import { encodeNumberIterableToHexits } from '../../convert/hex/hex';
+import { generateAllBlocks } from '../../data_source/fake_data_source/generateFakeData';
+import { firstAsyncIterator } from '../../functional/functional_async';
 import * as stories from '../__docs__/TransactionPage.stories';
 
 const { Transaction } = composeStories(stories);

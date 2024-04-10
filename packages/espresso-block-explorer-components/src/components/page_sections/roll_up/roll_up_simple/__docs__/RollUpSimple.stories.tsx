@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { curatedRollupMap } from '../../../../../types/data_source/rollup_entry/data';
+import { curatedRollupMap } from '../../../../../models/block_explorer/rollup_entry/data';
 import RollUpSimpleComp from '../RollUpSimple';
 
 interface ExampleProps {

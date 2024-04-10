@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { TaggedBase64 as TaggedBase64Object } from '../../../types/TaggedBase64';
+import { TaggedBase64 as TaggedBase64Object } from '../../../models/espresso/tagged_base64/TaggedBase64';
 import TaggedBase64Text from '../TaggedBase64Text';
 
 interface ExampleProps {

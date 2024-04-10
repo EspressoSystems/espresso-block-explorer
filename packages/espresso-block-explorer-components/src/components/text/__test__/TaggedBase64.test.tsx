@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, it } from 'vitest';
-import { TaggedBase64 } from '../../../types/TaggedBase64';
+import { TaggedBase64 } from '../../../models/espresso/tagged_base64/TaggedBase64';
 import TaggedBase64Text from '../TaggedBase64Text';
 
 describe('Tagged Base 64 Text Component', () => {

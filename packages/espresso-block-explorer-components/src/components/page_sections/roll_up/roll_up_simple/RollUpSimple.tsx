@@ -1,5 +1,5 @@
 import React from 'react';
-import { curatedRollupMap } from '../../../../types/data_source/rollup_entry/data';
+import { curatedRollupMap } from '../../../../models/block_explorer/rollup_entry/data';
 import { addClassToClassName } from '../../../higher_order';
 import NumberText from '../../../text/NumberText';
 import Text from '../../../text/Text';
