@@ -25,9 +25,9 @@ import {
   TransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
 } from '../components/page_sections/transaction_summary_data_table/TransactionSummaryDataTable';
-import Text from '../components/text/Text';
-import { BlockDetailEntry } from '../types/data_source/block_detail/types';
 import NumberText from '../components/text/NumberText';
+import Text from '../components/text/Text';
+import { BlockDetailEntry } from '../models/block_explorer/block_detail';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);

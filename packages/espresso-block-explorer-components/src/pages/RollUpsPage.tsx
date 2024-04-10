@@ -20,7 +20,7 @@ import {
 import { RollUpsSummaryLoader } from '../components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
 import NumberText from '../components/text/NumberText';
 import Text from '../components/text/Text';
-import { curatedRollupMap } from '../types/data_source/rollup_entry/data';
+import { curatedRollupMap } from '../models/block_explorer/rollup_entry/data';
 import { kNumberOfSampleBlocks } from './GibraltarHotShotQueryServiceAdapters';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
