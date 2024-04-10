@@ -1,6 +1,8 @@
 import React from 'react';
 import { BlockDetailAsyncRetrieverContext } from '../components/page_sections/block_detail_content/BlockDetailContentLoader';
 import { BlockSummaryAsyncRetrieverContext } from '../components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
+import { ExplorerOverviewLoaderContext } from '../components/page_sections/explorer_overview/ExplorerOverviewLoader';
+import { LatestBlockSummaryLoaderContext } from '../components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
 import { RollUpDetailAsyncRetrieverContext } from '../components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
 import { RollUpSummaryAsyncRetrieverContext } from '../components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
 import { TransactionDetailAsyncRetrieverContext } from '../components/page_sections/transaction_detail_content/TransactionDetailLoader';
@@ -14,6 +16,9 @@ import {
   mapAsyncIterator,
   takeAsyncIterator,
 } from '../functional/functional_async';
+import { BlockSummaryEntry } from '../models/block_explorer/block_summary';
+import MonetaryValue from '../models/block_explorer/monetary_value';
+import { TaggedBase64 } from '../models/espresso/tagged_base64/TaggedBase64';
 import { GibraltarHotShotQueryServiceAPIContext } from './GibraltarHotShotQueryServiceAPIContext';
 
 // We need to create adapters between the HotShotQueryService and the
@@ -45,11 +50,14 @@ export const ProvideGibraltarBlockDetailDataSource: React.FC<
           ]);
 
           return {
+            hash: new TaggedBase64('', new ArrayBuffer(0)),
             height: block.header.height,
-            proposer: leaf.leaf.proposer_id,
+            proposer: leaf.leaf.proposer_id.data,
+            recipient: leaf.leaf.proposer_id.data,
             transactions: block.payload.transaction_nmt.length,
             size: block.size,
             time: new Date(block.header.timestamp * 1000),
+            rewards: [] as MonetaryValue[],
           };
         },
       }}
@@ -59,6 +67,7 @@ export const ProvideGibraltarBlockDetailDataSource: React.FC<
 
 export interface ProvideGibraltarBlocksSummaryDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
+  blocksPerPage?: number;
 }
 
 /**
@@ -67,31 +76,32 @@ export interface ProvideGibraltarBlocksSummaryDataSourceProps {
  */
 export const ProvideGibraltarBlocksSummaryDataSource: React.FC<
   ProvideGibraltarBlocksSummaryDataSourceProps
-> = (props) => {
+> = ({ children, blocksPerPage: defaultBlocksPerPage = 20, ...rest }) => {
   const hotShotQueryService = React.useContext(
     GibraltarHotShotQueryServiceAPIContext,
   );
 
   return (
     <BlockSummaryAsyncRetrieverContext.Provider
-      {...props}
+      {...rest}
       value={{
         async retrieve(key) {
           const {
+            blocksPerPage = defaultBlocksPerPage,
             startAtBlock = await hotShotQueryService.status.blockHeight(),
           } = key;
 
           const blocks =
             await hotShotQueryService.availability.getBlockSummaries(
-              Math.max(0, startAtBlock - key.blocksPerPage),
-              startAtBlock,
+              Math.max(0, startAtBlock + 1 - blocksPerPage),
+              startAtBlock + 1,
             );
 
           return blocks
             .map((block): BlockSummaryEntry => {
               return {
                 height: block.header.height,
-                proposer: block.proposer_id,
+                proposer: block.proposer_id.data,
                 transactions: block.num_transactions,
                 size: block.size,
                 time: new Date(block.header.timestamp * 1000),
@@ -100,12 +110,15 @@ export const ProvideGibraltarBlocksSummaryDataSource: React.FC<
             .reverse();
         },
       }}
-    />
+    >
+      {children}
+    </BlockSummaryAsyncRetrieverContext.Provider>
   );
 };
 
 export interface ProvideGibraltarTransactionsSummaryDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
+  transactionsPerPage?: number;
 }
 
 /**
@@ -115,20 +128,24 @@ export interface ProvideGibraltarTransactionsSummaryDataSourceProps {
  */
 export const ProvideGibraltarTransactionsSummaryDataSource: React.FC<
   ProvideGibraltarTransactionsSummaryDataSourceProps
-> = (props) => {
+> = ({
+  children,
+  transactionsPerPage: defaultTransactionsPerPage = 20,
+  ...rest
+}) => {
   const hotShotQueryService = React.useContext(
     GibraltarHotShotQueryServiceAPIContext,
   );
 
   return (
     <TransactionSummaryAsyncRetrieverContext.Provider
-      {...props}
+      {...rest}
       value={{
         async retrieve(key) {
           const {
             startAtBlock = (await hotShotQueryService.status.blockHeight()) - 1,
             offset = 0,
-            transactionsPerPage = 20,
+            transactionsPerPage = defaultTransactionsPerPage,
           } = key;
 
           const transactions =
@@ -149,26 +166,32 @@ export const ProvideGibraltarTransactionsSummaryDataSource: React.FC<
           });
         },
       }}
-    />
+    >
+      {children}
+    </TransactionSummaryAsyncRetrieverContext.Provider>
   );
 };
 
 export const ProvideGibraltarTransactionsForBlockSummaryDataSource: React.FC<
   ProvideGibraltarTransactionsSummaryDataSourceProps
-> = (props) => {
+> = ({
+  children,
+  transactionsPerPage: defaultTransactionsPerPage = 20,
+  ...rest
+}) => {
   const hotShotQueryService = React.useContext(
     GibraltarHotShotQueryServiceAPIContext,
   );
 
   return (
     <TransactionSummaryAsyncRetrieverContext.Provider
-      {...props}
+      {...rest}
       value={{
         async retrieve(key) {
           const {
             startAtBlock = (await hotShotQueryService.status.blockHeight()) - 1,
             offset = 0,
-            transactionsPerPage = 20,
+            transactionsPerPage = defaultTransactionsPerPage,
           } = key;
 
           const block =
@@ -198,7 +221,9 @@ export const ProvideGibraltarTransactionsForBlockSummaryDataSource: React.FC<
           return await collectAsyncIterator(step4);
         },
       }}
-    />
+    >
+      {children}
+    </TransactionSummaryAsyncRetrieverContext.Provider>
   );
 };
 
@@ -254,6 +279,7 @@ export const ProvideGibraltarTransactionDetailDataSource: React.FC<
 
 export interface ProvideGibraltarTransactionsSummaryDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
+  transactionsPerPage?: number;
 }
 
 /**
@@ -262,21 +288,25 @@ export interface ProvideGibraltarTransactionsSummaryDataSourceProps {
  */
 export const ProvideGibraltarRollUpDetailDataSource: React.FC<
   ProvideGibraltarTransactionsSummaryDataSourceProps
-> = (props) => {
+> = ({
+  children,
+  transactionsPerPage: defaultTransactionsPerPage = 20,
+  ...rest
+}) => {
   const hotShotQueryService = React.useContext(
     GibraltarHotShotQueryServiceAPIContext,
   );
 
   return (
     <RollUpDetailAsyncRetrieverContext.Provider
-      {...props}
+      {...rest}
       value={{
         async retrieve(key) {
           const {
             height = (await hotShotQueryService.status.blockHeight()) - 1,
             offset = 0,
             namespace,
-            transactionsPerPage,
+            transactionsPerPage = defaultTransactionsPerPage,
           } = key;
           const transactions =
             await hotShotQueryService.availability.getTransactionSummaryRangeForRollup(
@@ -295,7 +325,9 @@ export const ProvideGibraltarRollUpDetailDataSource: React.FC<
           }));
         },
       }}
-    />
+    >
+      {children}
+    </RollUpDetailAsyncRetrieverContext.Provider>
   );
 };
 
@@ -349,6 +381,100 @@ export const ProvideGibraltarRollUpsSummaryDataSource: React.FC<
               transactions,
             })),
           );
+        },
+      }}
+    />
+  );
+};
+
+interface ProvideGibraltarLatestBlockDetailsProps {}
+
+export const ProvideGibraltarLatestBlockDetails: React.FC<
+  ProvideGibraltarLatestBlockDetailsProps
+> = (props) => {
+  const hotShotQueryService = React.useContext(
+    GibraltarHotShotQueryServiceAPIContext,
+  );
+
+  return (
+    <LatestBlockSummaryLoaderContext.Provider
+      {...props}
+      value={{
+        async retrieve() {
+          const latestBlockHeight =
+            (await hotShotQueryService.status.blockHeight()) - 1;
+          const [latestBlock, latestLeaf] = await Promise.all([
+            hotShotQueryService.availability.getBlockFromHeight(
+              latestBlockHeight,
+            ),
+            hotShotQueryService.availability.getLeafFromHeight(
+              latestBlockHeight,
+            ),
+          ] as const);
+
+          return {
+            height: latestBlock.header.height,
+            time: new Date(latestBlock.header.timestamp * 1000),
+            size: latestBlock.size,
+            transactions: latestBlock.payload.transaction_nmt.length,
+            proposer: latestLeaf.leaf.proposer_id.data,
+          };
+        },
+      }}
+    />
+  );
+};
+
+interface ProvideGibraltarExplorerOverviewProps {}
+
+export const ProvideGibraltarExplorerOverview: React.FC<
+  ProvideGibraltarExplorerOverviewProps
+> = (props) => {
+  const hotShotQueryService = React.useContext(
+    GibraltarHotShotQueryServiceAPIContext,
+  );
+
+  return (
+    <ExplorerOverviewLoaderContext.Provider
+      {...props}
+      value={{
+        async retrieve() {
+          const latestBlockHeight =
+            (await hotShotQueryService.status.blockHeight()) - 1;
+          const blocks = latestBlockHeight;
+
+          const step1 = iotaAsync(latestBlockHeight);
+          const step2 = mapAsyncIterator(step1, (i) =>
+            hotShotQueryService.availability.getBlockFromHeight(i),
+          );
+          const result = await foldRAsyncIterator(
+            async (acc, next) => {
+              const transactionNMT = next.payload.transaction_nmt;
+              transactionNMT.forEach((payload) => {
+                const namespace = payload.vm;
+                const previous = acc.get(namespace) ?? 0;
+                acc.set(namespace, previous + 1);
+              });
+
+              return acc;
+            },
+            Promise.resolve(new Map<number, number>()),
+            step2,
+          );
+
+          const rollups = result.size;
+          const transactions = foldRIterator(
+            (acc, next) => acc + next,
+            0,
+            result.values(),
+          );
+
+          return {
+            rollups,
+            transactions,
+            blocks,
+            sequencerNodes: 0,
+          };
         },
       }}
     />
