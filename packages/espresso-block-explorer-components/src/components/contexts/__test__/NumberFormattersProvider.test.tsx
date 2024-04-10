@@ -51,6 +51,7 @@ describe('Number Formatters Provider', () => {
               default: new Intl.NumberFormat('en-US', {}),
               bytes: new Intl.NumberFormat('en-US', {}),
               variableBytes: new Intl.NumberFormat('en-US', {}),
+              transactionsPerSecond: new Intl.NumberFormat('en-US', {}),
             }}
           >
             <ConsumeNumberFormattersComponent />
@@ -67,6 +68,7 @@ describe('Number Formatters Provider', () => {
               default: new Intl.NumberFormat('de-DE', {}),
               bytes: new Intl.NumberFormat('en-US', {}),
               variableBytes: new Intl.NumberFormat('en-US', {}),
+              transactionsPerSecond: new Intl.NumberFormat('en-US', {}),
             }}
           >
             <ConsumeNumberFormattersComponent />
