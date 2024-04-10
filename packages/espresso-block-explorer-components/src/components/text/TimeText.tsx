@@ -8,6 +8,9 @@ export interface TimeTextProps {
 /**
  * TimeText renders the given date as only the time portion of a timestamp. It
  * also is sure to wrap the text in a time element for accessibility.
+ *
+ * It achieves this by using the `time` formatter from the
+ * `CurrentDateTimeFormatters` context.
  */
 const TimeText: React.FC<TimeTextProps> = (props) => {
   const formatters = useContext(CurrentDateTimeFormatters);

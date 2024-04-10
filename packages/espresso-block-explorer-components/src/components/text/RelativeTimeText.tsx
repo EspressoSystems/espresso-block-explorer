@@ -45,6 +45,7 @@ const RelativeTimeText: React.FC<RelativeTimeTextProps> = (props) => {
   if (minutes !== 0) {
     return formatters.relative.format(minutes, 'minutes');
   }
+
   return formatters.relative.format(seconds, 'seconds');
 };
 
