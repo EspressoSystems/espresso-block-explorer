@@ -1,0 +1,138 @@
+@import url(../../../styles/main.css);
+
+:root {
+  --search-bar--margin-block-start: 20px;
+  --search-bar--margin-block-end: 0;
+  --search-bar--max-width: 561px;
+}
+
+.input-container.search {
+  max-width: var(--search-bar--max-width);
+  margin-block-start: var(--search-bar--margin-block-start);
+  margin-block-end: var(--search-bar--margin-block-end);
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+}
+
+.input-container.search {
+  --button--default--border-color: var(--color--transparent);
+  --button--default--background-color: var(--color--transparent);
+  --button--default--border-radius: var(--input--normal--height);
+  --button--icon-button--padding: 14px;
+  --button--default--border-width: 0;
+  --button--default--foreground-color: var(--color--slate-500);
+}
+
+label.result-section-title {
+  color: var(--color--slate-500);
+  padding-inline: 16px;
+}
+
+.input-container.search .icon.btn {
+  z-index: 3;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 0;
+  pointer-events: none;
+  touch-action: none;
+
+  transform: translateX(0);
+  transition:
+    margin-left var(--input--transition--timing) ease-in-out,
+    transform var(--input--transition--timing) ease-in-out,
+    background-color var(--input--transition--timing) ease-in-out,
+    color var(--input--transition--timing) ease-in-out,
+    fill var(--input--transition--timing) ease-in-out;
+  will-change: margin-left, transform, background-color, color, fill;
+}
+
+.input-container.search input[type='search'] {
+  z-index: 2;
+}
+
+.input-container.search .search-barrier {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background-color: var(--color--transparent);
+  opacity: 40%;
+
+  transition: background-color var(--input--transition--timing) ease-in-out;
+  will-change: background-color, point-events;
+}
+
+.input-container.search .search-results {
+  position: absolute;
+  top: 80px;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.input-container.search .search-results .search-results-scroll-container {
+  max-height: 50vh;
+  overflow-y: auto;
+  text-align: start;
+}
+
+.search-results-scroll-container a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.result-row {
+  padding: 8px;
+  border-bottom: 1px solid var(--color--slate-300);
+}
+
+.result-row .result-row-content {
+  padding: 16px;
+  border-radius: 8px;
+  white-space: nowrap;
+  background-color: transparent;
+
+  transition: background-color var(--input--transition--timing) ease-in-out;
+  will-change: background-color;
+}
+
+.result-row[data-selected='true'] .result-row-content,
+.result-row:hover .result-row-content {
+  background-color: var(--color--slate-300);
+}
+
+/* Interactivity Fun */
+/* 
+  When the input becomes focused, we want a lot of things to happen
+  automatically.
+*/
+
+.input-container.search input[type='search']:not(:focus-within) {
+  padding-left: var(--input--normal--height);
+}
+
+.input-container.search input[type='search']:focus-within {
+  padding-right: var(--input--normal--height);
+}
+
+.input-container.search input[type='search']:focus-within ~ .icon.btn {
+  margin-left: 100%;
+  transform: translateX(-100%);
+  --button--default--background-color: var(--color--slate-950);
+  --button--default--foreground-color: var(--color--white);
+}
+
+.input-container.search input[type='search']:focus-within + .search-barrier {
+  background-color: var(--color--slate-950);
+  pointer-events: all;
+}
+
+.input-container.search
+  input[type='search']:not(:focus-within)
+  ~ .search-results {
+  display: none;
+}

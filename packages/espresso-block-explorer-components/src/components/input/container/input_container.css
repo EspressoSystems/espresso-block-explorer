@@ -1,0 +1,40 @@
+:root {
+  --input--normal--height: 52px;
+  --input--normal--borer-style: solid;
+  --input--normal--border-width: 1px;
+  --input--normal--border-color: var(--color--slate-300);
+  --input--transition--timing: 240ms;
+
+  --input--active--border-color: var(--color--slate-400);
+}
+
+.input-container {
+  position: relative;
+  display: block;
+  min-height: var(--input--normal--height);
+}
+
+.input-container input[type] {
+  outline: none !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 16px;
+  line-height: var(--input--normal--height);
+  border-radius: var(--input--normal--height);
+  box-sizing: border-box;
+  border-style: var(--input--normal--borer-style);
+  border-color: var(--input--normal--border-color);
+  border-width: var(--input--normal--border-width);
+
+  transition:
+    border var(--input--transition--timing) ease-in-out,
+    padding var(--input--transition--timing) ease-in-out;
+  will-change: border, padding;
+}
+
+.input-container input[type]:focus-within {
+  border-color: var(--input--active--border-color);
+}

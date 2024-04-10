@@ -57,7 +57,7 @@ export const DataTableRowContext: React.Context<object> = React.createContext(
 type ColumnData<ColumnType> = {
   label: string;
   columnType: ColumnType;
-  buildCell: React.FC;
+  buildCell: React.ComponentType;
 };
 
 /**

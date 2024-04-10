@@ -1,0 +1,31 @@
+import { AsyncRetriever } from '../../async/AsyncRetriever';
+import { BlockDetailEntry } from './block_detail';
+import { BlockSummaryEntry } from './block_summary';
+import { TransactionSummaryEntry } from './transaction_summary';
+
+export interface GenesisOverviewEntry {
+  readonly rollups: number;
+  readonly transactions: number;
+  readonly blocks: number;
+  // readonly sequencerNodes: number;
+}
+
+export interface HistogramEntry {
+  readonly blockTime: number[];
+  readonly blockSize: number[];
+  readonly blockTransactions: number[];
+  readonly blockThroughput: number[];
+  readonly blocks: number[];
+}
+
+export interface ExplorerSummaryEntry {
+  readonly latestBlock: BlockDetailEntry;
+  readonly genesisOverview: GenesisOverviewEntry;
+  readonly latestBlocks: BlockSummaryEntry[];
+  readonly latestTransactions: TransactionSummaryEntry[];
+  // readonly mostActiveRollups: RollupSummaryEntry[];
+  readonly histograms: HistogramEntry;
+}
+
+export interface ExplorerSummaryAsyncRetriever
+  extends AsyncRetriever<void, ExplorerSummaryEntry> {}
