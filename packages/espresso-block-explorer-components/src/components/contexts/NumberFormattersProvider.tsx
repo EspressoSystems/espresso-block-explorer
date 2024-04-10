@@ -23,6 +23,13 @@ function createDefaultNumberFormatters(locale: string) {
       notation: 'standard',
       unitDisplay: 'long',
     }),
+    variableBytes: new Intl.NumberFormat(locale, {
+      style: 'unit',
+      unit: 'byte',
+      notation: 'compact',
+      unitDisplay: 'narrow',
+      maximumFractionDigits: 2,
+    }),
   };
 }
 
