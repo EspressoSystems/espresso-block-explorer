@@ -4,9 +4,9 @@ import {
   TypeCheckingCodec,
   isRecord,
   isUnknown,
-} from '../../../convert/codec/convert';
-import { numberCodec } from '../../../convert/codec/number';
-import { stringCodec } from '../../../convert/codec/string';
+} from '../../convert/codec/convert';
+import { numberCodec } from '../../convert/codec/number';
+import { stringCodec } from '../../convert/codec/string';
 
 export type RequestID = number;
 const requestIDCodec = numberCodec;
@@ -223,14 +223,3 @@ class WebWorkerResponseCodec extends TypeCheckingCodec<
 }
 
 export const webWorkerResponseCodec = new WebWorkerResponseCodec();
-// type AsyncMessageEvent<T = unknown> = MessageEvent<
-//   [RequestID, { response: T } | { error: unknown }]
-// >;
-
-export class WebWorkerErrorResponse extends Error {
-  readonly error: unknown;
-  constructor(error: unknown) {
-    super();
-    this.error = error;
-  }
-}

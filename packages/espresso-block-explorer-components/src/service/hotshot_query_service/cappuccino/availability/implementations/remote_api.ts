@@ -22,8 +22,8 @@ import {
   cappuccinoAPITransactionResponseCodec,
 } from '../transaction_response';
 import {
-  convertBlockAndLeafToBlockSummary,
-  convertLeafAndTransactionsToTransactionSummaries,
+  convertCappuccinoBlockAndLeafToBlockSummary,
+  convertCappuccinoLeafAndTransactionsToTransactionSummaries,
 } from '../transformers';
 
 export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI
@@ -71,7 +71,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI
       ]),
     );
     const step3 = mapAsyncIterator(step2, ([block, leaf]) =>
-      convertBlockAndLeafToBlockSummary(block, leaf),
+      convertCappuccinoBlockAndLeafToBlockSummary(block, leaf),
     );
     return await collectAsyncIterator(step3);
   }
@@ -93,7 +93,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI
     );
     const step3 = expandAsyncIterator(step2, (leaf) =>
       reverseAsyncIterator(
-        convertLeafAndTransactionsToTransactionSummaries(
+        convertCappuccinoLeafAndTransactionsToTransactionSummaries(
           leaf,
 
           mapAsyncIterator(

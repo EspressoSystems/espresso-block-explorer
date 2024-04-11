@@ -4,6 +4,8 @@ import {
   Completer,
   createCompleter,
 } from '../../../data_structures/async/completer/Completer';
+import NoCompleterFoundForRequestID from '../../../errors/NoCompleterFoundForRequestID';
+import WebWorkerErrorResponse from '../../../errors/WebWorkerErrorResponse';
 import { GibraltarHotShotQueryServiceAvailabilityAPI } from './availability/availability_api';
 import {
   GibraltarAPIBlock,
@@ -32,41 +34,6 @@ type RequestID = unknown;
 type AsyncMessageEvent<T = unknown> = MessageEvent<
   [RequestID, { response: T } | { error: unknown }]
 >;
-
-export class NoCompleterFoundForRequestID extends Error {
-  readonly requestID: RequestID;
-  constructor(
-    requestID: RequestID,
-    message: string = `no completer found for request id "${requestID}"`,
-  ) {
-    super(message);
-    this.requestID = requestID;
-  }
-
-  toJSON() {
-    return {
-      name: NoCompleterFoundForRequestID.name,
-      message: this.message,
-      requestID: this.requestID,
-    };
-  }
-}
-
-export class WebWorkerErrorResponse extends Error {
-  readonly error: unknown;
-  constructor(error: unknown, message: string = 'error in web worker') {
-    super(message);
-    this.error = error;
-  }
-
-  toJSON() {
-    return {
-      name: WebWorkerErrorResponse.name,
-      message: this.message,
-      error: this.error,
-    };
-  }
-}
 
 class AsyncRequestHelper {
   private worker: Worker;

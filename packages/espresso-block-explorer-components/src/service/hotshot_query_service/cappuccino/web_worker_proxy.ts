@@ -1,13 +1,21 @@
 import { numberCodec } from '../../../convert/codec/number';
 import UnimplementedError from '../../../errors/UnimplementedError';
 import { BlockHeightResponse } from '../types';
+import {
+  WebWorkerRequest,
+  WebWorkerResponseError,
+  WebWorkerResponseSuccess,
+  webWorkerRequestCodec,
+  webWorkerResponseErrorCodec,
+  webWorkerResponseSuccessCodec,
+} from '../web_worker_types';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from './availability/availability_api';
 import { cappuccinoAPIBlockCodec } from './availability/block';
 import { listCappuccinoDerivedBlockSummaryCodec } from './availability/derived_block_summary';
 import { listCappuccinoDerivedTransactionSummaryCodec } from './availability/derived_transaction_summary';
 import { cappuccinoAPILeafResponseCodec } from './availability/leaf_response';
 import { cappuccinoAPITransactionResponseCodec } from './availability/transaction_response';
-import { CappuccinoHotShotQueryServiceExplorerAPI } from './explorer/exporer_api';
+import { CappuccinoHotShotQueryServiceExplorerAPI } from './explorer/explorer_api';
 import {
   CappuccinoExplorerGetBlockDetailRequest,
   cappuccinoExplorerGetBlockDetailRequestCodec,
@@ -38,14 +46,6 @@ import { CappuccinoHotShotQueryService } from './hot_shot_query_service_api';
 import { FakeDataCappuccinoHotShotQueryService } from './implementations/fake_data';
 import { FetchBasedCappuccinoHotShotQueryService } from './implementations/remote_api';
 import { CappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
-import {
-  WebWorkerRequest,
-  WebWorkerResponseError,
-  WebWorkerResponseSuccess,
-  webWorkerRequestCodec,
-  webWorkerResponseErrorCodec,
-  webWorkerResponseSuccessCodec,
-} from './web_worker_types';
 
 type Config = {
   hotshot_query_service_url: undefined | null | string;

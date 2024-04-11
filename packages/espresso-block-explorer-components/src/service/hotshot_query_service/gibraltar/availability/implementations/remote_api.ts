@@ -22,8 +22,8 @@ import {
   gibraltarAPITransactionResponseCodec,
 } from '../transaction_response';
 import {
-  convertBlockAndLeafToBlockSummary,
-  convertLeafAndTransactionsToTransactionSummaries,
+  convertGibraltarBlockAndLeafToBlockSummary,
+  convertGibraltarLeafAndTransactionsToTransactionSummaries,
 } from '../transformers';
 
 export class FetchBasedGibraltarHotShotQueryServiceAvailabilityAPI
@@ -71,7 +71,7 @@ export class FetchBasedGibraltarHotShotQueryServiceAvailabilityAPI
       ]),
     );
     const step3 = mapAsyncIterator(step2, ([block, leaf]) =>
-      convertBlockAndLeafToBlockSummary(block, leaf),
+      convertGibraltarBlockAndLeafToBlockSummary(block, leaf),
     );
     return await collectAsyncIterator(step3);
   }
@@ -93,7 +93,7 @@ export class FetchBasedGibraltarHotShotQueryServiceAvailabilityAPI
     );
     const step3 = expandAsyncIterator(step2, (leaf) =>
       reverseAsyncIterator(
-        convertLeafAndTransactionsToTransactionSummaries(
+        convertGibraltarLeafAndTransactionsToTransactionSummaries(
           leaf,
 
           mapAsyncIterator(

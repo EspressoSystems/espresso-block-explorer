@@ -2,14 +2,13 @@ import {
   convertIterableToAsyncIterable,
   mapAsyncIterable,
 } from '../../../../functional/functional_async';
-import { TaggedBase64 } from '../../../../models/espresso/tagged_base64/TaggedBase64';
 import { CappuccinoAPIBlock } from './block';
 import { CappuccinoDerivedBlockSummary } from './derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from './derived_transaction_summary';
 import { CappuccinoAPILeafResponse } from './leaf_response';
 import { CappuccinoAPITransactionResponse } from './transaction_response';
 
-export async function convertBlockAndLeafToBlockSummary(
+export async function convertCappuccinoBlockAndLeafToBlockSummary(
   block: CappuccinoAPIBlock,
   leaf: CappuccinoAPILeafResponse,
 ): Promise<CappuccinoDerivedBlockSummary> {
@@ -22,7 +21,7 @@ export async function convertBlockAndLeafToBlockSummary(
   );
 }
 
-export async function convertBlockToBlockSummary(
+export async function convertCappuccinoBlockToBlockSummary(
   block: CappuccinoAPIBlock,
 ): Promise<CappuccinoDerivedBlockSummary> {
   return new CappuccinoDerivedBlockSummary(
@@ -30,7 +29,7 @@ export async function convertBlockToBlockSummary(
     block.hash,
     block.size,
     block.payload.transaction_nmt.length,
-    new TaggedBase64('PROPOSER', new Uint8Array([0, 0, 0, 0]).buffer),
+    new Uint8Array([0, 0, 0, 0]),
   );
 }
 
@@ -48,7 +47,7 @@ export async function convertBlockToBlockSummary(
 //   );
 // }
 
-export async function* convertLeafAndTransactionsToTransactionSummaries(
+export async function* convertCappuccinoLeafAndTransactionsToTransactionSummaries(
   leaf: CappuccinoAPILeafResponse,
   transactions: AsyncIterable<CappuccinoAPITransactionResponse>,
 ): AsyncGenerator<CappuccinoDerivedTransactionSummary> {

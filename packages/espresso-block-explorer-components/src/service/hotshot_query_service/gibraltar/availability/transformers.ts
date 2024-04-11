@@ -9,7 +9,7 @@ import { GibraltarDerivedTransactionSummary } from './derived_transaction_summar
 import { GibraltarAPILeafResponse } from './leaf_response';
 import { GibraltarAPITransactionResponse } from './transaction_response';
 
-export async function convertBlockAndLeafToBlockSummary(
+export async function convertGibraltarBlockAndLeafToBlockSummary(
   block: GibraltarAPIBlock,
   leaf: GibraltarAPILeafResponse,
 ): Promise<GibraltarDerivedBlockSummary> {
@@ -22,7 +22,7 @@ export async function convertBlockAndLeafToBlockSummary(
   );
 }
 
-export async function convertBlockToBlockSummary(
+export async function convertGibraltarBlockToBlockSummary(
   block: GibraltarAPIBlock,
 ): Promise<GibraltarDerivedBlockSummary> {
   return new GibraltarDerivedBlockSummary(
@@ -34,21 +34,7 @@ export async function convertBlockToBlockSummary(
   );
 }
 
-// export async function convertLeafToBlockSummary(
-//   leaf: GibraltarAPILeafResponse,
-// ): Promise<GibraltarDerivedBlockSummary> {
-//   return new GibraltarDerivedBlockSummary(
-//     leaf.leaf.block_header,
-//     new TaggedBase64('BLOCK', new Uint8Array([0, 0, 0, 0]).buffer),
-//     leaf.leaf.block_payload.transaction_nmt
-//       .map((x) => x.payload.length)
-//       .reduce((acc, next) => acc + next, 0),
-//     leaf.leaf.block_payload.transaction_nmt.length,
-//     leaf.leaf.proposer_id,
-//   );
-// }
-
-export async function* convertLeafAndTransactionsToTransactionSummaries(
+export async function* convertGibraltarLeafAndTransactionsToTransactionSummaries(
   leaf: GibraltarAPILeafResponse,
   transactions: AsyncIterable<GibraltarAPITransactionResponse>,
 ): AsyncGenerator<GibraltarDerivedTransactionSummary> {

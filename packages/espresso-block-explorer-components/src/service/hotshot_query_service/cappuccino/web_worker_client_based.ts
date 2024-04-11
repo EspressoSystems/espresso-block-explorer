@@ -5,6 +5,17 @@ import {
   createCompleter,
 } from '../../../data_structures/async/completer/Completer';
 import InvalidTypeError from '../../../errors/InvalidTypeError';
+import NoCompleterFoundForRequestID from '../../../errors/NoCompleterFoundForRequestID';
+import WebWorkerErrorResponse from '../../../errors/WebWorkerErrorResponse';
+import {
+  RequestID,
+  WebWorkerRequest,
+  WebWorkerResponse,
+  WebWorkerResponseError,
+  WebWorkerResponseSuccess,
+  webWorkerRequestCodec,
+  webWorkerResponseCodec,
+} from '../web_worker_types';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from './availability/availability_api';
 import {
   CappuccinoAPIBlock,
@@ -26,7 +37,7 @@ import {
   CappuccinoAPITransactionResponse,
   cappuccinoAPITransactionResponseCodec,
 } from './availability/transaction_response';
-import { CappuccinoHotShotQueryServiceExplorerAPI } from './explorer/exporer_api';
+import { CappuccinoHotShotQueryServiceExplorerAPI } from './explorer/explorer_api';
 import {
   CappuccinoExplorerGetBlockDetailRequest,
   cappuccinoExplorerGetBlockDetailRequestCodec,
@@ -73,35 +84,6 @@ import {
 } from './explorer/get_transaction_summaries_response';
 import { CappuccinoHotShotQueryService } from './hot_shot_query_service_api';
 import { CappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
-import {
-  RequestID,
-  WebWorkerErrorResponse,
-  WebWorkerRequest,
-  WebWorkerResponse,
-  WebWorkerResponseError,
-  WebWorkerResponseSuccess,
-  webWorkerRequestCodec,
-  webWorkerResponseCodec,
-} from './web_worker_types';
-
-export class NoCompleterFoundForRequestID extends Error {
-  readonly requestID: RequestID;
-  constructor(
-    requestID: RequestID,
-    message: string = `no completer found for request id "${requestID}"`,
-  ) {
-    super(message);
-    this.requestID = requestID;
-  }
-
-  toJSON() {
-    return {
-      name: NoCompleterFoundForRequestID.name,
-      message: this.message,
-      requestID: this.requestID,
-    };
-  }
-}
 
 class AsyncRequestHelper {
   private worker: Worker;

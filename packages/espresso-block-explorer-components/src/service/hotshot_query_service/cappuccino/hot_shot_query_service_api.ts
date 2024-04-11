@@ -1,5 +1,5 @@
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from './availability/availability_api';
-import { CappuccinoHotShotQueryServiceExplorerAPI } from './explorer/exporer_api';
+import { CappuccinoHotShotQueryServiceExplorerAPI } from './explorer/explorer_api';
 import { CappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
 
 export interface CappuccinoHotShotQueryService {

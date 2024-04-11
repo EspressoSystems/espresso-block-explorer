@@ -26,8 +26,8 @@ import {
 } from '../../../../../functional/functional_async';
 import { CappuccinoExplorerBlockDetail } from '../block_detail';
 import { CappuccinoExplorerBlockSummary } from '../block_summary';
+import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer_api';
 import { CappuccinoExplorerSummary } from '../explorer_summary';
-import { CappuccinoHotShotQueryServiceExplorerAPI } from '../exporer_api';
 import { CappuccinoGenesisOverview } from '../genesis_overview';
 import { CappuccinoExplorerGetBlockDetailRequest } from '../get_block_detail_request';
 import { CappuccinoExplorerGetBlockDetailResponse } from '../get_block_detail_response';

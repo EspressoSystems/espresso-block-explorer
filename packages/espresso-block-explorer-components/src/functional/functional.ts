@@ -29,7 +29,7 @@
 import LinkedList, {
   iterateLinkedList,
   pushLinkedList,
-} from '../data_structures/linked_list/linked_list';
+} from '../data_structures/linked_list/LinkedList';
 import MissingElementError from '../errors/MissingElementError';
 
 /**
