@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { CompleterAlreadyCompleted, createCompleter } from '../Completer';
+import { CompleterAlreadyCompletedError } from '../../../../errors/CompleterAlreadyCompletedError';
+import { createCompleter } from '../Completer';
 
 describe('Completer', () => {
   describe('basic behavior', () => {
@@ -46,9 +47,9 @@ describe('Completer', () => {
       try {
         completer.complete(2);
       } catch (err) {
-        expect(err).toBeInstanceOf(CompleterAlreadyCompleted);
+        expect(err).toBeInstanceOf(CompleterAlreadyCompletedError);
         expect(JSON.parse(JSON.stringify(err))).to.deep.equal({
-          name: 'CompleterAlreadyCompleted',
+          name: 'CompleterAlreadyCompletedError',
           message: err.message,
         });
       }

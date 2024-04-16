@@ -5,47 +5,13 @@
  * be run in production builds.
  */
 
-export class FailedAssertion extends Error {
-  constructor(message: string = 'assertion failed') {
-    super(message);
-    // eslint-disable-next-line no-debugger
-    debugger;
-  }
+import { FailedAssertion } from '../errors/FailedAssertion';
 
-  toJSON() {
-    return {
-      name: FailedAssertion.name,
-      message: this.message,
-    };
-  }
-}
-
-/*
-function assertDebug(booleanExpression: true, message?: string): void;
-function assertDebug(booleanExpression: false, message?: string): never;
-function assertDebug(booleanExpression: boolean, message?: string): void;
-function assertDebug(booleanExpression: boolean, message?: string): void {
-  if (!booleanExpression) {
-    throw new FailedAssertion(message);
-  }
-}
-
-function assertRelease(booleanExpression: true, message?: string): void;
-function assertRelease(booleanExpression: false, message?: string): never;
-function assertRelease(booleanExpression: boolean, message?: string): void;
-function assertRelease(): void {
-  // This is meant to be a no-op in production builds.
-}
-
-let assert = assertDebug;
-
-if (import.meta.env.PROD) {
-  assert = assertRelease;
-}
-
-export { assert };
-*/
-
+/**
+ * AssertExecutor is an interface that defines the contract for the assert
+ * function.  This is meant to be used to define the behavior of the assert
+ * function in different environments.
+ */
 interface AssertExecutor {
   assert(booleanExpression: true, message?: string): void;
   assert(booleanExpression: false, message?: string): never;
@@ -53,6 +19,11 @@ interface AssertExecutor {
   assert(booleanExpression: true, message?: string): void;
 }
 
+/**
+ * DebugAssertExecutor is an implementation of the AssertExecutor that will
+ * throw a FailedAssertion error when the boolean expression is false.
+ * This is meant to be used in development / debugging environments.
+ */
 class DebugAssertExecutor implements AssertExecutor {
   assert(booleanExpression: true, message?: string): void;
   assert(booleanExpression: false, message?: string): never;
@@ -64,6 +35,11 @@ class DebugAssertExecutor implements AssertExecutor {
   }
 }
 
+/**
+ * ReleaseAssertExecutor is an implementation of the AssertExecutor that will
+ * be a no-op in production builds.  This is meant to be used in production
+ * environments.
+ */
 class ReleaseAssertExecutor implements AssertExecutor {
   assert(booleanExpression: true, message?: string): void;
   assert(booleanExpression: false, message?: string): never;
@@ -83,6 +59,14 @@ function createAssertExecutor(): AssertExecutor {
 
 const assertExecutor = createAssertExecutor();
 
+/**
+ * assert is a function that will throw a FailedAssertion error when the
+ * boolean expression is false.  This is meant to be used in development /
+ * debugging environments.
+ *
+ * When used in a production environment (import.meta.env.PROD === true), this
+ * function will be a no-op.
+ */
 export function assert(booleanExpression: true, message?: string): void;
 export function assert(booleanExpression: false, message?: string): never;
 export function assert(booleanExpression: boolean, message?: string): void;

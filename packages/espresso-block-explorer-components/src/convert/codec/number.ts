@@ -1,7 +1,7 @@
+import InvalidInputError from '../../errors/InvalidInputError';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from './array';
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isArrayMemberFunction,
   isNumber,
@@ -17,7 +17,7 @@ export const isNumberArray = isArrayMemberFunction(isNumber);
  */
 export class NumberDecoder implements Converter<unknown, number> {
   convert(input: unknown): number {
-    if (typeof input !== 'number') {
+    if (!isNumber(input)) {
       throw new InvalidInputError();
     }
 

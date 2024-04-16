@@ -1,12 +1,16 @@
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
 import { numberArrayCodec } from '../../../../convert/codec/number';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 
+/**
+ * CappuccinoTransactionsRoot represents the transactions root in the Cappuccino
+ * API.
+ */
 export class CappuccinoTransactionsRoot {
   readonly root: number[];
 

@@ -1,11 +1,11 @@
 import {
   Codec,
   Converter,
-  InvalidInputError,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -13,6 +13,9 @@ import {
 import { CappuccinoAPIHeader, cappuccinoAPIHeaderCodec } from './block_header';
 import { CappuccinoAPIPayload, cappuccinoAPIPayloadCodec } from './payload';
 
+/**
+ * CappuccinoAPIBlock represents a block in the Cappuccino API.
+ */
 export class CappuccinoAPIBlock {
   readonly header: CappuccinoAPIHeader;
   readonly payload: CappuccinoAPIPayload;

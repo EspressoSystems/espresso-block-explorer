@@ -1,3 +1,7 @@
+import { CorruptBase64InputError } from '../../errors/CorruptBase64InputError';
+import { IncorrectBase64PaddingError } from '../../errors/IncorrectBase64PaddingError';
+import { InvalidBase64AlphabetLengthError } from '../../errors/InvalidBase64LengthError';
+
 const textEncoder = new TextEncoder();
 export function convertStringToArrayBuffer(s: string): Uint8Array {
   return textEncoder.encode(s);
@@ -21,67 +25,6 @@ function* fill256Array() {
 
 export const noPadding = -1;
 export const stdPadding = '='.charCodeAt(0);
-
-/**
- * InvalidAlphabetLengthError is an error that indicates the the Base64 alphabet
- * provided does not meet the required criteria.
- */
-export class InvalidBase64AlphabetLengthError extends Error {
-  readonly length: number;
-
-  constructor(
-    length: number,
-    message: string = `alphabet needs to be 64 characters, received ${length}`,
-  ) {
-    super(message);
-    this.length = length;
-    Object.freeze(this);
-  }
-
-  toJSON() {
-    return {
-      name: InvalidBase64AlphabetLengthError.name,
-      length: this.length,
-      message: this.message,
-    };
-  }
-}
-
-/**
- * CorruptBase64InputError is an error that indicates that the input provided
- * at the given offset is invalid.
- */
-export class CorruptBase64InputError extends Error {
-  readonly offset: number;
-
-  constructor(
-    offset: number,
-    message: string = `corrupt input error at ${offset}`,
-  ) {
-    super(message);
-    this.offset = offset;
-    Object.freeze(this);
-  }
-
-  toJSON() {
-    return {
-      name: CorruptBase64InputError.name,
-      offset: this.offset,
-      message: this.message,
-    };
-  }
-}
-
-/**
- * IncorrectPaddingError is an error that indicates that the padding provided
- * is not correct.
- */
-export class IncorrectPaddingError extends Error {
-  constructor(message: string = 'incorrect padding') {
-    super(message);
-    Object.freeze(this);
-  }
-}
 
 /**
  * Encoding represents a Base64 Encoding type. This class allows for the
@@ -251,7 +194,7 @@ export class Encoding {
             case 1:
               // incorrect padding
               // n, false, error
-              throw new IncorrectPaddingError();
+              throw new IncorrectBase64PaddingError();
 
             case 2:
               // two paddings are expected, the first padding is already

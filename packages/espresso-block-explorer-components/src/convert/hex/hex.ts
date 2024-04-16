@@ -1,45 +1,7 @@
+import InvalidHexStringError from '../../errors/InvalidHexStringError';
+import { InvalidHexValueError } from '../../errors/InvalidHexValueError';
 import { mapIterator } from '../../functional/functional';
 import { charCodesFromString } from '../base64/base64';
-
-/**
- * InvalidHexStringError is an error that indicates that the hex string provided
- * is invalid as it doesn't meet the requirements of a hex encoded string.
- */
-export class InvalidHexStringError extends Error {
-  constructor(message: string = 'invalid hex string') {
-    super(message);
-    Object.freeze(this);
-  }
-
-  toJSON() {
-    return {
-      name: InvalidHexStringError.name,
-      message: this.message,
-    };
-  }
-}
-
-/**
- * InvalidHexValueError is an error that indicates that the encountered value
- * isn't valid for a hex representation.
- */
-export class InvalidHexValueError extends Error {
-  readonly value: number;
-
-  constructor(value: number, message: string = `invalid hex value "${value}"`) {
-    super(message);
-    this.value = value;
-    Object.freeze(this);
-  }
-
-  toJSON() {
-    return {
-      name: InvalidHexValueError.name,
-      value: this.value,
-      message: this.message,
-    };
-  }
-}
 
 /**
  * parseHexString is a helper function for decoding a hex string with

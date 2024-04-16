@@ -13,7 +13,7 @@ import {
 } from '../get_block_summaries_response';
 import {
   CappuccinoExplorerGetExplorerSummaryResponse,
-  cappuccinoExplorerGetExplorerSummaryResponseResponseCodec,
+  cappuccinoExplorerGetExplorerSummaryResponseCodec,
 } from '../get_explorer_summary_response';
 import { CappuccinoExplorerGetSearchResultRequest } from '../get_search_result_request';
 import {
@@ -114,7 +114,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
     const url = new URL('explorer-summary', this.baseURL);
     return this.fetcher(url.toString()).then(
       validateAndExpandResponse(
-        cappuccinoExplorerGetExplorerSummaryResponseResponseCodec.decoder,
+        cappuccinoExplorerGetExplorerSummaryResponseCodec.decoder,
       ),
     );
   }

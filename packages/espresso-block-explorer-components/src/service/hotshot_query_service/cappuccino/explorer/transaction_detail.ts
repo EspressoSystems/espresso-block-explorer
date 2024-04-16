@@ -1,10 +1,10 @@
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   CappuccinoExplorerTransactionDetailData,
   cappuccinoExplorerTransactionDetailDataArrayCodec,

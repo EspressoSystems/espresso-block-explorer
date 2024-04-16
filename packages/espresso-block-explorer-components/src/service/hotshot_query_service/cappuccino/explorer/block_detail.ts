@@ -2,12 +2,12 @@ import { hexArrayBufferCodec } from '../../../../convert/codec/array_buffer';
 import {
   Codec,
   Converter,
-  InvalidInputError,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
 import { rfc3999DateCodec } from '../../../../convert/codec/date';
 import { numberCodec } from '../../../../convert/codec/number';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import MonetaryValue, {
   monetaryValueArrayCodec,
 } from '../../../../models/block_explorer/monetary_value';

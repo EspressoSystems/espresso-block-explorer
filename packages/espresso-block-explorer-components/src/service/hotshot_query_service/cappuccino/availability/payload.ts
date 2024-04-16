@@ -1,15 +1,18 @@
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   CappuccinoAPITransactionNMTEntry,
   arrayCappuccinoAPITransactionNMTEntryCodec,
 } from './transaction_nmt_entry';
 
+/**
+ * CappuccinoAPIPayload represents the payload in the Cappuccino API.
+ */
 export class CappuccinoAPIPayload {
   readonly transaction_nmt: CappuccinoAPITransactionNMTEntry[];
 

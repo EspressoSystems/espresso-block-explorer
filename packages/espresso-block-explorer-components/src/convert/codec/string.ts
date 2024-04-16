@@ -1,7 +1,7 @@
+import InvalidInputError from '../../errors/InvalidInputError';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from './array';
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isArrayMemberFunction,
   isString,
@@ -19,7 +19,7 @@ export class StringDecoder<S extends string = string>
   implements Converter<unknown, S>
 {
   convert(input: unknown): S {
-    if (typeof input !== 'string') {
+    if (!isString(input)) {
       throw new InvalidInputError();
     }
 

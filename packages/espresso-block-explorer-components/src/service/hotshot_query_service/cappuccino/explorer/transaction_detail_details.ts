@@ -1,13 +1,13 @@
 import { booleanCodec } from '../../../../convert/codec/boolean';
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
 import { rfc3999DateCodec } from '../../../../convert/codec/date';
 import { numberCodec } from '../../../../convert/codec/number';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,

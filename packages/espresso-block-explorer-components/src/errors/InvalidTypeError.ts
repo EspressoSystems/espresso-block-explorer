@@ -1,4 +1,6 @@
-export default class InvalidTypeError extends Error {
+import BaseError from './BaseError';
+
+export default class InvalidTypeError extends BaseError {
   readonly have: string;
   readonly want: string;
   constructor(
@@ -14,10 +16,9 @@ export default class InvalidTypeError extends Error {
 
   toJSON() {
     return {
-      name: InvalidTypeError.name,
+      ...super.toJSON(),
       have: this.have,
       want: this.want,
-      message: this.message,
     };
   }
 }

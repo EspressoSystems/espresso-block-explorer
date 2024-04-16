@@ -5,12 +5,12 @@ import {
 } from '../../../../convert/codec/array';
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -21,6 +21,10 @@ import {
   cappuccinoAPITransactionNMTEntryCodec,
 } from './transaction_nmt_entry';
 
+/**
+ * CappuccinoDerivedTransactionSummary represents a Transaction summary that
+ * is derived from other primitives in the Cappuccino API.
+ */
 export class CappuccinoDerivedTransactionSummary {
   readonly hash: TaggedBase64;
   readonly header: CappuccinoAPIHeader;

@@ -17,15 +17,15 @@ export interface Converter<Input = unknown, Output = unknown> {
  * A Codec is a combination of two converts that are able to convert back
  * and forth between the two types of representations.
  */
-export abstract class Codec<A = unknown, B = unknown> {
+export abstract class Codec<A = unknown, B = unknown, C = B, D = A> {
   abstract readonly encoder: Converter<A, B>;
-  abstract readonly decoder: Converter<B, A>;
+  abstract readonly decoder: Converter<C, D>;
 
   encode(input: A): B {
     return this.encoder.convert(input);
   }
 
-  decode(input: B): A {
+  decode(input: C): D {
     return this.decoder.convert(input);
   }
 }
@@ -36,18 +36,12 @@ export abstract class Codec<A = unknown, B = unknown> {
  */
 export abstract class TypeCheckingCodec<A = unknown, B = unknown> extends Codec<
   A,
-  B | unknown
+  B,
+  unknown,
+  A
 > {
   abstract readonly encoder: Converter<A, B>;
   abstract readonly decoder: Converter<unknown, A>;
-
-  encode(input: A): B {
-    return this.encoder.convert(input);
-  }
-
-  decode(input: unknown): A {
-    return this.decoder.convert(input);
-  }
 }
 
 export function isBoolean(input: unknown): input is boolean {
@@ -116,10 +110,4 @@ export function isRecord<Key extends string, Value>(
     key in value &&
     predicate((value as Record<Key, unknown>)[key])
   );
-}
-
-export class InvalidInputError extends Error {
-  constructor(message = 'invalid input') {
-    super(message);
-  }
 }

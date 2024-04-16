@@ -1,12 +1,15 @@
 import { urlBase64ArrayBufferCodec } from '../../../../convert/codec/array_buffer';
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isString,
 } from '../../../../convert/codec/convert';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 
+/**
+ * CappuccinoNamespaceTable represents the namespace table in the Cappuccino API.
+ */
 export class CappuccinoNamespaceTable {
   readonly bytes: ArrayBuffer;
   constructor(bytes: ArrayBuffer) {

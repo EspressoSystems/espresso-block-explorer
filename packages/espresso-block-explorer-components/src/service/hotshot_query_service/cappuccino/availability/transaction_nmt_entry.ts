@@ -5,7 +5,6 @@ import {
 } from '../../../../convert/codec/array';
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
@@ -14,7 +13,12 @@ import {
   numberArrayCodec,
   numberCodec,
 } from '../../../../convert/codec/number';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 
+/**
+ * CappuccinoAPITransactionNMTEntry represents a transaction NMT entry in the
+ * Cappuccino API.
+ */
 export class CappuccinoAPITransactionNMTEntry {
   readonly vm: number;
   readonly payload: number[];

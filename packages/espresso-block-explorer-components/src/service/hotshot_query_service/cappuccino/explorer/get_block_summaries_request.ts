@@ -1,12 +1,12 @@
 import {
   Codec,
   Converter,
-  InvalidInputError,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
 import { StringCodec, stringCodec } from '../../../../convert/codec/string';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 
 export abstract class CappuccinoExplorerGetBlockSummariesRequest {
   readonly limit: number;

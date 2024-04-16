@@ -1,10 +1,10 @@
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   CappuccinoExplorerSummary,
   cappuccinoExplorerSummaryCodec,
@@ -18,9 +18,7 @@ export class CappuccinoExplorerGetExplorerSummaryResponse {
   }
 
   toJSON() {
-    return cappuccinoExplorerGetExplorerSummaryResponseResponseCodec.encode(
-      this,
-    );
+    return cappuccinoExplorerGetExplorerSummaryResponseCodec.encode(this);
   }
 }
 
@@ -62,5 +60,5 @@ class CappuccinoExplorerGetExplorerSummaryResponseCodec extends TypeCheckingCode
   readonly decoder = new CappuccinoExplorerGetExplorerSummaryResponseDecoder();
 }
 
-export const cappuccinoExplorerGetExplorerSummaryResponseResponseCodec =
+export const cappuccinoExplorerGetExplorerSummaryResponseCodec =
   new CappuccinoExplorerGetExplorerSummaryResponseCodec();

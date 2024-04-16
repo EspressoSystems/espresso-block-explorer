@@ -6,19 +6,26 @@ import {
 import {
   Codec,
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isString,
   isUnknown,
 } from '../../../../convert/codec/convert';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
 } from '../../../../models/espresso/tagged_base64/TaggedBase64';
 
+/**
+ * CappuccinoAPIMerkleTreeProof represents a proof in the Merkle Tree.
+ */
 export abstract class CappuccinoAPIMerkleTreeProof {}
 
+/**
+ * CappuccinoAPIMerkleTreeEmptyProof represents an empty proof in the Merkle
+ * Tree.
+ */
 export class CappuccinoAPIMerkleTreeEmptyProof extends CappuccinoAPIMerkleTreeProof {
   toJSON() {
     return cappuccinoAPIMerkleTreeEmptyProofCodec.encode(this);
@@ -58,6 +65,9 @@ export class CappuccinoAPIMerkleTreeEmptyProofCodec extends TypeCheckingCodec<
 export const cappuccinoAPIMerkleTreeEmptyProofCodec =
   new CappuccinoAPIMerkleTreeEmptyProofCodec();
 
+/**
+ * CappuccinoAPIMerkleTreeLeafProof represents a leaf proof in the Merkle Tree.
+ */
 export class CappuccinoAPIMerkleTreeLeafProof extends CappuccinoAPIMerkleTreeProof {
   readonly value: TaggedBase64;
   readonly pos: TaggedBase64;
@@ -127,7 +137,11 @@ export class CappuccinoAPIMerkleTreeLeafProofCodec extends Codec<
 export const cappuccinoAPIMerkleTreeLeafProofCodec =
   new CappuccinoAPIMerkleTreeLeafProofCodec();
 
-export class CappuccinoAPIMerkletTreeForgottenSubTreeProof extends CappuccinoAPIMerkleTreeProof {
+/**
+ * CappuccinoAPIMerkletTreeForgottenSubTreeProof represents a forgotten subtree
+ * proof in the Merkle Tree.
+ */
+export class CappuccinoAPIMerkleTreeForgottenSubTreeProof extends CappuccinoAPIMerkleTreeProof {
   readonly value: TaggedBase64;
 
   constructor(value: TaggedBase64) {
@@ -141,9 +155,9 @@ export class CappuccinoAPIMerkletTreeForgottenSubTreeProof extends CappuccinoAPI
 }
 
 export class CappuccinoAPIMerkletTreeForgottenSubTreeProofDecoder
-  implements Converter<unknown, CappuccinoAPIMerkletTreeForgottenSubTreeProof>
+  implements Converter<unknown, CappuccinoAPIMerkleTreeForgottenSubTreeProof>
 {
-  convert(input: unknown): CappuccinoAPIMerkletTreeForgottenSubTreeProof {
+  convert(input: unknown): CappuccinoAPIMerkleTreeForgottenSubTreeProof {
     if (!isRecord(input, 'ForgettenSubtree', isUnknown)) {
       throw new InvalidInputError();
     }
@@ -153,16 +167,16 @@ export class CappuccinoAPIMerkletTreeForgottenSubTreeProofDecoder
       throw new InvalidInputError();
     }
 
-    return new CappuccinoAPIMerkletTreeForgottenSubTreeProof(
+    return new CappuccinoAPIMerkleTreeForgottenSubTreeProof(
       taggedBase64Codec.decode(forgottenSubtree.value),
     );
   }
 }
 
 export class CappuccinoAPIMerkletTreeForgottenSubTreeProofEncoder
-  implements Converter<CappuccinoAPIMerkletTreeForgottenSubTreeProof>
+  implements Converter<CappuccinoAPIMerkleTreeForgottenSubTreeProof>
 {
-  convert(input: CappuccinoAPIMerkletTreeForgottenSubTreeProof) {
+  convert(input: CappuccinoAPIMerkleTreeForgottenSubTreeProof) {
     return {
       ForgettenSubtree: {
         value: taggedBase64Codec.encode(input.value),
@@ -172,7 +186,7 @@ export class CappuccinoAPIMerkletTreeForgottenSubTreeProofEncoder
 }
 
 export class CappuccinoAPIMerkletTreeForgottenSubTreeProofCodec extends Codec<
-  CappuccinoAPIMerkletTreeForgottenSubTreeProof,
+  CappuccinoAPIMerkleTreeForgottenSubTreeProof,
   ReturnType<
     InstanceType<
       new () => CappuccinoAPIMerkletTreeForgottenSubTreeProofEncoder
@@ -186,6 +200,10 @@ export class CappuccinoAPIMerkletTreeForgottenSubTreeProofCodec extends Codec<
 export const cappuccinoAPIMerkletTreeForgottenSubTreeProofCodec =
   new CappuccinoAPIMerkletTreeForgottenSubTreeProofCodec();
 
+/**
+ * CappuccinoAPIMerkleTreeBranchProof represents a branch proof in the Merkle
+ * Tree.
+ */
 export class CappuccinoAPIMerkleTreeBranchProof extends CappuccinoAPIMerkleTreeProof {
   readonly value: TaggedBase64;
   readonly children: CappuccinoAPIMerkleTreeProof[];
@@ -299,7 +317,7 @@ export class CappuccinoAPIMerkleTreeProofEncoder
       return cappuccinoAPIMerkleTreeBranchProofCodec.encode(input);
     }
 
-    if (input instanceof CappuccinoAPIMerkletTreeForgottenSubTreeProof) {
+    if (input instanceof CappuccinoAPIMerkleTreeForgottenSubTreeProof) {
       return cappuccinoAPIMerkletTreeForgottenSubTreeProofCodec.encode(input);
     }
 

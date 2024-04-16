@@ -1,4 +1,6 @@
-import { Converter, InvalidInputError, TypeCheckingCodec } from './convert';
+import InvalidInputError from '../../errors/InvalidInputError';
+import { Converter, TypeCheckingCodec } from './convert';
+import { isUnknownArray } from './unknown';
 
 /**
  * ArrayDecoder is a general abstraction of an Array decoder.  It knows how
@@ -13,7 +15,7 @@ export class ArrayDecoder<T, U> implements Converter<unknown, U[]> {
   }
 
   convert(input: unknown): U[] {
-    if (!Array.isArray(input)) {
+    if (!isUnknownArray(input)) {
       throw new InvalidInputError();
     }
 
@@ -23,7 +25,7 @@ export class ArrayDecoder<T, U> implements Converter<unknown, U[]> {
 
 /**
  * ArrayEncoder is a general abstraction of an Array encoder.  It knows how
- * to encode the array semantics of a value, but not it's members.  As such
+ * to encode the array semantics of a value, but not its members.  As such
  * it acts a building block for a more complex Converter.  It itself requires
  * another Codec for the members itself.
  */

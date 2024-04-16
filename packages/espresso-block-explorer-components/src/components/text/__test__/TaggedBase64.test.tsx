@@ -46,6 +46,6 @@ describe('Tagged Base 64 Text Component', () => {
     );
     const text = screen.getByTestId('1');
     expect(text).toBeInTheDocument();
-    expect(text).toHaveTextContent('ASNFZ4mr...qYdlQyEA');
+    expect(text).toHaveTextContent('TAG~ASNF...qYdlQyEA');
   });
 });

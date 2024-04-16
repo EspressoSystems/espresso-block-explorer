@@ -1,4 +1,5 @@
-import { Converter, InvalidInputError, TypeCheckingCodec } from './convert';
+import InvalidInputError from '../../errors/InvalidInputError';
+import { Converter, TypeCheckingCodec, isString } from './convert';
 
 /**
  * RFC3999DateDecoder is a Converter that converts a string to a Date, provided
@@ -8,7 +9,7 @@ import { Converter, InvalidInputError, TypeCheckingCodec } from './convert';
  */
 export class RFC3999DateDecoder implements Converter<unknown, Date> {
   convert(input: unknown): Date {
-    if (typeof input !== 'string') {
+    if (!isString(input)) {
       throw new InvalidInputError();
     }
 

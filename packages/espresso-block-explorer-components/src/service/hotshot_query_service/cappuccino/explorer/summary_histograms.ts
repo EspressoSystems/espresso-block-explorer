@@ -1,11 +1,11 @@
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
 import { numberArrayCodec } from '../../../../convert/codec/number';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 
 export class CappuccinoSummaryHistograms {
   readonly blockTime: number[];

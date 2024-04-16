@@ -5,7 +5,6 @@ import {
 } from '../../../../convert/codec/array';
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
@@ -15,6 +14,7 @@ import {
   numberArrayCodec,
   numberCodec,
 } from '../../../../convert/codec/number';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,

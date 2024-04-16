@@ -1,10 +1,10 @@
 import {
   Codec,
   Converter,
-  InvalidInputError,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   CappuccinoExplorerSearchResults,
   cappuccinoExplorerSearchResultsCodec,
@@ -18,7 +18,7 @@ export class CappuccinoExplorerGetSearchResultResponse {
   }
 
   toJSON() {
-    return cappuccinoExplorerSearchResultResponseCodec.encode(this);
+    return cappuccinoExplorerGetSearchResultResponseCodec.encode(this);
   }
 }
 

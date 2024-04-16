@@ -1,6 +1,5 @@
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isNumber,
   isRecord,
@@ -11,7 +10,11 @@ import {
   NullDecoder,
   NullEncoder,
 } from '../../../../convert/codec/null';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 
+/**
+ * CappuccinoL1Finalized represents the finalized block in the Cappuccino L1.
+ */
 export class CappuccinoL1Finalized {
   readonly number: number;
   readonly timestamp: string;

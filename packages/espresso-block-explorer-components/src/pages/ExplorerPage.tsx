@@ -7,6 +7,7 @@ import {
 import { PathResolverContext } from '../components/contexts/PathResolverProvider';
 import ErrorContextGuard from '../components/data/async_data/ErrorContextGuard';
 import LabeledAnchorButton from '../components/hid/buttons/labeled_anchor_button/LabeledAnchorButton';
+import { addClassToClassName } from '../components/higher_order';
 import { SearchInput } from '../components/input/search/SearchInput';
 import Card, { CardNoPadding } from '../components/layout/card/Card';
 import Heading1 from '../components/layout/heading/Heading1';
@@ -115,12 +116,14 @@ const GuardedRollUpsSummaryDataTable: React.FC<
 };
 
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
-interface ExplorerPageProps {}
+interface ExplorerPageProps {
+  className?: string;
+}
 
 /**
- * BlocksPage is a component that renders the Blocks page.
+ * Explorer is a component that renders the Explorer page.
  */
-const BlocksPage: React.FC<ExplorerPageProps> = () => {
+const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
   const pathResolver = React.useContext(PathResolverContext);
   return (
     <OverridePagePath page={PageType.blocks}>
@@ -135,7 +138,13 @@ const BlocksPage: React.FC<ExplorerPageProps> = () => {
         <SearchInput />
       </EdgeMarginPageTitle>
 
-      <div className="explorer-grid edge-margin">
+      <div
+        {...props}
+        className={addClassToClassName(
+          props.className,
+          'explorer-grid edge-margin',
+        )}
+      >
         <LatestBlockSummaryDataLoader>
           <LatestBlockSummaryAsyncHandler className="latest-block" />
         </LatestBlockSummaryDataLoader>
@@ -216,4 +225,4 @@ const BlocksPage: React.FC<ExplorerPageProps> = () => {
   );
 };
 
-export default BlocksPage;
+export default ExplorerPage;

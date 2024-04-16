@@ -1,8 +1,5 @@
-import {
-  Converter,
-  InvalidInputError,
-  TypeCheckingCodec,
-} from '../../convert/codec/convert';
+import { Converter, TypeCheckingCodec } from '../../convert/codec/convert';
+import InvalidInputError from '../../errors/InvalidInputError';
 
 /**
  * CurrencyCode is a class that represents a currency code.  Generally speaking

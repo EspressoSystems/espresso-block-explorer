@@ -1,4 +1,5 @@
 import { assert } from '../../../assert/assert';
+import { CompleterAlreadyCompletedError } from '../../../errors/CompleterAlreadyCompletedError';
 
 /**
  * A completer is a simple object that allows you to complete a Promise
@@ -38,23 +39,6 @@ export interface Completer<T> {
 }
 
 /**
- * CompleterAlreadyCompleted is an error that is thrown when a completer has
- * already been completed, and is attempted to be completed again.
- */
-export class CompleterAlreadyCompleted extends Error {
-  constructor(message: string = 'completer has already been completed') {
-    super(message);
-  }
-
-  toJSON() {
-    return {
-      name: CompleterAlreadyCompleted.name,
-      message: this.message,
-    };
-  }
-}
-
-/**
  * notReady is a function that should never be able to be called based on the
  * behavior of how Promises init functions work in Javascript.
  */
@@ -63,7 +47,7 @@ function notReady(): never {
 }
 
 function throwAlreadyCompleted(): never {
-  throw new CompleterAlreadyCompleted();
+  throw new CompleterAlreadyCompletedError();
 }
 
 /**

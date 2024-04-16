@@ -1,12 +1,15 @@
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 
+/**
+ * CappuccinoAPIBitVecHead represents the head of a bit vector in the Cappuccino API.
+ */
 export class CappuccinoAPIBitVecHead {
   readonly width: number;
   readonly index: number;

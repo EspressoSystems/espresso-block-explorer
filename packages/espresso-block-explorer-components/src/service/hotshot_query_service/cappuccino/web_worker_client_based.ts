@@ -56,7 +56,7 @@ import {
 } from './explorer/get_block_summaries_response';
 import {
   CappuccinoExplorerGetExplorerSummaryResponse,
-  cappuccinoExplorerGetExplorerSummaryResponseResponseCodec,
+  cappuccinoExplorerGetExplorerSummaryResponseCodec,
 } from './explorer/get_explorer_summary_response';
 import {
   CappuccinoExplorerGetSearchResultRequest,
@@ -336,7 +336,7 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceExplorerAPI
   }
   async getExplorerOverview(): Promise<CappuccinoExplorerGetExplorerSummaryResponse> {
     return await this.sendRequest(
-      cappuccinoExplorerGetExplorerSummaryResponseResponseCodec,
+      cappuccinoExplorerGetExplorerSummaryResponseCodec,
       'getExplorerOverview',
       null,
     );

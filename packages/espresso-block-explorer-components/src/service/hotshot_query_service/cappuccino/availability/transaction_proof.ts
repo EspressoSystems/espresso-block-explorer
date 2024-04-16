@@ -1,11 +1,11 @@
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
 import { isUnknownArray } from '../../../../convert/codec/unknown';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -15,6 +15,10 @@ import {
   listCappuccinoAPIMerkleTreeProofCodec,
 } from './merkle_tree_proof';
 
+/**
+ * CappuccinoAPITransactionProof represents a transaction proof in the
+ * Cappuccino API.
+ */
 export class CappuccinoAPITransactionProof {
   readonly pos: TaggedBase64;
   readonly proof: CappuccinoAPIMerkleTreeProof[];

@@ -1,16 +1,19 @@
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import { CappuccinoAPILeaf, cappuccinoAPILeafCodec } from './leaf';
 import {
   CappuccinoAPIQuorumCertificate,
   cappuccinoAPIQuorumCertificateCodec,
 } from './quorum_certificate';
 
+/**
+ * CappuccinoAPILeafResponse represents a leaf response in the Cappuccino API.
+ */
 export class CappuccinoAPILeafResponse {
   readonly leaf: CappuccinoAPILeaf;
   readonly qc: CappuccinoAPIQuorumCertificate;

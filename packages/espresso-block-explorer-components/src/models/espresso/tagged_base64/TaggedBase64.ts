@@ -1,24 +1,7 @@
 import { rawURLEncoding } from '../../../convert/base64/base64';
 import { Converter, TypeCheckingCodec } from '../../../convert/codec/convert';
+import InvalidTaggedBase64EncodingError from '../../../errors/InvalidTaggedBase64EncodingError';
 import InvalidTypeError from '../../../errors/InvalidTypeError';
-
-/**
- * InvalidTaggedBase64EncodingError is an error that indicates that the
- * encountered string encoding of a supposed TaggedBase64 is invalid.
- */
-export class InvalidTaggedBase64EncodingError extends Error {
-  constructor(message: string = 'invalid tagged base64 encoding') {
-    super(message);
-    Object.freeze(this);
-  }
-
-  toJSON() {
-    return {
-      name: InvalidTaggedBase64EncodingError.name,
-      message: this.message,
-    };
-  }
-}
 
 /**
  * TaggedBase64 is an implementation of the server side type of TaggedBase64.

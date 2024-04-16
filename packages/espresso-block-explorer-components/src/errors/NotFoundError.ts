@@ -1,8 +1,10 @@
+import BaseError from './BaseError';
+
 /**
  * NotFoundError is an error that indicates that the resource for the specified
  * key was unable to be found.
  */
-export default class NotFoundError<Key> extends Error {
+export default class NotFoundError<Key> extends BaseError {
   readonly key: Key;
 
   constructor(key: Key, message: string = `Not Found: ${key}`) {
@@ -13,9 +15,8 @@ export default class NotFoundError<Key> extends Error {
 
   toJSON() {
     return {
-      name: NotFoundError.name,
+      ...super.toJSON(),
       key: this.key,
-      message: this.message,
     };
   }
 }

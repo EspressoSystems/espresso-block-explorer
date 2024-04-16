@@ -1,8 +1,10 @@
+import BaseError from './BaseError';
+
 /**
  * BadResponseError is a custom error that indicates that the result of a fetch
  * request was a Response that indicates a non-success.
  */
-export default class BadResponseError extends Error {
+export default class BadResponseError extends BaseError {
   readonly response: Response;
 
   constructor(response: Response, message: string = 'bad server response') {
@@ -13,9 +15,8 @@ export default class BadResponseError extends Error {
 
   toJSON() {
     return {
-      name: BadResponseError.name,
+      ...super.toJSON(),
       status: this.response.status,
-      message: this.message,
     };
   }
 }

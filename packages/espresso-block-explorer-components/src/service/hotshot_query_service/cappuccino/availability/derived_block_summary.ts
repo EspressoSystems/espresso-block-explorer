@@ -6,18 +6,22 @@ import {
 import { hexArrayBufferCodec } from '../../../../convert/codec/array_buffer';
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
 } from '../../../../models/espresso/tagged_base64/TaggedBase64';
 import { CappuccinoAPIHeader, cappuccinoAPIHeaderCodec } from './block_header';
 
+/**
+ * CappuccinoDerivedBlockSummary represents a block summary in that is derived
+ * from other primitives in the Cappuccino API.
+ */
 export class CappuccinoDerivedBlockSummary {
   readonly header: CappuccinoAPIHeader;
   readonly hash: TaggedBase64;

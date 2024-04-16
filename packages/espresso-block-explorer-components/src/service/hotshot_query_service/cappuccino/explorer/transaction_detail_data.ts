@@ -6,12 +6,12 @@ import {
 import { stdBase64ArrayBufferCodec } from '../../../../convert/codec/array_buffer';
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 
 type NamespaceID = number;
 const namespaceIDCodec = numberCodec;

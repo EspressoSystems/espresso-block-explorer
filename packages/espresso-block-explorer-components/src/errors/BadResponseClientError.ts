@@ -11,12 +11,4 @@ export default class BadResponseClientError extends BadResponseError {
   ) {
     super(response, message);
   }
-
-  toJSON() {
-    return {
-      name: BadResponseClientError.name,
-      status: this.response.status,
-      message: this.message,
-    };
-  }
 }

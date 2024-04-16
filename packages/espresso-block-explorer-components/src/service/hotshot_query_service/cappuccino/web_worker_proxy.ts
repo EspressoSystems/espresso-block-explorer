@@ -1,4 +1,5 @@
 import { numberCodec } from '../../../convert/codec/number';
+import NoURLProvidedError from '../../../errors/NoURLProvidedError';
 import UnimplementedError from '../../../errors/UnimplementedError';
 import { BlockHeightResponse } from '../types';
 import {
@@ -26,7 +27,7 @@ import {
   cappuccinoExplorerGetBlockSummariesRequestCodec,
 } from './explorer/get_block_summaries_request';
 import { cappuccinoExplorerGetBlockSummariesResponseCodec } from './explorer/get_block_summaries_response';
-import { cappuccinoExplorerGetExplorerSummaryResponseResponseCodec } from './explorer/get_explorer_summary_response';
+import { cappuccinoExplorerGetExplorerSummaryResponseCodec } from './explorer/get_explorer_summary_response';
 import {
   CappuccinoExplorerGetSearchResultRequest,
   cappuccinoExplorerGetSearchResultRequestCodec,
@@ -75,12 +76,6 @@ type ExplorerRequest<
   Method,
   Parameters<CappuccinoHotShotQueryServiceExplorerAPI[Method]>
 >;
-
-class NoURLProvidedError extends Error {
-  constructor(message: string = 'no url provided') {
-    super(message);
-  }
-}
 
 class WebWorkerProxyStatusAPI
   implements CappuccinoHotShotQueryServiceStatusAPI
@@ -246,7 +241,7 @@ class WebWorkerProxyExplorerAPI {
   }
 
   async getExplorerOverview() {
-    return cappuccinoExplorerGetExplorerSummaryResponseResponseCodec.encode(
+    return cappuccinoExplorerGetExplorerSummaryResponseCodec.encode(
       await this.service.getExplorerOverview(),
     );
   }

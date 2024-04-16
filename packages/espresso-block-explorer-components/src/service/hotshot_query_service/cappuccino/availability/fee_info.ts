@@ -1,12 +1,15 @@
 import { hexArrayBufferCodec } from '../../../../convert/codec/array_buffer';
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 
+/**
+ * CappuccinoFeeInfo represents the fee information in the Cappuccino API.
+ */
 export class CappuccinoFeeInfo {
   public readonly account: ArrayBuffer;
   public readonly amount: ArrayBuffer;

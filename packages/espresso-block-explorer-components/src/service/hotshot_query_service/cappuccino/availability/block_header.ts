@@ -1,6 +1,5 @@
 import {
   Converter,
-  InvalidInputError,
   TypeCheckingCodec,
   isRecord,
   isUnknown,
@@ -9,6 +8,7 @@ import {
   numberArrayCodec,
   numberCodec,
 } from '../../../../convert/codec/number';
+import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -27,6 +27,9 @@ import {
   cappuccinoNamespaceTableCodec,
 } from './namespace_table';
 
+/**
+ * CappuccinoAPIHeader represents the header of a block in the Cappuccino API.
+ */
 export class CappuccinoAPIHeader {
   readonly height: number;
   readonly timestamp: number;

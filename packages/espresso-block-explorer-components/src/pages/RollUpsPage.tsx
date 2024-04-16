@@ -21,7 +21,7 @@ import { RollUpsSummaryLoader } from '../components/page_sections/rollups_summar
 import NumberText from '../components/text/NumberText';
 import Text from '../components/text/Text';
 import { curatedRollupMap } from '../models/block_explorer/rollup_entry/data';
-import { kNumberOfSampleBlocks } from './GibraltarHotShotQueryServiceAdapters';
+import { kNumberOfSampleBlocks } from './CappuccinoHotShotQueryServiceAdapters';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
