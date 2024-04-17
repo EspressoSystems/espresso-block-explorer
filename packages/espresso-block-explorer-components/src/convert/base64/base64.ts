@@ -247,18 +247,23 @@ export class Encoding {
       dBuf.setUint8(0, (val >> 16) & 0xff);
 
       switch (dlen) {
+        // @ts-expect-error - We are explicitly falling through intentionally
+        // here.
+        // falls through
         case 4:
           dst.setUint8(di + 2, dBuf.getUint8(2));
           dBuf.setUint8(2, 0);
-        /* falls through */
 
+        // @ts-expect-error - We are explicitly falling through intentionally
+        // here.
+        // falls through
         case 3:
           dst.setUint8(di + 1, dBuf.getUint8(1));
           if (this.strict && dBuf.getUint8(2) !== 0) {
             throw new CorruptBase64InputError(si - 1);
           }
-        /* falls through */
 
+        // falls through
         case 2:
           dst.setUint8(di + 0, dBuf.getUint8(0));
           if (
