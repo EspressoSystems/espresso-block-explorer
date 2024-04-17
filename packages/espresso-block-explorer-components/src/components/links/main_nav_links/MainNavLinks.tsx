@@ -13,11 +13,11 @@ const MainNavLinks: React.FC = () => {
 
   return (
     <ul>
-      {/* <li>
+      <li>
         <NavLink pageType={PageType.explorer} href={resolver.explorer()}>
-          Explorer
+          <Text text="Explorer" />
         </NavLink>
-      </li> */}
+      </li>
       <li>
         <NavLink
           pageType={PageType.transactions}
