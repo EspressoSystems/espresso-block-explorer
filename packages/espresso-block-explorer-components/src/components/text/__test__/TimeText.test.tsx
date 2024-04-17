@@ -8,7 +8,7 @@ import * as stories from '../__docs__/TimeText.stories';
 const { Time } = composeStories(stories);
 
 describe('Time Text Component', () => {
-  it('should format format', () => {
+  it('should format time', () => {
     const date = '2024-01-01T17:10:12.123Z';
     render(
       <div data-testid="1">
