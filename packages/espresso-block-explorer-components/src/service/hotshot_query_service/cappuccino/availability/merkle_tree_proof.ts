@@ -138,7 +138,7 @@ export const cappuccinoAPIMerkleTreeLeafProofCodec =
   new CappuccinoAPIMerkleTreeLeafProofCodec();
 
 /**
- * CappuccinoAPIMerkletTreeForgottenSubTreeProof represents a forgotten subtree
+ * CappuccinoAPIMerkleTreeForgottenSubTreeProof represents a forgotten subtree
  * proof in the Merkle Tree.
  */
 export class CappuccinoAPIMerkleTreeForgottenSubTreeProof extends CappuccinoAPIMerkleTreeProof {
@@ -150,11 +150,11 @@ export class CappuccinoAPIMerkleTreeForgottenSubTreeProof extends CappuccinoAPIM
   }
 
   toJSON() {
-    return cappuccinoAPIMerkletTreeForgottenSubTreeProofCodec.encode(this);
+    return cappuccinoAPIMerkleTreeForgottenSubTreeProofCodec.encode(this);
   }
 }
 
-export class CappuccinoAPIMerkletTreeForgottenSubTreeProofDecoder
+export class CappuccinoAPIMerkleTreeForgottenSubTreeProofDecoder
   implements Converter<unknown, CappuccinoAPIMerkleTreeForgottenSubTreeProof>
 {
   convert(input: unknown): CappuccinoAPIMerkleTreeForgottenSubTreeProof {
@@ -173,7 +173,7 @@ export class CappuccinoAPIMerkletTreeForgottenSubTreeProofDecoder
   }
 }
 
-export class CappuccinoAPIMerkletTreeForgottenSubTreeProofEncoder
+export class CappuccinoAPIMerkleTreeForgottenSubTreeProofEncoder
   implements Converter<CappuccinoAPIMerkleTreeForgottenSubTreeProof>
 {
   convert(input: CappuccinoAPIMerkleTreeForgottenSubTreeProof) {
@@ -185,20 +185,20 @@ export class CappuccinoAPIMerkletTreeForgottenSubTreeProofEncoder
   }
 }
 
-export class CappuccinoAPIMerkletTreeForgottenSubTreeProofCodec extends Codec<
+export class CappuccinoAPIMerkleTreeForgottenSubTreeProofCodec extends Codec<
   CappuccinoAPIMerkleTreeForgottenSubTreeProof,
   ReturnType<
     InstanceType<
-      new () => CappuccinoAPIMerkletTreeForgottenSubTreeProofEncoder
+      new () => CappuccinoAPIMerkleTreeForgottenSubTreeProofEncoder
     >['convert']
   >
 > {
-  readonly encoder = new CappuccinoAPIMerkletTreeForgottenSubTreeProofEncoder();
-  readonly decoder = new CappuccinoAPIMerkletTreeForgottenSubTreeProofDecoder();
+  readonly encoder = new CappuccinoAPIMerkleTreeForgottenSubTreeProofEncoder();
+  readonly decoder = new CappuccinoAPIMerkleTreeForgottenSubTreeProofDecoder();
 }
 
-export const cappuccinoAPIMerkletTreeForgottenSubTreeProofCodec =
-  new CappuccinoAPIMerkletTreeForgottenSubTreeProofCodec();
+export const cappuccinoAPIMerkleTreeForgottenSubTreeProofCodec =
+  new CappuccinoAPIMerkleTreeForgottenSubTreeProofCodec();
 
 /**
  * CappuccinoAPIMerkleTreeBranchProof represents a branch proof in the Merkle
@@ -292,7 +292,7 @@ export class CappuccinoAPIMerkleTreeProofDecoder
     }
 
     if (isRecord(input, 'ForgettenSubtree', isUnknown)) {
-      return cappuccinoAPIMerkletTreeForgottenSubTreeProofCodec.decoder.convert(
+      return cappuccinoAPIMerkleTreeForgottenSubTreeProofCodec.decoder.convert(
         input,
       );
     }
@@ -318,7 +318,7 @@ export class CappuccinoAPIMerkleTreeProofEncoder
     }
 
     if (input instanceof CappuccinoAPIMerkleTreeForgottenSubTreeProof) {
-      return cappuccinoAPIMerkletTreeForgottenSubTreeProofCodec.encode(input);
+      return cappuccinoAPIMerkleTreeForgottenSubTreeProofCodec.encode(input);
     }
 
     if (input instanceof CappuccinoAPIMerkleTreeEmptyProof) {
