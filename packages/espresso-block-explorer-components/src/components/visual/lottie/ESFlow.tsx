@@ -1,5 +1,5 @@
-import { Lottie } from '@crello/react-lottie';
 import React from 'react';
+import Lottie from 'react-lottie';
 import { addClassToClassName } from '../../higher_order';
 import './es_flow.css';
 import animationData from './es_flow.json';
@@ -16,12 +16,12 @@ const ESFlowLottie: React.FC<ESFlowLottieProps> = ({
   height,
 }) => (
   <Lottie
-    className={addClassToClassName(className, 'es-flow-lottie')}
-    config={{
+    options={{
       loop: true,
       autoplay: true,
       animationData,
       rendererSettings: {
+        className: addClassToClassName(className, 'es-flow-lottie'),
         preserveAspectRatio: 'xMidYMid slice',
       },
     }}

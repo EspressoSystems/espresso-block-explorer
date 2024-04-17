@@ -3,12 +3,8 @@
 import {
   ExplorerPage,
   ExplorerSummaryLoader,
-  PageTitle,
   ProvideCappuccinoExplorerSummary,
-  WithEdgeMargin,
 } from 'espresso-block-explorer-components';
-
-const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 
 /**
  * Home represents the default home screen navigated to by the path '/'.
