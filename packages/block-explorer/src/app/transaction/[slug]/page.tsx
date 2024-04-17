@@ -2,11 +2,9 @@
 
 import {
   BlockNumberContext,
-  ProvideGibraltarTransactionDetailDataSource,
-  TransactionCommitContext,
+  ProvideCappuccinoTransactionDetailDataSource,
   TransactionOffsetContext,
   TransactionPage,
-  parseHexString,
 } from 'espresso-block-explorer-components';
 import { notFound, useParams } from 'next/navigation';
 
@@ -37,9 +35,9 @@ export default function Transaction() {
   return (
     <BlockNumberContext.Provider value={height}>
       <TransactionOffsetContext.Provider value={offset}>
-        <ProvideGibraltarTransactionDetailDataSource>
+        <ProvideCappuccinoTransactionDetailDataSource>
           <TransactionPage />
-        </ProvideGibraltarTransactionDetailDataSource>
+        </ProvideCappuccinoTransactionDetailDataSource>
       </TransactionOffsetContext.Provider>
     </BlockNumberContext.Provider>
   );

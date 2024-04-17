@@ -1,11 +1,11 @@
 'use client';
 
 import {
-  ProvideGibraltarBlockDetailDataSource,
-  ProvideGibraltarTransactionsForBlockSummaryDataSource,
-  ProvideGibraltarTransactionsSummaryDataSource,
-  TransactionsPage,
+  ProvideCappuccinoBlockDetailDataSource,
+  ProvideCappuccinoTransactionsForBlockSummaryDataSource,
+  ProvideCappuccinoTransactionsSummaryDataSource,
   TransactionsForBlockPage,
+  TransactionsPage,
 } from 'espresso-block-explorer-components';
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 
@@ -36,17 +36,17 @@ export default function Transactions() {
 
   if (block !== undefined) {
     return (
-      <ProvideGibraltarTransactionsForBlockSummaryDataSource>
-        <ProvideGibraltarBlockDetailDataSource>
+      <ProvideCappuccinoTransactionsForBlockSummaryDataSource>
+        <ProvideCappuccinoBlockDetailDataSource>
           <TransactionsForBlockPage block={block} offset={offset} />
-        </ProvideGibraltarBlockDetailDataSource>
-      </ProvideGibraltarTransactionsForBlockSummaryDataSource>
+        </ProvideCappuccinoBlockDetailDataSource>
+      </ProvideCappuccinoTransactionsForBlockSummaryDataSource>
     );
   }
 
   return (
-    <ProvideGibraltarTransactionsSummaryDataSource>
+    <ProvideCappuccinoTransactionsSummaryDataSource>
       <TransactionsPage startAtBlock={startAtBlock} offset={offset} />
-    </ProvideGibraltarTransactionsSummaryDataSource>
+    </ProvideCappuccinoTransactionsSummaryDataSource>
   );
 }

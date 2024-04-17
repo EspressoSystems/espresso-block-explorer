@@ -2,7 +2,7 @@
 
 import {
   NamespaceContext,
-  ProvideGibraltarRollUpDetailDataSource,
+  ProvideCappuccinoRollUpDetailDataSource,
   RollUpPage,
 } from 'espresso-block-explorer-components';
 import {
@@ -57,9 +57,9 @@ export default function SpecificRollUp() {
 
   return (
     <NamespaceContext.Provider value={Number(namespace)}>
-      <ProvideGibraltarRollUpDetailDataSource>
+      <ProvideCappuccinoRollUpDetailDataSource>
         <RollUpPage startAtBlock={startAtBlock} offset={offset} />
-      </ProvideGibraltarRollUpDetailDataSource>
+      </ProvideCappuccinoRollUpDetailDataSource>
     </NamespaceContext.Provider>
   );
 }

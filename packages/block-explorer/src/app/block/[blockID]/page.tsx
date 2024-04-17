@@ -2,7 +2,7 @@
 import {
   BlockNumberContext,
   BlockPage,
-  ProvideGibraltarBlockDetailDataSource,
+  ProvideCappuccinoBlockDetailDataSource,
 } from 'espresso-block-explorer-components';
 import { notFound, useParams } from 'next/navigation';
 
@@ -33,9 +33,9 @@ export default function Block() {
 
   return (
     <BlockNumberContext.Provider value={Number(blockID)}>
-      <ProvideGibraltarBlockDetailDataSource>
+      <ProvideCappuccinoBlockDetailDataSource>
         <BlockPage />
-      </ProvideGibraltarBlockDetailDataSource>
+      </ProvideCappuccinoBlockDetailDataSource>
     </BlockNumberContext.Provider>
   );
 }

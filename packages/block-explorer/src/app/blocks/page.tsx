@@ -2,7 +2,7 @@
 
 import {
   BlocksPage,
-  ProvideGibraltarBlocksSummaryDataSource,
+  ProvideCappuccinoBlocksSummaryDataSource,
 } from 'espresso-block-explorer-components';
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 
@@ -31,8 +31,8 @@ export default function Blocks() {
   const startAtBlock = getNumberFromParams(searchParams, 'height');
 
   return (
-    <ProvideGibraltarBlocksSummaryDataSource>
+    <ProvideCappuccinoBlocksSummaryDataSource>
       <BlocksPage startAtBlock={startAtBlock} />
-    </ProvideGibraltarBlocksSummaryDataSource>
+    </ProvideCappuccinoBlocksSummaryDataSource>
   );
 }
