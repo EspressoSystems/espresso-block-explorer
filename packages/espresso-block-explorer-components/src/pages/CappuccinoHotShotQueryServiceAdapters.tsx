@@ -7,7 +7,6 @@ import { RollUpDetailAsyncRetrieverContext } from '../components/page_sections/r
 import { RollUpSummaryAsyncRetrieverContext } from '../components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
 import { TransactionDetailAsyncRetrieverContext } from '../components/page_sections/transaction_detail_content/TransactionDetailLoader';
 import { TransactionSummaryAsyncRetrieverContext } from '../components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
-import UnimplementedError from '../errors/UnimplementedError';
 import { BlockSummaryEntry } from '../models/block_explorer/block_summary';
 import { TransactionSummaryEntry } from '../models/block_explorer/transaction_summary';
 import { TaggedBase64 } from '../models/espresso/tagged_base64/TaggedBase64';
@@ -399,7 +398,9 @@ export const ProvideCappuccinoRollUpsSummaryDataSource: React.FC<
       {...props}
       value={{
         async retrieve() {
-          throw new UnimplementedError();
+          // TODO: add the implementation for this when the Explorer API
+          //       supports it.
+          return [];
         },
       }}
     />
