@@ -474,24 +474,27 @@ const SearchDataConsumer: React.FC = () => {
   ];
   const invalidate = React.useContext(InvalidateContext);
 
-  if (loading) {
-    // controller.setLoading(controller.query, true);
-    // invalidate();
-    return <></>;
-  }
+  React.useEffect(() => {
+    if (loading) {
+      return;
+    }
 
-  if (controller.isLoading || error) {
-    return <></>;
-  }
+    if (controller.isLoading || error) {
+      return;
+    }
 
-  if (data[0] !== controller.query) {
-    // Out of date search term
-    return <></>;
-  }
+    if (data[0] !== controller.query) {
+      return;
+    }
 
-  controller.setLoading(data[0], false);
-  controller.setSearchResults(data[0], data[1]);
-  invalidate();
+    controller.setLoading(data[0], false);
+    controller.setSearchResults(data[0], data[1]);
+
+    // Invalidate the SearchController to trigger a re-render.
+    invalidate();
+    return () => {};
+  }, [controller, loading, error, data, invalidate]);
+
   return <></>;
 };
 
