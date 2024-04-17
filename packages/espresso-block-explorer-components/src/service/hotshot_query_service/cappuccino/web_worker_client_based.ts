@@ -84,6 +84,7 @@ import {
 } from './explorer/get_transaction_summaries_response';
 import { CappuccinoHotShotQueryService } from './hot_shot_query_service_api';
 import { CappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
+import ProxyWorker from './web_worker_api.js?worker';
 
 class AsyncRequestHelper {
   private worker: Worker;
@@ -360,9 +361,7 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryService
   public readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;
 
   constructor() {
-    const worker = new Worker(new URL('./web_worker_api.js', import.meta.url), {
-      type: 'module',
-    });
+    const worker = new ProxyWorker();
     const helper = new AsyncRequestHelper(worker);
     this.availability =
       new WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI(
