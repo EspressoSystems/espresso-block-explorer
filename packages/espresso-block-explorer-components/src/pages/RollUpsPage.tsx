@@ -7,7 +7,6 @@ import {
 import ErrorContextGuard from '../components/data/async_data/ErrorContextGuard';
 import Card from '../components/layout/card/Card';
 import Heading1 from '../components/layout/heading/Heading1';
-import Heading2 from '../components/layout/heading/Heading2';
 import { WithEdgeMargin } from '../components/layout/margin/margins';
 import { WithLoadingShimmer } from '../components/loading/LoadingShimmer';
 import Footer from '../components/page_sections/footer/Footer';
@@ -21,12 +20,10 @@ import { RollUpsSummaryLoader } from '../components/page_sections/rollups_summar
 import NumberText from '../components/text/NumberText';
 import Text from '../components/text/Text';
 import { curatedRollupMap } from '../models/block_explorer/rollup_entry/data';
-import { kNumberOfSampleBlocks } from './CappuccinoHotShotQueryServiceAdapters';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
-const EdgeMarginHeading2 = WithEdgeMargin(Heading2);
 
 interface GuardedRollUpsSummaryDataTableProps {}
 
@@ -77,9 +74,6 @@ const RollUpsPage: React.FC<RollUpsPageProps> = (props) => (
     </EdgeMarginPageTitle>
 
     <RollUpsSummaryLoader>
-      <EdgeMarginHeading2>
-        <Text text={`Over the latest ${kNumberOfSampleBlocks} Blocks`} />
-      </EdgeMarginHeading2>
       <GuardedRollUpsSummaryDataTable {...props} />
     </RollUpsSummaryLoader>
 
