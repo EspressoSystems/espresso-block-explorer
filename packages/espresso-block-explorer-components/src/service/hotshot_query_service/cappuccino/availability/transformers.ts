@@ -33,20 +33,6 @@ export async function convertCappuccinoBlockToBlockSummary(
   );
 }
 
-// export async function convertLeafToBlockSummary(
-//   leaf: CappuccinoAPILeafResponse,
-// ): Promise<CappuccinoDerivedBlockSummary> {
-//   return new CappuccinoDerivedBlockSummary(
-//     leaf.leaf.block_header,
-//     new TaggedBase64('BLOCK', new Uint8Array([0, 0, 0, 0]).buffer),
-//     leaf.leaf.block_payload.transaction_nmt
-//       .map((x) => x.payload.length)
-//       .reduce((acc, next) => acc + next, 0),
-//     leaf.leaf.block_payload.transaction_nmt.length,
-//     leaf.leaf.proposer_id,
-//   );
-// }
-
 export async function* convertCappuccinoLeafAndTransactionsToTransactionSummaries(
   leaf: CappuccinoAPILeafResponse,
   transactions: AsyncIterable<CappuccinoAPITransactionResponse>,
