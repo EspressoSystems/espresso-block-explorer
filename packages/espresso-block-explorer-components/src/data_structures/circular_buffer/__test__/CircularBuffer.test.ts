@@ -8,40 +8,38 @@ import {
 } from '../CircularBuffer';
 
 function basicOperations(buffer: CircularBuffer<number>) {
-  return () => {
-    it('should succeed without issue', () => {
-      const numberOfIterations = 10;
-      const countOperations = buffer.maxSize - 1;
-      for (let j = 0; j < numberOfIterations; j++) {
-        for (let i = 0; i < countOperations; i++) {
-          buffer.put(i);
-          expect(buffer.length).toBe(i + 1);
-        }
+  const numberOfIterations = 10;
+  const countOperations = buffer.maxSize - 1;
+  for (let j = 0; j < numberOfIterations; j++) {
+    for (let i = 0; i < countOperations; i++) {
+      buffer.put(i);
+      expect(buffer.length).toBe(i + 1);
+    }
 
-        expect(buffer.length).toBe(countOperations);
+    expect(buffer.length).toBe(countOperations);
 
-        for (let i = 0; i < countOperations; i++) {
-          expect(buffer.get()).toBe(i);
-        }
+    for (let i = 0; i < countOperations; i++) {
+      expect(buffer.get()).toBe(i);
+    }
 
-        expect(buffer.get()).toBe(undefined);
-      }
-    });
-  };
+    expect(buffer.get()).toBe(undefined);
+  }
 }
 
 describe('CircularBuffer', () => {
   describe('Size not Power of 2', () => {
-    describe(
-      'basic operations',
-      basicOperations(createCircularBuffer<number>(6)),
-    );
+    describe('basic operations', () => {
+      it('should perform basic operations', () => {
+        basicOperations(createCircularBuffer<number>(6));
+      });
+    });
   });
   describe('Size is Power of 2', () => {
-    describe(
-      'basic operations',
-      basicOperations(createCircularBuffer<number>(8)),
-    );
+    describe('basic operations', () => {
+      it('should perform basic operations', () => {
+        basicOperations(createCircularBuffer<number>(8));
+      });
+    });
   });
 
   describe('Read from Empty Buffer', () => {
