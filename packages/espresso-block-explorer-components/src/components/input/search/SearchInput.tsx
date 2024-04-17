@@ -433,30 +433,19 @@ const SearchLoader: React.FC = () => {
   const controller = React.useContext(SearchStateControllerContext);
   const query = React.useContext(QueryContext);
 
-  console.info(
-    'SearchLoader',
-    query,
-    controller.query,
-    controller.searchResultsQuery,
-    controller.isLoading,
-  );
-
   if (query === '') {
     return <></>;
   }
 
   if (query !== controller.query) {
-    console.log('<<<< HERE 0');
     return <></>;
   }
 
   if (controller.query === controller.searchResultsQuery) {
     // We're already loading, or have already loaded this result.
-    console.log('<<<< HERE 1');
     return <></>;
   }
 
-  console.log('<<<< HERE 2');
   return (
     <PromiseResolver
       promise={Promise.all([
