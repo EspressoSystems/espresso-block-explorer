@@ -642,6 +642,18 @@ const SearchBlockResults: React.FC = () => {
   );
 };
 
+interface CommitDisplayProps {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+/**
+ * CommitDisplay is a component that will wrap the children given in a
+ * consistent element for organization and styling.
+ */
+const CommitDisplay: React.FC<CommitDisplayProps> = (props) => (
+  <div className="commit">{props.children}</div>
+);
+
 /**
  * SearchBlockRow is an individual row result for a found block summary.
  */
@@ -652,14 +664,14 @@ const SearchBlockRow: React.FC = () => {
 
   return (
     <>
-      <div>
+      <CommitDisplay>
         {/* Split the matched portion versus the non - matched portion */}
         {/* This is a prefix match... so it's guaranteed to be the starting portion of the string */}
         <Text text={hash.substring(0, query.length)} />
         <strong>
           <Text text={hash.substring(query.length)} />
         </strong>
-      </div>
+      </CommitDisplay>
 
       <UISmallDiv>
         <NumberText number={block.height} />
@@ -731,14 +743,14 @@ const SearchTransactionRow: React.FC = () => {
 
   return (
     <>
-      <div>
+      <CommitDisplay>
         {/* Split the matched portion versus the non - matched portion */}
         {/* This is a prefix match... so it's guaranteed to be the starting portion of the string */}
         <Text text={hash.substring(0, query.length)} />
         <strong>
           <Text text={hash.substring(query.length)} />
         </strong>
-      </div>
+      </CommitDisplay>
       <UISmallDiv>
         Transaction <NumberText number={txn.offset + 1} /> of{' '}
         <NumberText number={txn.numTransactions} /> in Block{' '}
