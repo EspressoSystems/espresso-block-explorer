@@ -1,12 +1,36 @@
 import { describe, expect, it } from 'vitest';
-import { assert } from '../assert';
+import { assert, isDevelopment, isProduction } from '../assert';
 
 describe('Assert', () => {
-  it('should not throw when an assertion passes', () => {
-    expect(() => assert(true)).not.toThrow();
+  describe('Production', () => {
+    if (!isProduction()) {
+      // We ignore these tests if not in production
+      it('should not test in development', () => {});
+      return;
+    }
+
+    it('should not throw when an assertion passes', async () => {
+      expect(() => assert(true)).not.toThrow();
+    });
+
+    it('should not throw an error when assertion fails', async () => {
+      expect(() => assert(false)).not.toThrow();
+    });
   });
 
-  it('should throw an error when assertion fails', () => {
-    expect(() => assert(false)).toThrow();
+  describe('Development', () => {
+    if (!isDevelopment()) {
+      // We ignore these tests if not in development
+      it('should not test in production', () => {});
+      return;
+    }
+
+    it('should not throw when an assertion passes', async () => {
+      expect(() => assert(true)).not.toThrow();
+    });
+
+    it('should throw an error when assertion fails', async () => {
+      expect(() => assert(false)).toThrow();
+    });
   });
 });

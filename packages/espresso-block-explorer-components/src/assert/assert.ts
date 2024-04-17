@@ -57,6 +57,14 @@ function createAssertExecutor(): AssertExecutor {
   return new DebugAssertExecutor();
 }
 
+export function isProduction(): boolean {
+  return assertExecutor instanceof ReleaseAssertExecutor;
+}
+
+export function isDevelopment(): boolean {
+  return assertExecutor instanceof DebugAssertExecutor;
+}
+
 const assertExecutor = createAssertExecutor();
 
 /**
