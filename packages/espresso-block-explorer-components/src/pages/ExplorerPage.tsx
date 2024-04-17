@@ -126,7 +126,7 @@ interface ExplorerPageProps {
 const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
   const pathResolver = React.useContext(PathResolverContext);
   return (
-    <OverridePagePath page={PageType.blocks}>
+    <OverridePagePath page={PageType.explorer}>
       <Header />
 
       <EdgeMarginPageTitle className="center">
