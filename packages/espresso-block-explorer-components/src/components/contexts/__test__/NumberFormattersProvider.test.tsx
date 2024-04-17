@@ -55,10 +55,12 @@ describe('Number Formatters Provider', () => {
               gwei: new Intl.NumberFormat('en-US', {}),
               wei: new Intl.NumberFormat('en-US', {}),
               USD: new Intl.NumberFormat('en-US', {}),
+              GBP: new Intl.NumberFormat('en-US', {}),
+              EUR: new Intl.NumberFormat('en-US', {}),
               JPY: new Intl.NumberFormat('en-US', {}),
               ESP: new Intl.NumberFormat('en-US', {}),
               ETH: new Intl.NumberFormat('en-US', {}),
-              BTC: new Intl.NumberFormat('en-US', {}),
+              XBT: new Intl.NumberFormat('en-US', {}),
             }}
           >
             <ConsumeNumberFormattersComponent />
@@ -79,10 +81,12 @@ describe('Number Formatters Provider', () => {
               gwei: new Intl.NumberFormat('en-US', {}),
               wei: new Intl.NumberFormat('en-US', {}),
               USD: new Intl.NumberFormat('en-US', {}),
+              GBP: new Intl.NumberFormat('en-US', {}),
+              EUR: new Intl.NumberFormat('en-US', {}),
               JPY: new Intl.NumberFormat('en-US', {}),
               ESP: new Intl.NumberFormat('en-US', {}),
               ETH: new Intl.NumberFormat('en-US', {}),
-              BTC: new Intl.NumberFormat('en-US', {}),
+              XBT: new Intl.NumberFormat('en-US', {}),
             }}
           >
             <ConsumeNumberFormattersComponent />

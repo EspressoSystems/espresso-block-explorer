@@ -38,6 +38,7 @@ function createDefaultNumberFormatters(locale: string) {
     wei: new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: 'WEI',
+      currencyDisplay: 'code',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }),
@@ -52,12 +53,26 @@ function createDefaultNumberFormatters(locale: string) {
     USD: new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: 'USD',
+      currencyDisplay: 'symbol',
       maximumFractionDigits: 2,
     }),
     JPY: new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: 'JPY',
+      currencyDisplay: 'symbol',
       maximumFractionDigits: 0,
+    }),
+    EUR: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'EUR',
+      currencyDisplay: 'symbol',
+      maximumFractionDigits: 2,
+    }),
+    GBP: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'GBP',
+      currencyDisplay: 'symbol',
+      maximumFractionDigits: 2,
     }),
     ETH: new Intl.NumberFormat(locale, {
       style: 'currency',
@@ -77,10 +92,10 @@ function createDefaultNumberFormatters(locale: string) {
       minimumFractionDigits: 2,
       maximumFractionDigits: 18,
     }),
-    BTC: new Intl.NumberFormat(locale, {
+    XBT: new Intl.NumberFormat(locale, {
       style: 'currency',
       currencyDisplay: 'code',
-      currency: 'XBT',
+      currency: 'BTC',
       notation: 'standard',
       maximumSignificantDigits: 8,
       minimumFractionDigits: 2,

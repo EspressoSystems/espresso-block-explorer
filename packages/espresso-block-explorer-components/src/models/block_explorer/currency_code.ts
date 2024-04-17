@@ -45,7 +45,7 @@ export class CurrencyCode<
   }
 }
 
-export const JPY = new CurrencyCode('JPY', 392, 2);
+export const JPY = new CurrencyCode('JPY', 392, 0);
 export const GBP = new CurrencyCode('GBP', 826, 2);
 export const USD = new CurrencyCode('USD', 840, 2);
 export const EUR = new CurrencyCode('EUR', 978, 2);

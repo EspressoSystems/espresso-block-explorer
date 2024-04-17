@@ -32,9 +32,18 @@ describe('CurrencyCode', () => {
         const codec = currencyCodeCodec;
         expect(codec.decode(input)).toEqual(expected);
         if (shouldPass) {
+          expect(codec.encode(expected)).toEqual(expected.toJSON());
           expect(codec.encode(expected)).toEqual(input);
         }
       }
+    });
+
+    it('should throw when a non-string is given', () => {
+      expect(() => currencyCodeCodec.decode(1)).throws();
+    });
+
+    it('should throw when an unsupported currency code is given', () => {
+      expect(() => currencyCodeCodec.decode('INVALID')).throws();
     });
   });
 });

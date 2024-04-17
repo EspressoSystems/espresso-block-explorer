@@ -54,13 +54,17 @@ describe('Monetary Value', () => {
           [MonetaryValue.ETH(1n), 'ETH 0.000000000000000001'],
           [MonetaryValue.ETH(1000000000000000000n), 'ETH 1'],
           [MonetaryValue.BTC(1n), 'XBT 0.00000001'],
+          [MonetaryValue.JPY(1n), 'JPY 1'],
         ] as const;
 
         const l = cases.length;
         for (let i = 0; i < l; i++) {
           const c = cases[i];
-          const encoded = monetaryValueCodec.encode(c[0]);
-          expect(encoded).toEqual(c[1]);
+          const [value, expected] = c;
+          const encoded = monetaryValueCodec.encode(value);
+          expect(encoded).toEqual(value.toString());
+          expect(encoded).toEqual(value.toJSON());
+          expect(encoded).toEqual(expected);
         }
       }
 
@@ -85,6 +89,14 @@ describe('Monetary Value', () => {
           expect(decoded.currency).toEqual(c[1].currency);
         }
       }
+    });
+
+    it('should throw when an unsupported currency code is given', () => {
+      expect(() => monetaryValueCodec.decode('USD 1.00')).throws();
+    });
+
+    it('should throw when not given a string', () => {
+      expect(() => monetaryValueCodec.decode(1)).throws();
     });
   });
 });
