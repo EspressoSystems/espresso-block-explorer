@@ -1,11 +1,12 @@
 import { Codec, Converter } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
 import { StringCodec, stringCodec } from '../../../../convert/codec/string';
+import { latestConstant } from './constants';
 
 export abstract class CappuccinoExplorerGetBlockDetailRequest {
-  readonly target: number | 'latest';
+  readonly target: number | typeof latestConstant;
 
-  protected constructor(target: number | 'latest') {
+  protected constructor(target: number | typeof latestConstant) {
     this.target = target;
   }
 
@@ -32,7 +33,9 @@ class CappuccinoExplorerGetBlockDetailRequestEncoder
       return numberCodec.encode(input.target);
     }
 
-    return (stringCodec as StringCodec<'latest'>).encode(input.target);
+    return (stringCodec as StringCodec<typeof latestConstant>).encode(
+      input.target,
+    );
   }
 }
 
@@ -40,7 +43,7 @@ class CappuccinoExplorerGetBlockDetailRequestDecoder
   implements Converter<unknown, CappuccinoExplorerGetBlockDetailRequest>
 {
   convert(input: unknown): CappuccinoExplorerGetBlockDetailRequest {
-    if (input === 'latest') {
+    if (input === latestConstant) {
       return new CappuccinoExplorerGetBlockDetailRequestLatest();
     }
 
@@ -63,7 +66,7 @@ export const cappuccinoExplorerGetBlockDetailRequestCodec =
 
 class CappuccinoExplorerGetBlockDetailRequestLatest extends CappuccinoExplorerGetBlockDetailRequest {
   public constructor() {
-    super('latest');
+    super(latestConstant);
   }
 }
 

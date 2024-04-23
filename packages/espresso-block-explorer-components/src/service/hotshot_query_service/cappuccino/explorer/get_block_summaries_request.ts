@@ -7,10 +7,11 @@ import {
 import { numberCodec } from '../../../../convert/codec/number';
 import { StringCodec, stringCodec } from '../../../../convert/codec/string';
 import InvalidInputError from '../../../../errors/InvalidInputError';
+import { latestConstant } from './constants';
 
 export abstract class CappuccinoExplorerGetBlockSummariesRequest {
   readonly limit: number;
-  abstract get from(): number | 'latest';
+  abstract get from(): number | typeof latestConstant;
 
   protected constructor(limit: number) {
     this.limit = limit;
@@ -41,7 +42,9 @@ class CappuccinoExplorerGetBlockSummariesRequestEncoder
     }
 
     return {
-      from: (stringCodec as StringCodec<'latest'>).encode(input.from),
+      from: (stringCodec as StringCodec<typeof latestConstant>).encode(
+        input.from,
+      ),
       limit: numberCodec.encode(input.limit),
     } as const;
   }
@@ -58,7 +61,7 @@ class CappuccinoExplorerGetBlockSummariesRequestDecoder
       throw new InvalidInputError();
     }
 
-    if (input.from === 'latest') {
+    if (input.from === latestConstant) {
       return new CappuccinoExplorerGetBlockSummariesRequestLatest(
         numberCodec.decode(input.limit),
       );
@@ -87,8 +90,8 @@ class CappuccinoExplorerGetBlockSummariesRequestLatest extends CappuccinoExplore
     super(limit);
   }
 
-  public get from(): 'latest' {
-    return 'latest';
+  public get from(): typeof latestConstant {
+    return latestConstant;
   }
 }
 

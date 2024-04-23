@@ -26,6 +26,7 @@ import {
 } from '../../../../../functional/functional_async';
 import { CappuccinoExplorerBlockDetail } from '../block_detail';
 import { CappuccinoExplorerBlockSummary } from '../block_summary';
+import { latestConstant } from '../constants';
 import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer_api';
 import { CappuccinoExplorerSummary } from '../explorer_summary';
 import { CappuccinoGenesisOverview } from '../genesis_overview';
@@ -135,7 +136,7 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI
     request: CappuccinoExplorerGetBlockDetailRequest,
   ): Promise<CappuccinoExplorerGetBlockDetailResponse> {
     const target = request.target;
-    const block = await (target === 'latest'
+    const block = await (target === latestConstant
       ? lastAsyncIterable(generateAllBlocks())
       : firstAsyncIterator(dropAsyncIterable(generateAllBlocks(), target - 1)));
 
@@ -148,7 +149,8 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI
   ): Promise<CappuccinoExplorerGetBlockSummariesResponse> {
     const step1 = takeWhileAsyncIterator(
       generateAllBlocks(),
-      (block) => request.from === 'latest' || block.height <= request.from,
+      (block) =>
+        request.from === latestConstant || block.height <= request.from,
     );
     const step2 = reverseAsyncIterator(step1);
     const step3 = takeAsyncIterator(step2, request.limit);
