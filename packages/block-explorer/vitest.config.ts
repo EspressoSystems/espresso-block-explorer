@@ -13,12 +13,17 @@ export default defineConfig({
     setupFiles: './setupTests.ts',
     css: true,
     coverage: {
+      include: ['src/**/*.ts', 'src/**/*.tsx'],
+      provider: 'istanbul',
       reporter: ['text', 'json-summary', 'json', 'lcov'],
       reportOnFailure: true,
       exclude: [
+        '**/.storybook/*.ts',
         '**/*.config.js',
         '**/*.config.ts',
         '**/__test__/**',
+        '**/__docs__/**',
+        '**/__docs__/**/*.stories.tsx',
         '**/index.ts',
         '**/.next/**',
         '**/*.d.ts',

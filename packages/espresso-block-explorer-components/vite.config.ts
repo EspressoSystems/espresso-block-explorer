@@ -54,6 +54,7 @@ export default defineConfig({
     setupFiles: './setupTests.ts',
     css: true,
     coverage: {
+      provider: 'istanbul',
       reporter: ['text', 'json-summary', 'json', 'lcov'],
       reportOnFailure: true,
       exclude: [

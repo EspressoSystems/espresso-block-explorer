@@ -10,6 +10,8 @@ import {
 function basicOperations(buffer: CircularBuffer<number>) {
   const numberOfIterations = 10;
   const countOperations = buffer.maxSize - 1;
+
+  expect(buffer.length).toBe(0);
   for (let j = 0; j < numberOfIterations; j++) {
     for (let i = 0; i < countOperations; i++) {
       buffer.put(i);
@@ -22,7 +24,7 @@ function basicOperations(buffer: CircularBuffer<number>) {
       expect(buffer.get()).toBe(i);
     }
 
-    expect(buffer.get()).toBe(undefined);
+    expect(buffer.length).toBe(0);
   }
 }
 
@@ -34,6 +36,7 @@ describe('CircularBuffer', () => {
       });
     });
   });
+
   describe('Size is Power of 2', () => {
     describe('basic operations', () => {
       it('should perform basic operations', () => {
@@ -49,7 +52,19 @@ describe('CircularBuffer', () => {
           8,
           CircularBufferGetFromEmptyBehaviors.returnUndefined,
         );
-        expect(buffer.get()).toBe(undefined);
+
+        expect(buffer.get()).equals(undefined);
+      });
+    });
+
+    describe('returns null', () => {
+      it('should return undefined', () => {
+        const buffer = createCircularBuffer<number>(
+          8,
+          CircularBufferGetFromEmptyBehaviors.returnNull,
+        );
+
+        expect(buffer.get()).equals(null);
       });
     });
 
@@ -59,6 +74,7 @@ describe('CircularBuffer', () => {
           8,
           CircularBufferGetFromEmptyBehaviors.throwMissingElement,
         );
+
         expect(() => buffer.get()).toThrow();
       });
     });
