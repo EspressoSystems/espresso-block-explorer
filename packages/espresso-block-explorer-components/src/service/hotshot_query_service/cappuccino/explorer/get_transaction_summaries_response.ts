@@ -1,10 +1,8 @@
 import {
   Codec,
   Converter,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   CappuccinoExplorerTransactionSummary,
   cappuccinoExplorerTransactionSummaryArrayCodec,
@@ -27,9 +25,7 @@ class CappuccinoExplorerGetTransactionSummariesResponseDecoder
     Converter<unknown, CappuccinoExplorerGetTransactionSummariesResponse>
 {
   convert(input: unknown): CappuccinoExplorerGetTransactionSummariesResponse {
-    if (!isRecord(input, 'transaction_summaries', isUnknown)) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'transaction_summaries');
 
     return new CappuccinoExplorerGetTransactionSummariesResponse(
       cappuccinoExplorerTransactionSummaryArrayCodec.decode(

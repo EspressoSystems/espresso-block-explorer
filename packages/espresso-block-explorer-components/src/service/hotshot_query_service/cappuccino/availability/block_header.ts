@@ -1,14 +1,12 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import {
   numberArrayCodec,
   numberCodec,
 } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -75,21 +73,19 @@ export class CappuccinoAPIHeaderDecoder
   implements Converter<unknown, CappuccinoAPIHeader>
 {
   convert(input: unknown): CappuccinoAPIHeader {
-    if (
-      !isRecord(input, 'height', isUnknown) ||
-      !isRecord(input, 'timestamp', isUnknown) ||
-      !isRecord(input, 'l1_head', isUnknown) ||
-      !isRecord(input, 'l1_finalized', isUnknown) ||
-      !isRecord(input, 'payload_commitment', isUnknown) ||
-      !isRecord(input, 'ns_table', isUnknown) ||
-      !isRecord(input, 'block_merkle_root', isUnknown) ||
-      !isRecord(input, 'fee_merkle_root', isUnknown) ||
-      !isRecord(input, 'builder_signature', isUnknown) ||
-      !isRecord(input, 'fee_info', isUnknown) ||
-      false
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(
+      input,
+      'height',
+      'timestamp',
+      'l1_head',
+      'l1_finalized',
+      'payload_commitment',
+      'ns_table',
+      'block_merkle_root',
+      'fee_merkle_root',
+      'builder_signature',
+      'fee_info',
+    );
 
     return new CappuccinoAPIHeader(
       numberCodec.decode(input.height),

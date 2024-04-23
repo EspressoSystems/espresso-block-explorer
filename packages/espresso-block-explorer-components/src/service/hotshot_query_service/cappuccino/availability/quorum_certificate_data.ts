@@ -1,10 +1,8 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -30,9 +28,7 @@ export class CappuccinoAPIBQuorumCertificateDataDecoder
   implements Converter<unknown, CappuccinoAPIBQuorumCertificateData>
 {
   convert(input: unknown): CappuccinoAPIBQuorumCertificateData {
-    if (!isRecord(input, 'leaf_commit', isUnknown)) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'leaf_commit');
 
     return new CappuccinoAPIBQuorumCertificateData(
       taggedBase64Codec.decode(input.leaf_commit),

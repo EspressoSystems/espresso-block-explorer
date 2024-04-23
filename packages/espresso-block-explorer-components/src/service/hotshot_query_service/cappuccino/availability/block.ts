@@ -1,11 +1,9 @@
 import {
   Codec,
   Converter,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -46,15 +44,14 @@ export class CappuccinoAPIBlockDecode
   implements Converter<unknown, CappuccinoAPIBlock>
 {
   convert(input: unknown): CappuccinoAPIBlock {
-    if (
-      !isRecord(input, 'header', isUnknown) ||
-      !isRecord(input, 'payload', isUnknown) ||
-      !isRecord(input, 'hash', isUnknown) ||
-      !isRecord(input, 'size', isUnknown) ||
-      !isRecord(input, 'num_transactions', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(
+      input,
+      'header',
+      'payload',
+      'hash',
+      'size',
+      'num_transactions',
+    );
 
     return new CappuccinoAPIBlock(
       cappuccinoAPIHeaderCodec.decode(input.header),

@@ -7,11 +7,9 @@ import { stdBase64ArrayBufferCodec } from '../../../../convert/codec/array_buffe
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 
 type NamespaceID = number;
 const namespaceIDCodec = numberCodec;
@@ -34,12 +32,7 @@ class CappuccinoExplorerTransactionDetailDataDecoder
   implements Converter<unknown, CappuccinoExplorerTransactionDetailData>
 {
   convert(input: unknown): CappuccinoExplorerTransactionDetailData {
-    if (
-      !isRecord(input, 'namespace', isUnknown) ||
-      !isRecord(input, 'payload', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'namespace', 'payload');
 
     return new CappuccinoExplorerTransactionDetailData(
       namespaceIDCodec.decode(input.namespace),

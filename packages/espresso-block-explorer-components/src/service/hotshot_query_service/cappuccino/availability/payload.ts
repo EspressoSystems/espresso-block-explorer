@@ -1,10 +1,8 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   CappuccinoAPITransactionNMTEntry,
   arrayCappuccinoAPITransactionNMTEntryCodec,
@@ -29,9 +27,7 @@ export class CappuccinoAPIPayloadDecoder
   implements Converter<unknown, CappuccinoAPIPayload>
 {
   convert(input: unknown): CappuccinoAPIPayload {
-    if (!isRecord(input, 'transaction_nmt', isUnknown)) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'transaction_nmt');
 
     return new CappuccinoAPIPayload(
       arrayCappuccinoAPITransactionNMTEntryCodec.decode(input.transaction_nmt),

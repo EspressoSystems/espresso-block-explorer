@@ -2,12 +2,10 @@ import { hexArrayBufferCodec } from '../../../../convert/codec/array_buffer';
 import {
   Codec,
   Converter,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { rfc3999DateCodec } from '../../../../convert/codec/date';
 import { numberCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import MonetaryValue, {
   monetaryValueArrayCodec,
 } from '../../../../models/block_explorer/monetary_value';
@@ -55,18 +53,17 @@ class CappuccinoExplorerBlockDetailDecoder
   implements Converter<unknown, CappuccinoExplorerBlockDetail>
 {
   convert(input: unknown): CappuccinoExplorerBlockDetail {
-    if (
-      !isRecord(input, 'hash', isUnknown) ||
-      !isRecord(input, 'height', isUnknown) ||
-      !isRecord(input, 'time', isUnknown) ||
-      !isRecord(input, 'num_transactions', isUnknown) ||
-      !isRecord(input, 'proposer_id', isUnknown) ||
-      !isRecord(input, 'fee_recipient', isUnknown) ||
-      !isRecord(input, 'size', isUnknown) ||
-      !isRecord(input, 'block_reward', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(
+      input,
+      'hash',
+      'height',
+      'time',
+      'num_transactions',
+      'proposer_id',
+      'fee_recipient',
+      'size',
+      'block_reward',
+    );
 
     return new CappuccinoExplorerBlockDetail(
       taggedBase64Codec.decode(input.hash),

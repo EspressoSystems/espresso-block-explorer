@@ -1,10 +1,8 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import { CappuccinoAPILeaf, cappuccinoAPILeafCodec } from './leaf';
 import {
   CappuccinoAPIQuorumCertificate,
@@ -32,12 +30,7 @@ export class CappuccinoAPILeafResponseDecoder
   implements Converter<unknown, CappuccinoAPILeafResponse>
 {
   convert(input: unknown): CappuccinoAPILeafResponse {
-    if (
-      !isRecord(input, 'leaf', isUnknown) ||
-      !isRecord(input, 'qc', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'leaf', 'qc');
 
     return new CappuccinoAPILeafResponse(
       cappuccinoAPILeafCodec.decode(input.leaf),

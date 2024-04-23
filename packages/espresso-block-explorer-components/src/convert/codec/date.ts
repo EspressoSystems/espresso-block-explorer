@@ -1,4 +1,4 @@
-import InvalidInputError from '../../errors/InvalidInputError';
+import InvalidTypeError from '../../errors/InvalidTypeError';
 import { Converter, TypeCheckingCodec, isString } from './convert';
 
 /**
@@ -10,12 +10,12 @@ import { Converter, TypeCheckingCodec, isString } from './convert';
 export class RFC3999DateDecoder implements Converter<unknown, Date> {
   convert(input: unknown): Date {
     if (!isString(input)) {
-      throw new InvalidInputError();
+      throw new InvalidTypeError(typeof input, 'string');
     }
 
     const result = new Date(input);
     if (Number.isNaN(result.valueOf())) {
-      throw new InvalidInputError();
+      throw new InvalidTypeError('NaN', 'number');
     }
 
     return result;

@@ -1,15 +1,13 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import {
   numberArrayCodec,
   numberCodec,
 } from '../../../../convert/codec/number';
 import { stringCodec } from '../../../../convert/codec/string';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   CappuccinoAPIBitVecHead,
   cappuccinoAPIBitVecHeadCodec,
@@ -46,14 +44,7 @@ export class CappuccinoAPIBitVecDecoder
   implements Converter<unknown, CappuccinoAPIBitVec>
 {
   convert(input: unknown): CappuccinoAPIBitVec {
-    if (
-      !isRecord(input, 'order', isUnknown) ||
-      !isRecord(input, 'head', isUnknown) ||
-      !isRecord(input, 'bits', isUnknown) ||
-      !isRecord(input, 'data', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'order', 'head', 'bits', 'data');
 
     return new CappuccinoAPIBitVec(
       stringCodec.decode(input.order),

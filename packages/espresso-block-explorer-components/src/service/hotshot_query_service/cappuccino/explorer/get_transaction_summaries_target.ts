@@ -1,6 +1,7 @@
 import {
   Codec,
   Converter,
+  assertRecordWithKeys,
   isRecord,
   isUnknown,
 } from '../../../../convert/codec/convert';
@@ -46,9 +47,7 @@ class CappuccinoExplorerGetTransactionSummariesTargetDecoder
     Converter<unknown, CappuccinoExplorerGetTransactionSummariesTarget>
 {
   convert(input: unknown): CappuccinoExplorerGetTransactionSummariesTarget {
-    if (!isRecord(input, 'limit', isUnknown)) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'limit');
 
     if (
       isRecord(input, 'height', isUnknown) &&

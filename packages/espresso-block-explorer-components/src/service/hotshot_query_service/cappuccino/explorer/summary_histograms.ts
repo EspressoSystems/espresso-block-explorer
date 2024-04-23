@@ -1,11 +1,9 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { numberArrayCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 
 export class CappuccinoSummaryHistograms {
   readonly blockTime: number[];
@@ -34,14 +32,13 @@ class CappuccinoSummaryHistogramsDecoder
   implements Converter<unknown, CappuccinoSummaryHistograms>
 {
   convert(input: unknown): CappuccinoSummaryHistograms {
-    if (
-      !isRecord(input, 'block_time', isUnknown) ||
-      !isRecord(input, 'block_size', isUnknown) ||
-      !isRecord(input, 'block_transactions', isUnknown) ||
-      !isRecord(input, 'block_heights', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(
+      input,
+      'block_time',
+      'block_size',
+      'block_transactions',
+      'block_heights',
+    );
 
     return new CappuccinoSummaryHistograms(
       numberArrayCodec.decode(input.block_time),

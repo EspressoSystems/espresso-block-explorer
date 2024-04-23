@@ -1,10 +1,8 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   CappuccinoExplorerSummary,
   cappuccinoExplorerSummaryCodec,
@@ -26,9 +24,7 @@ class CappuccinoExplorerGetExplorerSummaryResponseDecoder
   implements Converter<unknown, CappuccinoExplorerGetExplorerSummaryResponse>
 {
   convert(input: unknown): CappuccinoExplorerGetExplorerSummaryResponse {
-    if (!isRecord(input, 'explorer_summary', isUnknown)) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'explorer_summary');
 
     return new CappuccinoExplorerGetExplorerSummaryResponse(
       cappuccinoExplorerSummaryCodec.decode(input.explorer_summary),

@@ -1,11 +1,9 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 
 /**
  * CappuccinoAPIBitVecHead represents the head of a bit vector in the Cappuccino API.
@@ -28,12 +26,7 @@ export class CappuccinoAPIBitVecHeadDecoder
   implements Converter<unknown, CappuccinoAPIBitVecHead>
 {
   convert(input: unknown): CappuccinoAPIBitVecHead {
-    if (
-      !isRecord(input, 'width', isUnknown) ||
-      !isRecord(input, 'index', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'width', 'index');
 
     return new CappuccinoAPIBitVecHead(
       numberCodec.decode(input.width),

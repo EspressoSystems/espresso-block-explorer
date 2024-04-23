@@ -1,10 +1,8 @@
 import {
   Codec,
   Converter,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   CappuccinoExplorerBlockDetail,
   cappuccinoExplorerBlockDetailCodec,
@@ -26,9 +24,7 @@ class CappuccinoExplorerGetBlockDetailResponseDecoder
   implements Converter<unknown, CappuccinoExplorerGetBlockDetailResponse>
 {
   convert(input: unknown): CappuccinoExplorerGetBlockDetailResponse {
-    if (!isRecord(input, 'block_detail', isUnknown)) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'block_detail');
 
     return new CappuccinoExplorerGetBlockDetailResponse(
       cappuccinoExplorerBlockDetailCodec.decode(input.block_detail),

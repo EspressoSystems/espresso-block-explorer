@@ -1,4 +1,4 @@
-import InvalidInputError from '../../errors/InvalidInputError';
+import InvalidTypeError from '../../errors/InvalidTypeError';
 import { Converter, TypeCheckingCodec, isBoolean } from './convert';
 
 /**
@@ -10,7 +10,7 @@ import { Converter, TypeCheckingCodec, isBoolean } from './convert';
 export class BooleanDecoder implements Converter<unknown, boolean> {
   convert(input: unknown): boolean {
     if (!isBoolean(input)) {
-      throw new InvalidInputError();
+      throw new InvalidTypeError(typeof input, 'boolean');
     }
 
     return input;

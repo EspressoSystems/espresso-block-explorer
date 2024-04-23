@@ -6,14 +6,12 @@ import {
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import {
   numberArrayCodec,
   numberCodec,
 } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 
 /**
  * CappuccinoAPITransactionNMTEntry represents a transaction NMT entry in the
@@ -37,12 +35,7 @@ export class CappuccinoAPITransactionNMTEntryDecoder
   implements Converter<unknown, CappuccinoAPITransactionNMTEntry>
 {
   convert(input: unknown): CappuccinoAPITransactionNMTEntry {
-    if (
-      !isRecord(input, 'vm', isUnknown) ||
-      !isRecord(input, 'payload', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'vm', 'payload');
 
     return new CappuccinoAPITransactionNMTEntry(
       numberCodec.decode(input.vm),

@@ -1,11 +1,8 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
-import { isUnknownArray } from '../../../../convert/codec/unknown';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -37,12 +34,7 @@ export class CappuccinoAPITransactionProofDecoder
   implements Converter<unknown, CappuccinoAPITransactionProof>
 {
   convert(input: unknown): CappuccinoAPITransactionProof {
-    if (
-      !isRecord(input, 'pos', isUnknown) ||
-      !isRecord(input, 'proof', isUnknownArray)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'pos', 'proof');
 
     return new CappuccinoAPITransactionProof(
       taggedBase64Codec.decode(input.pos),

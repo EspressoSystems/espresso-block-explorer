@@ -2,10 +2,8 @@ import { hexArrayBufferCodec } from '../../../../convert/codec/array_buffer';
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 
 /**
  * CappuccinoFeeInfo represents the fee information in the Cappuccino API.
@@ -28,12 +26,7 @@ class CappuccinoFeeInfoDecoder
   implements Converter<unknown, CappuccinoFeeInfo>
 {
   convert(input: unknown): CappuccinoFeeInfo {
-    if (
-      !isRecord(input, 'account', isUnknown) ||
-      !isRecord(input, 'amount', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'account', 'amount');
 
     return new CappuccinoFeeInfo(
       hexArrayBufferCodec.decode(input.account),

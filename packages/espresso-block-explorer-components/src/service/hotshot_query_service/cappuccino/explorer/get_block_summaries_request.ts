@@ -1,12 +1,11 @@
 import {
   Codec,
   Converter,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
+  isNumber,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
 import { StringCodec, stringCodec } from '../../../../convert/codec/string';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import { latestConstant } from './constants';
 
 export abstract class CappuccinoExplorerGetBlockSummariesRequest {
@@ -34,7 +33,7 @@ class CappuccinoExplorerGetBlockSummariesRequestEncoder
   implements Converter<CappuccinoExplorerGetBlockSummariesRequest, unknown>
 {
   convert(input: CappuccinoExplorerGetBlockSummariesRequest) {
-    if (typeof input.from === 'number') {
+    if (isNumber(input.from)) {
       return {
         from: numberCodec.encode(input.from),
         limit: numberCodec.encode(input.limit),
@@ -54,12 +53,7 @@ class CappuccinoExplorerGetBlockSummariesRequestDecoder
   implements Converter<unknown, CappuccinoExplorerGetBlockSummariesRequest>
 {
   convert(input: unknown): CappuccinoExplorerGetBlockSummariesRequest {
-    if (
-      !isRecord(input, 'from', isUnknown) ||
-      !isRecord(input, 'limit', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'from', 'limit');
 
     if (input.from === latestConstant) {
       return new CappuccinoExplorerGetBlockSummariesRequestLatest(

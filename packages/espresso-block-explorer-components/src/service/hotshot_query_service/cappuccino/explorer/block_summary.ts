@@ -7,12 +7,10 @@ import { hexArrayBufferCodec } from '../../../../convert/codec/array_buffer';
 import {
   Codec,
   Converter,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { rfc3999DateCodec } from '../../../../convert/codec/date';
 import { numberCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -51,16 +49,15 @@ class CappuccinoExplorerBlockSummaryDecoder
   implements Converter<unknown, CappuccinoExplorerBlockSummary>
 {
   convert(input: unknown): CappuccinoExplorerBlockSummary {
-    if (
-      !isRecord(input, 'hash', isUnknown) ||
-      !isRecord(input, 'height', isUnknown) ||
-      !isRecord(input, 'proposer_id', isUnknown) ||
-      !isRecord(input, 'num_transactions', isUnknown) ||
-      !isRecord(input, 'size', isUnknown) ||
-      !isRecord(input, 'time', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(
+      input,
+      'hash',
+      'height',
+      'proposer_id',
+      'num_transactions',
+      'size',
+      'time',
+    );
 
     return new CappuccinoExplorerBlockSummary(
       taggedBase64Codec.decode(input.hash),

@@ -1,5 +1,5 @@
 import { validateAndExpandResponse } from '../../../../../async/fetch/response_validators';
-import InvalidTypeError from '../../../../../errors/InvalidTypeError';
+import { numberCodec } from '../../../../../convert';
 import { CappuccinoHotShotQueryServiceStatusAPI } from '../status_api';
 
 export class FetchBasedCappuccinoHotShotQueryServiceStatusAPI
@@ -8,15 +8,9 @@ export class FetchBasedCappuccinoHotShotQueryServiceStatusAPI
   private readonly fetcher: typeof fetch;
   private readonly baseURL: URL;
   private readonly blockHeightURL: URL;
-  private readonly blockHeightResponseValidator = validateAndExpandResponse({
-    convert(a) {
-      if (typeof a !== 'number') {
-        throw new InvalidTypeError(typeof a, 'number');
-      }
-
-      return a;
-    },
-  });
+  private readonly blockHeightResponseValidator = validateAndExpandResponse(
+    numberCodec.decoder,
+  );
 
   constructor(fetcher: typeof fetch, url: URL) {
     this.fetcher = fetcher;

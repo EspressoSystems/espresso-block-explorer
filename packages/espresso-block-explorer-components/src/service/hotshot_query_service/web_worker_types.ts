@@ -1,6 +1,7 @@
 import {
   Converter,
   TypeCheckingCodec,
+  assertRecordWithKeys,
   isRecord,
   isUnknown,
 } from '../../convert/codec/convert';
@@ -40,14 +41,7 @@ export class WebWorkerRequest<
 
 class WebWorkerRequestDecoder implements Converter<unknown, WebWorkerRequest> {
   convert(input: unknown): WebWorkerRequest {
-    if (
-      !isRecord(input, 'requestID', isUnknown) ||
-      !isRecord(input, 'api', isUnknown) ||
-      !isRecord(input, 'method', isUnknown) ||
-      !isRecord(input, 'param', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'requestID', 'api', 'method', 'param');
 
     return new WebWorkerRequest(
       requestIDCodec.decode(input.requestID),
@@ -104,12 +98,7 @@ class WebWorkerResponseSuccessDecoder
   implements Converter<unknown, WebWorkerResponseSuccess>
 {
   convert(input: unknown): WebWorkerResponseSuccess {
-    if (
-      !isRecord(input, 'requestID', isUnknown) ||
-      !isRecord(input, 'response', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'requestID', 'response');
 
     return new WebWorkerResponseSuccess(
       requestIDCodec.decode(input.requestID),
@@ -157,12 +146,7 @@ class WebWorkerResponseErrorDecoder
   implements Converter<unknown, WebWorkerResponseError>
 {
   convert(input: unknown): WebWorkerResponseError {
-    if (
-      !isRecord(input, 'requestID', isUnknown) ||
-      !isRecord(input, 'error', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'requestID', 'error');
 
     return new WebWorkerResponseError(
       requestIDCodec.decode(input.requestID),

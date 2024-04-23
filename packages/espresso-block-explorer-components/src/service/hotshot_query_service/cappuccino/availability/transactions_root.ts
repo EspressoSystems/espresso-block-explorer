@@ -1,11 +1,9 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { numberArrayCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 
 /**
  * CappuccinoTransactionsRoot represents the transactions root in the Cappuccino
@@ -27,9 +25,7 @@ export class CappuccinoTransactionsRootDecoder
   implements Converter<unknown, CappuccinoTransactionsRoot>
 {
   convert(input: unknown): CappuccinoTransactionsRoot {
-    if (!isRecord(input, 'root', isUnknown)) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'root');
 
     return new CappuccinoTransactionsRoot(numberArrayCodec.decode(input.root));
   }

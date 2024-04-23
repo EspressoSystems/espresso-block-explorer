@@ -71,6 +71,7 @@ describe('Web worker Client Based', () => {
             CappuccinoExplorerGetBlockSummariesRequest.latest(10),
           ),
         ).resolves.not.toBeNull();
+
         await expect(
           client.explorer.getBlockSummaries(
             CappuccinoExplorerGetBlockSummariesRequest.from(
@@ -103,6 +104,7 @@ describe('Web worker Client Based', () => {
             ),
           ),
         );
+
         await expect(
           client.explorer.getTransactionSummaries(
             new CappuccinoExplorerGetTransactionSummariesRequest(
@@ -116,6 +118,7 @@ describe('Web worker Client Based', () => {
             ),
           ),
         );
+
         await expect(
           client.explorer.getTransactionSummaries(
             new CappuccinoExplorerGetTransactionSummariesRequest(
@@ -134,6 +137,7 @@ describe('Web worker Client Based', () => {
         await expect(
           client.explorer.getExplorerOverview(),
         ).resolves.not.toBeNull();
+
         await expect(
           client.explorer.getSearchResult(
             new CappuccinoExplorerGetSearchResultRequest('BLOCK~'),

@@ -2,12 +2,10 @@ import { booleanCodec } from '../../../../convert/codec/boolean';
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { rfc3999DateCodec } from '../../../../convert/codec/date';
 import { numberCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -55,19 +53,18 @@ class CappuccinoExplorerTransactionDetailDetailsDecoder
   implements Converter<unknown, CappuccinoExplorerTransactionDetailDetails>
 {
   convert(input: unknown): CappuccinoExplorerTransactionDetailDetails {
-    if (
-      !isRecord(input, 'hash', isUnknown) ||
-      !isRecord(input, 'height', isUnknown) ||
-      !isRecord(input, 'block_confirmed', isUnknown) ||
-      !isRecord(input, 'offset', isUnknown) ||
-      !isRecord(input, 'num_transactions', isUnknown) ||
-      !isRecord(input, 'size', isUnknown) ||
-      !isRecord(input, 'time', isUnknown) ||
-      !isRecord(input, 'sequencing_fees', isUnknown) ||
-      !isRecord(input, 'fee_details', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(
+      input,
+      'hash',
+      'height',
+      'block_confirmed',
+      'offset',
+      'num_transactions',
+      'size',
+      'time',
+      'sequencing_fees',
+      'fee_details',
+    );
 
     return new CappuccinoExplorerTransactionDetailDetails(
       taggedBase64Codec.decode(input.hash),

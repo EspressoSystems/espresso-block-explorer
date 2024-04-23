@@ -7,6 +7,7 @@ import {
   Codec,
   Converter,
   TypeCheckingCodec,
+  assertRecordWithKeys,
   isRecord,
   isString,
   isUnknown,
@@ -89,19 +90,12 @@ export class CappuccinoAPIMerkleTreeLeafProofDecoder
   implements Converter<unknown, CappuccinoAPIMerkleTreeLeafProof>
 {
   convert(input: unknown): CappuccinoAPIMerkleTreeLeafProof {
-    if (!isRecord(input, 'Leaf', isUnknown)) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'Leaf');
 
     const leaf = input.Leaf;
 
-    if (
-      !isRecord(leaf, 'value', isUnknown) ||
-      !isRecord(leaf, 'pos', isUnknown) ||
-      !isRecord(leaf, 'elem', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(leaf, 'value', 'pos', 'elem');
+
     return new CappuccinoAPIMerkleTreeLeafProof(
       taggedBase64Codec.decode(leaf.value),
       taggedBase64Codec.decode(leaf.pos),
@@ -158,14 +152,10 @@ export class CappuccinoAPIMerkleTreeForgottenSubTreeProofDecoder
   implements Converter<unknown, CappuccinoAPIMerkleTreeForgottenSubTreeProof>
 {
   convert(input: unknown): CappuccinoAPIMerkleTreeForgottenSubTreeProof {
-    if (!isRecord(input, 'ForgettenSubtree', isUnknown)) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'ForgettenSubtree');
 
     const forgottenSubtree = input.ForgettenSubtree;
-    if (!isRecord(forgottenSubtree, 'value', isUnknown)) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(forgottenSubtree, 'value');
 
     return new CappuccinoAPIMerkleTreeForgottenSubTreeProof(
       taggedBase64Codec.decode(forgottenSubtree.value),
@@ -223,17 +213,10 @@ export class CappuccinoAPIMerkleTreeBranchProofDecoder
   implements Converter<unknown, CappuccinoAPIMerkleTreeBranchProof>
 {
   convert(input: unknown): CappuccinoAPIMerkleTreeBranchProof {
-    if (!isRecord(input, 'Branch', isUnknown)) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'Branch');
 
     const branch = input.Branch;
-    if (
-      !isRecord(branch, 'value', isUnknown) ||
-      !isRecord(branch, 'children', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(branch, 'value', 'children');
 
     return new CappuccinoAPIMerkleTreeBranchProof(
       taggedBase64Codec.decode(branch.value),

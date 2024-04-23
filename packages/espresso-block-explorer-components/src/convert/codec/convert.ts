@@ -1,3 +1,6 @@
+import ExpectedObjectWithKeyError from '../../errors/ExpectedObjectWithKeyError';
+import InvalidTypeError from '../../errors/InvalidTypeError';
+
 /**
  * a Converter is a simple contract that indicates that a member is able to
  * be converted from an incoming input type of Input, to an outgoing output
@@ -110,4 +113,29 @@ export function isRecord<Key extends string, Value>(
     key in value &&
     predicate((value as Record<Key, unknown>)[key])
   );
+}
+
+/**
+ * assertRecordWithKeys is a helper function much like `isRecord`.  It is an
+ * assertion type function for typescript, which indicates that the type passed
+ * in has the keys passed in, otherwise this throw an error that indicates the
+ * nature of the error in question.
+ */
+export function assertRecordWithKeys<Key extends string>(
+  value: unknown,
+  ...keys: Key[]
+): asserts value is Record<Key, unknown> {
+  if (typeof value !== 'object') {
+    throw new InvalidTypeError(typeof value, 'object');
+  }
+
+  if (value === null) {
+    throw new InvalidTypeError('null', 'object');
+  }
+
+  for (const key of keys) {
+    if (!(key in value)) {
+      throw new ExpectedObjectWithKeyError('object', key);
+    }
+  }
 }

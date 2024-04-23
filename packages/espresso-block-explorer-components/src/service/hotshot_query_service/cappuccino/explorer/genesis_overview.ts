@@ -1,11 +1,9 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 
 export class CappuccinoGenesisOverview {
   readonly rollups: number;
@@ -27,13 +25,7 @@ class CappuccinoGenesisOverviewDecoder
   implements Converter<unknown, CappuccinoGenesisOverview>
 {
   convert(input: unknown): CappuccinoGenesisOverview {
-    if (
-      !isRecord(input, 'rollups', isUnknown) ||
-      !isRecord(input, 'transactions', isUnknown) ||
-      !isRecord(input, 'blocks', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'rollups', 'transactions', 'blocks');
 
     return new CappuccinoGenesisOverview(
       numberCodec.decode(input.rollups),

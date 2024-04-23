@@ -2,10 +2,8 @@ import { urlBase64ArrayBufferCodec } from '../../../../convert/codec/array_buffe
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isString,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 
 /**
  * CappuccinoNamespaceTable represents the namespace table in the Cappuccino API.
@@ -25,9 +23,7 @@ class CappuccinoNamespaceTableDecoder
   implements Converter<unknown, CappuccinoNamespaceTable>
 {
   convert(input: unknown): CappuccinoNamespaceTable {
-    if (!isRecord(input, 'bytes', isString)) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'bytes');
 
     return new CappuccinoNamespaceTable(
       urlBase64ArrayBufferCodec.decode(input.bytes),

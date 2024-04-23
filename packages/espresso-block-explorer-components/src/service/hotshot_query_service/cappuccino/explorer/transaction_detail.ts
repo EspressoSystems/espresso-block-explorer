@@ -1,10 +1,8 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   CappuccinoExplorerTransactionDetailData,
   cappuccinoExplorerTransactionDetailDataArrayCodec,
@@ -35,12 +33,7 @@ class CappuccinoExplorerTransactionDetailDecoder
   implements Converter<unknown, CappuccinoExplorerTransactionDetail>
 {
   convert(input: unknown): CappuccinoExplorerTransactionDetail {
-    if (
-      !isRecord(input, 'details', isUnknown) ||
-      !isRecord(input, 'data', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'details', 'data');
 
     return new CappuccinoExplorerTransactionDetail(
       cappuccinoExplorerTransactionDetailDetailsCodec.decode(input.details),

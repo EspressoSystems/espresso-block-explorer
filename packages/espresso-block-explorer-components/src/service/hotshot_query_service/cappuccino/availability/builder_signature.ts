@@ -2,11 +2,9 @@ import { hexArrayBufferCodec } from '../../../../convert/codec/array_buffer';
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 
 /**
  * CappuccinoBuilderSignature represents the signature of a builder in the
@@ -32,13 +30,7 @@ class CappuccinoBuilderSignatureDecoder
   implements Converter<unknown, CappuccinoBuilderSignature>
 {
   convert(input: unknown): CappuccinoBuilderSignature {
-    if (
-      !isRecord(input, 'r', isUnknown) ||
-      !isRecord(input, 's', isUnknown) ||
-      !isRecord(input, 'v', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'r', 's', 'v');
 
     return new CappuccinoBuilderSignature(
       hexArrayBufferCodec.decode(input.r),

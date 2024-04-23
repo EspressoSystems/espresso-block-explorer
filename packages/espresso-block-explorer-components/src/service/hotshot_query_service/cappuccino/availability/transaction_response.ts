@@ -1,11 +1,9 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -53,15 +51,14 @@ export class CappuccinoAPITransactionResponseDecoder
   implements Converter<unknown, CappuccinoAPITransactionResponse>
 {
   convert(input: unknown): CappuccinoAPITransactionResponse {
-    if (
-      !isRecord(input, 'transaction', isUnknown) ||
-      !isRecord(input, 'block_hash', isUnknown) ||
-      !isRecord(input, 'proof', isUnknown) ||
-      !isRecord(input, 'height', isUnknown) ||
-      !isRecord(input, 'hash', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(
+      input,
+      'transaction',
+      'block_hash',
+      'proof',
+      'height',
+      'hash',
+    );
 
     return new CappuccinoAPITransactionResponse(
       cappuccinoAPITransactionNMTEntryCodec.decoder.convert(input.transaction),

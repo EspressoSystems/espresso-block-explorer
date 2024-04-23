@@ -8,7 +8,7 @@ import {
   NullEncoder,
 } from '../../../../convert/codec/null';
 import { isUnknownArray } from '../../../../convert/codec/unknown';
-import InvalidInputError from '../../../../errors/InvalidInputError';
+import InvalidTypeError from '../../../../errors/InvalidTypeError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -38,7 +38,7 @@ export class CappuccinoAPIQuorumCertificateSignaturesDecoder
 {
   convert(input: unknown): CappuccinoAPIQuorumCertificateSignatures {
     if (!isUnknownArray(input) || input.length !== 2) {
-      throw new InvalidInputError();
+      throw new InvalidTypeError(typeof input, 'Array');
     }
 
     return new CappuccinoAPIQuorumCertificateSignatures(

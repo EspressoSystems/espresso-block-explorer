@@ -1,16 +1,15 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isNumber,
-  isRecord,
-  isString,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import {
   NullCodec,
   NullDecoder,
   NullEncoder,
 } from '../../../../convert/codec/null';
-import InvalidInputError from '../../../../errors/InvalidInputError';
+import { numberCodec } from '../../../../convert/codec/number';
+import { stringCodec } from '../../../../convert/codec/string';
 
 /**
  * CappuccinoL1Finalized represents the finalized block in the Cappuccino L1.
@@ -35,15 +34,13 @@ export class CappuccinoL1FinalizedDecoder
   implements Converter<unknown, CappuccinoL1Finalized>
 {
   convert(input: unknown): CappuccinoL1Finalized {
-    if (
-      !isRecord(input, 'number', isNumber) ||
-      !isRecord(input, 'timestamp', isString) ||
-      !isRecord(input, 'hash', isString)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(input, 'number', 'timestamp', 'hash');
 
-    return new CappuccinoL1Finalized(input.number, input.timestamp, input.hash);
+    return new CappuccinoL1Finalized(
+      numberCodec.decode(input.number),
+      stringCodec.decode(input.timestamp),
+      stringCodec.decode(input.hash),
+    );
   }
 }
 
@@ -52,9 +49,9 @@ export class CappuccinoL1FinalizedEncoder
 {
   convert(input: CappuccinoL1Finalized) {
     return {
-      number: input.number,
-      timestamp: input.timestamp,
-      hash: input.hash,
+      number: numberCodec.encode(input.number),
+      timestamp: stringCodec.encode(input.timestamp),
+      hash: stringCodec.encode(input.hash),
     };
   }
 }

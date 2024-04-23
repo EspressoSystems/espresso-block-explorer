@@ -1,4 +1,4 @@
-import InvalidInputError from '../../errors/InvalidInputError';
+import { InvalidTypeError } from '../../errors';
 import { Converter, TypeCheckingCodec } from './convert';
 import { isUnknownArray } from './unknown';
 
@@ -16,7 +16,12 @@ export class ArrayDecoder<T, U> implements Converter<unknown, U[]> {
 
   convert(input: unknown): U[] {
     if (!isUnknownArray(input)) {
-      throw new InvalidInputError();
+      throw new InvalidTypeError(
+        typeof input === 'object' && input !== null
+          ? input.constructor.name
+          : typeof input,
+        'array',
+      );
     }
 
     return input.map((m) => this.itemCodec.decode(m));

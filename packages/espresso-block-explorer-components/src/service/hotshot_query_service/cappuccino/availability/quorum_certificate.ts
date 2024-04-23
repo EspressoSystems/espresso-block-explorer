@@ -2,11 +2,9 @@ import { booleanCodec } from '../../../../convert/codec/boolean';
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { numberCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -57,16 +55,15 @@ export class CappuccinoAPIQuorumCertificateDecoder
   implements Converter<unknown, CappuccinoAPIQuorumCertificate>
 {
   convert(input: unknown): CappuccinoAPIQuorumCertificate {
-    if (
-      !isRecord(input, 'data', isUnknown) ||
-      !isRecord(input, 'vote_commitment', isUnknown) ||
-      !isRecord(input, 'view_number', isUnknown) ||
-      !isRecord(input, 'signatures', isUnknown) ||
-      !isRecord(input, 'is_genesis', isUnknown) ||
-      !isRecord(input, '_pd', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(
+      input,
+      'data',
+      'vote_commitment',
+      'view_number',
+      'signatures',
+      'is_genesis',
+      '_pd',
+    );
 
     return new CappuccinoAPIQuorumCertificate(
       cappuccinoAPIBQuorumCertificateDataCodec.decode(input.data),

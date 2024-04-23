@@ -1,4 +1,4 @@
-import InvalidInputError from '../../errors/InvalidInputError';
+import InvalidTypeError from '../../errors/InvalidTypeError';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from './array';
 import {
   Converter,
@@ -20,7 +20,7 @@ export class StringDecoder<S extends string = string>
 {
   convert(input: unknown): S {
     if (!isString(input)) {
-      throw new InvalidInputError();
+      throw new InvalidTypeError(typeof input, 'string');
     }
 
     return input as S;

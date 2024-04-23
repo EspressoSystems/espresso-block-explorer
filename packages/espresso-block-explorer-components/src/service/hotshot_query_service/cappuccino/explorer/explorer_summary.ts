@@ -1,10 +1,8 @@
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   CappuccinoExplorerBlockDetail,
   cappuccinoExplorerBlockDetailCodec,
@@ -56,15 +54,14 @@ class CappuccinoExplorerSummaryDecoder
   implements Converter<unknown, CappuccinoExplorerSummary>
 {
   convert(input: unknown): CappuccinoExplorerSummary {
-    if (
-      !isRecord(input, 'latest_block', isUnknown) ||
-      !isRecord(input, 'genesis_overview', isUnknown) ||
-      !isRecord(input, 'latest_blocks', isUnknown) ||
-      !isRecord(input, 'latest_transactions', isUnknown) ||
-      !isRecord(input, 'histograms', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(
+      input,
+      'latest_block',
+      'genesis_overview',
+      'latest_blocks',
+      'latest_transactions',
+      'histograms',
+    );
 
     return new CappuccinoExplorerSummary(
       cappuccinoExplorerBlockDetailCodec.decode(input.latest_block),

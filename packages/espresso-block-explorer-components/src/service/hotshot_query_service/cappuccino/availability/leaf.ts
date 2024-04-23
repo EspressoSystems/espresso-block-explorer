@@ -2,14 +2,12 @@ import { hexArrayBufferCodec } from '../../../../convert/codec/array_buffer';
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import {
   numberArrayCodec,
   numberCodec,
 } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -63,18 +61,17 @@ export class CappuccinoAPILeafDecoder
   implements Converter<unknown, CappuccinoAPILeaf>
 {
   convert(input: unknown): CappuccinoAPILeaf {
-    if (
-      !isRecord(input, 'view_number', isUnknown) ||
-      !isRecord(input, 'justify_qc', isUnknown) ||
-      !isRecord(input, 'parent_commitment', isUnknown) ||
-      !isRecord(input, 'block_header', isUnknown) ||
-      !isRecord(input, 'block_payload', isUnknown) ||
-      !isRecord(input, 'rejected', isUnknown) ||
-      !isRecord(input, 'timestamp', isUnknown) ||
-      !isRecord(input, 'proposer_id', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(
+      input,
+      'view_number',
+      'justify_qc',
+      'parent_commitment',
+      'block_header',
+      'block_payload',
+      'rejected',
+      'timestamp',
+      'proposer_id',
+    );
 
     return new CappuccinoAPILeaf(
       numberCodec.decode(input.view_number),

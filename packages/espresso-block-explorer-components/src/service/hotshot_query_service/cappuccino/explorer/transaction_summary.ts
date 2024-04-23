@@ -6,15 +6,13 @@ import {
 import {
   Converter,
   TypeCheckingCodec,
-  isRecord,
-  isUnknown,
+  assertRecordWithKeys,
 } from '../../../../convert/codec/convert';
 import { rfc3999DateCodec } from '../../../../convert/codec/date';
 import {
   numberArrayCodec,
   numberCodec,
 } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
@@ -56,16 +54,15 @@ class CappuccinoExplorerTransactionSummaryDecoder
   implements Converter<unknown, CappuccinoExplorerTransactionSummary>
 {
   convert(input: unknown): CappuccinoExplorerTransactionSummary {
-    if (
-      !isRecord(input, 'hash', isUnknown) ||
-      !isRecord(input, 'rollups', isUnknown) ||
-      !isRecord(input, 'height', isUnknown) ||
-      !isRecord(input, 'time', isUnknown) ||
-      !isRecord(input, 'offset', isUnknown) ||
-      !isRecord(input, 'num_transactions', isUnknown)
-    ) {
-      throw new InvalidInputError();
-    }
+    assertRecordWithKeys(
+      input,
+      'hash',
+      'rollups',
+      'height',
+      'time',
+      'offset',
+      'num_transactions',
+    );
 
     return new CappuccinoExplorerTransactionSummary(
       taggedBase64Codec.decode(input.hash),
