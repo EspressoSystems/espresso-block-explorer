@@ -10,7 +10,6 @@ export default class BadResponseError extends BaseError {
   constructor(response: Response, message: string = 'bad server response') {
     super(message);
     this.response = response;
-    Object.freeze(this);
   }
 
   toJSON() {
