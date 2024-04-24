@@ -1,4 +1,4 @@
-import { Text } from '@/test';
+import { Text } from '@/text';
 import {
   WithParagraphBase,
   WithParagraphSmall,
