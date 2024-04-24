@@ -4,10 +4,10 @@ import {
   assertRecordWithKeys,
   isRecord,
   isUnknown,
-} from '../../convert/codec/convert';
-import { numberCodec } from '../../convert/codec/number';
-import { stringCodec } from '../../convert/codec/string';
-import InvalidInputError from '../../errors/InvalidInputError';
+} from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
+import { stringCodec } from '@/convert/codec/string';
+import InvalidInputError from '@/errors/InvalidInputError';
 
 export type RequestID = number;
 const requestIDCodec = numberCodec;

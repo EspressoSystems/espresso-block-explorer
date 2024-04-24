@@ -1,18 +1,18 @@
+import { DataContext } from '@/contexts/DataProvider';
+import { LoadingContext } from '@/contexts/LoadingProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import { CardNoPadding } from '@/layout/card/Card';
+import SummaryTabledLabeledValue from '@/layout/summary_table_labeled_value/SummaryTabledLabeledValue';
+import SummaryValueLabeled from '@/layout/summary_value_labeled/SummaryValueLabeled';
+import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
+import SkeletonContent from '@/loading/SkeletonContent';
+import ByteSizeText from '@/text/ByteSizeText';
+import HexText from '@/text/HexText';
+import NumberText from '@/text/NumberText';
+import RelativeTimeText from '@/text/RelativeTimeText';
+import Text from '@/text/Text';
 import React from 'react';
-import { DataContext } from '../../contexts/DataProvider';
-import { LoadingContext } from '../../contexts/LoadingProvider';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
-import { CardNoPadding } from '../../layout/card/Card';
-import SummaryTabledLabeledValue from '../../layout/summary_table_labeled_value/SummaryTabledLabeledValue';
-import SummaryValueLabeled from '../../layout/summary_value_labeled/SummaryValueLabeled';
-import { WithLoadingShimmer } from '../../loading/LoadingShimmer';
-import SkeletonContent from '../../loading/SkeletonContent';
-import ByteSizeText from '../../text/ByteSizeText';
-import HexText from '../../text/HexText';
-import NumberText from '../../text/NumberText';
-import RelativeTimeText from '../../text/RelativeTimeText';
-import Text from '../../text/Text';
 import {
   LatestBlock,
   LatestBlockSummaryProvider,

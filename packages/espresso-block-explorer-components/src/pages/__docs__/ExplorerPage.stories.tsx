@@ -1,8 +1,8 @@
+import { ExplorerSummaryLoader } from '@/components/page_sections/explorer_summary/ExplorerSummaryLoader';
+import { ProvideTickEverySecond } from '@/contexts/NowProvider';
+import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import { ProvideTickEverySecond } from '../../components/contexts/NowProvider';
-import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
-import { ExplorerSummaryLoader } from '../../components/page_sections/explorer_summary/ExplorerSummaryLoader';
 import { ProvideCappuccinoExplorerSummary } from '../CappuccinoHotShotQueryServiceAdapters';
 import ExplorerPage from '../ExplorerPage';
 import FakeDataNotice from '../FakeDataNotice';

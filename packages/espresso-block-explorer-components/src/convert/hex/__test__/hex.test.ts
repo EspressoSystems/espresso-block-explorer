@@ -1,6 +1,6 @@
+import { compareArrayBuffer } from '@/functional/functional';
 import '@testing-library/jest-dom';
 import { describe, expect, it } from 'vitest';
-import { compareArrayBuffer } from '../../../functional/functional';
 import { parseHexString } from '../hex';
 
 describe('hex', () => {

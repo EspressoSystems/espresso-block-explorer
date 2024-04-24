@@ -1,8 +1,8 @@
-import { Converter } from '../../convert/codec/convert';
-import BadResponseClientError from '../../errors/BadResponseClientError';
-import BadResponseError from '../../errors/BadResponseError';
-import BadResponseServerError from '../../errors/BadResponseServerError';
-import ResponseContentTypeIsNotApplicationJSONError from '../../errors/ResponseContentTypIsNotApplicationJSONError';
+import { Converter } from '@/convert/codec/convert';
+import BadResponseClientError from '@/errors/BadResponseClientError';
+import BadResponseError from '@/errors/BadResponseError';
+import BadResponseServerError from '@/errors/BadResponseServerError';
+import ResponseContentTypeIsNotApplicationJSONError from '@/errors/ResponseContentTypeIsNotApplicationJSONError';
 
 /**
  * validateAndExpandResponse is a function that takes a [Converter] and returns
@@ -60,7 +60,7 @@ export function validateResponseIsJSON(response: Response): void {
   const contentType = response.headers.get('content-type');
 
   if (!contentType || !contentType.startsWith('application/json')) {
-    throw new ResponseContentTypeIsNotApplicationJSONError(
+    throw ResponseContentTypeIsNotApplicationJSONError.fromResponse(
       response,
       contentType || 'undefined',
     );

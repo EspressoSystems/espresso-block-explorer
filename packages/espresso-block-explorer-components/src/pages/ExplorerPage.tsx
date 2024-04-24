@@ -1,49 +1,46 @@
-import React from 'react';
-import { LoadingContext } from '../components/contexts/LoadingProvider';
-import {
-  OverridePagePath,
-  PageType,
-} from '../components/contexts/PagePathProvider';
-import { PathResolverContext } from '../components/contexts/PathResolverProvider';
-import ErrorContextGuard from '../components/data/async_data/ErrorContextGuard';
-import LabeledAnchorButton from '../components/hid/buttons/labeled_anchor_button/LabeledAnchorButton';
-import { addClassToClassName } from '../components/higher_order';
-import { SearchInput } from '../components/input/search/SearchInput';
-import Card, { CardNoPadding } from '../components/layout/card/Card';
-import Heading1 from '../components/layout/heading/Heading1';
-import { WithEdgeMargin } from '../components/layout/margin/margins';
-import SummaryTabledLabeledValue from '../components/layout/summary_table_labeled_value/SummaryTabledLabeledValue';
-import { WithLoadingShimmer } from '../components/loading/LoadingShimmer';
-import { BlockSizeHistogram } from '../components/page_sections/block_size_histogram/BlockSizeHistogram';
-import { BlockSizeHistogramLoader } from '../components/page_sections/block_size_histogram/BlockSizeHistogramDataLoader';
-import { BlockSummaryDataLoader } from '../components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
+import ErrorContextGuard from '@/components/data/async_data/ErrorContextGuard';
+import LabeledAnchorButton from '@/components/hid/buttons/labeled_anchor_button/LabeledAnchorButton';
+import { addClassToClassName } from '@/components/higher_order';
+import { SearchInput } from '@/components/input/search/SearchInput';
+import { BlockSizeHistogram } from '@/components/page_sections/block_size_histogram/BlockSizeHistogram';
+import { BlockSizeHistogramLoader } from '@/components/page_sections/block_size_histogram/BlockSizeHistogramDataLoader';
+import { BlockSummaryDataLoader } from '@/components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
 import {
   BlockSummaryDataTable,
   BlockSummaryDataTablePlaceholder,
-} from '../components/page_sections/block_summary_data_table/BlockSummaryDataTable';
-import { BlockThroughputHistogram } from '../components/page_sections/block_throughput_histogram/BlockThroughputHistogram';
-import { BlockThroughputHistogramLoader } from '../components/page_sections/block_throughput_histogram/BlockThroughputHistogramDataLoader';
-import { BlockTimeHistogram } from '../components/page_sections/block_time_histogram/BlockTimeHistogram';
-import { BlockTimeHistogramLoader } from '../components/page_sections/block_time_histogram/BlockTimeHistogramDataLoader';
-import { ExplorerOverviewAsyncHandler } from '../components/page_sections/explorer_overview/ExplorerOverview';
-import { ExplorerOverviewLoader } from '../components/page_sections/explorer_overview/ExplorerOverviewLoader';
-import Footer from '../components/page_sections/footer/Footer';
-import Header from '../components/page_sections/header/Header';
-import { LatestBlockSummaryAsyncHandler } from '../components/page_sections/latest_block_summary/LatestBlockSummary';
-import { LatestBlockSummaryDataLoader } from '../components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
-import PageTitle from '../components/page_sections/page_title/PageTitle';
+} from '@/components/page_sections/block_summary_data_table/BlockSummaryDataTable';
+import { BlockThroughputHistogram } from '@/components/page_sections/block_throughput_histogram/BlockThroughputHistogram';
+import { BlockThroughputHistogramLoader } from '@/components/page_sections/block_throughput_histogram/BlockThroughputHistogramDataLoader';
+import { BlockTimeHistogram } from '@/components/page_sections/block_time_histogram/BlockTimeHistogram';
+import { BlockTimeHistogramLoader } from '@/components/page_sections/block_time_histogram/BlockTimeHistogramDataLoader';
+import { ExplorerOverviewAsyncHandler } from '@/components/page_sections/explorer_overview/ExplorerOverview';
+import { ExplorerOverviewLoader } from '@/components/page_sections/explorer_overview/ExplorerOverviewLoader';
+import Footer from '@/components/page_sections/footer/Footer';
+import Header from '@/components/page_sections/header/Header';
+import { LatestBlockSummaryAsyncHandler } from '@/components/page_sections/latest_block_summary/LatestBlockSummary';
+import { LatestBlockSummaryDataLoader } from '@/components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
+import PageTitle from '@/components/page_sections/page_title/PageTitle';
 import {
   RollUpsSummaryDataTable,
   RollUpsSummaryDataTablePlaceholder,
-} from '../components/page_sections/rollups_summary_data_table/RollUpsSummaryDataTable';
-import { RollUpsSummaryLoader } from '../components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
-import { TransactionSummaryDataLoader } from '../components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
+} from '@/components/page_sections/rollups_summary_data_table/RollUpsSummaryDataTable';
+import { RollUpsSummaryLoader } from '@/components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
+import { TransactionSummaryDataLoader } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
 import {
   TransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
-} from '../components/page_sections/transaction_summary_data_table/TransactionSummaryDataTable';
-import Text from '../components/text/Text';
-import { WithUiText300 } from '../components/typography/typography';
+} from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataTable';
+import { LoadingContext } from '@/contexts/LoadingProvider';
+import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import Card, { CardNoPadding } from '@/layout/card/Card';
+import Heading1 from '@/layout/heading/Heading1';
+import { WithEdgeMargin } from '@/layout/margin/margins';
+import SummaryTabledLabeledValue from '@/layout/summary_table_labeled_value/SummaryTabledLabeledValue';
+import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
+import Text from '@/text/Text';
+import { WithUiText300 } from '@/typography/typography';
+import React from 'react';
 import './explorer_page.css';
 
 const Text300H3 = WithUiText300('h3');

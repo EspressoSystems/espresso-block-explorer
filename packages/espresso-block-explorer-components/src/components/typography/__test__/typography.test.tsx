@@ -1,8 +1,4 @@
-import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
-import React from 'react';
-import { describe, expect, it } from 'vitest';
-import Text from '../../text/Text';
+import Text from '@/text/Text';
 import {
   WithParagraphBase,
   WithParagraphSmall,
@@ -17,7 +13,10 @@ import {
   WithUiText300,
   WithUiText500,
   WithUiText600,
-} from '../typography';
+} from '@/typography';
+import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 
 const ParagraphText100Div = WithParagraphText100('div');
 const ParagraphText300Div = WithParagraphText300('div');

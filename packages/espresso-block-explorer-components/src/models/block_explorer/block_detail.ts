@@ -1,4 +1,4 @@
-import { AsyncRetriever } from '../../async/AsyncRetriever';
+import { AsyncRetriever } from '@/async/AsyncRetriever';
 import { TaggedBase64 } from '../espresso/tagged_base64/TaggedBase64';
 import MonetaryValue from './monetary_value';
 

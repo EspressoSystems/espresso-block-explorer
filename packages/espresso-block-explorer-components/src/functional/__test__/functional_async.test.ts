@@ -1,5 +1,3 @@
-import '@testing-library/jest-dom';
-import { describe, expect, it } from 'vitest';
 import {
   dropAsyncIterable,
   expandAsyncIterable,
@@ -10,7 +8,9 @@ import {
   iotaAsync,
   mapAsyncIterable,
   takeAsyncIterable,
-} from '../functional_async';
+} from '@/functional/functional_async';
+import '@testing-library/jest-dom';
+import { describe, expect, it } from 'vitest';
 
 async function arrayFromAsync<T>(iterable: AsyncIterable<T>): Promise<T[]> {
   return foldRAsyncIterator(

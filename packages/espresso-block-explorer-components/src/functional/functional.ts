@@ -29,8 +29,8 @@
 import LinkedList, {
   iterateLinkedList,
   pushLinkedList,
-} from '../data_structures/linked_list/LinkedList';
-import MissingElementError from '../errors/MissingElementError';
+} from '@/data_structures/linked_list/LinkedList';
+import MissingElementError from '@/errors/MissingElementError';
 
 /**
  * yieldAll is a convenience function for converting an Iterator into

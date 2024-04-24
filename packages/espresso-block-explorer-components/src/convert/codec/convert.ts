@@ -1,5 +1,5 @@
-import ExpectedObjectWithKeyError from '../../errors/ExpectedObjectWithKeyError';
-import InvalidTypeError from '../../errors/InvalidTypeError';
+import ExpectedObjectWithKeyError from '@/errors/ExpectedObjectWithKeyError';
+import InvalidTypeError from '@/errors/InvalidTypeError';
 
 /**
  * a Converter is a simple contract that indicates that a member is able to

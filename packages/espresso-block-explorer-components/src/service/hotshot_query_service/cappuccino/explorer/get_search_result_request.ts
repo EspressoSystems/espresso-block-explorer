@@ -1,5 +1,5 @@
-import { Codec, Converter } from '../../../../convert/codec/convert';
-import { stringCodec } from '../../../../convert/codec/string';
+import { Codec, Converter } from '@/convert/codec/convert';
+import { stringCodec } from '@/convert/codec/string';
 
 export class CappuccinoExplorerGetSearchResultRequest {
   readonly query: string;

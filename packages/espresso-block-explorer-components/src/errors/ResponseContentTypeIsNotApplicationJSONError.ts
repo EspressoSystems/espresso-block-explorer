@@ -5,15 +5,26 @@ import BadResponseError from './BadResponseError';
  * the nature of the failure was due to a client submission error.
  */
 export default class ResponseContentTypeIsNotApplicationJSONError extends BadResponseError {
-  get haveHeaderType(): string {
-    return this.response.headers.get('content-type') ?? 'undefined';
-  }
+  private haveHeaderType: string;
 
   constructor(
+    haveHeaderType: string,
     response: Response,
     message: string = 'response content type is not application/json',
   ) {
     super(response, message);
+    this.haveHeaderType = haveHeaderType;
+  }
+
+  static fromResponse(
+    response: Response,
+    message?: string,
+  ): ResponseContentTypeIsNotApplicationJSONError {
+    return new ResponseContentTypeIsNotApplicationJSONError(
+      response.headers.get('content-type') ?? 'undefined',
+      response,
+      message,
+    );
   }
 
   toJSON() {

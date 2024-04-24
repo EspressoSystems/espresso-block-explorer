@@ -1,4 +1,4 @@
-import { InvalidTypeError } from '../../errors';
+import InvalidTypeError from '@/errors/InvalidTypeError';
 import { Converter, TypeCheckingCodec } from './convert';
 import { isUnknownArray } from './unknown';
 

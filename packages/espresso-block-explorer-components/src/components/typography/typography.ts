@@ -9,11 +9,11 @@
  * added to other components.
  */
 
-import React from 'react';
 import {
   HigherOrderComponentWithClassNameProps,
   addClassNameToComponent,
-} from '../higher_order';
+} from '@/higher_order';
+import React from 'react';
 
 import './typography.css';
 

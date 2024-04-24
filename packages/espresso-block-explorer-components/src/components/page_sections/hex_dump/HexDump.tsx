@@ -1,7 +1,7 @@
+import { mapIterable, yieldAll } from '@/functional/functional';
+import { addClassToClassName } from '@/higher_order';
+import Text from '@/text/Text';
 import React from 'react';
-import { mapIterable, yieldAll } from '../../../functional/functional';
-import { addClassToClassName } from '../../higher_order';
-import Text from '../../text/Text';
 import './hex_dump.css';
 
 export interface HexDumpProps {

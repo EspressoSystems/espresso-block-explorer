@@ -1,4 +1,4 @@
-import InvalidTypeError from '../../errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/InvalidTypeError';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from './array';
 import {
   Converter,

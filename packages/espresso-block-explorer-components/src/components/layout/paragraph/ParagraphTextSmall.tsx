@@ -1,4 +1,4 @@
-import { WithParagraphSmall } from '../../typography/typography';
+import { WithParagraphSmall } from '@/typography/typography';
 
 /**
  * ParagraphTextSmall represents the standard Paragraph element to be utilized

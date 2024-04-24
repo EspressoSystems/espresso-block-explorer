@@ -1,9 +1,9 @@
-import { hexArrayBufferCodec } from '../../../../convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
+} from '@/convert/codec/convert';
 
 /**
  * CappuccinoFeeInfo represents the fee information in the Cappuccino API.

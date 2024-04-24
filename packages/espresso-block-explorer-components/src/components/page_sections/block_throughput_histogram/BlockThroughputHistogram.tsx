@@ -1,21 +1,21 @@
-import React from 'react';
-import { DataContext } from '../../contexts/DataProvider';
-import { LoadingContext } from '../../contexts/LoadingProvider';
-import ValueLabeled from '../../layout/value_labeled/ValueLabeled';
-import Text from '../../text/Text';
-import TransactionsPerSecondText from '../../text/TransactionsPerSecondText';
-import { HistogramLabelProps } from '../../visual/histogram/histogram_base/HistogramDefaultLabel';
+import { DataContext } from '@/contexts/DataProvider';
+import { LoadingContext } from '@/contexts/LoadingProvider';
+import ValueLabeled from '@/layout/value_labeled/ValueLabeled';
+import Text from '@/text/Text';
+import TransactionsPerSecondText from '@/text/TransactionsPerSecondText';
+import { HistogramLabelProps } from '@/visual/histogram/histogram_base/HistogramDefaultLabel';
 import {
   ProvideDataStatistics,
   SimpleHistogram,
-} from '../../visual/histogram/histogram_base/SimpleHistogram';
+} from '@/visual/histogram/histogram_base/SimpleHistogram';
 import {
   HistogramDomain,
   HistogramRange,
   HistogramRangeStatistics,
   HistogramYAxisLabelComponent,
-} from '../../visual/histogram/histogram_base/contexts';
-import { HistogramSectionTitle } from '../../visual/histogram/histogram_section_title/HistogramSectionTitle';
+} from '@/visual/histogram/histogram_base/contexts';
+import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_title/HistogramSectionTitle';
+import React from 'react';
 import { BlockThroughputHistogramData } from './BlockThroughputHistogramDataLoader';
 
 const ValueText: React.FC = () => {

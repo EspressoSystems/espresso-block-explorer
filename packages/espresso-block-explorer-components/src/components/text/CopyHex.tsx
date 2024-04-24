@@ -1,5 +1,5 @@
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import React from 'react';
-import { hexArrayBufferCodec } from '../../convert/codec/array_buffer';
 import CopyButton from '../hid/buttons/copy_button/CopyButton';
 import { CopyArrayBufferAsTextProps } from './CopyArrayBufferAsTextProps';
 import './inline.css';

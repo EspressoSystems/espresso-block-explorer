@@ -1,6 +1,6 @@
+import DiscordIcon from '@/visual/icons/DiscordIcon';
 import React from 'react';
 import SocialMediaIconLink from './SocialMediaIconLink';
-import DiscordIcon from '../../visual/icons/DiscordIcon';
 
 /**
  * DiscordLink is an icon link to the Espresso Discord server

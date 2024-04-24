@@ -1,6 +1,6 @@
+import { addClassToClassName } from '@/higher_order';
 import React from 'react';
 import Lottie from 'react-lottie';
-import { addClassToClassName } from '../../higher_order';
 import './es_flow.css';
 import animationData from './es_flow.json';
 

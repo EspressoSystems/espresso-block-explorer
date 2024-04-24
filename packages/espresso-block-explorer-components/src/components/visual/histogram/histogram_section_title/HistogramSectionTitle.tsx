@@ -1,5 +1,5 @@
+import Heading2 from '@/layout/heading/Heading2';
 import React from 'react';
-import Heading2 from '../../../layout/heading/Heading2';
 import './histogram_section_title.css';
 
 export interface HistogramSectionTitleProps {

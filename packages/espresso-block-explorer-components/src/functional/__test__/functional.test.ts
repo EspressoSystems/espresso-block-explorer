@@ -1,5 +1,3 @@
-import '@testing-library/jest-dom';
-import { describe, expect, it } from 'vitest';
 import {
   compareArrayBuffer,
   compareIterables,
@@ -14,7 +12,9 @@ import {
   iota,
   mapIterable,
   takeIterable,
-} from '../functional';
+} from '@/functional';
+import '@testing-library/jest-dom';
+import { describe, expect, it } from 'vitest';
 
 describe('functional', () => {
   describe('iota', () => {

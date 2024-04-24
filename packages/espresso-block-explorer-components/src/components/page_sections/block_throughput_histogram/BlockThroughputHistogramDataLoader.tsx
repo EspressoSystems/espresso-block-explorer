@@ -1,6 +1,6 @@
+import { AsyncRetriever } from '@/async/AsyncRetriever';
+import UnimplementedError from '@/errors/UnimplementedError';
 import React from 'react';
-import { AsyncRetriever } from '../../../async/AsyncRetriever';
-import UnimplementedError from '../../../errors/UnimplementedError';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 
 export interface BlockThroughputHistogramData {

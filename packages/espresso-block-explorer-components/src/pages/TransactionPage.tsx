@@ -1,27 +1,24 @@
-import React from 'react';
-import { LoadingContext } from '../components/contexts/LoadingProvider';
-import {
-  OverridePagePath,
-  PageType,
-} from '../components/contexts/PagePathProvider';
-import ErrorContextGuard from '../components/data/async_data/ErrorContextGuard';
-import Card from '../components/layout/card/Card';
-import Heading1 from '../components/layout/heading/Heading1';
-import Heading2 from '../components/layout/heading/Heading2';
-import { WithEdgeMargin } from '../components/layout/margin/margins';
-import { WithLoadingShimmer } from '../components/loading/LoadingShimmer';
-import Footer from '../components/page_sections/footer/Footer';
-import Header from '../components/page_sections/header/Header';
-import PageTitle from '../components/page_sections/page_title/PageTitle';
+import ErrorContextGuard from '@/components/data/async_data/ErrorContextGuard';
+import Footer from '@/components/page_sections/footer/Footer';
+import Header from '@/components/page_sections/header/Header';
+import PageTitle from '@/components/page_sections/page_title/PageTitle';
 import {
   TransactionDataContents,
   TransactionDataContentsPlaceholder,
   TransactionDetailsContent,
   TransactionDetailsContentPlaceholder,
   TransactionSubHeading,
-} from '../components/page_sections/transaction_detail_content/TransactionDetailContent';
-import { TransactionDetailContentLoader } from '../components/page_sections/transaction_detail_content/TransactionDetailLoader';
-import Text from '../components/text/Text';
+} from '@/components/page_sections/transaction_detail_content/TransactionDetailContent';
+import { TransactionDetailContentLoader } from '@/components/page_sections/transaction_detail_content/TransactionDetailLoader';
+import { LoadingContext } from '@/contexts/LoadingProvider';
+import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
+import Card from '@/layout/card/Card';
+import Heading1 from '@/layout/heading/Heading1';
+import Heading2 from '@/layout/heading/Heading2';
+import { WithEdgeMargin } from '@/layout/margin/margins';
+import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
+import Text from '@/text/Text';
+import React from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);

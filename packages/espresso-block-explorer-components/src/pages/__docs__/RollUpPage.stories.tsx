@@ -1,8 +1,8 @@
+import { ProvideTickEverySecond } from '@/components';
+import { NamespaceContext } from '@/components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
+import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import { ProvideTickEverySecond } from '../../components';
-import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
-import { NamespaceContext } from '../../components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
 import { ProvideCappuccinoRollUpDetailDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
 import FakeDataNotice from '../FakeDataNotice';
 import RollUpPage from '../RollUpPage';

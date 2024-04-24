@@ -1,13 +1,12 @@
-import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
-import React from 'react';
-import { describe, expect, it } from 'vitest';
 import {
   addClassNameToComponent,
   addClassToClassName,
   appendClassNameComponent,
-} from '../higher_order';
-import Text from '../text/Text';
+} from '@/higher_order';
+import Text from '@/text/Text';
+import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 
 describe('Higher Order Components', () => {
   describe('addClassToClassName', () => {

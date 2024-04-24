@@ -2,14 +2,10 @@ import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
-import {
-  NullCodec,
-  NullDecoder,
-  NullEncoder,
-} from '../../../../convert/codec/null';
-import { numberCodec } from '../../../../convert/codec/number';
-import { stringCodec } from '../../../../convert/codec/string';
+} from '@/convert/codec/convert';
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
+import { numberCodec } from '@/convert/codec/number';
+import { stringCodec } from '@/convert/codec/string';
 
 /**
  * CappuccinoL1Finalized represents the finalized block in the Cappuccino L1.

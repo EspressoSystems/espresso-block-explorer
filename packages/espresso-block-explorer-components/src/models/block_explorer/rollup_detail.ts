@@ -1,4 +1,4 @@
-import { AsyncRetriever } from '../../async/AsyncRetriever';
+import { AsyncRetriever } from '@/async/AsyncRetriever';
 import { TransactionSummaryEntry } from './transaction_summary';
 
 export interface RollUpDetailEntry extends TransactionSummaryEntry {}

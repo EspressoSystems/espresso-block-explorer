@@ -1,25 +1,22 @@
-import React from 'react';
-import { LoadingContext } from '../components/contexts/LoadingProvider';
-import {
-  OverridePagePath,
-  PageType,
-} from '../components/contexts/PagePathProvider';
-import ErrorContextGuard from '../components/data/async_data/ErrorContextGuard';
-import Card from '../components/layout/card/Card';
-import Heading1 from '../components/layout/heading/Heading1';
-import { WithEdgeMargin } from '../components/layout/margin/margins';
-import { WithLoadingShimmer } from '../components/loading/LoadingShimmer';
-import Footer from '../components/page_sections/footer/Footer';
-import Header from '../components/page_sections/header/Header';
-import PageTitle from '../components/page_sections/page_title/PageTitle';
+import ErrorContextGuard from '@/components/data/async_data/ErrorContextGuard';
+import Footer from '@/components/page_sections/footer/Footer';
+import Header from '@/components/page_sections/header/Header';
+import PageTitle from '@/components/page_sections/page_title/PageTitle';
 import {
   RollUpsSummaryDataTable,
   RollUpsSummaryDataTablePlaceholder,
-} from '../components/page_sections/rollups_summary_data_table/RollUpsSummaryDataTable';
-import { RollUpsSummaryLoader } from '../components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
-import NumberText from '../components/text/NumberText';
-import Text from '../components/text/Text';
-import { curatedRollupMap } from '../models/block_explorer/rollup_entry/data';
+} from '@/components/page_sections/rollups_summary_data_table/RollUpsSummaryDataTable';
+import { RollUpsSummaryLoader } from '@/components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
+import { LoadingContext } from '@/contexts/LoadingProvider';
+import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
+import Card from '@/layout/card/Card';
+import Heading1 from '@/layout/heading/Heading1';
+import { WithEdgeMargin } from '@/layout/margin/margins';
+import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
+import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
+import NumberText from '@/text/NumberText';
+import Text from '@/text/Text';
+import React from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);

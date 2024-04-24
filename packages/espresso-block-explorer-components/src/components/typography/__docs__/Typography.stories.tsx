@@ -1,6 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { Text } from '../../text';
+import { Text } from '@/test';
 import {
   WithParagraphBase,
   WithParagraphSmall,
@@ -15,7 +13,9 @@ import {
   WithUiText300,
   WithUiText500,
   WithUiText600,
-} from '../typography';
+} from '@/typography';
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 
 const ParagraphBase = WithParagraphBase('div');
 const ParagraphSmall = WithParagraphSmall('div');

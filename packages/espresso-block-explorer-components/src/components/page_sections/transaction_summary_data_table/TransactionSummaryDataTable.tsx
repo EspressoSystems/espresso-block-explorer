@@ -1,18 +1,18 @@
+import { DataContext } from '@/contexts/DataProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import { iota } from '@/functional/functional';
+import SkeletonContent from '@/loading/SkeletonContent';
+import { TransactionSummaryColumn } from '@/models/block_explorer/transaction_summary';
+import CopyTaggedBase64 from '@/text/CopyTaggedBase64';
+import DateTimeText from '@/text/DateTimeText';
+import NumberText from '@/text/NumberText';
+import TaggedBase64Text from '@/text/TaggedBase64Text';
+import Text from '@/text/Text';
 import React from 'react';
-import { iota } from '../../../functional/functional';
-import { TransactionSummaryColumn } from '../../../models/block_explorer/transaction_summary';
-import { DataContext } from '../../contexts/DataProvider';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
 import Link from '../../links/link/Link';
-import SkeletonContent from '../../loading/SkeletonContent';
-import CopyTaggedBase64 from '../../text/CopyTaggedBase64';
-import DateTimeText from '../../text/DateTimeText';
-import NumberText from '../../text/NumberText';
-import TaggedBase64Text from '../../text/TaggedBase64Text';
-import Text from '../../text/Text';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
 import { TransactionSummary } from './TransactionSummaryDataLoader';
 

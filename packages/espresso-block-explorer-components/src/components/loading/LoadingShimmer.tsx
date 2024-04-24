@@ -1,9 +1,9 @@
-import React from 'react';
-import './loading_shimmer.css';
 import {
   HigherOrderComponentWithClassNameProps,
   addClassNameToComponent,
-} from '../higher_order';
+} from '@/higher_order';
+import React from 'react';
+import './loading_shimmer.css';
 
 /**
  * WithLoadingShimmer is a higher order component that adds the loading-shimmer

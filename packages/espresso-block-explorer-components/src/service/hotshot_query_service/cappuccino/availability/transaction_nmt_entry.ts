@@ -1,17 +1,10 @@
-import {
-  ArrayCodec,
-  ArrayDecoder,
-  ArrayEncoder,
-} from '../../../../convert/codec/array';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
-import {
-  numberArrayCodec,
-  numberCodec,
-} from '../../../../convert/codec/number';
+} from '@/convert/codec/convert';
+import { numberArrayCodec, numberCodec } from '@/convert/codec/number';
 
 /**
  * CappuccinoAPITransactionNMTEntry represents a transaction NMT entry in the

@@ -1,20 +1,16 @@
-import {
-  ArrayCodec,
-  ArrayDecoder,
-  ArrayEncoder,
-} from '../../../../convert/codec/array';
-import { hexArrayBufferCodec } from '../../../../convert/codec/array_buffer';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Codec,
   Converter,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
-import { rfc3999DateCodec } from '../../../../convert/codec/date';
-import { numberCodec } from '../../../../convert/codec/number';
+} from '@/convert/codec/convert';
+import { rfc3999DateCodec } from '@/convert/codec/date';
+import { numberCodec } from '@/convert/codec/number';
 import {
   TaggedBase64,
   taggedBase64Codec,
-} from '../../../../models/espresso/tagged_base64/TaggedBase64';
+} from '@/models/espresso/tagged_base64/TaggedBase64';
 
 export class CappuccinoExplorerBlockSummary {
   readonly hash: TaggedBase64;

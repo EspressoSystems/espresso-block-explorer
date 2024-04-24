@@ -1,10 +1,10 @@
-import { hexArrayBufferCodec } from '../../../../convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
-import { numberCodec } from '../../../../convert/codec/number';
+} from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
 
 /**
  * CappuccinoBuilderSignature represents the signature of a builder in the

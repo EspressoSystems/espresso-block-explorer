@@ -1,6 +1,6 @@
+import { rollUpImagesMap } from '@/models/block_explorer/rollup_entry/data_images';
+import { RollUpEntry } from '@/models/block_explorer/rollup_entry/types';
 import React from 'react';
-import { rollUpImagesMap } from '../../../../models/block_explorer/rollup_entry/data_images';
-import { RollUpEntry } from '../../../../models/block_explorer/rollup_entry/types';
 
 export interface RollUpAvatar24Props {
   entry: RollUpEntry;

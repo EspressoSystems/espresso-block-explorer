@@ -2,8 +2,8 @@ import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
-import { numberCodec } from '../../../../convert/codec/number';
+} from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
 
 /**
  * CappuccinoAPIBitVecHead represents the head of a bit vector in the Cappuccino API.

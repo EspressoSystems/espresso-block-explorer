@@ -1,6 +1,6 @@
+import EspressoLogoAndTitle from '@/visual/icons/EspressoLogoAndTitle';
 import React from 'react';
 import NavBar from '../../links/nav_bar/NavBar';
-import EspressoLogoAndTitle from '../../visual/icons/EspressoLogoAndTitle';
 import './header.css';
 
 interface HeaderProps {}

@@ -1,5 +1,5 @@
-import { assert } from '../../../assert/assert';
-import { CompleterAlreadyCompletedError } from '../../../errors/CompleterAlreadyCompletedError';
+import { assert } from '@/assert/assert';
+import { CompleterAlreadyCompletedError } from '@/errors/CompleterAlreadyCompletedError';
 
 /**
  * A completer is a simple object that allows you to complete a Promise

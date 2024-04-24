@@ -1,5 +1,5 @@
+import { numberCodec } from '@/convert/codec/number';
 import { describe, expect, it } from 'vitest';
-import { numberCodec } from '../../../convert/codec/number';
 import { validateAndExpandResponse } from '../response_validators';
 
 describe('Response Validators', () => {

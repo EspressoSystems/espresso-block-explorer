@@ -3,9 +3,9 @@ import {
   Converter,
   assertRecordWithKeys,
   isNumber,
-} from '../../../../convert/codec/convert';
-import { numberCodec } from '../../../../convert/codec/number';
-import { StringCodec, stringCodec } from '../../../../convert/codec/string';
+} from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
+import { StringCodec, stringCodec } from '@/convert/codec/string';
 import { latestConstant } from './constants';
 
 export abstract class CappuccinoExplorerGetBlockSummariesRequest {

@@ -1,6 +1,6 @@
+import { addClassToClassName } from '@/higher_order';
+import { WithUiSmall, WithUiText600 } from '@/typography/typography';
 import React from 'react';
-import { addClassToClassName } from '../../higher_order';
-import { WithUiSmall, WithUiText600 } from '../../typography/typography';
 import './value_labeled.css';
 
 const LabelSmall = WithUiSmall('label');

@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@/assert/*": ["./assert/*"],
+      "@/async/*": ["./async/*"],
+      "@/components/*": ["./components/*"],
+      "@/contexts/*": ["./components/contexts/*"],
+      "@/convert/*": ["./convert/*"],
+      "@/data_source/*": ["./data_source/*"],
+      "@/data_structures/*": ["./data_structures/*"],
+      "@/errors/*": ["./errors/*"],
+      "@/functional/*": ["./functional/*"],
+      "@/higher_order": ["./components/higher_order"],
+      "@/layout/*": ["./components/layout/*"],
+      "@/loading/*": ["./components/loading/*"],
+      "@/models/*": ["./models/*"],
+      "@/service/*": ["./service/*"],
+      "@/text/*": ["./components/text/*"],
+      "@/typography/*": ["./components/typography/*"],
+      "@/visual/*": ["./components/visual/*"]
+    },
+    "target": "es2020", // Specifies the JavaScript version to target when transpiling code.
+    "useDefineForClassFields": true, // Enables the use of 'define' for class fields.
+    "lib": ["ES2020", "DOM", "DOM.Iterable"], // Specifies the libraries available for the code.
+    "module": "ESNext", // Defines the module system to use for code generation.
+    "skipLibCheck": true, // Skips type checking of declaration files.
+    /* Bundler mode */
+    "moduleResolution": "bundler", // Specifies how modules are resolved when bundling.
+    "allowImportingTsExtensions": true, // Allows importing TypeScript files with extensions.
+    "resolveJsonModule": true, // Enables importing JSON modules.
+    "isolatedModules": true, // Ensures each file is treated as a separate module.
+    "noEmit": true, // Prevents TypeScript from emitting output files.
+    "jsx": "react-jsx", // Configures JSX support for React.
+    /* Linting */
+    "strict": true, // Enables strict type checking.
+    "noUnusedLocals": true, // Flags unused local variables.
+    "noUnusedParameters": true, // Flags unused function parameters.
+    "noFallthroughCasesInSwitch": true, // Requires handling all cases in a switch statement.
+    "declaration": true, // Generates declaration files for TypeScript.
+    "types": ["vitest/globals", "vite/client"]
+  },
+  "include": ["src", "./setupTests.ts"] // Specifies the directory to include when searching for TypeScript files.
+}

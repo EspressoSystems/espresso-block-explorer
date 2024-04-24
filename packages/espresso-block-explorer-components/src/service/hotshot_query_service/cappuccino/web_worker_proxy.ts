@@ -1,6 +1,6 @@
-import { numberCodec } from '../../../convert/codec/number';
-import NoURLProvidedError from '../../../errors/NoURLProvidedError';
-import UnimplementedError from '../../../errors/UnimplementedError';
+import { numberCodec } from '@/convert/codec/number';
+import NoURLProvidedError from '@/errors/NoURLProvidedError';
+import UnimplementedError from '@/errors/UnimplementedError';
 import { BlockHeightResponse } from '../types';
 import {
   WebWorkerRequest,

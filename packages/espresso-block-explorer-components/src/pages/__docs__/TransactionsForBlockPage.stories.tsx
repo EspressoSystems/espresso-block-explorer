@@ -1,7 +1,7 @@
+import { ProvideTickEverySecond } from '@/components';
+import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import { ProvideTickEverySecond } from '../../components';
-import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
 import {
   ProvideCappuccinoBlockDetailDataSource,
   ProvideCappuccinoTransactionsForBlockSummaryDataSource,

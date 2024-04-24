@@ -1,4 +1,4 @@
-import InvalidTypeError from '../../errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/InvalidTypeError';
 import { Converter, TypeCheckingCodec, isBoolean } from './convert';
 
 /**

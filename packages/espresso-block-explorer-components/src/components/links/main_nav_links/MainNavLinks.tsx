@@ -1,7 +1,7 @@
+import { PageType } from '@/contexts/PagePathProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import Text from '@/text/Text';
 import React from 'react';
-import { PageType } from '../../contexts/PagePathProvider';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
-import Text from '../../text/Text';
 import NavLink from '../nav_link/NavLink';
 
 /**

@@ -2,7 +2,7 @@ import {
   Codec,
   Converter,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
+} from '@/convert/codec/convert';
 import {
   CappuccinoExplorerTransactionDetail,
   cappuccinoExplorerTransactionDetailCodec,

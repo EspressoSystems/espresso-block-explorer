@@ -1,8 +1,5 @@
+import { addClassNameToComponent, addClassToClassName } from '@/higher_order';
 import React from 'react';
-import {
-  addClassNameToComponent,
-  addClassToClassName,
-} from '../../../components/higher_order';
 import './images.css';
 
 export interface AvatarLogoProps {

@@ -1,7 +1,7 @@
+import UnimplementedError from '@/errors/UnimplementedError';
+import { RollUpDetailAsyncRetriever } from '@/models/block_explorer/rollup_detail';
+import { TransactionSummaryColumn } from '@/models/block_explorer/transaction_summary';
 import React from 'react';
-import UnimplementedError from '../../../errors/UnimplementedError';
-import { RollUpDetailAsyncRetriever } from '../../../models/block_explorer/rollup_detail';
-import { TransactionSummaryColumn } from '../../../models/block_explorer/transaction_summary';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import {
   DataTableState,

@@ -4,13 +4,13 @@ import {
   assertRecordWithKeys,
   isRecord,
   isUnknown,
-} from '../../../../convert/codec/convert';
-import { numberCodec } from '../../../../convert/codec/number';
-import InvalidInputError from '../../../../errors/InvalidInputError';
+} from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
+import InvalidInputError from '@/errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
-} from '../../../../models/espresso/tagged_base64/TaggedBase64';
+} from '@/models/espresso/tagged_base64/TaggedBase64';
 
 export abstract class CappuccinoExplorerGetTransactionSummariesTarget {
   readonly limit: number;
