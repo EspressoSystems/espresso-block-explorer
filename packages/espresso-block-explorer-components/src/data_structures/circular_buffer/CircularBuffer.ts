@@ -1,205 +1,43 @@
 import { assert } from '../../assert/assert';
+import { CircularBufferGetFromEmptyBehaviors } from './get_empty';
+import {
+  PowerOfTwoBehavior,
+  SlowNextIndexBehavior,
+  isPowerOfTwo,
+} from './next_index';
+import { CircularBufferPutIntoFullBehaviors } from './put_full';
+import {
+  CircularBuffer,
+  CircularBufferDetermineNextIndexBehavior,
+  CircularBufferGetFromEmptyBehavior,
+  CircularBufferPutIntoFullBehavior,
+  CircularBufferPutResult,
+} from './types';
 
-export enum CircularBufferPutResult {
-  success,
-  full,
-  failed,
-}
-
-/**
- * CircularBuffer is a simple buffer with a fixed size that allows for quick
- * FIFO reads and writes.
- *
- * We don't define the behavior for when the buffer is full.  It is equally
- * valid to ignore new writes, or to overwrite the oldest value.
- */
-export interface CircularBuffer<T> extends Iterable<T> {
-  // put attempts to insert the given value into the CircularBuffer.
-  put(value: T): CircularBufferPutResult;
-
-  // get attempts to retrieve the oldest value from the CircularBuffer.
-  get(): T | undefined;
-
-  get length(): number;
-
-  get maxSize(): number;
-}
-
-/**
- * CircularBufferDetermineNextIndexBehavior is a behavior that can be used
- * to determine the next index given an index for a CircularBuffer.
- *
- * We define this so that we are able to replace this behavior if needed.
- */
-interface CircularBufferDetermineNextIndexBehavior {
-  nextIndex(index: number): number;
-}
-
-/**
- * SlowNextIndexBehavior is a simple implementation of the
- * CircularBufferDetermineNextIndexBehavior interface which uses the modulo
- * operator to calculate the next index given a previous index.
- */
-class SlowNextIndexBehavior
-  implements CircularBufferDetermineNextIndexBehavior
-{
-  private maxSize: number;
-
-  constructor(maxSize: number) {
-    assert(!Number.isNaN(maxSize), 'maxSize must not be NaN');
-    assert(Number.isInteger(maxSize), 'maxSize must be an integer');
-    assert(maxSize > 0, 'maxSize must be greater than 0');
-    this.maxSize = maxSize;
-  }
-
-  nextIndex(index: number): number {
-    assert(index >= 0, 'index must be greater than or equal to 0');
-    return (index + 1) % this.maxSize;
-  }
-}
-
-/**
- * PowerOfTwoBehavior is an optimized implementation of the
- * CircularBufferDetermineNextIndexBehavior interface when the size of the
- * buffer is a power of two.
- */
-class PowerOfTwoBehavior implements CircularBufferDetermineNextIndexBehavior {
-  private preComputedSizeMinus1: number;
-
-  constructor(maxSize: number) {
-    assert(!Number.isNaN(maxSize), 'maxSize must not be NaN');
-    assert(Number.isInteger(maxSize), 'maxSize must be an integer');
-    assert(maxSize > 0, 'maxSize must be greater than 0');
-    assert(isPowerOfTwo(maxSize), 'maxSize must be a power of two');
-    this.preComputedSizeMinus1 = maxSize - 1;
-  }
-
-  nextIndex(index: number): number {
-    assert(index >= 0, 'index must be greater than or equal to 0');
-    return (index + 1) & this.preComputedSizeMinus1;
-  }
-}
-
-/**
- * CircularBufferGetFromEmptyBehavior is a behavior that can be used to make
- * decisions about what to do when a call to `get` is made on a
- * `CircularBuffer`, yet the `CircularBuffer` is empty.
- *
- * This allows the behavior to be changed by replacing only this logic.
- */
-export interface CircularBufferGetFromEmptyBehavior<T> {
-  getFromEmpty(buffer: CircularBuffer<T>): undefined;
-}
-
-/**
- * ReturnUndefinedOnEmptyBehavior is an implementation of
- * CircularBufferGetFromEmptyBehavior that favors returning `undefined` when
- * an attempt to `get` from an `empty` `CircularBuffer` is made.
- *
- * This seems like a reasonable default behavior.
- */
-class ReturnUndefinedOnEmptyBehavior
-  implements CircularBufferGetFromEmptyBehavior<unknown>
-{
-  getFromEmpty(): undefined {
-    return undefined;
-  }
-}
-
-/**
- * ThrowMissingElementOnEmptyBehavior is an implementation of
- * CircularBufferGetFromEmptyBehavior that favors throwing an error when an
- * attempt to `get` from an `empty` `CircularBuffer` is made.
- *
- * This is an alternative to the default behavior.
- */
-class ThrowMissingElementOnEmptyBehavior
-  implements CircularBufferGetFromEmptyBehavior<unknown>
-{
-  getFromEmpty(): never {
-    throw new Error('Missing element');
-  }
-}
-
-/**
- * CircularBufferGetFromEmptyBehaviors a collection of the behaviors that
- * can be utilized with the `CircularBuffer`.
- */
-export const CircularBufferGetFromEmptyBehaviors: Record<
-  'returnUndefined' | 'throwMissingElement',
-  CircularBufferGetFromEmptyBehavior<unknown>
-> = {
-  returnUndefined: new ReturnUndefinedOnEmptyBehavior(),
-  throwMissingElement: new ThrowMissingElementOnEmptyBehavior(),
+export {
+  CircularBufferGetFromEmptyBehaviors,
+  CircularBufferPutIntoFullBehaviors,
+  CircularBufferPutResult,
+};
+export type {
+  CircularBuffer,
+  CircularBufferGetFromEmptyBehavior,
+  CircularBufferPutIntoFullBehavior,
 };
 
 /**
- * CircularBufferPutIntoFullBehavior is a behavior that can be used to make
- * decisions about what to do when a call to `put` is made on a
- * `CircularBuffer` that is full.
+ * determineNextIndexFunction is a helper function for determining which
+ * next index strategy to utilize.
  */
-export interface CircularBufferPutIntoFullBehavior<T> {
-  putToFull(buffer: CircularBuffer<T>, value: T): CircularBufferPutResult;
-}
-
-/**
- * OverwriteOldestOnFullBehavior is an implementation of
- * CircularBufferPutIntoFullBehavior that favors overwriting the oldest value
- * when a `put` is made on a `full` `CircularBuffer`.
- *
- * This seems like a reasonable default behavior.
- */
-class OverwriteOldestOnFullBehavior<T>
-  implements CircularBufferPutIntoFullBehavior<T>
-{
-  putToFull(buffer: CircularBuffer<T>, value: T): CircularBufferPutResult {
-    buffer.get();
-    return buffer.put(value);
+function determineNextIndexFunction(
+  maxSize: number,
+): CircularBufferDetermineNextIndexBehavior {
+  if (isPowerOfTwo(maxSize)) {
+    return new PowerOfTwoBehavior(maxSize);
   }
-}
 
-/**
- * ReturnFullOnFullBehavior is an implementation of
- * CircularBufferPutIntoFullBehavior that favors returning `full` when a `put`
- * is made on a `full` `CircularBuffer`.
- *
- * This is an alternative to the default behavior, that is also reasonable.
- */
-class ReturnFullOnFullBehavior
-  implements CircularBufferPutIntoFullBehavior<unknown>
-{
-  putToFull(): CircularBufferPutResult {
-    return CircularBufferPutResult.full;
-  }
+  return new SlowNextIndexBehavior(maxSize);
 }
-
-/**
- * ThrowOnFullBehavior is an implementation of
- * CircularBufferPutIntoFullBehavior that favors throwing an error when a `put`
- * is made on a `full` `CircularBuffer`.
- *
- * This is an alternative to the default behavior.
- */
-class ThrowOnFullBehavior
-  implements CircularBufferPutIntoFullBehavior<unknown>
-{
-  putToFull(): never {
-    throw new Error('buffer full');
-  }
-}
-
-/**
- * CircularBufferPutIntoFullBehaviors a collection of the behaviors that
- * can be utilized with the `CircularBuffer`.
- */
-export const CircularBufferPutIntoFullBehaviors: Record<
-  'overwriteOldest' | 'returnFull' | 'throw',
-  CircularBufferPutIntoFullBehavior<unknown>
-> = {
-  overwriteOldest: new OverwriteOldestOnFullBehavior(),
-  returnFull: new ReturnFullOnFullBehavior(),
-  throw: new ThrowOnFullBehavior(),
-};
 
 /**
  * RingBufferBase is a base implementation of a RingBuffer with no assumptions
@@ -224,14 +62,7 @@ class RingBufferBase<T> implements CircularBuffer<T> {
   ) {
     assert(!Number.isNaN(maxSize), 'maxSize must not be NaN');
     this.buffer = new Array(maxSize);
-
-    // Indexing
-    if (isPowerOfTwo(maxSize)) {
-      this.nextIndex = new PowerOfTwoBehavior(maxSize);
-    } else {
-      this.nextIndex = new SlowNextIndexBehavior(maxSize);
-    }
-
+    this.nextIndex = determineNextIndexFunction(maxSize);
     this.getOnEmpty = getOnEmptyBehavior;
     this.putOnFull = putOnFullBehavior;
   }
@@ -259,7 +90,7 @@ class RingBufferBase<T> implements CircularBuffer<T> {
     return CircularBufferPutResult.success;
   }
 
-  get(): T | undefined {
+  get(): T | undefined | null {
     if (this.readIndex === this.writeIndex) {
       return this.getOnEmpty.getFromEmpty(this);
     }
@@ -273,7 +104,7 @@ class RingBufferBase<T> implements CircularBuffer<T> {
     return {
       next: () => {
         const value = this.get();
-        if (value === undefined) {
+        if (value === undefined || value === null) {
           return { value: undefined, done: true };
         }
 
@@ -281,14 +112,6 @@ class RingBufferBase<T> implements CircularBuffer<T> {
       },
     };
   }
-}
-
-/**
- * isPowerOfTwo is a function that checks if the given value is a power of two
- * or not.
- */
-function isPowerOfTwo(value: number): boolean {
-  return (value & (value - 1)) === 0;
 }
 
 /**

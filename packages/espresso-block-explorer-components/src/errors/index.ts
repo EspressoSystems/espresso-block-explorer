@@ -14,6 +14,6 @@ export { default as MissingElementError } from './MissingElementError';
 export { default as NoCompleterFoundForRequestID } from './NoCompleterFoundForRequestID';
 export { default as NoURLProvidedError } from './NoURLProvidedError';
 export { default as NotFoundError } from './NotFoundError';
-export { default as ResponseContentTypeIsNotApplicationJSONError } from './ResponseContentTypIsNotApplicationJSONError';
+export { default as ResponseContentTypeIsNotApplicationJSONError } from './ResponseContentTypeIsNotApplicationJSONError';
 export { default as UnimplementedError } from './UnimplementedError';
 export { default as WebWorkerErrorResponse } from './WebWorkerErrorResponse';
