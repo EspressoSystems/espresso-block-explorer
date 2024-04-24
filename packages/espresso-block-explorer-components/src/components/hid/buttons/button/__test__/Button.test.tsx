@@ -1,11 +1,11 @@
 import Text from '@/text/Text';
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import Button from '../Button';
 
 describe('Button Component', () => {
-  it('should be clickable successfully', () => {
+  it('should be clickable successfully', async () => {
     let inc: number = 0;
     render(
       <Button
@@ -22,13 +22,13 @@ describe('Button Component', () => {
     expect(button).toHaveTextContent('Click Me');
     expect(inc).equals(0);
 
-    fireEvent.click(button);
+    await act(() => fireEvent.click(button));
     expect(inc).equals(1);
-    fireEvent.click(button);
+    await act(() => fireEvent.click(button));
     expect(inc).equals(2);
   });
 
-  it('should prevent clicking', () => {
+  it('should prevent clicking', async () => {
     let inc: number = 0;
     render(
       <Button
@@ -46,9 +46,9 @@ describe('Button Component', () => {
     expect(button).toHaveTextContent('Click Me');
     expect(inc).equals(0);
 
-    fireEvent.click(button);
+    await act(() => fireEvent.click(button));
     expect(inc).equals(0);
-    fireEvent.click(button);
+    await act(() => fireEvent.click(button));
     expect(inc).equals(0);
   });
 });

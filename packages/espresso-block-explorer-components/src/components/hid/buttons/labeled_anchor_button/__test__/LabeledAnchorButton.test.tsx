@@ -1,8 +1,7 @@
 import { composeStories } from '@storybook/react';
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { describe, expect, it } from 'vitest';
 import * as stories from '../__docs__/LabeledAnchorButton.stories';
 
@@ -15,7 +14,7 @@ describe('Labeled Anchor Button component', () => {
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', 'https://example.com/');
 
-    await userEvent.click(link);
+    await act(() => userEvent.click(link));
   });
 
   it('should render Icon Button disabled', async () => {
@@ -30,6 +29,6 @@ describe('Labeled Anchor Button component', () => {
     expect(link).toBeInTheDocument();
     expect(link).not.toHaveAttribute('href');
 
-    await userEvent.click(link);
+    await act(() => userEvent.click(link));
   });
 });

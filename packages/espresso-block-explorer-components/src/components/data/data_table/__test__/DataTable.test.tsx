@@ -1,7 +1,12 @@
 import { composeStories } from '@storybook/react';
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import * as stories from '../__docs__/DataTable.stories';
 
@@ -25,7 +30,7 @@ describe('DataTable Component', async () => {
     );
 
     const column = screen.getByText('One');
-    fireEvent.click(column);
+    await act(() => fireEvent.click(column));
 
     await waitFor(() => {
       const ele = screen.getByTestId('1');

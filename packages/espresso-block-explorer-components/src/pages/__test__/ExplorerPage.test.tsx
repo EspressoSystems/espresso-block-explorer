@@ -1,8 +1,7 @@
 import { composeStories } from '@storybook/react';
 import '@testing-library/jest-dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { describe, expect, it } from 'vitest';
 import * as stories from '../__docs__/ExplorerPage.stories';
 
@@ -30,7 +29,7 @@ describe('ExplorerPage', async () => {
       expect(inputSearch).toBeInTheDocument();
 
       // User Selects the Search Element
-      await user.click(inputSearch);
+      await act(() => user.click(inputSearch));
 
       // Wait until the search box has focus
       await waitFor(() => {
@@ -38,7 +37,7 @@ describe('ExplorerPage', async () => {
       });
 
       // User types something to search
-      await user.keyboard('block~');
+      await act(() => user.keyboard('block~'));
 
       await waitFor(() => {
         expect(inputSearch).toHaveValue('block~');
@@ -70,7 +69,7 @@ describe('ExplorerPage', async () => {
       expect(childElements.length).toBeGreaterThanOrEqual(3);
 
       // We should be able to select one.
-      await user.keyboard('[ArrowDown]');
+      await act(() => user.keyboard('[ArrowDown]'));
 
       const firstResult = childElements[0];
       const secondResult = childElements[1];
@@ -106,7 +105,7 @@ describe('ExplorerPage', async () => {
       expect(inputSearch).toHaveValue(commit0.textContent!);
 
       // Select the next Element
-      await user.keyboard('[ArrowDown]');
+      await act(() => user.keyboard('[ArrowDown]'));
 
       await waitFor(() => {
         expect(firstResult.querySelector('[data-selected="true"]')).toBeNull();
@@ -138,7 +137,7 @@ describe('ExplorerPage', async () => {
       for (let i = 1; i < childElements.length; i++) {
         // Let's step through the rest of the elements.
         // Select the next Element
-        await user.keyboard('[ArrowDown]');
+        await act(() => user.keyboard('[ArrowDown]'));
       }
 
       // We should be back at the start, nothing should be selected.

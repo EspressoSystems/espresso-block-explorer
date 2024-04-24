@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { describe, expect, it } from 'vitest';
 import CopyButton from '../CopyButton';
 
@@ -11,7 +10,7 @@ describe('Copy Button Component', () => {
 
     const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
-    fireEvent.click(button);
+    await act(() => fireEvent.click(button));
   });
 
   it('should be clickable successfully', async () => {
@@ -21,7 +20,7 @@ describe('Copy Button Component', () => {
     const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
 
-    await user.click(button);
+    await act(() => user.click(button));
     const clipboardText = await navigator.clipboard.readText();
     expect(clipboardText).toBe('Hello, World!');
 
