@@ -1,4 +1,4 @@
-import { validateAndExpandResponse } from '../../../../../async/fetch/response_validators';
+import { validateAndExpandResponse } from '@/async/fetch/response_validators';
 import {
   collectAsyncIterator,
   dropAsyncIterator,
@@ -8,7 +8,7 @@ import {
   mapAsyncIterator,
   reverseAsyncIterator,
   takeAsyncIterator,
-} from '../../../../../functional/functional_async';
+} from '@/functional/functional_async';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { CappuccinoAPIBlock, cappuccinoAPIBlockCodec } from '../block';
 import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';

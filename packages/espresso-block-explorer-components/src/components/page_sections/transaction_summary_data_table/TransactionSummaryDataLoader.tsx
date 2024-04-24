@@ -1,12 +1,14 @@
-import React from 'react';
-import UnimplementedError from '../../../errors/UnimplementedError';
+import { DataContext } from '@/contexts/DataProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import UnimplementedError from '@/errors/UnimplementedError';
+import { addClassToClassName } from '@/higher_order';
 import {
   TransactionSummaryAsyncRetriever,
   TransactionSummaryColumn,
-} from '../../../models/block_explorer/transaction_summary';
-import { TaggedBase64 } from '../../../models/espresso/tagged_base64/TaggedBase64';
-import { DataContext } from '../../contexts/DataProvider';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
+} from '@/models/block_explorer/transaction_summary';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import Text from '@/text/Text';
+import React from 'react';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import {
   DataTableState,
@@ -14,8 +16,6 @@ import {
 } from '../../data/data_table/DataTable';
 import { SortDirection } from '../../data/types';
 import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
-import { addClassToClassName } from '../../higher_order';
-import Text from '../../text/Text';
 
 export interface TransactionSummary {
   hash: TaggedBase64;

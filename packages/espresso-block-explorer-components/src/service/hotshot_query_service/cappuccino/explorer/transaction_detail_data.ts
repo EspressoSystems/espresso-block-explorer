@@ -1,15 +1,11 @@
-import {
-  ArrayCodec,
-  ArrayDecoder,
-  ArrayEncoder,
-} from '../../../../convert/codec/array';
-import { stdBase64ArrayBufferCodec } from '../../../../convert/codec/array_buffer';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
+import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
-import { numberCodec } from '../../../../convert/codec/number';
+} from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
 
 type NamespaceID = number;
 const namespaceIDCodec = numberCodec;

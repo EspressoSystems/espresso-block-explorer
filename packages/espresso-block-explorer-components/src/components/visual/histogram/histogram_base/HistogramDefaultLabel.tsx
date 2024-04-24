@@ -1,5 +1,5 @@
+import NumberText from '@/text/NumberText';
 import PropTypes from 'prop-types';
-import NumberText from '../../../text/NumberText';
 
 export interface HistogramLabelProps {
   value: number;

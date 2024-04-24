@@ -1,5 +1,5 @@
+import { addClassToClassName } from '@/higher_order';
 import React from 'react';
-import { addClassToClassName } from '../../higher_order';
 import DiscordLink from './DiscordLink';
 import MediumLink from './MediumLink';
 import TwitterLink from './TwitterLink';

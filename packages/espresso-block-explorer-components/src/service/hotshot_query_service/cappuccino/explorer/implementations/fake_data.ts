@@ -2,10 +2,10 @@ import {
   GeneratedBlock,
   GeneratedTransaction,
   generateAllBlocks,
-} from '../../../../../data_source/fake_data_source/generateFakeData';
-import { createCircularBuffer } from '../../../../../data_structures/circular_buffer/CircularBuffer';
-import NotFoundError from '../../../../../errors/NotFoundError';
-import UnimplementedError from '../../../../../errors/UnimplementedError';
+} from '@/data_source/fake_data_source/generateFakeData';
+import { createCircularBuffer } from '@/data_structures/circular_buffer/CircularBuffer';
+import NotFoundError from '@/errors/NotFoundError';
+import UnimplementedError from '@/errors/UnimplementedError';
 import {
   collectAsyncIterable,
   collectAsyncIterator,
@@ -23,7 +23,7 @@ import {
   takeAsyncIterator,
   takeWhileAsyncIterable,
   takeWhileAsyncIterator,
-} from '../../../../../functional/functional_async';
+} from '@/functional/functional_async';
 import { CappuccinoExplorerBlockDetail } from '../block_detail';
 import { CappuccinoExplorerBlockSummary } from '../block_summary';
 import { latestConstant } from '../constants';

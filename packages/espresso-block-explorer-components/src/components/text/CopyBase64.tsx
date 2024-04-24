@@ -1,5 +1,5 @@
+import { stdEncoding } from '@/convert/base64/base64';
 import React from 'react';
-import { stdEncoding } from '../../convert/base64/base64';
 import CopyButton from '../hid/buttons/copy_button/CopyButton';
 import { CopyArrayBufferAsTextProps } from './CopyArrayBufferAsTextProps';
 import './inline.css';

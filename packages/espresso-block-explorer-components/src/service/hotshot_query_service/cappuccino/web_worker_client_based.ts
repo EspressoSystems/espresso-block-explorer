@@ -1,12 +1,12 @@
-import { Codec } from '../../../convert/codec/convert';
-import { numberCodec } from '../../../convert/codec/number';
+import { Codec } from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
 import {
   Completer,
   createCompleter,
-} from '../../../data_structures/async/completer/Completer';
-import InvalidTypeError from '../../../errors/InvalidTypeError';
-import NoCompleterFoundForRequestID from '../../../errors/NoCompleterFoundForRequestID';
-import WebWorkerErrorResponse from '../../../errors/WebWorkerErrorResponse';
+} from '@/data_structures/async/completer/Completer';
+import InvalidTypeError from '@/errors/InvalidTypeError';
+import NoCompleterFoundForRequestID from '@/errors/NoCompleterFoundForRequestID';
+import WebWorkerErrorResponse from '@/errors/WebWorkerErrorResponse';
 import {
   RequestID,
   WebWorkerRequest,

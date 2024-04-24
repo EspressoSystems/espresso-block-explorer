@@ -1,4 +1,4 @@
-import { WithUiText300 } from '../../typography/typography';
+import { WithUiText300 } from '@/typography/typography';
 import './heading.css';
 
 /**

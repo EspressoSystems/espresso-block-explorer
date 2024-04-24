@@ -1,11 +1,11 @@
-import React from 'react';
-import UnimplementedError from '../../../errors/UnimplementedError';
+import UnimplementedError from '@/errors/UnimplementedError';
 import {
   BlockDetailAsyncRetriever,
   BlockDetailEntry,
-} from '../../../models/block_explorer/block_detail';
-import MonetaryValue from '../../../models/block_explorer/monetary_value';
-import { TaggedBase64 } from '../../../models/espresso/tagged_base64/TaggedBase64';
+} from '@/models/block_explorer/block_detail';
+import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import React from 'react';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import './block_detail_content.css';
 

@@ -1,9 +1,9 @@
+import { OverrideLocale } from '@/contexts/LocaleProvider';
+import { ProvideDerivedNumberFormatters } from '@/contexts/NumberFormattersProvider';
+import { currencyCodeCodec } from '@/models/block_explorer/currency_code';
+import MonetaryValue from '@/models/block_explorer/monetary_value';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { currencyCodeCodec } from '../../../models/block_explorer/currency_code';
-import MonetaryValue from '../../../models/block_explorer/monetary_value';
-import { OverrideLocale } from '../../contexts/LocaleProvider';
-import { ProvideDerivedNumberFormatters } from '../../contexts/NumberFormattersProvider';
 import MoneyText from '../MoneyText';
 
 interface ExampleProps {

@@ -1,7 +1,7 @@
-import { rawURLEncoding } from '../../../convert/base64/base64';
-import { Converter, TypeCheckingCodec } from '../../../convert/codec/convert';
-import InvalidTaggedBase64EncodingError from '../../../errors/InvalidTaggedBase64EncodingError';
-import InvalidTypeError from '../../../errors/InvalidTypeError';
+import { rawURLEncoding } from '@/convert/base64/base64';
+import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
+import InvalidTaggedBase64EncodingError from '@/errors/InvalidTaggedBase64EncodingError';
+import InvalidTypeError from '@/errors/InvalidTypeError';
 
 /**
  * TaggedBase64 is an implementation of the server side type of TaggedBase64.

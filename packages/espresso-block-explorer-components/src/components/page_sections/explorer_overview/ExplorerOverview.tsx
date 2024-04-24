@@ -1,13 +1,13 @@
+import { DataContext } from '@/contexts/DataProvider';
+import { LoadingContext } from '@/contexts/LoadingProvider';
+import { CardNoPadding } from '@/layout/card/Card';
+import SummaryTabledLabeledValue from '@/layout/summary_table_labeled_value/SummaryTabledLabeledValue';
+import SummaryValueLabeled from '@/layout/summary_value_labeled/SummaryValueLabeled';
+import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
+import SkeletonContent from '@/loading/SkeletonContent';
+import NumberText from '@/text/NumberText';
+import Text from '@/text/Text';
 import React from 'react';
-import { DataContext } from '../../contexts/DataProvider';
-import { LoadingContext } from '../../contexts/LoadingProvider';
-import { CardNoPadding } from '../../layout/card/Card';
-import SummaryTabledLabeledValue from '../../layout/summary_table_labeled_value/SummaryTabledLabeledValue';
-import SummaryValueLabeled from '../../layout/summary_value_labeled/SummaryValueLabeled';
-import { WithLoadingShimmer } from '../../loading/LoadingShimmer';
-import SkeletonContent from '../../loading/SkeletonContent';
-import NumberText from '../../text/NumberText';
-import Text from '../../text/Text';
 import {
   ExplorerOverview,
   ExplorerOverviewProvider,

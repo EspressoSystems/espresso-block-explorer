@@ -1,27 +1,24 @@
-import React from 'react';
-import { LoadingContext } from '..';
-import {
-  OverridePagePath,
-  PageType,
-} from '../components/contexts/PagePathProvider';
-import ErrorContextGuard from '../components/data/async_data/ErrorContextGuard';
-import Card from '../components/layout/card/Card';
-import Heading1 from '../components/layout/heading/Heading1';
-import { WithEdgeMargin } from '../components/layout/margin/margins';
-import { WithLoadingShimmer } from '../components/loading/LoadingShimmer';
-import Footer from '../components/page_sections/footer/Footer';
-import Header from '../components/page_sections/header/Header';
-import PageTitle from '../components/page_sections/page_title/PageTitle';
-import RollUpInfo from '../components/page_sections/roll_up/roll_up_info/RollUpInfo';
-import RollUpTitle from '../components/page_sections/roll_up/roll_up_title/RollUpTitle';
+import ErrorContextGuard from '@/components/data/async_data/ErrorContextGuard';
+import Footer from '@/components/page_sections/footer/Footer';
+import Header from '@/components/page_sections/header/Header';
+import PageTitle from '@/components/page_sections/page_title/PageTitle';
+import RollUpInfo from '@/components/page_sections/roll_up/roll_up_info/RollUpInfo';
+import RollUpTitle from '@/components/page_sections/roll_up/roll_up_title/RollUpTitle';
 import {
   RollUpDetailDataTable,
   RollUpDetailDataTablePlaceholder,
-} from '../components/page_sections/rollup_detail_data_table/RollUpDetailDataTable';
+} from '@/components/page_sections/rollup_detail_data_table/RollUpDetailDataTable';
 import {
   NamespaceContext,
   RollUpDetailsDataLoader,
-} from '../components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
+} from '@/components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
+import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
+import Card from '@/layout/card/Card';
+import Heading1 from '@/layout/heading/Heading1';
+import { WithEdgeMargin } from '@/layout/margin/margins';
+import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
+import React from 'react';
+import { LoadingContext } from '..';
 
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginRollUpInfo = WithEdgeMargin(RollUpInfo);

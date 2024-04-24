@@ -1,6 +1,6 @@
-import { CorruptBase64InputError } from '../../errors/CorruptBase64InputError';
-import { IncorrectBase64PaddingError } from '../../errors/IncorrectBase64PaddingError';
-import { InvalidBase64AlphabetLengthError } from '../../errors/InvalidBase64LengthError';
+import { CorruptBase64InputError } from '@/errors/CorruptBase64InputError';
+import { IncorrectBase64PaddingError } from '@/errors/IncorrectBase64PaddingError';
+import { InvalidBase64AlphabetLengthError } from '@/errors/InvalidBase64LengthError';
 
 const textEncoder = new TextEncoder();
 export function convertStringToArrayBuffer(s: string): Uint8Array {

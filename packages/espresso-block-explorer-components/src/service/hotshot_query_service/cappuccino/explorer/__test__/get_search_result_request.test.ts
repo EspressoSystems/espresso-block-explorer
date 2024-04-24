@@ -1,6 +1,6 @@
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng';
 import { describe, expect, it } from 'vitest';
-import { hexArrayBufferCodec } from '../../../../../convert/codec/array_buffer';
-import { PseudoRandomNumberGenerator } from '../../../../../data_source/fake_data_source/prng';
 import {
   CappuccinoExplorerGetSearchResultRequest,
   cappuccinoExplorerGetSearchResultRequestCodec,

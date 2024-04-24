@@ -1,6 +1,6 @@
+import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import { describe, expect, it } from 'vitest';
-import { PseudoRandomNumberGenerator } from '../../../../../data_source/fake_data_source/prng';
-import { TaggedBase64 } from '../../../../../models/espresso/tagged_base64/TaggedBase64';
 import { CappuccinoAPIBitVec } from '../bit_vec';
 import { CappuccinoAPIBitVecHead } from '../bit_vec_head';
 import { CappuccinoAPIHeader } from '../block_header';

@@ -1,5 +1,5 @@
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import React from 'react';
-import { TaggedBase64 } from '../../models/espresso/tagged_base64/TaggedBase64';
 import './inline.css';
 
 export interface TaggedBase64TextProps {

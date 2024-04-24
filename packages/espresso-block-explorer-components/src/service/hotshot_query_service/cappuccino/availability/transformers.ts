@@ -1,7 +1,7 @@
 import {
   convertIterableToAsyncIterable,
   mapAsyncIterable,
-} from '../../../../functional/functional_async';
+} from '@/functional/functional_async';
 import { CappuccinoAPIBlock } from './block';
 import { CappuccinoDerivedBlockSummary } from './derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from './derived_transaction_summary';

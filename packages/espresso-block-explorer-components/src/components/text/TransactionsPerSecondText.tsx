@@ -1,5 +1,5 @@
+import { CurrentNumberFormatters } from '@/contexts/NumberFormattersProvider';
 import React, { useContext } from 'react';
-import { CurrentNumberFormatters } from '../contexts/NumberFormattersProvider';
 
 export interface TransactionsPerSecondTextProps {
   transactionsPerSecond: number;

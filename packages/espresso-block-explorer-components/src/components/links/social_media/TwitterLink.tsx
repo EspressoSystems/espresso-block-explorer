@@ -1,5 +1,5 @@
+import TwitterIcon from '@/visual/icons/TwitterIcon';
 import React from 'react';
-import TwitterIcon from '../../visual/icons/TwitterIcon';
 import SocialMediaIconLink from './SocialMediaIconLink';
 
 /**

@@ -2,8 +2,8 @@ import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
-import { numberArrayCodec } from '../../../../convert/codec/number';
+} from '@/convert/codec/convert';
+import { numberArrayCodec } from '@/convert/codec/number';
 
 export class CappuccinoSummaryHistograms {
   readonly blockTime: number[];

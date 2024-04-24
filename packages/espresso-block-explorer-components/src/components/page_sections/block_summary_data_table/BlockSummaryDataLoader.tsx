@@ -1,11 +1,13 @@
-import React from 'react';
-import UnimplementedError from '../../../errors/UnimplementedError';
+import { DataContext } from '@/contexts/DataProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import UnimplementedError from '@/errors/UnimplementedError';
+import { addClassToClassName } from '@/higher_order';
 import {
   BlockSummaryAsyncRetriever,
   BlockSummaryColumn,
-} from '../../../models/block_explorer/block_summary';
-import { DataContext } from '../../contexts/DataProvider';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
+} from '@/models/block_explorer/block_summary';
+import Text from '@/text/Text';
+import React from 'react';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import {
   DataTableSetStateContext,
@@ -14,8 +16,6 @@ import {
 } from '../../data/data_table/DataTable';
 import { SortDirection } from '../../data/types';
 import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
-import { addClassToClassName } from '../../higher_order';
-import Text from '../../text/Text';
 
 export interface BlockSummary {
   block: number;

@@ -2,8 +2,8 @@ import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
-import { numberArrayCodec } from '../../../../convert/codec/number';
+} from '@/convert/codec/convert';
+import { numberArrayCodec } from '@/convert/codec/number';
 
 /**
  * CappuccinoTransactionsRoot represents the transactions root in the Cappuccino

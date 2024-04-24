@@ -1,4 +1,4 @@
-import { AsyncRetriever } from '../../async/AsyncRetriever';
+import { AsyncRetriever } from '@/async/AsyncRetriever';
 
 export interface RollUpSummaryEntry {
   readonly namespace: number;

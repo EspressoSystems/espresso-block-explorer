@@ -2,12 +2,9 @@ import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
-import {
-  numberArrayCodec,
-  numberCodec,
-} from '../../../../convert/codec/number';
-import { stringCodec } from '../../../../convert/codec/string';
+} from '@/convert/codec/convert';
+import { numberArrayCodec, numberCodec } from '@/convert/codec/number';
+import { stringCodec } from '@/convert/codec/string';
 import {
   CappuccinoAPIBitVecHead,
   cappuccinoAPIBitVecHeadCodec,

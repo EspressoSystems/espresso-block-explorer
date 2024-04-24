@@ -1,7 +1,7 @@
+import CircularProgressIndicator from '@/loading/CircularProgressIndicator';
+import Text from '@/text/Text';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import CircularProgressIndicator from '../../../loading/CircularProgressIndicator';
-import Text from '../../../text/Text';
 import { AsyncState } from '../AsyncSnapshot';
 import { AsyncSnapshotContext } from '../AsyncSnapshotContext';
 import PromiseResolverComp from '../PromiseResolver';

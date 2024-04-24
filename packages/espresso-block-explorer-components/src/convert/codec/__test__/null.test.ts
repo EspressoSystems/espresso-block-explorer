@@ -1,5 +1,5 @@
+import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng';
 import { describe, expect, it } from 'vitest';
-import { PseudoRandomNumberGenerator } from '../../../data_source/fake_data_source/prng';
 import { NullCodec, NullDecoder, NullEncoder } from '../null';
 import { numberCodec } from '../number';
 

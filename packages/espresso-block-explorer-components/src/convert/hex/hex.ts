@@ -1,6 +1,6 @@
-import InvalidHexStringError from '../../errors/InvalidHexStringError';
-import { InvalidHexValueError } from '../../errors/InvalidHexValueError';
-import { mapIterator } from '../../functional/functional';
+import InvalidHexStringError from '@/errors/InvalidHexStringError';
+import { InvalidHexValueError } from '@/errors/InvalidHexValueError';
+import { mapIterator } from '@/functional/functional';
 import { charCodesFromString } from '../base64/base64';
 
 /**

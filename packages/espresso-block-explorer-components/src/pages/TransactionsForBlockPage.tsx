@@ -1,33 +1,30 @@
-import React from 'react';
-import { DataContext } from '../components/contexts/DataProvider';
-import { ErrorContext } from '../components/contexts/ErrorProvider';
-import { LoadingContext } from '../components/contexts/LoadingProvider';
-import {
-  OverridePagePath,
-  PageType,
-} from '../components/contexts/PagePathProvider';
-import { PathResolverContext } from '../components/contexts/PathResolverProvider';
-import ErrorContextGuard from '../components/data/async_data/ErrorContextGuard';
-import Card from '../components/layout/card/Card';
-import Heading1 from '../components/layout/heading/Heading1';
-import { WithEdgeMargin } from '../components/layout/margin/margins';
-import Link from '../components/links/link/Link';
-import { WithLoadingShimmer } from '../components/loading/LoadingShimmer';
+import ErrorContextGuard from '@/components/data/async_data/ErrorContextGuard';
+import Link from '@/components/links/link/Link';
 import {
   BlockDetailsLoader,
   BlockNumberContext,
-} from '../components/page_sections/block_detail_content/BlockDetailContentLoader';
-import Footer from '../components/page_sections/footer/Footer';
-import Header from '../components/page_sections/header/Header';
-import PageTitle from '../components/page_sections/page_title/PageTitle';
-import { TransactionSummaryDataLoader } from '../components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
+} from '@/components/page_sections/block_detail_content/BlockDetailContentLoader';
+import Footer from '@/components/page_sections/footer/Footer';
+import Header from '@/components/page_sections/header/Header';
+import PageTitle from '@/components/page_sections/page_title/PageTitle';
+import { TransactionSummaryDataLoader } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
 import {
   TransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
-} from '../components/page_sections/transaction_summary_data_table/TransactionSummaryDataTable';
-import NumberText from '../components/text/NumberText';
-import Text from '../components/text/Text';
-import { BlockDetailEntry } from '../models/block_explorer/block_detail';
+} from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataTable';
+import { DataContext } from '@/contexts/DataProvider';
+import { ErrorContext } from '@/contexts/ErrorProvider';
+import { LoadingContext } from '@/contexts/LoadingProvider';
+import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import Card from '@/layout/card/Card';
+import Heading1 from '@/layout/heading/Heading1';
+import { WithEdgeMargin } from '@/layout/margin/margins';
+import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
+import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
+import NumberText from '@/text/NumberText';
+import Text from '@/text/Text';
+import React from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);

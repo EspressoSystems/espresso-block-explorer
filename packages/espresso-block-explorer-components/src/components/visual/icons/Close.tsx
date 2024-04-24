@@ -1,6 +1,6 @@
+import { addClassToClassName } from '@/higher_order';
 import React from 'react';
 import SVGIconBase from './SVGIconBase';
-import { addClassToClassName } from '../../higher_order';
 
 /**
  * Menu is an icon of a hamburger menu

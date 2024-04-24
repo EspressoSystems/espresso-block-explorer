@@ -1,5 +1,6 @@
+import { TypeCheckingCodec } from '@/convert';
+import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng';
 import { describe, expect, it } from 'vitest';
-import { PseudoRandomNumberGenerator } from '../../../data_source/fake_data_source/prng';
 import {
   hexArrayBufferCodec,
   rawStdBase64ArrayBufferCodec,
@@ -7,7 +8,6 @@ import {
   stdBase64ArrayBufferCodec,
   urlBase64ArrayBufferCodec,
 } from '../array_buffer';
-import { TypeCheckingCodec } from '../convert';
 
 function appendGarbage(
   input: (boolean | number | null | undefined | string | bigint | object)[],

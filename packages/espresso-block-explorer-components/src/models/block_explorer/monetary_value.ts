@@ -1,10 +1,6 @@
-import {
-  ArrayCodec,
-  ArrayDecoder,
-  ArrayEncoder,
-} from '../../convert/codec/array';
-import { Converter, TypeCheckingCodec } from '../../convert/codec/convert';
-import InvalidInputError from '../../errors/InvalidInputError';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
+import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
+import InvalidInputError from '@/errors/InvalidInputError';
 import {
   BTC,
   CurrencyCode,

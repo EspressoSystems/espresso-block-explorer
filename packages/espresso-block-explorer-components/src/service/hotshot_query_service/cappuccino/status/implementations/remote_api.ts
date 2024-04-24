@@ -1,5 +1,5 @@
-import { validateAndExpandResponse } from '../../../../../async/fetch/response_validators';
-import { numberCodec } from '../../../../../convert';
+import { validateAndExpandResponse } from '@/async/fetch/response_validators';
+import { numberCodec } from '@/convert/codec/number';
 import { CappuccinoHotShotQueryServiceStatusAPI } from '../status_api';
 
 export class FetchBasedCappuccinoHotShotQueryServiceStatusAPI

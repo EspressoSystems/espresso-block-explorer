@@ -1,8 +1,8 @@
+import EspressoLogo from '@/visual/icons/EspressoLogo';
 import React from 'react';
 import NewsLetterSignUp from '../../interaction/news_letter_sign_up/NewsLetterSignUp';
 import ExternalLinks from '../../links/external_links/ExternalLinks';
 import SocialMediaLinks from '../../links/social_media/SocialMediaLinks';
-import EspressoLogo from '../../visual/icons/EspressoLogo';
 import './footer.css';
 
 /**

@@ -1,6 +1,6 @@
+import { addClassToClassName } from '@/higher_order';
+import { WithUiSmall, WithUiText600 } from '@/typography/typography';
 import React from 'react';
-import { addClassToClassName } from '../../higher_order';
-import { WithUiSmall, WithUiText600 } from '../../typography/typography';
 import './summary_tabled_labeled_value.css';
 
 const DivText600 = WithUiText600('div');

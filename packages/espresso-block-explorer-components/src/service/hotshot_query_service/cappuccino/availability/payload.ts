@@ -2,7 +2,7 @@ import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
+} from '@/convert/codec/convert';
 import {
   CappuccinoAPITransactionNMTEntry,
   arrayCappuccinoAPITransactionNMTEntryCodec,

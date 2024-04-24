@@ -8,9 +8,9 @@
 // that is seeded based on today's date in UTC.
 //
 
-import MonetaryValue from '../../models/block_explorer/monetary_value';
-import { curatedRollupMap } from '../../models/block_explorer/rollup_entry/data';
-import { TaggedBase64 } from '../../models/espresso/tagged_base64/TaggedBase64';
+import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import { PseudoRandomNumberGenerator } from './prng';
 
 export async function* generateAllBlocks(): AsyncGenerator<GeneratedBlock> {

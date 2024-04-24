@@ -1,8 +1,8 @@
+import { BlockNumberContext } from '@/components/page_sections/block_detail_content/BlockDetailContentLoader';
+import { ProvideTickEverySecond } from '@/contexts/NowProvider';
+import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import { ProvideTickEverySecond } from '../../components/contexts/NowProvider';
-import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
-import { BlockNumberContext } from '../../components/page_sections/block_detail_content/BlockDetailContentLoader';
 import BlockPage from '../BlockPage';
 import { ProvideCappuccinoBlockDetailDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
 import FakeDataNotice from '../FakeDataNotice';

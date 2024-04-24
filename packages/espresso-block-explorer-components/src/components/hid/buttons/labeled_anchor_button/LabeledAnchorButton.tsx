@@ -1,4 +1,4 @@
-import { addClassToClassName } from '../../../higher_order';
+import { addClassToClassName } from '@/higher_order';
 import AnchorButton, { AnchorButtonProps } from '../anchor_button/AnchorButton';
 
 /**

@@ -1,18 +1,18 @@
+import { DataContext } from '@/contexts/DataProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import { iota } from '@/functional/functional';
+import SkeletonContent from '@/loading/SkeletonContent';
+import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
+import ByteSizeText from '@/text/ByteSizeText';
+import CopyHex from '@/text/CopyHex';
+import DateTimeText from '@/text/DateTimeText';
+import HexText from '@/text/HexText';
+import NumberText from '@/text/NumberText';
 import React from 'react';
-import { iota } from '../../../functional/functional';
-import { BlockSummaryColumn } from '../../../models/block_explorer/block_summary';
-import { DataContext } from '../../contexts/DataProvider';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
 import Link from '../../links/link/Link';
-import SkeletonContent from '../../loading/SkeletonContent';
-import ByteSizeText from '../../text/ByteSizeText';
-import CopyHex from '../../text/CopyHex';
-import DateTimeText from '../../text/DateTimeText';
-import HexText from '../../text/HexText';
-import NumberText from '../../text/NumberText';
 import { BlockSummary } from './BlockSummaryDataLoader';
 
 /**

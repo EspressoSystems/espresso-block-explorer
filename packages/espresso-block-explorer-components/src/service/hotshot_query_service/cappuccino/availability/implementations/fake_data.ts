@@ -1,4 +1,4 @@
-import { generateAllBlocks } from '../../../../../data_source/fake_data_source/generateFakeData';
+import { generateAllBlocks } from '@/data_source/fake_data_source/generateFakeData';
 import {
   collectAsyncIterator,
   dropAsyncIterable,
@@ -13,8 +13,8 @@ import {
   reverseAsyncIterator,
   takeAsyncIterator,
   takeWhileAsyncIterator,
-} from '../../../../../functional/functional_async';
-import { TaggedBase64 } from '../../../../../models/espresso/tagged_base64/TaggedBase64';
+} from '@/functional/functional_async';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { CappuccinoAPIBlock } from '../block';
 import { CappuccinoAPIHeader } from '../block_header';

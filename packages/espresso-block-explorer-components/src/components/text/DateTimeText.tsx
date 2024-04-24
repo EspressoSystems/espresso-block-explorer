@@ -1,5 +1,5 @@
+import { CurrentDateTimeFormatters } from '@/contexts/DateTimeFormattersProvider';
 import React, { useContext } from 'react';
-import { CurrentDateTimeFormatters } from '../contexts/DateTimeFormattersProvider';
 
 export interface DateTimeTextProps {
   date: Date;

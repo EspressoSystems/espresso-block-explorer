@@ -1,8 +1,8 @@
+import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng';
+import { ESP } from '@/models/block_explorer/currency_code';
+import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import { describe, expect, it } from 'vitest';
-import { PseudoRandomNumberGenerator } from '../../../../../data_source/fake_data_source/prng';
-import { ESP } from '../../../../../models/block_explorer/currency_code';
-import MonetaryValue from '../../../../../models/block_explorer/monetary_value';
-import { TaggedBase64 } from '../../../../../models/espresso/tagged_base64/TaggedBase64';
 import { CappuccinoExplorerBlockDetail } from '../block_detail';
 import { CappuccinoExplorerBlockSummary } from '../block_summary';
 import { CappuccinoExplorerSummary } from '../explorer_summary';

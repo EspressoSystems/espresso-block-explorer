@@ -1,8 +1,4 @@
-import {
-  ArrayCodec,
-  ArrayDecoder,
-  ArrayEncoder,
-} from '../../../../convert/codec/array';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import {
   Codec,
   Converter,
@@ -11,12 +7,12 @@ import {
   isRecord,
   isString,
   isUnknown,
-} from '../../../../convert/codec/convert';
-import InvalidInputError from '../../../../errors/InvalidInputError';
+} from '@/convert/codec/convert';
+import InvalidInputError from '@/errors/InvalidInputError';
 import {
   TaggedBase64,
   taggedBase64Codec,
-} from '../../../../models/espresso/tagged_base64/TaggedBase64';
+} from '@/models/espresso/tagged_base64/TaggedBase64';
 
 /**
  * CappuccinoAPIMerkleTreeProof represents a proof in the Merkle Tree.

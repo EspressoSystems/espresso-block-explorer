@@ -1,21 +1,21 @@
+import { BlockDetailAsyncRetrieverContext } from '@/components/page_sections/block_detail_content/BlockDetailContentLoader';
+import { BlockSummaryAsyncRetrieverContext } from '@/components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
+import { ExplorerSummaryLoaderContext } from '@/components/page_sections/explorer_summary/ExplorerSummaryLoader';
+import { LatestBlockSummaryLoaderContext } from '@/components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
+import { RollUpDetailAsyncRetrieverContext } from '@/components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
+import { RollUpSummaryAsyncRetrieverContext } from '@/components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
+import { TransactionDetailAsyncRetrieverContext } from '@/components/page_sections/transaction_detail_content/TransactionDetailLoader';
+import { TransactionSummaryAsyncRetrieverContext } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
+import { BlockSummaryEntry } from '@/models/block_explorer/block_summary';
+import { TransactionSummaryEntry } from '@/models/block_explorer/transaction_summary';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import { CappuccinoExplorerGetBlockDetailRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_block_detail_request';
+import { CappuccinoExplorerGetBlockSummariesRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_block_summaries_request';
+import { CappuccinoExplorerGetTransactionDetailRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_detail_request';
+import { CappuccinoExplorerGetTransactionSummariesFilter } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_filter';
+import { CappuccinoExplorerGetTransactionSummariesRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_request';
+import { CappuccinoExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_target';
 import React from 'react';
-import { BlockDetailAsyncRetrieverContext } from '../components/page_sections/block_detail_content/BlockDetailContentLoader';
-import { BlockSummaryAsyncRetrieverContext } from '../components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
-import { ExplorerSummaryLoaderContext } from '../components/page_sections/explorer_summary/ExplorerSummaryLoader';
-import { LatestBlockSummaryLoaderContext } from '../components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
-import { RollUpDetailAsyncRetrieverContext } from '../components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
-import { RollUpSummaryAsyncRetrieverContext } from '../components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
-import { TransactionDetailAsyncRetrieverContext } from '../components/page_sections/transaction_detail_content/TransactionDetailLoader';
-import { TransactionSummaryAsyncRetrieverContext } from '../components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
-import { BlockSummaryEntry } from '../models/block_explorer/block_summary';
-import { TransactionSummaryEntry } from '../models/block_explorer/transaction_summary';
-import { TaggedBase64 } from '../models/espresso/tagged_base64/TaggedBase64';
-import { CappuccinoExplorerGetBlockDetailRequest } from '../service/hotshot_query_service/cappuccino/explorer/get_block_detail_request';
-import { CappuccinoExplorerGetBlockSummariesRequest } from '../service/hotshot_query_service/cappuccino/explorer/get_block_summaries_request';
-import { CappuccinoExplorerGetTransactionDetailRequest } from '../service/hotshot_query_service/cappuccino/explorer/get_transaction_detail_request';
-import { CappuccinoExplorerGetTransactionSummariesFilter } from '../service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_filter';
-import { CappuccinoExplorerGetTransactionSummariesRequest } from '../service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_request';
-import { CappuccinoExplorerGetTransactionSummariesTarget } from '../service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_target';
 import { CappuccinoHotShotQueryServiceAPIContext } from './CappuccinoHotShotQueryServiceAPIContext';
 
 // We need to create adapters between the HotShotQueryService and the

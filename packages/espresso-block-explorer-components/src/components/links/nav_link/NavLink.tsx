@@ -1,8 +1,5 @@
+import { CurrentPagePathContext, PageType } from '@/contexts/PagePathProvider';
 import React from 'react';
-import {
-  CurrentPagePathContext,
-  PageType,
-} from '../../contexts/PagePathProvider';
 import Link from '../link/Link';
 import './nav_link.css';
 

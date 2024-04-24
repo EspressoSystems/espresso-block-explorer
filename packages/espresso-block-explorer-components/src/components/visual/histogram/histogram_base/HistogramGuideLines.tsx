@@ -1,5 +1,5 @@
+import { WithUiSmall } from '@/typography/typography';
 import React from 'react';
-import { WithUiSmall } from '../../../typography/typography';
 import {
   HistogramGraphWidth,
   HistogramPlotHeight,

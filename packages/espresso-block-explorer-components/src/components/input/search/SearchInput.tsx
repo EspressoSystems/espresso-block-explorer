@@ -1,26 +1,26 @@
-import React from 'react';
-import { CappuccinoHotShotQueryServiceAPIContext } from '../../../pages/CappuccinoHotShotQueryServiceAPIContext';
-import { CappuccinoExplorerBlockSummary } from '../../../service/hotshot_query_service/cappuccino/explorer/block_summary';
-import { CappuccinoExplorerGetSearchResultRequest } from '../../../service/hotshot_query_service/cappuccino/explorer/get_search_result_request';
-import { CappuccinoExplorerGetSearchResultResponse } from '../../../service/hotshot_query_service/cappuccino/explorer/get_search_result_response';
-import { CappuccinoExplorerSearchResults } from '../../../service/hotshot_query_service/cappuccino/explorer/search_results';
-import { CappuccinoExplorerTransactionSummary } from '../../../service/hotshot_query_service/cappuccino/explorer/transaction_summary';
-import { CappuccinoHotShotQueryService } from '../../../service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
-import { DataContext } from '../../contexts/DataProvider';
-import { ErrorContext } from '../../contexts/ErrorProvider';
-import { LoadingContext } from '../../contexts/LoadingProvider';
+import { DataContext } from '@/contexts/DataProvider';
+import { ErrorContext } from '@/contexts/ErrorProvider';
+import { LoadingContext } from '@/contexts/LoadingProvider';
 import {
   PathResolver,
   PathResolverContext,
-} from '../../contexts/PathResolverProvider';
+} from '@/contexts/PathResolverProvider';
+import { CardNoPadding } from '@/layout/card/Card';
+import { CappuccinoExplorerBlockSummary } from '@/service/hotshot_query_service/cappuccino/explorer/block_summary';
+import { CappuccinoExplorerGetSearchResultRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_search_result_request';
+import { CappuccinoExplorerGetSearchResultResponse } from '@/service/hotshot_query_service/cappuccino/explorer/get_search_result_response';
+import { CappuccinoExplorerSearchResults } from '@/service/hotshot_query_service/cappuccino/explorer/search_results';
+import { CappuccinoExplorerTransactionSummary } from '@/service/hotshot_query_service/cappuccino/explorer/transaction_summary';
+import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
+import NumberText from '@/text/NumberText';
+import RelativeTimeText from '@/text/RelativeTimeText';
+import Text from '@/text/Text';
+import { WithUiSmall } from '@/typography/typography';
+import SearchGlass from '@/visual/icons/SearchGlass';
+import React from 'react';
+import { CappuccinoHotShotQueryServiceAPIContext } from '../../../pages/CappuccinoHotShotQueryServiceAPIContext';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import IconButton from '../../hid/buttons/icon_button/IconButton';
-import { CardNoPadding } from '../../layout/card/Card';
-import NumberText from '../../text/NumberText';
-import RelativeTimeText from '../../text/RelativeTimeText';
-import Text from '../../text/Text';
-import { WithUiSmall } from '../../typography/typography';
-import SearchGlass from '../../visual/icons/SearchGlass';
 import { InputContainer } from '../container/Container';
 import './search.css';
 

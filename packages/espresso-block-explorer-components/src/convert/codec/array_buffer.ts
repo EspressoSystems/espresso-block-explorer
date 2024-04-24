@@ -1,4 +1,4 @@
-import InvalidTypeError from '../../errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/InvalidTypeError';
 import * as base64 from '../base64/base64';
 import { encodeNumberIterableToHexits, parseHexString } from '../hex/hex';
 import { Converter, TypeCheckingCodec } from './convert';

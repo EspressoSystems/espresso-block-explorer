@@ -1,7 +1,7 @@
+import { ProvideDerivedDateTimeFormatters } from '@/contexts/DateTimeFormattersProvider';
+import { OverrideLocale } from '@/contexts/LocaleProvider';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { ProvideDerivedDateTimeFormatters } from '../../contexts/DateTimeFormattersProvider';
-import { OverrideLocale } from '../../contexts/LocaleProvider';
 import TimeText from '../TimeText';
 
 interface ExampleProps {

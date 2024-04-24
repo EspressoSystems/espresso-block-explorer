@@ -1,9 +1,9 @@
-import { urlBase64ArrayBufferCodec } from '../../../../convert/codec/array_buffer';
+import { urlBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
+} from '@/convert/codec/convert';
 
 /**
  * CappuccinoNamespaceTable represents the namespace table in the Cappuccino API.

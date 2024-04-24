@@ -1,6 +1,6 @@
-import { Codec, Converter } from '../../../../convert/codec/convert';
-import { numberCodec } from '../../../../convert/codec/number';
-import { StringCodec, stringCodec } from '../../../../convert/codec/string';
+import { Codec, Converter } from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
+import { StringCodec, stringCodec } from '@/convert/codec/string';
 import { latestConstant } from './constants';
 
 export abstract class CappuccinoExplorerGetBlockDetailRequest {

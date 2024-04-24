@@ -2,11 +2,11 @@ import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-} from '../../../../convert/codec/convert';
+} from '@/convert/codec/convert';
 import {
   TaggedBase64,
   taggedBase64Codec,
-} from '../../../../models/espresso/tagged_base64/TaggedBase64';
+} from '@/models/espresso/tagged_base64/TaggedBase64';
 
 /**
  * CappuccinoAPIBQuorumCertificateData represents a BFT quorum certificate

@@ -1,10 +1,10 @@
-import React from 'react';
-import UnimplementedError from '../../../errors/UnimplementedError';
+import UnimplementedError from '@/errors/UnimplementedError';
 import {
   ExplorerSummaryAsyncRetriever,
   ExplorerSummaryEntry,
-} from '../../../models/block_explorer/explorer_summary';
-import { TaggedBase64 } from '../../../models/espresso/tagged_base64/TaggedBase64';
+} from '@/models/block_explorer/explorer_summary';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import React from 'react';
 import {
   BlockSizeHistogramAsyncRetrieverContext,
   BlockSizeHistogramData,

@@ -1,16 +1,16 @@
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import { iota } from '@/functional/functional';
+import SkeletonContent from '@/loading/SkeletonContent';
+import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
+import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
+import NumberText from '@/text/NumberText';
+import Text from '@/text/Text';
 import React from 'react';
 import { DataContext } from '../..';
-import { iota } from '../../../functional/functional';
-import { BlockSummaryColumn } from '../../../models/block_explorer/block_summary';
-import { curatedRollupMap } from '../../../models/block_explorer/rollup_entry/data';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
 import Link from '../../links/link/Link';
-import SkeletonContent from '../../loading/SkeletonContent';
-import NumberText from '../../text/NumberText';
-import Text from '../../text/Text';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
 import { RollUpSummary } from './RollUpsSummaryLoader';
 

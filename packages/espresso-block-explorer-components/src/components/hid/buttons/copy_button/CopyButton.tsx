@@ -1,8 +1,8 @@
+import { Now } from '@/contexts/NowProvider';
+import { addClassToClassName } from '@/higher_order';
+import CheckCircle from '@/visual/icons/CheckCircle';
+import Copy from '@/visual/icons/Copy';
 import React from 'react';
-import { Now } from '../../../contexts/NowProvider';
-import { addClassToClassName } from '../../../higher_order';
-import CheckCircle from '../../../visual/icons/CheckCircle';
-import Copy from '../../../visual/icons/Copy';
 import './copy_button.css';
 
 export interface ButtonProps

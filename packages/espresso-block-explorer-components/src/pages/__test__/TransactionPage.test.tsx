@@ -1,11 +1,10 @@
+import { encodeNumberIterableToHexits } from '@/convert/hex/hex';
+import { generateAllBlocks } from '@/data_source/fake_data_source/generateFakeData';
+import { firstAsyncIterator } from '@/functional/functional_async';
 import { composeStories } from '@storybook/react';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
 import { describe, expect, it } from 'vitest';
-import { encodeNumberIterableToHexits } from '../../convert/hex/hex';
-import { generateAllBlocks } from '../../data_source/fake_data_source/generateFakeData';
-import { firstAsyncIterator } from '../../functional/functional_async';
 import * as stories from '../__docs__/TransactionPage.stories';
 
 const { Transaction } = composeStories(stories);

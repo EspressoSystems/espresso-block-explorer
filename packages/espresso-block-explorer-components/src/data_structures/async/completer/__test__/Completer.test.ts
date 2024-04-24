@@ -1,5 +1,5 @@
+import { CompleterAlreadyCompletedError } from '@/errors/CompleterAlreadyCompletedError';
 import { describe, expect, it } from 'vitest';
-import { CompleterAlreadyCompletedError } from '../../../../errors/CompleterAlreadyCompletedError';
 import { createCompleter } from '../Completer';
 
 describe('Completer', () => {
