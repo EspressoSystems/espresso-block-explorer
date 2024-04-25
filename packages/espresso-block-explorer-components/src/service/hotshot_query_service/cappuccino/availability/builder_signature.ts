@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Converter,
@@ -44,6 +45,8 @@ class CappuccinoBuilderSignatureEncoder
   implements Converter<CappuccinoBuilderSignature>
 {
   convert(input: CappuccinoBuilderSignature) {
+    assertInstanceOf(input, CappuccinoBuilderSignature);
+
     return {
       r: hexArrayBufferCodec.encode(input.r),
       s: hexArrayBufferCodec.encode(input.s),

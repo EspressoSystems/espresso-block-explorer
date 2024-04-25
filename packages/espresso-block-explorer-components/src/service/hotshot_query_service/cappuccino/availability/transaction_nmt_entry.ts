@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import {
   Converter,
@@ -41,6 +42,8 @@ export class CappuccinoAPITransactionNMTEntryEncoder
   implements Converter<CappuccinoAPITransactionNMTEntry>
 {
   convert(input: CappuccinoAPITransactionNMTEntry) {
+    assertInstanceOf(input, CappuccinoAPITransactionNMTEntry);
+
     return {
       vm: numberCodec.encode(input.vm),
       payload: numberArrayCodec.encode(input.payload),

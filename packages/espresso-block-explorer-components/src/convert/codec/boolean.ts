@@ -1,3 +1,4 @@
+import { assertType } from '@/assert/assert';
 import InvalidTypeError from '@/errors/InvalidTypeError';
 import { Converter, TypeCheckingCodec, isBoolean } from './convert';
 
@@ -24,6 +25,8 @@ export class BooleanDecoder implements Converter<unknown, boolean> {
  */
 export class BooleanEncoder implements Converter<boolean, boolean> {
   convert(input: boolean): boolean {
+    assertType(input, 'boolean');
+
     return input;
   }
 }

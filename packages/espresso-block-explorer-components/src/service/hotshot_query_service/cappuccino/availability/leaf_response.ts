@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -43,6 +44,8 @@ export class CappuccinoAPILeafResponseEncoder
   implements Converter<CappuccinoAPILeafResponse>
 {
   convert(input: CappuccinoAPILeafResponse) {
+    assertInstanceOf(input, CappuccinoAPILeafResponse);
+
     return {
       leaf: cappuccinoAPILeafCodec.encode(input.leaf),
       qc: cappuccinoAPIQuorumCertificateCodec.encode(input.qc),

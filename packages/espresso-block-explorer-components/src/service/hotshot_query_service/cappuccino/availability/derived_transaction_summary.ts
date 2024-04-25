@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import {
   Converter,
@@ -61,6 +62,8 @@ export class CappuccinoDerivedTransactionSummaryEncoder
   implements Converter<CappuccinoDerivedTransactionSummary>
 {
   convert(input: CappuccinoDerivedTransactionSummary) {
+    assertInstanceOf(input, CappuccinoDerivedTransactionSummary);
+
     return {
       hash: taggedBase64Codec.encode(input.hash),
       header: cappuccinoAPIHeaderCodec.encode(input.header),

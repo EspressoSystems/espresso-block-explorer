@@ -8,9 +8,7 @@ import ExplorerPage from '../ExplorerPage';
 import FakeDataNotice from '../FakeDataNotice';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
-interface ExampleProps {
-  block: number;
-}
+interface ExampleProps {}
 
 const Example: React.FC<ExampleProps> = (props) => (
   <>
@@ -39,7 +37,5 @@ export default meta;
 type Story = StoryObj<typeof Example>;
 
 export const Explorer: Story = {
-  args: {
-    block: 0,
-  },
+  args: {},
 };

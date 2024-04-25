@@ -1,3 +1,4 @@
+import { assertType } from '@/assert/assert';
 import { Converter, TypeCheckingCodec } from './convert';
 
 /**
@@ -39,6 +40,7 @@ export class UndefinedEncoder<T, U>
 
   convert(input: undefined | T): undefined | U {
     if (input === undefined) {
+      assertType(input, 'undefined');
       return undefined;
     }
 

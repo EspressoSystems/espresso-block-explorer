@@ -12,13 +12,13 @@ import {
   NamespaceContext,
   RollUpDetailsDataLoader,
 } from '@/components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
+import { LoadingContext } from '@/contexts/LoadingProvider';
 import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
 import Card from '@/layout/card/Card';
 import Heading1 from '@/layout/heading/Heading1';
 import { WithEdgeMargin } from '@/layout/margin/margins';
 import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
 import React from 'react';
-import { LoadingContext } from '..';
 
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginRollUpInfo = WithEdgeMargin(RollUpInfo);

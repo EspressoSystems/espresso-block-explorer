@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { Codec, Converter } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
 
@@ -17,6 +18,8 @@ class CappuccinoExplorerGetSearchResultRequestEncoder
   implements Converter<CappuccinoExplorerGetSearchResultRequest, unknown>
 {
   convert(input: CappuccinoExplorerGetSearchResultRequest) {
+    assertInstanceOf(input, CappuccinoExplorerGetSearchResultRequest);
+
     return stringCodec.encode(input.query);
   }
 }

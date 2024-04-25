@@ -1,3 +1,4 @@
+import { assertNotNull } from '@/assert/assert';
 import { Converter, TypeCheckingCodec } from './convert';
 
 /**
@@ -38,6 +39,7 @@ export class NullEncoder<T, U> implements Converter<null | T, null | U> {
       return null;
     }
 
+    assertNotNull(input);
     return this.itemCodec.encode(input);
   }
 }

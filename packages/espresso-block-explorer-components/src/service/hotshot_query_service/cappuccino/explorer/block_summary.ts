@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
@@ -70,6 +71,8 @@ class CappuccinoExplorerBlockSummaryEncoder
   implements Converter<CappuccinoExplorerBlockSummary, unknown>
 {
   convert(input: CappuccinoExplorerBlockSummary): unknown {
+    assertInstanceOf(input, CappuccinoExplorerBlockSummary);
+
     return {
       hash: taggedBase64Codec.encode(input.hash),
       height: numberCodec.encode(input.height),

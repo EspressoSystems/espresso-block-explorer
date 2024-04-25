@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { urlBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Converter,
@@ -35,6 +36,8 @@ class CappuccinoNamespaceTableEncoder
   implements Converter<CappuccinoNamespaceTable>
 {
   convert(input: CappuccinoNamespaceTable) {
+    assertInstanceOf(input, CappuccinoNamespaceTable);
+
     return {
       bytes: urlBase64ArrayBufferCodec.encode(input.bytes),
     };

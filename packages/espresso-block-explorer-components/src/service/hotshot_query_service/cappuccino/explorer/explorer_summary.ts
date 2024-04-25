@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -79,6 +80,8 @@ class CappuccinoExplorerSummaryEncoder
   implements Converter<CappuccinoExplorerSummary>
 {
   convert(input: CappuccinoExplorerSummary) {
+    assertInstanceOf(input, CappuccinoExplorerSummary);
+
     return {
       latest_block: cappuccinoExplorerBlockDetailCodec.encode(
         input.latestBlock,

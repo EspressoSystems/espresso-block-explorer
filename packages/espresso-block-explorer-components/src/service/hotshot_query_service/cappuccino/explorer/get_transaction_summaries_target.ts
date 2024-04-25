@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Codec,
   Converter,
@@ -15,7 +16,7 @@ import {
 export abstract class CappuccinoExplorerGetTransactionSummariesTarget {
   readonly limit: number;
 
-  protected constructor(limit: number) {
+  constructor(limit: number) {
     this.limit = limit;
   }
 
@@ -78,6 +79,8 @@ class CappuccinoExplorerGetTransactionSummariesTargetEncoder
     Converter<CappuccinoExplorerGetTransactionSummariesTarget, unknown>
 {
   convert(input: CappuccinoExplorerGetTransactionSummariesTarget) {
+    assertInstanceOf(input, CappuccinoExplorerGetTransactionSummariesTarget);
+
     if (
       input instanceof CappuccinoExplorerGetTransactionSummariesTargetLatest
     ) {

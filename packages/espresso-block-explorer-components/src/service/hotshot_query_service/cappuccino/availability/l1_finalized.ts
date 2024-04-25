@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -44,6 +45,8 @@ export class CappuccinoL1FinalizedEncoder
   implements Converter<CappuccinoL1Finalized>
 {
   convert(input: CappuccinoL1Finalized) {
+    assertInstanceOf(input, CappuccinoL1Finalized);
+
     return {
       number: numberCodec.encode(input.number),
       timestamp: stringCodec.encode(input.timestamp),

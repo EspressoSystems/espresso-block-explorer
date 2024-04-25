@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -35,6 +36,8 @@ export class CappuccinoTransactionsRootEncoder
   implements Converter<CappuccinoTransactionsRoot>
 {
   convert(input: CappuccinoTransactionsRoot) {
+    assertInstanceOf(input, CappuccinoTransactionsRoot);
+
     return {
       root: numberArrayCodec.encode(input.root),
     };

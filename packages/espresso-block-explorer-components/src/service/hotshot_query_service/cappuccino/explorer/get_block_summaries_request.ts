@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Codec,
   Converter,
@@ -12,7 +13,7 @@ export abstract class CappuccinoExplorerGetBlockSummariesRequest {
   readonly limit: number;
   abstract get from(): number | typeof latestConstant;
 
-  protected constructor(limit: number) {
+  constructor(limit: number) {
     this.limit = limit;
   }
 
@@ -33,6 +34,8 @@ class CappuccinoExplorerGetBlockSummariesRequestEncoder
   implements Converter<CappuccinoExplorerGetBlockSummariesRequest, unknown>
 {
   convert(input: CappuccinoExplorerGetBlockSummariesRequest) {
+    assertInstanceOf(input, CappuccinoExplorerGetBlockSummariesRequest);
+
     if (isNumber(input.from)) {
       return {
         from: numberCodec.encode(input.from),

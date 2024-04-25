@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
 import { isUnknownArray } from '@/convert/codec/unknown';
@@ -45,6 +46,8 @@ export class CappuccinoAPIQuorumCertificateSignaturesEncoder
   implements Converter<CappuccinoAPIQuorumCertificateSignatures>
 {
   convert(input: CappuccinoAPIQuorumCertificateSignatures) {
+    assertInstanceOf(input, CappuccinoAPIQuorumCertificateSignatures);
+
     return [
       taggedBase64Codec.encode(input.signature),
       cappuccinoAPIBitVecCodec.encode(input.bitvec),

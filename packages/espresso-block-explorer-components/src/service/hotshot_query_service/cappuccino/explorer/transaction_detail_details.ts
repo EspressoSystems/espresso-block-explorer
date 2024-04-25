@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { booleanCodec } from '@/convert/codec/boolean';
 import {
   Converter,
@@ -86,6 +87,8 @@ class CappuccinoExplorerTransactionDetailDetailsEncoder
   implements Converter<CappuccinoExplorerTransactionDetailDetails>
 {
   convert(input: CappuccinoExplorerTransactionDetailDetails) {
+    assertInstanceOf(input, CappuccinoExplorerTransactionDetailDetails);
+
     return {
       hash: taggedBase64Codec.encode(input.hash),
       height: numberCodec.encode(input.height),

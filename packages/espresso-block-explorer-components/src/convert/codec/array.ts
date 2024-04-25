@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import InvalidTypeError from '@/errors/InvalidTypeError';
 import { Converter, TypeCheckingCodec } from './convert';
 import { isUnknownArray } from './unknown';
@@ -41,6 +42,8 @@ export class ArrayEncoder<T, U> implements Converter<T[], U[]> {
   }
 
   convert(input: T[]): U[] {
+    assertInstanceOf(input, Array);
+
     return input.map((m) => this.itemCodec.encode(m));
   }
 }

@@ -79,6 +79,49 @@ export function assert(booleanExpression: true, message?: string): void;
 export function assert(booleanExpression: false, message?: string): never;
 export function assert(booleanExpression: boolean, message?: string): void;
 export function assert(booleanExpression: true, message?: string): void;
-export function assert(booleanExpression: boolean, message?: string): void {
+export function assert(booleanExpression: boolean, message?: string) {
   assertExecutor.assert(booleanExpression, message);
+}
+
+/**
+ * assertType is a function that will assert that a given value matches the
+ * expected type check. If the assertion fails, an annotated error message
+ * will indicate that the types don't match, what the expected type was, and
+ * what the actual type was.
+ */
+export function assertType(value: string, type: 'string'): void;
+export function assertType(value: boolean, type: 'boolean'): void;
+export function assertType(value: number, type: 'number'): void;
+export function assertType(value: object, type: 'object'): void;
+export function assertType(value: null, type: 'object'): void;
+export function assertType(value: bigint, type: 'bigint'): void;
+export function assertType(value: undefined, type: 'undefined'): void;
+export function assertType(value: unknown, type: string): never;
+export function assertType(value: unknown, type: string) {
+  assert(
+    typeof value === type,
+    `type assertion failed: expected "${type}", received "${typeof value}"`,
+  );
+}
+
+/**
+ * assertNotNull is a function that will assert that a given value is not null.
+ */
+export function assertNotNull<T>(value: null | T): asserts value is T {
+  assert(value !== null, 'expected a non-null value, received null');
+}
+
+/**
+ * assertInstanceOf ia function that ensures that the given value is in fact
+ * an instanceof the given constructor function.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function assertInstanceOf<T, C extends abstract new (...args: any) => T>(
+  value: unknown,
+  constructor: C,
+): asserts value is T {
+  assert(
+    value instanceof constructor,
+    `given value is not an instance of "${constructor.name}", specific type is "${typeof value === 'object' && value !== null ? value.constructor.name : typeof value}"`,
+  );
 }

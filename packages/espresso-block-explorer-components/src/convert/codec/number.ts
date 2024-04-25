@@ -1,3 +1,4 @@
+import { assertType } from '@/assert/assert';
 import InvalidTypeError from '@/errors/InvalidTypeError';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from './array';
 import {
@@ -32,6 +33,8 @@ export class NumberDecoder implements Converter<unknown, number> {
  */
 export class NumberEncoder implements Converter<number, number> {
   convert(input: number): number {
+    assertType(input, 'number');
+
     return input;
   }
 }

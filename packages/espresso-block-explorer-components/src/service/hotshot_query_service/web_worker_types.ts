@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -54,6 +55,8 @@ class WebWorkerRequestDecoder implements Converter<unknown, WebWorkerRequest> {
 
 class WebWorkerRequestEncoder implements Converter<WebWorkerRequest> {
   convert(input: WebWorkerRequest) {
+    assertInstanceOf(input, WebWorkerRequest);
+
     return {
       requestID: requestIDCodec.encode(input.requestID),
       api: stringCodec.encode(input.api),
@@ -111,6 +114,8 @@ class WebWorkerResponseSuccessEncoder
   implements Converter<WebWorkerResponseSuccess>
 {
   convert(input: WebWorkerResponseSuccess) {
+    assertInstanceOf(input, WebWorkerResponseSuccess);
+
     return {
       requestID: requestIDCodec.encode(input.requestID),
       response: input.response,
@@ -159,6 +164,8 @@ class WebWorkerResponseErrorEncoder
   implements Converter<WebWorkerResponseError>
 {
   convert(input: WebWorkerResponseError) {
+    assertInstanceOf(input, WebWorkerResponseError);
+
     return {
       requestID: requestIDCodec.encode(input.requestID),
       error: input.error,
@@ -194,6 +201,8 @@ class WebWorkerResponseDecoder
 
 class WebWorkerResponseEncoder implements Converter<WebWorkerResponse> {
   convert(input: WebWorkerResponse) {
+    assertInstanceOf(input, WebWorkerResponse);
+
     return input.toJSON();
   }
 }

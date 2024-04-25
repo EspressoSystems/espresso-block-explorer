@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import InvalidInputError from '@/errors/InvalidInputError';
 
@@ -105,6 +106,8 @@ class CurrencyCodeDecoder implements Converter<unknown, CurrencyCode> {
 
 class CurrencyCodeEncoder implements Converter<CurrencyCode, string> {
   public convert(input: CurrencyCode): string {
+    assertInstanceOf(input, CurrencyCode);
+
     return input.alpha3Code;
   }
 }

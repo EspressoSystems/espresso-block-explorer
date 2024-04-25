@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Codec,
   Converter,
@@ -36,6 +37,8 @@ class CappuccinoExplorerGetSearchResultResponseEncoder
   implements Converter<CappuccinoExplorerGetSearchResultResponse, unknown>
 {
   convert(input: CappuccinoExplorerGetSearchResultResponse): unknown {
+    assertInstanceOf(input, CappuccinoExplorerGetSearchResultResponse);
+
     return {
       search_results: cappuccinoExplorerSearchResultsCodec.encode(
         input.searchResults,

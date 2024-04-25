@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { rawURLEncoding } from '@/convert/base64/base64';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import InvalidTaggedBase64EncodingError from '@/errors/InvalidTaggedBase64EncodingError';
@@ -61,6 +62,8 @@ export class TaggedBase64Decoder implements Converter<unknown, TaggedBase64> {
 
 export class TaggedBase64Encoder implements Converter<TaggedBase64, string> {
   convert(input: TaggedBase64): string {
+    assertInstanceOf(input, TaggedBase64);
+
     return input.toString();
   }
 }

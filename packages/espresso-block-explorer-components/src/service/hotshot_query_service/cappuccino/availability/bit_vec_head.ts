@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -39,6 +40,8 @@ export class CappuccinoAPIBitVecHeadEncoder
   implements Converter<CappuccinoAPIBitVecHead>
 {
   convert(input: CappuccinoAPIBitVecHead) {
+    assertInstanceOf(input, CappuccinoAPIBitVecHead);
+
     return {
       width: numberCodec.encode(input.width),
       index: numberCodec.encode(input.index),

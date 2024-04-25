@@ -1,9 +1,10 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { Codec, Converter, isRecord, isUnknown } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 import InvalidInputError from '@/errors/InvalidInputError';
 
 export abstract class CappuccinoExplorerGetTransactionSummariesFilter {
-  protected constructor() {}
+  constructor() {}
 
   static block(block: number) {
     return new CappuccinoExplorerGetTransactionSummariesFilterBlock(block);
@@ -52,6 +53,8 @@ class CappuccinoExplorerGetTransactionSummariesFilterEncoder
     Converter<CappuccinoExplorerGetTransactionSummariesFilter, unknown>
 {
   convert(input: CappuccinoExplorerGetTransactionSummariesFilter) {
+    assertInstanceOf(input, CappuccinoExplorerGetTransactionSummariesFilter);
+
     if (input instanceof CappuccinoExplorerGetTransactionSummariesFilterNone) {
       return {};
     }

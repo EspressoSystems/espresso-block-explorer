@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -53,6 +54,8 @@ class CappuccinoSummaryHistogramsEncoder
   implements Converter<CappuccinoSummaryHistograms>
 {
   convert(input: CappuccinoSummaryHistograms) {
+    assertInstanceOf(input, CappuccinoSummaryHistograms);
+
     return {
       block_time: numberArrayCodec.encode(input.blockTime),
       block_size: numberArrayCodec.encode(input.blockSize),

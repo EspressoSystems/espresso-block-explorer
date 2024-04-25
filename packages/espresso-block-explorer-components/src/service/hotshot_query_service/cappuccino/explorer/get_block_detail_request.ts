@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { Codec, Converter } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 import { StringCodec, stringCodec } from '@/convert/codec/string';
@@ -6,7 +7,7 @@ import { latestConstant } from './constants';
 export abstract class CappuccinoExplorerGetBlockDetailRequest {
   readonly target: number | typeof latestConstant;
 
-  protected constructor(target: number | typeof latestConstant) {
+  constructor(target: number | typeof latestConstant) {
     this.target = target;
   }
 
@@ -29,6 +30,8 @@ class CappuccinoExplorerGetBlockDetailRequestEncoder
   implements Converter<CappuccinoExplorerGetBlockDetailRequest, unknown>
 {
   convert(input: CappuccinoExplorerGetBlockDetailRequest) {
+    assertInstanceOf(input, CappuccinoExplorerGetBlockDetailRequest);
+
     if (typeof input.target === 'number') {
       return numberCodec.encode(input.target);
     }

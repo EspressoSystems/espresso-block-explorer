@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Converter,
@@ -85,6 +86,8 @@ export class CappuccinoAPILeafDecoder
 
 export class CappuccinoAPILeafEncoder implements Converter<CappuccinoAPILeaf> {
   convert(input: CappuccinoAPILeaf) {
+    assertInstanceOf(input, CappuccinoAPILeaf);
+
     return {
       view_number: numberCodec.encode(input.view_number),
       justify_qc: cappuccinoAPIQuorumCertificateCodec.encode(input.justify_qc),

@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Codec,
   Converter,
@@ -67,6 +68,8 @@ export class CappuccinoAPIBlockEncoder
   implements Converter<CappuccinoAPIBlock, unknown>
 {
   convert(input: CappuccinoAPIBlock): unknown {
+    assertInstanceOf(input, CappuccinoAPIBlock);
+
     return {
       header: cappuccinoAPIHeaderCodec.encode(input.header),
       payload: cappuccinoAPIPayloadCodec.encode(input.payload),

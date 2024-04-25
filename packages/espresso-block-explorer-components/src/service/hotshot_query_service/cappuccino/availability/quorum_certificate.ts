@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { booleanCodec } from '@/convert/codec/boolean';
 import {
   Converter,
@@ -82,6 +83,8 @@ export class CappuccinoAPIQuorumCertificateEncoder
   implements Converter<CappuccinoAPIQuorumCertificate>
 {
   convert(input: CappuccinoAPIQuorumCertificate) {
+    assertInstanceOf(input, CappuccinoAPIQuorumCertificate);
+
     return {
       data: cappuccinoAPIBQuorumCertificateDataCodec.encode(input.data),
       vote_commitment: taggedBase64Codec.encode(input.vote_commitment),

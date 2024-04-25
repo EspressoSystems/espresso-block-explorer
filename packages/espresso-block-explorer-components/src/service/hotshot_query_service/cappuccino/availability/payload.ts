@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -39,6 +40,8 @@ export class CappuccinoAPIPayloadEncoder
   implements Converter<CappuccinoAPIPayload>
 {
   convert(input: CappuccinoAPIPayload) {
+    assertInstanceOf(input, CappuccinoAPIPayload);
+
     return {
       transaction_nmt: arrayCappuccinoAPITransactionNMTEntryCodec.encode(
         input.transaction_nmt,

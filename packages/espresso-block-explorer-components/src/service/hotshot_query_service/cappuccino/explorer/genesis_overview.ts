@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -39,6 +40,8 @@ class CappuccinoGenesisOverviewEncoder
   implements Converter<CappuccinoGenesisOverview>
 {
   convert(input: CappuccinoGenesisOverview) {
+    assertInstanceOf(input, CappuccinoGenesisOverview);
+
     return {
       rollups: numberCodec.encode(input.rollups),
       transactions: numberCodec.encode(input.transactions),

@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -40,6 +41,8 @@ export class CappuccinoAPIBQuorumCertificateDataEncoder
   implements Converter<CappuccinoAPIBQuorumCertificateData>
 {
   convert(input: CappuccinoAPIBQuorumCertificateData) {
+    assertInstanceOf(input, CappuccinoAPIBQuorumCertificateData);
+
     return {
       leaf_commit: taggedBase64Codec.encode(input.leaf_commit),
     };

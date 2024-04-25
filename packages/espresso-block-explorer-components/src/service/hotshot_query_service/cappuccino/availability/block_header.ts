@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -103,6 +104,8 @@ export class CappuccinoAPIHeaderEncoder
   implements Converter<CappuccinoAPIHeader>
 {
   convert(input: CappuccinoAPIHeader) {
+    assertInstanceOf(input, CappuccinoAPIHeader);
+
     return {
       height: numberCodec.encode(input.height),
       timestamp: numberCodec.encode(input.timestamp),

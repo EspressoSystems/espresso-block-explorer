@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
@@ -41,6 +42,8 @@ class CappuccinoExplorerTransactionDetailDataEncoder
   implements Converter<CappuccinoExplorerTransactionDetailData>
 {
   convert(input: CappuccinoExplorerTransactionDetailData) {
+    assertInstanceOf(input, CappuccinoExplorerTransactionDetailData);
+
     return {
       namespace: namespaceIDCodec.encode(input.namespace),
       payload: stdBase64ArrayBufferCodec.encode(input.payload),

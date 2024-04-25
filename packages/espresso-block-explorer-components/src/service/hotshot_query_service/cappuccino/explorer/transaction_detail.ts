@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -46,6 +47,8 @@ class CappuccinoExplorerTransactionDetailEncoder
   implements Converter<CappuccinoExplorerTransactionDetail>
 {
   convert(input: CappuccinoExplorerTransactionDetail) {
+    assertInstanceOf(input, CappuccinoExplorerTransactionDetail);
+
     return {
       details: cappuccinoExplorerTransactionDetailDetailsCodec.encode(
         input.details,

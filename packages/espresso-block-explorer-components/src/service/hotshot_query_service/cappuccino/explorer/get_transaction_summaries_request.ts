@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Codec,
   Converter,
@@ -48,6 +49,8 @@ class CappuccinoExplorerGetTransactionSummariesRequestEncoder
     Converter<CappuccinoExplorerGetTransactionSummariesRequest, unknown>
 {
   convert(input: CappuccinoExplorerGetTransactionSummariesRequest) {
+    assertInstanceOf(input, CappuccinoExplorerGetTransactionSummariesRequest);
+
     return {
       filter: cappuccinoExplorerGetTransactionSummariesFilterCodec.encode(
         input.filter,

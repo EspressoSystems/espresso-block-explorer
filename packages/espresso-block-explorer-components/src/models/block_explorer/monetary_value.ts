@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import InvalidInputError from '@/errors/InvalidInputError';
@@ -153,6 +154,8 @@ export class MonetaryValueDecoder implements Converter<unknown, MonetaryValue> {
 
 export class MonetaryValueEncoder implements Converter<MonetaryValue, string> {
   public convert(input: MonetaryValue): string {
+    assertInstanceOf(input, MonetaryValue);
+
     // Is it a negative value?
     const sign = input.value < 0n ? '-' : '';
     const value = input.value < 0n ? -input.value : input.value;

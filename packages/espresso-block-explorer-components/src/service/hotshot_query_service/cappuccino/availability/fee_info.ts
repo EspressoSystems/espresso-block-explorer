@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Converter,
@@ -37,6 +38,8 @@ class CappuccinoFeeInfoDecoder
 
 class CappuccinoFeeInfoEncoder implements Converter<CappuccinoFeeInfo> {
   convert(input: CappuccinoFeeInfo) {
+    assertInstanceOf(input, CappuccinoFeeInfo);
+
     return {
       account: hexArrayBufferCodec.encode(input.account),
       amount: hexArrayBufferCodec.encode(input.amount),

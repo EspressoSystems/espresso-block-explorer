@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import {
   Converter,
   TypeCheckingCodec,
@@ -32,6 +33,8 @@ class CappuccinoExplorerGetTransactionDetailRequestEncoder
   implements Converter<CappuccinoExplorerGetTransactionDetailRequest>
 {
   convert(input: CappuccinoExplorerGetTransactionDetailRequest) {
+    assertInstanceOf(input, CappuccinoExplorerGetTransactionDetailRequest);
+
     if (
       input instanceof
       CappuccinoExplorerGetTransactionDetailRequestHeightAndOffset

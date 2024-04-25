@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import InvalidTypeError from '@/errors/InvalidTypeError';
 import { Converter, TypeCheckingCodec, isString } from './convert';
 
@@ -29,6 +30,8 @@ export class RFC3999DateDecoder implements Converter<unknown, Date> {
  */
 export class RFC3999DateEncoder implements Converter<Date, string> {
   convert(input: Date): string {
+    assertInstanceOf(input, Date);
+
     return input.toISOString();
   }
 }

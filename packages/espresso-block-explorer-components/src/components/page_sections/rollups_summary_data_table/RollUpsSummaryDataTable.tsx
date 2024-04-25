@@ -1,3 +1,4 @@
+import { DataContext } from '@/components/contexts/DataProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import { iota } from '@/functional/functional';
 import SkeletonContent from '@/loading/SkeletonContent';
@@ -6,7 +7,6 @@ import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
 import NumberText from '@/text/NumberText';
 import Text from '@/text/Text';
 import React from 'react';
-import { DataContext } from '../..';
 import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';

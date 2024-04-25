@@ -1,3 +1,4 @@
+import { assertInstanceOf } from '@/assert/assert';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import {
   Codec,
@@ -44,7 +45,9 @@ export class CappuccinoAPIMerkleTreeEmptyProofDecoder
 export class CappuccinoAPIMerkleTreeEmptyProofEncoder
   implements Converter<CappuccinoAPIMerkleTreeEmptyProof>
 {
-  convert() {
+  convert(input: CappuccinoAPIMerkleTreeEmptyProof) {
+    assertInstanceOf(input, CappuccinoAPIMerkleTreeEmptyProof);
+
     return 'Empty' as const;
   }
 }
@@ -104,6 +107,8 @@ export class CappuccinoAPIMerkleTreeLeafProofEncoder
   implements Converter<CappuccinoAPIMerkleTreeLeafProof>
 {
   convert(input: CappuccinoAPIMerkleTreeLeafProof) {
+    assertInstanceOf(input, CappuccinoAPIMerkleTreeLeafProof);
+
     return {
       Leaf: {
         value: taggedBase64Codec.encode(input.value),
@@ -163,6 +168,8 @@ export class CappuccinoAPIMerkleTreeForgottenSubTreeProofEncoder
   implements Converter<CappuccinoAPIMerkleTreeForgottenSubTreeProof>
 {
   convert(input: CappuccinoAPIMerkleTreeForgottenSubTreeProof) {
+    assertInstanceOf(input, CappuccinoAPIMerkleTreeForgottenSubTreeProof);
+
     return {
       ForgettenSubtree: {
         value: taggedBase64Codec.encode(input.value),
@@ -236,6 +243,8 @@ export class CappuccinoAPIMerkleTreeBranchProofEncoder
   convert(input: CappuccinoAPIMerkleTreeBranchProof): {
     readonly Branch: { readonly value: string; readonly children: unknown[] };
   } {
+    assertInstanceOf(input, CappuccinoAPIMerkleTreeBranchProof);
+
     return {
       Branch: {
         value: taggedBase64Codec.encode(input.value),
@@ -288,6 +297,8 @@ export class CappuccinoAPIMerkleTreeProofEncoder
   implements Converter<CappuccinoAPIMerkleTreeProof>
 {
   convert(input: CappuccinoAPIMerkleTreeProof) {
+    assertInstanceOf(input, CappuccinoAPIMerkleTreeProof);
+
     if (input instanceof CappuccinoAPIMerkleTreeLeafProof) {
       return cappuccinoAPIMerkleTreeLeafProofCodec.encode(input);
     }
