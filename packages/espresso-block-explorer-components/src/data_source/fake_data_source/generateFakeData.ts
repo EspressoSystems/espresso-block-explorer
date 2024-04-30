@@ -13,6 +13,8 @@ import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import { PseudoRandomNumberGenerator } from './prng';
 
+async function* generateNoTransactions(): AsyncGenerator<GeneratedTransaction> {}
+
 export async function* generateAllBlocks(): AsyncGenerator<GeneratedBlock> {
   const now = new Date();
   const startMilliSeconds = new Date(
@@ -22,6 +24,20 @@ export async function* generateAllBlocks(): AsyncGenerator<GeneratedBlock> {
   ).valueOf();
 
   const prng = new PseudoRandomNumberGenerator(startMilliSeconds);
+  const allZeros = new Uint8Array(new Array(20).map(() => 0)).buffer;
+
+  // Create the genesis block
+  yield {
+    hash: new TaggedBase64('BLOCK', allZeros),
+    height: 0,
+    time: new Date(0),
+    genTime: 0,
+    transactions: generateNoTransactions(),
+    numTransactions: 0,
+    proposer: allZeros,
+    size: 0,
+    fees: [],
+  };
 
   // The way we want to generate this is by first determining how many seconds
   // it took to generate the block.  The concept graph is indicating that we
@@ -30,7 +46,7 @@ export async function* generateAllBlocks(): AsyncGenerator<GeneratedBlock> {
   // way we will have consistent generation and all of the data will be
   // guaranteed to be in the past.
 
-  let height = 0;
+  let height = 1;
   let time = startMilliSeconds;
   while (time < now.valueOf()) {
     const genTimeS = Math.floor(prng.nextFloat() * 14 * 1000);
