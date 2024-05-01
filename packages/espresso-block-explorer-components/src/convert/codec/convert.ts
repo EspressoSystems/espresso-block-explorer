@@ -1,5 +1,4 @@
-import ExpectedObjectWithKeyError from '@/errors/ExpectedObjectWithKeyError';
-import InvalidTypeError from '@/errors/InvalidTypeError';
+import ExpectedObjectWithKeyError from './ExpectedObjectWithKeyError';
 
 /**
  * a Converter is a simple contract that indicates that a member is able to
@@ -126,16 +125,34 @@ export function assertRecordWithKeys<Key extends string>(
   ...keys: Key[]
 ): asserts value is Record<Key, unknown> {
   if (typeof value !== 'object') {
-    throw new InvalidTypeError(typeof value, 'object');
+    throw new Error('expected object');
   }
 
   if (value === null) {
-    throw new InvalidTypeError('null', 'object');
+    throw new Error('received null');
   }
 
   for (const key of keys) {
     if (!(key in value)) {
       throw new ExpectedObjectWithKeyError('object', key);
     }
+  }
+}
+
+/**
+ * assertErrorCode is a helper function for decoding Errors.  All encoded errors
+ * are meant to have a 'code' present that indicates the type of error that is
+ * present, and potentially how it should be decoded.
+ */
+export function assertErrorCode<Code extends string>(
+  value: Record<'code', unknown>,
+  code: Code,
+): asserts value is Record<'code', Code> {
+  if (!isString(value.code)) {
+    throw new Error('code must be a string');
+  }
+
+  if (value.code !== code) {
+    throw new Error(`expected code to be ${code}, got ${value.code}`);
   }
 }

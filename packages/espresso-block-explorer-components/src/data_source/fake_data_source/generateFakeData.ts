@@ -85,9 +85,7 @@ export function generateIndividualBlock(
 
   // First, how many transactions do we want to generate?
   // We're expecting, based on the design, about 42 per second.
-  const numTransactions = Math.floor(
-    prng.nextFloat() * ((end - start) / 1000) * 12,
-  );
+  const numTransactions = Math.floor(prng.nextRange(0, 5));
 
   return {
     hash: new TaggedBase64('BLOCK', prng.fillBytes(32)),

@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import MissingElementError from '../MissingElementError';
+import MissingElementError, {
+  missingElementErrorCodec,
+} from '../MissingElementError';
+import { espressoErrorCodec } from '../registry';
 
 describe('MissingElementError', () => {
   describe('toJSON', () => {
@@ -7,9 +10,35 @@ describe('MissingElementError', () => {
       const err = new MissingElementError();
 
       expect(err.toJSON()).deep.equals({
-        name: MissingElementError.name,
+        code: MissingElementError.name,
         message: err.message,
       });
+    });
+  });
+
+  describe('missingElementErrorCodec', () => {
+    it('should encode and decode correctly', () => {
+      const want = new MissingElementError();
+
+      const encoded = missingElementErrorCodec.encode(want);
+      const have = missingElementErrorCodec.decode(encoded);
+
+      expect(have.message).toBe(want.message);
+    });
+  });
+
+  describe('registry', () => {
+    it('should encode and decode correctly', () => {
+      const want = new MissingElementError();
+
+      const encoded = espressoErrorCodec.encode(want);
+      const have = espressoErrorCodec.decode(encoded);
+
+      expect(have).instanceOf(MissingElementError);
+      if (!(have instanceof MissingElementError)) {
+        return;
+      }
+      expect(have.message).toBe(want.message);
     });
   });
 });

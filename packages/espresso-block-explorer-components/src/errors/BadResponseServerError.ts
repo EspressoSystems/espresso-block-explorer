@@ -1,14 +1,53 @@
-import BadResponseError from './BadResponseError';
+import {
+  Converter,
+  TypeCheckingCodec,
+  assertErrorCode,
+  assertRecordWithKeys,
+} from '@/convert/codec/convert';
+import { stringCodec } from '@/convert/codec/string';
+import BaseBadResponseError, {
+  BaseBadResponseErrorEncoder,
+} from './BaseBadResponseError';
+import { registerCodec } from './registry';
 
 /**
  * BadResponseServerError is a more specific BadResponse error that indicates
  * the nature of the failure was due to an error occurring on the server side.
  */
-export default class BadResponseClientError extends BadResponseError {
+export default class BadResponseServerError extends BaseBadResponseError {
   constructor(
-    response: Response,
-    message: string = 'bad sever response: client error',
+    status: number,
+    response: null | Response,
+    message: string = 'bad server response: server error',
   ) {
-    super(response, message);
+    super(status, response, message);
+    Object.freeze(this);
   }
 }
+
+class BadResponseServerErrorDecoder
+  implements Converter<unknown, BadResponseServerError>
+{
+  convert(input: unknown): BadResponseServerError {
+    assertRecordWithKeys(input, 'code', 'message', 'status');
+    assertErrorCode(input, BadResponseServerError.name);
+    return new BadResponseServerError(
+      Number(input.status),
+      null,
+      stringCodec.decode(input.message),
+    );
+  }
+}
+
+class BadResponseServerErrorEncoder extends BaseBadResponseErrorEncoder {}
+
+class BadResponseServerErrorCodec extends TypeCheckingCodec<BadResponseServerError> {
+  readonly encoder: Converter<BadResponseServerError, unknown> =
+    new BadResponseServerErrorEncoder();
+  readonly decoder: Converter<unknown, BadResponseServerError> =
+    new BadResponseServerErrorDecoder();
+}
+
+export const badResponseServerErrorCodec = new BadResponseServerErrorCodec();
+
+registerCodec(BadResponseServerError.name, badResponseServerErrorCodec);

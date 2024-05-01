@@ -48,8 +48,11 @@ describe('Completer', () => {
         completer.complete(2);
       } catch (err) {
         expect(err).toBeInstanceOf(CompleterAlreadyCompletedError);
+        if (!(err instanceof CompleterAlreadyCompletedError)) {
+          return;
+        }
         expect(JSON.parse(JSON.stringify(err))).to.deep.equal({
-          name: 'CompleterAlreadyCompletedError',
+          code: 'CompleterAlreadyCompletedError',
           message: err.message,
         });
       }

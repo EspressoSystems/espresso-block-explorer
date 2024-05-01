@@ -1,4 +1,3 @@
-export * from './assert';
 export * from './async';
 export * from './components';
 export * from './convert';

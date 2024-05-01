@@ -1,5 +1,3 @@
-import BaseError from './BaseError';
-
 /**
  * FailedAssertion is an error that indicates that an assertion failed. This
  * error is meant to be thrown when a condition that should be true is not.
@@ -7,9 +5,10 @@ import BaseError from './BaseError';
  * in the code.  With a debugger attached to the process, it will pause
  * execution when thrown for inspection.
  */
-export class FailedAssertion extends BaseError {
+export class FailedAssertion extends Error {
   constructor(message: string = 'assertion failed') {
     super(message);
+    Object.freeze(this);
     // eslint-disable-next-line no-debugger
     debugger;
   }

@@ -1,29 +1,34 @@
 import { describe, expect, it } from 'vitest';
-import InvalidTypeError, { invalidTypeErrorCodec } from '../InvalidTypeError';
+import InvalidStringValueError, {
+  invalidTypeErrorCodec,
+} from '../InvalidStringValueError';
 import { espressoErrorCodec } from '../registry';
 
-describe('InvalidTypeError', () => {
+describe('InvalidStringValueError', () => {
   describe('toJSON', () => {
     it('should yield a JSON representation with the correct parts', () => {
-      const err = new InvalidTypeError('string', 'object');
+      const err = new InvalidStringValueError('foo', 'bar');
 
       expect(err.toJSON()).deep.equals({
-        code: InvalidTypeError.name,
+        code: InvalidStringValueError.name,
         message: err.message,
-        have: 'string',
-        want: 'object',
+        have: err.have,
+        want: err.want,
       });
     });
   });
 
   describe('invalidTypeErrorCodec', () => {
     it('should encode and decode correctly', () => {
-      const want = new InvalidTypeError('string', 'object');
+      const want = new InvalidStringValueError('foo', 'bar');
 
       const encoded = invalidTypeErrorCodec.encode(want);
       const have = invalidTypeErrorCodec.decode(encoded);
 
       expect(have.message).toBe(want.message);
+      if (!(have instanceof InvalidStringValueError)) {
+        return;
+      }
       expect(have.have).toBe(want.have);
       expect(have.want).toBe(want.want);
     });
@@ -31,13 +36,13 @@ describe('InvalidTypeError', () => {
 
   describe('registry', () => {
     it('should encode and decode correctly', () => {
-      const want = new InvalidTypeError('string', 'object');
+      const want = new InvalidStringValueError('foo', 'bar');
 
       const encoded = espressoErrorCodec.encode(want);
       const have = espressoErrorCodec.decode(encoded);
 
-      expect(have).instanceOf(InvalidTypeError);
-      if (!(have instanceof InvalidTypeError)) {
+      expect(have).instanceOf(InvalidStringValueError);
+      if (!(have instanceof InvalidStringValueError)) {
         return;
       }
       expect(have.message).toBe(want.message);

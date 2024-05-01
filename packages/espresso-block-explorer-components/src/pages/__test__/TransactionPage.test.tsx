@@ -1,6 +1,9 @@
 import { encodeNumberIterableToHexits } from '@/convert/hex/hex';
 import { generateAllBlocks } from '@/data_source/fake_data_source/generateFakeData';
-import { firstAsyncIterator } from '@/functional/functional_async';
+import {
+  expandAsyncIterator,
+  firstAsyncIterator,
+} from '@/functional/functional_async';
 import { composeStories } from '@storybook/react';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
@@ -11,16 +14,15 @@ const { Transaction } = composeStories(stories);
 
 describe('TransactionPage', async () => {
   it('should render the story', async () => {
-    const block1 = await firstAsyncIterator(generateAllBlocks());
     const transaction1 = await firstAsyncIterator(
-      block1.transactions[Symbol.asyncIterator](),
+      expandAsyncIterator(generateAllBlocks(), (block) => block.transactions),
     );
 
     render(
       <Transaction
         data-testid="1"
         hash={`0x${Array.from(
-          encodeNumberIterableToHexits(new Uint8Array(transaction1.hash)),
+          encodeNumberIterableToHexits(new Uint8Array(transaction1.hash.data)),
         ).join('')}`}
       />,
     );

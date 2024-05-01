@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import InvalidTaggedBase64EncodingError from '../InvalidTaggedBase64EncodingError';
+import InvalidTaggedBase64EncodingError, {
+  invalidTaggedBase64EncodingErrorCodec,
+} from '../InvalidTaggedBase64EncodingError';
+import { espressoErrorCodec } from '../registry';
 
 describe('InvalidTaggedBase64EncodingError', () => {
   describe('toJSON', () => {
@@ -7,9 +10,35 @@ describe('InvalidTaggedBase64EncodingError', () => {
       const err = new InvalidTaggedBase64EncodingError();
 
       expect(err.toJSON()).deep.equals({
-        name: InvalidTaggedBase64EncodingError.name,
+        code: InvalidTaggedBase64EncodingError.name,
         message: err.message,
       });
+    });
+  });
+
+  describe('invalidTaggedBase64EncodingErrorCodec', () => {
+    it('should encode and decode correctly', () => {
+      const want = new InvalidTaggedBase64EncodingError();
+
+      const encoded = invalidTaggedBase64EncodingErrorCodec.encode(want);
+      const have = invalidTaggedBase64EncodingErrorCodec.decode(encoded);
+
+      expect(have.message).toBe(want.message);
+    });
+  });
+
+  describe('registry', () => {
+    it('should encode and decode correctly', () => {
+      const want = new InvalidTaggedBase64EncodingError();
+
+      const encoded = espressoErrorCodec.encode(want);
+      const have = espressoErrorCodec.decode(encoded);
+
+      expect(have).instanceOf(InvalidTaggedBase64EncodingError);
+      if (!(have instanceof InvalidTaggedBase64EncodingError)) {
+        return;
+      }
+      expect(have.message).toBe(want.message);
     });
   });
 });

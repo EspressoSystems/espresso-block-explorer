@@ -37,14 +37,14 @@ export function validateAndExpandResponse<A>(converter: Converter<unknown, A>) {
 export function validateResponseIsOk(response: Response): void {
   if (!response.ok) {
     if (response.status >= 500 && response.status < 600) {
-      throw new BadResponseServerError(response);
+      throw new BadResponseServerError(response.status, response);
     }
 
     if (response.status >= 400 && response.status < 500) {
-      throw new BadResponseClientError(response);
+      throw new BadResponseClientError(response.status, response);
     }
 
-    throw new BadResponseError(response);
+    throw new BadResponseError(response.status, response);
   }
 }
 

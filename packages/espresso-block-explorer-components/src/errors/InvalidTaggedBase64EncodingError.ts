@@ -1,4 +1,12 @@
-import BaseError from './BaseError';
+import {
+  Converter,
+  TypeCheckingCodec,
+  assertErrorCode,
+  assertRecordWithKeys,
+} from '@/convert/codec/convert';
+import { stringCodec } from '@/convert/codec/string';
+import BaseError, { BaseErrorEncoder } from './BaseError';
+import { registerCodec } from './registry';
 
 /**
  * InvalidTaggedBase64EncodingError is an error that indicates that the
@@ -11,9 +19,35 @@ export default class InvalidTaggedBase64EncodingError extends BaseError {
   }
 
   toJSON() {
-    return {
-      name: InvalidTaggedBase64EncodingError.name,
-      message: this.message,
-    };
+    return invalidTaggedBase64EncodingErrorCodec.encode(this);
   }
 }
+
+class InvalidTaggedBase64EncodingErrorDecoder
+  implements Converter<unknown, InvalidTaggedBase64EncodingError>
+{
+  convert(input: unknown): InvalidTaggedBase64EncodingError {
+    assertRecordWithKeys(input, 'code', 'message');
+    assertErrorCode(input, InvalidTaggedBase64EncodingError.name);
+    return new InvalidTaggedBase64EncodingError(
+      stringCodec.decode(input.message),
+    );
+  }
+}
+
+class InvalidTaggedBase64EncodingErrorEncoder extends BaseErrorEncoder {}
+
+class InvalidTaggedBase64EncodingErrorCodec extends TypeCheckingCodec<InvalidTaggedBase64EncodingError> {
+  readonly encoder: Converter<InvalidTaggedBase64EncodingError, unknown> =
+    new InvalidTaggedBase64EncodingErrorEncoder();
+  readonly decoder: Converter<unknown, InvalidTaggedBase64EncodingError> =
+    new InvalidTaggedBase64EncodingErrorDecoder();
+}
+
+export const invalidTaggedBase64EncodingErrorCodec =
+  new InvalidTaggedBase64EncodingErrorCodec();
+
+registerCodec(
+  InvalidTaggedBase64EncodingError.name,
+  invalidTaggedBase64EncodingErrorCodec,
+);

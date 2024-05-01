@@ -1,15 +1,58 @@
-export default class WebWorkerErrorResponse extends Error {
-  readonly error: unknown;
-  constructor(error: unknown, message: string = 'error in web worker') {
+import {
+  Converter,
+  TypeCheckingCodec,
+  assertErrorCode,
+  assertRecordWithKeys,
+} from '@/convert/codec/convert';
+import { stringCodec } from '@/convert/codec/string';
+import BaseError, { baseErrorEncoder } from './BaseError';
+import { EspressoError } from './EspressoError';
+import { espressoErrorCodec, registerCodec } from './registry';
+
+export default class WebWorkerErrorResponse extends BaseError {
+  readonly error: EspressoError;
+  constructor(error: EspressoError, message: string = 'error in web worker') {
     super(message);
     this.error = error;
+    Object.freeze(this);
   }
 
   toJSON() {
+    return webWorkerErrorResponseCodec.encode(this);
+  }
+}
+
+class WebWorkerErrorResponseDecoder
+  implements Converter<unknown, WebWorkerErrorResponse>
+{
+  convert(input: unknown): WebWorkerErrorResponse {
+    assertRecordWithKeys(input, 'code', 'error', 'message');
+    assertErrorCode(input, WebWorkerErrorResponse.name);
+    return new WebWorkerErrorResponse(
+      espressoErrorCodec.decode(input.error),
+      stringCodec.decode(input.message),
+    );
+  }
+}
+
+class WebWorkerErrorResponseEncoder
+  implements Converter<WebWorkerErrorResponse>
+{
+  convert(input: WebWorkerErrorResponse): unknown {
     return {
-      name: WebWorkerErrorResponse.name,
-      message: this.message,
-      error: this.error,
+      ...baseErrorEncoder.convert(input),
+      error: espressoErrorCodec.encode(input.error),
     };
   }
 }
+
+class WebWorkerErrorResponseCodec extends TypeCheckingCodec<WebWorkerErrorResponse> {
+  readonly encoder: Converter<WebWorkerErrorResponse, unknown> =
+    new WebWorkerErrorResponseEncoder();
+  readonly decoder: Converter<unknown, WebWorkerErrorResponse> =
+    new WebWorkerErrorResponseDecoder();
+}
+
+export const webWorkerErrorResponseCodec = new WebWorkerErrorResponseCodec();
+
+registerCodec(WebWorkerErrorResponse.name, webWorkerErrorResponseCodec);

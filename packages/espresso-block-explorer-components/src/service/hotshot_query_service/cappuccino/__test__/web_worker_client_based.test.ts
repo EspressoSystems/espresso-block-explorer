@@ -30,15 +30,15 @@ describe('Web worker Client Based', () => {
           client.availability.getLeafFromHeight(0),
         ).resolves.not.toBeNull();
         await expect(
-          client.availability.getTransactionFromHeightAndOffset(0, 0),
-        ).resolves.not.toBeNull();
+          client.availability.getTransactionFromHeightAndOffset(10, 0),
+        ).resolves.not.toBe(null);
         await expect(
           client.availability.getTransactionSummaryRange(10, 0, 10),
         ).resolves.not.toBeNull();
         await expect(
           client.availability.getTransactionSummaryRangeForRollup(
             0xc0ffee1,
-            20,
+            40,
             0,
             10,
           ),

@@ -1,5 +1,4 @@
 import { assertInstanceOf } from '@/assert/assert';
-import InvalidTypeError from '@/errors/InvalidTypeError';
 import { Converter, TypeCheckingCodec } from './convert';
 import { isUnknownArray } from './unknown';
 
@@ -17,12 +16,12 @@ export class ArrayDecoder<T, U> implements Converter<unknown, U[]> {
 
   convert(input: unknown): U[] {
     if (!isUnknownArray(input)) {
-      throw new InvalidTypeError(
+      const have =
         typeof input === 'object' && input !== null
           ? input.constructor.name
-          : typeof input,
-        'array',
-      );
+          : typeof input;
+      const want = 'array';
+      throw new Error(`invalid array value: have "${have}", want "${want}"`);
     }
 
     return input.map((m) => this.itemCodec.decode(m));

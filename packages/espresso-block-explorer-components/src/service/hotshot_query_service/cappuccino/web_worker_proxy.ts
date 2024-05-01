@@ -1,5 +1,5 @@
 import { numberCodec } from '@/convert/codec/number';
-import NoURLProvidedError from '@/errors/NoURLProvidedError';
+import { EspressoError } from '@/errors/EspressoError';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { BlockHeightResponse } from '../types';
 import {
@@ -318,6 +318,27 @@ class WebWorkerProxyHotShotQueryService {
 
 type PostMessageFunction = typeof postMessage;
 
+async function determineServiceImplementation(): Promise<CappuccinoHotShotQueryService> {
+  try {
+    const response = await fetch('/config.json');
+    const config: Config = await response.json();
+    if (config.hotshot_query_service_url) {
+      const url = new URL(config.hotshot_query_service_url);
+      return new FetchBasedCappuccinoHotShotQueryService(fetch.bind(self), url);
+    }
+  } catch (err) {
+    // We ignore this error for now, and fallback to fake data.
+  }
+
+  return new FakeDataCappuccinoHotShotQueryService();
+}
+
+async function determineService() {
+  return new WebWorkerProxyHotShotQueryService(
+    await determineServiceImplementation(),
+  );
+}
+
 export class WebWorkerProxy {
   // private config: Promise<Config>;
   private service: Promise<WebWorkerProxyHotShotQueryService>;
@@ -325,21 +346,7 @@ export class WebWorkerProxy {
 
   constructor(postMessage: PostMessageFunction) {
     this.postMessage = postMessage;
-    this.service = fetch('/config.json')
-      .then((response) => response.json())
-      .then((config: Config) => {
-        if (config.hotshot_query_service_url) {
-          const url = new URL(config.hotshot_query_service_url);
-          return new FetchBasedCappuccinoHotShotQueryService(
-            fetch.bind(self),
-            url,
-          );
-        }
-
-        throw new NoURLProvidedError();
-      })
-      .catch(() => new FakeDataCappuccinoHotShotQueryService())
-      .then((service) => new WebWorkerProxyHotShotQueryService(service));
+    this.service = determineService();
   }
 
   async handleEvent(event: MessageEvent) {
@@ -361,15 +368,7 @@ export class WebWorkerProxy {
     } catch (error) {
       this.postMessage(
         webWorkerResponseErrorCodec.encode(
-          new WebWorkerResponseError(
-            request.requestID,
-            typeof error === 'object' &&
-            error !== null &&
-            'toJSON' in error &&
-            typeof error.toJSON === 'function'
-              ? error.toJSON()
-              : error,
-          ),
+          new WebWorkerResponseError(request.requestID, error as EspressoError),
         ),
       );
     }

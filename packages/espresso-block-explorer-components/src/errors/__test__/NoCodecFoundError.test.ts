@@ -1,14 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { FailedAssertion } from '../FailedAssertion';
+import NoCodecFoundError from '../NoCodecFoundError';
 
-describe('FailedAssertion', () => {
+describe('NoCodecFoundError', () => {
   describe('toJSON', () => {
     it('should yield a JSON representation with the correct parts', () => {
-      const err = new FailedAssertion();
+      const err = new NoCodecFoundError('foo');
 
       expect(err.toJSON()).deep.equals({
-        name: FailedAssertion.name,
+        code: NoCodecFoundError.name,
         message: err.message,
+        codec: err.codec,
       });
     });
   });

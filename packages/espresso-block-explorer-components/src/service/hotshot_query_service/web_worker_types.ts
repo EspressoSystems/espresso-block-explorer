@@ -8,7 +8,9 @@ import {
 } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 import { stringCodec } from '@/convert/codec/string';
+import { EspressoError } from '@/errors/EspressoError';
 import InvalidInputError from '@/errors/InvalidInputError';
+import { espressoErrorCodec } from '@/errors/registry';
 
 export type RequestID = number;
 const requestIDCodec = numberCodec;
@@ -135,9 +137,9 @@ export const webWorkerResponseSuccessCodec =
   new WebWorkerResponseSuccessCodec();
 
 export class WebWorkerResponseError extends WebWorkerResponse {
-  readonly error: unknown;
+  readonly error: EspressoError;
 
-  constructor(requestID: RequestID, error: unknown) {
+  constructor(requestID: RequestID, error: EspressoError) {
     super(requestID);
     this.error = error;
   }
@@ -155,7 +157,7 @@ class WebWorkerResponseErrorDecoder
 
     return new WebWorkerResponseError(
       requestIDCodec.decode(input.requestID),
-      input.error,
+      espressoErrorCodec.decode(input.error),
     );
   }
 }
@@ -168,7 +170,7 @@ class WebWorkerResponseErrorEncoder
 
     return {
       requestID: requestIDCodec.encode(input.requestID),
-      error: input.error,
+      error: espressoErrorCodec.encode(input.error),
     };
   }
 }
