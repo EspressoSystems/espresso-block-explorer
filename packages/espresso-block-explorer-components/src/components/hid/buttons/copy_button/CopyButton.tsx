@@ -39,6 +39,7 @@ const CopyButton: React.FC<ButtonProps> = (props) => {
       <button
         {...props}
         className={addClassToClassName(props.className, 'btn--copy copied')}
+        title="Copy Contents"
       >
         <CheckCircle />
       </button>
@@ -65,6 +66,7 @@ const CopyButton: React.FC<ButtonProps> = (props) => {
 
         navigator.clipboard.writeText(props.content);
       }}
+      title="Copy Contents"
     >
       <Copy />
     </button>

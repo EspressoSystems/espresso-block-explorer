@@ -43,7 +43,7 @@ type Story = StoryObj<typeof Example>;
 
 export const TransactionsForBlock: Story = {
   args: {
-    block: 0,
+    block: 20,
     offset: undefined,
   },
 

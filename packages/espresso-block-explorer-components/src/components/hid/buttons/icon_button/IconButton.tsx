@@ -9,9 +9,26 @@ import Button, { ButtonProps } from '../button/Button';
  */
 const IconButton: React.FC<ButtonProps> = ({ className, ...props }) => (
   <Button
-    className={addClassToClassName(className, 'icon type--ui--button')}
     {...props}
+    className={addClassToClassName(className, 'icon type--ui--button')}
   />
 );
 
 export default IconButton;
+
+export interface PresentationButtonProps
+  extends React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  > {}
+
+export const PresentationIconButton: React.FC<PresentationButtonProps> = ({
+  className,
+  ...props
+}) => (
+  <div
+    {...props}
+    className={addClassToClassName(className, 'icon type--ui--button btn')}
+    role="presentation"
+  />
+);

@@ -7,7 +7,10 @@ import ExternalLink from './ExternalLink';
  * like within the Footer of all of the Espresso Pages.
  */
 const ExternalLinks: React.FC = () => (
-  <div className="external-links type--ui--text-600 ">
+  <nav
+    className="external-links type--ui--text-600"
+    aria-label="Espresso Links"
+  >
     <ExternalLink href="https://medium.com/@espressosys">
       <Text text="News" />
     </ExternalLink>
@@ -26,7 +29,7 @@ const ExternalLinks: React.FC = () => (
     <ExternalLink href="https://www.espressosys.com/privacy-policy">
       <Text text="Privacy policy" />
     </ExternalLink>
-  </div>
+  </nav>
 );
 
 export default ExternalLinks;

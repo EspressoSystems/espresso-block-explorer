@@ -1,3 +1,5 @@
+import PromiseResolver from '@/components/data/async_data/PromiseResolver';
+import { PresentationIconButton } from '@/components/hid/buttons/icon_button/IconButton';
 import { DataContext } from '@/contexts/DataProvider';
 import { ErrorContext } from '@/contexts/ErrorProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
@@ -19,8 +21,6 @@ import { WithUiSmall } from '@/typography/typography';
 import SearchGlass from '@/visual/icons/SearchGlass';
 import React from 'react';
 import { CappuccinoHotShotQueryServiceAPIContext } from '../../../pages/CappuccinoHotShotQueryServiceAPIContext';
-import PromiseResolver from '../../data/async_data/PromiseResolver';
-import IconButton from '../../hid/buttons/icon_button/IconButton';
 import { InputContainer } from '../container/Container';
 import './search.css';
 
@@ -73,6 +73,16 @@ function caseInsensitiveTaggedBase64Query(query: string): string {
   return `${queryPrefix.toLocaleUpperCase()}~${querySuffix}`;
 }
 
+export interface InitialSearchState {
+  rawQuery?: string;
+  query?: string;
+  searchResultsQuery?: string;
+  lastActivity?: Date;
+  searchResults?: CappuccinoExplorerGetSearchResultResponse;
+  isLoading?: boolean;
+  offset?: null | number;
+}
+
 /**
  * SearchStateController is the controller that manages the state of the search
  * input.  It is responsible for managing the query, the last activity, the
@@ -84,16 +94,35 @@ function caseInsensitiveTaggedBase64Query(query: string): string {
  * clobbering each other when the async state is being resolved.
  */
 class SearchStateController {
-  private pRawQuery: string = '';
-  private pQuery: string = '';
-  private pLastActivity: Date = new Date();
-  private pSearchResults: CappuccinoExplorerGetSearchResultResponse =
-    new CappuccinoExplorerGetSearchResultResponse(
-      new CappuccinoExplorerSearchResults([], []),
-    );
-  private pSearchResultsQuery: string = '';
-  private pIsLoading: boolean = false;
-  private pOffset: null | number = null;
+  private pRawQuery: string;
+  private pQuery: string;
+  private pLastActivity;
+  private pSearchResults: CappuccinoExplorerGetSearchResultResponse;
+  private pSearchResultsQuery;
+  private pIsLoading;
+  private pOffset;
+
+  constructor(initialState?: InitialSearchState) {
+    const {
+      rawQuery = '',
+      query = '',
+      lastActivity = new Date(),
+      searchResults = new CappuccinoExplorerGetSearchResultResponse(
+        new CappuccinoExplorerSearchResults([], []),
+      ),
+      searchResultsQuery = '',
+      isLoading = false,
+      offset = null,
+    } = initialState || {};
+
+    this.pRawQuery = rawQuery;
+    this.pQuery = query;
+    this.pSearchResultsQuery = searchResultsQuery;
+    this.pLastActivity = lastActivity;
+    this.pSearchResults = searchResults;
+    this.pIsLoading = isLoading;
+    this.pOffset = offset;
+  }
 
   get rawQuery(): string {
     return this.pRawQuery;
@@ -268,13 +297,16 @@ const SearchStateControllerContext = React.createContext<SearchStateController>(
 );
 const InvalidateContext = React.createContext<() => void>(() => {});
 
-function useSearchStateController() {
-  const [controller] = React.useState(new SearchStateController());
+function useSearchStateController(initialState?: InitialSearchState) {
+  const [controller] = React.useState(new SearchStateController(initialState));
   const [state, setState] = React.useState(0);
   return [controller, () => setState(state + 1)] as const;
 }
 
-export interface SearchInputProps {}
+export interface SearchInputProps {
+  initialState?: InitialSearchState;
+  forceFocusState?: boolean;
+}
 
 /**
  * SearchInput is the component that will allow the user to search for blocks,
@@ -282,8 +314,8 @@ export interface SearchInputProps {}
  *
  * Right now it only supports searching for blocks and transactions.
  */
-export const SearchInput: React.FC<SearchInputProps> = () => {
-  const [controller, invalidate] = useSearchStateController();
+export const SearchInput: React.FC<SearchInputProps> = (props) => {
+  const [controller, invalidate] = useSearchStateController(props.initialState);
   const service = React.useContext(CappuccinoHotShotQueryServiceAPIContext);
   const pathResolver = React.useContext(PathResolverContext);
 
@@ -293,7 +325,7 @@ export const SearchInput: React.FC<SearchInputProps> = () => {
       <InvalidateContext.Provider value={invalidate}>
         <SelectedOffsetContext.Provider value={controller.offset}>
           <QueryContext.Provider value={controller.query}>
-            <InputContainer className="search">
+            <InputContainer className="search" role="search">
               <input
                 type="search"
                 placeholder="Search blocks, transactions, rollups or addresses..."
@@ -388,13 +420,15 @@ export const SearchInput: React.FC<SearchInputProps> = () => {
                   controller.setQuery(trimmedValue);
                   invalidate();
                 }}
+                data-focused={props.forceFocusState ? true : undefined}
+                aria-label="search text"
               />
 
               <SearchBarrier />
 
-              <IconButton>
+              <PresentationIconButton>
                 <SearchGlass />
-              </IconButton>
+              </PresentationIconButton>
 
               {/* This will load any search results for the query */}
 
@@ -524,11 +558,14 @@ const SearchResultsGuard: React.FC = () => {
 const SearchResults: React.FC = () => {
   return (
     <CardNoPadding className="search-results">
-      <div className="search-results-scroll-container">
+      <section
+        aria-label="search results"
+        className="search-results-scroll-container"
+      >
         <SearchResultsNoResults />
         <SearchBlockResults />
         <SearchTransactionResults />
-      </div>
+      </section>
     </CardNoPadding>
   );
 };
@@ -594,9 +631,11 @@ const SearchResultsNoResults: React.FC = () => {
   }
 
   return (
-    <SearchResultLabel className="result-section-title">
-      <Text text="No results found" />
-    </SearchResultLabel>
+    <section aria-label="no-results">
+      <SearchResultLabel className="result-section-title">
+        <Text text="No results found" />
+      </SearchResultLabel>
+    </section>
   );
 };
 
@@ -618,7 +657,7 @@ const SearchBlockResults: React.FC = () => {
   const blockIndexOffset = 0;
 
   return (
-    <>
+    <section aria-label="block-results">
       <SearchResultLabel className="result-section-title">
         <Text text="Blocks" />
       </SearchResultLabel>
@@ -641,7 +680,7 @@ const SearchBlockResults: React.FC = () => {
           </a>
         );
       })}
-    </>
+    </section>
   );
 };
 
@@ -709,7 +748,7 @@ const SearchTransactionResults: React.FC = () => {
   const transactionIndexOffset = blocks.length;
   // Let's make this look good
   return (
-    <>
+    <section aria-label="transaction-results">
       <SearchResultLabel className="result-section-title">
         <Text text="Transactions" />
       </SearchResultLabel>
@@ -731,7 +770,7 @@ const SearchTransactionResults: React.FC = () => {
           </a>
         );
       })}
-    </>
+    </section>
   );
 };
 

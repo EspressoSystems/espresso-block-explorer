@@ -27,7 +27,11 @@ const NewsLetterSignUp: React.FC = () => {
         value={emailAddress}
         onChange={(event) => setEmailAddress(event.target.value)}
       />
-      <IconButton className="submit" disabled={!emailAddress.trim()}>
+      <IconButton
+        className="submit"
+        disabled={!emailAddress.trim()}
+        title="Sign-up for Newsletter"
+      >
         <ArrowRight />
       </IconButton>
     </form>

@@ -13,7 +13,11 @@ const OpenNavDrawerButton: React.FC<OpenNavDrawerButtonProps> = (props) => {
   const setNavDrawerOpen = React.useContext(CurrentSetNavDrawerStateContext);
 
   return (
-    <IconButton {...props} onClick={() => setNavDrawerOpen(true)}>
+    <IconButton
+      {...props}
+      onClick={() => setNavDrawerOpen(true)}
+      title="Open Navigation Drawer"
+    >
       <Menu />
     </IconButton>
   );

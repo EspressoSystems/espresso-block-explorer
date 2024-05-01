@@ -44,7 +44,7 @@ type Story = StoryObj<typeof Example>;
 
 export const Transaction: Story = {
   args: {
-    height: 0,
+    height: 20,
     offset: 0,
   },
 };

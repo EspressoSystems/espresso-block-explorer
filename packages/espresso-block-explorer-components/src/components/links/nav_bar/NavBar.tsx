@@ -18,6 +18,7 @@ const NavBar: React.FC<NavBarProps> = (props) => (
     <nav
       {...props}
       className={addClassToClassName(props.className, 'nav--main')}
+      aria-label="Main Navigation"
     >
       <MainNavLinks />
       <OpenNavDrawerButton />

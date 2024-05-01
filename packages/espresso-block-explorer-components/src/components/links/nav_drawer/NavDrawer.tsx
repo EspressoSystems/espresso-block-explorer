@@ -15,7 +15,7 @@ const NavDrawer: React.FC = () => {
     .join(' ');
 
   return (
-    <UIText100Nav className={className}>
+    <UIText100Nav className={className} aria-label="Navigation Drawer">
       <CloseNavDrawerButton />
       <MainNavLinks />
     </UIText100Nav>

@@ -15,14 +15,15 @@ interface SocialMediaLinksProps
  * to all of the Espresso Social Media Links grouped together.
  */
 const SocialMediaLinks: React.FC<SocialMediaLinksProps> = (props) => (
-  <div
+  <nav
     {...props}
     className={addClassToClassName(props.className, 'social-media-links')}
+    aria-label="Social Media Links"
   >
     <DiscordLink />
     <TwitterLink />
     <MediumLink />
-  </div>
+  </nav>
 );
 
 export default SocialMediaLinks;

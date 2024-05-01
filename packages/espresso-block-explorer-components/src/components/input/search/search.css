@@ -111,28 +111,39 @@ label.result-section-title {
   automatically.
 */
 
-.input-container.search input[type='search']:not(:focus-within) {
+.input-container.search {
+  margin-block-end: var(--input--normal--height);
+}
+
+.input-container.search
+  input[type='search']:not(:focus-within, [data-focused='true']) {
   padding-left: var(--input--normal--height);
 }
 
-.input-container.search input[type='search']:focus-within {
+.input-container.search input[type='search']:focus-within,
+.input-container.search input[type='search'][data-focused='true'] {
   padding-right: var(--input--normal--height);
 }
 
-.input-container.search input[type='search']:focus-within ~ .icon.btn {
+.input-container.search input[type='search']:focus-within ~ .icon.btn,
+.input-container.search input[type='search'][data-focused='true'] ~ .icon.btn {
   margin-left: 100%;
   transform: translateX(-100%);
   --button--default--background-color: var(--color--slate-950);
+  --text--background-color: var(--color--slate-950);
   --button--default--foreground-color: var(--color--white);
 }
 
-.input-container.search input[type='search']:focus-within + .search-barrier {
+.input-container.search input[type='search']:focus-within + .search-barrier,
+.input-container.search
+  input[type='search'][data-focused='true']
+  + .search-barrier {
   background-color: var(--color--slate-950);
   pointer-events: all;
 }
 
 .input-container.search
-  input[type='search']:not(:focus-within)
+  input[type='search']:not(:focus-within, [data-focused='true'])
   ~ .search-results {
   display: none;
 }

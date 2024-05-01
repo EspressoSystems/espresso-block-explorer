@@ -13,7 +13,11 @@ const CloseNavDrawerButton: React.FC<CloseNavDrawerButtonProps> = (props) => {
   const setNavDrawerOpen = React.useContext(CurrentSetNavDrawerStateContext);
 
   return (
-    <IconButton {...props} onClick={() => setNavDrawerOpen(false)}>
+    <IconButton
+      {...props}
+      onClick={() => setNavDrawerOpen(false)}
+      title="Close Navigation Drawer"
+    >
       <Close />
     </IconButton>
   );

@@ -5,6 +5,7 @@ import './input_container.css';
 export interface InputContainerProps {
   className?: string;
   children: React.ReactNode | React.ReactNode[];
+  role?: string;
 }
 
 /**
@@ -23,7 +24,10 @@ export interface InputContainerProps {
  */
 export const InputContainer: React.FC<InputContainerProps> = (props) => {
   return (
-    <div className={addClassToClassName(props.className, 'input-container')}>
+    <div
+      className={addClassToClassName(props.className, 'input-container')}
+      role={props.role}
+    >
       {props.children}
     </div>
   );
