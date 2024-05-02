@@ -97,7 +97,11 @@ function buildHexDumpString(value: ArrayBuffer): string {
 const HexDump: React.FC<HexDumpProps> = ({ value, className, ...props }) => {
   return (
     <>
-      <pre {...props} className={addClassToClassName(className, 'hex-dump')}>
+      <pre
+        {...props}
+        className={addClassToClassName(className, 'hex-dump')}
+        tabIndex={0}
+      >
         <Text text={buildHexDumpString(value)} />
       </pre>
     </>
