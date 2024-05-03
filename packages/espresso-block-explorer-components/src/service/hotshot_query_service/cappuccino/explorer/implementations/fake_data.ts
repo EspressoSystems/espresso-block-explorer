@@ -138,7 +138,7 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI
     const target = request.target;
     const block = await (target === latestConstant
       ? lastAsyncIterable(generateAllBlocks())
-      : firstAsyncIterator(dropAsyncIterable(generateAllBlocks(), target - 1)));
+      : firstAsyncIterator(dropAsyncIterable(generateAllBlocks(), target)));
 
     return new CappuccinoExplorerGetBlockDetailResponse(
       createBlockDetailFromGeneratedBlock(block),
