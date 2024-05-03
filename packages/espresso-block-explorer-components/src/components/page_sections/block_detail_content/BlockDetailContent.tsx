@@ -35,14 +35,17 @@ const BackABlock: React.FC = () => {
 
   if (currentBlockID <= 0) {
     return (
-      <IconAnchorButton>
+      <IconAnchorButton disabled>
         <ArrowLeft />
       </IconAnchorButton>
     );
   }
 
   return (
-    <IconAnchorButton href={pathResolver.block(currentBlockID - 1)}>
+    <IconAnchorButton
+      href={pathResolver.block(currentBlockID - 1)}
+      title="Previous Block"
+    >
       <ArrowLeft />
     </IconAnchorButton>
   );
@@ -57,7 +60,10 @@ const ForwardABlock: React.FC = () => {
   const pathResolver = React.useContext(PathResolverContext);
 
   return (
-    <IconAnchorButton href={pathResolver.block(currentBlockID + 1)}>
+    <IconAnchorButton
+      href={pathResolver.block(currentBlockID + 1)}
+      title="Next Block"
+    >
       <ArrowRight />
     </IconAnchorButton>
   );

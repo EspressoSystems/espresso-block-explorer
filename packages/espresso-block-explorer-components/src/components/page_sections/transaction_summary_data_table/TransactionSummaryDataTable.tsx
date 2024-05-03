@@ -66,7 +66,10 @@ const BlockCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as TransactionSummary;
 
   return (
-    <Link href={pathResolver.block(row.block)}>
+    <Link
+      href={pathResolver.block(row.block)}
+      title={`Link to Block ${row.block}`}
+    >
       <NumberText number={row.block} />
     </Link>
   );

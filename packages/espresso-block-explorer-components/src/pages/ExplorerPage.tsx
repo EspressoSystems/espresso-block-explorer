@@ -43,7 +43,7 @@ import { WithUiText300 } from '@/typography/typography';
 import React from 'react';
 import './explorer_page.css';
 
-const Text300H3 = WithUiText300('h3');
+const Text300H2 = WithUiText300('h2');
 const EdgeShimmerDiv = WithLoadingShimmer('div');
 
 interface GuardedBlocksSummaryDataTableProps {}
@@ -170,9 +170,9 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
 
         <Card className="latest-blocks-summary">
           <SummaryTabledLabeledValue>
-            <Text300H3>
+            <Text300H2>
               <Text text="Latest Blocks" />
-            </Text300H3>
+            </Text300H2>
             <LabeledAnchorButton href={pathResolver.blocks()}>
               <Text text="View all" />
             </LabeledAnchorButton>
@@ -186,9 +186,9 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
 
         <Card className="latest-transactions-summary">
           <SummaryTabledLabeledValue>
-            <Text300H3>
+            <Text300H2>
               <Text text="Latest Transactions" />
-            </Text300H3>
+            </Text300H2>
             <LabeledAnchorButton href={pathResolver.transactions()}>
               <Text text="View all" />
             </LabeledAnchorButton>
@@ -202,9 +202,9 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
 
         <Card className="latest-rollups-summary">
           <SummaryTabledLabeledValue>
-            <Text300H3>
+            <Text300H2>
               <Text text="Most active rollups" />
-            </Text300H3>
+            </Text300H2>
             <LabeledAnchorButton href={pathResolver.rollUps()}>
               <Text text="View all" />
             </LabeledAnchorButton>
