@@ -1,14 +1,5 @@
-/**
- * This file is filled with components that are meant to wrap others as a
- * form of Higher-Order components.  They Essentially wrap other components
- * in order to add a class to the wrapped component.
- *
- * This file defines convenience wrappers for the various text formatting
- * styles that are defined within the main.css files.  The primary reason
- * for creating these higher-order components is to allow for them to be
- * added to other components.
- */
-import React from 'react';
+import { default as React } from 'react';
+
 export interface HigherOrderComponentWithClassNameProps {
     className?: string;
     children?: React.ReactNode | React.ReactNode[];

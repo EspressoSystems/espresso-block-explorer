@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 /**
  * TransactionSubHeading represents a sub heading for the Transaction Detail
  * Header.

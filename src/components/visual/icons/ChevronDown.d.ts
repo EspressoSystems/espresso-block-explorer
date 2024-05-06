@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 /**
  * ChevronDown represents a chevron pointing down
  */

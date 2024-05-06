@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 /**
  * createDefaultDateTimeFormatters will create the desired DateTime Formatters
  * that can be accessed within the application.
@@ -7,6 +8,7 @@ declare function createDefaultDateTimeFormatters(locale: string): {
     default: Intl.DateTimeFormat;
     utcFullDateTime: Intl.DateTimeFormat;
     time: Intl.DateTimeFormat;
+    seconds: Intl.NumberFormat;
     relative: Intl.RelativeTimeFormat;
     numDays: Intl.NumberFormat;
     numHours: Intl.NumberFormat;
@@ -21,6 +23,7 @@ declare const CurrentDateTimeFormatters: React.Context<{
     default: Intl.DateTimeFormat;
     utcFullDateTime: Intl.DateTimeFormat;
     time: Intl.DateTimeFormat;
+    seconds: Intl.NumberFormat;
     relative: Intl.RelativeTimeFormat;
     numDays: Intl.NumberFormat;
     numHours: Intl.NumberFormat;

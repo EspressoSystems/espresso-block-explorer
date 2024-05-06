@@ -1,10 +1,10 @@
-import React from 'react';
-import { TaggedBase64 } from '../../../types/TaggedBase64';
-import { BlockSummaryAsyncRetriever, BlockSummaryColumn } from '../../../types/data_source/block_summary/types';
 import { DataTableState } from '../../data/data_table/DataTable';
+import { default as React } from 'react';
+import { BlockSummaryAsyncRetriever, BlockSummaryColumn } from '../../../../../../../../../../../src/models/block_explorer/block_summary';
+
 export interface BlockSummary {
     block: number;
-    proposer: TaggedBase64;
+    proposer: ArrayBuffer;
     transactions: number;
     size: number;
     time: Date;
@@ -12,7 +12,6 @@ export interface BlockSummary {
 export interface BlockSummaryDataTableState extends DataTableState<BlockSummaryColumn> {
     startAtBlock?: number;
 }
-export declare const kBlocksPerPage = 20;
 /**
  * RetrieverContext represents the retriever to be utilized for retrieving
  * the BlockSummary data.

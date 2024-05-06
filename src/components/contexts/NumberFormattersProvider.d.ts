@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 /**
  * createDefaultNumberFormatters will create the default Number formatting
  * data structures required by other parts of the application.
@@ -15,6 +16,17 @@ import React from 'react';
 declare function createDefaultNumberFormatters(locale: string): {
     default: Intl.NumberFormat;
     bytes: Intl.NumberFormat;
+    variableBytes: Intl.NumberFormat;
+    transactionsPerSecond: Intl.NumberFormat;
+    wei: Intl.NumberFormat;
+    gwei: Intl.NumberFormat;
+    USD: Intl.NumberFormat;
+    JPY: Intl.NumberFormat;
+    EUR: Intl.NumberFormat;
+    GBP: Intl.NumberFormat;
+    ETH: Intl.NumberFormat;
+    ESP: Intl.NumberFormat;
+    XBT: Intl.NumberFormat;
 };
 /**
  * CurrentNumberFormatters is the current context of number formatters.  It
@@ -24,6 +36,17 @@ declare function createDefaultNumberFormatters(locale: string): {
 declare const CurrentNumberFormatters: React.Context<{
     default: Intl.NumberFormat;
     bytes: Intl.NumberFormat;
+    variableBytes: Intl.NumberFormat;
+    transactionsPerSecond: Intl.NumberFormat;
+    wei: Intl.NumberFormat;
+    gwei: Intl.NumberFormat;
+    USD: Intl.NumberFormat;
+    JPY: Intl.NumberFormat;
+    EUR: Intl.NumberFormat;
+    GBP: Intl.NumberFormat;
+    ETH: Intl.NumberFormat;
+    ESP: Intl.NumberFormat;
+    XBT: Intl.NumberFormat;
 }>;
 export { CurrentNumberFormatters };
 export interface ProvideCurrencyFormatterProps {

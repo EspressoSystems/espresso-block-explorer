@@ -1,5 +1,6 @@
-import React from 'react';
-import { RollUpEntry } from '../../../../types/data_source/rollup_entry/types';
+import { default as React } from 'react';
+import { RollUpEntry } from '../../../../../../../../../../../../src/models/block_explorer/rollup_entry/types';
+
 export interface RollUpAvatar24Props {
     entry: RollUpEntry;
 }

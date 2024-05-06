@@ -1,5 +1,6 @@
-import React from 'react';
 import { ButtonProps } from '../button/Button';
+import { default as React } from 'react';
+
 /**
  * LabeledButton is an extension to a normal Button, but designed to hold
  * text specifically.  It has styles that provide sufficient padding and

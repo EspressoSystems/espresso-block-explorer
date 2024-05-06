@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 /**
  * MediumIcon is an icon representation of the Medium logo.
  */

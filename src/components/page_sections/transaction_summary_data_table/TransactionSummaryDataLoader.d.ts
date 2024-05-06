@@ -1,7 +1,8 @@
-import React from 'react';
-import { TaggedBase64 } from '../../../types/TaggedBase64';
-import { TransactionSummaryAsyncRetriever, TransactionSummaryColumn } from '../../../types/data_source/transaction_summary/types';
 import { DataTableState } from '../../data/data_table/DataTable';
+import { default as React } from 'react';
+import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
+import { TransactionSummaryAsyncRetriever, TransactionSummaryColumn } from '../../../../../../../../../../../src/models/block_explorer/transaction_summary';
+
 export interface TransactionSummary {
     hash: TaggedBase64;
     rollups: number[];

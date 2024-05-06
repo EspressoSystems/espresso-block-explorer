@@ -1,1 +1,0 @@
-import{j as s}from"./jsx-runtime-5BUNAZ9W.js";import{a as r}from"./higher_order-VtSBvwoq.js";const e=a=>s("div",{...a,className:r(a.className,"card")});try{e.displayName="Card",e.__docgenInfo={description:"",displayName:"Card",props:{className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}}}}}catch{}export{e as C};

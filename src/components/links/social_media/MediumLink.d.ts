@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 /**
  * MediumLink is an Icon Link to the Espresso Systems Medium Account
  * @returns

@@ -1,5 +1,6 @@
-import React from 'react';
-import { BlockDetailAsyncRetriever, BlockDetailEntry } from '../../../types/data_source/block_detail/types';
+import { default as React } from 'react';
+import { BlockDetailAsyncRetriever, BlockDetailEntry } from '../../../../../../../../../../../src/models/block_explorer/block_detail';
+
 export declare const BlockNumberContext: React.Context<number>;
 /**
  * BlockDetailContext is a React Context for holding the current BlockDetail.

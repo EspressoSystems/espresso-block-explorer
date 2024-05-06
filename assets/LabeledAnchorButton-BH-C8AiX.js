@@ -1,0 +1,3 @@
+import{j as a}from"./jsx-runtime-Cd6u8K_H.js";import{a as o}from"./higher_order-D-qJ_MgL.js";import{A as n}from"./AnchorButton-CQJ9FYn9.js";const t=e=>a(n,{...e,className:o(e.className,"label type--ui--button")});try{t.displayName="LabeledAnchorButton",t.__docgenInfo={description:`LabeledAnchorButton is an AnchorButton but designed to hold text.  It
+mirrors the Design of the LabeledButton, while being an Anchor tag for
+links instead of an actual button.`,displayName:"LabeledAnchorButton",props:{disabled:{defaultValue:null,description:"",name:"disabled",required:!1,type:{name:"boolean"}}}}}catch{}export{t as L};

@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 /**
  * PageType represents the different page types we are expecting to be on.
  * they may correspond beyond 1 to 1 for different paths.

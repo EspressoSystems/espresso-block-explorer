@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 /**
  * ArrowLeft represents an arrow pointing to the left.
  */

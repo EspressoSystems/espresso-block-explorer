@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 /**
  * SearchGlass represents an icon of a search glass angled up to the left.
  */

@@ -1,5 +1,6 @@
-import React from 'react';
 import { SortDirection } from '../types';
+import { default as React } from 'react';
+
 /**
  * DataTableState represents the underlying DataTableState. The DataTable
  * knows absolutely nothing about the Data being worked with or the ColumnType.
@@ -31,7 +32,7 @@ export declare const DataTableRowContext: React.Context<object>;
 type ColumnData<ColumnType> = {
     label: string;
     columnType: ColumnType;
-    buildCell: React.FC;
+    buildCell: React.ComponentType;
 };
 export interface DataTableProps<ColumnType> {
     columns: ColumnData<ColumnType>[];

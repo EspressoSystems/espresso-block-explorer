@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 declare const DataContext: React.Context<unknown>;
 export { DataContext };
 export interface SetDataProps<Data> {

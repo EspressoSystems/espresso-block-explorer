@@ -1,5 +1,6 @@
-import React from 'react';
-import { TransactionDetailAsyncRetriever, TransactionDetailEntry } from '../../../types/data_source/transaction_detail/types';
+import { default as React } from 'react';
+import { TransactionDetailAsyncRetriever, TransactionDetailEntry } from '../../../../../../../../../../../src/models/block_explorer/transaction_detail';
+
 /**
  * TransactionCommitContext represents the current hash for a Transaction.
  */

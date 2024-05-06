@@ -1,2 +1,0 @@
-import{j as o}from"./jsx-runtime-5BUNAZ9W.js";import{a}from"./higher_order-VtSBvwoq.js";import{M as n}from"./Copy-Sdn8c7EE.js";const p=t=>o("button",{...t,className:a(t.className,"btn--copy"),children:o(n,{})});try{CopyButton.displayName="CopyButton",CopyButton.__docgenInfo={description:`Button is a simple wrapper around a normal button element that adds the
-class 'btn' to the button in order to change it's styling.`,displayName:"CopyButton",props:{}}}catch{}export{p as B};

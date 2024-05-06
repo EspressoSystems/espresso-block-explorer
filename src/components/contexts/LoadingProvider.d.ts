@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 declare const LoadingContext: React.Context<boolean>;
 export { LoadingContext };
 export interface SetLoadingProps {

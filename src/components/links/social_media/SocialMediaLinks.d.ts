@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 interface SocialMediaLinksProps extends React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLDivElement>, HTMLDivElement> {
 }
 /**

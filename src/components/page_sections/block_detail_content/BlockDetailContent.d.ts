@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 /**
  * BlockNavigation is a component that displays the current BlockID
  * and provides the corresponding Previous and Next block navigation

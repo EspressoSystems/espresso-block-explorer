@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 /**
  * DiscordLink is an icon link to the Espresso Discord server
  */

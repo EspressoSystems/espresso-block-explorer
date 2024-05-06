@@ -1,4 +1,5 @@
-import React from 'react';
+import { default as React } from 'react';
+
 export interface ErrorContextGuardProps {
     children: React.ReactNode | React.ReactNode[];
 }
