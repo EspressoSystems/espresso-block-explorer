@@ -1,6 +1,6 @@
+import Text from '@/text/Text';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import Text from '../../../text/Text';
 import ButtonComp from '../button/Button';
 
 interface ExampleProps {

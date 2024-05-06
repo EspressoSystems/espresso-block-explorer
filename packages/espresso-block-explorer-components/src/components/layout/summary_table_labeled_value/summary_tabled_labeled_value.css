@@ -1,0 +1,31 @@
+.summary-tabled-labeled-value {
+  display: grid;
+}
+
+.summary-tabled-labeled-value > label {
+  grid-area: label;
+  text-align: start;
+  color: var(--color--slate-500);
+}
+
+.summary-tabled-labeled-value > div.value {
+  box-sizing: border-box;
+  grid-area: value;
+  text-align: end;
+  color: var(--color--slate-950);
+}
+
+/* Mobile */
+.summary-tabled-labeled-value {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: 'label value';
+  gap: 8px;
+}
+
+/* Medium */
+@media screen and (min-width: 768px) {
+  .summary-tabled-labeled-value {
+    gap: 20px;
+  }
+}

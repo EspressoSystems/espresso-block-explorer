@@ -1,5 +1,5 @@
+import { addClassToClassName } from '@/higher_order';
 import React from 'react';
-import { addClassToClassName } from '../../higher_order';
 import './icons.css';
 
 export interface SVGIconBaseProps extends React.SVGProps<SVGElement> {}

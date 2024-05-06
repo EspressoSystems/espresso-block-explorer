@@ -1,11 +1,11 @@
+import { ProvideTickEverySecond } from '@/contexts/NowProvider';
+import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import { ProvideTickEverySecond } from '../../components';
-import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
-import { ProvideGibraltarTransactionsSummaryDataSource } from '../GibraltarHotShotQueryServiceAdapters';
+import { ProvideCappuccinoTransactionsSummaryDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
+import FakeDataNotice from '../FakeDataNotice';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 import TransactionsPage from '../TransactionsPage';
-import FakeDataNotice from '../FakeDataNotice';
 
 interface ExampleProps {
   startAtBlock?: number;
@@ -17,9 +17,9 @@ const Example: React.FC<ExampleProps> = (props) => (
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideGibraltarTransactionsSummaryDataSource>
+        <ProvideCappuccinoTransactionsSummaryDataSource>
           <TransactionsPage {...props} />
-        </ProvideGibraltarTransactionsSummaryDataSource>
+        </ProvideCappuccinoTransactionsSummaryDataSource>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </>

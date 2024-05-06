@@ -1,7 +1,7 @@
+import { PageType } from '@/contexts/PagePathProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import Text from '@/text/Text';
 import React from 'react';
-import { PageType } from '../../contexts/PagePathProvider';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
-import Text from '../../text/Text';
 import NavLink from '../nav_link/NavLink';
 
 /**
@@ -13,11 +13,11 @@ const MainNavLinks: React.FC = () => {
 
   return (
     <ul>
-      {/* <li>
+      <li>
         <NavLink pageType={PageType.explorer} href={resolver.explorer()}>
-          Explorer
+          <Text text="Explorer" />
         </NavLink>
-      </li> */}
+      </li>
       <li>
         <NavLink
           pageType={PageType.transactions}

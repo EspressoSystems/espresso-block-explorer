@@ -1,6 +1,6 @@
+import { ErrorContext } from '@/contexts/ErrorProvider';
+import Text from '@/text/Text';
 import React from 'react';
-import { ErrorContext } from '../../contexts/ErrorProvider';
-import Text from '../../text/Text';
 
 export interface ErrorContextGuardProps {
   children: React.ReactNode | React.ReactNode[];

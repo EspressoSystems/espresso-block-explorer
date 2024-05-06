@@ -1,18 +1,18 @@
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import { urlEncoding } from '@/convert/base64/base64';
+import { encodeNumberIterableToHexits } from '@/convert/hex/hex';
+import TableLabeledValue from '@/layout/table_labeled_value/TabledLabeledValue';
+import SkeletonContent from '@/loading/SkeletonContent';
+import ByteSizeText from '@/text/ByteSizeText';
+import CopyTaggedBase64 from '@/text/CopyTaggedBase64';
+import DateTimeText from '@/text/DateTimeText';
+import FullTaggedBase64Text from '@/text/FullTaggedBase64Text';
+import NumberText from '@/text/NumberText';
+import Text from '@/text/Text';
+import { WithUiSmall } from '@/typography/typography';
 import React from 'react';
-import { urlEncoding } from '../../../types/base64';
-import { encodeNumberIterableToHexits } from '../../../types/hex';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import LabeledButton from '../../hid/buttons/labeled_button/LabeledButton';
-import TableLabeledValue from '../../layout/table_labeled_value/TabledLabeledValue';
 import Link from '../../links/link/Link';
-import SkeletonContent from '../../loading/SkeletonContent';
-import ByteSizeText from '../../text/ByteSizeText';
-import DateTimeText from '../../text/DateTimeText';
-import HexText from '../../text/HexText';
-import NumberText from '../../text/NumberText';
-import TaggedBase64Text from '../../text/TaggedBase64Text';
-import Text from '../../text/Text';
-import { WithUiSmall } from '../../typography/typography';
 import { BlockNumberContext } from '../block_detail_content/BlockDetailContentLoader';
 import HexDump from '../hex_dump/HexDump';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
@@ -110,7 +110,9 @@ export const TransactionDetailsContent: React.FC<
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Espresso Sequencer Hash" />
-        <HexText value={details.hash.data} />
+        <CopyTaggedBase64 value={details.hash}>
+          <FullTaggedBase64Text value={details.hash} />
+        </CopyTaggedBase64>
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Time" />
@@ -118,7 +120,9 @@ export const TransactionDetailsContent: React.FC<
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Sender" />
-        <TaggedBase64Text value={details.sender} />
+        <CopyTaggedBase64 value={details.sender}>
+          <FullTaggedBase64Text value={details.sender} />
+        </CopyTaggedBase64>
       </TableLabeledValue>
     </>
   );

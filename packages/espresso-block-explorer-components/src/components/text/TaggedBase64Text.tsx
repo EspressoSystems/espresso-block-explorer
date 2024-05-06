@@ -1,7 +1,5 @@
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import React from 'react';
-import { TaggedBase64 } from '../../types/TaggedBase64';
-import { rawURLEncoding } from '../../types/base64';
-import CopyButton from '../hid/buttons/copy_button/CopyButton';
 import './inline.css';
 
 export interface TaggedBase64TextProps {
@@ -13,7 +11,7 @@ export interface TaggedBase64TextProps {
  * in it's own way.
  */
 const TaggedBase64Text: React.FC<TaggedBase64TextProps> = (props) => {
-  const string = rawURLEncoding.encodeToString(props.value.data);
+  const string = props.value.toString();
 
   if (string.length <= 16) {
     return string;
@@ -29,22 +27,6 @@ const TaggedBase64Text: React.FC<TaggedBase64TextProps> = (props) => {
         ...
         {string.substring(string.length - 8, string.length)}
       </span>
-      <CopyButton
-        onClick={(event) => {
-          event.stopPropagation();
-          event.preventDefault();
-
-          if (
-            typeof window === 'undefined' ||
-            !navigator ||
-            !navigator.clipboard
-          ) {
-            return;
-          }
-
-          navigator.clipboard.writeText(props.value.toString());
-        }}
-      />
     </span>
   );
 };

@@ -1,7 +1,7 @@
+import { mapIterable, yieldAll } from '@/functional/functional';
+import { addClassToClassName } from '@/higher_order';
+import Text from '@/text/Text';
 import React from 'react';
-import { mapIterable, yieldAll } from '../../../types/functional';
-import { addClassToClassName } from '../../higher_order';
-import Text from '../../text/Text';
 import './hex_dump.css';
 
 export interface HexDumpProps {
@@ -97,7 +97,11 @@ function buildHexDumpString(value: ArrayBuffer): string {
 const HexDump: React.FC<HexDumpProps> = ({ value, className, ...props }) => {
   return (
     <>
-      <pre {...props} className={addClassToClassName(className, 'hex-dump')}>
+      <pre
+        {...props}
+        className={addClassToClassName(className, 'hex-dump')}
+        tabIndex={0}
+      >
         <Text text={buildHexDumpString(value)} />
       </pre>
     </>

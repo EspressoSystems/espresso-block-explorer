@@ -1,7 +1,7 @@
+import UnimplementedError from '@/errors/UnimplementedError';
+import { RollUpDetailAsyncRetriever } from '@/models/block_explorer/rollup_detail';
+import { TransactionSummaryColumn } from '@/models/block_explorer/transaction_summary';
 import React from 'react';
-import { RollUpDetailAsyncRetriever } from '../../../types/data_source/rollup_detail/types';
-import { TransactionSummaryColumn } from '../../../types/data_source/transaction_summary/types';
-import UnimplementedError from '../../../types/errors/UnimplementedError';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import {
   DataTableState,
@@ -9,8 +9,6 @@ import {
 } from '../../data/data_table/DataTable';
 import { SortDirection } from '../../data/types';
 import { TransactionSummary } from '../transaction_summary_data_table/TransactionSummaryDataLoader';
-
-const kTransactionsPerPage = 20;
 
 /**
  * NamespaceContext is a React Context that holds a reference to the
@@ -50,7 +48,6 @@ function createDataRetrieverFromRetriever(
         namespace,
         height: resolvedState.height,
         offset: resolvedState.offset,
-        transactionsPerPage: kTransactionsPerPage,
       });
 
       return data.map(

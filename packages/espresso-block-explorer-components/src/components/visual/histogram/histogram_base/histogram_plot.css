@@ -1,0 +1,9 @@
+@import url(../../../../styles/main.css);
+
+:root {
+  --histogram-plot--fill-color: var(--color--sky-700);
+}
+
+.histogram-plot {
+  fill: var(--histogram-plot--fill-color);
+}

@@ -1,6 +1,6 @@
+import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { OverridePagePath, PageType } from '../../../contexts/PagePathProvider';
 import NavBarComp from '../NavBar';
 
 interface ExampleProps {}

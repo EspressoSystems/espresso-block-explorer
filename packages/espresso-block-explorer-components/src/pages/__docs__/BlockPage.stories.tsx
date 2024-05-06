@@ -1,11 +1,11 @@
+import { BlockNumberContext } from '@/components/page_sections/block_detail_content/BlockDetailContentLoader';
+import { ProvideTickEverySecond } from '@/contexts/NowProvider';
+import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import { ProvideTickEverySecond } from '../../components/contexts/NowProvider';
-import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
-import { BlockNumberContext } from '../../components/page_sections/block_detail_content/BlockDetailContentLoader';
 import BlockPage from '../BlockPage';
+import { ProvideCappuccinoBlockDetailDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
 import FakeDataNotice from '../FakeDataNotice';
-import { ProvideGibraltarBlockDetailDataSource } from '../GibraltarHotShotQueryServiceAdapters';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
 interface ExampleProps {
@@ -18,9 +18,9 @@ const Example: React.FC<ExampleProps> = ({ block, ...props }) => (
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
         <BlockNumberContext.Provider value={block}>
-          <ProvideGibraltarBlockDetailDataSource>
+          <ProvideCappuccinoBlockDetailDataSource>
             <BlockPage {...props} />
-          </ProvideGibraltarBlockDetailDataSource>
+          </ProvideCappuccinoBlockDetailDataSource>
         </BlockNumberContext.Provider>
       </OverridePathResolver>
     </ProvideTickEverySecond>

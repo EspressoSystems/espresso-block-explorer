@@ -55,12 +55,15 @@ a.btn {
   text-decoration: none;
 }
 
-a.btn,
-button.btn {
+button.btn,
+a.btn {
+  appearance: none;
+}
+
+.btn {
   --text--color: var(--button--default--foreground-color);
   --icon--fill-color: var(--button--default--foreground-color);
 
-  appearance: none;
   box-sizing: border-box;
   background-color: var(--button--default--background-color);
   color: var(--button--default--foreground-color);
@@ -87,50 +90,41 @@ button.btn {
     outline-width ease-in-out var(--button--transition--duration);
 }
 
-a.btn.icon,
-button.btn.icon {
+.btn.icon {
   padding: var(--button--icon-button--padding);
 }
 
-a.btn.label,
-button.btn.label {
+.btn.label {
   padding: var(--button--label-button--padding);
 }
 
-a.btn,
-button.btn,
-a.btn svg,
-button.btn svg,
-a.btn--flat svg {
+.btn,
+.btn svg,
+.btn--flat svg {
   display: inline-flex;
   justify-content: center;
   align-items: center;
 }
 
-a.btn,
-button.btn {
+.btn {
   gap: var(--button--default--gap);
 }
 
-a.btn:hover,
-button.btn:hover {
+.btn:hover {
   border-color: var(--button--hovered--border-color);
 }
 
-a.btn:active,
-button.btn:active {
+.btn:active {
   border-color: var(--button--pressed--border-color);
   /* background-color: var(--button--pressed--background-color); */
 }
 
-a.btn:focus-visible,
-button.btn:focus-visible {
+.btn:focus-visible {
   outline-width: var(--button--focused--outline-width);
   outline-color: var(--button--focused--outline-color);
 }
 
-a.btn[disabled],
-button.btn[disabled] {
+.btn[disabled] {
   --text--color: var(--button--disabled--foreground-color);
   --icon--fill-color: var(--button--disabled--foreground-color);
 
@@ -139,12 +133,12 @@ button.btn[disabled] {
   color: var(--button--disabled--foreground-color);
 }
 
-a.btn--flat {
+.btn--flat {
   display: inline-flex;
   padding: var(--button--icon-button--padding);
 }
 
-a.btn--flat {
+.btn--flat {
   --text--color: var(--button-flat--default--foreground-color);
   --icon--fill-color: var(--button-flat--default--foreground-color);
 
@@ -152,7 +146,7 @@ a.btn--flat {
   color: var(--button-flat--default--foreground-color);
 }
 
-a.btn--flat:hover {
+.btn--flat:hover {
   --text--color: var(--button-flat--hovered--foreground-color);
   --icon--fill-color: var(--button-flat--hovered--foreground-color);
 

@@ -50,6 +50,17 @@ describe('Number Formatters Provider', () => {
             formatters={{
               default: new Intl.NumberFormat('en-US', {}),
               bytes: new Intl.NumberFormat('en-US', {}),
+              variableBytes: new Intl.NumberFormat('en-US', {}),
+              transactionsPerSecond: new Intl.NumberFormat('en-US', {}),
+              gwei: new Intl.NumberFormat('en-US', {}),
+              wei: new Intl.NumberFormat('en-US', {}),
+              USD: new Intl.NumberFormat('en-US', {}),
+              GBP: new Intl.NumberFormat('en-US', {}),
+              EUR: new Intl.NumberFormat('en-US', {}),
+              JPY: new Intl.NumberFormat('en-US', {}),
+              ESP: new Intl.NumberFormat('en-US', {}),
+              ETH: new Intl.NumberFormat('en-US', {}),
+              XBT: new Intl.NumberFormat('en-US', {}),
             }}
           >
             <ConsumeNumberFormattersComponent />
@@ -65,6 +76,17 @@ describe('Number Formatters Provider', () => {
             formatters={{
               default: new Intl.NumberFormat('de-DE', {}),
               bytes: new Intl.NumberFormat('en-US', {}),
+              variableBytes: new Intl.NumberFormat('en-US', {}),
+              transactionsPerSecond: new Intl.NumberFormat('en-US', {}),
+              gwei: new Intl.NumberFormat('en-US', {}),
+              wei: new Intl.NumberFormat('en-US', {}),
+              USD: new Intl.NumberFormat('en-US', {}),
+              GBP: new Intl.NumberFormat('en-US', {}),
+              EUR: new Intl.NumberFormat('en-US', {}),
+              JPY: new Intl.NumberFormat('en-US', {}),
+              ESP: new Intl.NumberFormat('en-US', {}),
+              ETH: new Intl.NumberFormat('en-US', {}),
+              XBT: new Intl.NumberFormat('en-US', {}),
             }}
           >
             <ConsumeNumberFormattersComponent />

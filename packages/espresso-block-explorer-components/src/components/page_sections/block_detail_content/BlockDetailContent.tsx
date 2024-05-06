@@ -1,21 +1,24 @@
+import { DataContext } from '@/contexts/DataProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import TableLabeledValue from '@/layout/table_labeled_value/TabledLabeledValue';
+import SkeletonContent from '@/loading/SkeletonContent';
+import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
+import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import ByteSizeText from '@/text/ByteSizeText';
+import CopyHex from '@/text/CopyHex';
+import DateTimeText from '@/text/DateTimeText';
+import FullHexText from '@/text/FullHexText';
+import MoneyText from '@/text/MoneyText';
+import NumberText from '@/text/NumberText';
+import RelativeTimeText from '@/text/RelativeTimeText';
+import Text from '@/text/Text';
+import { WithUiSmall } from '@/typography/typography';
+import ArrowLeft from '@/visual/icons/ArrowLeft';
+import ArrowRight from '@/visual/icons/ArrowRight';
 import React from 'react';
-import { TaggedBase64 } from '../../../types/TaggedBase64';
-import { BlockDetailEntry } from '../../../types/data_source/block_detail/types';
-import { DataContext } from '../../contexts/DataProvider';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import { IconAnchorButton } from '../../hid/buttons';
-import TableLabeledValue from '../../layout/table_labeled_value/TabledLabeledValue';
 import Link from '../../links/link/Link';
-import SkeletonContent from '../../loading/SkeletonContent';
-import ByteSizeText from '../../text/ByteSizeText';
-import DateTimeText from '../../text/DateTimeText';
-import NumberText from '../../text/NumberText';
-import RelativeTimeText from '../../text/RelativeTimeText';
-import TaggedBase64Text from '../../text/TaggedBase64Text';
-import Text from '../../text/Text';
-import { WithUiSmall } from '../../typography/typography';
-import ArrowLeft from '../../visual/icons/ArrowLeft';
-import ArrowRight from '../../visual/icons/ArrowRight';
 import { BlockNumberContext } from './BlockDetailContentLoader';
 import './block_detail_content.css';
 
@@ -32,14 +35,17 @@ const BackABlock: React.FC = () => {
 
   if (currentBlockID <= 0) {
     return (
-      <IconAnchorButton>
+      <IconAnchorButton disabled>
         <ArrowLeft />
       </IconAnchorButton>
     );
   }
 
   return (
-    <IconAnchorButton href={pathResolver.block(currentBlockID - 1)}>
+    <IconAnchorButton
+      href={pathResolver.block(currentBlockID - 1)}
+      title="Previous Block"
+    >
       <ArrowLeft />
     </IconAnchorButton>
   );
@@ -54,7 +60,10 @@ const ForwardABlock: React.FC = () => {
   const pathResolver = React.useContext(PathResolverContext);
 
   return (
-    <IconAnchorButton href={pathResolver.block(currentBlockID + 1)}>
+    <IconAnchorButton
+      href={pathResolver.block(currentBlockID + 1)}
+      title="Next Block"
+    >
       <ArrowRight />
     </IconAnchorButton>
   );
@@ -88,11 +97,14 @@ export const BlockNavigation: React.FC = () => {
  */
 const BlockDetailContext: React.Context<BlockDetailEntry> = React.createContext(
   {
+    hash: new TaggedBase64('BLOCK', new ArrayBuffer(0)),
     height: 0,
     time: new Date(),
     transactions: 0,
-    proposer: new TaggedBase64('PUBKEY', new ArrayBuffer(0)),
+    proposer: new ArrayBuffer(0),
+    recipient: new ArrayBuffer(0),
     size: 0,
+    rewards: new Array<MonetaryValue>(0),
   },
 );
 
@@ -118,7 +130,15 @@ export const BlockDetailsContentPlaceholder: React.FC<
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
+        <Text text="Fee Recipient" />
+        <SkeletonContent />
+      </TableLabeledValue>
+      <TableLabeledValue>
         <Text text="Size" />
+        <SkeletonContent />
+      </TableLabeledValue>
+      <TableLabeledValue>
+        <Text text="Block Reward" />
         <SkeletonContent />
       </TableLabeledValue>
     </>
@@ -156,11 +176,27 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Proposer" />
-        <TaggedBase64Text value={details.proposer} />
+        <CopyHex value={details.proposer}>
+          <FullHexText value={details.proposer} />
+        </CopyHex>
+      </TableLabeledValue>
+      <TableLabeledValue>
+        <Text text="Fee Recipient" />
+        <CopyHex value={details.proposer}>
+          <FullHexText value={details.proposer} />
+        </CopyHex>
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Size" />
         <ByteSizeText bytes={details.size} />
+      </TableLabeledValue>
+      <TableLabeledValue>
+        <Text text="Block Reward" />
+        <>
+          {...details.rewards.map((reward, index) => (
+            <MoneyText key={index} money={reward} />
+          ))}
+        </>
       </TableLabeledValue>
     </>
   );

@@ -61,6 +61,7 @@ describe('Date Time Formatters Provider', () => {
               utcFullDateTime: new Intl.DateTimeFormat('en-US', {}),
               time: new Intl.DateTimeFormat('en-US', {}),
               relative: new Intl.RelativeTimeFormat('en-US', {}),
+              seconds: new Intl.NumberFormat('en-US', {}),
 
               numDays: new Intl.NumberFormat('en-US', {}),
               numHours: new Intl.NumberFormat('en-US', {}),

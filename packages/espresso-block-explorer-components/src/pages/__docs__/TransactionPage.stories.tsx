@@ -1,11 +1,11 @@
+import { BlockNumberContext } from '@/components/page_sections/block_detail_content';
+import { TransactionOffsetContext } from '@/components/page_sections/transaction_detail_content/TransactionDetailLoader';
+import { ProvideTickEverySecond } from '@/contexts/NowProvider';
+import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import { ProvideTickEverySecond } from '../../components/contexts/NowProvider';
-import { OverridePathResolver } from '../../components/contexts/PathResolverProvider';
-import { BlockNumberContext } from '../../components/page_sections/block_detail_content';
-import { TransactionOffsetContext } from '../../components/page_sections/transaction_detail_content/TransactionDetailLoader';
+import { ProvideCappuccinoTransactionDetailDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
 import FakeDataNotice from '../FakeDataNotice';
-import { ProvideGibraltarTransactionDetailDataSource } from '../GibraltarHotShotQueryServiceAdapters';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 import TransactionPage from '../TransactionPage';
 
@@ -21,9 +21,9 @@ const Example: React.FC<ExampleProps> = ({ height, offset, ...props }) => (
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
         <BlockNumberContext.Provider value={height}>
           <TransactionOffsetContext.Provider value={offset}>
-            <ProvideGibraltarTransactionDetailDataSource>
+            <ProvideCappuccinoTransactionDetailDataSource>
               <TransactionPage {...props} />
-            </ProvideGibraltarTransactionDetailDataSource>
+            </ProvideCappuccinoTransactionDetailDataSource>
           </TransactionOffsetContext.Provider>
         </BlockNumberContext.Provider>
       </OverridePathResolver>
@@ -44,7 +44,7 @@ type Story = StoryObj<typeof Example>;
 
 export const Transaction: Story = {
   args: {
-    height: 0,
+    height: 20,
     offset: 0,
   },
 };

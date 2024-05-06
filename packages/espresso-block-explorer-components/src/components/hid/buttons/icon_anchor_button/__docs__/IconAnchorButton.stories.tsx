@@ -1,16 +1,16 @@
+import ArrowLeft from '@/visual/icons/ArrowLeft';
+import ArrowRight from '@/visual/icons/ArrowRight';
+import CheckCircle from '@/visual/icons/CheckCircle';
+import ChevronDown from '@/visual/icons/ChevronDown';
+import ChevronUp from '@/visual/icons/ChevronUp';
+import DiscordIcon from '@/visual/icons/DiscordIcon';
+import InfoCircle from '@/visual/icons/InfoCircle';
+import MediumIcon from '@/visual/icons/MediumIcon';
+import Menu from '@/visual/icons/Menu';
+import SearchGlass from '@/visual/icons/SearchGlass';
+import TwitterIcon from '@/visual/icons/TwitterIcon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import ArrowLeft from '../../../../visual/icons/ArrowLeft';
-import ArrowRight from '../../../../visual/icons/ArrowRight';
-import CheckCircle from '../../../../visual/icons/CheckCircle';
-import ChevronDown from '../../../../visual/icons/ChevronDown';
-import ChevronUp from '../../../../visual/icons/ChevronUp';
-import DiscordIcon from '../../../../visual/icons/DiscordIcon';
-import InfoCircle from '../../../../visual/icons/InfoCircle';
-import MediumIcon from '../../../../visual/icons/MediumIcon';
-import Menu from '../../../../visual/icons/Menu';
-import SearchGlass from '../../../../visual/icons/SearchGlass';
-import TwitterIcon from '../../../../visual/icons/TwitterIcon';
 import IconAnchorButtonComp from '../IconAnchorButton';
 
 interface ExampleProps {

@@ -1,8 +1,7 @@
 import { composeStories } from '@storybook/react';
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { describe, expect, it } from 'vitest';
 import * as stories from '../__docs__/IconButton.stories';
 
@@ -17,7 +16,7 @@ describe('Icon Button component', () => {
     expect(button).toBeEnabled();
     expect(a).equals(0);
 
-    await userEvent.click(button);
+    await act(() => userEvent.click(button));
     expect(a).equals(1);
   });
 
@@ -29,7 +28,7 @@ describe('Icon Button component', () => {
     expect(button).toBeDisabled();
     expect(a).equals(0);
 
-    await userEvent.click(button);
+    await act(() => userEvent.click(button));
     expect(a).equals(0, 'tapping on a disabled button should have no result');
   });
 });

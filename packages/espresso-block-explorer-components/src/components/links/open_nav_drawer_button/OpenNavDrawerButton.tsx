@@ -1,7 +1,7 @@
+import { CurrentSetNavDrawerStateContext } from '@/contexts/NavDrawerStateProvider';
+import Menu from '@/visual/icons/Menu';
 import React from 'react';
-import { CurrentSetNavDrawerStateContext } from '../../contexts/NavDrawerStateProvider';
 import IconButton from '../../hid/buttons/icon_button/IconButton';
-import Menu from '../../visual/icons/Menu';
 
 interface OpenNavDrawerButtonProps {}
 
@@ -13,7 +13,11 @@ const OpenNavDrawerButton: React.FC<OpenNavDrawerButtonProps> = (props) => {
   const setNavDrawerOpen = React.useContext(CurrentSetNavDrawerStateContext);
 
   return (
-    <IconButton {...props} onClick={() => setNavDrawerOpen(true)}>
+    <IconButton
+      {...props}
+      onClick={() => setNavDrawerOpen(true)}
+      title="Open Navigation Drawer"
+    >
       <Menu />
     </IconButton>
   );

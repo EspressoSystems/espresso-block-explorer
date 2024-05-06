@@ -1,11 +1,11 @@
+import { addClassToClassName } from '@/higher_order';
+import Card from '@/layout/card/Card';
+import ValueLabeled from '@/layout/value_labeled/ValueLabeled';
+import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
+import NumberText from '@/text/NumberText';
+import Text from '@/text/Text';
 import React from 'react';
-import { curatedRollupMap } from '../../../../types/data_source/rollup_entry/data';
-import { addClassToClassName } from '../../../higher_order';
-import Card from '../../../layout/card/Card';
-import ValueLabeled from '../../../layout/value_labeled/ValueLabeled';
 import Link from '../../../links/link/Link';
-import NumberText from '../../../text/NumberText';
-import Text from '../../../text/Text';
 import './roll_up_info.css';
 
 export interface RollUpInfoProps {

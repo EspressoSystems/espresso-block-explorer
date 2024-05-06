@@ -1,6 +1,6 @@
+import { CurrentDateTimeFormatters } from '@/contexts/DateTimeFormattersProvider';
+import { Now } from '@/contexts/NowProvider';
 import React, { useContext } from 'react';
-import { CurrentDateTimeFormatters } from '../contexts/DateTimeFormattersProvider';
-import { Now } from '../contexts/NowProvider';
 
 export interface RelativeTimeTextProps {
   date: Date;
@@ -45,6 +45,7 @@ const RelativeTimeText: React.FC<RelativeTimeTextProps> = (props) => {
   if (minutes !== 0) {
     return formatters.relative.format(minutes, 'minutes');
   }
+
   return formatters.relative.format(seconds, 'seconds');
 };
 

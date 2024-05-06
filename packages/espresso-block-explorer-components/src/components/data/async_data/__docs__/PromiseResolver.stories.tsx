@@ -1,7 +1,8 @@
+import NotFoundError from '@/errors/NotFoundError';
+import CircularProgressIndicator from '@/loading/CircularProgressIndicator';
+import Text from '@/text/Text';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import CircularProgressIndicator from '../../../loading/CircularProgressIndicator';
-import Text from '../../../text/Text';
 import { AsyncState } from '../AsyncSnapshot';
 import { AsyncSnapshotContext } from '../AsyncSnapshotContext';
 import PromiseResolverComp from '../PromiseResolver';
@@ -17,8 +18,7 @@ async function sleep(milliseconds: number): Promise<void> {
 }
 
 interface ExampleProps {
-  value: string;
-  milliseconds: number;
+  promise: Promise<string>;
 }
 
 const ConsumeSnapshot: React.FC = () => {
@@ -28,15 +28,18 @@ const ConsumeSnapshot: React.FC = () => {
     return <CircularProgressIndicator />;
   }
 
+  if (snapshot.error) {
+    // We have an error...
+    return <Text text={'Error: ' + snapshot.error.message} />;
+  }
+
   const data = snapshot.data;
   return <Text text={String(data)} />;
 };
 
 const Example: React.FC<ExampleProps> = (props) => {
   return (
-    <PromiseResolverComp
-      promise={sleep(props.milliseconds).then(() => props.value)}
-    >
+    <PromiseResolverComp promise={props.promise}>
       <ConsumeSnapshot />
     </PromiseResolverComp>
   );
@@ -50,9 +53,26 @@ const meta: Meta<typeof Example> = {
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const PromiseResolver: Story = {
+export const Default: Story = {
   args: {
-    value: 'Done!',
-    milliseconds: 2000,
+    promise: sleep(2000).then(() => 'Done!'),
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    promise: new Promise(() => {}),
+  },
+};
+
+export const Resolved: Story = {
+  args: {
+    promise: Promise.resolve('Done!'),
+  },
+};
+
+export const Rejected: Story = {
+  args: {
+    promise: Promise.reject(new NotFoundError('nothing')),
   },
 };

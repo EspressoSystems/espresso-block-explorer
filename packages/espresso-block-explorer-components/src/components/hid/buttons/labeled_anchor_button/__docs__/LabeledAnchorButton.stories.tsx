@@ -1,6 +1,6 @@
+import Text from '@/text/Text';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import Text from '../../../../text/Text';
 import LabeledAnchorButtonComp from '../LabeledAnchorButton';
 
 interface ExampleProps {

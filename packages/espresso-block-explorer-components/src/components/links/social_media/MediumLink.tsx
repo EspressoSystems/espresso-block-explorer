@@ -1,5 +1,5 @@
+import MediumIcon from '@/visual/icons/MediumIcon';
 import React from 'react';
-import MediumIcon from '../../visual/icons/MediumIcon';
 import SocialMediaIconLink from './SocialMediaIconLink';
 
 /**

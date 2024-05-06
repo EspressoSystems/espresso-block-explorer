@@ -1,7 +1,7 @@
+import NumberText from '@/text/NumberText';
+import Text from '@/text/Text';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import NumberText from '../../../text/NumberText';
-import Text from '../../../text/Text';
 import PromiseResolver from '../../async_data/PromiseResolver';
 import { SortDirection, reverseSortDir } from '../../types';
 import DataTableComp, {

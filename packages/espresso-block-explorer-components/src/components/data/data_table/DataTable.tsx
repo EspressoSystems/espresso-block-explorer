@@ -1,8 +1,8 @@
+import { DataContext } from '@/contexts/DataProvider';
+import Text from '@/text/Text';
+import { WithUiSmall } from '@/typography/typography';
+import ChevronUp from '@/visual/icons/ChevronUp';
 import React from 'react';
-import { DataContext } from '../../contexts/DataProvider';
-import Text from '../../text/Text';
-import { WithUiSmall } from '../../typography/typography';
-import ChevronUp from '../../visual/icons/ChevronUp';
 import { SortDirection } from '../types';
 import './data_table.css';
 
@@ -57,7 +57,7 @@ export const DataTableRowContext: React.Context<object> = React.createContext(
 type ColumnData<ColumnType> = {
   label: string;
   columnType: ColumnType;
-  buildCell: React.FC;
+  buildCell: React.ComponentType;
 };
 
 /**

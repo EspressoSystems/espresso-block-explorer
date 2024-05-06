@@ -32,6 +32,14 @@ function createDefaultDateTimeFormatters(locale: string) {
       second: '2-digit',
       timeZoneName: 'short',
     }),
+
+    seconds: new Intl.NumberFormat(locale, {
+      style: 'unit',
+      unit: 'second',
+      unitDisplay: 'narrow',
+      maximumFractionDigits: 2,
+    }),
+
     relative: new Intl.RelativeTimeFormat(locale, {
       style: 'narrow',
       numeric: 'always',

@@ -3,7 +3,7 @@ import React from 'react';
 import {
   HigherOrderComponentWithClassNameProps,
   addClassNameToComponent,
-} from '../../higher_order';
+} from '@/higher_order';
 import './margin.css';
 
 /**

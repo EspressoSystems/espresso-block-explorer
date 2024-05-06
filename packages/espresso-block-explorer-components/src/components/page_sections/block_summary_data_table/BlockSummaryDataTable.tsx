@@ -1,17 +1,18 @@
+import { DataContext } from '@/contexts/DataProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import { iota } from '@/functional/functional';
+import SkeletonContent from '@/loading/SkeletonContent';
+import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
+import ByteSizeText from '@/text/ByteSizeText';
+import CopyHex from '@/text/CopyHex';
+import DateTimeText from '@/text/DateTimeText';
+import HexText from '@/text/HexText';
+import NumberText from '@/text/NumberText';
 import React from 'react';
-import { BlockSummaryColumn } from '../../../types/data_source/block_summary/types';
-import { iota } from '../../../types/functional';
-import { DataContext } from '../../contexts/DataProvider';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
 import Link from '../../links/link/Link';
-import SkeletonContent from '../../loading/SkeletonContent';
-import ByteSizeText from '../../text/ByteSizeText';
-import DateTimeText from '../../text/DateTimeText';
-import NumberText from '../../text/NumberText';
-import TaggedBase64Text from '../../text/TaggedBase64Text';
 import { BlockSummary } from './BlockSummaryDataLoader';
 
 /**
@@ -38,7 +39,11 @@ const BlockCell: React.FC = () => {
 const ProposerCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as BlockSummary;
 
-  return <TaggedBase64Text value={row.proposer} />;
+  return (
+    <CopyHex value={row.proposer}>
+      <HexText value={row.proposer} />
+    </CopyHex>
+  );
 };
 
 /**
@@ -75,40 +80,79 @@ const TimeCell: React.FC = () => {
   return <DateTimeText date={row.time} />;
 };
 
+interface BlockSummaryDataTableLayoutProps {
+  components: [
+    React.ComponentType,
+    React.ComponentType,
+    React.ComponentType,
+    React.ComponentType,
+    React.ComponentType,
+  ];
+}
+
+/**
+ * BlockSummaryDataTableLayoutProps represents the the general layout of the
+ * Block Summary Data Table.  It provides the labels, and column types while
+ * allowing the caller to provide the specific component constructors to
+ * utilize for the component.
+ */
+const BlockSummaryDataTableLayout: React.FC<
+  BlockSummaryDataTableLayoutProps
+> = (props) => {
+  return (
+    <DataTable
+      columns={[
+        {
+          label: 'Blocks',
+          columnType: BlockSummaryColumn.height,
+          buildCell: props.components[0],
+        },
+        {
+          label: 'Proposer',
+          columnType: BlockSummaryColumn.proposer,
+          buildCell: props.components[1],
+        },
+        {
+          label: 'Transaction',
+          columnType: BlockSummaryColumn.transactions,
+          buildCell: props.components[2],
+        },
+        {
+          label: 'Size',
+          columnType: BlockSummaryColumn.size,
+          buildCell: props.components[3],
+        },
+        {
+          label: 'Time',
+          columnType: BlockSummaryColumn.time,
+          buildCell: props.components[4],
+        },
+      ]}
+    />
+  );
+};
+
+export interface BlockSummaryDataTablePlaceholderProps {
+  numElements?: number;
+}
+
 /**
  * BlockSummaryDataTablePlaceholder is a placeholder that acts like a
  * normal BlockSummaryDataTable, but with loading indicator placeholders.
  */
-export const BlockSummaryDataTablePlaceholder: React.FC = () => {
+export const BlockSummaryDataTablePlaceholder: React.FC<
+  BlockSummaryDataTablePlaceholderProps
+> = (props) => {
+  const { numElements = 20 } = props;
   return (
-    <DataContext.Provider value={Array.from(iota(20))}>
-      <DataTable
-        columns={[
-          {
-            label: 'Blocks',
-            columnType: BlockSummaryColumn.height,
-            buildCell: SkeletonContent,
-          },
-          {
-            label: 'Proposer',
-            columnType: BlockSummaryColumn.proposer,
-            buildCell: SkeletonContent,
-          },
-          {
-            label: 'Transaction',
-            columnType: BlockSummaryColumn.transactions,
-            buildCell: SkeletonContent,
-          },
-          {
-            label: 'Size',
-            columnType: BlockSummaryColumn.size,
-            buildCell: SkeletonContent,
-          },
-          {
-            label: 'Time',
-            columnType: BlockSummaryColumn.time,
-            buildCell: SkeletonContent,
-          },
+    <DataContext.Provider value={Array.from(iota(numElements))}>
+      <BlockSummaryDataTableLayout
+        components={[
+          SkeletonContent,
+          SkeletonContent,
+          SkeletonContent,
+          SkeletonContent,
+          SkeletonContent,
         ]}
       />
     </DataContext.Provider>
@@ -120,33 +164,13 @@ export const BlockSummaryDataTablePlaceholder: React.FC = () => {
  */
 export const BlockSummaryDataTable: React.FC = () => {
   return (
-    <DataTable
-      columns={[
-        {
-          label: 'Blocks',
-          columnType: BlockSummaryColumn.height,
-          buildCell: BlockCell,
-        },
-        {
-          label: 'Proposer',
-          columnType: BlockSummaryColumn.proposer,
-          buildCell: ProposerCell,
-        },
-        {
-          label: 'Transaction',
-          columnType: BlockSummaryColumn.transactions,
-          buildCell: TransactionsCell,
-        },
-        {
-          label: 'Size',
-          columnType: BlockSummaryColumn.size,
-          buildCell: SizeCell,
-        },
-        {
-          label: 'Time',
-          columnType: BlockSummaryColumn.time,
-          buildCell: TimeCell,
-        },
+    <BlockSummaryDataTableLayout
+      components={[
+        BlockCell,
+        ProposerCell,
+        TransactionsCell,
+        SizeCell,
+        TimeCell,
       ]}
     />
   );

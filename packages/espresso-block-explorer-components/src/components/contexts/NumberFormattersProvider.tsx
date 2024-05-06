@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import { CurrentLocale } from './LocaleProvider';
+import TransactionPerSecondNumberFormat from './TransactionsPerSecondNumberFormat';
 
 /**
  * createDefaultNumberFormatters will create the default Number formatting
@@ -22,6 +23,83 @@ function createDefaultNumberFormatters(locale: string) {
       unit: 'byte',
       notation: 'standard',
       unitDisplay: 'long',
+    }),
+    variableBytes: new Intl.NumberFormat(locale, {
+      style: 'unit',
+      unit: 'byte',
+      notation: 'compact',
+      unitDisplay: 'narrow',
+      maximumFractionDigits: 2,
+    }),
+    transactionsPerSecond: new TransactionPerSecondNumberFormat(locale, {
+      maximumFractionDigits: 2,
+    }) as unknown as Intl.NumberFormat,
+
+    wei: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'WEI',
+      currencyDisplay: 'code',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }),
+    gwei: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'XXX',
+      minimumFractionDigits: 2,
+      maximumSignificantDigits: 9,
+      maximumFractionDigits: 9,
+    }),
+
+    USD: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'USD',
+      currencyDisplay: 'symbol',
+      maximumFractionDigits: 2,
+    }),
+    JPY: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'JPY',
+      currencyDisplay: 'symbol',
+      maximumFractionDigits: 0,
+    }),
+    EUR: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'EUR',
+      currencyDisplay: 'symbol',
+      maximumFractionDigits: 2,
+    }),
+    GBP: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'GBP',
+      currencyDisplay: 'symbol',
+      maximumFractionDigits: 2,
+    }),
+    ETH: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currencyDisplay: 'code',
+      currency: 'ETH',
+      notation: 'standard',
+      maximumSignificantDigits: 18,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 18,
+    }),
+    ESP: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currencyDisplay: 'code',
+      currency: 'ESP',
+      notation: 'standard',
+      maximumSignificantDigits: 18,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 18,
+    }),
+    XBT: new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currencyDisplay: 'code',
+      currency: 'BTC',
+      notation: 'standard',
+      maximumSignificantDigits: 8,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 8,
     }),
   };
 }

@@ -57,8 +57,11 @@ describe('Path Resolver Provider Context', () => {
             transactions(): string {
               return '/ts';
             },
-            transaction(hash: string): string {
-              return `/t/${hash}`;
+            transaction(height: number, offset: number): string {
+              return `/t/${height}-${offset}`;
+            },
+            transactionsForBlock(height: number): string {
+              return `/tb/${height}`;
             },
             rollUps(): string {
               return '/rs';

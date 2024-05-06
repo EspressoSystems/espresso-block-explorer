@@ -1,12 +1,13 @@
-import React from 'react';
-import { TaggedBase64 } from '../../../types/TaggedBase64';
+import { DataContext } from '@/contexts/DataProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import UnimplementedError from '@/errors/UnimplementedError';
+import { addClassToClassName } from '@/higher_order';
 import {
   BlockSummaryAsyncRetriever,
   BlockSummaryColumn,
-} from '../../../types/data_source/block_summary/types';
-import UnimplementedError from '../../../types/errors/UnimplementedError';
-import { DataContext } from '../../contexts/DataProvider';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
+} from '@/models/block_explorer/block_summary';
+import Text from '@/text/Text';
+import React from 'react';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import {
   DataTableSetStateContext,
@@ -15,12 +16,10 @@ import {
 } from '../../data/data_table/DataTable';
 import { SortDirection } from '../../data/types';
 import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
-import { addClassToClassName } from '../../higher_order';
-import Text from '../../text/Text';
 
 export interface BlockSummary {
   block: number;
-  proposer: TaggedBase64;
+  proposer: ArrayBuffer;
   transactions: number;
   size: number;
   time: Date;
@@ -30,8 +29,6 @@ export interface BlockSummaryDataTableState
   extends DataTableState<BlockSummaryColumn> {
   startAtBlock?: number;
 }
-
-export const kBlocksPerPage = 20;
 
 /**
  * createDataRetrieverFromRetriever converts the given
@@ -45,7 +42,6 @@ function createDataRetrieverFromRetriever(
     const resolvedState = state as BlockSummaryDataTableState;
     const data = await retriever.retrieve({
       startAtBlock: resolvedState.startAtBlock,
-      blocksPerPage: kBlocksPerPage,
     });
 
     return data.map(
@@ -149,6 +145,8 @@ export interface BlocksNavigationProps {
   className?: string;
 }
 
+const kBlocksPerPage = 20;
+
 export const BlocksNavigation: React.FC<BlocksNavigationProps> = (props) => {
   const data = React.useContext(DataContext) as BlockSummary[];
   const pathResolver = React.useContext(PathResolverContext);
@@ -164,7 +162,7 @@ export const BlocksNavigation: React.FC<BlocksNavigationProps> = (props) => {
     previous.push(
       <LabeledAnchorButton
         key={0}
-        href={pathResolver.blocks(state.startAtBlock - kBlocksPerPage)}
+        href={pathResolver.blocks(state.startAtBlock + kBlocksPerPage)}
       >
         <Text text="Previous" />
       </LabeledAnchorButton>,
@@ -175,7 +173,7 @@ export const BlocksNavigation: React.FC<BlocksNavigationProps> = (props) => {
     previous.push(
       <LabeledAnchorButton
         key={1}
-        href={pathResolver.blocks(data[data.length - 1].block + 1)}
+        href={pathResolver.blocks(data[data.length - 1].block - 1)}
       >
         <Text text="Next" />
       </LabeledAnchorButton>,

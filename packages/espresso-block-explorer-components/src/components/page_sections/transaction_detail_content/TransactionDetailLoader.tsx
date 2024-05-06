@@ -1,11 +1,11 @@
-import React from 'react';
-import { TaggedBase64 } from '../../../types/TaggedBase64';
+import { DataContext } from '@/contexts/DataProvider';
+import UnimplementedError from '@/errors/UnimplementedError';
 import {
   TransactionDetailAsyncRetriever,
   TransactionDetailEntry,
-} from '../../../types/data_source/transaction_detail/types';
-import UnimplementedError from '../../../types/errors/UnimplementedError';
-import { DataContext } from '../../contexts/DataProvider';
+} from '@/models/block_explorer/transaction_detail';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import React from 'react';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 import { BlockNumberContext } from '../block_detail_content/BlockDetailContentLoader';
 import './transaction_detail_content.css';

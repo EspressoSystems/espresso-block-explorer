@@ -1,5 +1,6 @@
+import { rollUpImagesMap } from '@/models/block_explorer/rollup_entry/data_images';
+import { RollUpEntry } from '@/models/block_explorer/rollup_entry/types';
 import React from 'react';
-import { RollUpEntry } from '../../../../types/data_source/rollup_entry/types';
 
 export interface RollUpAvatar24Props {
   entry: RollUpEntry;
@@ -10,7 +11,9 @@ export interface RollUpAvatar24Props {
  * logo24 stored within the given RollUpEntry.
  */
 const RollUpAvatar24: React.FC<RollUpAvatar24Props> = (props) => {
-  return React.createElement(props.entry.logo24);
+  const namespace = props.entry.namespace;
+  const images = rollUpImagesMap.get(namespace);
+  return React.createElement(images!.logo24);
 };
 
 export default RollUpAvatar24;

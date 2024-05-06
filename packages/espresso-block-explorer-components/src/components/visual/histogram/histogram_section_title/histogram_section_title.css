@@ -1,0 +1,12 @@
+.histogram-section-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.histogram-section-title > h2 {
+  margin: 0;
+}
+
+.histogram-section-title > .value-labeled {
+  text-align: end;
+}

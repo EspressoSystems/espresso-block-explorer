@@ -1,25 +1,13 @@
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import React from 'react';
-import { mapIterable, mapIterator } from '../../types/functional';
-
-export interface FullHexTextProps {
-  value: ArrayBuffer;
-}
+import { HexTextProps } from './HexText';
 
 /**
  * FullHexText is a simple Text component that renders the given ArrayBuffer as
  * a hex string
  */
-const FullHexText: React.FC<FullHexTextProps> = (props) => {
-  const hexBytes = Array.from(
-    mapIterator(
-      mapIterator(mapIterable(new Uint8Array(props.value), Number), (byte) =>
-        byte.toString(16),
-      ),
-      (byte) => byte.padStart(2, '0'),
-    ),
-  ).join('');
-
-  return `0x${hexBytes}`;
+const FullHexText: React.FC<HexTextProps> = (props) => {
+  return hexArrayBufferCodec.encode(props.value);
 };
 
 export default FullHexText;

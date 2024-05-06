@@ -13,3 +13,7 @@ button.btn--copy > svg {
   width: 18px;
   height: 18px;
 }
+
+button.btn--copy.copied {
+  --icon--fill-color: var(--color--green-600);
+}

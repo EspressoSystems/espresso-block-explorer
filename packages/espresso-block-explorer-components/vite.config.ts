@@ -3,6 +3,7 @@
 
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+import tsconfigPaths from 'vite-tsconfig-paths';
 import { peerDependencies } from './package.json';
 
 export default defineConfig({
@@ -19,7 +20,33 @@ export default defineConfig({
     sourcemap: true, // Generates source maps for debugging.
     emptyOutDir: true, // Clears the output directory before building.
   },
-  plugins: [dts()], // Uses the 'vite-plugin-dts' plugin for generating TypeScript declaration files (d.ts).
+  resolve: {
+    alias: [
+      { find: '@/assert', replacement: '/src/assert' },
+      { find: '@/async', replacement: '/src/async' },
+      { find: '@/components', replacement: '/src/components/' },
+      { find: '@/contexts', replacement: '/src/components/contexts' },
+      { find: '@/convert', replacement: '/src/convert' },
+      { find: '@/data_source', replacement: '/src/data_source' },
+      { find: '@/data_structures', replacement: '/src/data_structures' },
+      { find: '@/errors', replacement: '/src/errors' },
+      { find: '@/functional', replacement: '/src/functional' },
+      { find: '@/higher_order', replacement: '/src/components/higher_order' },
+      { find: '@/layout', replacement: '/src/components/layout' },
+      { find: '@/loading', replacement: '/src/components/loading' },
+      { find: '@/models', replacement: '/src/models' },
+      { find: '@/service', replacement: '/src/service' },
+      { find: '@/text', replacement: '/src/components/text' },
+      { find: '@/typography', replacement: '/src/components/typography' },
+      { find: '@/visual', replacement: '/src/components/visual' },
+    ],
+  },
+  plugins: [
+    dts({
+      tsconfigPath: 'tsconfig.build.json',
+    }),
+    tsconfigPaths(),
+  ], // Uses the 'vite-plugin-dts' plugin for generating TypeScript declaration files (d.ts).
   test: {
     globals: true,
     globalSetup: './vitest.global-setup.ts',
@@ -27,6 +54,7 @@ export default defineConfig({
     setupFiles: './setupTests.ts',
     css: true,
     coverage: {
+      provider: 'istanbul',
       reporter: ['text', 'json-summary', 'json', 'lcov'],
       reportOnFailure: true,
       exclude: [

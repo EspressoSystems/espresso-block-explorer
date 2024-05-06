@@ -1,0 +1,32 @@
+# Ignore Everything by default
+
+-
+
+# Add in specific Exceptions
+
+# Allow Docker folder
+
+!docker
+
+# Allow root package files
+
+!package.json
+!package-lock.json
+
+# Explicitly allow esporess-block-explorer-components pieces
+
+!packages/espresso-block-explorer-components/public
+!packages/espresso-block-explorer-components/src
+!packages/espresso-block-explorer-components/package.json
+!packages/espresso-block-explorer-components/tsconfig.json
+!packages/espresso-block-explorer-components/vite.config.ts
+
+# Explicitly allow block-explorer pices
+
+!packages/block-explorer/public
+!packages/block-explorer/src
+!packages/block-explorer/package.json
+!packages/block-explorer/tsconfig.json
+!packages/block-explorer/tsconfig.base.json
+!packages/block-explorer/tsconfig.build.json
+!packages/block-explorer/next.config.js

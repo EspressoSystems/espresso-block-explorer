@@ -1,0 +1,6 @@
+@import url('../icons/icons.css');
+
+.es-flow-lottie path {
+  --icon--fill-color: red;
+  fill: var(--icon--fill-color);
+}

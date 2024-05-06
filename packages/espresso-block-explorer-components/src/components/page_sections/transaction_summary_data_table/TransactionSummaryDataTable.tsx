@@ -1,17 +1,18 @@
+import { DataContext } from '@/contexts/DataProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import { iota } from '@/functional/functional';
+import SkeletonContent from '@/loading/SkeletonContent';
+import { TransactionSummaryColumn } from '@/models/block_explorer/transaction_summary';
+import CopyTaggedBase64 from '@/text/CopyTaggedBase64';
+import DateTimeText from '@/text/DateTimeText';
+import NumberText from '@/text/NumberText';
+import TaggedBase64Text from '@/text/TaggedBase64Text';
+import Text from '@/text/Text';
 import React from 'react';
-import { TransactionSummaryColumn } from '../../../types/data_source/transaction_summary/types';
-import { iota } from '../../../types/functional';
-import { DataContext } from '../../contexts/DataProvider';
-import { PathResolverContext } from '../../contexts/PathResolverProvider';
 import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
 import Link from '../../links/link/Link';
-import SkeletonContent from '../../loading/SkeletonContent';
-import DateTimeText from '../../text/DateTimeText';
-import HexText from '../../text/HexText';
-import NumberText from '../../text/NumberText';
-import Text from '../../text/Text';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
 import { TransactionSummary } from './TransactionSummaryDataLoader';
 
@@ -24,9 +25,11 @@ const TransactionCell: React.FC = () => {
   const pathResolver = React.useContext(PathResolverContext);
 
   return (
-    <Link href={pathResolver.transaction(row.block, row.offset)}>
-      <HexText value={row.hash.data} />
-    </Link>
+    <CopyTaggedBase64 value={row.hash}>
+      <Link href={pathResolver.transaction(row.block, row.offset)}>
+        <TaggedBase64Text value={row.hash} />
+      </Link>
+    </CopyTaggedBase64>
   );
 };
 
@@ -63,7 +66,10 @@ const BlockCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as TransactionSummary;
 
   return (
-    <Link href={pathResolver.block(row.block)}>
+    <Link
+      href={pathResolver.block(row.block)}
+      title={`Link to Block ${row.block}`}
+    >
       <NumberText number={row.block} />
     </Link>
   );
@@ -78,36 +84,73 @@ const TimeCell: React.FC = () => {
   return <DateTimeText date={row.time} />;
 };
 
+interface TransactionsSummaryDataTableLayoutProps {
+  components: [
+    React.ComponentType,
+    React.ComponentType,
+    React.ComponentType,
+    React.ComponentType,
+  ];
+}
+
+/**
+ * TransactionsSummaryDataTableLayout is a component that provides the overall
+ * layout of the Transactions Summary Data Table.  It provides the label, and
+ * column type of the Data Table, while allowing the caller to specify the
+ * ComponentTypes of each of the cells.
+ */
+const TransactionsSummaryDataTableLayout: React.FC<
+  TransactionsSummaryDataTableLayoutProps
+> = (props) => {
+  return (
+    <DataTable
+      columns={[
+        {
+          label: 'Transaction',
+          columnType: TransactionSummaryColumn.hash,
+          buildCell: props.components[0],
+        },
+        {
+          label: 'Rollups',
+          columnType: TransactionSummaryColumn.rollup,
+          buildCell: props.components[1],
+        },
+        {
+          label: 'Block',
+          columnType: TransactionSummaryColumn.block,
+          buildCell: props.components[2],
+        },
+        {
+          label: 'Time',
+          columnType: TransactionSummaryColumn.time,
+          buildCell: props.components[3],
+        },
+      ]}
+    />
+  );
+};
+
+export interface TransactionsSummaryDataTablePlaceholderProps {
+  numElements?: number;
+}
+
 /**
  * TransactionsSummaryDataTablePlaceholder is a DataTable that contains
  * Transaction Summary State.
  */
-export const TransactionsSummaryDataTablePlaceholder: React.FC = () => {
+export const TransactionsSummaryDataTablePlaceholder: React.FC<
+  TransactionsSummaryDataTablePlaceholderProps
+> = (props) => {
+  const { numElements = 20 } = props;
   // Maintain the starting arguments.
   return (
-    <DataContext.Provider value={Array.from(iota(20))}>
-      <DataTable
-        columns={[
-          {
-            label: 'Transaction',
-            columnType: TransactionSummaryColumn.hash,
-            buildCell: SkeletonContent,
-          },
-          {
-            label: 'Rollups',
-            columnType: TransactionSummaryColumn.rollup,
-            buildCell: SkeletonContent,
-          },
-          {
-            label: 'Block',
-            columnType: TransactionSummaryColumn.block,
-            buildCell: SkeletonContent,
-          },
-          {
-            label: 'Time',
-            columnType: TransactionSummaryColumn.time,
-            buildCell: SkeletonContent,
-          },
+    <DataContext.Provider value={Array.from(iota(numElements))}>
+      <TransactionsSummaryDataTableLayout
+        components={[
+          SkeletonContent,
+          SkeletonContent,
+          SkeletonContent,
+          SkeletonContent,
         ]}
       />
     </DataContext.Provider>
@@ -121,29 +164,8 @@ export const TransactionsSummaryDataTablePlaceholder: React.FC = () => {
 export const TransactionsSummaryDataTable: React.FC = () => {
   // Maintain the starting arguments.
   return (
-    <DataTable
-      columns={[
-        {
-          label: 'Transaction',
-          columnType: TransactionSummaryColumn.hash,
-          buildCell: TransactionCell,
-        },
-        {
-          label: 'Rollups',
-          columnType: TransactionSummaryColumn.rollup,
-          buildCell: RollUpCell,
-        },
-        {
-          label: 'Block',
-          columnType: TransactionSummaryColumn.block,
-          buildCell: BlockCell,
-        },
-        {
-          label: 'Time',
-          columnType: TransactionSummaryColumn.time,
-          buildCell: TimeCell,
-        },
-      ]}
+    <TransactionsSummaryDataTableLayout
+      components={[TransactionCell, RollUpCell, BlockCell, TimeCell]}
     />
   );
 };

@@ -5,9 +5,18 @@ table.data-table {
   border-spacing: 0;
 }
 
-table.data-table td {
+table.data-table td,
+table.data-table th {
   padding: 16px 4px;
   text-align: start;
+  white-space: nowrap;
+  /*
+  In order to get these tables to "line-up" on the `Explorer` page, we need
+  to give these cells a consistent height, and some positioning hacks to
+  make inline buttons and images take up the same height as the text they
+  are being displayed next to.
+  */
+  height: 20px;
 }
 
 table.data-table table {
@@ -29,15 +38,10 @@ table.data-table tr:not(:nth-last-child(1)) td {
   border-bottom: 1px solid var(--color--slate-100);
 }
 
-table.data-table th {
-  padding: 0;
-}
-
-table.data-table th div {
+table.data-table th > div {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 16px 4px;
   cursor: pointer;
   user-select: none;
 }

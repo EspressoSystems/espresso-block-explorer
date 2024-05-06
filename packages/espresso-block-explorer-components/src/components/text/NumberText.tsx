@@ -1,5 +1,5 @@
+import { CurrentNumberFormatters } from '@/contexts/NumberFormattersProvider';
 import React, { useContext } from 'react';
-import { CurrentNumberFormatters } from '../contexts/NumberFormattersProvider';
 
 export interface NumberTextProps {
   number: number;
@@ -7,7 +7,7 @@ export interface NumberTextProps {
 
 /**
  * [NumberText] is a component that will format the given `number` prop with
- * the default currency formatter retrieved from the CurrentNumberFormatters.
+ * the default formatter retrieved from the `CurrentNumberFormatters` context.
  */
 const NumberText: React.FC<NumberTextProps> = (props) => {
   const formatters = useContext(CurrentNumberFormatters);

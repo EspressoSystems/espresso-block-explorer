@@ -1,8 +1,8 @@
+import { addClassToClassName } from '@/higher_order';
+import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
+import NumberText from '@/text/NumberText';
+import Text from '@/text/Text';
 import React from 'react';
-import { curatedRollupMap } from '../../../../types/data_source/rollup_entry/data';
-import { addClassToClassName } from '../../../higher_order';
-import NumberText from '../../../text/NumberText';
-import Text from '../../../text/Text';
 import RollUpName from '../roll_up_simple/RollUpName';
 import RollUpAvatar40 from './RollUpAvatar40';
 import './roll_up_title.css';

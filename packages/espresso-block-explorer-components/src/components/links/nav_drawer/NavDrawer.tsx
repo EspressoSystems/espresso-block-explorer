@@ -1,9 +1,9 @@
+import { CurrentNavDrawerStateContext } from '@/contexts/NavDrawerStateProvider';
+import { WithUiText100 } from '@/typography/typography';
 import React from 'react';
-import MainNavLinks from '../main_nav_links/MainNavLinks';
 import CloseNavDrawerButton from '../close_nav_drawer_button/CloseNavDrawerButton';
+import MainNavLinks from '../main_nav_links/MainNavLinks';
 import './nav_drawer.css';
-import { CurrentNavDrawerStateContext } from '../../contexts/NavDrawerStateProvider';
-import { WithUiText100 } from '../../typography/typography';
 
 const UIText100Nav = WithUiText100('nav');
 
@@ -15,7 +15,7 @@ const NavDrawer: React.FC = () => {
     .join(' ');
 
   return (
-    <UIText100Nav className={className}>
+    <UIText100Nav className={className} aria-label="Navigation Drawer">
       <CloseNavDrawerButton />
       <MainNavLinks />
     </UIText100Nav>
