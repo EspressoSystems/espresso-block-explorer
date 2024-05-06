@@ -45,7 +45,9 @@ const GuardedEdgeMarginTransactionsForBlockNavigation: React.FC = () => {
     return (
       <>
         <Text text="For block #" />
-        <Link href={pathResolver.block(block)} />
+        <Link href={pathResolver.block(block)}>
+          <NumberText number={block} />
+        </Link>
       </>
     );
   }
