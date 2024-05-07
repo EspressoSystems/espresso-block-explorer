@@ -46,7 +46,7 @@ jobs:
         with:
           context: .
           file: ./docker/block-explorer.Dockerfile
-          platforms: linux/amd64 #,linux/arm64 #arm64 timing out currently
+          platforms: linux/amd64,linux/arm64 #arm64 timing out currently
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

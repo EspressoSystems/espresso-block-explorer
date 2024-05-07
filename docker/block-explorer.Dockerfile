@@ -1,4 +1,4 @@
-FROM node:20-alpine as builder
+FROM --platform=$BUILDPLATFORM node:20-alpine as builder
 
 WORKDIR /app
 COPY package.json package-lock.json /app/
@@ -10,15 +10,17 @@ RUN npm ci --no-audit --all-workspaces
 # Build the Components Library
 RUN npm run build --workspace=packages/espresso-block-explorer-components
 
-# Install again, for the block-explorer-components
-RUN npm install --all-workspaces
+# Copy over public, and asset files, then install again, for the block-explorer-components
+RUN rm -rf packages/block-explorer/public && \
+    cp -r packages/espresso-block-explorer-components/public packages/block-explorer/public && \
+    cp -r packages/espresso-block-explorer-components/dist/assets packages/block-explorer/public/assets
+RUN npm install --no-audit --save --workspace=packages/block-explorer packages/espresso-block-explorer-components/
 
 # Build the Next Application
 RUN npm run build --workspace=packages/block-explorer
 
-FROM node:20-alpine
-RUN apk add --no-cache bash jq
-
+FROM --platform=$BUILDPLATFORM node:20-alpine
+RUN apk add --no-cache bash jq tini
 WORKDIR /app
 
 COPY --from=builder /app/package.json /app/package-lock.json /app/
@@ -42,4 +44,5 @@ EXPOSE 3000
 ENV HOST=0.0.0.0
 ENV QUERY_SERVICE_URI=""
 
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ./init.sh
