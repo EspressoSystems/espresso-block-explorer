@@ -19,9 +19,7 @@ RUN npm install --no-audit --save --workspace=packages/block-explorer packages/e
 # Build the Next Application
 RUN npm run build --workspace=packages/block-explorer
 
-FROM node:20-alpine
-RUN apk add --no-cache bash jq
-
+RUN apk add --no-cache bash jq tini
 WORKDIR /app
 
 COPY --from=builder /app/package.json /app/package-lock.json /app/
@@ -45,4 +43,5 @@ EXPOSE 3000
 ENV HOST=0.0.0.0
 ENV QUERY_SERVICE_URI=""
 
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ./init.sh
