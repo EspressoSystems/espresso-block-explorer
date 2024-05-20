@@ -2,8 +2,9 @@ import EspressoLogoAndTitle from '@/visual/icons/EspressoLogoAndTitle';
 import React from 'react';
 import NavBar from '../../links/nav_bar/NavBar';
 import './header.css';
+import { Link } from '../..';
 
-interface HeaderProps {}
+interface HeaderProps { }
 
 /**
  * Header is a component for creating and display a consistent Header for
@@ -11,7 +12,9 @@ interface HeaderProps {}
  */
 const Header: React.FC<HeaderProps> = (props) => (
   <header {...props}>
-    <EspressoLogoAndTitle />
+    <Link href="/">
+      <EspressoLogoAndTitle />
+    </Link>
     {/* Spacer */}
     <NavBar />
   </header>
