@@ -1,10 +1,11 @@
+import { PathResolverContext } from '@/components/contexts/PathResolverProvider';
+import Link from '@/components/links/link/Link';
 import EspressoLogoAndTitle from '@/visual/icons/EspressoLogoAndTitle';
 import React from 'react';
 import NavBar from '../../links/nav_bar/NavBar';
 import './header.css';
-import { Link, PathResolverContext } from '../..';
 
-interface HeaderProps { }
+interface HeaderProps {}
 
 /**
  * Header is a component for creating and display a consistent Header for
@@ -21,7 +22,7 @@ const Header: React.FC<HeaderProps> = (props) => {
       {/* Spacer */}
       <NavBar />
     </header>
-  )
+  );
 };
 
 export default Header;
