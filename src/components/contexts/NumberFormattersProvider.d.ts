@@ -18,6 +18,7 @@ declare function createDefaultNumberFormatters(locale: string): {
     bytes: Intl.NumberFormat;
     variableBytes: Intl.NumberFormat;
     transactionsPerSecond: Intl.NumberFormat;
+    bytesPerSecond: Intl.NumberFormat;
     wei: Intl.NumberFormat;
     gwei: Intl.NumberFormat;
     USD: Intl.NumberFormat;
@@ -38,6 +39,7 @@ declare const CurrentNumberFormatters: React.Context<{
     bytes: Intl.NumberFormat;
     variableBytes: Intl.NumberFormat;
     transactionsPerSecond: Intl.NumberFormat;
+    bytesPerSecond: Intl.NumberFormat;
     wei: Intl.NumberFormat;
     gwei: Intl.NumberFormat;
     USD: Intl.NumberFormat;

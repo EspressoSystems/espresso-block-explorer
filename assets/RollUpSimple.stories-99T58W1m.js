@@ -1,0 +1,5 @@
+import{j as r}from"./jsx-runtime-Cd6u8K_H.js";import{c as m}from"./data-BqGnzjPf.js";import{R as n}from"./RollUpSimple-CxTZCvmx.js";import"./index-UfW7PFvU.js";import"./_commonjsHelpers-BosuxZz1.js";import"./higher_order-D-qJ_MgL.js";import"./NumberText-BjtZNgFb.js";import"./NumberFormattersProvider-BnR4LO86.js";import"./LocaleProvider-JyRdHYHm.js";import"./Text-BU7JBOLk.js";const c=o=>r(n,{namespace:o.namespace});function*l(){for(const o of m)yield[o[1].name,o[0]]}const e={...Object.fromEntries(l()),"Unregistered Rollup (1)":1},S={title:"Components/Page Sections/Roll Up Simple",component:c,argTypes:{namespace:{options:Object.keys(e),mapping:e,control:{type:"select",labels:Object.keys(e)}}}},s={args:{namespace:e[Object.keys(e)[0]]}};var p,t,a;s.parameters={...s.parameters,docs:{...(p=s.parameters)==null?void 0:p.docs,source:{originalSource:`{
+  args: {
+    namespace: namespaces[Object.keys(namespaces)[0]]
+  }
+}`,...(a=(t=s.parameters)==null?void 0:t.docs)==null?void 0:a.source}}};const U=["RollUpSimple"];export{s as RollUpSimple,U as __namedExportsOrder,S as default};
