@@ -1,8 +1,8 @@
 import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import ValueLabeled from '@/layout/value_labeled/ValueLabeled';
+import BytesPerSecondText from '@/text/BytesPerSecondText';
 import Text from '@/text/Text';
-import TransactionsPerSecondText from '@/text/TransactionsPerSecondText';
 import { HistogramLabelProps } from '@/visual/histogram/histogram_base/HistogramDefaultLabel';
 import {
   ProvideDataStatistics,
@@ -20,13 +20,11 @@ import { BlockThroughputHistogramData } from './BlockThroughputHistogramDataLoad
 
 const ValueText: React.FC = () => {
   const rangeStatistics = React.useContext(HistogramRangeStatistics);
-  return (
-    <TransactionsPerSecondText transactionsPerSecond={rangeStatistics.mean} />
-  );
+  return <BytesPerSecondText bytesPerSecond={rangeStatistics.mean} />;
 };
 
 const LabelValue: React.FC<HistogramLabelProps> = (props) => {
-  return <TransactionsPerSecondText transactionsPerSecond={props.value} />;
+  return <BytesPerSecondText bytesPerSecond={props.value} />;
 };
 
 export const BlockThroughputHistogram: React.FC = () => {
@@ -46,7 +44,7 @@ export const BlockThroughputHistogram: React.FC = () => {
           <HistogramYAxisLabelComponent.Provider value={LabelValue}>
             <ProvideDataStatistics>
               <HistogramSectionTitle>
-                <Text text="Throughput" />
+                <Text text="Blockspace Used" />
                 <ValueLabeled>
                   <ValueText />
                   <Text text="Average" />
