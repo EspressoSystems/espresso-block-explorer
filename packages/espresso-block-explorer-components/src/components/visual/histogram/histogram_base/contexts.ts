@@ -19,6 +19,14 @@ export const HistogramDomainStatistics = React.createContext<DataStatistics>(
   DataStatistics.empty,
 );
 export const HistogramYAxisGuideLines = React.createContext<number[]>([]);
+export const HistogramGraphValueIndex = React.createContext<number>(0);
+export const HistogramGraphValue = React.createContext<number>(0);
+export const HistogramGraphValueRect = React.createContext<{
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}>({ x: 0, y: 0, width: 0, height: 0 });
 
 export const HistogramRangeAffineTransform =
   React.createContext<AffineTransform>(AffineTransform.identity);
