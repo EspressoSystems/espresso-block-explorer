@@ -51,6 +51,12 @@ export const HistogramTooltip: React.FC = () => {
       return;
     }
 
+    if (!('getBBox' in textRef.current)) {
+      // We cannot progress without this bounding box.  So we'll fallback on
+      // the defaults in this case.
+      return;
+    }
+
     const bbox = textRef.current.getBBox();
     setTextBBox(bbox);
   }, [textRef, setTextBBox]);
