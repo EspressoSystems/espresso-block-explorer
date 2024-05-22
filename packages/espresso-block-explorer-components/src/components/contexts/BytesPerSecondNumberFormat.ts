@@ -9,7 +9,8 @@
  */
 export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
   private compoundPerSecondFormatter: Intl.NumberFormat;
-  private unitFormatter: Intl.NumberFormat;
+  private currentUnitFormatter: Intl.NumberFormat;
+  private desiredUnitFormatter: Intl.NumberFormat;
 
   resolvedOptions(): Intl.ResolvedNumberFormatOptions {
     return {
@@ -33,7 +34,12 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
       style: 'unit',
       unit: 'kilometer-per-second',
     });
-    this.unitFormatter = new Intl.NumberFormat(locales, {
+    this.currentUnitFormatter = new Intl.NumberFormat(locales, {
+      ...(options ?? {}),
+      style: 'unit',
+      unit: 'kilometer',
+    });
+    this.desiredUnitFormatter = new Intl.NumberFormat(locales, {
       ...(options ?? {}),
       style: 'unit',
       unit: 'byte',
@@ -50,14 +56,15 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
 
   private replaceUnitInFormatParts<P extends Intl.NumberFormatPart>(
     compoundParts: P[],
-    unitUnit: undefined | P,
+    currentUnit: undefined | P,
+    desiredUnit: undefined | P,
   ): P[] {
     return compoundParts.map((part) => {
-      if (part.type !== 'unit' || !unitUnit) {
+      if (part.type !== 'unit' || !currentUnit || !desiredUnit) {
         return part;
       }
 
-      const unitIndex = part.value.indexOf(unitUnit.value);
+      const unitIndex = part.value.indexOf(currentUnit.value);
       if (unitIndex < 0) {
         // Uhh oh... this doesn't format the way we expect it to.
         // let's fall back on a hard-coded value.
@@ -71,7 +78,7 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
       return {
         ...part,
         type: 'unit',
-        value: part.value.replace(unitUnit.value, 'Tx'),
+        value: part.value.replace(currentUnit.value, desiredUnit.value),
       };
     });
   }
@@ -82,11 +89,13 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
 
   formatToParts(number?: number | bigint | undefined): Intl.NumberFormatPart[] {
     const compoundParts = this.compoundPerSecondFormatter.formatToParts(number);
-    const unitParts = this.unitFormatter.formatToParts(number);
+    const currentUnitParts = this.currentUnitFormatter.formatToParts(number);
+    const desiredUnitParts = this.desiredUnitFormatter.formatToParts(number);
 
     return this.replaceUnitInFormatParts(
       compoundParts,
-      unitParts.find(this.findUnitInFormatParts),
+      currentUnitParts.find(this.findUnitInFormatParts),
+      desiredUnitParts.find(this.findUnitInFormatParts),
     );
   }
 
@@ -98,10 +107,18 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
       start,
       end,
     );
-    const unitParts = this.unitFormatter.formatRangeToParts(start, end);
+    const currentUnitParts = this.currentUnitFormatter.formatRangeToParts(
+      start,
+      end,
+    );
+    const desiredUnitParts = this.desiredUnitFormatter.formatRangeToParts(
+      start,
+      end,
+    );
     return this.replaceUnitInFormatParts(
       compoundParts,
-      unitParts.find(this.findUnitInFormatParts),
+      currentUnitParts.find(this.findUnitInFormatParts),
+      desiredUnitParts.find(this.findUnitInFormatParts),
     );
   }
 
