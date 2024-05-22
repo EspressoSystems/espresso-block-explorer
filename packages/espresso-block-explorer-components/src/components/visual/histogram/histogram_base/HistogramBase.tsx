@@ -23,6 +23,14 @@ function useSVGSize() {
     if (!ref.current) {
       return;
     }
+
+    if (typeof ResizeObserver === 'undefined') {
+      // ResizeObserver is not supported.  Fallback to a single query.
+      const rect = ref.current.getBoundingClientRect();
+      setRect(rect);
+      return;
+    }
+
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
         setRect(entry.contentRect);
