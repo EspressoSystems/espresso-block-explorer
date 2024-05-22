@@ -126,7 +126,7 @@ export const BlockDetailsContentPlaceholder: React.FC<
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
-        <Text text="Proposer" />
+        <Text text="Builder" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
@@ -175,7 +175,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
         </Link>
       </TableLabeledValue>
       <TableLabeledValue>
-        <Text text="Proposer" />
+        <Text text="Builder" />
         <CopyHex value={details.proposer}>
           <FullHexText value={details.proposer} />
         </CopyHex>

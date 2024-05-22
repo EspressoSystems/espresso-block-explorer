@@ -66,7 +66,7 @@ export const LatestBlockSummaryDetails: React.FC = () => {
         <NumberText number={block.transactions} />
       </SummaryTabledLabeledValue>
       <SummaryTabledLabeledValue>
-        <Text text="Proposer" />
+        <Text text="Builder" />
         <HexText value={block.proposer} />
       </SummaryTabledLabeledValue>
     </div>
@@ -89,7 +89,7 @@ export const LatestBlockSummaryDetailsPlaceholder: React.FC = () => {
         <SkeletonContent />
       </SummaryTabledLabeledValue>
       <SummaryTabledLabeledValue>
-        <Text text="Proposer" />
+        <Text text="Builder" />
         <SkeletonContent />
       </SummaryTabledLabeledValue>
     </div>

@@ -108,7 +108,7 @@ const BlockSummaryDataTableLayout: React.FC<
           buildCell: props.components[0],
         },
         {
-          label: 'Proposer',
+          label: 'Builder',
           columnType: BlockSummaryColumn.proposer,
           buildCell: props.components[1],
         },
