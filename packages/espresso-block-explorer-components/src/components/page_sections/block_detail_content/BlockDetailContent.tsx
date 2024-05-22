@@ -9,7 +9,6 @@ import ByteSizeText from '@/text/ByteSizeText';
 import CopyHex from '@/text/CopyHex';
 import DateTimeText from '@/text/DateTimeText';
 import FullHexText from '@/text/FullHexText';
-import MoneyText from '@/text/MoneyText';
 import NumberText from '@/text/NumberText';
 import RelativeTimeText from '@/text/RelativeTimeText';
 import Text from '@/text/Text';
@@ -189,14 +188,6 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
       <TableLabeledValue>
         <Text text="Size" />
         <ByteSizeText bytes={details.size} />
-      </TableLabeledValue>
-      <TableLabeledValue>
-        <Text text="Block Reward" />
-        <>
-          {...details.rewards.map((reward, index) => (
-            <MoneyText key={index} money={reward} />
-          ))}
-        </>
       </TableLabeledValue>
     </>
   );
