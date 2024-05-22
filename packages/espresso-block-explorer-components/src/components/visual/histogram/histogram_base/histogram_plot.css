@@ -4,6 +4,40 @@
   --histogram-plot--fill-color: var(--color--sky-700);
 }
 
-.histogram-plot {
+.histogram-plot rect.bbox {
+  fill: transparent;
+}
+
+.histogram-plot rect.bar {
   fill: var(--histogram-plot--fill-color);
+}
+
+.histogram-plot > g {
+  position: relative;
+}
+
+.histogram-plot g.tooltip {
+  display: none;
+}
+
+.histogram-plot rect.bbox:hover ~ g.tooltip,
+.histogram-plot g.tooltip:hover {
+  display: initial;
+}
+
+circle.value-pointer--outer {
+  fill: var(--card--background-color);
+}
+
+circle.value-pointer--inner {
+  fill: var(--color--slate-500);
+}
+
+.tooltip--card {
+  stroke: var(--card--border-color);
+  fill: var(--card--background-color);
+}
+
+text.tooltip--value-label {
+  fill: var(--color--slate-950);
 }
