@@ -51,6 +51,12 @@ export const ProvideGuideLines: React.FC<ProvideGuideLinesProps> = ({
   );
 };
 
+// the y-axis labels need an offset so that the lines don't overlap with the
+// labels as much as possible.  This number was chosen based on visual
+// inspection.  In an ideal circumstance the width of the labels would be
+// known and could be referenced.  For now this will suffice.
+const yAxisLabelOffset = 60;
+
 /**
  * HistogramGuidLines is a component that displays the guide lines for the y-axis
  * based on the sampling provided for the histogram.
@@ -72,7 +78,7 @@ export const HistogramGuideLines: React.FC = () => {
       {lines.map((line, i) => (
         <line
           key={i}
-          x1={60}
+          x1={yAxisLabelOffset}
           y1={plotHeight - rangeAffineTransform.transform(line)}
           x2={graphWidth}
           y2={plotHeight - rangeAffineTransform.transform(line)}
