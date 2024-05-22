@@ -72,7 +72,7 @@ export const HistogramGuideLines: React.FC = () => {
       {lines.map((line, i) => (
         <line
           key={i}
-          x1={0}
+          x1={60}
           y1={plotHeight - rangeAffineTransform.transform(line)}
           x2={graphWidth}
           y2={plotHeight - rangeAffineTransform.transform(line)}
