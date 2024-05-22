@@ -10,7 +10,7 @@ export interface TransactionsPerSecondTextProps {
  * of transactions per second.
  *
  * It achieves this by using the `transactionsPerSecond` formatter from the
- * `CurrencyNumberFormatters` context.
+ * `CurrentNumberFormatters` context.
  */
 const TransactionsPerSecondText: React.FC<TransactionsPerSecondTextProps> = (
   props,

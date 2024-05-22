@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from 'react';
+import BytesPerSecondNumberFormat from './BytesPerSecondNumberFormat';
 import { CurrentLocale } from './LocaleProvider';
 import TransactionPerSecondNumberFormat from './TransactionsPerSecondNumberFormat';
 
@@ -32,6 +33,9 @@ function createDefaultNumberFormatters(locale: string) {
       maximumFractionDigits: 2,
     }),
     transactionsPerSecond: new TransactionPerSecondNumberFormat(locale, {
+      maximumFractionDigits: 2,
+    }) as unknown as Intl.NumberFormat,
+    bytesPerSecond: new BytesPerSecondNumberFormat(locale, {
       maximumFractionDigits: 2,
     }) as unknown as Intl.NumberFormat,
 
