@@ -54,5 +54,14 @@ export function computeDataStatistics(data: number[]): DataStatistics {
     }
   }
 
+  const sameMinAndMax = min === max;
+  if (sameMinAndMax && min !== 0) {
+    min = 0;
+  }
+
+  if (sameMinAndMax && max === 0) {
+    max = 1;
+  }
+
   return new DataStatistics(min, max, sum, l);
 }
