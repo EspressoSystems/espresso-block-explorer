@@ -17,12 +17,16 @@
 }
 
 .histogram-plot g.tooltip {
-  display: none;
+  opacity: 0;
+  transition: opacity 240ms ease-in-out;
+  will-change: opacity;
+  pointer-events: none;
 }
 
 .histogram-plot rect.bbox:hover ~ g.tooltip,
 .histogram-plot g.tooltip:hover {
-  display: initial;
+  opacity: 1;
+  pointer-events: initial;
 }
 
 circle.value-pointer--outer {
