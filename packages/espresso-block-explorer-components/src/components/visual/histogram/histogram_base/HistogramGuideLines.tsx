@@ -38,13 +38,8 @@ export const ProvideGuideLines: React.FC<ProvideGuideLinesProps> = ({
   const desiredGuideLineCount = 4;
 
   const lines: number[] = [];
-  const step =
-    (rangeStatistics.max - rangeStatistics.min) / desiredGuideLineCount;
-  for (
-    let i = rangeAffineTransform.inputMin;
-    i <= rangeAffineTransform.inputMax && step > 0;
-    i += step
-  ) {
+  const step = rangeStatistics.max / desiredGuideLineCount;
+  for (let i = 0; i <= rangeAffineTransform.inputMax && step > 0; i += step) {
     lines.push(i);
   }
 
