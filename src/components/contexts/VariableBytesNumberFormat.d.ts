@@ -1,15 +1,19 @@
 /**
- * BytesPerSecondNumberFormat is a custom number format, that formats bytes per
- * second, with the preset range of SI prefixes.
+ * VariableBytesNumberFormat is a number formatter hack that attempts to unify
+ * byte formatting representation with the "correct" SI unit prefix stepping.
+ * This is necessary as the current default implementation of the NumberFormat
+ * doesn't actually format using SI Prefixes, but rather abbreviations for
+ * number of "thousands".
  *
- * See VariableBytesNumberFormat for a similar implementation.
+ * For more detail please refer to the following:
+ * https://stackoverflow.com/questions/77215632/why-intl-numberformat-formats-1000000000-bytes-as-1bb-instead-of-1gb
  */
-export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
-    private bytesPerSecondFormatter;
-    private kilobytesPerSecondFormatter;
-    private megabytesPerSecondFormatter;
-    private gigabytesPerSecondFormatter;
-    private petabytesPerSecondFormatter;
+export default class VariableBytesNumberFormat implements Intl.NumberFormat {
+    private bytesFormatter;
+    private kilobytesFormatter;
+    private megabytesFormatter;
+    private gigabytesFormatter;
+    private petabytesFormatter;
     resolvedOptions(): Intl.ResolvedNumberFormatOptions;
     constructor(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions | undefined);
     private extractValue;

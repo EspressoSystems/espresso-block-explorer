@@ -1,3 +1,4 @@
+import { default as VariableBytesNumberFormat } from './VariableBytesNumberFormat';
 import { default as React } from 'react';
 
 /**
@@ -16,7 +17,7 @@ import { default as React } from 'react';
 declare function createDefaultNumberFormatters(locale: string): {
     default: Intl.NumberFormat;
     bytes: Intl.NumberFormat;
-    variableBytes: Intl.NumberFormat;
+    variableBytes: VariableBytesNumberFormat;
     transactionsPerSecond: Intl.NumberFormat;
     bytesPerSecond: Intl.NumberFormat;
     wei: Intl.NumberFormat;
@@ -37,7 +38,7 @@ declare function createDefaultNumberFormatters(locale: string): {
 declare const CurrentNumberFormatters: React.Context<{
     default: Intl.NumberFormat;
     bytes: Intl.NumberFormat;
-    variableBytes: Intl.NumberFormat;
+    variableBytes: VariableBytesNumberFormat;
     transactionsPerSecond: Intl.NumberFormat;
     bytesPerSecond: Intl.NumberFormat;
     wei: Intl.NumberFormat;
