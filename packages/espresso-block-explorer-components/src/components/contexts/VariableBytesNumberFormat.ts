@@ -1,54 +1,54 @@
 /**
- * BytesPerSecondNumberFormat is a custom number format, that formats bytes per
- * second, with the preset range of SI prefixes.
+ * VariableBytesNumberFormat is a number formatter hack that attempts to unify
+ * byte formatting representation with the "correct" SI unit prefix stepping.
+ * This is necessary as the current default implementation of the NumberFormat
+ * doesn't actually format using SI Prefixes, but rather abbreviations for
+ * number of "thousands".
  *
- * See VariableBytesNumberFormat for a similar implementation.
+ * For more detail please refer to the following:
+ * https://stackoverflow.com/questions/77215632/why-intl-numberformat-formats-1000000000-bytes-as-1bb-instead-of-1gb
  */
-export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
-  private bytesPerSecondFormatter: Intl.NumberFormat;
-  private kilobytesPerSecondFormatter: Intl.NumberFormat;
-  private megabytesPerSecondFormatter: Intl.NumberFormat;
-  private gigabytesPerSecondFormatter: Intl.NumberFormat;
-  private petabytesPerSecondFormatter: Intl.NumberFormat;
+export default class VariableBytesNumberFormat implements Intl.NumberFormat {
+  private bytesFormatter: Intl.NumberFormat;
+  private kilobytesFormatter: Intl.NumberFormat;
+  private megabytesFormatter: Intl.NumberFormat;
+  private gigabytesFormatter: Intl.NumberFormat;
+  private petabytesFormatter: Intl.NumberFormat;
 
   resolvedOptions(): Intl.ResolvedNumberFormatOptions {
-    return this.bytesPerSecondFormatter.resolvedOptions();
+    return {
+      ...this.bytesFormatter.resolvedOptions(),
+    };
   }
 
   constructor(
     locales?: Intl.LocalesArgument,
     options?: Intl.NumberFormatOptions | undefined,
   ) {
-    // We need to fake this because we cannot actually get an Intl.NumberFormatter
-    // for bytes-per-second or even an arbitrary unit-per-second.
-
-    // So, we'll try to fake this by using an assumption that the per second format
-    // has the same unit as the compound format, then we'll just replace that
-    // occurrence with our desired format.
-    this.bytesPerSecondFormatter = new Intl.NumberFormat(locales, {
+    this.bytesFormatter = new Intl.NumberFormat(locales, {
       ...(options ?? {}),
       style: 'unit',
-      unit: 'byte-per-second',
+      unit: 'byte',
     });
-    this.kilobytesPerSecondFormatter = new Intl.NumberFormat(locales, {
+    this.kilobytesFormatter = new Intl.NumberFormat(locales, {
       ...(options ?? {}),
       style: 'unit',
-      unit: 'kilobyte-per-second',
+      unit: 'kilobyte',
     });
-    this.megabytesPerSecondFormatter = new Intl.NumberFormat(locales, {
+    this.megabytesFormatter = new Intl.NumberFormat(locales, {
       ...(options ?? {}),
       style: 'unit',
-      unit: 'megabyte-per-second',
+      unit: 'megabyte',
     });
-    this.gigabytesPerSecondFormatter = new Intl.NumberFormat(locales, {
+    this.gigabytesFormatter = new Intl.NumberFormat(locales, {
       ...(options ?? {}),
       style: 'unit',
-      unit: 'gigabyte-per-second',
+      unit: 'gigabyte',
     });
-    this.petabytesPerSecondFormatter = new Intl.NumberFormat(locales, {
+    this.petabytesFormatter = new Intl.NumberFormat(locales, {
       ...(options ?? {}),
       style: 'unit',
-      unit: 'petabyte-per-second',
+      unit: 'petabyte',
     });
   }
 
@@ -62,30 +62,30 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
   ): Intl.NumberFormatPart[] {
     const [peta, giga, mega, kilo] = thresholds;
     if (number >= peta) {
-      return this.petabytesPerSecondFormatter.formatToParts(
+      return this.petabytesFormatter.formatToParts(
         (number as number) / (peta as number),
       );
     }
 
     if (number >= giga) {
-      return this.gigabytesPerSecondFormatter.formatToParts(
+      return this.gigabytesFormatter.formatToParts(
         (number as number) / (giga as number),
       );
     }
 
     if (number >= mega) {
-      return this.megabytesPerSecondFormatter.formatToParts(
+      return this.megabytesFormatter.formatToParts(
         (number as number) / (mega as number),
       );
     }
 
     if (number >= kilo) {
-      return this.kilobytesPerSecondFormatter.formatToParts(
+      return this.kilobytesFormatter.formatToParts(
         (number as number) / (kilo as number),
       );
     }
 
-    return this.bytesPerSecondFormatter.formatToParts(number as number);
+    return this.bytesFormatter.formatToParts(number as number);
   }
 
   formatNumberToParts(number: number): Intl.NumberFormatPart[] {
@@ -110,7 +110,7 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
       return this.formatBigintToParts(number);
     }
 
-    return this.bytesPerSecondFormatter.formatToParts(number);
+    return this.bytesFormatter.formatToParts(number);
   }
 
   formatRangeTToParts<T = number>(
@@ -120,33 +120,33 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
   ): Intl.NumberRangeFormatPart[] {
     const [peta, giga, mega, kilo] = thresholds;
     if (start >= peta || end >= peta) {
-      return this.petabytesPerSecondFormatter.formatRangeToParts(
+      return this.petabytesFormatter.formatRangeToParts(
         (start as number) / (peta as number),
         (end as number) / (peta as number),
       );
     }
     if (start >= giga || end >= giga) {
-      return this.gigabytesPerSecondFormatter.formatRangeToParts(
+      return this.gigabytesFormatter.formatRangeToParts(
         (start as number) / (giga as number),
         (end as number) / (giga as number),
       );
     }
 
     if (start >= mega || end >= mega) {
-      return this.megabytesPerSecondFormatter.formatRangeToParts(
+      return this.megabytesFormatter.formatRangeToParts(
         (start as number) / (mega as number),
         (end as number) / (mega as number),
       );
     }
 
     if (start >= kilo || end >= kilo) {
-      return this.kilobytesPerSecondFormatter.formatRangeToParts(
+      return this.kilobytesFormatter.formatRangeToParts(
         (start as number) / (kilo as number),
         (end as number) / (kilo as number),
       );
     }
 
-    return this.bytesPerSecondFormatter.formatRangeToParts(
+    return this.bytesFormatter.formatRangeToParts(
       start as number,
       end as number,
     );
@@ -183,7 +183,7 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
       return this.formatBigintRangeToParts(start, end);
     }
 
-    return this.bytesPerSecondFormatter.formatRangeToParts(start, end);
+    return this.bytesFormatter.formatRangeToParts(start, end);
   }
 
   format(number?: number | bigint | undefined): string {
