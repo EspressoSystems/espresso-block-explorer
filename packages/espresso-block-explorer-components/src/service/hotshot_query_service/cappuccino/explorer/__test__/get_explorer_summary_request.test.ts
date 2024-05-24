@@ -1,4 +1,5 @@
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng';
+import { iota } from '@/functional/functional';
 import { ESP } from '@/models/block_explorer/currency_code';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
@@ -60,7 +61,7 @@ describe('CappuccinoExplorerGetExplorerSummaryResponse', () => {
             Array.from(new Uint8Array(prng.fillBytes(50))),
             Array.from(new Uint8Array(prng.fillBytes(50))),
             Array.from(new Uint8Array(prng.fillBytes(50))),
-            Array.from(new Uint8Array(prng.fillBytes(50))),
+            Array.from(iota(50)),
           ),
         ),
       );
