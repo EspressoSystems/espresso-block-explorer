@@ -12,6 +12,7 @@ import {
   HistogramDomain,
   HistogramDomainAffineTransform,
   HistogramDomainStatistics,
+  HistogramLabelsBBox,
   HistogramPlotHeight,
   HistogramPlotWidth,
   HistogramRange,
@@ -99,15 +100,51 @@ export const ProvideDataStatistics: React.FC<ProvideDataStatisticsProps> = ({
 };
 
 export const SimpleHistogram: React.FC = () => {
+  const labelsRef = React.useRef<null | SVGSVGElement>(null);
+  const [labelsSize, setLabelsSize] = React.useState<null | DOMRect>(null);
+  React.useEffect(() => {
+    if (!labelsRef.current) {
+      return;
+    }
+
+    if (!('getBBox' in labelsRef.current)) {
+      return;
+    }
+
+    const bbox = labelsRef.current.getBBox();
+    setLabelsSize(bbox);
+  }, [labelsRef, setLabelsSize]);
+
   return (
     <HistogramBase>
-      <ProvideAffineTransforms>
-        <ProvideGuideLines>
-          <HistogramGuideLines />
-          <HistogramYAxisLabels />
-          <HistogramPlot />
-        </ProvideGuideLines>
-      </ProvideAffineTransforms>
+      <HistogramLabelsBBox.Provider value={labelsSize}>
+        <RecalculatePlotWidth>
+          <ProvideAffineTransforms>
+            <ProvideGuideLines>
+              <HistogramGuideLines />
+              <HistogramYAxisLabels labelsRef={labelsRef} />
+              <HistogramPlot />
+            </ProvideGuideLines>
+          </ProvideAffineTransforms>
+        </RecalculatePlotWidth>
+      </HistogramLabelsBBox.Provider>
     </HistogramBase>
+  );
+};
+
+interface RecalculatePlotWidthProps {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+const RecalculatePlotWidth: React.FC<RecalculatePlotWidthProps> = (props) => {
+  const plotWidth = React.useContext(HistogramPlotWidth);
+  const labelsBBox = React.useContext(HistogramLabelsBBox);
+
+  return (
+    <HistogramPlotWidth.Provider
+      value={Math.floor(plotWidth - (labelsBBox?.width ?? 0))}
+    >
+      {props.children}
+    </HistogramPlotWidth.Provider>
   );
 };

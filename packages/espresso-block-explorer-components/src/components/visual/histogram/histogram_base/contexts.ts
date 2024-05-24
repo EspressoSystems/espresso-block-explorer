@@ -27,6 +27,7 @@ export const HistogramGraphValueRect = React.createContext<{
   width: number;
   height: number;
 }>({ x: 0, y: 0, width: 0, height: 0 });
+export const HistogramLabelsBBox = React.createContext<null | DOMRect>(null);
 
 export const HistogramRangeAffineTransform =
   React.createContext<AffineTransform>(AffineTransform.identity);

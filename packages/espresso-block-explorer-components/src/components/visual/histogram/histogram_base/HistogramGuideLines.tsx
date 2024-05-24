@@ -2,6 +2,7 @@ import { WithUiSmall } from '@/typography/typography';
 import React from 'react';
 import {
   HistogramGraphWidth,
+  HistogramLabelsBBox,
   HistogramPlotHeight,
   HistogramRangeAffineTransform,
   HistogramRangeStatistics,
@@ -72,13 +73,14 @@ export const HistogramGuideLines: React.FC = () => {
   const plotHeight = React.useContext(HistogramPlotHeight);
   const rangeAffineTransform = React.useContext(HistogramRangeAffineTransform);
   const lines = React.useContext(HistogramYAxisGuideLines);
+  const labelsBBox = React.useContext(HistogramLabelsBBox);
 
   return (
     <g className="histogram-y-guide-lines">
       {lines.map((line, i) => (
         <line
           key={i}
-          x1={yAxisLabelOffset}
+          x1={labelsBBox?.width ?? yAxisLabelOffset}
           y1={plotHeight - rangeAffineTransform.transform(line)}
           x2={graphWidth}
           y2={plotHeight - rangeAffineTransform.transform(line)}
@@ -87,6 +89,10 @@ export const HistogramGuideLines: React.FC = () => {
     </g>
   );
 };
+
+export interface HistogramYAxisLabelsProps {
+  labelsRef: undefined | React.RefObject<SVGGElement>;
+}
 
 /**
  * HistogramYAxisLabels is a component that displays the labels for the y-axis
@@ -98,14 +104,16 @@ export const HistogramGuideLines: React.FC = () => {
  * - HistogramRangeAffineTransform
  * - HistogramYAxisLabelComponent
  */
-export const HistogramYAxisLabels: React.FC = () => {
+export const HistogramYAxisLabels: React.FC<HistogramYAxisLabelsProps> = (
+  props,
+) => {
   const plotHeight = React.useContext(HistogramPlotHeight);
   const lines = React.useContext(HistogramYAxisGuideLines);
   const rangeAffineTransform = React.useContext(HistogramRangeAffineTransform);
   const comp = React.useContext(HistogramYAxisLabelComponent);
 
   return (
-    <g className="histogram-y-axis-labels">
+    <g ref={props.labelsRef} className="histogram-y-axis-labels">
       {lines.map((line, i) => (
         <UiTextSmallText
           key={i}
