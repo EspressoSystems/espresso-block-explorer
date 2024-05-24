@@ -2,6 +2,7 @@ import React, { createContext, useContext } from 'react';
 import BytesPerSecondNumberFormat from './BytesPerSecondNumberFormat';
 import { CurrentLocale } from './LocaleProvider';
 import TransactionPerSecondNumberFormat from './TransactionsPerSecondNumberFormat';
+import VariableBytesNumberFormat from './VariableBytesNumberFormat';
 
 /**
  * createDefaultNumberFormatters will create the default Number formatting
@@ -25,9 +26,7 @@ function createDefaultNumberFormatters(locale: string) {
       notation: 'standard',
       unitDisplay: 'long',
     }),
-    variableBytes: new Intl.NumberFormat(locale, {
-      style: 'unit',
-      unit: 'byte',
+    variableBytes: new VariableBytesNumberFormat(locale, {
       notation: 'compact',
       unitDisplay: 'narrow',
       maximumFractionDigits: 2,
@@ -36,6 +35,8 @@ function createDefaultNumberFormatters(locale: string) {
       maximumFractionDigits: 2,
     }) as unknown as Intl.NumberFormat,
     bytesPerSecond: new BytesPerSecondNumberFormat(locale, {
+      notation: 'compact',
+      unitDisplay: 'narrow',
       maximumFractionDigits: 2,
     }) as unknown as Intl.NumberFormat,
 
