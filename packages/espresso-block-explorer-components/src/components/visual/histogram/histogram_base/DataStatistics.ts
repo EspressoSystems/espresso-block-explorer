@@ -11,12 +11,20 @@ export class DataStatistics {
   readonly mean: number;
   readonly total: number;
   readonly count: number;
+  readonly length: number;
 
-  constructor(min: number, max: number, total: number, count: number) {
+  constructor(
+    min: number,
+    max: number,
+    total: number,
+    count: number,
+    length: number,
+  ) {
     this.min = min;
     this.max = max;
     this.total = total;
     this.count = count;
+    this.length = length;
     this.mean = total / count;
   }
 
@@ -24,7 +32,7 @@ export class DataStatistics {
     return computeDataStatistics(data);
   }
 
-  static empty = new DataStatistics(0, 0, 0, 0);
+  static empty = new DataStatistics(0, 0, 0, 0, 0);
 }
 
 /**
@@ -33,23 +41,29 @@ export class DataStatistics {
  * collect and maintain running min, max, total, and count values.  Further
  * statistical information can be derived from these values.
  */
-export function computeDataStatistics(data: number[]): DataStatistics {
+export function computeDataStatistics(data: (null | number)[]): DataStatistics {
   const l = data.length;
   if (l === 0) {
-    return new DataStatistics(0, 0, 0, 0);
+    return new DataStatistics(0, 0, 0, 0, 0);
   }
 
-  let min = data[0];
-  let max = data[0];
+  let min = null;
+  let max = null;
   let sum = 0;
+  let count = 0;
 
   for (let i = 0; i < l; i++) {
     const point = data[i];
+    if (point === null) {
+      continue;
+    }
+
+    count++;
     sum += point;
-    if (point < min) {
+    if (min === null || point < min) {
       min = point;
     }
-    if (point > max) {
+    if (max === null || point > max) {
       max = point;
     }
   }
@@ -63,5 +77,5 @@ export function computeDataStatistics(data: number[]): DataStatistics {
     max = 1;
   }
 
-  return new DataStatistics(min, max, sum, l);
+  return new DataStatistics(min ?? 0, max ?? 0, sum ?? 0, count, l);
 }

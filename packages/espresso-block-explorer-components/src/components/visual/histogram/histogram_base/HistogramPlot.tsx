@@ -37,33 +37,44 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
   const rangeStatistics = React.useContext(HistogramRangeStatistics);
   const affineTransform = React.useContext(HistogramRangeAffineTransform);
 
-  const rectangleWidthRaw = plotWidth / rangeStatistics.count;
+  const rectangleWidthRaw =
+    (plotWidth - graphInsets - graphInsets) / (rangeStatistics.length - 1);
   const rectangleWidth = Math.floor(rectangleWidthRaw);
+  const totalRectangleWidth = rectangleWidth * rangeStatistics.length;
 
   const rectangleHeights = values.map((blockTime) =>
     affineTransform.transform(blockTime),
   );
 
+  const offsetX = graphWidth - totalRectangleWidth - graphInsets;
+
   return (
     <>
-      <g
-        className="histogram-plot"
-        transform={`translate(${graphWidth - graphInsets - plotWidth + Math.round((rectangleWidthRaw - rectangleWidth) * rangeStatistics.count)},0)`}
-        key="data"
-      >
-        {values.map((_, i) => (
-          <>
-            {/* This is the bar of the histogram */}
+      <g className="histogram-plot" transform={`translate(${offsetX},0)`}>
+        {values.map((v, i) =>
+          v === null ? (
             <rect
-              key={i}
+              key={`missing-${i}`}
+              className="missing"
+              x={i * rectangleWidth}
+              y={0}
+              width={rectangleWidth - 1}
+              height={plotHeight}
+              data-offset={i}
+            ></rect>
+          ) : (
+            /* This is the bar of the histogram */
+            <rect
+              key={`bar-${i}`}
               className="bar"
               x={i * rectangleWidth}
               y={plotHeight - rectangleHeights[i]}
               width={rectangleWidth - 1}
               height={rectangleHeights[i]}
+              data-offset={i}
             ></rect>
-          </>
-        ))}
+          ),
+        )}
       </g>
 
       {/*
@@ -75,14 +86,11 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
         thing to do.  Additionally, redrawing an SVG with mouse changes could
         be expensive.
       */}
-      <g
-        className="histogram-plot"
-        transform={`translate(${graphWidth - graphInsets - plotWidth + Math.round((rectangleWidthRaw - rectangleWidth) * rangeStatistics.count)},0)`}
-        key="tooltips"
-      >
+
+      <g className="histogram-plot" transform={`translate(${offsetX},0)`}>
         {values.map((value, i) => (
-          <g key={i}>
-            {/* We need a bounding box for a hit area to detect mouse events */}
+          /* We need a bounding box for a hit area to detect mouse events */
+          <g key={`tooltip-${i}`}>
             <rect
               className="bbox"
               x={i * rectangleWidth}
