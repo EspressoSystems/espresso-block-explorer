@@ -53,7 +53,7 @@ export const ProvideAffineTransforms: React.FC<
   );
 
   const rangeAffineTransform = new AffineTransform(
-    0,
+    rangeStatistics.min,
     rangeStatistics.max,
     0,
     plotHeight,
