@@ -20,7 +20,7 @@ export const HistogramDomainStatistics = React.createContext<DataStatistics>(
 );
 export const HistogramYAxisGuideLines = React.createContext<number[]>([]);
 export const HistogramGraphValueIndex = React.createContext<number>(0);
-export const HistogramGraphValue = React.createContext<number>(0);
+export const HistogramGraphValue = React.createContext<null | number>(0);
 export const HistogramGraphValueRect = React.createContext<{
   x: number;
   y: number;

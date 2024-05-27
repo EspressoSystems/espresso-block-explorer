@@ -12,6 +12,12 @@
   fill: var(--histogram-plot--fill-color);
 }
 
+.histogram-plot rect.missing {
+  stroke: var(--histogram-plot--fill-color);
+  stroke-dasharray: 4 2 4 2;
+  fill: var(--color--transparent);
+}
+
 .histogram-plot > g {
   position: relative;
 }
