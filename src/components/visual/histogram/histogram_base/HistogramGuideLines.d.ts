@@ -26,6 +26,9 @@ export declare const ProvideGuideLines: React.FC<ProvideGuideLinesProps>;
  * - HistogramYAxisGuideLines
  */
 export declare const HistogramGuideLines: React.FC;
+export interface HistogramYAxisLabelsProps {
+    labelsRef: undefined | React.RefObject<SVGGElement>;
+}
 /**
  * HistogramYAxisLabels is a component that displays the labels for the y-axis
  * based on the sampling provided for the histogram.
@@ -36,4 +39,4 @@ export declare const HistogramGuideLines: React.FC;
  * - HistogramRangeAffineTransform
  * - HistogramYAxisLabelComponent
  */
-export declare const HistogramYAxisLabels: React.FC;
+export declare const HistogramYAxisLabels: React.FC<HistogramYAxisLabelsProps>;

@@ -1,10 +1,10 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 
 export declare class CappuccinoSummaryHistograms {
-    readonly blockTime: number[];
-    readonly blockSize: number[];
-    readonly blockTransactions: number[];
-    readonly blockHeights: number[];
+    readonly blockTime: (null | number)[];
+    readonly blockSize: (null | number)[];
+    readonly blockTransactions: (null | number)[];
+    readonly blockHeights: (null | number)[];
     constructor(blockTime: number[], blockSize: number[], blockTransactions: number[], blockHeights: number[]);
     toJSON(): {
         block_time: number[];

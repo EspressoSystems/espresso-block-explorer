@@ -11,7 +11,8 @@ export declare class DataStatistics {
     readonly mean: number;
     readonly total: number;
     readonly count: number;
-    constructor(min: number, max: number, total: number, count: number);
+    readonly length: number;
+    constructor(min: number, max: number, total: number, count: number, length: number);
     static compute(data: number[]): DataStatistics;
     static empty: DataStatistics;
 }
@@ -21,4 +22,4 @@ export declare class DataStatistics {
  * collect and maintain running min, max, total, and count values.  Further
  * statistical information can be derived from these values.
  */
-export declare function computeDataStatistics(data: number[]): DataStatistics;
+export declare function computeDataStatistics(data: (null | number)[]): DataStatistics;

@@ -13,13 +13,14 @@ export declare const HistogramRangeStatistics: React.Context<DataStatistics>;
 export declare const HistogramDomainStatistics: React.Context<DataStatistics>;
 export declare const HistogramYAxisGuideLines: React.Context<number[]>;
 export declare const HistogramGraphValueIndex: React.Context<number>;
-export declare const HistogramGraphValue: React.Context<number>;
+export declare const HistogramGraphValue: React.Context<number | null>;
 export declare const HistogramGraphValueRect: React.Context<{
     x: number;
     y: number;
     width: number;
     height: number;
 }>;
+export declare const HistogramLabelsBBox: React.Context<DOMRect | null>;
 export declare const HistogramRangeAffineTransform: React.Context<AffineTransform>;
 export declare const HistogramDomainAffineTransform: React.Context<AffineTransform>;
 export declare const HistogramYAxisLabelComponent: React.Context<HistogramLabel>;
