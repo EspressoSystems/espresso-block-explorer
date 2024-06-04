@@ -156,3 +156,16 @@ export function assertErrorCode<Code extends string>(
     throw new Error(`expected code to be ${code}, got ${value.code}`);
   }
 }
+
+export function assertTypeCode<Type extends string>(
+  value: Record<'type', unknown>,
+  type: Type,
+): asserts value is Record<'type', Type> {
+  if (!isString(value.type)) {
+    throw new Error('type must be a string');
+  }
+
+  if (value.type !== type) {
+    throw new Error(`expected type to be ${type}, got ${value.type}`);
+  }
+}
