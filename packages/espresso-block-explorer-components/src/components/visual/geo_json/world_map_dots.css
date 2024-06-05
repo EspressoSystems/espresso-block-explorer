@@ -1,0 +1,4 @@
+@import url(../../../styles/main.css);
+svg.world-map-dots circle {
+  fill: var(--color--slate-300);
+}
