@@ -383,3 +383,33 @@ export function foldRIterator<T, U>(
 
   return result;
 }
+
+/**
+ * zipWithIterator is a zipWith function that can be applied to an
+ * AsyncIterator.
+ */
+export function* zipWithIterator<T, U, V>(
+  itT: Iterator<T>,
+  itU: Iterator<U>,
+  zipper: (t: T, u: U) => V,
+): Generator<V> {
+  for (
+    let tNext = itT.next(), uNext = itU.next();
+    !tNext.done && !uNext.done;
+    tNext = itT.next(), uNext = itU.next()
+  ) {
+    yield zipper(tNext.value, uNext.value);
+  }
+}
+
+/**
+ * zipWithIterable is a zipWith function that can be applied to an
+ * AsyncIterable.
+ */
+export function zipWithIterable<T, U, V>(
+  ts: Iterable<T>,
+  us: Iterable<U>,
+  zipper: (t: T, u: U) => V,
+): Generator<V> {
+  return zipWithIterator(ts[Symbol.iterator](), us[Symbol.iterator](), zipper);
+}
