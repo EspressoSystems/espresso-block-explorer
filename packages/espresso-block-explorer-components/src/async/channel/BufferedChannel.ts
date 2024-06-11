@@ -27,19 +27,24 @@ import { Channel } from './Channel';
  * prevents further requests from being added to the buffer until the buffer
  * is empty enough to accept more requests.
  */
-export class BufferedChannel<T> implements Channel<T> {
-  private readonly requestQueue: CircularBuffer<T>;
-  private dataAvailable: Completer<void>;
+class BufferedChannel<T> implements Channel<T> {
+  private readonly publishQueue: CircularBuffer<T>;
+  private pollBlocked: Completer<void>;
+  private publishBlocked: Completer<void>;
   private readonly capacity: number;
   private closed: boolean = false;
 
-  constructor(size: number = 256) {
-    this.requestQueue = createCircularBuffer(
+  constructor(size: number) {
+    this.publishQueue = createCircularBuffer(
       Math.max(2, size),
       CircularBufferGetFromEmptyBehaviors.throwMissingElement,
       CircularBufferPutIntoFullBehaviors.throw,
     );
-    this.dataAvailable = createCompleter();
+    const completer = createCompleter<void>();
+    this.pollBlocked = completer;
+    this.publishBlocked = completer;
+    completer.complete();
+
     this.capacity = size - 1;
   }
 
@@ -55,7 +60,7 @@ export class BufferedChannel<T> implements Channel<T> {
    */
   close() {
     if (this.closed) {
-      return;
+      throw new ChannelClosedError();
     }
 
     this.closed = true;
@@ -66,9 +71,9 @@ export class BufferedChannel<T> implements Channel<T> {
    * outstanding read requests. This will complete all of the requests with
    * a ChannelClosedError.
    */
-  drain() {
-    while (this.requestQueue.length > 0) {
-      const request = this.requestQueue.get();
+  async drain(): Promise<void> {
+    while (this.publishQueue.length > 0) {
+      const request = this.publishQueue.get();
       if (!request) {
         continue;
       }
@@ -84,15 +89,23 @@ export class BufferedChannel<T> implements Channel<T> {
       throw new ChannelClosedError();
     }
 
-    if (this.requestQueue.length >= this.capacity) {
-      await this.dataAvailable.promise;
+    if (this.publishQueue.length >= this.capacity) {
+      if (this.publishBlocked.isCompleted) {
+        // Create a new write lock.
+        const nextWriteLock = createCompleter<void>();
+        this.publishBlocked = nextWriteLock;
+        await nextWriteLock.promise;
+      }
+
+      await this.publishBlocked.promise;
       return this.publish(data);
     }
 
-    const previousDataAvailable = this.dataAvailable;
-    this.dataAvailable = createCompleter();
-    this.requestQueue.put(data);
-    previousDataAvailable.complete();
+    this.publishQueue.put(data);
+
+    if (!this.pollBlocked.isCompleted) {
+      this.pollBlocked.complete();
+    }
   }
 
   /**
@@ -100,20 +113,27 @@ export class BufferedChannel<T> implements Channel<T> {
    * data available, it will wait until data is available.
    */
   async poll(): Promise<T> {
-    if (this.requestQueue.length <= 0) {
+    if (this.publishQueue.length <= 0) {
       if (this.isClosed) {
         throw new ChannelClosedError();
       }
       // We don't have any requests to fulfill.  So we need to wait for the
       // data to be come available.
-      await this.dataAvailable.promise;
+
+      if (this.pollBlocked.isCompleted) {
+        const nextReadLock = createCompleter<void>();
+        this.pollBlocked = nextReadLock;
+      }
+
+      await this.pollBlocked.promise;
       return this.poll();
     }
 
-    const previousDataAvailable = this.dataAvailable;
-    this.dataAvailable = createCompleter();
-    const value = this.requestQueue.get();
-    previousDataAvailable.complete();
+    const value = this.publishQueue.get();
+    if (!this.publishBlocked.isCompleted) {
+      this.publishBlocked.complete();
+    }
+
     return value!;
   }
 
@@ -157,6 +177,6 @@ class BufferedChannelAsyncIterator<T> implements AsyncIterator<T> {
  * createBufferedChannel creates a new BufferedChannel that has a capacity of
  * the specified size.
  */
-export function createBufferedChannel<T>(size: number = 256): Channel<T> {
-  return new BufferedChannel(size);
+export function createBufferedChannel<T>(size: number): Channel<T> {
+  return new BufferedChannel<T>(size);
 }

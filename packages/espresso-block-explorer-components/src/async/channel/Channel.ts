@@ -5,4 +5,6 @@
 export interface Channel<T> extends AsyncIterable<T> {
   publish(data: T): Promise<void>;
   poll(): Promise<T>;
+  close(): void;
+  drain(): Promise<void>;
 }

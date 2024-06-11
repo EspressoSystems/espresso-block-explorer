@@ -3,6 +3,7 @@ export { default as BadResponseClientError } from './BadResponseClientError';
 export { default as BadResponseError } from './BadResponseError';
 export { default as BadResponseServerError } from './BadResponseServerError';
 export { default as BaseBadResponseError } from './BaseBadResponseError';
+export { default as ChannelClosedError } from './ChannelClosedError';
 export { CompleterAlreadyCompletedError } from './CompleterAlreadyCompletedError';
 export type { EspressoError } from './EspressoError';
 export { IncorrectBase64PaddingError } from './IncorrectBase64PaddingError';
