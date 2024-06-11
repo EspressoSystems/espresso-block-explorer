@@ -1,13 +1,23 @@
 import GeoJSONFeatureCollection from '@/models/geo/geo_json/feature_collection';
 import GeoJSONMultiPolygon from '@/models/geo/geo_json/multi_polygon';
-import {
-  degreesToCoordinateSpaceProjection,
-  mapHeight,
-  mapWidth,
-} from '@/models/geo/world_map_grid/constants';
+import ChainProjection from '@/models/geo/projection/ChainProjection';
+import CoordinateSpaceProjection from '@/models/geo/projection/CoordinateSpaceProjection';
+import { degreesRadiansProjection } from '@/models/geo/projection/DegreesRadiansProjection';
+import MercatorProjection, {
+  mercatorProjection,
+} from '@/models/geo/projection/MercatorProjection';
+import DensityIndependentPoint from '@/models/geo/units/DensityIndependentPoint';
+import LatLng from '@/models/geo/units/LatLng';
+import Latitude from '@/models/geo/units/Latitude';
+import Longitude from '@/models/geo/units/Longitude';
+import { mapHeight, mapWidth } from '@/models/geo/world_map_grid/constants';
 import SVGPathBuilder from '../histogram/histogram_base/SVGPathBuilder';
 
 interface GeoJSONViewProps {
+  offsetX?: number;
+  offsetY?: number;
+  width?: number;
+  height?: number;
   geoJson: GeoJSONFeatureCollection;
 }
 
@@ -19,9 +29,19 @@ interface GeoJSONViewProps {
 const GeoJSONView: React.FC<GeoJSONViewProps> = (props) => {
   // eslint-disable-next-line react/prop-types
   const { features } = props.geoJson as GeoJSONFeatureCollection;
+  const {
+    // eslint-disable-next-line react/prop-types
+    offsetX = 0,
+    // eslint-disable-next-line react/prop-types
+    offsetY = 0,
+    // eslint-disable-next-line react/prop-types
+    width = Number(mapWidth),
+    // eslint-disable-next-line react/prop-types
+    height = Number(mapHeight),
+  } = props;
 
   return (
-    <svg viewBox={`0 0 ${Number(mapWidth)} ${Number(mapHeight)}`}>
+    <svg viewBox={`${offsetX} ${offsetY} ${width} ${height}`}>
       {features.map((feature, index) => {
         const { geometry } = feature;
 
@@ -29,6 +49,27 @@ const GeoJSONView: React.FC<GeoJSONViewProps> = (props) => {
           // We don't want to draw these at the moment.
           return <></>;
         }
+
+        const projection = new ChainProjection(
+          degreesRadiansProjection,
+          new ChainProjection(
+            mercatorProjection,
+            new CoordinateSpaceProjection(
+              MercatorProjection.minProjection,
+              MercatorProjection.maxProjection,
+              new LatLng(
+                new Latitude(new DensityIndependentPoint(offsetY + height)),
+                new Longitude(new DensityIndependentPoint(offsetX)),
+              ),
+              new LatLng(
+                new Latitude(new DensityIndependentPoint(offsetY)),
+                new Longitude(new DensityIndependentPoint(offsetX + width)),
+              ),
+            ),
+          ),
+        );
+
+        const degreesToCoordinateSpaceProjection = projection;
 
         return (
           <g key={index} data-index={index}>
@@ -47,8 +88,8 @@ const GeoJSONView: React.FC<GeoJSONViewProps> = (props) => {
                     );
 
                   pathBuilder.moveTo(
-                    Number(firstPointProjected.lat),
                     Number(firstPointProjected.lng),
+                    Number(firstPointProjected.lat),
                   );
                   for (let i = 1; i < polygonLength; i++) {
                     const point = polygon.coordinates[i];
@@ -57,8 +98,8 @@ const GeoJSONView: React.FC<GeoJSONViewProps> = (props) => {
                         point.coordinates,
                       );
                     pathBuilder.lineTo(
-                      Number(pointProjected.lat),
                       Number(pointProjected.lng),
+                      Number(pointProjected.lat),
                     );
                   }
                   pathBuilder.close();
@@ -66,11 +107,7 @@ const GeoJSONView: React.FC<GeoJSONViewProps> = (props) => {
 
                 return (
                   <g key={index} data-index={index}>
-                    <path
-                      d={pathBuilder.instructionToString()}
-                      fill="transparent"
-                      stroke="black"
-                    />
+                    <path d={pathBuilder.instructionToString()} />
                   </g>
                 );
               },

@@ -57,14 +57,14 @@ export function createEdgeFunction<N extends NumberLike>(
   p0: LatLng<N>,
   p1: LatLng<N>,
 ): EdgeFunction<N> {
-  const dx = Number(p1.lat) - Number(p0.lat);
-  const dy = Number(p1.lng) - Number(p0.lng);
-  const X = Number(p0.lat);
-  const Y = Number(p0.lng);
+  const dx = Number(p1.lng) - Number(p0.lng);
+  const dy = Number(p1.lat) - Number(p0.lat);
+  const X = Number(p0.lng);
+  const Y = Number(p0.lat);
 
   return (point: LatLng<N>) => {
-    const x = Number(point.lat);
-    const y = Number(point.lng);
+    const x = Number(point.lng);
+    const y = Number(point.lat);
     const value = (x - X) * dy - (y - Y) * dx;
 
     if (value < 0) {

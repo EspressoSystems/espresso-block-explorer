@@ -1,4 +1,13 @@
 @import url(../../../styles/main.css);
-svg.world-map-dots circle {
-  fill: var(--color--slate-300);
+:root {
+  --world-map--continent-color: var(--color--slate-300);
+  --world-map--node-color: var(--color--slate-950);
+}
+
+svg.world-map-dots circle.continent {
+  fill: var(--world-map--continent-color);
+}
+
+svg.world-map-dots circle.node {
+  fill: var(--world-map--node-color);
 }

@@ -25,8 +25,8 @@ const WorldMapDotsFullResolution: React.FC = () => {
           <circle
             className="continent"
             key={index}
-            cx={Number(center.lat)}
-            cy={Number(center.lng)}
+            cx={Number(center.lng)}
+            cy={Number(center.lat)}
             r={Number(gridCellRadius)}
             data-coord={degreesToCoordinateSpaceProjection
               .inverseProject(center)

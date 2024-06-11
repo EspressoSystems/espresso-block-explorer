@@ -22,14 +22,14 @@ describe('Multi Point', () => {
         new GeoJSONMultiPoint([
           new GeoJSONPoint(
             new LatLng(
-              new Latitude(new Degrees(100)),
-              new Longitude(new Degrees(0)),
+              new Latitude(new Degrees(0)),
+              new Longitude(new Degrees(100)),
             ),
           ),
           new GeoJSONPoint(
             new LatLng(
-              new Latitude(new Degrees(101)),
-              new Longitude(new Degrees(1)),
+              new Latitude(new Degrees(1)),
+              new Longitude(new Degrees(101)),
             ),
           ),
         ]),
@@ -42,14 +42,14 @@ describe('Multi Point', () => {
       const geoJSONMultiPoint = new GeoJSONMultiPoint([
         new GeoJSONPoint(
           new LatLng(
-            new Latitude(new Degrees(1)),
-            new Longitude(new Degrees(2)),
+            new Latitude(new Degrees(2)),
+            new Longitude(new Degrees(1)),
           ),
         ),
         new GeoJSONPoint(
           new LatLng(
-            new Latitude(new Degrees(3)),
-            new Longitude(new Degrees(4)),
+            new Latitude(new Degrees(4)),
+            new Longitude(new Degrees(3)),
           ),
         ),
       ]);

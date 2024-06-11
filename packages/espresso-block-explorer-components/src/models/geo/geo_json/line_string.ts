@@ -6,11 +6,12 @@ import {
   assertTypeCode,
 } from '@/convert/codec/convert';
 import { Degrees } from '../units';
-import LatLng, { listLatLngDegreesCodec } from '../units/LatLng';
+import LatLng from '../units/LatLng';
 import GeoJSONBoundingBox, {
   generateBoundingBoxFromMinMaxes,
 } from './bounding_box';
 import GeoJSONGeometry, { registerGeometryCodec } from './geometry';
+import { listGeoJSONPositionCodec } from './position';
 
 const kGeoJSONLineStringType = 'LineString';
 
@@ -81,8 +82,8 @@ class GeoJSONLineStringCodec extends TypeCheckingCodec<
   GeoJSONLineString,
   ReturnType<InstanceType<new () => GeoJSONLineStringEncoder['convert']>>
 > {
-  readonly encoder = new GeoJSONLineStringEncoder(listLatLngDegreesCodec);
-  readonly decoder = new GeoJSONLineStringDecoder(listLatLngDegreesCodec);
+  readonly encoder = new GeoJSONLineStringEncoder(listGeoJSONPositionCodec);
+  readonly decoder = new GeoJSONLineStringDecoder(listGeoJSONPositionCodec);
 }
 
 export const geoJSONLineStringCodec = new GeoJSONLineStringCodec();

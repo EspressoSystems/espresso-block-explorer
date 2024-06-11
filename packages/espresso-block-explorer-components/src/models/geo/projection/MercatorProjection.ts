@@ -18,7 +18,7 @@ import { GeodesicProjection } from './GeodesicProjection';
  * Actual real-world uses of the Mercator projection tend to swap out the
  * projection model after these points are reached for a different projection.
  */
-const extremeLongitudePoint = 85.05133;
+const extremeLatitudePoint = 85.05133;
 
 /**
  * MercatorProjection is a geodesic projection which favors maintaining
@@ -42,14 +42,14 @@ export default class MercatorProjection
 {
   public static min = degreesRadiansProjection.project(
     new LatLng(
-      new Latitude(new Degrees(-180)),
-      new Longitude(new Degrees(-extremeLongitudePoint)),
+      new Latitude(new Degrees(-extremeLatitudePoint)),
+      new Longitude(new Degrees(-180)),
     ),
   );
   public static max = degreesRadiansProjection.project(
     new LatLng(
-      new Latitude(new Degrees(180)),
-      new Longitude(new Degrees(extremeLongitudePoint)),
+      new Latitude(new Degrees(extremeLatitudePoint)),
+      new Longitude(new Degrees(180)),
     ),
   );
 
@@ -60,44 +60,46 @@ export default class MercatorProjection
     MercatorProjection.max,
   );
 
-  private static projectLatitude(lat: Latitude<Radians>): Latitude<NumberLike> {
-    return new Latitude(Number(lat));
+  private static projectLongitude(
+    lng: Longitude<Radians>,
+  ): Longitude<NumberLike> {
+    return new Longitude(Number(lng));
   }
 
   /**
    * ensureLongitudeBounds ensures that the longitude value is within the
    * bounds of the Mercator Projection.
    */
-  private static ensureLongitudeBounds(
-    lng: Longitude<Radians>,
-  ): Longitude<Radians> {
-    if (greaterThan(lng, MercatorProjection.max.lng)) {
-      return MercatorProjection.max.lng;
+  private static ensureLatitudeBounds(
+    lat: Latitude<Radians>,
+  ): Latitude<Radians> {
+    if (greaterThan(lat, MercatorProjection.max.lat)) {
+      return MercatorProjection.max.lat;
     }
 
-    if (lessThan(lng, MercatorProjection.min.lng)) {
-      return MercatorProjection.min.lng;
+    if (lessThan(lat, MercatorProjection.min.lat)) {
+      return MercatorProjection.min.lat;
     }
 
-    return lng;
+    return lat;
   }
 
-  private static projectLongitude(
-    long: Longitude<Radians>,
-  ): Longitude<NumberLike> {
-    return new Longitude(
+  private static projectLatitude(
+    long: Latitude<Radians>,
+  ): Latitude<NumberLike> {
+    return new Latitude(
       Math.log(
-        Math.tan(Math.PI / 4 + Number(this.ensureLongitudeBounds(long)) / 2),
+        Math.tan(Math.PI / 4 + Number(this.ensureLatitudeBounds(long)) / 2),
       ),
     );
   }
 
-  private static inverseProjectLatitude(lat: NumberLike): Latitude<Radians> {
-    return new Latitude(new Radians(Number(lat)));
+  private static inverseProjectLongitude(lat: NumberLike): Longitude<Radians> {
+    return new Longitude(new Radians(Number(lat)));
   }
 
-  private static inverseProjectLongitude(long: NumberLike): Longitude<Radians> {
-    return new Longitude(
+  private static inverseProjectLatitude(long: NumberLike): Latitude<Radians> {
+    return new Latitude(
       new Radians(2 * Math.atan(Math.exp(Number(long))) - Math.PI / 2),
     );
   }

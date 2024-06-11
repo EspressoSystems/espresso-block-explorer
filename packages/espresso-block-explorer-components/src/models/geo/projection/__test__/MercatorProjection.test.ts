@@ -55,8 +55,8 @@ describe('Mercator Projection', () => {
       it('should result in the same value as the extreme bounds', () => {
         const resultN = mercatorProjection.project(
           new LatLng(
-            new Latitude(new Radians(-Math.PI)),
-            new Longitude(new Radians(-Math.PI / 2)),
+            new Latitude(new Radians(-Math.PI / 2)),
+            new Longitude(new Radians(-Math.PI)),
           ),
         );
 
@@ -68,8 +68,8 @@ describe('Mercator Projection', () => {
 
         const resultX = mercatorProjection.project(
           new LatLng(
-            new Latitude(new Radians(Math.PI)),
-            new Longitude(new Radians(Math.PI / 2)),
+            new Latitude(new Radians(Math.PI / 2)),
+            new Longitude(new Radians(Math.PI)),
           ),
         );
 
@@ -137,18 +137,18 @@ describe('Mercator Projection', () => {
       const epsilon = Math.sqrt(1e-9);
 
       for (
-        let y = Number(MercatorProjection.min.lng);
-        y < Number(MercatorProjection.max.lng);
-        y += Math.PI / N
+        let x = Number(MercatorProjection.min.lng);
+        x < Number(MercatorProjection.max.lng);
+        x += (2 * Math.PI) / N
       ) {
         for (
-          let x = Number(MercatorProjection.min.lat);
-          x < Number(MercatorProjection.max.lat);
-          x += (2 * Math.PI) / N
+          let y = Number(MercatorProjection.min.lat);
+          y < Number(MercatorProjection.max.lat);
+          y += Math.PI / N
         ) {
           const p0 = new LatLng(
-            new Latitude(new Radians(x)),
-            new Longitude(new Radians(y)),
+            new Latitude(new Radians(y)),
+            new Longitude(new Radians(x)),
           );
 
           const p1 = mercatorProjection.project(p0);

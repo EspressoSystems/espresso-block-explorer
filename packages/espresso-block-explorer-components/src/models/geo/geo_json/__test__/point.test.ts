@@ -17,8 +17,8 @@ describe('Point', () => {
       expect(point).deep.equals(
         new GeoJSONPoint(
           new LatLng(
-            new Latitude(new Degrees(100)),
-            new Longitude(new Degrees(0)),
+            new Latitude(new Degrees(0)),
+            new Longitude(new Degrees(100)),
           ),
         ),
       );
@@ -28,7 +28,7 @@ describe('Point', () => {
 
     it('should encode and decode to the same value shape', () => {
       const geoJSONPoint = new GeoJSONPoint(
-        new LatLng(new Latitude(new Degrees(1)), new Longitude(new Degrees(2))),
+        new LatLng(new Latitude(new Degrees(2)), new Longitude(new Degrees(1))),
       );
 
       expect(

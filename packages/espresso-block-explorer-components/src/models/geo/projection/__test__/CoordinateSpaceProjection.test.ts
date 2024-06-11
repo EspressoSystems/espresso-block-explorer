@@ -9,12 +9,12 @@ import CoordinateSpaceProjection from '../CoordinateSpaceProjection';
 describe('Coordinate Space Projection', () => {
   const projection = new CoordinateSpaceProjection(
     new LatLng(
-      new Latitude(new Radians(-Math.PI)),
-      new Longitude(new Radians(-Math.PI / 2)),
+      new Latitude(new Radians(-Math.PI / 2)),
+      new Longitude(new Radians(-Math.PI)),
     ),
     new LatLng(
-      new Latitude(new Radians(Math.PI)),
-      new Longitude(new Radians(Math.PI / 2)),
+      new Latitude(new Radians(Math.PI / 2)),
+      new Longitude(new Radians(Math.PI)),
     ),
     new LatLng(
       new Latitude(new DensityIndependentPoint(0)),
@@ -42,8 +42,8 @@ describe('Coordinate Space Projection', () => {
       const epsilon = 0.000000001;
       const result = projection.project(
         new LatLng(
-          new Latitude(new Radians(-Math.PI)),
-          new Longitude(new Radians(-Math.PI / 2)),
+          new Latitude(new Radians(-Math.PI / 2)),
+          new Longitude(new Radians(-Math.PI)),
         ),
       );
 
@@ -54,8 +54,8 @@ describe('Coordinate Space Projection', () => {
     it('should map PI,PI/2 to 100,100', () => {
       const result = projection.project(
         new LatLng(
-          new Latitude(new Radians(Math.PI)),
-          new Longitude(new Radians(Math.PI / 2)),
+          new Latitude(new Radians(Math.PI / 2)),
+          new Longitude(new Radians(Math.PI)),
         ),
       );
 
@@ -90,11 +90,11 @@ describe('Coordinate Space Projection', () => {
       );
 
       expect(Number(result.lat)).closeTo(
-        Number(new Radians(-Math.PI)),
+        Number(new Radians(-Math.PI / 2)),
         epsilon,
       );
       expect(Number(result.lng)).closeTo(
-        Number(new Radians(-Math.PI / 2)),
+        Number(new Radians(-Math.PI)),
         epsilon,
       );
     });
@@ -108,11 +108,11 @@ describe('Coordinate Space Projection', () => {
         ),
       );
 
-      expect(Number(result.lat)).closeTo(Number(new Radians(Math.PI)), epsilon);
-      expect(Number(result.lng)).closeTo(
+      expect(Number(result.lat)).closeTo(
         Number(new Radians(Math.PI / 2)),
         epsilon,
       );
+      expect(Number(result.lng)).closeTo(Number(new Radians(Math.PI)), epsilon);
     });
   });
 
@@ -132,8 +132,8 @@ describe('Coordinate Space Projection', () => {
           x += (2 * Math.PI) / N
         ) {
           const p0 = new LatLng(
-            new Latitude(new Radians(x)),
-            new Longitude(new Radians(y)),
+            new Latitude(new Radians(y)),
+            new Longitude(new Radians(x)),
           );
 
           const p1 = projection.project(p0);

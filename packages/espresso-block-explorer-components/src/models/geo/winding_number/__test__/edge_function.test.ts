@@ -5,21 +5,29 @@ import Longitude from '../../units/Longitude';
 import { EdgeCrossing, createEdgeFunction } from '../edge_function';
 
 describe('Edge Function', () => {
-  describe('Up', () => {
+  describe('Right', () => {
     const point = new LatLng(new Latitude(0), new Longitude(-1));
     const end = new LatLng(new Latitude(0), new Longitude(1));
     const edgeFunction = createEdgeFunction(point, end);
 
-    it('should return left', () => {
+    /*
+      We are pointing from (-1, 0) to (1, 0).
+      It should look like this:
+
+      *----------->
+
+    */
+
+    it('(0, -1) should return right', () => {
       expect(
         edgeFunction(new LatLng(new Latitude(-1), new Longitude(0))),
-      ).equals(EdgeCrossing.left);
+      ).equals(EdgeCrossing.right);
     });
 
-    it('should return right', () => {
+    it('(0, 1) should return left', () => {
       expect(
         edgeFunction(new LatLng(new Latitude(1), new Longitude(0))),
-      ).equals(EdgeCrossing.right);
+      ).equals(EdgeCrossing.left);
     });
 
     it('should return onEdge', () => {
@@ -29,21 +37,29 @@ describe('Edge Function', () => {
     });
   });
 
-  describe('down', () => {
+  describe('left', () => {
     const point = new LatLng(new Latitude(0), new Longitude(1));
     const end = new LatLng(new Latitude(0), new Longitude(-1));
     const edgeFunction = createEdgeFunction(point, end);
 
-    it('should return right', () => {
+    /*
+      We are pointing from (1, 0) to (-1, 0).
+      It should look like this:
+
+      <-----------*
+
+    */
+
+    it('(0, -1) should return left', () => {
       expect(
         edgeFunction(new LatLng(new Latitude(-1), new Longitude(0))),
-      ).equals(EdgeCrossing.right);
+      ).equals(EdgeCrossing.left);
     });
 
-    it('should return left', () => {
+    it('(0, 1) should return right', () => {
       expect(
         edgeFunction(new LatLng(new Latitude(1), new Longitude(0))),
-      ).equals(EdgeCrossing.left);
+      ).equals(EdgeCrossing.right);
     });
 
     it('should return onEdge', () => {
@@ -53,21 +69,32 @@ describe('Edge Function', () => {
     });
   });
 
-  describe('Left', () => {
+  describe('Down', () => {
     const point = new LatLng(new Latitude(1), new Longitude(0));
     const end = new LatLng(new Latitude(-1), new Longitude(0));
     const edgeFunction = createEdgeFunction(point, end);
 
-    it('should return right', () => {
+    /*
+      We are pointing from (0, 1) to (0, -1).
+      It should look like this:
+
+      *
+      |
+      |
+      V
+
+    */
+
+    it('(1, 0) should return left', () => {
       expect(
         edgeFunction(new LatLng(new Latitude(0), new Longitude(1))),
-      ).equals(EdgeCrossing.right);
+      ).equals(EdgeCrossing.left);
     });
 
-    it('should return left', () => {
+    it('(-1, 0) should return right', () => {
       expect(
         edgeFunction(new LatLng(new Latitude(0), new Longitude(-1))),
-      ).equals(EdgeCrossing.left);
+      ).equals(EdgeCrossing.right);
     });
 
     it('should return onEdge', () => {
@@ -77,21 +104,31 @@ describe('Edge Function', () => {
     });
   });
 
-  describe('Right', () => {
+  describe('Up', () => {
     const point = new LatLng(new Latitude(-1), new Longitude(0));
     const end = new LatLng(new Latitude(1), new Longitude(0));
     const edgeFunction = createEdgeFunction(point, end);
 
-    it('should return right', () => {
+    /*
+      We are pointing from (0, -1) to (0, 1).
+      It should look like this:
+
+      ^
+      |
+      |
+      *
+    */
+
+    it('(-1, 0) should return left', () => {
       expect(
         edgeFunction(new LatLng(new Latitude(0), new Longitude(-1))),
-      ).equals(EdgeCrossing.right);
+      ).equals(EdgeCrossing.left);
     });
 
-    it('should return left', () => {
+    it('(1, 0) should return right', () => {
       expect(
         edgeFunction(new LatLng(new Latitude(0), new Longitude(1))),
-      ).equals(EdgeCrossing.left);
+      ).equals(EdgeCrossing.right);
     });
 
     it('should return onEdge', () => {
@@ -106,16 +143,24 @@ describe('Edge Function', () => {
     const end = new LatLng(new Latitude(1), new Longitude(1));
     const edgeFunction = createEdgeFunction(point, end);
 
-    it('should return right', () => {
+    /*
+      We are pointing from (-1, -1) to (1, 1).
+      It should look like this:
+        %
+       /
+      *
+    */
+
+    it('(-1, 1) should return left', () => {
       expect(
         edgeFunction(new LatLng(new Latitude(1), new Longitude(-1))),
-      ).equals(EdgeCrossing.right);
+      ).equals(EdgeCrossing.left);
     });
 
-    it('should return left', () => {
+    it('(1, -1) should return right', () => {
       expect(
         edgeFunction(new LatLng(new Latitude(-1), new Longitude(1))),
-      ).equals(EdgeCrossing.left);
+      ).equals(EdgeCrossing.right);
     });
 
     it('should return onEdge', () => {

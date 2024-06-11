@@ -1,12 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import Degrees from '../Degrees';
-import LatLng, {
-  latLngDegreesCodec,
-  latLngRadiansCodec,
-  listLatLngDegreesCodec,
-  listListLatLngDegreesCodec,
-  listListListLatLngDegreesCodec,
-} from '../LatLng';
+import LatLng, { latLngDegreesCodec, latLngRadiansCodec } from '../LatLng';
 import Latitude from '../Latitude';
 import Longitude from '../Longitude';
 import Radians from '../Radians';
@@ -99,51 +93,6 @@ describe('LatLng', () => {
         expect(latLng.lng).instanceOf(Longitude);
         expect(latLng.lat.value).instanceOf(Degrees);
         expect(latLng.lng.value).instanceOf(Degrees);
-      });
-
-      it('should decode to a list', () => {
-        const list = listLatLngDegreesCodec.decode([
-          [0, 0],
-          [1, 1],
-        ]);
-
-        expect(list).length(2);
-        expect(list[0]).instanceOf(LatLng);
-        expect(list[1]).instanceOf(LatLng);
-      });
-
-      it('should decode to a list of lists', () => {
-        const list = listListLatLngDegreesCodec.decode([
-          [
-            [0, 0],
-            [1, 1],
-          ],
-        ]);
-
-        expect(list).length(1);
-        expect(list[0]).instanceOf(Array);
-        expect(list[0]).length(2);
-        expect(list[0][0]).instanceOf(LatLng);
-        expect(list[0][1]).instanceOf(LatLng);
-      });
-
-      it('should decode to a list of lists of lists', () => {
-        const list = listListListLatLngDegreesCodec.decode([
-          [
-            [
-              [0, 0],
-              [1, 1],
-            ],
-          ],
-        ]);
-
-        expect(list).length(1);
-        expect(list[0]).instanceOf(Array);
-        expect(list[0]).length(1);
-        expect(list[0][0]).instanceOf(Array);
-        expect(list[0][0]).length(2);
-        expect(list[0][0][0]).instanceOf(LatLng);
-        expect(list[0][0][1]).instanceOf(LatLng);
       });
 
       it('should throw when not given an array', () => {

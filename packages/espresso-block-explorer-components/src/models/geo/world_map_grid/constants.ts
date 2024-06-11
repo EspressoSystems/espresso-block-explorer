@@ -100,15 +100,15 @@ const coordinateSpaceProjection = new CoordinateSpaceProjection(
   MercatorProjection.maxProjection,
   // Minimum Coordinates
   new LatLng(
-    new Latitude(new DensityIndependentPoint(0)),
+    new Latitude(mercatorProjectionScreenHeight),
     // This is reversed as the mercator projection would actually be upside-
     // down otherwise.
-    new Longitude(mercatorProjectionScreenHeight),
+    new Longitude(new DensityIndependentPoint(0)),
   ),
   // Maximum Coordinates
   new LatLng(
-    new Latitude(mercatorProjectionScreenWidth),
-    new Longitude(new DensityIndependentPoint(0)),
+    new Latitude(new DensityIndependentPoint(0)),
+    new Longitude(mercatorProjectionScreenWidth),
   ),
 );
 
@@ -156,7 +156,7 @@ const xCoords = Array.from(
   mapIterable(
     iota(numXCells),
     (x) =>
-      new Latitude(
+      new Longitude(
         new DensityIndependentPoint(
           x * Number(gridCellSize) + Number(halfCellSize),
         ),
@@ -167,7 +167,7 @@ const xCoords = Array.from(
 // compute the centers of the grid cells, in coordinate space.
 export const gridCellCoordinateSpaceCenters = Array.from(
   expandIterable(xCoords, (coordX) => {
-    return mapIterable(yCoords, (coordY) => new LatLng(coordX, coordY));
+    return mapIterable(yCoords, (coordY) => new LatLng(coordY, coordX));
   }),
 );
 

@@ -6,9 +6,10 @@ import {
   assertTypeCode,
 } from '@/convert/codec';
 import { Degrees } from '../units';
-import LatLng, { latLngDegreesCodec } from '../units/LatLng';
+import LatLng from '../units/LatLng';
 import GeoJSONBoundingBox from './bounding_box';
 import GeoJSONGeometry, { registerGeometryCodec } from './geometry';
+import { geoJSONPositionCodec } from './position';
 
 const kGeoJSONPointType = 'Point' as const;
 
@@ -71,8 +72,8 @@ class GeoJSONPointCodec extends TypeCheckingCodec<
   GeoJSONPoint,
   ReturnType<InstanceType<new () => GeoJSONPointEncoder['convert']>>
 > {
-  readonly encoder = new GeoJSONPointEncoder(latLngDegreesCodec);
-  readonly decoder = new GeoJSONPointDecoder(latLngDegreesCodec);
+  readonly encoder = new GeoJSONPointEncoder(geoJSONPositionCodec);
+  readonly decoder = new GeoJSONPointDecoder(geoJSONPositionCodec);
 }
 
 export const geoJSONPointCodec = new GeoJSONPointCodec();

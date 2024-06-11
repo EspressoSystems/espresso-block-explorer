@@ -30,22 +30,22 @@ describe('Multi Line String', () => {
         new GeoJSONMultiLineString([
           new GeoJSONLineString([
             new LatLng(
-              new Latitude(new Degrees(100)),
-              new Longitude(new Degrees(0)),
+              new Latitude(new Degrees(0)),
+              new Longitude(new Degrees(100)),
             ),
             new LatLng(
-              new Latitude(new Degrees(101)),
-              new Longitude(new Degrees(1)),
+              new Latitude(new Degrees(1)),
+              new Longitude(new Degrees(101)),
             ),
           ]),
           new GeoJSONLineString([
             new LatLng(
-              new Latitude(new Degrees(102)),
-              new Longitude(new Degrees(2)),
+              new Latitude(new Degrees(2)),
+              new Longitude(new Degrees(102)),
             ),
             new LatLng(
-              new Latitude(new Degrees(103)),
-              new Longitude(new Degrees(3)),
+              new Latitude(new Degrees(3)),
+              new Longitude(new Degrees(103)),
             ),
           ]),
         ]),
@@ -58,22 +58,22 @@ describe('Multi Line String', () => {
       const geoJSONMultiLineString = new GeoJSONMultiLineString([
         new GeoJSONLineString([
           new LatLng(
-            new Latitude(new Degrees(1)),
-            new Longitude(new Degrees(2)),
+            new Latitude(new Degrees(2)),
+            new Longitude(new Degrees(1)),
           ),
           new LatLng(
-            new Latitude(new Degrees(3)),
-            new Longitude(new Degrees(4)),
+            new Latitude(new Degrees(4)),
+            new Longitude(new Degrees(3)),
           ),
         ]),
         new GeoJSONLineString([
           new LatLng(
-            new Latitude(new Degrees(5)),
-            new Longitude(new Degrees(6)),
+            new Latitude(new Degrees(6)),
+            new Longitude(new Degrees(5)),
           ),
           new LatLng(
-            new Latitude(new Degrees(7)),
-            new Longitude(new Degrees(8)),
+            new Latitude(new Degrees(8)),
+            new Longitude(new Degrees(7)),
           ),
         ]),
       ]);

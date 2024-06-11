@@ -54,7 +54,8 @@ function createEndAndEdgeFunction(point: LatLng<Degrees>) {
     point,
     createEdgeFunction(
       point,
-      new LatLng(new Latitude(new Degrees(400)), point.lng),
+      new LatLng(new Latitude(new Degrees(Number(point.lat) + 10)), point.lng),
+      // new LatLng(point.lat, new Longitude(new Degrees(400))),
     ),
   ] as const;
 }

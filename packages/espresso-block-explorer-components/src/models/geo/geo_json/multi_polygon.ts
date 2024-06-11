@@ -6,7 +6,7 @@ import {
   assertTypeCode,
 } from '@/convert/codec/convert';
 import { Degrees } from '../units';
-import LatLng, { listListListLatLngDegreesCodec } from '../units/LatLng';
+import LatLng from '../units/LatLng';
 import GeoJSONBoundingBox, {
   generateBoundingBoxFromBoundingBoxes,
 } from './bounding_box';
@@ -14,6 +14,7 @@ import GeoJSONGeometry, { registerGeometryCodec } from './geometry';
 import GeoJSONMultiPoint from './multi_point';
 import GeoJSONPoint from './point';
 import GeoJSONPolygon from './polygon';
+import { listListListGeoJSONPositionCodec } from './position';
 const kGeoJSONMultiPolygonType = 'MultiPolygon';
 
 /**
@@ -103,10 +104,10 @@ class GeoJSONMultiPolygonCodec extends TypeCheckingCodec<
   ReturnType<InstanceType<new () => GeoJSONMultiPolygonEncoder['convert']>>
 > {
   readonly encoder = new GeoJSONMultiPolygonEncoder(
-    listListListLatLngDegreesCodec,
+    listListListGeoJSONPositionCodec,
   );
   readonly decoder = new GeoJSONMultiPolygonDecoder(
-    listListListLatLngDegreesCodec,
+    listListListGeoJSONPositionCodec,
   );
 }
 
