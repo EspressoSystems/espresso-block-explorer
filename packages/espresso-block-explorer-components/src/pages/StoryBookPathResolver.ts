@@ -38,4 +38,7 @@ export class StoryBookPathResolver implements PathResolver {
     }
     return `/?path=/story/pages-rollup--rollup&args=namespace:${namespace}`;
   }
+  nodes(): string {
+    return '/?path=/story/pages-nodes--nodes';
+  }
 }
