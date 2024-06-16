@@ -37,13 +37,20 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
   const rangeStatistics = React.useContext(HistogramRangeStatistics);
   const affineTransform = React.useContext(HistogramRangeAffineTransform);
 
+  // We have nothing to plot, so it doesn't make sense to try to calculate
+  // things to plot.  We return early here to save the headache, and any
+  // potential division by zero.
+  if (rangeStatistics.length === 0) {
+    return <></>;
+  }
+
   const rectangleWidthRaw =
-    (plotWidth - graphInsets - graphInsets) / (rangeStatistics.length - 1);
+    (plotWidth - graphInsets - graphInsets) / rangeStatistics.length;
   const rectangleWidth = Math.floor(rectangleWidthRaw);
   const totalRectangleWidth = rectangleWidth * rangeStatistics.length;
 
   const rectangleHeights = values.map((blockTime) =>
-    affineTransform.transform(blockTime),
+    affineTransform.transform(Number(blockTime)),
   );
 
   const offsetX = graphWidth - totalRectangleWidth - graphInsets;
@@ -51,19 +58,22 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
   return (
     <>
       <g className="histogram-plot" transform={`translate(${offsetX},0)`}>
-        {values.map((v, i) =>
-          v === null ? (
-            <rect
-              key={`missing-${i}`}
-              className="missing"
-              x={i * rectangleWidth}
-              y={0}
-              width={rectangleWidth - 1}
-              height={plotHeight}
-              data-offset={i}
-            ></rect>
-          ) : (
-            /* This is the bar of the histogram */
+        {values.map((v, i) => {
+          if (v === null) {
+            return (
+              <rect
+                key={`missing-${i}`}
+                className="missing"
+                x={i * rectangleWidth}
+                y={0}
+                width={rectangleWidth - 1}
+                height={plotHeight}
+                data-offset={i}
+              />
+            );
+          }
+          /* This is the bar of the histogram */
+          return (
             <rect
               key={`bar-${i}`}
               className="bar"
@@ -72,9 +82,9 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
               width={rectangleWidth - 1}
               height={rectangleHeights[i]}
               data-offset={i}
-            ></rect>
-          ),
-        )}
+            />
+          );
+        })}
       </g>
 
       {/*

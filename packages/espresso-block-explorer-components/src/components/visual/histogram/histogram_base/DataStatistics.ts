@@ -28,7 +28,7 @@ export class DataStatistics {
     this.mean = total / count;
   }
 
-  static compute(data: number[]): DataStatistics {
+  static compute(data: (null | number)[]): DataStatistics {
     return computeDataStatistics(data);
   }
 

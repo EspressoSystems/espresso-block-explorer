@@ -10,8 +10,8 @@ export const HistogramGraphWidth = React.createContext<number>(417);
 export const HistogramGraphHeight = React.createContext<number>(152);
 export const HistogramPlotWidth = React.createContext<number>(360);
 export const HistogramPlotHeight = React.createContext<number>(152);
-export const HistogramRange = React.createContext<number[]>([]);
-export const HistogramDomain = React.createContext<number[]>([]);
+export const HistogramRange = React.createContext<(null | number)[]>([]);
+export const HistogramDomain = React.createContext<(null | number)[]>([]);
 export const HistogramRangeStatistics = React.createContext<DataStatistics>(
   DataStatistics.empty,
 );
