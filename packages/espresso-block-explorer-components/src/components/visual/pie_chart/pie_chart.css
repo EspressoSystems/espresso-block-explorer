@@ -1,0 +1,49 @@
+@import url(../../../styles/main.css);
+
+:root {
+  --pie-chart--fill-color--01: #de9e67;
+  --pie-chart--fill-color--02: #b67237;
+  --pie-chart--fill-color--03: #fcebde;
+  --pie-chart--fill-color--04: #1eb6f8;
+  --pie-chart--fill-color--05: #0c81b4;
+  --pie-chart--fill-color--06: #d0e8f4;
+  --pie-chart--fill-color--07: #b9ad3e;
+  --pie-chart--fill-color--08: #605812;
+  --pie-chart--fill-color--09: #f0e89d;
+  --pie-chart--fill-color--10: #451f17;
+  --pie-chart--fill-color--11: #ff792e;
+}
+
+svg g.pie-chart-sections path:nth-child(11n + 1) {
+  fill: var(--pie-chart--fill-color--01);
+}
+svg g.pie-chart-sections path:nth-child(11n + 2) {
+  fill: var(--pie-chart--fill-color--02);
+}
+svg g.pie-chart-sections path:nth-child(11n + 3) {
+  fill: var(--pie-chart--fill-color--03);
+}
+svg g.pie-chart-sections path:nth-child(11n + 4) {
+  fill: var(--pie-chart--fill-color--04);
+}
+svg g.pie-chart-sections path:nth-child(11n + 5) {
+  fill: var(--pie-chart--fill-color--05);
+}
+svg g.pie-chart-sections path:nth-child(11n + 6) {
+  fill: var(--pie-chart--fill-color--06);
+}
+svg g.pie-chart-sections path:nth-child(11n + 7) {
+  fill: var(--pie-chart--fill-color--07);
+}
+svg g.pie-chart-sections path:nth-child(11n + 8) {
+  fill: var(--pie-chart--fill-color--08);
+}
+svg g.pie-chart-sections path:nth-child(11n + 9) {
+  fill: var(--pie-chart--fill-color--09);
+}
+svg g.pie-chart-sections path:nth-child(11n + 10) {
+  fill: var(--pie-chart--fill-color--10);
+}
+svg g.pie-chart-sections path:nth-child(11n + 11) {
+  fill: var(--pie-chart--fill-color--11);
+}
