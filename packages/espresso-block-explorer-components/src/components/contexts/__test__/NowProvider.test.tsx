@@ -1,17 +1,9 @@
+import { sleep } from '@/async/sleep';
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Now, ProvideTickEverySecond } from '../NowProvider';
-
-async function sleep(ms: number) {
-  return new Promise<void>((resolve) => {
-    const timeout = setTimeout(() => {
-      clearTimeout(timeout);
-      resolve();
-    }, ms);
-  });
-}
 
 let localNow: null | Date = null;
 const ConsumeNowComponent: React.FC = () => {
