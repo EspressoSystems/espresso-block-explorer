@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSVGSize } from '../../svg/hooks';
 import {
   HistogramGraphHeight,
   HistogramGraphWidth,
@@ -14,37 +15,6 @@ const horizontalInsets = 16;
 const verticalInsets = 24;
 const defaultHistogramWidth = 417;
 const defaultHistogramHeight = 176;
-
-function useSVGSize() {
-  const ref = React.useRef<null | SVGSVGElement>(null);
-  const [rect, setRect] = React.useState<null | DOMRect>(null);
-  React.useEffect(() => {
-    if (!ref.current) {
-      return;
-    }
-
-    if (typeof ResizeObserver === 'undefined') {
-      // ResizeObserver is not supported.  Fallback to a single query.
-      const rect = ref.current.getBoundingClientRect();
-      setRect(rect);
-      return;
-    }
-
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        setRect(entry.contentRect);
-      }
-    });
-
-    observer.observe(ref.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [ref, setRect]);
-
-  return [ref, rect] as const;
-}
 
 /**
  * HistogramBase is a component that provides the base SVG element for a

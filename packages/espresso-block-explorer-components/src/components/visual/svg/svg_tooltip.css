@@ -1,0 +1,10 @@
+@import url(../../../styles/main.css);
+
+.tooltip--card {
+  stroke: var(--card--border-color);
+  fill: var(--card--background-color);
+}
+
+text.tooltip--value-label {
+  fill: var(--color--slate-950);
+}

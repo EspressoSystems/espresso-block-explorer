@@ -29,12 +29,6 @@
   pointer-events: none;
 }
 
-.histogram-plot rect.bbox:hover ~ g.tooltip,
-.histogram-plot g.tooltip:hover {
-  opacity: 1;
-  pointer-events: initial;
-}
-
 circle.value-pointer--outer {
   fill: var(--card--background-color);
 }
@@ -43,9 +37,10 @@ circle.value-pointer--inner {
   fill: var(--color--slate-500);
 }
 
-.tooltip--card {
-  stroke: var(--card--border-color);
-  fill: var(--card--background-color);
+.histogram-plot rect.bbox:hover ~ g.tooltip,
+.histogram-plot g.tooltip:hover {
+  opacity: 1;
+  pointer-events: initial;
 }
 
 text.tooltip--value-label {
