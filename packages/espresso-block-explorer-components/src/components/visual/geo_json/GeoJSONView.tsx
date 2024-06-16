@@ -11,7 +11,7 @@ import LatLng from '@/models/geo/units/LatLng';
 import Latitude from '@/models/geo/units/Latitude';
 import Longitude from '@/models/geo/units/Longitude';
 import { mapHeight, mapWidth } from '@/models/geo/world_map_grid/constants';
-import SVGPathBuilder from '../histogram/histogram_base/SVGPathBuilder';
+import SVGPathBuilder from '../svg/SVGPathBuilder';
 
 interface GeoJSONViewProps {
   offsetX?: number;
