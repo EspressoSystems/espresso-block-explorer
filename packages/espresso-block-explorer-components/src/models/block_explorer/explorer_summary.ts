@@ -11,11 +11,11 @@ export interface GenesisOverviewEntry {
 }
 
 export interface HistogramEntry {
-  readonly blockTime: number[];
-  readonly blockSize: number[];
-  readonly blockTransactions: number[];
-  readonly blockThroughput: number[];
-  readonly blocks: number[];
+  readonly blockTime: (number | null)[];
+  readonly blockSize: (number | null)[];
+  readonly blockTransactions: (number | null)[];
+  readonly blockThroughput: (number | null)[];
+  readonly blocks: (number | null)[];
 }
 
 export interface ExplorerSummaryEntry {
