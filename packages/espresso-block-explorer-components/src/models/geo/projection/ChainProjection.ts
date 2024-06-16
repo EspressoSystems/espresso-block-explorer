@@ -14,6 +14,19 @@ export default class ChainProjection<
   Output2 extends NumberLike,
 > implements GeodesicProjection<Input1, Output2>
 {
+  get minInput() {
+    return this.projection1.minInput;
+  }
+  get maxInput() {
+    return this.projection1.maxInput;
+  }
+  get minOutput() {
+    return this.projection2.minOutput;
+  }
+  get maxOutput() {
+    return this.projection2.maxOutput;
+  }
+
   constructor(
     private readonly projection1: GeodesicProjection<Input1, Output1>,
     private readonly projection2: GeodesicProjection<Output1, Output2>,

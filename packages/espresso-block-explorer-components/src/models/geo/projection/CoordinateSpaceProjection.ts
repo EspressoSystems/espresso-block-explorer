@@ -15,6 +15,11 @@ import { GeodesicProjection } from './GeodesicProjection';
 export default class CoordinateSpaceProjection<N extends NumberLike>
   implements GeodesicProjection<NumberLike, DensityIndependentPoint>
 {
+  readonly minInput: LatLng<N>;
+  readonly maxInput: LatLng<N>;
+  readonly minOutput: LatLng<DensityIndependentPoint>;
+  readonly maxOutput: LatLng<DensityIndependentPoint>;
+
   private horizontalAffine: AffineTransform;
   private inverseHorizontalAffine: AffineTransform;
   private verticalAffine: AffineTransform;
@@ -25,6 +30,10 @@ export default class CoordinateSpaceProjection<N extends NumberLike>
     coordinateMin: LatLng<DensityIndependentPoint>,
     coordinateMax: LatLng<DensityIndependentPoint>,
   ) {
+    this.minInput = projectionMin;
+    this.maxInput = projectionMax;
+    this.minOutput = coordinateMin;
+    this.maxOutput = coordinateMax;
     this.horizontalAffine = new AffineTransform(
       Number(projectionMin.lat),
       Number(projectionMax.lat),

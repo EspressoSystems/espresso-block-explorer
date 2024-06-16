@@ -60,6 +60,11 @@ export default class MercatorProjection
     MercatorProjection.max,
   );
 
+  readonly minInput = MercatorProjection.min;
+  readonly maxInput = MercatorProjection.max;
+  readonly minOutput = MercatorProjection.minProjection;
+  readonly maxOutput = MercatorProjection.maxProjection;
+
   private static projectLongitude(
     lng: Longitude<Radians>,
   ): Longitude<NumberLike> {

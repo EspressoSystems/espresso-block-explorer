@@ -12,6 +12,23 @@ import { GeodesicProjection } from './GeodesicProjection';
 export default class DegreesRadiansProjection
   implements GeodesicProjection<Degrees, Radians>
 {
+  readonly minInput = new LatLng(
+    new Latitude(new Degrees(-90)),
+    new Longitude(new Degrees(-180)),
+  );
+  readonly maxInput = new LatLng(
+    new Latitude(new Degrees(90)),
+    new Longitude(new Degrees(180)),
+  );
+  readonly minOutput = new LatLng(
+    new Latitude(new Radians(-Math.PI / 2)),
+    new Longitude(new Radians(-Math.PI)),
+  );
+  readonly maxOutput = new LatLng(
+    new Latitude(new Radians(Math.PI / 2)),
+    new Longitude(new Radians(Math.PI)),
+  );
+
   private projectLatitude(lat: Latitude<Degrees>): Latitude<Radians> {
     return new Latitude(this.convertDegreesToRadians(lat));
   }
