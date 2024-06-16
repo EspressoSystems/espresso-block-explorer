@@ -6,7 +6,7 @@ import { CappuccinoExplorerGetTransactionDetailRequest } from '../explorer/get_t
 import { CappuccinoExplorerGetTransactionSummariesFilter } from '../explorer/get_transaction_summaries_filter';
 import { CappuccinoExplorerGetTransactionSummariesRequest } from '../explorer/get_transaction_summaries_request';
 import { CappuccinoExplorerGetTransactionSummariesTarget } from '../explorer/get_transaction_summaries_target';
-import { WebWorkerClientBasedCappuccinoHotShotQueryService } from '../web_worker_client_based';
+import { WebWorkerClientBasedCappuccinoHotShotQueryService } from '../hotshot_query_service_web_worker_client_based';
 
 describe('Web worker Client Based', () => {
   describe('Fake Data', () => {

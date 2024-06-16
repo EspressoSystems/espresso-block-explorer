@@ -83,8 +83,8 @@ import {
   cappuccinoExplorerGetTransactionSummariesResponseCodec,
 } from './explorer/get_transaction_summaries_response';
 import { CappuccinoHotShotQueryService } from './hot_shot_query_service_api';
+import ProxyWorker from './hotshot_query_service_web_worker_api.js?worker';
 import { CappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
-import ProxyWorker from './web_worker_api.js?worker';
 
 class AsyncRequestHelper {
   private worker: Worker;

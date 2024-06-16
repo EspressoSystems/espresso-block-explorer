@@ -1,4 +1,4 @@
-import { WebWorkerProxy } from './web_worker_proxy';
+import { WebWorkerProxy } from './hotshot_query_service_web_worker_proxy';
 
 self.addEventListener(
   'message',
