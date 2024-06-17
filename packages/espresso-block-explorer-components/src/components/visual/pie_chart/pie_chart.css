@@ -47,3 +47,26 @@ svg g.pie-chart-sections path:nth-child(11n + 10) {
 svg g.pie-chart-sections path:nth-child(11n + 11) {
   fill: var(--pie-chart--fill-color--11);
 }
+
+svg path.pie-chart-section-hitbox {
+  fill: var(--color--transparent);
+  stroke: var(--color--transparent);
+}
+
+.pie-chart-tooltip-hitboxes g.tooltip {
+  opacity: 0;
+  transition: opacity 240ms ease-in-out;
+  will-change: opacity;
+  pointer-events: none;
+}
+
+.pie-chart-tooltip-hitboxes g.pie-chart-tooltip-hitbox path:hover ~ g.tooltip,
+.pie-chart-tooltip-hitboxes g.pie-chart-tooltip-hitbox g.tooltip:hover {
+  opacity: 1;
+  pointer-events: initial;
+}
+
+rect.node-hitbox {
+  fill: var(--color--transparent);
+  stroke: var(--color--transparent);
+}
