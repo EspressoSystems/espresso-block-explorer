@@ -24,15 +24,22 @@ export const MapGeodesicToCoordinateSpaceProjectionContext =
   );
 
 /**
+ * CoordinateRectangle is a rectangle with the given `NumberLike` coordinates.
+ */
+export interface CoordinateRectangle<T extends NumberLike> {
+  x: T;
+  y: T;
+  width: T;
+  height: T;
+}
+
+/**
  * MapCoordinateSpaceRectContext is a context that provides the rectangle that
  * represents the coordinate space of the map.
  */
-export const MapCoordinateSpaceRectContext = React.createContext<{
-  x: DensityIndependentPoint;
-  y: DensityIndependentPoint;
-  width: DensityIndependentPoint;
-  height: DensityIndependentPoint;
-}>({
+export const MapCoordinateSpaceRectContext = React.createContext<
+  CoordinateRectangle<DensityIndependentPoint>
+>({
   x: new DensityIndependentPoint(0),
   y: new DensityIndependentPoint(0),
   width: mapWidth,

@@ -1,7 +1,7 @@
 import DensityIndependentPoint from '@/models/geo/units/DensityIndependentPoint';
 import React from 'react';
 import { useSVGSize } from '../svg/hooks';
-import { MapCoordinateSpaceRectContext } from './contexts';
+import { CoordinateRectangle, MapCoordinateSpaceRectContext } from './contexts';
 
 export interface WorldMapAutoSizerProps {
   children: React.ReactNode | React.ReactNode[];
@@ -15,12 +15,7 @@ export interface WorldMapAutoSizerProps {
 function resolveRectangle(
   ref: React.MutableRefObject<SVGSVGElement | null>,
   state: DOMRect | null,
-  rect: {
-    x: DensityIndependentPoint;
-    y: DensityIndependentPoint;
-    width: DensityIndependentPoint;
-    height: DensityIndependentPoint;
-  },
+  rect: CoordinateRectangle<DensityIndependentPoint>,
 ) {
   if (
     ref.current === null ||
