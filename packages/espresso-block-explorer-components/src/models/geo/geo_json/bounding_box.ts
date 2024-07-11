@@ -1,3 +1,4 @@
+import { firstIterator, foldRIterator } from '@/functional/functional';
 import { greaterThan, lessThan } from '@/models/numeric/numeric';
 import { Degrees, LatLng, Latitude, Longitude } from '../units';
 import { GenericLATLNG } from '../units/latlng_interface';
@@ -42,16 +43,20 @@ export default class GeoJSONBoundingBox {
  * of the other boxes.
  */
 export function generateBoundingBoxFromBoundingBoxes(
-  objects: { bbox: GeoJSONBoundingBox }[],
+  iterable: Iterable<{ bbox: GeoJSONBoundingBox }>,
 ): GeoJSONBoundingBox {
-  return new GeoJSONBoundingBox(
-    objects
-      .slice(1)
-      .reduce((min, object) => min.min(object.bbox.min), objects[0].bbox.min),
-    objects
-      .slice(1)
-      .reduce((max, object) => max.max(object.bbox.max), objects[0].bbox.max),
+  const it = iterable[Symbol.iterator]();
+  const first = firstIterator(it);
+  const [min, max] = foldRIterator(
+    ([min, max], object) => [
+      min.min(object.bbox.min),
+      max.max(object.bbox.max),
+    ],
+    [first.bbox.min, first.bbox.max],
+    it,
   );
+
+  return new GeoJSONBoundingBox(min, max);
 }
 
 /**
@@ -60,10 +65,15 @@ export function generateBoundingBoxFromBoundingBoxes(
  * This box will be the smallest box that contains all of the points.
  */
 export function generateBoundingBoxFromMinMaxes(
-  objects: GenericLATLNG<Latitude<Degrees>, Longitude<Degrees>>[],
+  iterable: Iterable<GenericLATLNG<Latitude<Degrees>, Longitude<Degrees>>>,
 ): GeoJSONBoundingBox {
-  return new GeoJSONBoundingBox(
-    objects.slice(1).reduce((min, object) => min.min(object), objects[0]),
-    objects.slice(1).reduce((max, object) => max.max(object), objects[0]),
+  const it = iterable[Symbol.iterator]();
+  const first = firstIterator(it);
+  const [min, max] = foldRIterator(
+    ([min, max], object) => [min.min(object), max.max(object)],
+    [first, first],
+    it,
   );
+
+  return new GeoJSONBoundingBox(min, max);
 }
