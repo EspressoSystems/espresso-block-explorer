@@ -30,7 +30,6 @@ export const PieChartLabelContext = React.createContext<
   React.FC<PieChartLabelProps>
 >(() => <></>);
 
-/* eslint-disable react/prop-types */
 export interface PieChartEntry {
   label: string;
   value: number;
