@@ -6,6 +6,7 @@ export { default as BaseBadResponseError } from './BaseBadResponseError';
 export { default as ChannelClosedError } from './ChannelClosedError';
 export { CompleterAlreadyCompletedError } from './CompleterAlreadyCompletedError';
 export type { EspressoError } from './EspressoError';
+export { default as FetchError } from './FetchError';
 export { IncorrectBase64PaddingError } from './IncorrectBase64PaddingError';
 export { InvalidBase64AlphabetLengthError } from './InvalidBase64LengthError';
 export { default as InvalidHexStringError } from './InvalidHexStringError';
