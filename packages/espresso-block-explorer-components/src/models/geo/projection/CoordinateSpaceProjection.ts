@@ -77,13 +77,16 @@ export default class CoordinateSpaceProjection<N extends NumberLike>
   }
 
   inverseProject(point: LatLng<DensityIndependentPoint>): LatLng<Radians> {
+    const latitudeRadians = new Radians(
+      this.inverseHorizontalAffine.transform(Number(point.lat)),
+    );
+    const longitudeRadians = new Radians(
+      this.inverseVerticalAffine.transform(Number(point.lng)),
+    );
+
     return new LatLng(
-      new Latitude(
-        new Radians(this.inverseHorizontalAffine.transform(Number(point.lat))),
-      ),
-      new Longitude(
-        new Radians(this.inverseVerticalAffine.transform(Number(point.lng))),
-      ),
+      new Latitude(latitudeRadians),
+      new Longitude(longitudeRadians),
     );
   }
 }
