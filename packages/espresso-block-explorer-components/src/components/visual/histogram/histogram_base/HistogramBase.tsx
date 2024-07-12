@@ -34,7 +34,11 @@ export const HistogramBase: React.FC<HistogramBaseProps> = (props) => {
       <HistogramGraphHeight.Provider value={height}>
         <HistogramPlotWidth.Provider value={width - horizontalInsets}>
           <HistogramPlotHeight.Provider value={height - verticalInsets}>
-            <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`}>
+            <svg
+              ref={svgRef}
+              role="graphics-datachart"
+              viewBox={`0 0 ${width} ${height}`}
+            >
               <g transform={`translate(0, ${verticalInsets / 2})`}>
                 {props.children}
               </g>

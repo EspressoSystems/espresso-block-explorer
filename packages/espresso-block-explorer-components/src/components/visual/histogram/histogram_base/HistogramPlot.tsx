@@ -57,11 +57,16 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
 
   return (
     <>
-      <g className="histogram-plot" transform={`translate(${offsetX},0)`}>
+      <g
+        className="histogram-plot"
+        transform={`translate(${offsetX},0)`}
+        role="graphics-datagroup"
+      >
         {values.map((v, i) => {
           if (v === null) {
             return (
               <rect
+                role="graphics-dataunit"
                 key={`missing-${i}`}
                 className="missing"
                 x={i * rectangleWidth}
@@ -72,9 +77,11 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
               />
             );
           }
+
           /* This is the bar of the histogram */
           return (
             <rect
+              role="graphics-dataunit"
               key={`bar-${i}`}
               className="bar"
               x={i * rectangleWidth}

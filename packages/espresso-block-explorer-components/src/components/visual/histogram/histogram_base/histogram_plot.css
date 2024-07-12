@@ -38,7 +38,9 @@ circle.value-pointer--inner {
 }
 
 .histogram-plot rect.bbox:hover ~ g.tooltip,
-.histogram-plot g.tooltip:hover {
+.histogram-plot rect.bbox[data-hover='true'] ~ g.tooltip,
+.histogram-plot g.tooltip:hover,
+.histogram-plot g.tooltip[data-hover='true'] {
   opacity: 1;
   pointer-events: initial;
 }
