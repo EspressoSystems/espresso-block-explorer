@@ -1,4 +1,5 @@
 @import url(../../../../styles/main.css);
+@import url(../../../layout/card/card.css);
 
 :root {
   --histogram-plot--fill-color: var(--color--sky-700);
