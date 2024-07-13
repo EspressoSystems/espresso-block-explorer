@@ -1,4 +1,5 @@
 @import url(../../../styles/main.css);
+@import url(../../layout/card/card.css);
 
 :root {
   --pie-chart--fill-color--01: #de9e67;
@@ -14,59 +15,56 @@
   --pie-chart--fill-color--11: #ff792e;
 }
 
-svg g.pie-chart-sections path:nth-child(11n + 1) {
+svg g.pie-chart-sections > *:nth-child(11n + 1) {
   fill: var(--pie-chart--fill-color--01);
 }
-svg g.pie-chart-sections path:nth-child(11n + 2) {
+svg g.pie-chart-sections > *:nth-child(11n + 2) {
   fill: var(--pie-chart--fill-color--02);
 }
-svg g.pie-chart-sections path:nth-child(11n + 3) {
+svg g.pie-chart-sections > *:nth-child(11n + 3) {
   fill: var(--pie-chart--fill-color--03);
 }
-svg g.pie-chart-sections path:nth-child(11n + 4) {
+svg g.pie-chart-sections > *:nth-child(11n + 4) {
   fill: var(--pie-chart--fill-color--04);
 }
-svg g.pie-chart-sections path:nth-child(11n + 5) {
+svg g.pie-chart-sections > *:nth-child(11n + 5) {
   fill: var(--pie-chart--fill-color--05);
 }
-svg g.pie-chart-sections path:nth-child(11n + 6) {
+svg g.pie-chart-sections > *:nth-child(11n + 6) {
   fill: var(--pie-chart--fill-color--06);
 }
-svg g.pie-chart-sections path:nth-child(11n + 7) {
+svg g.pie-chart-sections > *:nth-child(11n + 7) {
   fill: var(--pie-chart--fill-color--07);
 }
-svg g.pie-chart-sections path:nth-child(11n + 8) {
+svg g.pie-chart-sections > *:nth-child(11n + 8) {
   fill: var(--pie-chart--fill-color--08);
 }
-svg g.pie-chart-sections path:nth-child(11n + 9) {
+svg g.pie-chart-sections > *:nth-child(11n + 9) {
   fill: var(--pie-chart--fill-color--09);
 }
-svg g.pie-chart-sections path:nth-child(11n + 10) {
+svg g.pie-chart-sections > *:nth-child(11n + 10) {
   fill: var(--pie-chart--fill-color--10);
 }
-svg g.pie-chart-sections path:nth-child(11n + 11) {
+svg g.pie-chart-sections > *:nth-child(11n + 11) {
   fill: var(--pie-chart--fill-color--11);
 }
 
-svg path.pie-chart-section-hitbox {
+svg .pie-chart-section-hitbox {
   fill: var(--color--transparent);
   stroke: var(--color--transparent);
 }
 
-.pie-chart-tooltip-hitboxes g.tooltip {
+.pie-chart-tooltip-hitbox g.tooltip {
   opacity: 0;
   transition: opacity 240ms ease-in-out;
   will-change: opacity;
   pointer-events: none;
 }
 
-.pie-chart-tooltip-hitboxes g.pie-chart-tooltip-hitbox path:hover ~ g.tooltip,
-.pie-chart-tooltip-hitboxes g.pie-chart-tooltip-hitbox g.tooltip:hover {
+.pie-chart-section-hitbox:hover ~ g.tooltip,
+.pie-chart-section-hitbox[data-hover] ~ g.tooltip,
+pie-chart-tooltip-hitbox g.tooltip:hover,
+pie-chart-tooltip-hitbox g.tooltip[data-hover] {
   opacity: 1;
   pointer-events: initial;
-}
-
-rect.node-hitbox {
-  fill: var(--color--transparent);
-  stroke: var(--color--transparent);
 }

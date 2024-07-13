@@ -3,6 +3,7 @@ import NumberText from '@/components/text/NumberText';
 import { WithUiText600 } from '@/components/typography/typography';
 import React from 'react';
 import Text from '../../text/Text';
+import SVGPathBuilder from '../svg/SVGPathBuilder';
 import {
   SVGToolTipContentComponent,
   SVGToolTipDrawAreaHeight,
@@ -70,9 +71,65 @@ export const PieChart: React.FC<PieChartProps> = (props) => {
   }
 
   const resolvedSize = size ?? { x: 0, y: 0, width: 100, height: 100 };
-
   const { x, y, width, height } = resolvedSize;
   const radius = Math.min(width, height) / 2;
+
+  if (data.length === 1) {
+    // We only have a single entry.
+    // As such, we should only draw a single circle.
+
+    return (
+      <svg
+        ref={ref}
+        viewBox={`${x} ${y} ${width} ${height}`}
+        role="graphics-datachart"
+        aria-roledescription="pie chart"
+      >
+        <SVGToolTipDrawAreaWidth.Provider value={Number(width)}>
+          <SVGToolTipDrawAreaHeight.Provider value={Number(height)}>
+            <g className="pie-chart-sections" role="graphics-datagroup">
+              <circle
+                cx={radius}
+                cy={radius}
+                r={radius}
+                data-label={data[0].label}
+                role="graphics-datascale"
+                // aria-datatype="portion"
+                aria-valuemax={1}
+              />
+            </g>
+            <g className="pie-chart-tooltip-hitboxes">
+              <PieChartEntryCalculationContext.Provider
+                value={{
+                  startX: radius,
+                  startY: radius,
+                  endX: radius,
+                  endY: radius,
+                  label: data[0].label,
+                  value: data[0].value,
+                  startAngle: 0,
+                  endAngle: 2 * Math.PI,
+                  endPercentage: 1,
+                }}
+              >
+                <g className="pie-chart-tooltip-hitbox">
+                  <circle
+                    className="pie-chart-section-hitbox"
+                    cx={radius}
+                    cy={radius}
+                    r={radius}
+                    data-label={data[0].label}
+                  />
+                  <PieChartTooltip />
+                </g>
+              </PieChartEntryCalculationContext.Provider>
+            </g>
+          </SVGToolTipDrawAreaHeight.Provider>
+        </SVGToolTipDrawAreaWidth.Provider>
+      </svg>
+    );
+  }
+
   const total = data.reduce((acc, entry) => acc + entry.value, 0);
 
   const runningPercentage = data.reduce((acc: number[], entry) => {
@@ -107,25 +164,63 @@ export const PieChart: React.FC<PieChartProps> = (props) => {
   });
 
   return (
-    <svg ref={ref} viewBox={`${x} ${y} ${width} ${height}`}>
+    <svg
+      ref={ref}
+      viewBox={`${x} ${y} ${width} ${height}`}
+      role="graphics-datachart"
+      aria-roledescription="pie chart"
+    >
       <SVGToolTipDrawAreaWidth.Provider value={Number(width)}>
         <SVGToolTipDrawAreaHeight.Provider value={Number(height)}>
-          <g className="pie-chart-sections">
+          <g className="pie-chart-sections" role="graphics-datagroup">
             {entries.map((entry, index) => {
-              const { startX, startY, endX, endY, label } = entry;
+              const {
+                startX,
+                startY,
+                endX,
+                endY,
+                label,
+                value,
+                startAngle,
+                endAngle,
+              } = entry;
+
+              const largeSweep = endAngle - startAngle > Math.PI ? 1 : 0;
+              const pathBuilder = new SVGPathBuilder();
+              pathBuilder.moveTo(radius, radius);
+              pathBuilder.lineTo(startX, startY);
+              pathBuilder.arcTo(radius, radius, 0, largeSweep, 1, endX, endY);
+              pathBuilder.close();
 
               return (
                 <path
                   key={index}
-                  d={`M ${radius} ${radius} L ${startX} ${startY} A ${radius} ${radius} 0 0 1 ${endX} ${endY} Z`}
+                  d={pathBuilder.instructionToString()}
                   data-label={label}
+                  role="graphics-datascale"
+                  aria-valuemax={value / total}
                 />
               );
             })}
           </g>
           <g className="pie-chart-tooltip-hitboxes">
             {entries.map((entry, index) => {
-              const { startX, startY, endX, endY, label } = entry;
+              const {
+                startX,
+                startY,
+                endX,
+                endY,
+                label,
+                endAngle,
+                startAngle,
+              } = entry;
+
+              const largeSweep = endAngle - startAngle > Math.PI ? 1 : 0;
+              const pathBuilder = new SVGPathBuilder();
+              pathBuilder.moveTo(radius, radius);
+              pathBuilder.lineTo(startX, startY);
+              pathBuilder.arcTo(radius, radius, 0, largeSweep, 1, endX, endY);
+              pathBuilder.close();
 
               return (
                 <PieChartEntryCalculationContext.Provider
@@ -136,7 +231,7 @@ export const PieChart: React.FC<PieChartProps> = (props) => {
                     <path
                       key={index}
                       className="pie-chart-section-hitbox"
-                      d={`M ${radius} ${radius} L ${startX} ${startY} A ${radius} ${radius} 0 0 1 ${endX} ${endY} Z`}
+                      d={pathBuilder.instructionToString()}
                       data-label={label}
                     />
                     <PieChartTooltip />
@@ -151,6 +246,38 @@ export const PieChart: React.FC<PieChartProps> = (props) => {
   );
 };
 
+function calculatePieSectionTooltipPosition(
+  width: number,
+  height: number,
+  offsetRadius: number,
+  entry: PieChartEntryCalculation,
+) {
+  const centerX = width * 0.5;
+  const centerY = height * 0.5;
+
+  // We add the start and end points twice to ge the center closer to the
+  // middle of the pie chart section.
+
+  if (entry.endAngle >= 2 * Math.PI && entry.startAngle <= 0) {
+    // We have a single entry
+    // Let's move this element to just the center of hte Pie Chart.
+    return [centerX, centerY];
+  }
+
+  const middleAngle = (entry.endAngle + entry.startAngle) / 2;
+
+  const pointX = centerX + Math.cos(middleAngle) * offsetRadius;
+  const pointY = centerY + Math.sin(middleAngle) * offsetRadius;
+
+  return [pointX, pointY];
+}
+
+// The offset radius is how far from the center of the pie chart tooltip we
+// want the tooltip to be centered about. Normally we'd expect this to just
+// be about half of the total radius as that make the most sense. However
+// upon visual inspection this weight looks best around two thirds.
+const kTooltipOffsetRadiusRatio = 2 / 3;
+
 const PieChartTooltip: React.FC = () => {
   const height = React.useContext(SVGToolTipDrawAreaHeight);
   const width = React.useContext(SVGToolTipDrawAreaWidth);
@@ -160,16 +287,13 @@ const PieChartTooltip: React.FC = () => {
     return <></>;
   }
 
-  const centerX = width * 0.5;
-  const centerY = height * 0.5;
-
-  // We add the start and end points twice to ge the center closer to the
-  // middle of the pie chart section.
-
-  const pointX =
-    (centerX + entry.startX + entry.startX + entry.endX + entry.endX) / 5;
-  const pointY =
-    (centerY + entry.startY + entry.startY + entry.endY + entry.endY) / 5;
+  const [pointX, pointY] = calculatePieSectionTooltipPosition(
+    width,
+    height,
+    // As odd as it seems
+    Math.min(width, height) * 0.5 * kTooltipOffsetRadiusRatio,
+    entry,
+  );
 
   return (
     <SVGToolTipContentComponent.Provider value={PieChartToolTipContent}>
