@@ -89,7 +89,7 @@ export function filterIterable<T>(
 export function* mapIterator<T, U>(
   iterator: Iterator<T>,
   transformer: (t: T) => U,
-): Generator<U> {
+): IterableIterator<U> {
   for (let next = iterator.next(); !next.done; next = iterator.next()) {
     yield transformer(next.value);
   }
@@ -102,7 +102,7 @@ export function* mapIterator<T, U>(
 export function mapIterable<T, U>(
   iterable: Iterable<T>,
   transformer: (t: T) => U,
-): Generator<U> {
+): IterableIterator<U> {
   return mapIterator(iterable[Symbol.iterator](), transformer);
 }
 
@@ -113,11 +113,12 @@ export function* takeIterator<T>(
   iterator: Iterator<T>,
   count: number,
 ): Generator<T> {
-  for (
-    let i = 0, next = iterator.next();
-    i < count && !next.done;
-    i++, next = iterator.next()
-  ) {
+  for (let i = 0; i < count; i++) {
+    const next = iterator.next();
+    if (next.done) {
+      return;
+    }
+
     yield next.value;
   }
 }
@@ -176,6 +177,39 @@ export function firstIterator<T>(iterator: Iterator<T>): T {
   }
 
   return next.value;
+}
+
+/**
+ * firstIterable is a convenience function for invoking firstIterator with
+ * an Iterable instead.
+ */
+export function firstIterable<T>(iterable: Iterable<T>): T {
+  return firstIterator(iterable[Symbol.iterator]());
+}
+
+/**
+ * lastIterator returns the last element of the given Iterator
+ * If no element is found, this throws an error.
+ */
+export function lastIterator<T>(iterator: Iterator<T>): T {
+  let last: undefined | T = undefined;
+  for (let next = iterator.next(); !next.done; next = iterator.next()) {
+    last = next.value;
+  }
+
+  if (last === undefined) {
+    throw new MissingElementError();
+  }
+
+  return last;
+}
+
+/**
+ * lastIterable is a convenience function for invoking lastIterator with
+ * an Iterable instead.
+ */
+export function lastIterable<T>(iterable: Iterable<T>): T {
+  return lastIterator(iterable[Symbol.iterator]());
 }
 
 /**
@@ -382,4 +416,34 @@ export function foldRIterator<T, U>(
   }
 
   return result;
+}
+
+/**
+ * zipWithIterator is a zipWith function that can be applied to an
+ * AsyncIterator.
+ */
+export function* zipWithIterator<T, U, V>(
+  itT: Iterator<T>,
+  itU: Iterator<U>,
+  zipper: (t: T, u: U) => V,
+): Generator<V> {
+  for (
+    let tNext = itT.next(), uNext = itU.next();
+    !tNext.done && !uNext.done;
+    tNext = itT.next(), uNext = itU.next()
+  ) {
+    yield zipper(tNext.value, uNext.value);
+  }
+}
+
+/**
+ * zipWithIterable is a zipWith function that can be applied to an
+ * AsyncIterable.
+ */
+export function zipWithIterable<T, U, V>(
+  ts: Iterable<T>,
+  us: Iterable<U>,
+  zipper: (t: T, u: U) => V,
+): Generator<V> {
+  return zipWithIterator(ts[Symbol.iterator](), us[Symbol.iterator](), zipper);
 }

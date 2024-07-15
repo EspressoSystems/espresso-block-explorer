@@ -101,16 +101,76 @@ class RingBufferBase<T> implements CircularBuffer<T> {
   }
 
   [Symbol.iterator](): Iterator<T> {
-    return {
-      next: () => {
-        const value = this.get();
-        if (value === undefined || value === null) {
-          return { value: undefined, done: true };
-        }
+    return new RingBufferMutableIterator(this);
+  }
 
-        return { value, done: false };
-      },
+  immutableIterable(): Iterable<T> {
+    return {
+      [Symbol.iterator]: () => this.immutableIterator(),
     };
+  }
+
+  immutableIterator(): Iterator<T> {
+    return new RingBufferImmutableIterator(
+      this.readIndex,
+      this.writeIndex,
+      this.buffer,
+      this.nextIndex,
+    );
+  }
+}
+
+/**
+ * RingBufferMutableIterator is an iterator that will iterate over the
+ * RingBufferBase in a mutable fashion.  It will consume the buffer as it
+ * iterates over it.
+ */
+class RingBufferMutableIterator<T> implements Iterator<T> {
+  private readonly buffer: RingBufferBase<T>;
+  constructor(buffer: RingBufferBase<T>) {
+    this.buffer = buffer;
+  }
+
+  next(): IteratorResult<T> {
+    const value = this.buffer.get();
+    if (value === undefined || value === null) {
+      return { value: undefined, done: true };
+    }
+
+    return { value, done: false };
+  }
+}
+
+/**
+ * RingBufferImmutableIterator is an iterator that will iterate over the
+ * contents of the RingBufferBase in an immutable fashion.
+ */
+class RingBufferImmutableIterator<T> implements Iterator<T> {
+  private readIndex: number;
+  private writeIndex: number;
+  private readonly buffer: T[];
+  private nextIndex: CircularBufferDetermineNextIndexBehavior;
+
+  constructor(
+    readIndex: number,
+    writeIndex: number,
+    buffer: T[],
+    nextIndex: CircularBufferDetermineNextIndexBehavior,
+  ) {
+    this.readIndex = readIndex;
+    this.writeIndex = writeIndex;
+    this.buffer = buffer;
+    this.nextIndex = nextIndex;
+  }
+
+  next(): IteratorResult<T> {
+    if (this.readIndex === this.writeIndex) {
+      return { value: undefined, done: true };
+    }
+
+    const value = this.buffer[this.readIndex];
+    this.readIndex = this.nextIndex.nextIndex(this.readIndex);
+    return { value, done: false };
   }
 }
 

@@ -1,0 +1,31 @@
+@import url(../../../styles/main.css);
+:root {
+  --world-map--continent-color: var(--color--slate-300);
+  --world-map--node-color: var(--color--slate-950);
+}
+
+svg.world-map-dots circle.continent {
+  fill: var(--world-map--continent-color);
+}
+
+svg.world-map-dots circle.node {
+  fill: var(--world-map--node-color);
+}
+
+.world-map-population-dots-tooltips g.tooltip {
+  opacity: 0;
+  transition: opacity 240ms ease-in-out;
+  will-change: opacity;
+  pointer-events: none;
+}
+
+.world-map-population-dots-tooltips g.population rect:hover ~ g.tooltip,
+.world-map-population-dots-tooltips g.population g.tooltip:hover {
+  opacity: 1;
+  pointer-events: initial;
+}
+
+rect.node-hitbox {
+  fill: var(--color--transparent);
+  stroke: var(--color--transparent);
+}

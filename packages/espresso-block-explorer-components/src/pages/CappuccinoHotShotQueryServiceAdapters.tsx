@@ -7,6 +7,7 @@ import { RollUpSummaryAsyncRetrieverContext } from '@/components/page_sections/r
 import { TransactionDetailAsyncRetrieverContext } from '@/components/page_sections/transaction_detail_content/TransactionDetailLoader';
 import { TransactionSummaryAsyncRetrieverContext } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
 import { BlockSummaryEntry } from '@/models/block_explorer/block_summary';
+import { ExplorerSummaryEntry } from '@/models/block_explorer/explorer_summary';
 import { TransactionSummaryEntry } from '@/models/block_explorer/transaction_summary';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import { CappuccinoExplorerGetBlockDetailRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_block_detail_request';
@@ -506,7 +507,7 @@ export const ProvideCappuccinoExplorerSummary: React.FC<
               blockThroughput: [],
               blocks: histograms.blockHeights,
             },
-          };
+          } satisfies ExplorerSummaryEntry;
         },
       }}
     />

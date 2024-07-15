@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSVGSize } from '../../svg/hooks';
 import { AffineTransform } from './AffineTransform';
 import { DataStatistics } from './DataStatistics';
 import { HistogramBase } from './HistogramBase';
@@ -100,20 +101,7 @@ export const ProvideDataStatistics: React.FC<ProvideDataStatisticsProps> = ({
 };
 
 export const SimpleHistogram: React.FC = () => {
-  const labelsRef = React.useRef<null | SVGSVGElement>(null);
-  const [labelsSize, setLabelsSize] = React.useState<null | DOMRect>(null);
-  React.useEffect(() => {
-    if (!labelsRef.current) {
-      return;
-    }
-
-    if (!('getBBox' in labelsRef.current)) {
-      return;
-    }
-
-    const bbox = labelsRef.current.getBBox();
-    setLabelsSize(bbox);
-  }, [labelsRef, setLabelsSize]);
+  const [labelsRef, labelsSize] = useSVGSize();
 
   return (
     <HistogramBase>
@@ -121,8 +109,10 @@ export const SimpleHistogram: React.FC = () => {
         <RecalculatePlotWidth>
           <ProvideAffineTransforms>
             <ProvideGuideLines>
-              <HistogramGuideLines />
-              <HistogramYAxisLabels labelsRef={labelsRef} />
+              <g role="graphics-axis">
+                <HistogramGuideLines />
+                <HistogramYAxisLabels labelsRef={labelsRef} />
+              </g>
               <HistogramPlot />
             </ProvideGuideLines>
           </ProvideAffineTransforms>

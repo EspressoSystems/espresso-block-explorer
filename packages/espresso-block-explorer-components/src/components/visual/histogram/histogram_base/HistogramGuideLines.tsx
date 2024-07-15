@@ -78,6 +78,7 @@ export const HistogramGuideLines: React.FC = () => {
     <g className="histogram-y-guide-lines">
       {lines.map((line, i) => (
         <line
+          role="graphics-tick"
           key={i}
           x1={labelsBBox?.width ?? yAxisLabelOffset}
           y1={plotHeight - rangeAffineTransform.transform(line)}
@@ -112,7 +113,11 @@ export const HistogramYAxisLabels: React.FC<HistogramYAxisLabelsProps> = (
   const comp = React.useContext(HistogramYAxisLabelComponent);
 
   return (
-    <g ref={props.labelsRef} className="histogram-y-axis-labels">
+    <g
+      ref={props.labelsRef}
+      className="histogram-y-axis-labels"
+      role="graphics-category"
+    >
       {lines.map((line, i) => (
         <UiTextSmallText
           key={i}

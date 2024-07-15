@@ -36,6 +36,11 @@ const MainNavLinks: React.FC = () => {
           <Text text="Rollups" />
         </NavLink>
       </li>
+      <li>
+        <NavLink pageType={PageType.nodes} href={resolver.nodes()}>
+          <Text text="Nodes" />
+        </NavLink>
+      </li>
     </ul>
   );
 };

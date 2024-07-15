@@ -1,0 +1,12 @@
+.pie-chart-section-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pie-chart-section-title > h2 {
+  margin: 0;
+}
+
+.pie-chart-section-title > .value-labeled {
+  text-align: end;
+}

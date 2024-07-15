@@ -160,7 +160,11 @@ export const ExplorerSummaryLoader: React.FC<ExplorerSummaryLoaderProps> = (
                               blocks: histograms.blocks,
                               blockThroughput: histograms.blockSize.map(
                                 (value, i) =>
-                                  value / Math.max(1, histograms.blockTime[i]),
+                                  value === null ||
+                                  histograms.blockTime[i] === null
+                                    ? null
+                                    : value /
+                                      Math.max(1, histograms.blockTime[i]!),
                               ),
                             }) as BlockThroughputHistogramData,
                         ),

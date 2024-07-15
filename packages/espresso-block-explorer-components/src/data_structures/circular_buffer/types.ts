@@ -21,6 +21,9 @@ export interface CircularBuffer<T> extends Iterable<T> {
   get length(): number;
 
   get maxSize(): number;
+
+  immutableIterable(): Iterable<T>;
+  immutableIterator(): Iterator<T>;
 }
 
 /**

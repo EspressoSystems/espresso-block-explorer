@@ -411,3 +411,19 @@ export async function collectAsyncIterable<T>(
 ): Promise<T[]> {
   return collectAsyncIterator(iterable[Symbol.asyncIterator]());
 }
+
+/**
+ * unimplementedAsyncIterable is an async iterable that just throws an
+ * unimplemented error.
+ */
+// eslint-disable-next-line require-yield
+export async function* unimplementedAsyncIterable<T>(): AsyncGenerator<T> {
+  throw new UnimplementedError();
+}
+
+/**
+ * emptyAsyncIterable is an async iterable that is empty, so it yields
+ * nothing.
+ */
+// eslint-disable-next-line require-yield
+export async function* emptyAsyncIterable<T>(): AsyncGenerator<T> {}

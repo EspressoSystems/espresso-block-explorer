@@ -30,7 +30,7 @@ const ConsumeSnapshot: React.FC = () => {
 
   if (snapshot.error) {
     // We have an error...
-    return <Text text={'Error: ' + snapshot.error.message} />;
+    return <Text text={'Error: ' + snapshot.error.toString()} />;
   }
 
   const data = snapshot.data;
