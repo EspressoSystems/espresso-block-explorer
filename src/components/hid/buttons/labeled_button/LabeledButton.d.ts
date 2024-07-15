@@ -1,5 +1,5 @@
-import { ButtonProps } from '../button/Button';
 import { default as React } from 'react';
+import { ButtonProps } from '../button/Button';
 
 /**
  * LabeledButton is an extension to a normal Button, but designed to hold

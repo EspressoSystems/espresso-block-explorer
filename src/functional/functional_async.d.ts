@@ -111,3 +111,13 @@ export declare function reverseAsyncIterator<T>(iterator: AsyncIterator<T>): Asy
 export declare function reverseAsyncIterable<T>(iterable: AsyncIterable<T>): AsyncGenerator<T>;
 export declare function collectAsyncIterator<T>(iterator: AsyncIterator<T>): Promise<T[]>;
 export declare function collectAsyncIterable<T>(iterable: AsyncIterable<T>): Promise<T[]>;
+/**
+ * unimplementedAsyncIterable is an async iterable that just throws an
+ * unimplemented error.
+ */
+export declare function unimplementedAsyncIterable<T>(): AsyncGenerator<T>;
+/**
+ * emptyAsyncIterable is an async iterable that is empty, so it yields
+ * nothing.
+ */
+export declare function emptyAsyncIterable<T>(): AsyncGenerator<T>;

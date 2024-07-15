@@ -1,7 +1,7 @@
-import { CappuccinoAPITransactionProof } from './transaction_proof';
-import { CappuccinoAPITransactionNMTEntry } from './transaction_nmt_entry';
-import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
+import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
+import { CappuccinoAPITransactionNMTEntry } from './transaction_nmt_entry';
+import { CappuccinoAPITransactionProof } from './transaction_proof';
 
 /**
  * CappuccinoAPITransactionResponse represents a transaction response in the

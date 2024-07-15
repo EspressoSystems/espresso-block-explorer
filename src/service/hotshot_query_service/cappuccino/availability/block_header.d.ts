@@ -1,9 +1,9 @@
-import { CappuccinoNamespaceTable } from './namespace_table';
-import { CappuccinoL1Finalized } from './l1_finalized';
-import { CappuccinoFeeInfo } from './fee_info';
-import { CappuccinoBuilderSignature } from './builder_signature';
-import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
+import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
+import { CappuccinoBuilderSignature } from './builder_signature';
+import { CappuccinoFeeInfo } from './fee_info';
+import { CappuccinoL1Finalized } from './l1_finalized';
+import { CappuccinoNamespaceTable } from './namespace_table';
 
 /**
  * CappuccinoAPIHeader represents the header of a block in the Cappuccino API.

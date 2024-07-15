@@ -1,5 +1,5 @@
-import { default as React } from 'react';
 import { CappuccinoHotShotQueryService } from '../../../../../../../../../src/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
+import { default as React } from 'react';
 
 export declare const CappuccinoHotShotQueryServiceAPIContext: React.Context<CappuccinoHotShotQueryService>;
 export interface ProviderCappuccinoLiveServiceProps {

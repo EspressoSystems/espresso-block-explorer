@@ -1,5 +1,5 @@
-import { default as BaseError } from './BaseError';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
+import { default as BaseError } from './BaseError';
 
 /**
  * CompleterAlreadyCompletedError is an error that is thrown when a completer

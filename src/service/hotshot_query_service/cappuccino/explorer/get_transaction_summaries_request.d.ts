@@ -1,6 +1,6 @@
-import { CappuccinoExplorerGetTransactionSummariesTarget } from './get_transaction_summaries_target';
-import { CappuccinoExplorerGetTransactionSummariesFilter } from './get_transaction_summaries_filter';
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
+import { CappuccinoExplorerGetTransactionSummariesFilter } from './get_transaction_summaries_filter';
+import { CappuccinoExplorerGetTransactionSummariesTarget } from './get_transaction_summaries_target';
 
 export declare class CappuccinoExplorerGetTransactionSummariesRequest {
     readonly target: CappuccinoExplorerGetTransactionSummariesTarget;

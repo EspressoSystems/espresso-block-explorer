@@ -9,6 +9,7 @@ export declare enum PageType {
     blocks = "blocks",
     transactions = "transactions",
     rollups = "rollups",
+    nodes = "nodes",
     unknown = "unknown"
 }
 /**

@@ -1,5 +1,5 @@
-import { default as BaseBadResponseError } from './BaseBadResponseError';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
+import { default as BaseBadResponseError } from './BaseBadResponseError';
 
 /**
  * BadResponseClientError is a more specific BadResponse error that indicates

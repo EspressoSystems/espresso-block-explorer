@@ -1,5 +1,5 @@
-import { ButtonProps } from '../button/Button';
 import { default as React } from 'react';
+import { ButtonProps } from '../button/Button';
 
 /**
  * IconButton represents a Button with a simple icon within it.  It is styled

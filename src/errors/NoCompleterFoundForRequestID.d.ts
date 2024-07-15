@@ -1,5 +1,5 @@
-import { default as BaseError } from './BaseError';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
+import { default as BaseError } from './BaseError';
 
 export default class NoCompleterFoundForRequestID<RequestID = unknown> extends BaseError {
     readonly requestID: RequestID;

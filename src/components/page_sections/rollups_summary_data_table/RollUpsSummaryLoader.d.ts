@@ -1,7 +1,7 @@
-import { DataTableState } from '../../data/data_table/DataTable';
-import { default as React } from 'react';
-import { RollUpSummaryAsyncRetriever } from '../../../../../../../../../../../src/models/block_explorer/rollup_summary';
 import { BlockSummaryColumn } from '../../../../../../../../../../../src/models/block_explorer/block_summary';
+import { RollUpSummaryAsyncRetriever } from '../../../../../../../../../../../src/models/block_explorer/rollup_summary';
+import { default as React } from 'react';
+import { DataTableState } from '../../data/data_table/DataTable';
 
 export interface RollUpSummary {
     namespace: number;

@@ -1,5 +1,5 @@
-import { default as BaseError } from './BaseError';
 import { Converter } from '../../../../../../../../../src/convert/codec/convert';
+import { default as BaseError } from './BaseError';
 
 /**
  * BaseBadResponseError is this base error of all failures due to handling the

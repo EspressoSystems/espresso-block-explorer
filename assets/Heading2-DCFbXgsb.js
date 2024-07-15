@@ -1,1 +1,0 @@
-import{W as e}from"./typography-DzQrGlWr.js";import"./Heading1-DORIYz4p.js";const i=e("h2");try{Heading2.displayName="Heading2",Heading2.__docgenInfo={description:"Heading2 represents a standard h2 with the appropriate text styles.",displayName:"Heading2",props:{className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}}}}}catch{}export{i as H};

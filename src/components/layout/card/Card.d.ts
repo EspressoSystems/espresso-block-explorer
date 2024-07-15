@@ -1,5 +1,5 @@
-import { default as React } from 'react';
 import { HigherOrderComponentWithClassNameProps } from '../../../../../../../../../../../src/components/higher_order';
+import { default as React } from 'react';
 
 export interface CardProps extends HigherOrderComponentWithClassNameProps {
 }

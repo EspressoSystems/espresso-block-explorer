@@ -1,5 +1,5 @@
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { ArrayCodec } from '../../../../../../../../../../../../src/convert/codec/array';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 
 /**
  * CappuccinoAPITransactionNMTEntry represents a transaction NMT entry in the

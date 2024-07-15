@@ -1,5 +1,5 @@
-import { default as React } from 'react';
 import { AsyncRetriever } from '../../../../../../../../../../../src/async/AsyncRetriever';
+import { default as React } from 'react';
 
 export interface ExplorerOverview {
     rollups: number;

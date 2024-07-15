@@ -1,7 +1,7 @@
-import { TransactionSummaryEntry } from './transaction_summary';
-import { BlockSummaryEntry } from './block_summary';
-import { BlockDetailEntry } from './block_detail';
 import { AsyncRetriever } from '../../../../../../../../../../src/async/AsyncRetriever';
+import { BlockDetailEntry } from './block_detail';
+import { BlockSummaryEntry } from './block_summary';
+import { TransactionSummaryEntry } from './transaction_summary';
 
 export interface GenesisOverviewEntry {
     readonly rollups: number;
@@ -9,11 +9,11 @@ export interface GenesisOverviewEntry {
     readonly blocks: number;
 }
 export interface HistogramEntry {
-    readonly blockTime: number[];
-    readonly blockSize: number[];
-    readonly blockTransactions: number[];
-    readonly blockThroughput: number[];
-    readonly blocks: number[];
+    readonly blockTime: (number | null)[];
+    readonly blockSize: (number | null)[];
+    readonly blockTransactions: (number | null)[];
+    readonly blockThroughput: (number | null)[];
+    readonly blocks: (number | null)[];
 }
 export interface ExplorerSummaryEntry {
     readonly latestBlock: BlockDetailEntry;

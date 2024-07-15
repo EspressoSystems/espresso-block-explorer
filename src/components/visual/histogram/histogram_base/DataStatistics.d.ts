@@ -13,7 +13,7 @@ export declare class DataStatistics {
     readonly count: number;
     readonly length: number;
     constructor(min: number, max: number, total: number, count: number, length: number);
-    static compute(data: number[]): DataStatistics;
+    static compute(data: (null | number)[]): DataStatistics;
     static empty: DataStatistics;
 }
 /**

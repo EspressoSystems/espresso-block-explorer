@@ -9,4 +9,5 @@ export declare class StoryBookPathResolver implements PathResolver {
     transaction(height: number, offset: number): string;
     rollUps(): string;
     rollUp(namespace: number, startAtBlock?: number, offset?: number): string;
+    nodes(): string;
 }

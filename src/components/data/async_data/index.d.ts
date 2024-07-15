@@ -1,3 +1,4 @@
+export { default as AsyncIterableResolver } from './AsyncIterableResolver';
 export { AsyncSnapshot } from './AsyncSnapshot';
 export { AsyncSnapshotContext } from './AsyncSnapshotContext';
 export * from './BasicAsyncDataHandler';

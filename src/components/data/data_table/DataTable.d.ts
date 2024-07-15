@@ -1,5 +1,5 @@
-import { SortDirection } from '../types';
 import { default as React } from 'react';
+import { SortDirection } from '../types';
 
 /**
  * DataTableState represents the underlying DataTableState. The DataTable

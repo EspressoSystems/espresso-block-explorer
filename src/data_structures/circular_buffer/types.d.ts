@@ -15,6 +15,8 @@ export interface CircularBuffer<T> extends Iterable<T> {
     get(): T | undefined | null;
     get length(): number;
     get maxSize(): number;
+    immutableIterable(): Iterable<T>;
+    immutableIterator(): Iterator<T>;
 }
 /**
  * CircularBufferDetermineNextIndexBehavior is a behavior that can be used

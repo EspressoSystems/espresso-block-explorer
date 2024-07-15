@@ -1,5 +1,5 @@
-import { CopyArrayBufferAsTextProps } from './CopyArrayBufferAsTextProps';
 import { default as React } from 'react';
+import { CopyArrayBufferAsTextProps } from './CopyArrayBufferAsTextProps';
 
 /**
  * CopyBase64 is a component that will display a `CopyButton` with the contents

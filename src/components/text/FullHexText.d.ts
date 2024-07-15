@@ -1,5 +1,5 @@
-import { HexTextProps } from './HexText';
 import { default as React } from 'react';
+import { HexTextProps } from './HexText';
 
 /**
  * FullHexText is a simple Text component that renders the given ArrayBuffer as

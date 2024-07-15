@@ -56,3 +56,4 @@ export declare function assertRecordWithKeys<Key extends string>(value: unknown,
  * present, and potentially how it should be decoded.
  */
 export declare function assertErrorCode<Code extends string>(value: Record<'code', unknown>, code: Code): asserts value is Record<'code', Code>;
+export declare function assertTypeCode<Type extends string>(value: Record<'type', unknown>, type: Type): asserts value is Record<'type', Type>;

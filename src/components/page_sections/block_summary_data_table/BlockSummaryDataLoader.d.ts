@@ -1,6 +1,6 @@
-import { DataTableState } from '../../data/data_table/DataTable';
-import { default as React } from 'react';
 import { BlockSummaryAsyncRetriever, BlockSummaryColumn } from '../../../../../../../../../../../src/models/block_explorer/block_summary';
+import { default as React } from 'react';
+import { DataTableState } from '../../data/data_table/DataTable';
 
 export interface BlockSummary {
     block: number;

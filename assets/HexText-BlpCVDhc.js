@@ -1,0 +1,2 @@
+import{a}from"./jsx-runtime-C8OW3RLV.js";import{h as n}from"./array_buffer-73_ZskUD.js";/* empty css               */const t=r=>{const e=n.encode(r.value);return e.length<=14?e:a("span",{title:e,children:[e.substring(0,8),"...",e.substring(e.length-6)]})};try{t.displayName="HexText",t.__docgenInfo={description:`HexText is a simple Text component that renders the given ArrayBuffer as
+a hex string`,displayName:"HexText",props:{value:{defaultValue:null,description:"",name:"value",required:!0,type:{name:"ArrayBuffer"}}}}}catch{}export{t as H};

@@ -1,5 +1,5 @@
-import { TaggedBase64TextProps } from './TaggedBase64Text';
 import { default as React } from 'react';
+import { TaggedBase64TextProps } from './TaggedBase64Text';
 
 /**
  * TaggedBase64Text is a simple Text component that renders a TaggedBase64 value

@@ -1,5 +1,5 @@
-import { default as React } from 'react';
 import { PageType } from '../../../../../../../../../../../src/components/contexts/PagePathProvider';
+import { default as React } from 'react';
 
 export interface NavLinkProps {
     href: string;

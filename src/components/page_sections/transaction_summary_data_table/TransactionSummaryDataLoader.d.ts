@@ -1,7 +1,7 @@
-import { DataTableState } from '../../data/data_table/DataTable';
-import { default as React } from 'react';
-import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
 import { TransactionSummaryAsyncRetriever, TransactionSummaryColumn } from '../../../../../../../../../../../src/models/block_explorer/transaction_summary';
+import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
+import { default as React } from 'react';
+import { DataTableState } from '../../data/data_table/DataTable';
 
 export interface TransactionSummary {
     hash: TaggedBase64;

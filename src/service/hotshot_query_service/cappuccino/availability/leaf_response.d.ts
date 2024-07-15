@@ -1,6 +1,6 @@
-import { CappuccinoAPIQuorumCertificate } from './quorum_certificate';
-import { CappuccinoAPILeaf } from './leaf';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
+import { CappuccinoAPILeaf } from './leaf';
+import { CappuccinoAPIQuorumCertificate } from './quorum_certificate';
 
 /**
  * CappuccinoAPILeafResponse represents a leaf response in the Cappuccino API.

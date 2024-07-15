@@ -1,5 +1,5 @@
-import { CappuccinoExplorerTransactionSummary } from './transaction_summary';
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
+import { CappuccinoExplorerTransactionSummary } from './transaction_summary';
 
 export declare class CappuccinoExplorerGetTransactionSummariesResponse {
     readonly transactionSummaries: CappuccinoExplorerTransactionSummary[];

@@ -1,5 +1,5 @@
-import { default as VariableBytesNumberFormat } from './VariableBytesNumberFormat';
 import { default as React } from 'react';
+import { default as VariableBytesNumberFormat } from './VariableBytesNumberFormat';
 
 /**
  * createDefaultNumberFormatters will create the default Number formatting

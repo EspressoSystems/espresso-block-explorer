@@ -1,5 +1,5 @@
-import { latestConstant } from './constants';
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
+import { latestConstant } from './constants';
 
 export declare abstract class CappuccinoExplorerGetBlockSummariesRequest {
     readonly limit: number;

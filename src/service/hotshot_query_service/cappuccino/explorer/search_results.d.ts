@@ -1,6 +1,6 @@
-import { CappuccinoExplorerTransactionSummary } from './transaction_summary';
-import { CappuccinoExplorerBlockSummary } from './block_summary';
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
+import { CappuccinoExplorerBlockSummary } from './block_summary';
+import { CappuccinoExplorerTransactionSummary } from './transaction_summary';
 
 export declare class CappuccinoExplorerSearchResults {
     readonly blocks: CappuccinoExplorerBlockSummary[];

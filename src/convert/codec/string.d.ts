@@ -1,5 +1,5 @@
-import { Converter, TypeCheckingCodec } from './convert';
 import { ArrayCodec } from './array';
+import { Converter, TypeCheckingCodec } from './convert';
 
 export declare const isStringArray: (input: unknown) => input is string[];
 /**

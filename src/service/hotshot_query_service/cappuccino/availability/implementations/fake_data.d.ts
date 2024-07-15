@@ -1,9 +1,9 @@
-import { CappuccinoAPITransactionResponse } from '../transaction_response';
-import { CappuccinoAPILeafResponse } from '../leaf_response';
-import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
-import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
-import { CappuccinoAPIBlock } from '../block';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
+import { CappuccinoAPIBlock } from '../block';
+import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
+import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
+import { CappuccinoAPILeafResponse } from '../leaf_response';
+import { CappuccinoAPITransactionResponse } from '../transaction_response';
 
 export declare class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements CappuccinoHotShotQueryServiceAvailabilityAPI {
     getLeafFromHeight(height: number): Promise<CappuccinoAPILeafResponse>;

@@ -44,12 +44,12 @@ export declare function filterIterable<T>(iterable: Iterable<T>, predicate: (val
 /**
  * mapIterator is a map function, but operating on Javascript iterators.
  */
-export declare function mapIterator<T, U>(iterator: Iterator<T>, transformer: (t: T) => U): Generator<U>;
+export declare function mapIterator<T, U>(iterator: Iterator<T>, transformer: (t: T) => U): IterableIterator<U>;
 /**
  * mapIterable is a convenience function for invoking mapIterator with an
  * Iterable instead.
  */
-export declare function mapIterable<T, U>(iterable: Iterable<T>, transformer: (t: T) => U): Generator<U>;
+export declare function mapIterable<T, U>(iterable: Iterable<T>, transformer: (t: T) => U): IterableIterator<U>;
 /**
  * takeIterator is a take function, but operating on Javascript iterators.
  */
@@ -75,6 +75,21 @@ export declare function dropIterable<T>(iterable: Iterable<T>, count: number): G
  * @throws an error when no element is returned from the iterator.
  */
 export declare function firstIterator<T>(iterator: Iterator<T>): T;
+/**
+ * firstIterable is a convenience function for invoking firstIterator with
+ * an Iterable instead.
+ */
+export declare function firstIterable<T>(iterable: Iterable<T>): T;
+/**
+ * lastIterator returns the last element of the given Iterator
+ * If no element is found, this throws an error.
+ */
+export declare function lastIterator<T>(iterator: Iterator<T>): T;
+/**
+ * lastIterable is a convenience function for invoking lastIterator with
+ * an Iterable instead.
+ */
+export declare function lastIterable<T>(iterable: Iterable<T>): T;
 /**
  * firstWhereIterator is a find function, but operating on Javascript iterators.
  */
@@ -141,3 +156,13 @@ export declare function reverseIterable<T>(iterable: Iterable<T>): Generator<T>;
  * AsyncIterator.
  */
 export declare function foldRIterator<T, U>(combiner: (acc: U, element: T) => U, seed: U, list: Iterator<T>): U;
+/**
+ * zipWithIterator is a zipWith function that can be applied to an
+ * AsyncIterator.
+ */
+export declare function zipWithIterator<T, U, V>(itT: Iterator<T>, itU: Iterator<U>, zipper: (t: T, u: U) => V): Generator<V>;
+/**
+ * zipWithIterable is a zipWith function that can be applied to an
+ * AsyncIterable.
+ */
+export declare function zipWithIterable<T, U, V>(ts: Iterable<T>, us: Iterable<U>, zipper: (t: T, u: U) => V): Generator<V>;

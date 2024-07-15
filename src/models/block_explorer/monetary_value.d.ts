@@ -1,6 +1,6 @@
-import { CurrencyCode } from './currency_code';
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
 import { ArrayCodec } from '../../../../../../../../../../src/convert/codec/array';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
+import { CurrencyCode } from './currency_code';
 
 /**
  * MonetaryValue represents a numeric value with monetary significance. It is a

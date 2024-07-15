@@ -1,6 +1,6 @@
-import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { ArrayCodec } from '../../../../../../../../../../../../src/convert/codec/array';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
+import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
 
 type NamespaceID = number;
 export declare class CappuccinoExplorerTransactionSummary {

@@ -1,7 +1,7 @@
-import { CappuccinoAPIPayload } from './payload';
-import { CappuccinoAPIHeader } from './block_header';
-import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
+import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
+import { CappuccinoAPIHeader } from './block_header';
+import { CappuccinoAPIPayload } from './payload';
 
 /**
  * CappuccinoAPIBlock represents a block in the Cappuccino API.

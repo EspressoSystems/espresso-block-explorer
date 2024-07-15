@@ -1,14 +1,14 @@
-import { HistogramLabelProps } from './HistogramDefaultLabel';
-import { DataStatistics } from './DataStatistics';
-import { AffineTransform } from './AffineTransform';
 import { default as React } from 'react';
+import { AffineTransform } from './AffineTransform';
+import { DataStatistics } from './DataStatistics';
+import { HistogramLabelProps } from './HistogramDefaultLabel';
 
 export declare const HistogramGraphWidth: React.Context<number>;
 export declare const HistogramGraphHeight: React.Context<number>;
 export declare const HistogramPlotWidth: React.Context<number>;
 export declare const HistogramPlotHeight: React.Context<number>;
-export declare const HistogramRange: React.Context<number[]>;
-export declare const HistogramDomain: React.Context<number[]>;
+export declare const HistogramRange: React.Context<(number | null)[]>;
+export declare const HistogramDomain: React.Context<(number | null)[]>;
 export declare const HistogramRangeStatistics: React.Context<DataStatistics>;
 export declare const HistogramDomainStatistics: React.Context<DataStatistics>;
 export declare const HistogramYAxisGuideLines: React.Context<number[]>;
