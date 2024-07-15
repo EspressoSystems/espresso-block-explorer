@@ -57,6 +57,7 @@ describe('functional', () => {
       const generator = iota(10);
       const takeGenerator = takeIterable(generator, 3);
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       for (const _ of takeGenerator) {
         // do nothing
       }
