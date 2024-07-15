@@ -52,6 +52,17 @@ describe('functional', () => {
       expect(Array.from(takeIterable(iota(10), 3))).deep.equal([0, 1, 2]);
       expect(Array.from(takeIterable(iota(3), 10))).deep.equal([0, 1, 2]);
     });
+
+    it('should allow use of underlying iterable after take completes, and should only drop the necessary elements', () => {
+      const generator = iota(10);
+      const takeGenerator = takeIterable(generator, 3);
+
+      for (const _ of takeGenerator) {
+        // do nothing
+      }
+
+      expect(generator.next().value).equals(3);
+    });
   });
 
   describe('dropIterable', () => {
