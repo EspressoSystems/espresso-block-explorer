@@ -63,6 +63,7 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "test": "vitest run",
+    "test-storybook": "test-storybook",
     "test-watch": "vitest",
     "test:ui": "vitest --ui",
     "regenerate-baked-map-data": "GENERATE=1 vitest run src/models/geo/world_map_grid/__test__/generate_grid.test.ts"

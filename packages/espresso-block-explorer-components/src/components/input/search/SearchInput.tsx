@@ -190,7 +190,11 @@ class SearchStateController {
     this.pOffset = offset;
 
     const ele = document.querySelector(`[data-index="${offset}"]`);
-    if (ele) {
+    if (
+      ele &&
+      'scrollIntoView' in ele &&
+      typeof ele.scrollIntoView === 'function'
+    ) {
       ele.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     }
   }
