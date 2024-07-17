@@ -10,9 +10,9 @@
  * the Storybook and vitest environments.
  */
 import {
-  dropIterator,
-  firstIterator,
-  mapIterator,
+  dropIterable,
+  firstIterable,
+  mapIterable,
   takeIterator,
 } from '@/functional/functional';
 import { act } from '@testing-library/react';
@@ -115,7 +115,7 @@ const getSliceHitBoxes = (chart: SVGSVGElement) => {
 
   const it = boundingBoxElements[Symbol.iterator]();
 
-  return mapIterator(
+  return mapIterable(
     it,
     (element) => element as Element as SVGPathElement | SVGCircleElement,
   );
@@ -126,7 +126,7 @@ const getToolTips = (chart: SVGSVGElement) => {
 
   const it = boundingBoxElements[Symbol.iterator]();
 
-  return mapIterator(
+  return mapIterable(
     it,
     (element): SVGGElement => element as Element as SVGGElement,
   );
@@ -148,8 +148,8 @@ export const interactionHoverOverIthSlice = async (
 
     const hitboxes = getSliceHitBoxes(chart);
     const tooltips = getToolTips(chart);
-    const firstHitbox = firstIterator(dropIterator(hitboxes, item));
-    const firstToolTip = firstIterator(dropIterator(tooltips, item));
+    const firstHitbox = firstIterable(dropIterable(hitboxes, item));
+    const firstToolTip = firstIterable(dropIterable(tooltips, item));
 
     await interactionHoverElementFromCanvas(canvasElement, firstHitbox);
     await waitFor(
@@ -162,7 +162,9 @@ export const interactionHoverOverIthSlice = async (
 
     // No Other tooltip should be visible
     const it = getToolTips(chart)[Symbol.iterator]();
-    for (const tooltip of takeIterator(it, item)) {
+    const taken = takeIterator(it, item);
+    for (let next = taken.next(); !next.done; next = taken.next()) {
+      const tooltip = next.value;
       await expect(tooltip).not.toEqual(firstToolTip);
       await expectToolTipVisibility(tooltip, false);
       // expect(tooltip).not.toBeVisible();
@@ -174,7 +176,8 @@ export const interactionHoverOverIthSlice = async (
     // expect(firstToolTip).toBeVisible();
 
     // No Other tooltip should be visible
-    for (const tooltip of it) {
+    for (let itNext = it.next(); !itNext.done; itNext = it.next()) {
+      const tooltip = itNext.value;
       await expect(tooltip).not.toEqual(firstToolTip);
       // expect(tooltip).not.toBeVisible();
       await expectToolTipVisibility(tooltip, false);

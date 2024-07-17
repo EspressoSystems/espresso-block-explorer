@@ -1,10 +1,10 @@
 import {
+  collectAsyncIterable,
   dropAsyncIterable,
   expandAsyncIterable,
   filterAsyncIterable,
   firstAsyncIterator,
   firstWhereAsyncIterable,
-  foldRAsyncIterator,
   iotaAsync,
   mapAsyncIterable,
   takeAsyncIterable,
@@ -12,27 +12,20 @@ import {
 import '@testing-library/jest-dom';
 import { describe, expect, it } from 'vitest';
 
-async function arrayFromAsync<T>(iterable: AsyncIterable<T>): Promise<T[]> {
-  return foldRAsyncIterator(
-    (acc, next) => {
-      acc.push(next);
-      return Promise.resolve(acc);
-    },
-    Promise.resolve([] as T[]),
-    iterable[Symbol.asyncIterator](),
-  );
-}
-
 describe('functional async', () => {
   describe('iotaAsync', () => {
     it('should contain the element sequence expected', async () => {
-      await expect(arrayFromAsync(iotaAsync(1))).resolves.deep.equal([0]);
-      await expect(arrayFromAsync(iotaAsync(2))).resolves.deep.equal([0, 1]);
-      await expect(arrayFromAsync(iotaAsync(3))).resolves.deep.equal([0, 1, 2]);
-      await expect(arrayFromAsync(iotaAsync(4))).resolves.deep.equal([
+      await expect(collectAsyncIterable(iotaAsync(1))).resolves.deep.equal([0]);
+      await expect(collectAsyncIterable(iotaAsync(2))).resolves.deep.equal([
+        0, 1,
+      ]);
+      await expect(collectAsyncIterable(iotaAsync(3))).resolves.deep.equal([
+        0, 1, 2,
+      ]);
+      await expect(collectAsyncIterable(iotaAsync(4))).resolves.deep.equal([
         0, 1, 2, 3,
       ]);
-      await expect(arrayFromAsync(iotaAsync(10))).resolves.deep.equal([
+      await expect(collectAsyncIterable(iotaAsync(10))).resolves.deep.equal([
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
       ]);
     });
@@ -41,17 +34,17 @@ describe('functional async', () => {
   describe('filterAsyncIterable', () => {
     it('should contain the element sequence expected', async () => {
       await expect(
-        arrayFromAsync(
+        collectAsyncIterable(
           filterAsyncIterable(iotaAsync(10), (n) => (n & 0x01) === 0),
         ),
       ).resolves.deep.equal([0, 2, 4, 6, 8]);
       await expect(
-        arrayFromAsync(
+        collectAsyncIterable(
           filterAsyncIterable(iotaAsync(10), (n) => (n & 0x01) === 1),
         ),
       ).resolves.deep.equal([1, 3, 5, 7, 9]);
       await expect(
-        arrayFromAsync(filterAsyncIterable(iotaAsync(10), () => false)),
+        collectAsyncIterable(filterAsyncIterable(iotaAsync(10), () => false)),
       ).resolves.deep.equal([]);
     });
   });
@@ -59,7 +52,7 @@ describe('functional async', () => {
   describe('mapAsyncIterable', () => {
     it('should contain the element sequence expected', async () => {
       await expect(
-        arrayFromAsync(
+        collectAsyncIterable(
           mapAsyncIterable(iotaAsync(10), (n) => Promise.resolve(n * n)),
         ),
       ).resolves.deep.equal([0, 1, 4, 9, 16, 25, 36, 49, 64, 81]);
@@ -69,10 +62,10 @@ describe('functional async', () => {
   describe('takeAsyncIterable', () => {
     it('should contain the element sequence expected', async () => {
       await expect(
-        arrayFromAsync(takeAsyncIterable(iotaAsync(10), 3)),
+        collectAsyncIterable(takeAsyncIterable(iotaAsync(10), 3)),
       ).resolves.deep.equal([0, 1, 2]);
       await expect(
-        arrayFromAsync(takeAsyncIterable(iotaAsync(3), 10)),
+        collectAsyncIterable(takeAsyncIterable(iotaAsync(3), 10)),
       ).resolves.deep.equal([0, 1, 2]);
     });
   });
@@ -80,10 +73,10 @@ describe('functional async', () => {
   describe('dropAsyncIterable', () => {
     it('should contain the element sequence expected', async () => {
       await expect(
-        arrayFromAsync(dropAsyncIterable(iotaAsync(10), 7)),
+        collectAsyncIterable(dropAsyncIterable(iotaAsync(10), 7)),
       ).resolves.deep.equal([7, 8, 9]);
       await expect(
-        arrayFromAsync(dropAsyncIterable(iotaAsync(3), 7)),
+        collectAsyncIterable(dropAsyncIterable(iotaAsync(3), 7)),
       ).resolves.deep.equal([]);
     });
   });
@@ -127,7 +120,9 @@ describe('functional async', () => {
   describe('expandAsyncIterable', () => {
     it('should contain the element sequence expected', async () => {
       await expect(
-        arrayFromAsync(expandAsyncIterable(iotaAsync(4), (n) => iotaAsync(n))),
+        collectAsyncIterable(
+          expandAsyncIterable(iotaAsync(4), (n) => iotaAsync(n)),
+        ),
       ).resolves.deep.equal([
         // 0
 

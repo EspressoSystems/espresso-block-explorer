@@ -86,7 +86,9 @@ function buildHexDumpString(value: ArrayBufferLike): string {
   const data = new Uint8Array(value);
 
   const it = mapIterable(data, hexEncodeByte);
-  return Array.from(generateHexDumpLinesFormat(it)).join('\n');
+  return Array.from(generateHexDumpLinesFormat(it[Symbol.iterator]())).join(
+    '\n',
+  );
 }
 
 /**

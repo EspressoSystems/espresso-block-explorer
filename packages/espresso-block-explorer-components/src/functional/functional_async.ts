@@ -6,6 +6,8 @@ import MissingElementError from '@/errors/MissingElementError';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { iota } from './functional';
 
+export * from './async/async';
+
 export async function* convertIteratorToAsyncIterator<T>(
   iterator: Iterator<T>,
 ): AsyncGenerator<T> {
@@ -30,80 +32,6 @@ export async function* yieldAllAsync<T>(
   for (let next = await it.next(); !next.done; next = await it.next()) {
     yield next.value;
   }
-}
-
-/**
- * filterAsyncIterator is a filter function, but operating on Javascript
- * AsyncIterators.
- */
-export function filterAsyncIterator<T, S extends T>(
-  iterator: AsyncIterator<T>,
-  predicate: (value: T) => value is S,
-): AsyncGenerator<S>;
-export function filterAsyncIterator<T>(
-  iterator: AsyncIterator<T>,
-  predicate: (value: T) => unknown,
-): AsyncGenerator<T>;
-export async function* filterAsyncIterator<T>(
-  iterator: AsyncIterator<T>,
-  predicate: (value: T) => unknown,
-): AsyncGenerator<T> {
-  for (
-    let next = await iterator.next();
-    !next.done;
-    next = await iterator.next()
-  ) {
-    if (predicate(next.value)) {
-      yield next.value;
-    }
-  }
-}
-
-/**
- * filterAsyncIterable is a convenience function for invoking
- * filterAsyncIterator with an AsyncIterable instead.
- */
-export function filterAsyncIterable<T, S extends T>(
-  iterable: AsyncIterable<T>,
-  predicate: (value: T) => value is S,
-): AsyncGenerator<T>;
-export function filterAsyncIterable<T>(
-  iterable: AsyncIterable<T>,
-  predicate: (value: T) => unknown,
-): AsyncGenerator<T>;
-export function filterAsyncIterable<T>(
-  iterable: AsyncIterable<T>,
-  predicate: (t: T) => unknown,
-): AsyncGenerator<T> {
-  return filterAsyncIterator(iterable[Symbol.asyncIterator](), predicate);
-}
-
-/**
- * mapAsyncIterator is a map function, but operating on Javascript
- * AsyncIterators.
- */
-export async function* mapAsyncIterator<T, U>(
-  iterator: AsyncIterator<T>,
-  transformer: (t: T) => Promise<U>,
-): AsyncGenerator<U> {
-  for (
-    let next = await iterator.next();
-    !next.done;
-    next = await iterator.next()
-  ) {
-    yield await transformer(next.value);
-  }
-}
-
-/**
- * mapAsyncIterable is a convenience function for invoking mapAsyncIterator with
- * an AsyncIterable instead.
- */
-export function mapAsyncIterable<T, U>(
-  iterable: AsyncIterable<T>,
-  transformer: (t: T) => Promise<U>,
-): AsyncGenerator<U> {
-  return mapAsyncIterator(iterable[Symbol.asyncIterator](), transformer);
 }
 
 /**

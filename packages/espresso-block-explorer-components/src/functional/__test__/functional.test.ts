@@ -5,13 +5,10 @@ import {
   dropIterable,
   dropIterator,
   expandIterable,
-  filterIterable,
   firstIterator,
   firstWhereIterable,
   inf,
   iota,
-  mapIterable,
-  takeIterable,
 } from '@/functional';
 import '@testing-library/jest-dom';
 import { describe, expect, it } from 'vitest';
@@ -24,45 +21,6 @@ describe('functional', () => {
       expect(Array.from(iota(3))).deep.equal([0, 1, 2]);
       expect(Array.from(iota(4))).deep.equal([0, 1, 2, 3]);
       expect(Array.from(iota(10))).deep.equal([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-    });
-  });
-
-  describe('filterIterable', () => {
-    it('should contain the element sequence expected', () => {
-      expect(
-        Array.from(filterIterable(iota(10), (n) => (n & 0x01) === 0)),
-      ).deep.equal([0, 2, 4, 6, 8]);
-      expect(
-        Array.from(filterIterable(iota(10), (n) => (n & 0x01) === 1)),
-      ).deep.equal([1, 3, 5, 7, 9]);
-      expect(Array.from(filterIterable(iota(10), () => false))).deep.equal([]);
-    });
-  });
-
-  describe('mapIterable', () => {
-    it('should contain the element sequence expected', () => {
-      expect(Array.from(mapIterable(iota(10), (n) => n * n))).deep.equal([
-        0, 1, 4, 9, 16, 25, 36, 49, 64, 81,
-      ]);
-    });
-  });
-
-  describe('takeIterable', () => {
-    it('should contain the element sequence expected', () => {
-      expect(Array.from(takeIterable(iota(10), 3))).deep.equal([0, 1, 2]);
-      expect(Array.from(takeIterable(iota(3), 10))).deep.equal([0, 1, 2]);
-    });
-
-    it('should allow use of underlying iterable after take completes, and should only drop the necessary elements', () => {
-      const generator = iota(10);
-      const takeGenerator = takeIterable(generator, 3);
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      for (const _ of takeGenerator) {
-        // do nothing
-      }
-
-      expect(generator.next().value).equals(3);
     });
   });
 

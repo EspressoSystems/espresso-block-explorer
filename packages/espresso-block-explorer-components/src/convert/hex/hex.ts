@@ -1,6 +1,6 @@
 import InvalidHexStringError from '@/errors/InvalidHexStringError';
 import { InvalidHexValueError } from '@/errors/InvalidHexValueError';
-import { mapIterator } from '@/functional/functional';
+import { mapIterable, mapIterator } from '@/functional/functional';
 import { charCodesFromString } from '../base64/base64';
 
 /**
@@ -83,10 +83,10 @@ function encodeHexit(byte: number) {
  * encodeNumberIteratorToHexits will transform the Iterator of numbers into
  * its hex representation.
  */
-export function* encodeNumberIteratorToHexits(
+export function encodeNumberIteratorToHexits(
   iterator: Iterator<number>,
-): IterableIterator<string> {
-  yield* mapIterator(iterator, encodeHexit);
+): Iterator<string> {
+  return mapIterator(iterator, encodeHexit);
 }
 
 /**
@@ -95,6 +95,6 @@ export function* encodeNumberIteratorToHexits(
  */
 export function encodeNumberIterableToHexits(
   iterable: Iterable<number>,
-): IterableIterator<string> {
-  return encodeNumberIteratorToHexits(iterable[Symbol.iterator]());
+): Iterable<string> {
+  return mapIterable(iterable, encodeHexit);
 }
