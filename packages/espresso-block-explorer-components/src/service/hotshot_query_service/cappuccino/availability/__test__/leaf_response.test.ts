@@ -33,7 +33,7 @@ describe('CappuccinoAPILeafResponse', () => {
         new CappuccinoAPIQuorumCertificateSignatures(
           new TaggedBase64('SIG', prng.fillBytes(20)),
           new CappuccinoAPIBitVec(
-            'abc',
+            CappuccinoAPIBitVecOrder.lsb0,
             new CappuccinoAPIBitVecHead(prng.nextInt(), prng.nextInt()),
             prng.nextInt(),
             Array.from(new Uint8Array(prng.fillBytes(20))),
@@ -83,7 +83,7 @@ describe('CappuccinoAPILeafResponse', () => {
       new CappuccinoAPIQuorumCertificateSignatures(
         new TaggedBase64('SIG', prng.fillBytes(20)),
         new CappuccinoAPIBitVec(
-          'def',
+          CappuccinoAPIBitVecOrder.lsb0,
           new CappuccinoAPIBitVecHead(prng.nextInt(), prng.nextInt()),
           prng.nextInt(),
           Array.from(new Uint8Array(prng.fillBytes(20))),
