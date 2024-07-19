@@ -250,7 +250,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
   // private isSubscribedToNodeIdentity: boolean = false;
   private isSubscribedToVoters: boolean = false;
   private async handleConnect() {
-    if (this.isConnected !== null) {
+    if (this.isConnected) {
       throw new Error('already connected to WebSocket');
     }
 
