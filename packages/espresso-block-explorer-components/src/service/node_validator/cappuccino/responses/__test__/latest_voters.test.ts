@@ -1,3 +1,4 @@
+import { CappuccinoAPIBitVecOrder } from '@/service/hotshot_query_service';
 import { describe, it } from 'vitest';
 import { cappuccinoLatestVotersCodec } from '../latest_voters';
 import { cappuccinoNodeValidatorResponseCodec } from '../node_validator_response_codec';
@@ -15,7 +16,7 @@ describe('LatestVoters', () => {
       // Latest Voters
       const latestVoters = response.latestVoter;
 
-      expect(latestVoters.order).toBe('bitvec::order::Lsb0');
+      expect(latestVoters.order).toBe(CappuccinoAPIBitVecOrder.lsb0);
       expect(latestVoters.bits).toBe(7);
       expect(latestVoters.data).to.deep.equal([23]);
       expect(latestVoters.head.width).toBe(16);

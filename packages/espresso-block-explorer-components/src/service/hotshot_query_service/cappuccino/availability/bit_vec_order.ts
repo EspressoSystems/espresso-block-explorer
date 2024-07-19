@@ -16,6 +16,10 @@ export abstract class CappuccinoAPIBitVecOrder {
     return msb0;
   }
 
+  valueOf() {
+    return this.toString();
+  }
+
   toJSON() {
     return this.toString();
   }
@@ -34,7 +38,7 @@ const kBitVecOrderMsb0String = 'bitvec::order::Msb0';
  * https://github.com/ferrilab/bitvec/blob/5fb855073acc2ed045094ed89d8daf8c765f0135/README.md
  * Msb0 represents Big Endianness, and Lsb0 represents Little Endianness.
  */
-export class CappuccinoAPIBitVecOrderLsb0 extends CappuccinoAPIBitVecOrder {
+class CappuccinoAPIBitVecOrderLsb0 extends CappuccinoAPIBitVecOrder {
   toString() {
     return kBitVecOrderLsb0String;
   }
@@ -52,7 +56,7 @@ const lsb0 = new CappuccinoAPIBitVecOrderLsb0();
  * https://github.com/ferrilab/bitvec/blob/5fb855073acc2ed045094ed89d8daf8c765f0135/README.md
  * Msb0 represents Big Endianness, and Lsb0 represents Little Endianness.
  */
-export class CappuccinoAPIBitVecOrderMsb0 extends CappuccinoAPIBitVecOrder {
+class CappuccinoAPIBitVecOrderMsb0 extends CappuccinoAPIBitVecOrder {
   toString() {
     return kBitVecOrderMsb0String;
   }
@@ -69,10 +73,10 @@ class CappuccinoAPIBitVecOrderDecoder
     }
     switch (input) {
       case kBitVecOrderLsb0String:
-        return new CappuccinoAPIBitVecOrderLsb0();
+        return CappuccinoAPIBitVecOrder.lsb0;
 
       case kBitVecOrderMsb0String:
-        return new CappuccinoAPIBitVecOrderMsb0();
+        return CappuccinoAPIBitVecOrder.msb0;
 
       default:
         throw new InvalidTypeError(input, 'CappuccinoAPIBitVecOrder');

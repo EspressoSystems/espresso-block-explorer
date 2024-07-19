@@ -15,7 +15,6 @@ import {
 import {
   CappuccinoAPIBitVecOrder,
   cappuccinoAPIBitVecOrderCodec,
-  CappuccinoAPIBitVecOrderLsb0,
 } from './bit_vec_order';
 
 /**
@@ -41,7 +40,7 @@ export class CappuccinoAPIBitVec implements Iterable<boolean> {
   }
 
   private getBitVecIndexIterable(): Iterable<BitVecIndex> {
-    if (this.order instanceof CappuccinoAPIBitVecOrderLsb0) {
+    if (this.order === CappuccinoAPIBitVecOrder.lsb0) {
       return new Lsb0BitVecIndexIterable(this.head.width, this.bits);
     }
 

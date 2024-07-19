@@ -1,3 +1,4 @@
+import { CappuccinoAPIBitVecOrder } from '@/service/hotshot_query_service';
 import { describe, it } from 'vitest';
 import { cappuccinoNodeValidatorResponseCodec } from '../node_validator_response_codec';
 import { cappuccinoVotersSnapshotCodec } from '../voters_snapshot';
@@ -25,7 +26,7 @@ describe('VotersSnapshot', () => {
 
       const voter0 = next.value;
 
-      expect(voter0.order).toBe('bitvec::order::Lsb0');
+      expect(voter0.order).toBe(CappuccinoAPIBitVecOrder.lsb0);
       expect(voter0.bits).toBe(7);
       expect(voter0.data).to.deep.equal([23]);
       expect(voter0.head.width).toBe(16);
@@ -39,7 +40,7 @@ describe('VotersSnapshot', () => {
       }
 
       const voterI = next.value;
-      expect(voterI.order).toBe('bitvec::order::Lsb0');
+      expect(voterI.order).toBe(CappuccinoAPIBitVecOrder.lsb0);
       expect(voterI.head.width).toBe(16);
       expect(voterI.head.index).toBe(0);
     }
