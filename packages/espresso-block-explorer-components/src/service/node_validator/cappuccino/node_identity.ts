@@ -1,20 +1,22 @@
-import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import {
+  ArrayCodec,
+  ArrayDecoder,
+  ArrayEncoder,
+  nullableStringCodec,
+  nullableURLCodec,
+} from '@/convert/codec';
+import { nullableHexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import { stringCodec } from '@/convert/codec/string';
 import {
   TaggedBase64,
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/TaggedBase64';
-import CappuccinoCompanyIdentity, {
-  cappuccinoCompanyIdentityCodec,
-} from './company_identity';
 import CappuccinoLocationDetails, {
-  cappuccinoLocationDetailsCodec,
+  nullableCappuccinoLocationDetailsCodec,
 } from './node_location_details';
 
 /**
@@ -25,27 +27,30 @@ import CappuccinoLocationDetails, {
  */
 export default class CappuccinoNodeIdentity {
   readonly publicKey: TaggedBase64;
-  readonly name: string;
-  readonly address: ArrayBuffer;
-  readonly company: CappuccinoCompanyIdentity;
-  readonly location: CappuccinoLocationDetails;
-  readonly operatingSystem: string;
-  readonly nodeType: string;
-  readonly networkType: string;
+  readonly name: null | string;
+  readonly walletAddress: null | ArrayBuffer;
+  readonly publicURL: null | URL;
+  readonly company: null | string;
+  readonly location: null | CappuccinoLocationDetails;
+  readonly operatingSystem: null | string;
+  readonly nodeType: null | string;
+  readonly networkType: null | string;
 
   constructor(
     publicKey: TaggedBase64,
-    name: string,
-    address: ArrayBuffer,
-    company: CappuccinoCompanyIdentity,
-    location: CappuccinoLocationDetails,
-    operatingSystem: string,
-    nodeType: string,
-    networkType: string,
+    name: null | string,
+    walletAddress: null | ArrayBuffer,
+    publicURL: null | URL,
+    company: null | string,
+    location: null | CappuccinoLocationDetails,
+    operatingSystem: null | string,
+    nodeType: null | string,
+    networkType: null | string,
   ) {
     this.publicKey = publicKey;
     this.name = name;
-    this.address = address;
+    this.walletAddress = walletAddress;
+    this.publicURL = publicURL;
     this.company = company;
     this.location = location;
     this.operatingSystem = operatingSystem;
@@ -63,14 +68,15 @@ class CappuccinoNodeIdentityEncoder
 {
   convert(input: CappuccinoNodeIdentity) {
     return {
-      publicKey: taggedBase64Codec.encode(input.publicKey),
-      name: stringCodec.encode(input.name),
-      address: hexArrayBufferCodec.encode(input.address),
-      company: cappuccinoCompanyIdentityCodec.encode(input.company),
-      location: cappuccinoLocationDetailsCodec.encode(input.location),
-      operatingSystem: stringCodec.encode(input.operatingSystem),
-      nodeType: stringCodec.encode(input.nodeType),
-      networkType: stringCodec.encode(input.networkType),
+      public_key: taggedBase64Codec.encode(input.publicKey),
+      name: nullableStringCodec.encode(input.name),
+      wallet_address: nullableHexArrayBufferCodec.encode(input.walletAddress),
+      public_url: nullableURLCodec.encode(input.publicURL),
+      company: nullableStringCodec.encode(input.company),
+      location: nullableCappuccinoLocationDetailsCodec.encode(input.location),
+      operating_system: nullableStringCodec.encode(input.operatingSystem),
+      node_type: nullableStringCodec.encode(input.nodeType),
+      network_type: nullableStringCodec.encode(input.networkType),
     };
   }
 }
@@ -81,24 +87,26 @@ class CappuccinoNodeIdentityDecoder
   convert(input: unknown) {
     assertRecordWithKeys(
       input,
-      'publicKey',
+      'public_key',
       'name',
-      'address',
+      'wallet_address',
+      'public_url',
       'company',
       'location',
-      'operatingSystem',
-      'nodeType',
-      'networkType',
+      'operating_system',
+      'node_type',
+      'network_type',
     );
     return new CappuccinoNodeIdentity(
-      taggedBase64Codec.decode(input.publicKey),
-      stringCodec.decode(input.name),
-      hexArrayBufferCodec.decode(input.address),
-      cappuccinoCompanyIdentityCodec.decode(input.company),
-      cappuccinoLocationDetailsCodec.decode(input.location),
-      stringCodec.decode(input.operatingSystem),
-      stringCodec.decode(input.nodeType),
-      stringCodec.decode(input.networkType),
+      taggedBase64Codec.decode(input.public_key),
+      nullableStringCodec.decode(input.name),
+      nullableHexArrayBufferCodec.decode(input.wallet_address),
+      nullableURLCodec.decode(input.public_url),
+      nullableStringCodec.decode(input.company),
+      nullableCappuccinoLocationDetailsCodec.decode(input.location),
+      nullableStringCodec.decode(input.operating_system),
+      nullableStringCodec.decode(input.node_type),
+      nullableStringCodec.decode(input.network_type),
     );
   }
 }

@@ -1,5 +1,10 @@
 import { createBufferedChannel } from '@/async/channel';
+import UnimplementedError from '@/errors/UnimplementedError';
 import FakeDataCappuccinoNodeValidatorAPI from './implementations/fake_data';
+import ReplayDataCappuccinoNodeValidatorAPI, {
+  HARFormat,
+} from './implementations/replay_data';
+import WebSocketDataCappuccinoNodeValidatorAPI from './implementations/websocket_data';
 import { CappuccinoNodeValidatorService } from './node_validator_service_api';
 import CappuccinoNodeValidatorRequest from './requests/node_validator_request';
 import { cappuccinoNodeValidatorRequestCodec } from './requests/node_validator_request_codec';
@@ -12,16 +17,79 @@ type Config = {
 
 type PostMessageFunction = typeof postMessage;
 
+async function determineServiceImplementationFromReplayURL(
+  url: URL,
+): Promise<CappuccinoNodeValidatorService> {
+  // The Path of the URL is the HAR file URL
+  const fileURL = url.pathname;
+
+  const response = await fetch(fileURL);
+
+  if (!response.ok) {
+    throw new UnimplementedError();
+  }
+
+  const capturedHAR: HARFormat = await response.json();
+  const requestChannel =
+    createBufferedChannel<CappuccinoNodeValidatorRequest>(1024);
+  const responseChannel =
+    createBufferedChannel<CappuccinoNodeValidatorResponse>(1024);
+
+  const replayService = new ReplayDataCappuccinoNodeValidatorAPI(
+    requestChannel,
+    responseChannel,
+    capturedHAR,
+  );
+  replayService.startProcessing();
+  return replayService;
+}
+
+async function determineServiceImplementationFromServiceURL(
+  serviceURL: string,
+): Promise<null | CappuccinoNodeValidatorService> {
+  const url = new URL(serviceURL);
+
+  if (url.protocol === 'replay:') {
+    return determineServiceImplementationFromReplayURL(url);
+  }
+
+  if (url.protocol === 'ws:' || url.protocol === 'wss:') {
+    // Web Socket Implementation
+    const requestChannel =
+      createBufferedChannel<CappuccinoNodeValidatorRequest>(1024);
+    const responseChannel =
+      createBufferedChannel<CappuccinoNodeValidatorResponse>(1024);
+    const service = new WebSocketDataCappuccinoNodeValidatorAPI(
+      requestChannel,
+      responseChannel,
+      url,
+    );
+
+    service.startProcessing();
+    return service;
+  }
+
+  return null;
+}
+
 async function determineServiceImplementation(): Promise<CappuccinoNodeValidatorService> {
   try {
     const response = await fetch('/config.json');
     const config: Config = await response.json();
+
     if (config.node_validator_service_url) {
-      // const url = new URL(config.node_validator_service_url);
-      // return new FetchBasedCappuccinoHotShotQueryService(fetch.bind(self), url);
+      const service = await determineServiceImplementationFromServiceURL(
+        config.node_validator_service_url,
+      );
+      if (service !== null) {
+        return service;
+      }
     }
-  } catch (err) {
-    // We ignore this error for now, and fallback to fake data.
+  } catch (error) {
+    console.warn(
+      'error determining service implementation, from configuration file',
+      error,
+    );
   }
 
   const requestChannel =
@@ -29,14 +97,14 @@ async function determineServiceImplementation(): Promise<CappuccinoNodeValidator
   const responseChannel =
     createBufferedChannel<CappuccinoNodeValidatorResponse>(1024);
 
-  const service = new FakeDataCappuccinoNodeValidatorAPI(
+  const fakeService = new FakeDataCappuccinoNodeValidatorAPI(
     requestChannel,
     responseChannel,
   );
 
-  service.startProcessing();
+  fakeService.startProcessing();
 
-  return service;
+  return fakeService;
 }
 
 async function determineService() {
@@ -89,7 +157,7 @@ export class WebWorkerProxy {
       const service = await this.service;
       service.send(request);
     } catch (error) {
-      //
+      console.warn('error processing message from event', error);
     }
   }
 }

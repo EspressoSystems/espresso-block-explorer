@@ -44,6 +44,7 @@ export class WebWorkerClientBasedNodeValidatorService
   private handleMessage(event: MessageEvent) {
     // This should be a response message
     const response = cappuccinoNodeValidatorResponseCodec.decode(event.data);
+    console.info('<<< HERE handleMessage', response);
     this.responseChannel.publish(response);
   }
 

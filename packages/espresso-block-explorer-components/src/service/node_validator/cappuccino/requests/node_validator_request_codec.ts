@@ -1,51 +1,77 @@
-import {
-  Converter,
-  TypeCheckingCodec,
-  assertRecordWithKeys,
-} from '@/convert/codec/convert';
-import UnimplementedError from '@/errors/UnimplementedError';
-import CappuccinoNodeValidatorRequest from './node_validator_request';
-import {
-  CappuccinoNodeIdentityRoleCall,
-  cappuccinoNodeIdentityRoleCallCodec,
-  kCappuccinoNodeIdentityRoleCallType,
-} from './role_call';
+import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
+import InvalidTypeError from '@/errors/InvalidTypeError';
+import CappuccinoNodeValidatorRequest, {
+  Close,
+  Connect,
+  kCloseValue,
+  kConnectValue,
+  kRequestBlocksSnapshotValue,
+  kRequestHistogramSnapshotValue,
+  kRequestNodeIdentitySnapshotValue,
+  kRequestVotersSnapshotValue,
+  kSubscribeLatestBockValue,
+  kSubscribeNodeIdentityValue,
+  kSubscribeVotersValue,
+  RequestBlocksSnapshot,
+  RequestHistogramSnapshot,
+  RequestNodeIdentitySnapshot,
+  RequestVotersSnapshot,
+  SubscribeLatestBlock,
+  SubscribeNodeIdentity,
+  SubscribeVoters,
+} from './node_validator_request';
+
+class CappuccinoNodeValidatorRequestEncoder
+  implements Converter<CappuccinoNodeValidatorRequest, string>
+{
+  convert(input: CappuccinoNodeValidatorRequest): string {
+    return input.valueOf();
+  }
+}
 
 class CappuccinoNodeValidatorRequestDecoder
   implements Converter<unknown, CappuccinoNodeValidatorRequest>
 {
   convert(input: unknown): CappuccinoNodeValidatorRequest {
-    assertRecordWithKeys(input, 'type');
-
-    switch (input.type) {
-      case kCappuccinoNodeIdentityRoleCallType:
-        return cappuccinoNodeIdentityRoleCallCodec.decode(input);
+    if (typeof input !== 'string') {
+      throw new InvalidTypeError(typeof input, 'string');
     }
 
-    throw new UnimplementedError();
-  }
-}
+    switch (input) {
+      case kSubscribeNodeIdentityValue:
+        return new SubscribeNodeIdentity();
+      case kSubscribeLatestBockValue:
+        return new SubscribeLatestBlock();
+      case kSubscribeVotersValue:
+        return new SubscribeVoters();
+      case kRequestNodeIdentitySnapshotValue:
+        return new RequestNodeIdentitySnapshot();
+      case kRequestBlocksSnapshotValue:
+        return new RequestBlocksSnapshot();
+      case kRequestHistogramSnapshotValue:
+        return new RequestHistogramSnapshot();
+      case kRequestVotersSnapshotValue:
+        return new RequestVotersSnapshot();
 
-class CappuccinoNodeValidatorRequestEncoder
-  implements Converter<CappuccinoNodeValidatorRequest>
-{
-  convert(input: CappuccinoNodeValidatorRequest) {
-    if (input instanceof CappuccinoNodeIdentityRoleCall) {
-      return cappuccinoNodeIdentityRoleCallCodec.encode(input);
+      case kConnectValue:
+        return new Connect();
+      case kCloseValue:
+        return new Close();
+
+      default:
+        throw new InvalidTypeError(input, 'CappuccinoNodeValidatorRequest');
     }
-
-    throw new UnimplementedError();
   }
 }
 
 class CappuccinoNodeValidatorRequestCodec extends TypeCheckingCodec<
   CappuccinoNodeValidatorRequest,
-  ReturnType<
-    InstanceType<new () => CappuccinoNodeValidatorRequestEncoder>['convert']
-  >
+  string
 > {
-  readonly encoder = new CappuccinoNodeValidatorRequestEncoder();
-  readonly decoder = new CappuccinoNodeValidatorRequestDecoder();
+  readonly encoder: Converter<CappuccinoNodeValidatorRequest, string> =
+    new CappuccinoNodeValidatorRequestEncoder();
+  readonly decoder: Converter<string, CappuccinoNodeValidatorRequest> =
+    new CappuccinoNodeValidatorRequestDecoder();
 }
 
 export const cappuccinoNodeValidatorRequestCodec =

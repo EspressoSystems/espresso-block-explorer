@@ -14,11 +14,19 @@ import { NodeSummaryData } from './NodesSummaryLoader';
 const NameCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as NodeSummaryData;
 
+  if (row.name === null || row.name === '') {
+    return <Text text="-" />;
+  }
+
   return <Text text={row.name} />;
 };
 
 const AddressCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as NodeSummaryData;
+
+  if (row.address === null) {
+    return <Text text="-" />;
+  }
 
   return <FullHexText value={row.address} />;
 };
@@ -26,11 +34,27 @@ const AddressCell: React.FC = () => {
 const CompanyName: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as NodeSummaryData;
 
+  if (
+    row.companyDetails === null ||
+    row.companyDetails.name === null ||
+    row.companyDetails.name === ''
+  ) {
+    return <Text text="-" />;
+  }
+
   return <Text text={row.companyDetails.name} />;
 };
 
 const WebSiteCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as NodeSummaryData;
+
+  if (
+    row.companyDetails === null ||
+    row.companyDetails.website === null ||
+    row.companyDetails?.website === ''
+  ) {
+    return <Text text="-" />;
+  }
 
   if (!row.companyDetails.website) {
     return <Text text="-" />;
@@ -45,6 +69,14 @@ const WebSiteCell: React.FC = () => {
 
 const LatLng: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as NodeSummaryData;
+
+  if (row.location === null) {
+    return <Text text="-" />;
+  }
+
+  if (row.location.coords === null) {
+    return <Text text="-" />;
+  }
 
   return (
     <Text

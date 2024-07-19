@@ -85,11 +85,15 @@ export function convertNodeInformationToDotPopulation(
   // Calculate which nodes are contained within the bounding box
   const rawDotPopulation = mapIterable(boundingBoxes, ({ offset, bbox }) => {
     const nodes = filterIterable(nodeInformation, (node) => {
-      return bbox.contains(
-        new LatLng(
-          new Latitude(new Degrees(node.location.coords[0])),
-          new Longitude(new Degrees(node.location.coords[1])),
-        ),
+      return (
+        node.location !== null &&
+        node.location.coords !== null &&
+        bbox.contains(
+          new LatLng(
+            new Latitude(new Degrees(node.location.coords[0])),
+            new Longitude(new Degrees(node.location.coords[1])),
+          ),
+        )
       );
     });
 

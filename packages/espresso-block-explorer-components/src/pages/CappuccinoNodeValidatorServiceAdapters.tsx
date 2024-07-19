@@ -31,8 +31,20 @@ import {
 } from '@/data_structures/circular_buffer/CircularBuffer';
 import CappuccinoNodeIdentity from '@/service/node_validator/cappuccino/node_identity';
 import { CappuccinoNodeValidatorAPI } from '@/service/node_validator/cappuccino/node_validator_api';
+import {
+  Connect,
+  RequestBlocksSnapshot,
+  RequestHistogramSnapshot,
+  RequestNodeIdentitySnapshot,
+  RequestVotersSnapshot,
+  SubscribeLatestBlock,
+  SubscribeNodeIdentity,
+  SubscribeVoters,
+} from '@/service/node_validator/cappuccino/requests/node_validator_request';
+import { CappuccinoBlocksSnapshot } from '@/service/node_validator/cappuccino/responses/blocks_snapshot';
 import { CappuccinoHistogramSnapshot } from '@/service/node_validator/cappuccino/responses/histogram_snapshot';
-import { CappuccinoLatestBlockSnapshot } from '@/service/node_validator/cappuccino/responses/latest_block';
+import { CappuccinoLatestBlock } from '@/service/node_validator/cappuccino/responses/latest_block';
+import { CappuccinoLatestNodeIdentity } from '@/service/node_validator/cappuccino/responses/latest_node_identity';
 import { CappuccinoNodeIdentitySnapshot } from '@/service/node_validator/cappuccino/responses/node_identity_snapshot';
 import React from 'react';
 import { zipWithIterable } from '../functional';
@@ -68,17 +80,19 @@ function convertCappuccinoNodeIdentity(
 ): NodeSummaryData {
   return {
     name: node.name,
-    address: node.address,
+    address: node.walletAddress,
     companyDetails: {
-      name: node.company.name,
-      website: node.company.website,
+      name: node.company,
+      website: null,
     },
     location: {
-      coords: [
-        Number(node.location.coords.lat),
-        Number(node.location.coords.lng),
-      ],
-      country: node.location.country,
+      coords: node.location?.coords
+        ? [
+            node.location.coords.lat.valueOf(),
+            node.location.coords.lng.valueOf(),
+          ]
+        : null,
+      country: node.location?.country ?? null,
     },
   };
 }
@@ -92,11 +106,14 @@ function sortPieChartLabelPercentagePairs(
 
 function aggregateCountsForNodes(
   nodes: CappuccinoNodeIdentity[],
-  keyExtractor: (node: CappuccinoNodeIdentity) => string,
+  keyExtractor: (node: CappuccinoNodeIdentity) => null | string,
 ): PieChartEntry[] {
   const counts = new Map<string, number>();
   for (const node of nodes) {
     const key = keyExtractor(node);
+    if (key === null) {
+      continue;
+    }
     counts.set(key, (counts.get(key) ?? 0) + 1);
   }
 
@@ -113,7 +130,10 @@ function computeOperatingSystemsPieChartData(nodes: CappuccinoNodeIdentity[]) {
 }
 
 function computeCountriesPieChartData(nodes: CappuccinoNodeIdentity[]) {
-  return aggregateCountsForNodes(nodes, (node) => node.location.country);
+  return aggregateCountsForNodes(
+    nodes,
+    (node) => node.location?.country ?? null,
+  );
 }
 
 function computeNetworkTypesPieChartData(nodes: CappuccinoNodeIdentity[]) {
@@ -128,7 +148,7 @@ async function bridgeStreamIntoIndividualStreams(
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
   nodeValidatorService: CappuccinoNodeValidatorAPI,
 ) {
-  let lastBlock: null | CappuccinoLatestBlockSnapshot = null;
+  let lastBlock: null | CappuccinoLatestBlock = null;
   const blockHeightHistograms = createCircularBuffer<number>(50);
   const blockTimeHistograms = createCircularBuffer<number>(50);
   const blockSizeHistograms = createCircularBuffer<number>(50);
@@ -136,7 +156,7 @@ async function bridgeStreamIntoIndividualStreams(
   let nodes: CappuccinoNodeIdentity[] = [];
 
   for await (const event of nodeValidatorService.stream) {
-    if (event instanceof CappuccinoLatestBlockSnapshot) {
+    if (event instanceof CappuccinoLatestBlock) {
       const previousBlock = lastBlock;
       lastBlock = event;
       streams.latestBlockStream.publish({
@@ -163,6 +183,42 @@ async function bridgeStreamIntoIndividualStreams(
         blockSizeHistograms,
         blockThroughputHistograms,
       );
+
+      continue;
+    }
+
+    if (event instanceof CappuccinoBlocksSnapshot) {
+      for (const block of event.blocks) {
+        const previousBlock = lastBlock?.latestBlock ?? null;
+        lastBlock = new CappuccinoLatestBlock(block);
+        blockHeightHistograms.put(block.height);
+        blockSizeHistograms.put(block.size);
+
+        const time =
+          (block.time.valueOf() - (previousBlock?.time.valueOf() ?? 0)) / 1000;
+
+        blockTimeHistograms.put(time);
+        blockThroughputHistograms.put(block.size / Math.max(1, time));
+      }
+
+      await publishHistogramUpdates(
+        streams,
+        blockHeightHistograms,
+        blockTimeHistograms,
+        blockSizeHistograms,
+        blockThroughputHistograms,
+      );
+
+      const latestBlock = lastBlock?.latestBlock ?? null;
+      if (latestBlock !== null) {
+        streams.latestBlockStream.publish({
+          height: latestBlock.height,
+          time: latestBlock.time,
+          size: latestBlock.size,
+          transactions: latestBlock.numTransactions,
+          proposer: latestBlock.proposerID,
+        });
+      }
 
       continue;
     }
@@ -218,7 +274,57 @@ async function bridgeStreamIntoIndividualStreams(
       ]);
       continue;
     }
+
+    if (event instanceof CappuccinoLatestNodeIdentity) {
+      // Check to see if the incoming node already exists.
+      const existingNodeIndex = nodes.findIndex(
+        (node) =>
+          node.publicKey.toString() === event.nodeIdentity.publicKey.toString(),
+      );
+
+      if (existingNodeIndex < 0) {
+        // Node does **not exist** in the list, let's add it.
+        nodes.push(event.nodeIdentity);
+      } else {
+        // Node **does exist** in the list, let's replace it.
+        nodes[existingNodeIndex] = event.nodeIdentity;
+      }
+
+      const operatingSystems = computeOperatingSystemsPieChartData(nodes);
+      const countries = computeCountriesPieChartData(nodes);
+      const networkTypes = computeNetworkTypesPieChartData(nodes);
+      const nodeTypes = computeNodeTypesPieChartData(nodes);
+      const convertedNodes = nodes.map(convertCappuccinoNodeIdentity);
+
+      await Promise.all([
+        streams.nodesSummary.publish(convertedNodes),
+        streams.nodeCoordinates.publish(convertedNodes),
+        streams.pieChartCountries.publish(countries),
+        streams.pieChartNetworkTypes.publish(networkTypes),
+        streams.pieChartNodeTypes.publish(nodeTypes),
+        streams.pieChartOperatingSystems.publish(operatingSystems),
+      ]);
+      continue;
+    }
   }
+}
+
+async function startValidatorService(
+  nodeValidatorService: CappuccinoNodeValidatorAPI,
+) {
+  // We need to "connect" to the service.
+  await nodeValidatorService.send(new Connect());
+
+  // Setup our subscriptions.
+  await nodeValidatorService.send(new SubscribeLatestBlock());
+  await nodeValidatorService.send(new SubscribeNodeIdentity());
+  await nodeValidatorService.send(new SubscribeVoters());
+
+  // Request the latest information
+  await nodeValidatorService.send(new RequestNodeIdentitySnapshot());
+  await nodeValidatorService.send(new RequestBlocksSnapshot());
+  await nodeValidatorService.send(new RequestHistogramSnapshot());
+  await nodeValidatorService.send(new RequestVotersSnapshot());
 }
 
 function createNodeValidatorSplitStreams() {
@@ -253,6 +359,7 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
 
   // Bridge these streams
   bridgeStreamIntoIndividualStreams(streams, nodeValidatorService);
+  startValidatorService(nodeValidatorService);
 
   return (
     <LatestBlockSummaryStreamContext.Provider value={streams.latestBlockStream}>

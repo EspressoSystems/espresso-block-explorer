@@ -1,4 +1,5 @@
 import { assertInstanceOf } from '@/assert/assert';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Codec,
@@ -108,3 +109,7 @@ class CappuccinoExplorerBlockDetailCodec extends Codec<
 
 export const cappuccinoExplorerBlockDetailCodec =
   new CappuccinoExplorerBlockDetailCodec();
+export const cappuccinoExplorerBlockDetailArrayCodec = new ArrayCodec(
+  new ArrayDecoder(cappuccinoExplorerBlockDetailCodec),
+  new ArrayEncoder(cappuccinoExplorerBlockDetailCodec),
+);

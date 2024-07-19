@@ -1,3 +1,4 @@
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec';
 import {
   Converter,
   TypeCheckingCodec,
@@ -56,3 +57,8 @@ class CappuccinoLocationDetailsCodec extends TypeCheckingCodec<CappuccinoLocatio
 
 export const cappuccinoLocationDetailsCodec =
   new CappuccinoLocationDetailsCodec();
+
+export const nullableCappuccinoLocationDetailsCodec = new NullCodec(
+  new NullDecoder(cappuccinoLocationDetailsCodec),
+  new NullEncoder(cappuccinoLocationDetailsCodec),
+);

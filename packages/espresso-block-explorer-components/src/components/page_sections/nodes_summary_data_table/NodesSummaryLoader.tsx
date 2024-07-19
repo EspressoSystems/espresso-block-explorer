@@ -3,15 +3,15 @@ import { unimplementedAsyncIterable } from '@/functional/functional_async';
 import React from 'react';
 
 export interface NodeSummaryData {
-  name: string;
-  address: ArrayBuffer;
-  companyDetails: {
-    name: string;
-    website: string;
+  name: null | string;
+  address: null | ArrayBuffer;
+  companyDetails: null | {
+    name: null | string;
+    website: null | string;
   };
   location: {
-    coords: [number, number];
-    country: string;
+    coords: null | [number, number];
+    country: null | string;
   };
 }
 
