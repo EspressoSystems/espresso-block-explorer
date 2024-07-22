@@ -13,6 +13,9 @@ import CappuccinoNodeValidatorRequest, {
   SubscribeNodeIdentity,
   SubscribeVoters,
 } from '../requests/node_validator_request';
+import { CappuccinoConnectionClosed } from '../responses/connection_closed';
+import { CappuccinoConnectionConnecting } from '../responses/connection_connecting';
+import { CappuccinoConnectionOpened } from '../responses/connection_opened';
 import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
 import { cappuccinoNodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
 
@@ -214,6 +217,8 @@ export default class ReplayDataCappuccinoNodeValidatorAPI
   }
 
   private async handleConnect() {
+    this.responseStream.publish(new CappuccinoConnectionConnecting());
+    this.responseStream.publish(new CappuccinoConnectionOpened());
     // Let's start the message replay here.
     const webSocketMessages = expandIterable(
       this.capturedHAR.log.entries,
@@ -252,6 +257,8 @@ export default class ReplayDataCappuccinoNodeValidatorAPI
         continue;
       }
     }
+
+    this.responseStream.publish(new CappuccinoConnectionClosed());
   }
 
   private async handleClose() {}

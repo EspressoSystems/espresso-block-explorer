@@ -33,6 +33,9 @@ import CappuccinoNodeValidatorRequest, {
   SubscribeVoters,
 } from '../requests/node_validator_request';
 import { CappuccinoBlocksSnapshot } from '../responses/blocks_snapshot';
+import { CappuccinoConnectionClosed } from '../responses/connection_closed';
+import { CappuccinoConnectionConnecting } from '../responses/connection_connecting';
+import { CappuccinoConnectionOpened } from '../responses/connection_opened';
 import { CappuccinoHistogramSnapshot } from '../responses/histogram_snapshot';
 import { CappuccinoLatestBlock } from '../responses/latest_block';
 import { CappuccinoLatestVoters } from '../responses/latest_voters';
@@ -275,6 +278,9 @@ export default class FakeDataCappuccinoNodeValidatorAPI
     }
 
     this.isConnected = true;
+
+    this.responseStream.publish(new CappuccinoConnectionConnecting());
+    this.responseStream.publish(new CappuccinoConnectionOpened());
   }
 
   private async handleClose() {
@@ -285,6 +291,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
     this.isConnected = false;
     this.isSubscribedToLatestBlock = false;
     this.isSubscribedToVoters = false;
+    this.responseStream.publish(new CappuccinoConnectionClosed());
   }
 
   private async assertIsConnected() {

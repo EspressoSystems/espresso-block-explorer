@@ -10,6 +10,21 @@ import {
   kCappuccinoBlocksSnapshotType,
 } from './blocks_snapshot';
 import {
+  CappuccinoConnectionClosed,
+  cappuccinoConnectionClosedCodec,
+  kCappuccinoConnectionClosedType,
+} from './connection_closed';
+import {
+  CappuccinoConnectionConnecting,
+  cappuccinoConnectionConnectingCodec,
+  kCappuccinoConnectionConnectingType,
+} from './connection_connecting';
+import {
+  CappuccinoConnectionOpened,
+  cappuccinoConnectionOpenedCodec,
+  kCappuccinoConnectionOpenedType,
+} from './connection_opened';
+import {
   CappuccinoHistogramSnapshot,
   cappuccinoHistogramSnapshotCodec,
   kCappuccinoHistogramSnapshotType,
@@ -45,6 +60,18 @@ class CappuccinoNodeValidatorResponseDecoder
   implements Converter<unknown, CappuccinoNodeValidatorResponse>
 {
   convert(input: unknown): CappuccinoNodeValidatorResponse {
+    // Non Server Based Messages
+    // This is in-band, technically, not the greatest approach.
+    if (input === kCappuccinoConnectionOpenedType) {
+      return cappuccinoConnectionOpenedCodec.decode(input);
+    }
+    if (input === kCappuccinoConnectionClosedType) {
+      return cappuccinoConnectionClosedCodec.decode(input);
+    }
+    if (input === kCappuccinoConnectionConnectingType) {
+      return cappuccinoConnectionConnectingCodec.decode(input);
+    }
+
     if (isRecordWithKeys(input, kCappuccinoBlocksSnapshotType)) {
       return cappuccinoBlocksSnapshotCodec.decode(input);
     }
@@ -75,6 +102,16 @@ class CappuccinoNodeValidatorResponseEncoder
   implements Converter<CappuccinoNodeValidatorResponse>
 {
   convert(input: CappuccinoNodeValidatorResponse) {
+    if (input instanceof CappuccinoConnectionOpened) {
+      return cappuccinoConnectionOpenedCodec.encode(input);
+    }
+    if (input instanceof CappuccinoConnectionClosed) {
+      return cappuccinoConnectionClosedCodec.encode(input);
+    }
+    if (input instanceof CappuccinoConnectionConnecting) {
+      return cappuccinoConnectionConnectingCodec.encode(input);
+    }
+
     if (input instanceof CappuccinoBlocksSnapshot) {
       return cappuccinoBlocksSnapshotCodec.encode(input);
     }

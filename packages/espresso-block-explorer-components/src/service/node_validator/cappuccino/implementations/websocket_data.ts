@@ -9,6 +9,9 @@ import CappuccinoNodeValidatorRequest, {
   Connect,
 } from '../requests/node_validator_request';
 import { cappuccinoNodeValidatorRequestCodec } from '../requests/node_validator_request_codec';
+import { CappuccinoConnectionClosed } from '../responses/connection_closed';
+import { CappuccinoConnectionConnecting } from '../responses/connection_connecting';
+import { CappuccinoConnectionOpened } from '../responses/connection_opened';
 import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
 import { cappuccinoNodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
 
@@ -90,17 +93,22 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
   private async handleConnect() {
     this.assertNotConnected();
 
+    await this.responseStream.publish(new CappuccinoConnectionConnecting());
     const url = new URL('node-validator/details', this.serviceBaseURL);
 
     const webSocketCompleter = createCompleter<WebSocket>();
 
     const messageHandler = new WebSocketMessageHandler(this.responseStream);
-    const openHandler = new WebSocketOpenHandler(webSocketCompleter);
-    const closeHandler = new WebSocketCloseHandler();
-    const errorHandler = new WebSocketErrorHandler();
+    const openHandler = new WebSocketOpenHandler(
+      webSocketCompleter,
+      this.responseStream,
+    );
+    const closeHandler = new WebSocketCloseHandler(this.responseStream);
+    const errorHandler = new WebSocketErrorHandler(this.responseStream);
 
     const webSocket = new WebSocket(url);
 
+    webSocket.onerror;
     webSocket.addEventListener('open', openHandler);
     webSocket.addEventListener('message', messageHandler);
     webSocket.addEventListener('close', closeHandler);
@@ -173,23 +181,40 @@ class WebSocketMessageHandler implements EventListenerObject {
 
 class WebSocketOpenHandler implements EventListenerObject {
   private readonly completer: Completer<WebSocket>;
-  constructor(completer: Completer<WebSocket>) {
+  private readonly responseStream: Channel<CappuccinoNodeValidatorResponse>;
+  constructor(
+    completer: Completer<WebSocket>,
+    responseStream: Channel<CappuccinoNodeValidatorResponse>,
+  ) {
     this.completer = completer;
+    this.responseStream = responseStream;
   }
 
   handleEvent(event: Event) {
     console.info('websocket onopen', event);
     this.completer.complete(event.target as WebSocket);
+    this.responseStream.publish(new CappuccinoConnectionOpened());
   }
 }
 
 class WebSocketCloseHandler implements EventListenerObject {
-  handleEvent(event: CloseEvent) {
-    console.info('websocket onclose', event);
+  private readonly responseStream: Channel<CappuccinoNodeValidatorResponse>;
+
+  constructor(responseStream: Channel<CappuccinoNodeValidatorResponse>) {
+    this.responseStream = responseStream;
+  }
+
+  async handleEvent() {
+    await this.responseStream.publish(new CappuccinoConnectionClosed());
   }
 }
 
 class WebSocketErrorHandler implements EventListenerObject {
+  private readonly responseStream: Channel<CappuccinoNodeValidatorResponse>;
+
+  constructor(responseStream: Channel<CappuccinoNodeValidatorResponse>) {
+    this.responseStream = responseStream;
+  }
   handleEvent(event: Event) {
     console.info('websocket onerror', event);
   }
