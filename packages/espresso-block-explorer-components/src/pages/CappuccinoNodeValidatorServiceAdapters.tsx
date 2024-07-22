@@ -13,6 +13,10 @@ import {
 } from '@/components/page_sections/block_time_histogram/BlockTimeHistogramDataLoader';
 import { CountriesPieChartStreamContext } from '@/components/page_sections/countries_pie_chart/CountriesPieChartLoader';
 import {
+  LatestBlockProducer,
+  LatestBlockProducersStreamContext,
+} from '@/components/page_sections/latest_block_producers/LatestBlockProducersLoader';
+import {
   LatestBlock,
   LatestBlockSummaryStreamContext,
 } from '@/components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
@@ -21,6 +25,8 @@ import { NodeTypesPieChartStreamContext } from '@/components/page_sections/node_
 import {
   NodeSummaryData,
   NodeSummaryStreamContext,
+  NodeVoteParticipationStats,
+  VoterParticipationStreamContext,
 } from '@/components/page_sections/nodes_summary_data_table/NodesSummaryLoader';
 import { OperatingSystemPieChartStreamContext } from '@/components/page_sections/operating_system_pie_chart/OperatingSystemPieChartLoader';
 import { NodeIdentityInformationStreamContext } from '@/components/visual/geo_json/WorldMapDotsPopulationResolver';
@@ -32,6 +38,7 @@ import {
 import CappuccinoNodeIdentity from '@/service/node_validator/cappuccino/node_identity';
 import { CappuccinoNodeValidatorAPI } from '@/service/node_validator/cappuccino/node_validator_api';
 import {
+  Close,
   Connect,
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
@@ -45,9 +52,18 @@ import { CappuccinoBlocksSnapshot } from '@/service/node_validator/cappuccino/re
 import { CappuccinoHistogramSnapshot } from '@/service/node_validator/cappuccino/responses/histogram_snapshot';
 import { CappuccinoLatestBlock } from '@/service/node_validator/cappuccino/responses/latest_block';
 import { CappuccinoLatestNodeIdentity } from '@/service/node_validator/cappuccino/responses/latest_node_identity';
+import { CappuccinoLatestVoters } from '@/service/node_validator/cappuccino/responses/latest_voters';
 import { CappuccinoNodeIdentitySnapshot } from '@/service/node_validator/cappuccino/responses/node_identity_snapshot';
+import { CappuccinoVotersSnapshot } from '@/service/node_validator/cappuccino/responses/voters_snapshot';
 import React from 'react';
-import { zipWithIterable } from '../functional';
+import {
+  compareArrayBuffer,
+  firstWhereIterable,
+  foldRIterator,
+  mapIterable,
+  zipWithIterable,
+} from '../functional';
+import { CappuccinoAPIBitVec, CappuccinoExplorerBlockDetail } from '../service';
 import { CappuccinoNodeValidatorServiceAPIContext } from './CappuccinoNodeValidatorServiceAPIContext';
 
 async function publishHistogramUpdates(
@@ -79,6 +95,7 @@ function convertCappuccinoNodeIdentity(
   node: CappuccinoNodeIdentity,
 ): NodeSummaryData {
   return {
+    publicKey: node.publicKey,
     name: node.name,
     address: node.walletAddress,
     companyDetails: {
@@ -144,21 +161,105 @@ function computeNodeTypesPieChartData(nodes: CappuccinoNodeIdentity[]) {
   return aggregateCountsForNodes(nodes, (node) => node.nodeType);
 }
 
+function computeVoterParticipationStats(
+  nodes: CappuccinoNodeIdentity[],
+  bitVecs: Iterable<CappuccinoAPIBitVec>,
+): NodeVoteParticipationStats[] {
+  // Each BitVec should be the same number of entries as the nodes.
+  const participantStats = Array.from(
+    mapIterable(bitVecs, (bitVec) => Array.from(mapIterable(bitVec, Number))),
+  );
+
+  const results = nodes.map((_, index): NodeVoteParticipationStats => {
+    // We don't care about the actual node, we just care about the stats
+    const roundStats = mapIterable(participantStats, (round) => round[index]);
+    const it = roundStats[Symbol.iterator]();
+
+    const [totalVotes, voteParticipation] = foldRIterator(
+      ([total, voteParticipation]: [number, number], value: number) => [
+        total + 1,
+        voteParticipation + value,
+      ],
+      [0, 0],
+      it,
+    );
+
+    return { voteParticipation, totalVotes };
+  });
+
+  return results;
+}
+
+function computeLatestBuilders(
+  blocks: Iterable<CappuccinoExplorerBlockDetail>,
+): LatestBlockProducer[] {
+  const it = blocks[Symbol.iterator]();
+  const results = foldRIterator(
+    (builderCounts, block) => {
+      // Does our ArrayBuffer already exist in the map?
+      // We cannot compare ArrayBuffers directly, which is sad, so we must look
+      // the array within the keys of the map.
+      // This makes this operation n^2, but only at the scale of
+      // kTrailingHistorySamples in the worst case.
+
+      // Find our existing key, or if we cannot find one, use the current
+      // block's key
+      const keys =
+        firstWhereIterable(builderCounts.keys(), (key) => {
+          // Compare the ArrayBuffers
+          return compareArrayBuffer(key, block.proposerID) === 0;
+        }) ?? block.proposerID;
+
+      // Set the new count, incrementing the old count by 1.
+      builderCounts.set(keys, (builderCounts.get(keys) ?? 0) + 1);
+
+      return builderCounts;
+    },
+    new Map<ArrayBuffer, number>(),
+    it,
+  );
+
+  // We want to sort the results by the number of blocks built.
+
+  const sorted = Array.from(results.entries()).sort((a, b) => b[1] - a[1]);
+
+  return Array.from(
+    mapIterable(sorted, ([address, count]) => ({ proposer: address, count })),
+  );
+}
+
+const kTrailingHistorySamples = 50;
+
 async function bridgeStreamIntoIndividualStreams(
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
   nodeValidatorService: CappuccinoNodeValidatorAPI,
 ) {
   let lastBlock: null | CappuccinoLatestBlock = null;
-  const blockHeightHistograms = createCircularBuffer<number>(50);
-  const blockTimeHistograms = createCircularBuffer<number>(50);
-  const blockSizeHistograms = createCircularBuffer<number>(50);
-  const blockThroughputHistograms = createCircularBuffer<number>(50);
+  const latestBlocks = createCircularBuffer<CappuccinoExplorerBlockDetail>(
+    kTrailingHistorySamples,
+  );
+  const blockHeightHistograms = createCircularBuffer<number>(
+    kTrailingHistorySamples,
+  );
+  const blockTimeHistograms = createCircularBuffer<number>(
+    kTrailingHistorySamples,
+  );
+  const blockSizeHistograms = createCircularBuffer<number>(
+    kTrailingHistorySamples,
+  );
+  const blockThroughputHistograms = createCircularBuffer<number>(
+    kTrailingHistorySamples,
+  );
+  const votersBitVecs = createCircularBuffer<CappuccinoAPIBitVec>(
+    kTrailingHistorySamples,
+  );
   let nodes: CappuccinoNodeIdentity[] = [];
 
   for await (const event of nodeValidatorService.stream) {
     if (event instanceof CappuccinoLatestBlock) {
       const previousBlock = lastBlock;
       lastBlock = event;
+      latestBlocks.put(event.latestBlock);
       streams.latestBlockStream.publish({
         height: event.latestBlock.height,
         time: event.latestBlock.time,
@@ -184,6 +285,10 @@ async function bridgeStreamIntoIndividualStreams(
         blockThroughputHistograms,
       );
 
+      streams.latestBlockProducers.publish(
+        computeLatestBuilders(latestBlocks.immutableIterable()),
+      );
+
       continue;
     }
 
@@ -191,6 +296,7 @@ async function bridgeStreamIntoIndividualStreams(
       for (const block of event.blocks) {
         const previousBlock = lastBlock?.latestBlock ?? null;
         lastBlock = new CappuccinoLatestBlock(block);
+        latestBlocks.put(block);
         blockHeightHistograms.put(block.height);
         blockSizeHistograms.put(block.size);
 
@@ -219,6 +325,10 @@ async function bridgeStreamIntoIndividualStreams(
           proposer: latestBlock.proposerID,
         });
       }
+
+      streams.latestBlockProducers.publish(
+        computeLatestBuilders(latestBlocks.immutableIterable()),
+      );
 
       continue;
     }
@@ -306,6 +416,30 @@ async function bridgeStreamIntoIndividualStreams(
       ]);
       continue;
     }
+
+    if (event instanceof CappuccinoVotersSnapshot) {
+      for (const voter of event.voters) {
+        votersBitVecs.put(voter);
+      }
+
+      const voteStats = computeVoterParticipationStats(
+        nodes,
+        votersBitVecs.immutableIterable(),
+      );
+
+      await streams.voters.publish(voteStats);
+    }
+
+    if (event instanceof CappuccinoLatestVoters) {
+      votersBitVecs.put(event.latestVoter);
+
+      const voteStats = computeVoterParticipationStats(
+        nodes,
+        votersBitVecs.immutableIterable(),
+      );
+
+      await streams.voters.publish(voteStats);
+    }
   }
 }
 
@@ -342,6 +476,12 @@ function createNodeValidatorSplitStreams() {
     pieChartNetworkTypes: createBufferedChannel<PieChartEntry[]>(4),
     pieChartNodeTypes: createBufferedChannel<PieChartEntry[]>(4),
     pieChartOperatingSystems: createBufferedChannel<PieChartEntry[]>(4),
+
+    // Voter Participation Data
+    voters: createBufferedChannel<NodeVoteParticipationStats[]>(4),
+
+    // Latest Builders
+    latestBlockProducers: createBufferedChannel<LatestBlockProducer[]>(4),
   };
 }
 
@@ -357,47 +497,63 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
   );
   const streams = createNodeValidatorSplitStreams();
 
-  // Bridge these streams
-  bridgeStreamIntoIndividualStreams(streams, nodeValidatorService);
-  startValidatorService(nodeValidatorService);
+  React.useEffect(() => {
+    // Bridge these streams
+    bridgeStreamIntoIndividualStreams(streams, nodeValidatorService);
+    startValidatorService(nodeValidatorService);
+
+    return () => {
+      // Tear Down
+      // Tell the service to Close the connection.
+      nodeValidatorService.send(new Close());
+    };
+  });
 
   return (
     <LatestBlockSummaryStreamContext.Provider value={streams.latestBlockStream}>
-      <BlockTimeHistogramStreamContext.Provider
-        value={streams.blockTimeHistogramStream}
+      <LatestBlockProducersStreamContext.Provider
+        value={streams.latestBlockProducers}
       >
-        <BlockSizeHistogramStreamContext.Provider
-          value={streams.blockSizeHistogramStream}
+        <BlockTimeHistogramStreamContext.Provider
+          value={streams.blockTimeHistogramStream}
         >
-          <BlockThroughputHistogramStreamContext.Provider
-            value={streams.blockThroughputHistogramStream}
+          <BlockSizeHistogramStreamContext.Provider
+            value={streams.blockSizeHistogramStream}
           >
-            <NodeSummaryStreamContext.Provider value={streams.nodesSummary}>
-              <OperatingSystemPieChartStreamContext.Provider
-                value={streams.pieChartOperatingSystems}
-              >
-                <NetworkTypesPieChartStreamContext.Provider
-                  value={streams.pieChartNetworkTypes}
+            <BlockThroughputHistogramStreamContext.Provider
+              value={streams.blockThroughputHistogramStream}
+            >
+              <NodeSummaryStreamContext.Provider value={streams.nodesSummary}>
+                <OperatingSystemPieChartStreamContext.Provider
+                  value={streams.pieChartOperatingSystems}
                 >
-                  <NodeTypesPieChartStreamContext.Provider
-                    value={streams.pieChartNodeTypes}
+                  <NetworkTypesPieChartStreamContext.Provider
+                    value={streams.pieChartNetworkTypes}
                   >
-                    <CountriesPieChartStreamContext.Provider
-                      value={streams.pieChartCountries}
+                    <NodeTypesPieChartStreamContext.Provider
+                      value={streams.pieChartNodeTypes}
                     >
-                      <NodeIdentityInformationStreamContext.Provider
-                        value={streams.nodeCoordinates}
+                      <CountriesPieChartStreamContext.Provider
+                        value={streams.pieChartCountries}
                       >
-                        {props.children}
-                      </NodeIdentityInformationStreamContext.Provider>
-                    </CountriesPieChartStreamContext.Provider>
-                  </NodeTypesPieChartStreamContext.Provider>
-                </NetworkTypesPieChartStreamContext.Provider>
-              </OperatingSystemPieChartStreamContext.Provider>
-            </NodeSummaryStreamContext.Provider>
-          </BlockThroughputHistogramStreamContext.Provider>
-        </BlockSizeHistogramStreamContext.Provider>
-      </BlockTimeHistogramStreamContext.Provider>
+                        <NodeIdentityInformationStreamContext.Provider
+                          value={streams.nodeCoordinates}
+                        >
+                          <VoterParticipationStreamContext.Provider
+                            value={streams.voters}
+                          >
+                            {props.children}
+                          </VoterParticipationStreamContext.Provider>
+                        </NodeIdentityInformationStreamContext.Provider>
+                      </CountriesPieChartStreamContext.Provider>
+                    </NodeTypesPieChartStreamContext.Provider>
+                  </NetworkTypesPieChartStreamContext.Provider>
+                </OperatingSystemPieChartStreamContext.Provider>
+              </NodeSummaryStreamContext.Provider>
+            </BlockThroughputHistogramStreamContext.Provider>
+          </BlockSizeHistogramStreamContext.Provider>
+        </BlockTimeHistogramStreamContext.Provider>
+      </LatestBlockProducersStreamContext.Provider>
     </LatestBlockSummaryStreamContext.Provider>
   );
 };

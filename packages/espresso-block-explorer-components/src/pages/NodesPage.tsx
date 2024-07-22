@@ -4,13 +4,18 @@ import { CountriesPieChart } from '@/components/page_sections/countries_pie_char
 import { CountriesPieChartStreamConsumer } from '@/components/page_sections/countries_pie_chart/CountriesPieChartLoader';
 import Footer from '@/components/page_sections/footer/Footer';
 import Header from '@/components/page_sections/header/Header';
+import { LatestBlockProducersAsyncHandler } from '@/components/page_sections/latest_block_producers/LatestBlockProducers';
+import { LatestBlockProducersStreamConsumer } from '@/components/page_sections/latest_block_producers/LatestBlockProducersLoader';
 import { LatestBlockSummaryStreamConsumer } from '@/components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
 import { NetworkTypesPieChart } from '@/components/page_sections/network_types_pie_chart/NetworkTypesPieChart';
 import { NetworkTypesPieChartStreamConsumer } from '@/components/page_sections/network_types_pie_chart/NetworkTypesPieChartLoader';
 import { NodeTypesPieChart } from '@/components/page_sections/node_types_pie_chart/NodeTypesPieChart';
 import { NodeTypesPieChartStreamConsumer } from '@/components/page_sections/node_types_pie_chart/NodeTypesPieChartLoader';
 import { NodesSummaryDataTable } from '@/components/page_sections/nodes_summary_data_table/NodesSummaryDataTable';
-import { NodeSummaryStreamConsumer } from '@/components/page_sections/nodes_summary_data_table/NodesSummaryLoader';
+import {
+  NodeSummaryStreamConsumer,
+  VotersParticipationStatsConsumer,
+} from '@/components/page_sections/nodes_summary_data_table/NodesSummaryLoader';
 import { OperatingSystemPieChart } from '@/components/page_sections/operating_system_pie_chart/OperatingSystemPieChart';
 import { OperatingSystemPieChartStreamConsumer } from '@/components/page_sections/operating_system_pie_chart/OperatingSystemPieChartLoader';
 import Text from '@/components/text/Text';
@@ -65,6 +70,9 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
       </LatestBlockSummaryStreamConsumer>
 
       {/* Latest Block Producers */}
+      <LatestBlockProducersStreamConsumer>
+        <LatestBlockProducersAsyncHandler className="latest-block-producers" />
+      </LatestBlockProducersStreamConsumer>
 
       {/* Block Time Histogram */}
       <CardNoPadding className="block-time-histogram">
@@ -152,9 +160,11 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
 
       {/* Recent Node Updates Data Table */}
       <CardNoPadding className="nodes">
-        <NodeSummaryStreamConsumer>
-          <NodesSummaryDataTable />
-        </NodeSummaryStreamConsumer>
+        <VotersParticipationStatsConsumer>
+          <NodeSummaryStreamConsumer>
+            <NodesSummaryDataTable />
+          </NodeSummaryStreamConsumer>
+        </VotersParticipationStatsConsumer>
       </CardNoPadding>
     </div>
 

@@ -3,6 +3,7 @@ import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import { describe, expect, it } from 'vitest';
 import { CappuccinoAPIBitVec } from '../bit_vec';
 import { CappuccinoAPIBitVecHead } from '../bit_vec_head';
+import { CappuccinoAPIBitVecOrder } from '../bit_vec_order';
 import { CappuccinoAPIHeader } from '../block_header';
 import { CappuccinoBuilderSignature } from '../builder_signature';
 import { CappuccinoFeeInfo } from '../fee_info';

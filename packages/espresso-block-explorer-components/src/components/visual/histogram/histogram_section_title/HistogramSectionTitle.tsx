@@ -1,8 +1,10 @@
+import { addClassToClassName } from '@/components/higher_order';
 import Heading2 from '@/layout/heading/Heading2';
 import React from 'react';
 import './histogram_section_title.css';
 
 export interface HistogramSectionTitleProps {
+  className?: string;
   children: [React.ReactNode, React.ReactNode];
 }
 
@@ -22,7 +24,12 @@ export const HistogramSectionTitle: React.FC<HistogramSectionTitleProps> = (
   props,
 ) => {
   return (
-    <div className="histogram-section-title">
+    <div
+      className={addClassToClassName(
+        props.className,
+        'histogram-section-title',
+      )}
+    >
       <Heading2>{props.children[0]}</Heading2>
       {props.children[1]}
     </div>

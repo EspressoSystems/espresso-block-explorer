@@ -38,6 +38,7 @@ import { CappuccinoLatestBlock } from '../responses/latest_block';
 import { CappuccinoLatestVoters } from '../responses/latest_voters';
 import { CappuccinoNodeIdentitySnapshot } from '../responses/node_identity_snapshot';
 import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
+import { CappuccinoVotersSnapshot } from '../responses/voters_snapshot';
 
 function createBlockDetailFromGeneratedBlock(
   block: GeneratedBlock,
@@ -110,18 +111,37 @@ export default class FakeDataCappuccinoNodeValidatorAPI
   private histogramBlockTimeData = createCircularBuffer<number>(50);
   private histogramBlockSizeData = createCircularBuffer<number>(50);
   private histogramBlockTransactionData = createCircularBuffer<number>(50);
+
+  private generateVotersFromBlockDetail(
+    blockDetail: CappuccinoExplorerBlockDetail,
+  ): CappuccinoAPIBitVec {
+    const prng = new PseudoRandomNumberGenerator(blockDetail.time.valueOf());
+
+    // We want 2/3 + 1 voters to have voted. But we can just settle on
+    // a random number of voters for our fake data.
+    const numberNodes = nodeList.length;
+    const numberVoteBitVec = Math.ceil(numberNodes / 16);
+
+    const votesVector = new Uint16Array(prng.fillBytes(numberVoteBitVec * 2));
+
+    const nextVoters = new CappuccinoAPIBitVec(
+      CappuccinoAPIBitVecOrder.lsb0,
+      new CappuccinoAPIBitVecHead(16, 0),
+      numberNodes,
+      Array.from(votesVector),
+    );
+
+    return nextVoters;
+  }
+
   private histogramBlockHeightData = createCircularBuffer<number>(50);
 
   private updateBlockDetails(blockDetail: CappuccinoExplorerBlockDetail): void {
     const previousBlock = this.latestBlock;
     const nextBlockTime =
       (blockDetail.time.valueOf() - previousBlock.time.valueOf()) / 1000;
-    const nextVoters = new CappuccinoAPIBitVec(
-      CappuccinoAPIBitVecOrder.lsb0,
-      new CappuccinoAPIBitVecHead(16, 0),
-      0,
-      [],
-    );
+
+    const nextVoters = this.generateVotersFromBlockDetail(blockDetail);
 
     this.latestBlock = blockDetail;
     this.latestBlocks.put(blockDetail);
@@ -329,5 +349,11 @@ export default class FakeDataCappuccinoNodeValidatorAPI
 
   private async handleRequestVotersSnapshot() {
     await this.assertIsConnected();
+
+    this.responseStream.publish(
+      new CappuccinoVotersSnapshot(
+        Array.from(this.latestVoters.immutableIterable()),
+      ),
+    );
   }
 }

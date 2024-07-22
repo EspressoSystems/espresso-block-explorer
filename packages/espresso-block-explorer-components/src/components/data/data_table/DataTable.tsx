@@ -51,6 +51,13 @@ export const DataTableRowContext: React.Context<object> = React.createContext(
 );
 
 /**
+ * DataTableIndexContext is a Context that provides the index of the current
+ * row within the DataTable.
+ */
+export const DataTableIndexContext: React.Context<number> =
+  React.createContext(-1);
+
+/**
  * ColumnData represents the minimum data needed to render a cell, and header
  * column.
  */
@@ -171,7 +178,9 @@ const DataTableTBody: React.FC = () => {
     <TextSmallTbody>
       {data.map((row, idx) => (
         <DataTableRowContext.Provider key={idx} value={row}>
-          <DataTableRow />
+          <DataTableIndexContext.Provider value={idx}>
+            <DataTableRow />
+          </DataTableIndexContext.Provider>
         </DataTableRowContext.Provider>
       ))}
     </TextSmallTbody>

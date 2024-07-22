@@ -20,6 +20,11 @@ import VariableBytesNumberFormat from './VariableBytesNumberFormat';
 function createDefaultNumberFormatters(locale: string) {
   return {
     default: new Intl.NumberFormat(locale),
+    percentage: new Intl.NumberFormat(locale, {
+      style: 'percent',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 3,
+    }),
     bytes: new Intl.NumberFormat(locale, {
       style: 'unit',
       unit: 'byte',

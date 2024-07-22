@@ -1,15 +1,22 @@
 import { DataContext } from '@/components/contexts/DataProvider';
+import { NumberText } from '@/components/text';
 import FullHexText from '@/components/text/FullHexText';
+import PercentageText from '@/components/text/PercentageText';
+import TaggedBase64Text from '@/components/text/TaggedBase64Text';
 import { iota } from '@/functional/functional';
 import SkeletonContent from '@/loading/SkeletonContent';
-import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
 import Text from '@/text/Text';
 import React from 'react';
 import DataTable, {
+  DataTableIndexContext,
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
 import Link from '../../links/link/Link';
-import { NodeSummaryData } from './NodesSummaryLoader';
+import {
+  NodeSummaryColumn,
+  NodeSummaryData,
+  VotersParticipationStatsContext,
+} from './NodesSummaryLoader';
 
 const NameCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as NodeSummaryData;
@@ -19,6 +26,12 @@ const NameCell: React.FC = () => {
   }
 
   return <Text text={row.name} />;
+};
+
+const PubKey: React.FC = () => {
+  const row = React.useContext(DataTableRowContext) as NodeSummaryData;
+
+  return <TaggedBase64Text value={row.publicKey} />;
 };
 
 const AddressCell: React.FC = () => {
@@ -67,26 +80,50 @@ const WebSiteCell: React.FC = () => {
   );
 };
 
-const LatLng: React.FC = () => {
-  const row = React.useContext(DataTableRowContext) as NodeSummaryData;
+// const LatLng: React.FC = () => {
+//   const row = React.useContext(DataTableRowContext) as NodeSummaryData;
 
-  if (row.location === null) {
-    return <Text text="-" />;
-  }
+//   if (row.location === null) {
+//     return <Text text="-" />;
+//   }
 
-  if (row.location.coords === null) {
-    return <Text text="-" />;
+//   if (row.location.coords === null) {
+//     return <Text text="-" />;
+//   }
+
+//   return (
+//     <Text
+//       text={`${row.location.coords[0]}, ${row.location.coords[1]} ${row.location.country}`}
+//     />
+//   );
+// };
+
+const VoterParticipation: React.FC = () => {
+  const allNodesVoteStats = React.useContext(VotersParticipationStatsContext);
+  // const row = React.useContext(DataTableRowContext) as NodeSummaryData;
+  const index = React.useContext(DataTableIndexContext);
+
+  const voterStats = allNodesVoteStats[index] ?? null;
+
+  if (voterStats === null) {
+    // This is entirely possible.
+    return <Text text="?" />;
   }
 
   return (
-    <Text
-      text={`${row.location.coords[0]}, ${row.location.coords[1]} ${row.location.country}`}
-    />
+    <>
+      <NumberText number={voterStats.voteParticipation} /> (
+      <PercentageText
+        percentage={voterStats.voteParticipation / voterStats.totalVotes}
+      />
+      )
+    </>
   );
 };
 
 interface NodesSummaryDataTableLayoutProps {
   components: [
+    React.ComponentType,
     React.ComponentType,
     React.ComponentType,
     React.ComponentType,
@@ -102,30 +139,40 @@ const NodesSummaryDataTableLayout: React.FC<
     <DataTable
       columns={[
         {
-          label: 'Name',
-          columnType: BlockSummaryColumn.height,
+          label: 'Public Key',
+          columnType: NodeSummaryColumn.publicKey,
           buildCell: props.components[0],
         },
         {
-          label: 'Address',
-          columnType: BlockSummaryColumn.proposer,
+          label: 'Name',
+          columnType: NodeSummaryColumn.name,
           buildCell: props.components[1],
         },
         {
-          label: 'Company',
-          columnType: BlockSummaryColumn.transactions,
+          label: 'Address',
+          columnType: NodeSummaryColumn.address,
           buildCell: props.components[2],
         },
         {
-          label: 'Website',
-          columnType: BlockSummaryColumn.size,
+          label: 'Company',
+          columnType: NodeSummaryColumn.companyName,
           buildCell: props.components[3],
         },
         {
-          label: 'Location',
-          columnType: BlockSummaryColumn.size,
+          label: 'Website',
+          columnType: NodeSummaryColumn.companyWebSite,
           buildCell: props.components[4],
         },
+        {
+          label: 'Vote Participation',
+          columnType: NodeSummaryColumn.voteParticipation,
+          buildCell: props.components[5],
+        },
+        // {
+        //   label: 'Location',
+        //   columnType: NodeSummaryColumn.location,
+        //   buildCell: props.components[5],
+        // },
       ]}
     />
   );
@@ -149,6 +196,7 @@ export const NodesSummaryDataTablePlaceholder: React.FC<
           SkeletonContent,
           SkeletonContent,
           SkeletonContent,
+          SkeletonContent,
         ]}
       />
     </DataContext.Provider>
@@ -158,7 +206,14 @@ export const NodesSummaryDataTablePlaceholder: React.FC<
 export const NodesSummaryDataTable: React.FC = () => {
   return (
     <NodesSummaryDataTableLayout
-      components={[NameCell, AddressCell, CompanyName, WebSiteCell, LatLng]}
+      components={[
+        PubKey,
+        NameCell,
+        AddressCell,
+        CompanyName,
+        WebSiteCell,
+        VoterParticipation,
+      ]}
     />
   );
 };
