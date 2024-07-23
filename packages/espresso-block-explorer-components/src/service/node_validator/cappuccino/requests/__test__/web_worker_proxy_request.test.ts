@@ -1,7 +1,7 @@
 import { zipWithIterable } from '@/functional/functional';
 import { describe, it } from 'vitest';
-import { cappuccinoNodeValidatorRequestCodec } from '../node_validator_request_codec';
 import { Close, Connect } from '../web_worker_life_cycle_request';
+import { webWorkerLifeCycleRequestCodec } from '../web_worker_life_cycle_request_codec';
 
 describe('NodeValidatorRequest', () => {
   it('should JSON encode', () => {
@@ -14,11 +14,11 @@ describe('NodeValidatorRequest', () => {
       requestConstructors,
       (a, b) => [a, b] as const,
     )) {
-      expect(
-        cappuccinoNodeValidatorRequestCodec.encode(new constructor()),
-      ).toBe(string);
+      expect(webWorkerLifeCycleRequestCodec.encode(new constructor())).toBe(
+        string,
+      );
 
-      expect(cappuccinoNodeValidatorRequestCodec.decode(string)).toBeInstanceOf(
+      expect(webWorkerLifeCycleRequestCodec.decode(string)).toBeInstanceOf(
         constructor,
       );
 
