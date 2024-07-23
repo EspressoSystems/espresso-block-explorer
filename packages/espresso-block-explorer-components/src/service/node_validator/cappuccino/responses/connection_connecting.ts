@@ -1,6 +1,6 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import InvalidTypeError from '@/errors/InvalidTypeError';
-import CappuccinoNodeValidatorResponse from './node_validator_response';
+import WebworkerLifeCycleResponse from './web_worker_life_cycle_response';
 
 /**
  * kCappuccinoConnectionConnectingType is the type string for the
@@ -13,7 +13,7 @@ export const kCappuccinoConnectionConnectingType =
  * CappuccinoConnectionConnecting is a response from the Cappuccino node
  * validator that contains a snapshot of the histograms in the network.
  */
-export class CappuccinoConnectionConnecting extends CappuccinoNodeValidatorResponse {
+export class CappuccinoConnectionConnecting extends WebworkerLifeCycleResponse {
   toJSON() {
     return cappuccinoConnectionConnectingCodec.encode(this);
   }

@@ -5,11 +5,11 @@ import ReplayDataCappuccinoNodeValidatorAPI, {
   HARFormat,
 } from './implementations/replay_data';
 import WebSocketDataCappuccinoNodeValidatorAPI from './implementations/websocket_data';
-import { CappuccinoNodeValidatorService } from './node_validator_service_api';
-import CappuccinoNodeValidatorRequest from './requests/node_validator_request';
-import { cappuccinoNodeValidatorRequestCodec } from './requests/node_validator_request_codec';
-import CappuccinoNodeValidatorResponse from './responses/node_validator_response';
-import { cappuccinoNodeValidatorResponseCodec } from './responses/node_validator_response_codec';
+import { WebWorkerProxyRequest } from './requests/web_worker_proxy_request';
+import { webWorkerProxyRequestCodec } from './requests/web_worker_proxy_request_codec';
+import { WebWorkerProxyResponse } from './responses/web_worker_proxy_response';
+import { webWorkerProxyResponseCodec } from './responses/web_worker_proxy_response_codec';
+import { WebWorkerNodeValidatorAPI } from './web_worker_proxy_api';
 
 type Config = {
   node_validator_service_url: undefined | null | string;
@@ -19,7 +19,7 @@ type PostMessageFunction = typeof postMessage;
 
 async function determineServiceImplementationFromReplayURL(
   url: URL,
-): Promise<CappuccinoNodeValidatorService> {
+): Promise<WebWorkerNodeValidatorAPI> {
   // The Path of the URL is the HAR file URL
   const fileURL = url.pathname;
 
@@ -30,10 +30,8 @@ async function determineServiceImplementationFromReplayURL(
   }
 
   const capturedHAR: HARFormat = await response.json();
-  const requestChannel =
-    createBufferedChannel<CappuccinoNodeValidatorRequest>(1024);
-  const responseChannel =
-    createBufferedChannel<CappuccinoNodeValidatorResponse>(1024);
+  const requestChannel = createBufferedChannel<WebWorkerProxyRequest>(1024);
+  const responseChannel = createBufferedChannel<WebWorkerProxyResponse>(1024);
 
   const replayService = new ReplayDataCappuccinoNodeValidatorAPI(
     requestChannel,
@@ -46,7 +44,7 @@ async function determineServiceImplementationFromReplayURL(
 
 async function determineServiceImplementationFromServiceURL(
   serviceURL: string,
-): Promise<null | CappuccinoNodeValidatorService> {
+): Promise<null | WebWorkerNodeValidatorAPI> {
   const url = new URL(serviceURL);
 
   if (url.protocol === 'replay:') {
@@ -55,10 +53,8 @@ async function determineServiceImplementationFromServiceURL(
 
   if (url.protocol === 'ws:' || url.protocol === 'wss:') {
     // Web Socket Implementation
-    const requestChannel =
-      createBufferedChannel<CappuccinoNodeValidatorRequest>(1024);
-    const responseChannel =
-      createBufferedChannel<CappuccinoNodeValidatorResponse>(1024);
+    const requestChannel = createBufferedChannel<WebWorkerProxyRequest>(1024);
+    const responseChannel = createBufferedChannel<WebWorkerProxyResponse>(1024);
     const service = new WebSocketDataCappuccinoNodeValidatorAPI(
       requestChannel,
       responseChannel,
@@ -72,7 +68,7 @@ async function determineServiceImplementationFromServiceURL(
   return null;
 }
 
-async function determineServiceImplementation(): Promise<CappuccinoNodeValidatorService> {
+async function determineServiceImplementation(): Promise<WebWorkerNodeValidatorAPI> {
   try {
     const response = await fetch('/config.json');
     const config: Config = await response.json();
@@ -92,10 +88,8 @@ async function determineServiceImplementation(): Promise<CappuccinoNodeValidator
     );
   }
 
-  const requestChannel =
-    createBufferedChannel<CappuccinoNodeValidatorRequest>(1024);
-  const responseChannel =
-    createBufferedChannel<CappuccinoNodeValidatorResponse>(1024);
+  const requestChannel = createBufferedChannel<WebWorkerProxyRequest>(1024);
+  const responseChannel = createBufferedChannel<WebWorkerProxyResponse>(1024);
 
   const fakeService = new FakeDataCappuccinoNodeValidatorAPI(
     requestChannel,
@@ -113,11 +107,9 @@ async function determineService() {
   );
 }
 
-class WebWorkerProxyNodeValidatorService
-  implements CappuccinoNodeValidatorService
-{
-  private service: CappuccinoNodeValidatorService;
-  constructor(Service: CappuccinoNodeValidatorService) {
+class WebWorkerProxyNodeValidatorService implements WebWorkerNodeValidatorAPI {
+  private service: WebWorkerNodeValidatorAPI;
+  constructor(Service: WebWorkerNodeValidatorAPI) {
     this.service = Service;
   }
 
@@ -125,23 +117,23 @@ class WebWorkerProxyNodeValidatorService
     return this.service.stream;
   }
 
-  async send(request: CappuccinoNodeValidatorRequest) {
+  async send(request: WebWorkerProxyRequest) {
     return this.service.send(request);
   }
 }
 
 async function handleResponses(
-  service: Promise<CappuccinoNodeValidatorService>,
+  service: Promise<WebWorkerNodeValidatorAPI>,
   postMessage: PostMessageFunction,
 ) {
   const resolvedService = await service;
   for await (const response of resolvedService.stream) {
-    postMessage(cappuccinoNodeValidatorResponseCodec.encode(response));
+    postMessage(webWorkerProxyResponseCodec.encode(response));
   }
 }
 
 export class WebWorkerProxy {
-  private service: Promise<WebWorkerProxyNodeValidatorService>;
+  private service: Promise<WebWorkerNodeValidatorAPI>;
 
   constructor(postMessage: PostMessageFunction) {
     const service = determineService();
@@ -151,7 +143,7 @@ export class WebWorkerProxy {
 
   async handleEvent(event: MessageEvent) {
     // This is our entry point, and where we will receive / process messages
-    const request = cappuccinoNodeValidatorRequestCodec.decode(event.data);
+    const request = webWorkerProxyRequestCodec.decode(event.data);
 
     try {
       const service = await this.service;

@@ -1,15 +1,15 @@
 import FakeDataCappuccinoNodeValidatorAPI from '@/service/node_validator/cappuccino/implementations/fake_data';
-import { CappuccinoNodeValidatorAPI } from '@/service/node_validator/cappuccino/node_validator_api';
 import { WebWorkerClientBasedNodeValidatorService } from '@/service/node_validator/cappuccino/node_validator_web_worker_client_based';
+import { WebWorkerNodeValidatorAPI } from '@/service/node_validator/cappuccino/web_worker_proxy_api';
 import React from 'react';
 import { createBufferedChannel } from '../async';
 
 export const CappuccinoNodeValidatorServiceAPIContext =
-  React.createContext<CappuccinoNodeValidatorAPI>(
+  React.createContext<WebWorkerNodeValidatorAPI>(
     createDefaultCappuccinoNodeValidatorService(),
   );
 
-function createDefaultCappuccinoNodeValidatorService(): CappuccinoNodeValidatorAPI {
+function createDefaultCappuccinoNodeValidatorService(): WebWorkerNodeValidatorAPI {
   if (
     (typeof window !== 'undefined' && 'Worker' in window) ||
     (typeof self !== 'undefined' && 'Worker' in self)

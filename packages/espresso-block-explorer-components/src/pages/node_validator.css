@@ -44,6 +44,11 @@
 
 .network-map {
   grid-area: nm;
+  text-align: center;
+}
+
+.network-map > svg {
+  max-width: 1000px;
 }
 
 .cdn {
@@ -112,8 +117,8 @@ nav.nav--main > button.btn.icon {
       'lb lb lb lb lb lb lbp lbp lbp lbp lbp lbp'
       'gbt gbt gbt gbt gbs gbs gbs gbs gt gt gt gt'
       'cdn cdn cdn cdn cdn cdn cdn cdn cdn cdn cdn cdn'
-      'nm nm nm nm nm nm pccou pccou pccou pcnet pcnet pcnet'
-      'nm nm nm nm nm nm pctype pctype pctype pcos pcos pcos'
+      'nm nm nm nm nm nm nm nm nm nm nm nm'
+      'pccou pccou pccou pcnet pcnet pcnet pctype pctype pctype pcos pcos pcos'
       'nodes nodes nodes nodes nodes nodes nodes nodes nodes nodes nodes nodes';
   }
 

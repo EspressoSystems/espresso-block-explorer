@@ -1,10 +1,6 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import InvalidTypeError from '@/errors/InvalidTypeError';
 import CappuccinoNodeValidatorRequest, {
-  Close,
-  Connect,
-  kCloseValue,
-  kConnectValue,
   kRequestBlocksSnapshotValue,
   kRequestHistogramSnapshotValue,
   kRequestNodeIdentitySnapshotValue,
@@ -52,11 +48,6 @@ class CappuccinoNodeValidatorRequestDecoder
         return new RequestHistogramSnapshot();
       case kRequestVotersSnapshotValue:
         return new RequestVotersSnapshot();
-
-      case kConnectValue:
-        return new Connect();
-      case kCloseValue:
-        return new Close();
 
       default:
         throw new InvalidTypeError(input, 'CappuccinoNodeValidatorRequest');

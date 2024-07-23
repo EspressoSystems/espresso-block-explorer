@@ -24,6 +24,7 @@ export default class BaseError extends Error implements EspressoError {
 export class BaseErrorEncoder implements Converter<BaseError> {
   convert(input: BaseError) {
     assertInstanceOf(input, BaseError);
+
     return {
       code: input.code,
       message: input.message,

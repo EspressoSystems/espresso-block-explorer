@@ -1,8 +1,6 @@
 import { zipWithIterable } from '@/functional/functional';
 import { describe, it } from 'vitest';
 import {
-  Close,
-  Connect,
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
@@ -23,8 +21,6 @@ describe('NodeValidatorRequest', () => {
       'RequestVotersSnapshot',
       'RequestHistogramSnapshot',
       'RequestNodeIdentitySnapshot',
-      'Connect',
-      'Close',
     ];
 
     const requestConstructors = [
@@ -35,8 +31,6 @@ describe('NodeValidatorRequest', () => {
       RequestVotersSnapshot,
       RequestHistogramSnapshot,
       RequestNodeIdentitySnapshot,
-      Connect,
-      Close,
     ];
 
     for (const [string, constructor] of zipWithIterable(

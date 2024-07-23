@@ -1,22 +1,31 @@
 import { Channel, createBufferedChannel } from '@/async/channel';
-import { CappuccinoNodeValidatorService } from './node_validator_service_api';
+import WebSocketError from '@/errors/WebSocketError';
 import ProxyWorker from './node_validator_web_worker_api.js?worker';
 import CappuccinoNodeValidatorRequest from './requests/node_validator_request';
-import { cappuccinoNodeValidatorRequestCodec } from './requests/node_validator_request_codec';
+import { WebWorkerProxyRequest } from './requests/web_worker_proxy_request';
+import { webWorkerProxyRequestCodec } from './requests/web_worker_proxy_request_codec';
 import CappuccinoNodeValidatorResponse from './responses/node_validator_response';
-import { cappuccinoNodeValidatorResponseCodec } from './responses/node_validator_response_codec';
+import { WebWorkerProxyResponse } from './responses/web_worker_proxy_response';
+import { webWorkerProxyResponseCodec } from './responses/web_worker_proxy_response_codec';
+import { WebWorkerNodeValidatorAPI } from './web_worker_proxy_api';
+
+const _: unknown = null;
+
+// We're performing this useless check to ensure that WebSocketError is imported
+// for it's side-effect.
+_ instanceof WebSocketError;
 
 export class WebWorkerClientBasedNodeValidatorService
-  implements CappuccinoNodeValidatorService
+  implements WebWorkerNodeValidatorAPI
 {
-  private requestChannel: Channel<CappuccinoNodeValidatorRequest>;
-  private responseChannel: Channel<CappuccinoNodeValidatorResponse>;
+  private requestChannel: Channel<WebWorkerProxyRequest>;
+  private responseChannel: Channel<WebWorkerProxyResponse>;
 
   constructor(
-    requestChannel: Channel<CappuccinoNodeValidatorRequest> = createBufferedChannel(
+    requestChannel: Channel<WebWorkerProxyRequest> = createBufferedChannel(
       1024,
     ),
-    responseChannel: Channel<CappuccinoNodeValidatorResponse> = createBufferedChannel(
+    responseChannel: Channel<WebWorkerProxyResponse> = createBufferedChannel(
       1024,
     ),
   ) {
@@ -43,17 +52,17 @@ export class WebWorkerClientBasedNodeValidatorService
 
   private handleMessage(event: MessageEvent) {
     // This should be a response message
-    const response = cappuccinoNodeValidatorResponseCodec.decode(event.data);
+    const response = webWorkerProxyResponseCodec.decode(event.data);
     console.info('<<< HERE handleMessage', response);
     this.responseChannel.publish(response);
   }
 
   private handleMessageError() {
-    // Figure out what to do here
+    // TODO @Ayiga: figure out how to handle this message error for the WebWorker
   }
 
   private handleError() {
-    // Figure out what to do here.
+    // TODO @Ayiga: figure out how to handle this error for the WebWorker
   }
 }
 
@@ -63,9 +72,9 @@ export class WebWorkerClientBasedNodeValidatorService
  */
 async function bridgeRequestsToWebWorker(
   worker: Worker,
-  requestChannel: Channel<CappuccinoNodeValidatorRequest>,
+  requestChannel: Channel<WebWorkerProxyRequest>,
 ) {
   for await (const request of requestChannel) {
-    worker.postMessage(cappuccinoNodeValidatorRequestCodec.encode(request));
+    worker.postMessage(webWorkerProxyRequestCodec.encode(request));
   }
 }

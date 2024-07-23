@@ -88,21 +88,3 @@ export class RequestVotersSnapshot extends CappuccinoNodeValidatorRequest {
     return kRequestVotersSnapshotValue;
   }
 }
-
-// MARK: Web Worker implementation specific requests.
-
-export const kConnectValue = 'Connect' as const;
-
-export class Connect extends CappuccinoNodeValidatorRequest {
-  valueOf(): string {
-    return kConnectValue;
-  }
-}
-
-export const kCloseValue = 'Close' as const;
-
-export class Close extends CappuccinoNodeValidatorRequest {
-  valueOf(): string {
-    return kCloseValue;
-  }
-}

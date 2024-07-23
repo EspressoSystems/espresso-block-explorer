@@ -1,4 +1,6 @@
-import { Channel } from '@/async/channel';
+import { Channel, createChannelToSink } from '@/async/channel';
+import { createSinkWithConverter } from '@/async/sink';
+import { Sink } from '@/async/sink/sink';
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import {
   GeneratedBlock,
@@ -20,10 +22,7 @@ import {
 } from '@/service/hotshot_query_service';
 import CappuccinoNodeIdentity from '../node_identity';
 import CappuccinoLocationDetails from '../node_location_details';
-import { CappuccinoNodeValidatorAPI } from '../node_validator_api';
 import CappuccinoNodeValidatorRequest, {
-  Close,
-  Connect,
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
@@ -32,6 +31,15 @@ import CappuccinoNodeValidatorRequest, {
   SubscribeNodeIdentity,
   SubscribeVoters,
 } from '../requests/node_validator_request';
+import WebWorkerLifeCycleRequest, {
+  Close,
+  Connect,
+} from '../requests/web_worker_life_cycle_request';
+import {
+  LifeCycleRequest,
+  NodeValidatorRequest,
+  WebWorkerProxyRequest,
+} from '../requests/web_worker_proxy_request';
 import { CappuccinoBlocksSnapshot } from '../responses/blocks_snapshot';
 import { CappuccinoConnectionClosed } from '../responses/connection_closed';
 import { CappuccinoConnectionConnecting } from '../responses/connection_connecting';
@@ -42,6 +50,13 @@ import { CappuccinoLatestVoters } from '../responses/latest_voters';
 import { CappuccinoNodeIdentitySnapshot } from '../responses/node_identity_snapshot';
 import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
 import { CappuccinoVotersSnapshot } from '../responses/voters_snapshot';
+import WebWorkerLifeCycleResponse from '../responses/web_worker_life_cycle_response';
+import {
+  WebWorkerProxyResponse,
+  lifeCycleResponseToWebWorkerProxyResponseConverter,
+  nodeValidatorResponseToWebWorkerProxyResponseConverter,
+} from '../responses/web_worker_proxy_response';
+import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 
 function createBlockDetailFromGeneratedBlock(
   block: GeneratedBlock,
@@ -82,20 +97,32 @@ function convertGeneratedNodeIdentity(
 }
 
 export default class FakeDataCappuccinoNodeValidatorAPI
-  implements CappuccinoNodeValidatorAPI
+  implements WebWorkerNodeValidatorAPI
 {
-  readonly responseStream: Channel<CappuccinoNodeValidatorResponse>;
-  readonly requestStream: Channel<CappuccinoNodeValidatorRequest>;
+  readonly responseStream: Channel<WebWorkerProxyResponse>;
+  readonly requestStream: Channel<WebWorkerProxyRequest>;
+
+  readonly lifecycleResponseSink: Sink<WebWorkerLifeCycleResponse>;
+  readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
 
   constructor(
-    requestStream: Channel<CappuccinoNodeValidatorRequest>,
-    responseStream: Channel<CappuccinoNodeValidatorResponse>,
+    requestStream: Channel<WebWorkerProxyRequest>,
+    responseStream: Channel<WebWorkerProxyResponse>,
   ) {
     this.requestStream = requestStream;
     this.responseStream = responseStream;
+
+    this.lifecycleResponseSink = createSinkWithConverter(
+      createChannelToSink(responseStream),
+      lifeCycleResponseToWebWorkerProxyResponseConverter,
+    );
+    this.nodeValidatorResponseSink = createSinkWithConverter(
+      createChannelToSink(responseStream),
+      nodeValidatorResponseToWebWorkerProxyResponseConverter,
+    );
   }
 
-  get stream(): AsyncIterable<CappuccinoNodeValidatorResponse> {
+  get stream(): AsyncIterable<WebWorkerProxyResponse> {
     return this.responseStream;
   }
 
@@ -139,7 +166,9 @@ export default class FakeDataCappuccinoNodeValidatorAPI
 
   private histogramBlockHeightData = createCircularBuffer<number>(50);
 
-  private updateBlockDetails(blockDetail: CappuccinoExplorerBlockDetail): void {
+  private async updateBlockDetails(
+    blockDetail: CappuccinoExplorerBlockDetail,
+  ): Promise<void> {
     const previousBlock = this.latestBlock;
     const nextBlockTime =
       (blockDetail.time.valueOf() - previousBlock.time.valueOf()) / 1000;
@@ -162,12 +191,16 @@ export default class FakeDataCappuccinoNodeValidatorAPI
 
     // Publish the new block to the response stream.
     if (this.isSubscribedToLatestBlock) {
-      this.responseStream.publish(new CappuccinoLatestBlock(blockDetail));
+      await this.nodeValidatorResponseSink.send(
+        new CappuccinoLatestBlock(blockDetail),
+      );
     }
 
     // Publish thew new Voters to the response stream.
     if (this.isSubscribedToVoters) {
-      this.responseStream.publish(new CappuccinoLatestVoters(nextVoters));
+      this.nodeValidatorResponseSink.send(
+        new CappuccinoLatestVoters(nextVoters),
+      );
     }
   }
 
@@ -179,8 +212,10 @@ export default class FakeDataCappuccinoNodeValidatorAPI
       this.updateBlockDetails(createBlockDetailFromGeneratedBlock(block));
     }
 
-    this.responseStream.publish(new CappuccinoLatestBlock(this.latestBlock));
-    this.responseStream.publish(
+    await this.nodeValidatorResponseSink.send(
+      new CappuccinoLatestBlock(this.latestBlock),
+    );
+    await this.nodeValidatorResponseSink.send(
       new CappuccinoHistogramSnapshot(
         new CappuccinoSummaryHistograms(
           Array.from(this.histogramBlockTimeData.immutableIterable()),
@@ -190,7 +225,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
         ),
       ),
     );
-    this.responseStream.publish(
+    this.nodeValidatorResponseSink.send(
       new CappuccinoNodeIdentitySnapshot(
         nodeList.map(convertGeneratedNodeIdentity),
       ),
@@ -221,7 +256,19 @@ export default class FakeDataCappuccinoNodeValidatorAPI
     }
   }
 
-  private async handleRequest(request: CappuccinoNodeValidatorRequest) {
+  private async handleRequest(request: WebWorkerProxyRequest) {
+    if (request instanceof LifeCycleRequest) {
+      await this.handleLifeCycleRequest(request.request);
+      return;
+    }
+
+    if (request instanceof NodeValidatorRequest) {
+      await this.handleNodeValidatorRequest(request.request);
+      return;
+    }
+  }
+
+  private async handleLifeCycleRequest(request: WebWorkerLifeCycleRequest) {
     if (request instanceof Connect) {
       await this.handleConnect();
       return;
@@ -231,7 +278,11 @@ export default class FakeDataCappuccinoNodeValidatorAPI
       await this.handleClose();
       return;
     }
+  }
 
+  private async handleNodeValidatorRequest(
+    request: CappuccinoNodeValidatorRequest,
+  ) {
     if (request instanceof SubscribeLatestBlock) {
       await this.handleSubscribeLatestBlock();
       return;
@@ -279,8 +330,8 @@ export default class FakeDataCappuccinoNodeValidatorAPI
 
     this.isConnected = true;
 
-    this.responseStream.publish(new CappuccinoConnectionConnecting());
-    this.responseStream.publish(new CappuccinoConnectionOpened());
+    await this.lifecycleResponseSink.send(new CappuccinoConnectionConnecting());
+    await this.lifecycleResponseSink.send(new CappuccinoConnectionOpened());
   }
 
   private async handleClose() {
@@ -291,7 +342,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
     this.isConnected = false;
     this.isSubscribedToLatestBlock = false;
     this.isSubscribedToVoters = false;
-    this.responseStream.publish(new CappuccinoConnectionClosed());
+    await this.lifecycleResponseSink.send(new CappuccinoConnectionClosed());
   }
 
   private async assertIsConnected() {
@@ -322,7 +373,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
   private async handleRequestBlocksSnapshot() {
     await this.assertIsConnected();
 
-    this.responseStream.publish(
+    await this.nodeValidatorResponseSink.send(
       new CappuccinoBlocksSnapshot(
         Array.from(this.latestBlocks.immutableIterable()),
       ),
@@ -332,7 +383,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
   private async handleRequestHistogramSnapshot() {
     await this.assertIsConnected();
 
-    this.responseStream.publish(
+    await this.nodeValidatorResponseSink.send(
       new CappuccinoHistogramSnapshot(
         new CappuccinoSummaryHistograms(
           Array.from(this.histogramBlockTimeData.immutableIterable()),
@@ -347,7 +398,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
   private async handleRequestNodeIdentitySnapshot() {
     await this.assertIsConnected();
 
-    this.responseStream.publish(
+    await this.nodeValidatorResponseSink.send(
       new CappuccinoNodeIdentitySnapshot(
         nodeList.map(convertGeneratedNodeIdentity),
       ),
@@ -357,7 +408,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
   private async handleRequestVotersSnapshot() {
     await this.assertIsConnected();
 
-    this.responseStream.publish(
+    await this.nodeValidatorResponseSink.send(
       new CappuccinoVotersSnapshot(
         Array.from(this.latestVoters.immutableIterable()),
       ),

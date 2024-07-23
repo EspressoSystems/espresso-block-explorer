@@ -1,4 +1,6 @@
 import { createBufferedChannel } from '@/async/channel/BufferedChannel';
+import { createSinkWithConverter } from '@/async/sink/converted_sink';
+import { Sink } from '@/async/sink/sink';
 import {
   BlockSizeHistogramData,
   BlockSizeHistogramStreamContext,
@@ -36,10 +38,7 @@ import {
   createCircularBuffer,
 } from '@/data_structures/circular_buffer/CircularBuffer';
 import CappuccinoNodeIdentity from '@/service/node_validator/cappuccino/node_identity';
-import { CappuccinoNodeValidatorAPI } from '@/service/node_validator/cappuccino/node_validator_api';
-import {
-  Close,
-  Connect,
+import CappuccinoNodeValidatorRequest, {
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
@@ -48,13 +47,28 @@ import {
   SubscribeNodeIdentity,
   SubscribeVoters,
 } from '@/service/node_validator/cappuccino/requests/node_validator_request';
+import WebWorkerLifeCycleRequest, {
+  Close,
+  Connect,
+} from '@/service/node_validator/cappuccino/requests/web_worker_life_cycle_request';
+import {
+  LifeCycleRequest,
+  lifeCycleRequestToWebWorkerProxyRequestConverter,
+  nodeValidatorRequestToWebWorkerProxyRequestConverter,
+} from '@/service/node_validator/cappuccino/requests/web_worker_proxy_request';
 import { CappuccinoBlocksSnapshot } from '@/service/node_validator/cappuccino/responses/blocks_snapshot';
 import { CappuccinoHistogramSnapshot } from '@/service/node_validator/cappuccino/responses/histogram_snapshot';
 import { CappuccinoLatestBlock } from '@/service/node_validator/cappuccino/responses/latest_block';
 import { CappuccinoLatestNodeIdentity } from '@/service/node_validator/cappuccino/responses/latest_node_identity';
 import { CappuccinoLatestVoters } from '@/service/node_validator/cappuccino/responses/latest_voters';
 import { CappuccinoNodeIdentitySnapshot } from '@/service/node_validator/cappuccino/responses/node_identity_snapshot';
+import CappuccinoNodeValidatorResponse from '@/service/node_validator/cappuccino/responses/node_validator_response';
 import { CappuccinoVotersSnapshot } from '@/service/node_validator/cappuccino/responses/voters_snapshot';
+import {
+  LifeCycleResponse,
+  NodeValidatorResponse,
+} from '@/service/node_validator/cappuccino/responses/web_worker_proxy_response';
+import { WebWorkerNodeValidatorAPI } from '@/service/node_validator/cappuccino/web_worker_proxy_api';
 import React from 'react';
 import {
   compareArrayBuffer,
@@ -230,235 +244,314 @@ function computeLatestBuilders(
 
 const kTrailingHistorySamples = 50;
 
-async function bridgeStreamIntoIndividualStreams(
-  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  nodeValidatorService: CappuccinoNodeValidatorAPI,
-) {
-  let lastBlock: null | CappuccinoLatestBlock = null;
+function createBridgeState() {
   const latestBlocks = createCircularBuffer<CappuccinoExplorerBlockDetail>(
-    kTrailingHistorySamples,
+    kTrailingHistorySamples + 1,
   );
   const blockHeightHistograms = createCircularBuffer<number>(
-    kTrailingHistorySamples,
+    kTrailingHistorySamples + 1,
   );
   const blockTimeHistograms = createCircularBuffer<number>(
-    kTrailingHistorySamples,
+    kTrailingHistorySamples + 1,
   );
   const blockSizeHistograms = createCircularBuffer<number>(
-    kTrailingHistorySamples,
+    kTrailingHistorySamples + 1,
   );
   const blockThroughputHistograms = createCircularBuffer<number>(
-    kTrailingHistorySamples,
+    kTrailingHistorySamples + 1,
   );
   const votersBitVecs = createCircularBuffer<CappuccinoAPIBitVec>(
-    kTrailingHistorySamples,
+    kTrailingHistorySamples + 1,
   );
-  let nodes: CappuccinoNodeIdentity[] = [];
+  const nodes: CappuccinoNodeIdentity[] = [];
+
+  return {
+    lastBlock: null as null | CappuccinoLatestBlock,
+    latestBlocks,
+    blockHeightHistograms,
+    blockTimeHistograms,
+    blockSizeHistograms,
+    blockThroughputHistograms,
+    votersBitVecs,
+    nodes,
+  };
+}
+
+async function bridgeLatestBlock(
+  state: ReturnType<typeof createBridgeState>,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  event: CappuccinoLatestBlock,
+) {
+  const previousBlock = state.lastBlock;
+  state.lastBlock = event;
+  state.latestBlocks.put(event.latestBlock);
+  streams.latestBlockStream.publish({
+    height: event.latestBlock.height,
+    time: event.latestBlock.time,
+    size: event.latestBlock.size,
+    transactions: event.latestBlock.numTransactions,
+    proposer: event.latestBlock.proposerID,
+  });
+
+  state.blockHeightHistograms.put(event.latestBlock.height);
+  state.blockSizeHistograms.put(event.latestBlock.size);
+  const time =
+    (event.latestBlock.time.valueOf() -
+      (previousBlock?.latestBlock.time.valueOf() ?? 0)) /
+    1000;
+  state.blockTimeHistograms.put(time);
+  state.blockThroughputHistograms.put(
+    event.latestBlock.size / Math.max(1, time),
+  );
+
+  await publishHistogramUpdates(
+    streams,
+    state.blockHeightHistograms,
+    state.blockTimeHistograms,
+    state.blockSizeHistograms,
+    state.blockThroughputHistograms,
+  );
+
+  streams.latestBlockProducers.publish(
+    computeLatestBuilders(state.latestBlocks.immutableIterable()),
+  );
+}
+
+async function bridgeBlocksSnapshot(
+  state: ReturnType<typeof createBridgeState>,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  event: CappuccinoBlocksSnapshot,
+) {
+  for (const block of event.blocks) {
+    const previousBlock = state.lastBlock?.latestBlock ?? null;
+    state.lastBlock = new CappuccinoLatestBlock(block);
+    state.latestBlocks.put(block);
+    state.blockHeightHistograms.put(block.height);
+    state.blockSizeHistograms.put(block.size);
+
+    const time =
+      (block.time.valueOf() - (previousBlock?.time.valueOf() ?? 0)) / 1000;
+
+    state.blockTimeHistograms.put(time);
+    state.blockThroughputHistograms.put(block.size / Math.max(1, time));
+  }
+
+  await publishHistogramUpdates(
+    streams,
+    state.blockHeightHistograms,
+    state.blockTimeHistograms,
+    state.blockSizeHistograms,
+    state.blockThroughputHistograms,
+  );
+
+  const latestBlock = state.lastBlock?.latestBlock ?? null;
+  if (latestBlock !== null) {
+    streams.latestBlockStream.publish({
+      height: latestBlock.height,
+      time: latestBlock.time,
+      size: latestBlock.size,
+      transactions: latestBlock.numTransactions,
+      proposer: latestBlock.proposerID,
+    });
+  }
+
+  streams.latestBlockProducers.publish(
+    computeLatestBuilders(state.latestBlocks.immutableIterable()),
+  );
+}
+
+async function bridgeHistogramSnapshot(
+  state: ReturnType<typeof createBridgeState>,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  event: CappuccinoHistogramSnapshot,
+) {
+  for (const height of event.histograms.blockHeights) {
+    state.blockHeightHistograms.put(height!);
+  }
+
+  for (const time of event.histograms.blockTime) {
+    state.blockTimeHistograms.put(time!);
+  }
+
+  for (const size of event.histograms.blockSize) {
+    state.blockSizeHistograms.put(size!);
+  }
+
+  for (const throughput of zipWithIterable(
+    state.blockTimeHistograms.immutableIterable(),
+    state.blockSizeHistograms.immutableIterable(),
+    (time, size) => (size ?? 0) / Math.max(1, time ?? 1),
+  )) {
+    state.blockThroughputHistograms.put(throughput!);
+  }
+
+  await publishHistogramUpdates(
+    streams,
+    state.blockHeightHistograms,
+    state.blockTimeHistograms,
+    state.blockSizeHistograms,
+    state.blockThroughputHistograms,
+  );
+}
+
+async function bridgeNodeIdentitySnapshot(
+  state: ReturnType<typeof createBridgeState>,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  event: CappuccinoNodeIdentitySnapshot,
+) {
+  state.nodes = event.nodes;
+
+  const operatingSystems = computeOperatingSystemsPieChartData(state.nodes);
+  const countries = computeCountriesPieChartData(state.nodes);
+  const networkTypes = computeNetworkTypesPieChartData(state.nodes);
+  const nodeTypes = computeNodeTypesPieChartData(state.nodes);
+  const convertedNodes = state.nodes.map(convertCappuccinoNodeIdentity);
+
+  await Promise.all([
+    streams.nodesSummary.publish(convertedNodes),
+    streams.nodeCoordinates.publish(convertedNodes),
+    streams.pieChartCountries.publish(countries),
+    streams.pieChartNetworkTypes.publish(networkTypes),
+    streams.pieChartNodeTypes.publish(nodeTypes),
+    streams.pieChartOperatingSystems.publish(operatingSystems),
+  ]);
+}
+
+async function bridgeLatestNodeIdentity(
+  state: ReturnType<typeof createBridgeState>,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  event: CappuccinoLatestNodeIdentity,
+) {
+  // Check to see if the incoming node already exists.
+  const existingNodeIndex = state.nodes.findIndex(
+    (node) =>
+      node.publicKey.toString() === event.nodeIdentity.publicKey.toString(),
+  );
+
+  if (existingNodeIndex < 0) {
+    // Node does **not exist** in the list, let's add it.
+    state.nodes.push(event.nodeIdentity);
+  } else {
+    // Node **does exist** in the list, let's replace it.
+    state.nodes[existingNodeIndex] = event.nodeIdentity;
+  }
+
+  const operatingSystems = computeOperatingSystemsPieChartData(state.nodes);
+  const countries = computeCountriesPieChartData(state.nodes);
+  const networkTypes = computeNetworkTypesPieChartData(state.nodes);
+  const nodeTypes = computeNodeTypesPieChartData(state.nodes);
+  const convertedNodes = state.nodes.map(convertCappuccinoNodeIdentity);
+
+  await Promise.all([
+    streams.nodesSummary.publish(convertedNodes),
+    streams.nodeCoordinates.publish(convertedNodes),
+    streams.pieChartCountries.publish(countries),
+    streams.pieChartNetworkTypes.publish(networkTypes),
+    streams.pieChartNodeTypes.publish(nodeTypes),
+    streams.pieChartOperatingSystems.publish(operatingSystems),
+  ]);
+}
+
+async function bridgeVotersSnapshot(
+  state: ReturnType<typeof createBridgeState>,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  event: CappuccinoVotersSnapshot,
+) {
+  for (const voter of event.voters) {
+    state.votersBitVecs.put(voter);
+  }
+
+  const voteStats = computeVoterParticipationStats(
+    state.nodes,
+    state.votersBitVecs.immutableIterable(),
+  );
+
+  await streams.voters.publish(voteStats);
+}
+
+async function bridgeLatestVoters(
+  state: ReturnType<typeof createBridgeState>,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  event: CappuccinoLatestVoters,
+) {
+  state.votersBitVecs.put(event.latestVoter);
+
+  const voteStats = computeVoterParticipationStats(
+    state.nodes,
+    state.votersBitVecs.immutableIterable(),
+  );
+
+  await streams.voters.publish(voteStats);
+}
+
+async function bridgeNodeValidatorResponse(
+  state: ReturnType<typeof createBridgeState>,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  event: CappuccinoNodeValidatorResponse,
+) {
+  if (event instanceof CappuccinoLatestBlock) {
+    return bridgeLatestBlock(state, streams, event);
+  }
+
+  if (event instanceof CappuccinoBlocksSnapshot) {
+    return bridgeBlocksSnapshot(state, streams, event);
+  }
+
+  if (event instanceof CappuccinoHistogramSnapshot) {
+    return bridgeHistogramSnapshot(state, streams, event);
+  }
+
+  if (event instanceof CappuccinoNodeIdentitySnapshot) {
+    return bridgeNodeIdentitySnapshot(state, streams, event);
+  }
+
+  if (event instanceof CappuccinoLatestNodeIdentity) {
+    return bridgeLatestNodeIdentity(state, streams, event);
+  }
+
+  if (event instanceof CappuccinoVotersSnapshot) {
+    return bridgeVotersSnapshot(state, streams, event);
+  }
+
+  if (event instanceof CappuccinoLatestVoters) {
+    return bridgeLatestVoters(state, streams, event);
+  }
+}
+
+async function bridgeStreamIntoIndividualStreams(
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  nodeValidatorService: WebWorkerNodeValidatorAPI,
+) {
+  const state = createBridgeState();
 
   for await (const event of nodeValidatorService.stream) {
-    if (event instanceof CappuccinoLatestBlock) {
-      const previousBlock = lastBlock;
-      lastBlock = event;
-      latestBlocks.put(event.latestBlock);
-      streams.latestBlockStream.publish({
-        height: event.latestBlock.height,
-        time: event.latestBlock.time,
-        size: event.latestBlock.size,
-        transactions: event.latestBlock.numTransactions,
-        proposer: event.latestBlock.proposerID,
-      });
-
-      blockHeightHistograms.put(event.latestBlock.height);
-      blockSizeHistograms.put(event.latestBlock.size);
-      const time =
-        (event.latestBlock.time.valueOf() -
-          (previousBlock?.latestBlock.time.valueOf() ?? 0)) /
-        1000;
-      blockTimeHistograms.put(time);
-      blockThroughputHistograms.put(event.latestBlock.size / Math.max(1, time));
-
-      await publishHistogramUpdates(
-        streams,
-        blockHeightHistograms,
-        blockTimeHistograms,
-        blockSizeHistograms,
-        blockThroughputHistograms,
-      );
-
-      streams.latestBlockProducers.publish(
-        computeLatestBuilders(latestBlocks.immutableIterable()),
-      );
-
-      continue;
+    if (event instanceof NodeValidatorResponse) {
+      await bridgeNodeValidatorResponse(state, streams, event.response);
     }
 
-    if (event instanceof CappuccinoBlocksSnapshot) {
-      for (const block of event.blocks) {
-        const previousBlock = lastBlock?.latestBlock ?? null;
-        lastBlock = new CappuccinoLatestBlock(block);
-        latestBlocks.put(block);
-        blockHeightHistograms.put(block.height);
-        blockSizeHistograms.put(block.size);
-
-        const time =
-          (block.time.valueOf() - (previousBlock?.time.valueOf() ?? 0)) / 1000;
-
-        blockTimeHistograms.put(time);
-        blockThroughputHistograms.put(block.size / Math.max(1, time));
-      }
-
-      await publishHistogramUpdates(
-        streams,
-        blockHeightHistograms,
-        blockTimeHistograms,
-        blockSizeHistograms,
-        blockThroughputHistograms,
-      );
-
-      const latestBlock = lastBlock?.latestBlock ?? null;
-      if (latestBlock !== null) {
-        streams.latestBlockStream.publish({
-          height: latestBlock.height,
-          time: latestBlock.time,
-          size: latestBlock.size,
-          transactions: latestBlock.numTransactions,
-          proposer: latestBlock.proposerID,
-        });
-      }
-
-      streams.latestBlockProducers.publish(
-        computeLatestBuilders(latestBlocks.immutableIterable()),
-      );
-
-      continue;
-    }
-
-    if (event instanceof CappuccinoHistogramSnapshot) {
-      for (const height of event.histograms.blockHeights) {
-        blockHeightHistograms.put(height!);
-      }
-
-      for (const time of event.histograms.blockTime) {
-        blockTimeHistograms.put(time!);
-      }
-
-      for (const size of event.histograms.blockSize) {
-        blockSizeHistograms.put(size!);
-      }
-
-      for (const throughput of zipWithIterable(
-        blockTimeHistograms.immutableIterable(),
-        blockSizeHistograms.immutableIterable(),
-        (time, size) => (size ?? 0) / Math.max(1, time ?? 1),
-      )) {
-        blockThroughputHistograms.put(throughput!);
-      }
-
-      await publishHistogramUpdates(
-        streams,
-        blockHeightHistograms,
-        blockTimeHistograms,
-        blockSizeHistograms,
-        blockThroughputHistograms,
-      );
-
-      continue;
-    }
-
-    if (event instanceof CappuccinoNodeIdentitySnapshot) {
-      nodes = event.nodes;
-
-      const operatingSystems = computeOperatingSystemsPieChartData(nodes);
-      const countries = computeCountriesPieChartData(nodes);
-      const networkTypes = computeNetworkTypesPieChartData(nodes);
-      const nodeTypes = computeNodeTypesPieChartData(nodes);
-      const convertedNodes = nodes.map(convertCappuccinoNodeIdentity);
-
-      await Promise.all([
-        streams.nodesSummary.publish(convertedNodes),
-        streams.nodeCoordinates.publish(convertedNodes),
-        streams.pieChartCountries.publish(countries),
-        streams.pieChartNetworkTypes.publish(networkTypes),
-        streams.pieChartNodeTypes.publish(nodeTypes),
-        streams.pieChartOperatingSystems.publish(operatingSystems),
-      ]);
-      continue;
-    }
-
-    if (event instanceof CappuccinoLatestNodeIdentity) {
-      // Check to see if the incoming node already exists.
-      const existingNodeIndex = nodes.findIndex(
-        (node) =>
-          node.publicKey.toString() === event.nodeIdentity.publicKey.toString(),
-      );
-
-      if (existingNodeIndex < 0) {
-        // Node does **not exist** in the list, let's add it.
-        nodes.push(event.nodeIdentity);
-      } else {
-        // Node **does exist** in the list, let's replace it.
-        nodes[existingNodeIndex] = event.nodeIdentity;
-      }
-
-      const operatingSystems = computeOperatingSystemsPieChartData(nodes);
-      const countries = computeCountriesPieChartData(nodes);
-      const networkTypes = computeNetworkTypesPieChartData(nodes);
-      const nodeTypes = computeNodeTypesPieChartData(nodes);
-      const convertedNodes = nodes.map(convertCappuccinoNodeIdentity);
-
-      await Promise.all([
-        streams.nodesSummary.publish(convertedNodes),
-        streams.nodeCoordinates.publish(convertedNodes),
-        streams.pieChartCountries.publish(countries),
-        streams.pieChartNetworkTypes.publish(networkTypes),
-        streams.pieChartNodeTypes.publish(nodeTypes),
-        streams.pieChartOperatingSystems.publish(operatingSystems),
-      ]);
-      continue;
-    }
-
-    if (event instanceof CappuccinoVotersSnapshot) {
-      for (const voter of event.voters) {
-        votersBitVecs.put(voter);
-      }
-
-      const voteStats = computeVoterParticipationStats(
-        nodes,
-        votersBitVecs.immutableIterable(),
-      );
-
-      await streams.voters.publish(voteStats);
-    }
-
-    if (event instanceof CappuccinoLatestVoters) {
-      votersBitVecs.put(event.latestVoter);
-
-      const voteStats = computeVoterParticipationStats(
-        nodes,
-        votersBitVecs.immutableIterable(),
-      );
-
-      await streams.voters.publish(voteStats);
+    if (event instanceof LifeCycleResponse) {
+      // TODO @Ayiga: Handle LifeCycleResponse
     }
   }
 }
 
 async function startValidatorService(
-  nodeValidatorService: CappuccinoNodeValidatorAPI,
+  lifecycleRequestSink: Sink<WebWorkerLifeCycleRequest>,
+  nodeValidatorRequestSink: Sink<CappuccinoNodeValidatorRequest>,
 ) {
   // We need to "connect" to the service.
-  await nodeValidatorService.send(new Connect());
+  await lifecycleRequestSink.send(new Connect());
 
   // Setup our subscriptions.
-  await nodeValidatorService.send(new SubscribeLatestBlock());
-  await nodeValidatorService.send(new SubscribeNodeIdentity());
-  await nodeValidatorService.send(new SubscribeVoters());
+  await nodeValidatorRequestSink.send(new SubscribeLatestBlock());
+  await nodeValidatorRequestSink.send(new SubscribeNodeIdentity());
+  await nodeValidatorRequestSink.send(new SubscribeVoters());
 
   // Request the latest information
-  await nodeValidatorService.send(new RequestNodeIdentitySnapshot());
-  await nodeValidatorService.send(new RequestBlocksSnapshot());
-  await nodeValidatorService.send(new RequestHistogramSnapshot());
-  await nodeValidatorService.send(new RequestVotersSnapshot());
+  await nodeValidatorRequestSink.send(new RequestNodeIdentitySnapshot());
+  await nodeValidatorRequestSink.send(new RequestBlocksSnapshot());
+  await nodeValidatorRequestSink.send(new RequestHistogramSnapshot());
+  await nodeValidatorRequestSink.send(new RequestVotersSnapshot());
 }
 
 function createNodeValidatorSplitStreams() {
@@ -499,13 +592,22 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
 
   React.useEffect(() => {
     // Bridge these streams
+
+    const nodeValidatorRequestSink = createSinkWithConverter(
+      nodeValidatorService,
+      nodeValidatorRequestToWebWorkerProxyRequestConverter,
+    );
+    const lifeCycleRequestSink = createSinkWithConverter(
+      nodeValidatorService,
+      lifeCycleRequestToWebWorkerProxyRequestConverter,
+    );
     bridgeStreamIntoIndividualStreams(streams, nodeValidatorService);
-    startValidatorService(nodeValidatorService);
+    startValidatorService(lifeCycleRequestSink, nodeValidatorRequestSink);
 
     return () => {
       // Tear Down
       // Tell the service to Close the connection.
-      nodeValidatorService.send(new Close());
+      nodeValidatorService.send(new LifeCycleRequest(new Close()));
     };
   });
 
