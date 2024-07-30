@@ -8,6 +8,7 @@ import { default as BaseError } from './BaseError';
 export default class NotFoundError<Key = unknown> extends BaseError {
     readonly key: Key;
     constructor(key: Key, message?: string);
+    get code(): string;
 }
 export declare class NotFoundErrorDecoder<Key> implements Converter<unknown, NotFoundError<Key>> {
     private readonly codec;

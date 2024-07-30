@@ -8,6 +8,7 @@ import { default as BaseError } from './BaseError';
 export declare class CorruptBase64InputError extends BaseError {
     readonly offset: number;
     constructor(offset: number, message?: string);
+    get code(): string;
     toJSON(): unknown;
 }
 declare class CorruptBase64InputErrorCodec extends TypeCheckingCodec<CorruptBase64InputError> {

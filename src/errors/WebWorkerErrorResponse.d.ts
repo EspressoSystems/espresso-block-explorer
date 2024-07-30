@@ -6,6 +6,7 @@ export default class WebWorkerErrorResponse extends BaseError {
     readonly error: EspressoError;
     constructor(error: EspressoError, message?: string);
     toJSON(): unknown;
+    get code(): string;
 }
 declare class WebWorkerErrorResponseCodec extends TypeCheckingCodec<WebWorkerErrorResponse> {
     readonly encoder: Converter<WebWorkerErrorResponse, unknown>;

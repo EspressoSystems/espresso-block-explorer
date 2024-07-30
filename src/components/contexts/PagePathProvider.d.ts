@@ -1,4 +1,4 @@
-import { default as React } from 'react';
+import { default as React } from '../../../../../node_modules/react';
 
 /**
  * PageType represents the different page types we are expecting to be on.

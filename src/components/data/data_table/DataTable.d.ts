@@ -1,4 +1,4 @@
-import { default as React } from 'react';
+import { default as React } from '../../../../../../node_modules/react';
 import { SortDirection } from '../types';
 
 /**
@@ -25,6 +25,11 @@ export declare const DataTableSetStateContext: React.Context<React.Dispatch<Reac
  * the DataTable.
  */
 export declare const DataTableRowContext: React.Context<object>;
+/**
+ * DataTableIndexContext is a Context that provides the index of the current
+ * row within the DataTable.
+ */
+export declare const DataTableIndexContext: React.Context<number>;
 /**
  * ColumnData represents the minimum data needed to render a cell, and header
  * column.

@@ -44,6 +44,12 @@ export declare function isArray<T>(input: unknown, predicate: (input: unknown) =
 export declare function isArrayMemberFunction<T>(predicate: (input: unknown) => input is T): (input: unknown) => input is T[];
 export declare function isRecord<Key extends string, Value>(value: unknown, key: Key, predicate: (value: unknown) => value is Value): value is Record<Key, Value>;
 /**
+ * isRecordWithKeys is a helper function that indicates that the value passed
+ * in is a record with the keys passed in.  This is a type checking function
+ * for typescript.
+ */
+export declare function isRecordWithKeys<Key extends string>(value: unknown, ...keys: Key[]): value is Record<Key, unknown>;
+/**
  * assertRecordWithKeys is a helper function much like `isRecord`.  It is an
  * assertion type function for typescript, which indicates that the type passed
  * in has the keys passed in, otherwise this throw an error that indicates the

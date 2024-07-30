@@ -1,4 +1,4 @@
-import { default as React } from 'react';
+import { default as React } from '../../../../../../node_modules/react';
 
 /**
  * ExternalLinks is a helpful container for the list of External Links we'd

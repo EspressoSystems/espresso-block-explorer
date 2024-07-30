@@ -9,6 +9,7 @@ export declare class InvalidHexValueError extends BaseError {
     readonly value: number;
     constructor(value: number, message?: string);
     toJSON(): unknown;
+    get code(): string;
 }
 declare class InvalidHexValueErrorCodec extends TypeCheckingCodec<InvalidHexValueError> {
     readonly encoder: Converter<InvalidHexValueError, unknown>;

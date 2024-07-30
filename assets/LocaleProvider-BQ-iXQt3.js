@@ -1,5 +1,0 @@
-import{j as o}from"./jsx-runtime-C8OW3RLV.js";import{r as n}from"./index-BwDkhjyp.js";const r=n.createContext(typeof window>"u"||!navigator?"en-US":navigator.language),a=e=>o(r.Provider,{value:e.locale,children:e.children}),t=e=>typeof window>"u"||!navigator?e.children:o(r.Provider,{value:navigator.language,children:e.children});try{Context.displayName="Context",Context.__docgenInfo={description:`Context lets components pass information deep down without explicitly
-passing props.
-
-Created from {@link createContext}`,displayName:"Context",props:{}}}catch{}try{a.displayName="OverrideLocale",a.__docgenInfo={description:`OverrideLocale is a [FunctionalComponent] that will provide the given locale
-to all of the descendant components within the tree.`,displayName:"OverrideLocale",props:{locale:{defaultValue:null,description:"",name:"locale",required:!0,type:{name:"string"}}}}}catch{}try{t.displayName="ProvideNavigatorLanguage",t.__docgenInfo={description:"ProvideNavigatorLanguage is a [FunctionalComponent] that will provide the\nlocale retrieved from the `navigator.language` value.",displayName:"ProvideNavigatorLanguage",props:{}}}catch{}export{r as C,a as O};

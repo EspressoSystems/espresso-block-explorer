@@ -1,4 +1,4 @@
-import { default as React } from 'react';
+import { default as React } from '../../../../../../node_modules/react';
 
 /**
  * AsyncIterableResolverProps represents the props that can be passed to the

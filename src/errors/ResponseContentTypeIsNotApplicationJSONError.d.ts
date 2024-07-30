@@ -10,6 +10,7 @@ export default class ResponseContentTypeIsNotApplicationJSONError extends BaseBa
     constructor(haveHeaderType: string, status: number, response: null | Response, message?: string);
     static fromResponse(response: Response, message?: string): ResponseContentTypeIsNotApplicationJSONError;
     toJSON(): unknown;
+    get code(): string;
 }
 declare class ResponseContentTypeIsNotApplicationJSONErrorCodec extends TypeCheckingCodec<ResponseContentTypeIsNotApplicationJSONError> {
     readonly encoder: Converter<ResponseContentTypeIsNotApplicationJSONError, unknown>;

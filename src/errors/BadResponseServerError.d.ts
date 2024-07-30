@@ -7,6 +7,7 @@ import { default as BaseBadResponseError } from './BaseBadResponseError';
  */
 export default class BadResponseServerError extends BaseBadResponseError {
     constructor(status: number, response: null | Response, message?: string);
+    get code(): string;
 }
 declare class BadResponseServerErrorCodec extends TypeCheckingCodec<BadResponseServerError> {
     readonly encoder: Converter<BadResponseServerError, unknown>;

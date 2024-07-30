@@ -1,5 +1,5 @@
 import { PieChartEntry } from '../../../../../../../../../../../src/components/visual/pie_chart/PieChart';
-import { default as React } from 'react';
+import { default as React } from '../../../../../../node_modules/react';
 
 export declare const CountriesPieChartStreamContext: React.Context<AsyncIterable<PieChartEntry[]>>;
 interface CountriesPieChartStreamConsumerProps {

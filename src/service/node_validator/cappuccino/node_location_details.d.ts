@@ -1,3 +1,4 @@
+import { NullCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { default as Degrees } from '../../../../../../../../../../../src/models/geo/units/Degrees';
 import { default as LatLng } from '../../../../../../../../../../../src/models/geo/units/LatLng';
@@ -27,4 +28,5 @@ declare class CappuccinoLocationDetailsCodec extends TypeCheckingCodec<Cappuccin
     readonly decoder: CappuccinoLocationDetailsDecoder;
 }
 export declare const cappuccinoLocationDetailsCodec: CappuccinoLocationDetailsCodec;
+export declare const nullableCappuccinoLocationDetailsCodec: NullCodec<CappuccinoLocationDetails, unknown>;
 export {};

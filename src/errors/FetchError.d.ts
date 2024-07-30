@@ -11,6 +11,7 @@ import { default as BaseError } from './BaseError';
 export default class FetchError extends BaseError {
     cause: unknown;
     constructor(cause: unknown, message?: string);
+    get code(): string;
 }
 declare class FetchErrorCodec extends TypeCheckingCodec<FetchError> {
     readonly encoder: Converter<FetchError, unknown>;

@@ -1,4 +1,4 @@
-import { default as React } from 'react';
+import { default as React } from '../../../../../../node_modules/react';
 
 /**
  * MainNavLinks is a component that contains all of the main navigation links

@@ -7,6 +7,7 @@ import { default as BaseError } from './BaseError';
  */
 export default class ChannelClosedError extends BaseError {
     constructor(message?: string);
+    get code(): string;
 }
 declare class ChannelClosedErrorCodec extends TypeCheckingCodec<ChannelClosedError> {
     readonly encoder: Converter<ChannelClosedError, unknown>;

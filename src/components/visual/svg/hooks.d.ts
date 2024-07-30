@@ -1,4 +1,4 @@
-import { default as React } from 'react';
+import { default as React } from '../../../../../../node_modules/react';
 
 /**
  * useSVGSize is a helpful hook that can be used to setup the automatic

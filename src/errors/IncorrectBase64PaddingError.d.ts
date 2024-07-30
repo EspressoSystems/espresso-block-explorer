@@ -7,6 +7,7 @@ import { default as BaseError } from './BaseError';
  */
 export declare class IncorrectBase64PaddingError extends BaseError {
     constructor(message?: string);
+    get code(): string;
 }
 declare class IncorrectBase64PaddingErrorCodec extends TypeCheckingCodec<IncorrectBase64PaddingError> {
     readonly encoder: Converter<IncorrectBase64PaddingError, unknown>;

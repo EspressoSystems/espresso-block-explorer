@@ -7,6 +7,7 @@ import { default as BaseError } from './BaseError';
  */
 export default class InvalidHexStringError extends BaseError {
     constructor(message?: string);
+    get code(): string;
 }
 declare class InvalidHexStringErrorCodec extends TypeCheckingCodec<InvalidHexStringError> {
     readonly encoder: Converter<InvalidHexStringError, unknown>;

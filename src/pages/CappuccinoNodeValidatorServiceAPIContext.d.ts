@@ -1,4 +1,4 @@
-import { CappuccinoNodeValidatorAPI } from '../../../../../../../../../src/service/node_validator/cappuccino/node_validator_api';
-import { default as React } from 'react';
+import { WebWorkerNodeValidatorAPI } from '../../../../../../../../../src/service/node_validator/cappuccino/web_worker_proxy_api';
+import { default as React } from '../../../../node_modules/react';
 
-export declare const CappuccinoNodeValidatorServiceAPIContext: React.Context<CappuccinoNodeValidatorAPI>;
+export declare const CappuccinoNodeValidatorServiceAPIContext: React.Context<WebWorkerNodeValidatorAPI>;

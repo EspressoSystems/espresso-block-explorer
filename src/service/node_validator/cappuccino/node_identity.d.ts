@@ -1,7 +1,6 @@
 import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
-import { default as CappuccinoCompanyIdentity } from './company_identity';
 import { default as CappuccinoLocationDetails } from './node_location_details';
 
 /**
@@ -12,26 +11,28 @@ import { default as CappuccinoLocationDetails } from './node_location_details';
  */
 export default class CappuccinoNodeIdentity {
     readonly publicKey: TaggedBase64;
-    readonly name: string;
-    readonly address: ArrayBuffer;
-    readonly company: CappuccinoCompanyIdentity;
-    readonly location: CappuccinoLocationDetails;
-    readonly operatingSystem: string;
-    readonly nodeType: string;
-    readonly networkType: string;
-    constructor(publicKey: TaggedBase64, name: string, address: ArrayBuffer, company: CappuccinoCompanyIdentity, location: CappuccinoLocationDetails, operatingSystem: string, nodeType: string, networkType: string);
+    readonly name: null | string;
+    readonly walletAddress: null | ArrayBuffer;
+    readonly publicURL: null | URL;
+    readonly company: null | string;
+    readonly location: null | CappuccinoLocationDetails;
+    readonly operatingSystem: null | string;
+    readonly nodeType: null | string;
+    readonly networkType: null | string;
+    constructor(publicKey: TaggedBase64, name: null | string, walletAddress: null | ArrayBuffer, publicURL: null | URL, company: null | string, location: null | CappuccinoLocationDetails, operatingSystem: null | string, nodeType: null | string, networkType: null | string);
     toJSON(): unknown;
 }
 declare class CappuccinoNodeIdentityEncoder implements Converter<CappuccinoNodeIdentity> {
     convert(input: CappuccinoNodeIdentity): {
-        publicKey: string;
-        name: string;
-        address: string;
-        company: unknown;
+        public_key: string;
+        name: string | null;
+        wallet_address: string | null;
+        public_url: string | null;
+        company: string | null;
         location: unknown;
-        operatingSystem: string;
-        nodeType: string;
-        networkType: string;
+        operating_system: string | null;
+        node_type: string | null;
+        network_type: string | null;
     };
 }
 declare class CappuccinoNodeIdentityDecoder implements Converter<unknown, CappuccinoNodeIdentity> {

@@ -1,5 +1,5 @@
 import { CappuccinoExplorerGetSearchResultResponse } from '../../../../../../../../../../../src/service/hotshot_query_service/cappuccino/explorer/get_search_result_response';
-import { default as React } from 'react';
+import { default as React } from '../../../../../../node_modules/react';
 
 export interface InitialSearchState {
     rawQuery?: string;

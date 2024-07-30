@@ -1,5 +1,5 @@
 import { BlockDetailAsyncRetriever, BlockDetailEntry } from '../../../../../../../../../../../src/models/block_explorer/block_detail';
-import { default as React } from 'react';
+import { default as React } from '../../../../../../node_modules/react';
 
 export declare const BlockNumberContext: React.Context<number>;
 /**

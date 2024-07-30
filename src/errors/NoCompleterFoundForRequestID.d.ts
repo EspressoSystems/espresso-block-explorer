@@ -5,6 +5,7 @@ export default class NoCompleterFoundForRequestID<RequestID = unknown> extends B
     readonly requestID: RequestID;
     constructor(requestID: RequestID, message?: string);
     toJSON(): unknown;
+    get code(): string;
 }
 declare class NoCompleterFoundForRequestIDCodec extends TypeCheckingCodec<NoCompleterFoundForRequestID> {
     readonly encoder: Converter<NoCompleterFoundForRequestID, unknown>;

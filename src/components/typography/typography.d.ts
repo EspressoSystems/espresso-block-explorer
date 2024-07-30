@@ -1,5 +1,5 @@
 import { HigherOrderComponentWithClassNameProps } from '../../../../../../../../../../src/components/higher_order';
-import { default as React } from 'react';
+import { default as React } from '../../../../../node_modules/react';
 
 /**
  * WithParagraphText100 is a function that takes a component and adds the

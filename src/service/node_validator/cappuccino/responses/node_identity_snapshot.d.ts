@@ -2,6 +2,14 @@ import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../.
 import { default as CappuccinoNodeIdentity } from '../node_identity';
 import { default as CappuccinoNodeValidatorResponse } from './node_validator_response';
 
+/**
+ * Messages from the Cappuccino Node Validator take the form of:
+ * { "MessageType": MessageType }
+ */
+/**
+ * kCappuccinoNodeIdentitySnapshotType is the type string for the
+ * CappuccinoNodeIdentitySnapshot class.
+ */
 export declare const kCappuccinoNodeIdentitySnapshotType: "NodeIdentitySnapshot";
 /**
  * CappuccinoNodeIdentitySnapshot is a response from the Cappuccino node
@@ -10,11 +18,9 @@ export declare const kCappuccinoNodeIdentitySnapshotType: "NodeIdentitySnapshot"
  */
 export declare class CappuccinoNodeIdentitySnapshot extends CappuccinoNodeValidatorResponse {
     readonly nodes: CappuccinoNodeIdentity[];
-    get type(): "NodeIdentitySnapshot";
     constructor(nodes: CappuccinoNodeIdentity[]);
     toJSON(): {
-        nodes: unknown[];
-        type: "NodeIdentitySnapshot";
+        NodeIdentitySnapshot: unknown[];
     };
 }
 declare class CappuccinoNodeIdentitySnapshotDecoder implements Converter<unknown, CappuccinoNodeIdentitySnapshot> {
@@ -22,8 +28,7 @@ declare class CappuccinoNodeIdentitySnapshotDecoder implements Converter<unknown
 }
 declare class CappuccinoNodeIdentitySnapshotEncoder implements Converter<CappuccinoNodeIdentitySnapshot> {
     convert(input: CappuccinoNodeIdentitySnapshot): {
-        nodes: unknown[];
-        type: "NodeIdentitySnapshot";
+        NodeIdentitySnapshot: unknown[];
     };
 }
 declare class CappuccinoNodeIdentitySnapshotCodec extends TypeCheckingCodec<CappuccinoNodeIdentitySnapshot, ReturnType<InstanceType<new () => CappuccinoNodeIdentitySnapshotEncoder>['convert']>> {

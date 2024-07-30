@@ -9,6 +9,7 @@ export declare class InvalidBase64AlphabetLengthError extends BaseError {
     readonly length: number;
     constructor(length: number, message?: string);
     toJSON(): unknown;
+    get code(): string;
 }
 declare class InvalidBase64AlphabetLengthErrorCodec extends TypeCheckingCodec<InvalidBase64AlphabetLengthError> {
     readonly encoder: Converter<InvalidBase64AlphabetLengthError, unknown>;

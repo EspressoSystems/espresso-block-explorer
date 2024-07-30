@@ -8,3 +8,4 @@ export * from './number';
 export * from './string';
 export * from './undefined';
 export * from './unknown';
+export * from './url';

@@ -1,19 +1,28 @@
 import { Channel } from '../../../../../../../../../../../../src/async/channel';
-import { CappuccinoNodeValidatorAPI } from '../node_validator_api';
+import { Sink } from '../../../../../../../../../../../../src/async/sink/sink';
 import { default as CappuccinoNodeValidatorRequest } from '../requests/node_validator_request';
+import { WebWorkerProxyRequest } from '../requests/web_worker_proxy_request';
 import { default as CappuccinoNodeValidatorResponse } from '../responses/node_validator_response';
+import { default as WebWorkerLifeCycleResponse } from '../responses/web_worker_life_cycle_response';
+import { WebWorkerProxyResponse } from '../responses/web_worker_proxy_response';
+import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 
-export default class FakeDataCappuccinoNodeValidatorAPI implements CappuccinoNodeValidatorAPI {
-    readonly responseStream: Channel<CappuccinoNodeValidatorResponse>;
-    readonly requestStream: Channel<CappuccinoNodeValidatorRequest>;
-    constructor(requestStream: Channel<CappuccinoNodeValidatorRequest>, responseStream: Channel<CappuccinoNodeValidatorResponse>);
-    get stream(): AsyncIterable<CappuccinoNodeValidatorResponse>;
+export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNodeValidatorAPI {
+    readonly responseStream: Channel<WebWorkerProxyResponse>;
+    readonly requestStream: Channel<WebWorkerProxyRequest>;
+    readonly lifecycleResponseSink: Sink<WebWorkerLifeCycleResponse>;
+    readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
+    constructor(requestStream: Channel<WebWorkerProxyRequest>, responseStream: Channel<WebWorkerProxyResponse>);
+    get stream(): AsyncIterable<WebWorkerProxyResponse>;
     send(request: CappuccinoNodeValidatorRequest): Promise<void>;
     private prng;
     private latestBlock;
+    private latestBlocks;
+    private latestVoters;
     private histogramBlockTimeData;
     private histogramBlockSizeData;
     private histogramBlockTransactionData;
+    private generateVotersFromBlockDetail;
     private histogramBlockHeightData;
     private updateBlockDetails;
     initializeState(): Promise<void>;
@@ -21,5 +30,19 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements CappuccinoNod
     handleRequests(): Promise<void>;
     streamBlocks(): Promise<void>;
     private handleRequest;
-    private handleRoleCall;
+    private handleLifeCycleRequest;
+    private handleNodeValidatorRequest;
+    private isConnected;
+    private isSubscribedToLatestBlock;
+    private isSubscribedToVoters;
+    private handleConnect;
+    private handleClose;
+    private assertIsConnected;
+    private handleSubscribeLatestBlock;
+    private handleSubscribeNodeIdentity;
+    private handleSubscribeVoters;
+    private handleRequestBlocksSnapshot;
+    private handleRequestHistogramSnapshot;
+    private handleRequestNodeIdentitySnapshot;
+    private handleRequestVotersSnapshot;
 }

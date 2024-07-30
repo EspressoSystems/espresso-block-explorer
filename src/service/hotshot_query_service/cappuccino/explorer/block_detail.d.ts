@@ -1,3 +1,4 @@
+import { ArrayCodec } from '../../../../../../../../../../../../src/convert/codec';
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { default as MonetaryValue } from '../../../../../../../../../../../../src/models/block_explorer/monetary_value';
 import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
@@ -25,4 +26,5 @@ declare class CappuccinoExplorerBlockDetailCodec extends Codec<CappuccinoExplore
     readonly decoder: CappuccinoExplorerBlockDetailDecoder;
 }
 export declare const cappuccinoExplorerBlockDetailCodec: CappuccinoExplorerBlockDetailCodec;
+export declare const cappuccinoExplorerBlockDetailArrayCodec: ArrayCodec<CappuccinoExplorerBlockDetail, unknown>;
 export {};

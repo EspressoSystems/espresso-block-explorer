@@ -7,6 +7,7 @@ import { default as BaseError } from './BaseError';
  */
 export default class BufferFullError extends BaseError {
     constructor(message?: string);
+    get code(): string;
 }
 declare class BufferFullErrorCodec extends TypeCheckingCodec<BufferFullError> {
     readonly encoder: Converter<BufferFullError, unknown>;

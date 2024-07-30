@@ -1,3 +1,0 @@
-import{j as s}from"./jsx-runtime-C8OW3RLV.js";import{R as t}from"./index-BwDkhjyp.js";const o=t.createContext(new Date),r=e=>{const[a,c]=t.useState(new Date);return t.useEffect(()=>{const n=setInterval(()=>{c(new Date)},1e3);return()=>{clearInterval(n)}}),s(o.Provider,{...e,value:a})};try{o.displayName="Now",o.__docgenInfo={description:`Now is a context that is meant to provide the current Date, or some
-reference for whatever 'now' is considered to be.`,displayName:"Now",props:{}}}catch{}try{r.displayName="ProvideTickEverySecond",r.__docgenInfo={description:`ProvideTickEverySecond is a component that will update the Now context
-every second.`,displayName:"ProvideTickEverySecond",props:{}}}catch{}export{o as N,r as P};

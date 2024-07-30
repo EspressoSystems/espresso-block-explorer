@@ -6,6 +6,7 @@ export default class InvalidStringValueError extends BaseError {
     readonly want: string;
     constructor(haveType: string, wantType: string, message?: string);
     toJSON(): unknown;
+    get code(): string;
 }
 declare class InvalidStringValueErrorCodec extends TypeCheckingCodec<InvalidStringValueError> {
     readonly encoder: Converter<InvalidStringValueError, unknown>;

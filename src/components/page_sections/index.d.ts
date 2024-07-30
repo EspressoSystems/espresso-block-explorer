@@ -8,6 +8,7 @@ export * from './explorer_summary';
 export * from './footer';
 export * from './header';
 export * from './hex_dump';
+export * from './latest_block_producers';
 export * from './latest_block_summary';
 export * from './page_title';
 export * from './roll_up';

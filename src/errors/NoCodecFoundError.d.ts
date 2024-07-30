@@ -6,4 +6,5 @@ export default class NoCodecFoundError extends Error {
         message: string;
         codec: string;
     };
+    get code(): string;
 }

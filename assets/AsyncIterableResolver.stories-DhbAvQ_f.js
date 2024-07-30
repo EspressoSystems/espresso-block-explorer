@@ -1,5 +1,0 @@
-import{j as t}from"./jsx-runtime-C8OW3RLV.js";import{s as m}from"./sleep-CW-vxfof.js";import{C as i}from"./CircularProgressIndicator-CEwC7I0u.js";import{T as a}from"./Text-BU7JBOLk.js";import{R as p}from"./index-BwDkhjyp.js";import{A as l}from"./AsyncIterableResolver-D79DAQrI.js";import{A as u,a as f}from"./ProvideAsyncStates-cPWIR7SO.js";import"./higher_order-BhpYKJuV.js";import"./_commonjsHelpers-BosuxZz1.js";import"./LoadingProvider-D-gSICWy.js";const d=()=>{const r=p.useContext(u);if(r.asyncState===f.waiting&&!r.data)return t(i,{});if(r.error)return t(a,{text:"Error: "+r.error.toString()});const c=r.data;return t(a,{text:String(c)})},y=r=>t(l,{asyncIterable:r.asyncIterable,children:t(d,{})}),v={title:"Components/Async/Async Iterable Resolver",component:y},e={args:{asyncIterable:x()}};async function*x(){for(let r=0;r<10;r++)await m(1e3),yield r}var o,s,n;e.parameters={...e.parameters,docs:{...(o=e.parameters)==null?void 0:o.docs,source:{originalSource:`{
-  args: {
-    asyncIterable: counter()
-  }
-}`,...(n=(s=e.parameters)==null?void 0:s.docs)==null?void 0:n.source}}};const w=["Default"];export{e as Default,w as __namedExportsOrder,v as default};

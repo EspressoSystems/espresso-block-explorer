@@ -4,7 +4,7 @@ import { default as DensityIndependentPoint } from '../../../../../../../../../.
 import { default as LatLng } from '../../../../../../../../../../../src/models/geo/units/LatLng';
 import { default as Radians } from '../../../../../../../../../../../src/models/geo/units/Radians';
 import { NumberLike } from '../../../../../../../../../../../src/models/numeric/numeric';
-import { default as React } from 'react';
+import { default as React } from '../../../../../../node_modules/react';
 
 /**
  * MapGeodesicToCoordinateSpaceProjectionContext is a context that provides a

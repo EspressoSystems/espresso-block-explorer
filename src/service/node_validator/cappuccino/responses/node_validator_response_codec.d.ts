@@ -6,19 +6,40 @@ declare class CappuccinoNodeValidatorResponseDecoder implements Converter<unknow
 }
 declare class CappuccinoNodeValidatorResponseEncoder implements Converter<CappuccinoNodeValidatorResponse> {
     convert(input: CappuccinoNodeValidatorResponse): {
-        histograms: {
+        BlocksSnapshot: unknown[];
+    } | {
+        HistogramSnapshot: {
             block_time: number[];
             block_size: number[];
             block_transactions: number[];
             block_heights: number[];
         };
-        type: "HistogramSnapshot";
     } | {
-        latestBlock: unknown;
-        type: "LatestBlockSnapshot";
+        LatestBlock: unknown;
     } | {
-        nodes: unknown[];
-        type: "NodeIdentitySnapshot";
+        LatestNodeIdentity: unknown;
+    } | {
+        LatestVoters: {
+            order: string;
+            head: {
+                width: number;
+                index: number;
+            };
+            bits: number;
+            data: number[];
+        };
+    } | {
+        NodeIdentitySnapshot: unknown[];
+    } | {
+        VotersSnapshot: {
+            order: string;
+            head: {
+                width: number;
+                index: number;
+            };
+            bits: number;
+            data: number[];
+        }[];
     };
 }
 declare class CappuccinoNodeValidatorResponseCodec extends TypeCheckingCodec<CappuccinoNodeValidatorResponse, ReturnType<InstanceType<new () => CappuccinoNodeValidatorResponseEncoder>['convert']>> {

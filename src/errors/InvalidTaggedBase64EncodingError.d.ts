@@ -8,6 +8,7 @@ import { default as BaseError } from './BaseError';
 export default class InvalidTaggedBase64EncodingError extends BaseError {
     constructor(message?: string);
     toJSON(): unknown;
+    get code(): string;
 }
 declare class InvalidTaggedBase64EncodingErrorCodec extends TypeCheckingCodec<InvalidTaggedBase64EncodingError> {
     readonly encoder: Converter<InvalidTaggedBase64EncodingError, unknown>;

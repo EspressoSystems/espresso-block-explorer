@@ -1,5 +1,5 @@
 import { AsyncRetriever } from '../../../../../../../../../../../src/async/AsyncRetriever';
-import { default as React } from 'react';
+import { default as React } from '../../../../../../node_modules/react';
 
 /**
  * The LatestBlock type is the data type that is expected to be

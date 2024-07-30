@@ -7,6 +7,7 @@ import { default as BaseError } from './BaseError';
  */
 export declare class CompleterAlreadyCompletedError extends BaseError {
     constructor(message?: string);
+    get code(): string;
 }
 declare class CompleterAlreadyCompletedErrorCodec extends TypeCheckingCodec<CompleterAlreadyCompletedError> {
     readonly encoder: Converter<CompleterAlreadyCompletedError, unknown>;

@@ -1,4 +1,18 @@
 /**
+ * Sink is a simple interface that represents the ability to send Requests
+ * to some consumer.
+ */
+export interface Sink<Request> {
+    send(request: Request): Promise<void>;
+}
+/**
+ * Source is a simple interface that represents a stream of Responses that
+ * can be consumed from some producer.
+ */
+export interface Source<Response> {
+    readonly stream: AsyncIterable<Response>;
+}
+/**
  * NodeValidatorAPI is an extremely simplified definition that attempts to wrap
  * the basic underlying functionality of the NodeValidator API. This
  * functionality can best be thought of as the ability to received a continual
@@ -8,7 +22,7 @@
  * This API is defined extremely generally for extra flexibility.  In general
  * this definitions merely represents a bi-direction pipe / Stream.
  */
-export interface NodeValidatorAPI<Request, Response> {
+export interface NodeValidatorAPI<Request, Response> extends Source<Response>, Sink<Request> {
     /**
      * stream is an AsyncIterator that will yield Responses from the NodeValidator
      * API. These responses are meant to be self identifying in such that they

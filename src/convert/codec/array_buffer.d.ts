@@ -1,4 +1,5 @@
 import { Converter, TypeCheckingCodec } from './convert';
+import { NullCodec } from './null';
 import * as base64 from '../base64/base64';
 export declare class HexArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
     convert(input: unknown): ArrayBuffer;
@@ -11,6 +12,7 @@ export declare class HexArrayBufferCodec extends TypeCheckingCodec<ArrayBuffer, 
     decoder: HexArrayBufferDecoder;
 }
 export declare const hexArrayBufferCodec: HexArrayBufferCodec;
+export declare const nullableHexArrayBufferCodec: NullCodec<ArrayBuffer, string>;
 export declare class Base64ArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
     private encoding;
     constructor(encoding: base64.Encoding);

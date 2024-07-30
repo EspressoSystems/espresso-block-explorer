@@ -1,6 +1,6 @@
 import { TransactionSummaryAsyncRetriever, TransactionSummaryColumn } from '../../../../../../../../../../../src/models/block_explorer/transaction_summary';
 import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
-import { default as React } from 'react';
+import { default as React } from '../../../../../../node_modules/react';
 import { DataTableState } from '../../data/data_table/DataTable';
 
 export interface TransactionSummary {

@@ -8,6 +8,7 @@ import { default as BaseError } from './BaseError';
  */
 export default class MissingElementError extends BaseError {
     constructor(message?: string);
+    get code(): string;
 }
 declare class MissingElementErrorCodec extends TypeCheckingCodec<MissingElementError> {
     readonly encoder: Converter<MissingElementError, unknown>;
