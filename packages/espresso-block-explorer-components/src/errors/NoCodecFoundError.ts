@@ -1,5 +1,7 @@
 import { stringCodec } from '@/convert/codec/string';
 
+const kNoCodecFoundErrorCode = 'NoCodecFoundError';
+
 export default class NoCodecFoundError extends Error {
   readonly codec: string;
   constructor(
@@ -21,6 +23,10 @@ export default class NoCodecFoundError extends Error {
       message: stringCodec.encode(this.message),
       codec: stringCodec.encode(this.codec),
     };
+  }
+
+  get code(): string {
+    return kNoCodecFoundErrorCode;
   }
 }
 

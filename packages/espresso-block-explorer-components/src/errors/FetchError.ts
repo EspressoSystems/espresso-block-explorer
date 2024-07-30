@@ -8,6 +8,8 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { BaseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kFetchErrorCode = 'FetchError';
+
 /**
  * FetchError is an error that indicates that a fetch operation has failed.
  * This is notably different from an error due a Server response.  These
@@ -26,12 +28,16 @@ export default class FetchError extends BaseError {
     this.cause = cause;
     Object.freeze(this);
   }
+
+  get code(): string {
+    return kFetchErrorCode;
+  }
 }
 
 class FetchErrorDecoder implements Converter<unknown, FetchError> {
   convert(input: unknown): FetchError {
     assertRecordWithKeys(input, 'code', 'message');
-    assertErrorCode(input, FetchError.name);
+    assertErrorCode(input, kFetchErrorCode);
     // We can't actually decode this error, as it's likely to not be a
     // BaseError.
     return new FetchError({}, stringCodec.decode(input.message));
@@ -47,4 +53,4 @@ class FetchErrorCodec extends TypeCheckingCodec<FetchError> {
 
 export const bufferFullErrorCodec = new FetchErrorCodec();
 
-registerCodec(FetchError.name, bufferFullErrorCodec);
+registerCodec(kFetchErrorCode, bufferFullErrorCodec);

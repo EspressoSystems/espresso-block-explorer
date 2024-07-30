@@ -3,6 +3,7 @@ import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import { describe, expect, it } from 'vitest';
 import { CappuccinoAPIBitVec } from '../bit_vec';
 import { CappuccinoAPIBitVecHead } from '../bit_vec_head';
+import { CappuccinoAPIBitVecOrder } from '../bit_vec_order';
 import { CappuccinoAPIHeader } from '../block_header';
 import { CappuccinoBuilderSignature } from '../builder_signature';
 import { CappuccinoFeeInfo } from '../fee_info';
@@ -33,7 +34,7 @@ describe('CappuccinoAPILeafResponse', () => {
         new CappuccinoAPIQuorumCertificateSignatures(
           new TaggedBase64('SIG', prng.fillBytes(20)),
           new CappuccinoAPIBitVec(
-            'abc',
+            CappuccinoAPIBitVecOrder.lsb0,
             new CappuccinoAPIBitVecHead(prng.nextInt(), prng.nextInt()),
             prng.nextInt(),
             Array.from(new Uint8Array(prng.fillBytes(20))),
@@ -83,7 +84,7 @@ describe('CappuccinoAPILeafResponse', () => {
       new CappuccinoAPIQuorumCertificateSignatures(
         new TaggedBase64('SIG', prng.fillBytes(20)),
         new CappuccinoAPIBitVec(
-          'def',
+          CappuccinoAPIBitVecOrder.lsb0,
           new CappuccinoAPIBitVecHead(prng.nextInt(), prng.nextInt()),
           prng.nextInt(),
           Array.from(new Uint8Array(prng.fillBytes(20))),

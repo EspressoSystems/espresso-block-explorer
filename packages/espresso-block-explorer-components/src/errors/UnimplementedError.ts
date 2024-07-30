@@ -8,6 +8,8 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { BaseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kUnimplementedErrorCode = 'UnimplementedError';
+
 /**
  * Unimplemented is an error that indicates the logic for this code has not
  * yet been implemented.  It is meant to be a placeholder error.
@@ -19,6 +21,10 @@ export default class UnimplementedError extends BaseError {
     // eslint-disable-next-line no-debugger
     debugger;
   }
+
+  get code(): string {
+    return kUnimplementedErrorCode;
+  }
 }
 
 class UnimplementedErrorDecoder
@@ -26,7 +32,7 @@ class UnimplementedErrorDecoder
 {
   convert(input: unknown): UnimplementedError {
     assertRecordWithKeys(input, 'code', 'message');
-    assertErrorCode(input, UnimplementedError.name);
+    assertErrorCode(input, kUnimplementedErrorCode);
     return new UnimplementedError(stringCodec.decode(input.message));
   }
 }
@@ -42,4 +48,4 @@ class UnimplementedErrorCodec extends TypeCheckingCodec<UnimplementedError> {
 
 export const unimplementedCodec = new UnimplementedErrorCodec();
 
-registerCodec(UnimplementedError.name, unimplementedCodec);
+registerCodec(kUnimplementedErrorCode, unimplementedCodec);

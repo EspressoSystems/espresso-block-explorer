@@ -3,6 +3,7 @@ import InvalidTypeError from '@/errors/InvalidTypeError';
 import * as base64 from '../base64/base64';
 import { encodeNumberIterableToHexits, parseHexString } from '../hex/hex';
 import { Converter, TypeCheckingCodec } from './convert';
+import { NullCodec, NullDecoder, NullEncoder } from './null';
 
 export class HexArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
   convert(input: unknown): ArrayBuffer {
@@ -34,6 +35,10 @@ export class HexArrayBufferCodec extends TypeCheckingCodec<
 }
 
 export const hexArrayBufferCodec = new HexArrayBufferCodec();
+export const nullableHexArrayBufferCodec = new NullCodec(
+  new NullDecoder(hexArrayBufferCodec),
+  new NullEncoder(hexArrayBufferCodec),
+);
 
 export class Base64ArrayBufferDecoder
   implements Converter<unknown, ArrayBuffer>

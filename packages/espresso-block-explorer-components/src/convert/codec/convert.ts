@@ -115,6 +115,18 @@ export function isRecord<Key extends string, Value>(
 }
 
 /**
+ * isRecordWithKeys is a helper function that indicates that the value passed
+ * in is a record with the keys passed in.  This is a type checking function
+ * for typescript.
+ */
+export function isRecordWithKeys<Key extends string>(
+  value: unknown,
+  ...keys: Key[]
+): value is Record<Key, unknown> {
+  return isObject(value) && keys.every((key) => key in value);
+}
+
+/**
  * assertRecordWithKeys is a helper function much like `isRecord`.  It is an
  * assertion type function for typescript, which indicates that the type passed
  * in has the keys passed in, otherwise this throw an error that indicates the

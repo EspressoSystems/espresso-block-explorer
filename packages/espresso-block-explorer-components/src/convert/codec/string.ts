@@ -7,6 +7,7 @@ import {
   isArrayMemberFunction,
   isString,
 } from './convert';
+import { NullCodec, NullDecoder, NullEncoder } from './null';
 
 export const isStringArray = isArrayMemberFunction(isString);
 
@@ -59,4 +60,8 @@ export const stringCodec = new StringCodec();
 export const stringArrayCodec = new ArrayCodec(
   new ArrayDecoder(stringCodec),
   new ArrayEncoder(stringCodec),
+);
+export const nullableStringCodec = new NullCodec(
+  new NullDecoder(stringCodec),
+  new NullEncoder(stringCodec),
 );

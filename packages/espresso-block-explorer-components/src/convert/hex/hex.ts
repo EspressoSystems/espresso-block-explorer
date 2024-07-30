@@ -83,7 +83,7 @@ function encodeHexit(byte: number) {
  */
 export function* encodeNumberIteratorToHexits(
   iterator: Iterator<number>,
-): Generator<string> {
+): IterableIterator<string> {
   yield* mapIterator(iterator, encodeHexit);
 }
 
@@ -93,6 +93,6 @@ export function* encodeNumberIteratorToHexits(
  */
 export function encodeNumberIterableToHexits(
   iterable: Iterable<number>,
-): Generator<string> {
+): IterableIterator<string> {
   return encodeNumberIteratorToHexits(iterable[Symbol.iterator]());
 }

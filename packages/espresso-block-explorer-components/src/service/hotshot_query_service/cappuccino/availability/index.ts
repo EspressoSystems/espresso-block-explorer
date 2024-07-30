@@ -1,6 +1,7 @@
 export * from './availability_api';
 export * from './bit_vec';
 export * from './bit_vec_head';
+export * from './bit_vec_order';
 export * from './block';
 export * from './block_header';
 export * from './builder_signature';

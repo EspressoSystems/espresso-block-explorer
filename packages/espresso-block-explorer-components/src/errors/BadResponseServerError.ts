@@ -23,14 +23,19 @@ export default class BadResponseServerError extends BaseBadResponseError {
     super(status, response, message);
     Object.freeze(this);
   }
+
+  get code(): string {
+    return kBadResponseServerErrorCode;
+  }
 }
 
+const kBadResponseServerErrorCode = 'BadResponseServerError';
 class BadResponseServerErrorDecoder
   implements Converter<unknown, BadResponseServerError>
 {
   convert(input: unknown): BadResponseServerError {
     assertRecordWithKeys(input, 'code', 'message', 'status');
-    assertErrorCode(input, BadResponseServerError.name);
+    assertErrorCode(input, kBadResponseServerErrorCode);
     return new BadResponseServerError(
       Number(input.status),
       null,
@@ -50,4 +55,4 @@ class BadResponseServerErrorCodec extends TypeCheckingCodec<BadResponseServerErr
 
 export const badResponseServerErrorCodec = new BadResponseServerErrorCodec();
 
-registerCodec(BadResponseServerError.name, badResponseServerErrorCodec);
+registerCodec(kBadResponseServerErrorCode, badResponseServerErrorCodec);

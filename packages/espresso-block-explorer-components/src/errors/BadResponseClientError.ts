@@ -10,6 +10,8 @@ import BaseBadResponseError, {
 } from './BaseBadResponseError';
 import { registerCodec } from './registry';
 
+const kBadResponseClientErrorCode = 'BadResponseClientError';
+
 /**
  * BadResponseClientError is a more specific BadResponse error that indicates
  * the nature of the failure was due to a client submission error.
@@ -24,6 +26,10 @@ export default class BadResponseClientError extends BaseBadResponseError {
     Object.freeze(this);
   }
 
+  get code(): string {
+    return kBadResponseClientErrorCode;
+  }
+
   toJSON(): unknown {
     return badResponseClientErrorCodec.encode(this);
   }
@@ -34,7 +40,7 @@ class BadResponseClientErrorDecoder
 {
   convert(input: unknown): BadResponseClientError {
     assertRecordWithKeys(input, 'code', 'message', 'status');
-    assertErrorCode(input, BadResponseClientError.name);
+    assertErrorCode(input, kBadResponseClientErrorCode);
 
     return new BadResponseClientError(
       Number(input.status),
@@ -55,4 +61,4 @@ class BadResponseClientErrorCodec extends TypeCheckingCodec<BadResponseClientErr
 
 export const badResponseClientErrorCodec = new BadResponseClientErrorCodec();
 
-registerCodec(BadResponseClientError.name, badResponseClientErrorCodec);
+registerCodec(kBadResponseClientErrorCode, badResponseClientErrorCodec);

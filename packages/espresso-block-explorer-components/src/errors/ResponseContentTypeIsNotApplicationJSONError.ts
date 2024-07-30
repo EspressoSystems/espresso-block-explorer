@@ -11,6 +11,9 @@ import BaseBadResponseError, {
 } from './BaseBadResponseError';
 import { registerCodec } from './registry';
 
+const kResponseContentTypeIsNotApplicationJSONErrorCode =
+  'ResponseContentTypeIsNotApplicationJSONError';
+
 /**
  * BadResponseClientError is a more specific BadResponse error that indicates
  * the nature of the failure was due to a client submission error.
@@ -44,6 +47,10 @@ export default class ResponseContentTypeIsNotApplicationJSONError extends BaseBa
   toJSON() {
     return responseContentTypeIsNotApplicationJSONErrorCodec.encode(this);
   }
+
+  get code(): string {
+    return kResponseContentTypeIsNotApplicationJSONErrorCode;
+  }
 }
 
 class ResponseContentTypeIsNotApplicationJSONErrorDecoder
@@ -51,7 +58,7 @@ class ResponseContentTypeIsNotApplicationJSONErrorDecoder
 {
   convert(input: unknown): ResponseContentTypeIsNotApplicationJSONError {
     assertRecordWithKeys(input, 'code', 'status', 'have', 'want', 'message');
-    assertErrorCode(input, ResponseContentTypeIsNotApplicationJSONError.name);
+    assertErrorCode(input, kResponseContentTypeIsNotApplicationJSONErrorCode);
 
     return new ResponseContentTypeIsNotApplicationJSONError(
       stringCodec.decode(input.code),

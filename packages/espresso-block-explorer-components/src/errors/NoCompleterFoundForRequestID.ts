@@ -10,6 +10,8 @@ import { unknownCodec } from '@/convert/codec/unknown';
 import BaseError, { baseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kNoCompleterFoundForRequestIDCode = 'NoCompleterFoundForRequestID';
+
 export default class NoCompleterFoundForRequestID<
   RequestID = unknown,
 > extends BaseError {
@@ -26,6 +28,10 @@ export default class NoCompleterFoundForRequestID<
   toJSON() {
     return noCompleterFoundForRequestIDCodec.encode(this);
   }
+
+  get code(): string {
+    return kNoCompleterFoundForRequestIDCode;
+  }
 }
 
 class NoCompleterFoundForRequestIDDecoder
@@ -33,7 +39,7 @@ class NoCompleterFoundForRequestIDDecoder
 {
   convert(input: unknown): NoCompleterFoundForRequestID {
     assertRecordWithKeys(input, 'code', 'requestID', 'message');
-    assertErrorCode(input, NoCompleterFoundForRequestID.name);
+    assertErrorCode(input, kNoCompleterFoundForRequestIDCode);
     return new NoCompleterFoundForRequestID(
       unknownCodec.decode(input.requestID),
       stringCodec.decode(input.message),
@@ -64,6 +70,6 @@ export const noCompleterFoundForRequestIDCodec =
   new NoCompleterFoundForRequestIDCodec();
 
 registerCodec(
-  NoCompleterFoundForRequestID.name,
+  kNoCompleterFoundForRequestIDCode,
   noCompleterFoundForRequestIDCodec,
 );

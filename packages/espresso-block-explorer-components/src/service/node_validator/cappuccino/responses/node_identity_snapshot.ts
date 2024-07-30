@@ -2,13 +2,21 @@ import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-  assertTypeCode,
 } from '@/convert/codec/convert';
 import CappuccinoNodeIdentity, {
   listCappuccinoNodeIdentityCodec,
 } from '../node_identity';
 import CappuccinoNodeValidatorResponse from './node_validator_response';
 
+/**
+ * Messages from the Cappuccino Node Validator take the form of:
+ * { "MessageType": MessageType }
+ */
+
+/**
+ * kCappuccinoNodeIdentitySnapshotType is the type string for the
+ * CappuccinoNodeIdentitySnapshot class.
+ */
 export const kCappuccinoNodeIdentitySnapshotType =
   'NodeIdentitySnapshot' as const;
 
@@ -19,9 +27,6 @@ export const kCappuccinoNodeIdentitySnapshotType =
  */
 export class CappuccinoNodeIdentitySnapshot extends CappuccinoNodeValidatorResponse {
   readonly nodes: CappuccinoNodeIdentity[];
-  get type() {
-    return kCappuccinoNodeIdentitySnapshotType;
-  }
 
   constructor(nodes: CappuccinoNodeIdentity[]) {
     super();
@@ -37,11 +42,11 @@ class CappuccinoNodeIdentitySnapshotDecoder
   implements Converter<unknown, CappuccinoNodeIdentitySnapshot>
 {
   convert(input: unknown): CappuccinoNodeIdentitySnapshot {
-    assertRecordWithKeys(input, 'nodes', 'type');
-    assertTypeCode(input, kCappuccinoNodeIdentitySnapshotType);
+    assertRecordWithKeys(input, kCappuccinoNodeIdentitySnapshotType);
 
+    const list = input[kCappuccinoNodeIdentitySnapshotType];
     return new CappuccinoNodeIdentitySnapshot(
-      listCappuccinoNodeIdentityCodec.decode(input.nodes),
+      listCappuccinoNodeIdentityCodec.decode(list),
     );
   }
 }
@@ -51,8 +56,8 @@ class CappuccinoNodeIdentitySnapshotEncoder
 {
   convert(input: CappuccinoNodeIdentitySnapshot) {
     return {
-      nodes: listCappuccinoNodeIdentityCodec.encode(input.nodes),
-      type: kCappuccinoNodeIdentitySnapshotType,
+      [kCappuccinoNodeIdentitySnapshotType]:
+        listCappuccinoNodeIdentityCodec.encode(input.nodes),
     };
   }
 }

@@ -2,7 +2,6 @@ import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
-  assertTypeCode,
 } from '@/convert/codec/convert';
 import {
   CappuccinoSummaryHistograms,
@@ -10,13 +9,23 @@ import {
 } from '@/service/hotshot_query_service/cappuccino/explorer/summary_histograms';
 import CappuccinoNodeValidatorResponse from './node_validator_response';
 
+/**
+ * Messages from the Cappuccino Node Validator take the form of:
+ * { "MessageType": MessageType }
+ */
+
+/**
+ * kCappuccinoHistogramSnapshotType is the type string for the
+ * CappuccinoHistogramSnapshot class.
+ */
 export const kCappuccinoHistogramSnapshotType = 'HistogramSnapshot' as const;
 
+/**
+ * CappuccinoHistogramSnapshot is a response from the Cappuccino node
+ * validator that contains a snapshot of the histograms in the network.
+ */
 export class CappuccinoHistogramSnapshot extends CappuccinoNodeValidatorResponse {
   readonly histograms: CappuccinoSummaryHistograms;
-  get type() {
-    return kCappuccinoHistogramSnapshotType;
-  }
 
   constructor(histograms: CappuccinoSummaryHistograms) {
     super();
@@ -32,11 +41,12 @@ class CappuccinoHistogramSnapshotDecoder
   implements Converter<unknown, CappuccinoHistogramSnapshot>
 {
   convert(input: unknown): CappuccinoHistogramSnapshot {
-    assertRecordWithKeys(input, 'histograms', 'type');
-    assertTypeCode(input, kCappuccinoHistogramSnapshotType);
+    assertRecordWithKeys(input, kCappuccinoHistogramSnapshotType);
 
     return new CappuccinoHistogramSnapshot(
-      cappuccinoSummaryHistogramsCodec.decode(input.histograms),
+      cappuccinoSummaryHistogramsCodec.decode(
+        input[kCappuccinoHistogramSnapshotType],
+      ),
     );
   }
 }
@@ -46,8 +56,8 @@ class CappuccinoHistogramSnapshotEncoder
 {
   convert(input: CappuccinoHistogramSnapshot) {
     return {
-      histograms: cappuccinoSummaryHistogramsCodec.encode(input.histograms),
-      type: kCappuccinoHistogramSnapshotType,
+      [kCappuccinoHistogramSnapshotType]:
+        cappuccinoSummaryHistogramsCodec.encode(input.histograms),
     };
   }
 }

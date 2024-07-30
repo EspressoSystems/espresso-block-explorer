@@ -9,6 +9,8 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { baseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kInvalidTypeErrorCode = 'InvalidTypeError';
+
 export default class InvalidTypeError extends BaseError {
   readonly have: string;
   readonly want: string;
@@ -26,12 +28,16 @@ export default class InvalidTypeError extends BaseError {
   toJSON() {
     return invalidTypeErrorCodec.encode(this);
   }
+
+  get code(): string {
+    return kInvalidTypeErrorCode;
+  }
 }
 
 class InvalidTypeErrorDecoder implements Converter<unknown, InvalidTypeError> {
   convert(input: unknown): InvalidTypeError {
     assertRecordWithKeys(input, 'code', 'have', 'want', 'message');
-    assertErrorCode(input, InvalidTypeError.name);
+    assertErrorCode(input, kInvalidTypeErrorCode);
     return new InvalidTypeError(
       stringCodec.decode(input.have),
       stringCodec.decode(input.want),
@@ -60,4 +66,4 @@ class InvalidTypeErrorCodec extends TypeCheckingCodec<InvalidTypeError> {
 
 export const invalidTypeErrorCodec = new InvalidTypeErrorCodec();
 
-registerCodec(InvalidTypeError.name, invalidTypeErrorCodec);
+registerCodec(kInvalidTypeErrorCode, invalidTypeErrorCodec);

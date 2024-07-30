@@ -8,6 +8,8 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { BaseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kInvalidHexStringErrorCode = 'InvalidHexStringError';
+
 /**
  * InvalidHexStringError is an error that indicates that the hex string provided
  * is invalid as it doesn't meet the requirements of a hex encoded string.
@@ -17,6 +19,10 @@ export default class InvalidHexStringError extends BaseError {
     super(message);
     Object.freeze(this);
   }
+
+  get code(): string {
+    return kInvalidHexStringErrorCode;
+  }
 }
 
 class InvalidHexStringErrorDecoder
@@ -24,7 +30,7 @@ class InvalidHexStringErrorDecoder
 {
   convert(input: unknown): InvalidHexStringError {
     assertRecordWithKeys(input, 'code', 'message');
-    assertErrorCode(input, InvalidHexStringError.name);
+    assertErrorCode(input, kInvalidHexStringErrorCode);
     return new InvalidHexStringError(stringCodec.decode(input.message));
   }
 }
@@ -40,4 +46,4 @@ class InvalidHexStringErrorCodec extends TypeCheckingCodec<InvalidHexStringError
 
 export const invalidHexStringErrorCodec = new InvalidHexStringErrorCodec();
 
-registerCodec(InvalidHexStringError.name, invalidHexStringErrorCodec);
+registerCodec(kInvalidHexStringErrorCode, invalidHexStringErrorCodec);

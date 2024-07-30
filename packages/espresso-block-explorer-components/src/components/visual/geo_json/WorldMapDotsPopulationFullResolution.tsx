@@ -38,7 +38,8 @@ const PopulationEntryContext = React.createContext<DotPopulation | null>(null);
 const WorldMapDotsPopulationFullResolution: React.FC = () => {
   const rect = React.useContext(MapCoordinateSpaceRectContext);
   const loading = React.useContext(LoadingContext);
-  const dotPopulation = React.useContext(DataContext) as DotPopulation[];
+  const dotPopulation =
+    (React.useContext(DataContext) as DotPopulation[]) || [];
   const centers = React.useContext(MapCoordinateGridSpaceCentersContext);
   const radius =
     (Number(gridCellRadius) / Number(mapWidth)) * Number(rect.width);
@@ -137,6 +138,19 @@ const WorldMapDotToolTipContent: React.FC = () => {
   return (
     <>
       {dot.nodes.map((node, index) => {
+        if (node.name === null) {
+          return (
+            <UiText600
+              key={index}
+              x={Number(0)}
+              y={text600FontSize * (index + 1)}
+              textAnchor="center"
+            >
+              <Text text={`unnamed node ${index + 1}`} />
+            </UiText600>
+          );
+        }
+
         return (
           <UiText600
             key={index}
