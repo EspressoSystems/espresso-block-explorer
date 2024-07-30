@@ -198,14 +198,24 @@ export default class ReplayDataCappuccinoNodeValidatorAPI
 
   private async handleRequest(request: WebWorkerProxyRequest) {
     if (request instanceof LifeCycleRequest) {
-      await this.handleLifeCycleRequest(request.request);
+      try {
+        await this.handleLifeCycleRequest(request.request);
+      } catch (err) {
+        console.error('failed to handle life cycle request', request, err);
+      }
       return;
     }
 
     if (request instanceof NodeValidatorRequest) {
-      await this.handleNodeValidatorRequest(request.request);
+      try {
+        await this.handleNodeValidatorRequest(request.request);
+      } catch (err) {
+        console.error('failed to handle node validator request', request, err);
+      }
       return;
     }
+
+    console.error('unknown request type', request);
   }
 
   private async handleLifeCycleRequest(request: WebWorkerLifeCycleRequest) {

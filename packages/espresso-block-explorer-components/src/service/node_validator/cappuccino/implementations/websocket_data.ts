@@ -5,7 +5,6 @@ import {
   Completer,
   createCompleter,
 } from '@/data_structures/async/completer/Completer';
-import UnimplementedError from '@/errors/UnimplementedError';
 import WebSocketError from '@/errors/WebSocketError';
 import CappuccinoNodeValidatorRequest from '../requests/node_validator_request';
 import { cappuccinoNodeValidatorRequestCodec } from '../requests/node_validator_request_codec';
@@ -91,16 +90,24 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
 
   private async handleRequest(request: WebWorkerProxyRequest) {
     if (request instanceof LifeCycleRequest) {
-      await this.handleLifeCycleRequest(request.request);
+      try {
+        await this.handleLifeCycleRequest(request.request);
+      } catch (err) {
+        console.error('failed to handle life cycle request', request, err);
+      }
       return;
     }
 
     if (request instanceof NodeValidatorRequest) {
-      await this.handleNodeValidatorRequest(request.request);
+      try {
+        await this.handleNodeValidatorRequest(request.request);
+      } catch (err) {
+        console.error('failed to handle node validator request', request, err);
+      }
       return;
     }
 
-    throw new UnimplementedError();
+    console.error('unrecognized request', request);
   }
 
   private async handleLifeCycleRequest(request: WebWorkerLifeCycleRequest) {

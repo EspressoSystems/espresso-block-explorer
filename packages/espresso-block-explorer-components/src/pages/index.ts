@@ -1,9 +1,12 @@
 export { default as BlockPage } from './BlockPage';
 export { default as BlocksPage } from './BlocksPage';
-export * from './CappuccinoHotShotQueryServiceAPIContext';
 export * from './CappuccinoHotShotQueryServiceAdapters';
+export * from './CappuccinoHotShotQueryServiceAPIContext';
+export * from './CappuccinoNodeValidatorServiceAdapters';
+export * from './CappuccinoNodeValidatorServiceAPIContext';
 export { default as ExplorerPage } from './ExplorerPage';
 export { default as FakeDataNotice } from './FakeDataNotice';
+export { default as NodesPage } from './NodesPage';
 export { default as RollUpPage } from './RollUpPage';
 export { default as RollUpsPage } from './RollUpsPage';
 export { default as TransactionPage } from './TransactionPage';
