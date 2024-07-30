@@ -8,6 +8,8 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { BaseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kMissingElementErrorCode = 'MissingElementError';
+
 /**
  * MissingElementError is an error that indicates that a member of a collection
  * was not present.  This generally occurs when the collection lacks the
@@ -18,6 +20,10 @@ export default class MissingElementError extends BaseError {
     super(message);
     Object.freeze(this);
   }
+
+  get code(): string {
+    return kMissingElementErrorCode;
+  }
 }
 
 class MissingElementErrorDecoder
@@ -25,7 +31,7 @@ class MissingElementErrorDecoder
 {
   convert(input: unknown): MissingElementError {
     assertRecordWithKeys(input, 'code', 'message');
-    assertErrorCode(input, MissingElementError.name);
+    assertErrorCode(input, kMissingElementErrorCode);
     return new MissingElementError(stringCodec.decode(input.message));
   }
 }
@@ -41,4 +47,4 @@ class MissingElementErrorCodec extends TypeCheckingCodec<MissingElementError> {
 
 export const missingElementErrorCodec = new MissingElementErrorCodec();
 
-registerCodec(MissingElementError.name, missingElementErrorCodec);
+registerCodec(kMissingElementErrorCode, missingElementErrorCodec);

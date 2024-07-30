@@ -8,10 +8,16 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { BaseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kInvalidInputErrorCode = 'InvalidInputError';
+
 export default class InvalidInputError extends BaseError {
   constructor(message = 'invalid input') {
     super(message);
     Object.freeze(this);
+  }
+
+  get code(): string {
+    return kInvalidInputErrorCode;
   }
 }
 
@@ -20,7 +26,7 @@ class InvalidInputErrorDecoder
 {
   convert(input: unknown): InvalidInputError {
     assertRecordWithKeys(input, 'code', 'message');
-    assertErrorCode(input, InvalidInputError.name);
+    assertErrorCode(input, kInvalidInputErrorCode);
     return new InvalidInputError(stringCodec.decode(input.message));
   }
 }
@@ -36,4 +42,4 @@ class InvalidInputErrorCodec extends TypeCheckingCodec<InvalidInputError> {
 
 export const invalidInputErrorCodec = new InvalidInputErrorCodec();
 
-registerCodec(InvalidInputError.name, invalidInputErrorCodec);
+registerCodec(kInvalidInputErrorCode, invalidInputErrorCodec);

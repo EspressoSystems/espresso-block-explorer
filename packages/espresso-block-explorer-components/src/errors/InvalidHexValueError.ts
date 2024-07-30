@@ -9,6 +9,8 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { baseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kInvalidHexValueErrorCode = 'InvalidHexValueError';
+
 /**
  * InvalidHexValueError is an error that indicates that the encountered value
  * isn't valid for a hex representation.
@@ -25,6 +27,10 @@ export class InvalidHexValueError extends BaseError {
   toJSON() {
     return invalidHexValueErrorCodec.encode(this);
   }
+
+  get code(): string {
+    return kInvalidHexValueErrorCode;
+  }
 }
 
 class InvalidHexValueErrorDecoder
@@ -32,7 +38,7 @@ class InvalidHexValueErrorDecoder
 {
   convert(input: unknown): InvalidHexValueError {
     assertRecordWithKeys(input, 'code', 'value', 'message');
-    assertErrorCode(input, InvalidHexValueError.name);
+    assertErrorCode(input, kInvalidHexValueErrorCode);
     return new InvalidHexValueError(
       numberCodec.decode(input.value),
       stringCodec.decode(input.message),
@@ -58,4 +64,4 @@ class InvalidHexValueErrorCodec extends TypeCheckingCodec<InvalidHexValueError> 
 
 export const invalidHexValueErrorCodec = new InvalidHexValueErrorCodec();
 
-registerCodec(InvalidHexValueError.name, invalidHexValueErrorCodec);
+registerCodec(kInvalidHexValueErrorCode, invalidHexValueErrorCodec);

@@ -10,6 +10,9 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { baseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kInvalidBase64AlphabetLengthErrorCode =
+  'InvalidBase64AlphabetLengthError';
+
 /**
  * InvalidAlphabetLengthError is an error that indicates the the Base64 alphabet
  * provided does not meet the required criteria.
@@ -29,6 +32,10 @@ export class InvalidBase64AlphabetLengthError extends BaseError {
   toJSON() {
     return invalidBase64AlphabetLengthErrorCodec.encode(this);
   }
+
+  get code(): string {
+    return kInvalidBase64AlphabetLengthErrorCode;
+  }
 }
 
 class InvalidBase64AlphabetLengthErrorDecoder
@@ -36,7 +43,7 @@ class InvalidBase64AlphabetLengthErrorDecoder
 {
   convert(input: unknown): InvalidBase64AlphabetLengthError {
     assertRecordWithKeys(input, 'code', 'length', 'message');
-    assertErrorCode(input, InvalidBase64AlphabetLengthError.name);
+    assertErrorCode(input, kInvalidBase64AlphabetLengthErrorCode);
     return new InvalidBase64AlphabetLengthError(
       numberCodec.decode(input.length),
       stringCodec.decode(input.message),
@@ -68,6 +75,6 @@ export const invalidBase64AlphabetLengthErrorCodec =
   new InvalidBase64AlphabetLengthErrorCodec();
 
 registerCodec(
-  InvalidBase64AlphabetLengthError.name,
+  kInvalidBase64AlphabetLengthErrorCode,
   invalidBase64AlphabetLengthErrorCodec,
 );

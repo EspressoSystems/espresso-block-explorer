@@ -10,6 +10,7 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { baseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kCorruptBase64InputErrorCode = 'CorruptBase64InputError';
 /**
  * CorruptBase64InputError is an error that indicates that the input provided
  * at the given offset is invalid.
@@ -26,6 +27,10 @@ export class CorruptBase64InputError extends BaseError {
     Object.freeze(this);
   }
 
+  get code(): string {
+    return kCorruptBase64InputErrorCode;
+  }
+
   toJSON() {
     return corruptBase64InputErrorCodec.encode(this);
   }
@@ -36,7 +41,7 @@ class CorruptBase64InputErrorDecoder
 {
   convert(input: unknown): CorruptBase64InputError {
     assertRecordWithKeys(input, 'code', 'offset', 'message');
-    assertErrorCode(input, CorruptBase64InputError.name);
+    assertErrorCode(input, kCorruptBase64InputErrorCode);
     return new CorruptBase64InputError(
       numberCodec.decode(input.offset),
       stringCodec.decode(input.message),
@@ -66,4 +71,4 @@ class CorruptBase64InputErrorCodec extends TypeCheckingCodec<CorruptBase64InputE
 
 export const corruptBase64InputErrorCodec = new CorruptBase64InputErrorCodec();
 
-registerCodec(CorruptBase64InputError.name, corruptBase64InputErrorCodec);
+registerCodec(kCorruptBase64InputErrorCode, corruptBase64InputErrorCodec);

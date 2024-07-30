@@ -8,6 +8,9 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { BaseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kInvalidTaggedBase64EncodingErrorCode =
+  'InvalidTaggedBase64EncodingError';
+
 /**
  * InvalidTaggedBase64EncodingError is an error that indicates that the
  * encountered string encoding of a supposed TaggedBase64 is invalid.
@@ -21,6 +24,10 @@ export default class InvalidTaggedBase64EncodingError extends BaseError {
   toJSON() {
     return invalidTaggedBase64EncodingErrorCodec.encode(this);
   }
+
+  get code(): string {
+    return kInvalidTaggedBase64EncodingErrorCode;
+  }
 }
 
 class InvalidTaggedBase64EncodingErrorDecoder
@@ -28,7 +35,7 @@ class InvalidTaggedBase64EncodingErrorDecoder
 {
   convert(input: unknown): InvalidTaggedBase64EncodingError {
     assertRecordWithKeys(input, 'code', 'message');
-    assertErrorCode(input, InvalidTaggedBase64EncodingError.name);
+    assertErrorCode(input, kInvalidTaggedBase64EncodingErrorCode);
     return new InvalidTaggedBase64EncodingError(
       stringCodec.decode(input.message),
     );
@@ -48,6 +55,6 @@ export const invalidTaggedBase64EncodingErrorCodec =
   new InvalidTaggedBase64EncodingErrorCodec();
 
 registerCodec(
-  InvalidTaggedBase64EncodingError.name,
+  kInvalidTaggedBase64EncodingErrorCode,
   invalidTaggedBase64EncodingErrorCodec,
 );

@@ -8,6 +8,8 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { BaseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kWebSocketErrorCode = 'WebSocketError';
+
 /**
  * WebSocketError is an error class that represents and wraps a general
  * WebSocketError that doesn't have a more specific error representation.
@@ -23,12 +25,16 @@ export default class WebSocketError extends BaseError {
     this.cause = cause;
     Object.freeze(this);
   }
+
+  get code(): string {
+    return kWebSocketErrorCode;
+  }
 }
 
 class WebSocketErrorDecoder implements Converter<unknown, WebSocketError> {
   convert(input: unknown): WebSocketError {
     assertRecordWithKeys(input, 'code', 'message');
-    assertErrorCode(input, WebSocketError.name);
+    assertErrorCode(input, kWebSocketErrorCode);
     // We can't actually decode this error, as it's likely to not be a
     // BaseError.
     return new WebSocketError({}, stringCodec.decode(input.message));
@@ -46,4 +52,4 @@ class WebSocketErrorCodec extends TypeCheckingCodec<WebSocketError> {
 
 export const bufferFullErrorCodec = new WebSocketErrorCodec();
 
-registerCodec(WebSocketError.name, bufferFullErrorCodec);
+registerCodec(kWebSocketErrorCode, bufferFullErrorCodec);

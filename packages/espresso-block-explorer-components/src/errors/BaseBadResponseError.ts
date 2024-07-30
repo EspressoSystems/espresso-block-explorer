@@ -8,6 +8,7 @@ import BaseError, { baseErrorEncoder } from './BaseError';
  *  */
 export default abstract class BaseBadResponseError extends BaseError {
   readonly response: null | Response;
+
   readonly status: number;
 
   constructor(status: number, response: null | Response, message: string) {

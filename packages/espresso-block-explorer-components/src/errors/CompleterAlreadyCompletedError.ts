@@ -17,14 +17,19 @@ export class CompleterAlreadyCompletedError extends BaseError {
     super(message);
     Object.freeze(this);
   }
+
+  get code(): string {
+    return kCompleterAlreadyCompletedErrorCode;
+  }
 }
 
+const kCompleterAlreadyCompletedErrorCode = 'CompleterAlreadyCompletedError';
 class CompleterAlreadyCompletedErrorDecoder
   implements Converter<unknown, CompleterAlreadyCompletedError>
 {
   convert(input: unknown): CompleterAlreadyCompletedError {
     assertRecordWithKeys(input, 'code', 'message');
-    assertErrorCode(input, CompleterAlreadyCompletedError.name);
+    assertErrorCode(input, kCompleterAlreadyCompletedErrorCode);
     return new CompleterAlreadyCompletedError(
       stringCodec.decode(input.message),
     );

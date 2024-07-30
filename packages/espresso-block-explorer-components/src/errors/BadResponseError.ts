@@ -10,6 +10,8 @@ import BaseBadResponseError, {
 } from './BaseBadResponseError';
 import { registerCodec } from './registry';
 
+const kBadResponseErrorCode = 'BadResponseError';
+
 /**
  * BadResponseError is a custom error that indicates that the result of a fetch
  * request was a Response that indicates a non-success.
@@ -24,6 +26,10 @@ export default class BadResponseError extends BaseBadResponseError {
     Object.freeze(this);
   }
 
+  get code(): string {
+    return kBadResponseErrorCode;
+  }
+
   toJSON(): unknown {
     return badResponseErrorCodec.encode(this);
   }
@@ -32,7 +38,7 @@ export default class BadResponseError extends BaseBadResponseError {
 class BadResponseErrorDecoder implements Converter<unknown, BadResponseError> {
   convert(input: unknown): BadResponseError {
     assertRecordWithKeys(input, 'code', 'message', 'status');
-    assertErrorCode(input, BadResponseError.name);
+    assertErrorCode(input, kBadResponseErrorCode);
 
     return new BadResponseError(
       Number(input.status),
@@ -53,4 +59,4 @@ class BadResponseErrorCodec extends TypeCheckingCodec<BadResponseError> {
 
 export const badResponseErrorCodec = new BadResponseErrorCodec();
 
-registerCodec(BadResponseError.name, badResponseErrorCodec);
+registerCodec(kBadResponseErrorCode, badResponseErrorCodec);

@@ -9,6 +9,8 @@ import BaseError, { baseErrorEncoder } from './BaseError';
 import { EspressoError } from './EspressoError';
 import { espressoErrorCodec, registerCodec } from './registry';
 
+const kWebWorkerErrorResponseCode = 'WebWorkerErrorResponse';
+
 export default class WebWorkerErrorResponse extends BaseError {
   readonly error: EspressoError;
   constructor(error: EspressoError, message: string = 'error in web worker') {
@@ -20,6 +22,10 @@ export default class WebWorkerErrorResponse extends BaseError {
   toJSON() {
     return webWorkerErrorResponseCodec.encode(this);
   }
+
+  get code(): string {
+    return kWebWorkerErrorResponseCode;
+  }
 }
 
 class WebWorkerErrorResponseDecoder
@@ -27,7 +33,7 @@ class WebWorkerErrorResponseDecoder
 {
   convert(input: unknown): WebWorkerErrorResponse {
     assertRecordWithKeys(input, 'code', 'error', 'message');
-    assertErrorCode(input, WebWorkerErrorResponse.name);
+    assertErrorCode(input, kWebWorkerErrorResponseCode);
     return new WebWorkerErrorResponse(
       espressoErrorCodec.decode(input.error),
       stringCodec.decode(input.message),
@@ -55,4 +61,4 @@ class WebWorkerErrorResponseCodec extends TypeCheckingCodec<WebWorkerErrorRespon
 
 export const webWorkerErrorResponseCodec = new WebWorkerErrorResponseCodec();
 
-registerCodec(WebWorkerErrorResponse.name, webWorkerErrorResponseCodec);
+registerCodec(kWebWorkerErrorResponseCode, webWorkerErrorResponseCodec);

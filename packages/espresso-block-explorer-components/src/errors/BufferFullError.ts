@@ -8,6 +8,8 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { BaseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kBufferFullErrorCode = 'BufferFullError';
+
 /**
  * BufferFullError is an error that indicates that a buffer is at capacity while
  * something was attempted to be added to the buffer.
@@ -17,12 +19,16 @@ export default class BufferFullError extends BaseError {
     super(message);
     Object.freeze(this);
   }
+
+  get code(): string {
+    return kBufferFullErrorCode;
+  }
 }
 
 class BufferFullErrorDecoder implements Converter<unknown, BufferFullError> {
   convert(input: unknown): BufferFullError {
     assertRecordWithKeys(input, 'code', 'message');
-    assertErrorCode(input, BufferFullError.name);
+    assertErrorCode(input, kBufferFullErrorCode);
     return new BufferFullError(stringCodec.decode(input.message));
   }
 }
@@ -38,4 +44,4 @@ class BufferFullErrorCodec extends TypeCheckingCodec<BufferFullError> {
 
 export const bufferFullErrorCodec = new BufferFullErrorCodec();
 
-registerCodec(BufferFullError.name, bufferFullErrorCodec);
+registerCodec(kBufferFullErrorCode, bufferFullErrorCodec);

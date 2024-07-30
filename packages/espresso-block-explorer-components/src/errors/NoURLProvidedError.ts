@@ -8,10 +8,16 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { BaseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kNoURLProvidedErrorCode = 'NoURLProvidedError';
+
 export default class NoURLProvidedError extends BaseError {
   constructor(message: string = 'no url provided') {
     super(message);
     Object.freeze(this);
+  }
+
+  get code(): string {
+    return kNoURLProvidedErrorCode;
   }
 }
 
@@ -20,7 +26,7 @@ class NoURLProvidedErrorDecoder
 {
   convert(input: unknown): NoURLProvidedError {
     assertRecordWithKeys(input, 'code', 'message');
-    assertErrorCode(input, NoURLProvidedError.name);
+    assertErrorCode(input, kNoURLProvidedErrorCode);
     return new NoURLProvidedError(stringCodec.decode(input.message));
   }
 }
@@ -36,4 +42,4 @@ class NoURLProvidedErrorCodec extends TypeCheckingCodec<NoURLProvidedError> {
 
 export const noURLProvidedErrorCodec = new NoURLProvidedErrorCodec();
 
-registerCodec(NoURLProvidedError.name, noURLProvidedErrorCodec);
+registerCodec(kNoURLProvidedErrorCode, noURLProvidedErrorCodec);

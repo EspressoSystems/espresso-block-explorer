@@ -8,6 +8,8 @@ import { stringCodec } from '@/convert/codec/string';
 import BaseError, { BaseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kIncorrectBase64PaddingErrorCode = 'IncorrectBase64PaddingError';
+
 /**
  * IncorrectBase64PaddingError is an error that indicates that the padding
  * provided is not correct.
@@ -17,6 +19,10 @@ export class IncorrectBase64PaddingError extends BaseError {
     super(message);
     Object.freeze(this);
   }
+
+  get code(): string {
+    return kIncorrectBase64PaddingErrorCode;
+  }
 }
 
 class IncorrectBase64PaddingErrorDecoder
@@ -24,7 +30,7 @@ class IncorrectBase64PaddingErrorDecoder
 {
   convert(input: unknown): IncorrectBase64PaddingError {
     assertRecordWithKeys(input, 'code', 'message');
-    assertErrorCode(input, IncorrectBase64PaddingError.name);
+    assertErrorCode(input, kIncorrectBase64PaddingErrorCode);
     return new IncorrectBase64PaddingError(stringCodec.decode(input.message));
   }
 }
@@ -42,6 +48,6 @@ export const incorrectBase64PaddingErrorCodec =
   new IncorrectBase64PaddingErrorCodec();
 
 registerCodec(
-  IncorrectBase64PaddingError.name,
+  kIncorrectBase64PaddingErrorCode,
   incorrectBase64PaddingErrorCodec,
 );

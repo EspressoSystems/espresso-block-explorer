@@ -10,6 +10,8 @@ import { unknownCodec } from '@/convert/codec/unknown';
 import BaseError, { baseErrorEncoder } from './BaseError';
 import { registerCodec } from './registry';
 
+const kNotFoundErrorCode = 'NotFoundError';
+
 /**
  * NotFoundError is an error that indicates that the resource for the specified
  * key was unable to be found.
@@ -21,6 +23,10 @@ export default class NotFoundError<Key = unknown> extends BaseError {
     super(message);
     this.key = key;
     Object.freeze(this);
+  }
+
+  get code(): string {
+    return kNotFoundErrorCode;
   }
 }
 
@@ -34,7 +40,7 @@ export class NotFoundErrorDecoder<Key>
 
   convert(input: unknown): NotFoundError<Key> {
     assertRecordWithKeys(input, 'code', 'key');
-    assertErrorCode(input, NotFoundError.name);
+    assertErrorCode(input, kNotFoundErrorCode);
     return new NotFoundError(this.codec.decode(input.key));
   }
 }
@@ -84,4 +90,4 @@ export const notFoundKeyUnknownErrorCodec = new NotFoundErrorCodec(
   new NotFoundErrorDecoder(unknownCodec),
 );
 
-registerCodec(NotFoundError.name, notFoundKeyUnknownErrorCodec);
+registerCodec(kNotFoundErrorCode, notFoundKeyUnknownErrorCodec);
