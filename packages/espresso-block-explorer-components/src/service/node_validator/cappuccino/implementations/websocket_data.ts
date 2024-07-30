@@ -230,7 +230,6 @@ class WebSocketMessageHandler implements EventListenerObject {
 
   async handleEvent(event: MessageEvent) {
     // This is assumed to be a Text type
-    console.info('websocket onmessage', event);
 
     try {
       const message = this.decodeMessage(event);
@@ -254,7 +253,6 @@ class WebSocketOpenHandler implements EventListenerObject {
   }
 
   handleEvent(event: Event) {
-    console.info('websocket onopen', event);
     this.completer.complete(event.target as WebSocket);
     this.lifecycleResponseSink.send(new CappuccinoConnectionOpened());
   }
