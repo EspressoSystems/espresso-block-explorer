@@ -3,6 +3,7 @@ import LinkedList, {
   pushLinkedList,
 } from '@/data_structures/linked_list/LinkedList';
 import MissingElementError from '@/errors/MissingElementError';
+import UnimplementedError from '@/errors/UnimplementedError';
 import { iota } from './functional';
 
 export async function* convertIteratorToAsyncIterator<T>(
