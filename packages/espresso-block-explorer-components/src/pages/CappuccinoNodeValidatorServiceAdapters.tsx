@@ -221,8 +221,8 @@ function computeLatestBuilders(
       const keys =
         firstWhereIterable(builderCounts.keys(), (key) => {
           // Compare the ArrayBuffers
-          return compareArrayBuffer(key, block.proposerID) === 0;
-        }) ?? block.proposerID;
+          return compareArrayBuffer(key, block.proposerID[0]) === 0;
+        }) ?? block.proposerID[0];
 
       // Set the new count, incrementing the old count by 1.
       builderCounts.set(keys, (builderCounts.get(keys) ?? 0) + 1);
@@ -290,7 +290,7 @@ async function bridgeLatestBlock(
     time: event.latestBlock.time,
     size: event.latestBlock.size,
     transactions: event.latestBlock.numTransactions,
-    proposer: event.latestBlock.proposerID,
+    proposer: event.latestBlock.proposerID[0],
   });
 
   state.blockHeightHistograms.put(event.latestBlock.height);
@@ -351,7 +351,7 @@ async function bridgeBlocksSnapshot(
       time: latestBlock.time,
       size: latestBlock.size,
       transactions: latestBlock.numTransactions,
-      proposer: latestBlock.proposerID,
+      proposer: latestBlock.proposerID[0],
     });
   }
 

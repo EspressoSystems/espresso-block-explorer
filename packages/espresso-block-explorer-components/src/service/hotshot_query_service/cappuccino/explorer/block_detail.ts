@@ -1,6 +1,10 @@
 import { assertInstanceOf } from '@/assert/assert';
-import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import {
+  ArrayCodec,
+  ArrayDecoder,
+  ArrayEncoder,
+  hexArrayBufferArrayCodec,
+} from '@/convert/codec';
 import {
   Codec,
   Converter,
@@ -21,8 +25,8 @@ export class CappuccinoExplorerBlockDetail {
   readonly height: number;
   readonly time: Date;
   readonly numTransactions: number;
-  readonly proposerID: ArrayBuffer;
-  readonly feeRecipient: ArrayBuffer;
+  readonly proposerID: ArrayBuffer[];
+  readonly feeRecipient: ArrayBuffer[];
   readonly size: number;
   readonly blockReward: MonetaryValue[];
 
@@ -31,8 +35,8 @@ export class CappuccinoExplorerBlockDetail {
     height: number,
     time: Date,
     numTransactions: number,
-    proposerID: ArrayBuffer,
-    feeRecipient: ArrayBuffer,
+    proposerID: ArrayBuffer[],
+    feeRecipient: ArrayBuffer[],
     size: number,
     blockReward: MonetaryValue[],
   ) {
@@ -72,8 +76,8 @@ class CappuccinoExplorerBlockDetailDecoder
       numberCodec.decode(input.height),
       rfc3999DateCodec.decode(input.time),
       numberCodec.decode(input.num_transactions),
-      hexArrayBufferCodec.decode(input.proposer_id),
-      hexArrayBufferCodec.decode(input.fee_recipient),
+      hexArrayBufferArrayCodec.decode(input.proposer_id),
+      hexArrayBufferArrayCodec.decode(input.fee_recipient),
       numberCodec.decode(input.size),
       monetaryValueArrayCodec.decode(input.block_reward),
     );
@@ -91,8 +95,8 @@ class CappuccinoExplorerBlockDetailEncoder
       height: numberCodec.encode(input.height),
       time: rfc3999DateCodec.encode(input.time),
       num_transactions: numberCodec.encode(input.numTransactions),
-      proposer_id: hexArrayBufferCodec.encode(input.proposerID),
-      fee_recipient: hexArrayBufferCodec.encode(input.feeRecipient),
+      proposer_id: hexArrayBufferArrayCodec.encode(input.proposerID),
+      fee_recipient: hexArrayBufferArrayCodec.encode(input.feeRecipient),
       size: numberCodec.encode(input.size),
       block_reward: monetaryValueArrayCodec.encode(input.blockReward),
     };

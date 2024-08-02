@@ -2,6 +2,7 @@ import { assertInstanceOf } from '@/assert/assert';
 import InvalidTypeError from '@/errors/InvalidTypeError';
 import * as base64 from '../base64/base64';
 import { encodeNumberIterableToHexits, parseHexString } from '../hex/hex';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from './array';
 import { Converter, TypeCheckingCodec } from './convert';
 import { NullCodec, NullDecoder, NullEncoder } from './null';
 
@@ -38,6 +39,10 @@ export const hexArrayBufferCodec = new HexArrayBufferCodec();
 export const nullableHexArrayBufferCodec = new NullCodec(
   new NullDecoder(hexArrayBufferCodec),
   new NullEncoder(hexArrayBufferCodec),
+);
+export const hexArrayBufferArrayCodec = new ArrayCodec(
+  new ArrayDecoder(hexArrayBufferCodec),
+  new ArrayEncoder(hexArrayBufferCodec),
 );
 
 export class Base64ArrayBufferDecoder
