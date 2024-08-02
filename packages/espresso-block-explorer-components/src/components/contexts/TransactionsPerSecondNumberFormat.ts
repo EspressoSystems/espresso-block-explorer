@@ -80,9 +80,12 @@ export default class TransactionPerSecondNumberFormat
     return part.value;
   }
 
-  formatToParts(number?: number | bigint | undefined): Intl.NumberFormatPart[] {
-    const compoundParts = this.compoundPerSecondFormatter.formatToParts(number);
-    const unitParts = this.unitFormatter.formatToParts(number);
+  formatToParts(
+    number?: number | bigint | Intl.StringNumericLiteral | undefined,
+  ): Intl.NumberFormatPart[] {
+    const value = typeof number === 'string' ? Number(number) : number;
+    const compoundParts = this.compoundPerSecondFormatter.formatToParts(value);
+    const unitParts = this.unitFormatter.formatToParts(value);
 
     return this.replaceUnitInFormatParts(
       compoundParts,
@@ -105,7 +108,7 @@ export default class TransactionPerSecondNumberFormat
     );
   }
 
-  format(number?: number | bigint | undefined): string {
+  format(number: number | bigint | Intl.StringNumericLiteral): string {
     return this.formatToParts(number).map(this.extractValue).join('');
   }
 
