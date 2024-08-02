@@ -66,8 +66,8 @@ function createBlockDetailFromGeneratedBlock(
     block.height,
     block.time,
     block.numTransactions,
-    [block.proposer],
-    [block.proposer],
+    block.proposer,
+    block.proposer,
     block.size,
     block.fees,
   );

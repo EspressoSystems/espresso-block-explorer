@@ -19,7 +19,7 @@ import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/Labeled
 
 export interface BlockSummary {
   block: number;
-  proposer: ArrayBuffer;
+  proposer: ArrayBuffer[];
   transactions: number;
   size: number;
   time: Date;

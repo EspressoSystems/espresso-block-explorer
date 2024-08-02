@@ -45,6 +45,39 @@ export const hexArrayBufferArrayCodec = new ArrayCodec(
   new ArrayEncoder(hexArrayBufferCodec),
 );
 
+class BackwardsCompatibleHexArrayBufferDecoder
+  implements Converter<unknown, ArrayBuffer[]>
+{
+  convert(input: unknown): ArrayBuffer[] {
+    if (input instanceof Array) {
+      // This is the new format.
+      return hexArrayBufferArrayCodec.decode(input);
+    }
+
+    // Fall back to the old format, and wrap it in an Array
+    return [hexArrayBufferCodec.decode(input)];
+  }
+}
+
+class BackwardsCompatibleHexArrayBufferEncoder
+  implements Converter<ArrayBuffer[], unknown>
+{
+  convert(input: ArrayBuffer[]): unknown {
+    return hexArrayBufferArrayCodec.encode(input);
+  }
+}
+
+class BackwardsCompatibleHexArrayBufferCodec extends TypeCheckingCodec<
+  ArrayBuffer[],
+  unknown
+> {
+  readonly encoder = new BackwardsCompatibleHexArrayBufferEncoder();
+  readonly decoder = new BackwardsCompatibleHexArrayBufferDecoder();
+}
+
+export const backwardsCompatibleHexArrayBufferCodec =
+  new BackwardsCompatibleHexArrayBufferCodec();
+
 export class Base64ArrayBufferDecoder
   implements Converter<unknown, ArrayBuffer>
 {

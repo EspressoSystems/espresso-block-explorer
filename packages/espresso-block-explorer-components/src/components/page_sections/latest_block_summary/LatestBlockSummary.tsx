@@ -67,7 +67,11 @@ export const LatestBlockSummaryDetails: React.FC = () => {
       </SummaryTabledLabeledValue>
       <SummaryTabledLabeledValue>
         <Text text="Builder" />
-        <HexText value={block.proposer} />
+        {block.proposer.map((proposer, index) => (
+          <div key={index}>
+            <HexText value={proposer} />
+          </div>
+        ))}
       </SummaryTabledLabeledValue>
     </div>
   );

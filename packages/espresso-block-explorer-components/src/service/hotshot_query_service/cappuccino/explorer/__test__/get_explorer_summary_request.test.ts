@@ -41,7 +41,7 @@ describe('CappuccinoExplorerGetExplorerSummaryResponse', () => {
             new CappuccinoExplorerBlockSummary(
               new TaggedBase64('BLOCK', prng.fillBytes(20)),
               prng.nextInt(),
-              prng.fillBytes(20),
+              [prng.fillBytes(20)],
               prng.nextInt(),
               prng.nextInt(),
               new Date(prng.nextInt()),

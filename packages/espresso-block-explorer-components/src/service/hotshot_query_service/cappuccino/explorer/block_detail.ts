@@ -3,7 +3,7 @@ import {
   ArrayCodec,
   ArrayDecoder,
   ArrayEncoder,
-  hexArrayBufferArrayCodec,
+  backwardsCompatibleHexArrayBufferCodec,
 } from '@/convert/codec';
 import {
   Codec,
@@ -76,8 +76,8 @@ class CappuccinoExplorerBlockDetailDecoder
       numberCodec.decode(input.height),
       rfc3999DateCodec.decode(input.time),
       numberCodec.decode(input.num_transactions),
-      hexArrayBufferArrayCodec.decode(input.proposer_id),
-      hexArrayBufferArrayCodec.decode(input.fee_recipient),
+      backwardsCompatibleHexArrayBufferCodec.decode(input.proposer_id),
+      backwardsCompatibleHexArrayBufferCodec.decode(input.fee_recipient),
       numberCodec.decode(input.size),
       monetaryValueArrayCodec.decode(input.block_reward),
     );
@@ -95,8 +95,12 @@ class CappuccinoExplorerBlockDetailEncoder
       height: numberCodec.encode(input.height),
       time: rfc3999DateCodec.encode(input.time),
       num_transactions: numberCodec.encode(input.numTransactions),
-      proposer_id: hexArrayBufferArrayCodec.encode(input.proposerID),
-      fee_recipient: hexArrayBufferArrayCodec.encode(input.feeRecipient),
+      proposer_id: backwardsCompatibleHexArrayBufferCodec.encode(
+        input.proposerID,
+      ),
+      fee_recipient: backwardsCompatibleHexArrayBufferCodec.encode(
+        input.feeRecipient,
+      ),
       size: numberCodec.encode(input.size),
       block_reward: monetaryValueArrayCodec.encode(input.blockReward),
     };

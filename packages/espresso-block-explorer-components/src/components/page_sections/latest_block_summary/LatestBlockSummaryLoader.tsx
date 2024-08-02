@@ -14,7 +14,7 @@ export interface LatestBlock {
   time: Date;
   size: number;
   transactions: number;
-  proposer: ArrayBuffer;
+  proposer: ArrayBuffer[];
 }
 
 /**
@@ -40,7 +40,7 @@ export const LatestBlockSummaryProvider = React.createContext<LatestBlock>({
   time: new Date(),
   size: 0,
   transactions: 0,
-  proposer: new ArrayBuffer(0),
+  proposer: [],
 });
 
 interface LatestBlockSummaryDataLoaderProps {

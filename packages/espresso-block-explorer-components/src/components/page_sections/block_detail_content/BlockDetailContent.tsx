@@ -100,8 +100,8 @@ const BlockDetailContext: React.Context<BlockDetailEntry> = React.createContext(
     height: 0,
     time: new Date(),
     transactions: 0,
-    proposer: new ArrayBuffer(0),
-    recipient: new ArrayBuffer(0),
+    proposer: [new ArrayBuffer(0)],
+    recipient: [new ArrayBuffer(0)],
     size: 0,
     rewards: new Array<MonetaryValue>(0),
   },
@@ -125,11 +125,11 @@ export const BlockDetailsContentPlaceholder: React.FC<
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
-        <Text text="Builder" />
+        <Text text="Builders" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
-        <Text text="Fee Recipient" />
+        <Text text="Fee Recipients" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue>
@@ -174,16 +174,24 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
         </Link>
       </TableLabeledValue>
       <TableLabeledValue>
-        <Text text="Builder" />
-        <CopyHex value={details.proposer}>
-          <FullHexText value={details.proposer} />
-        </CopyHex>
+        <Text text="Builders" />
+        {details.proposer.map((proposer, index) => (
+          <div key={index}>
+            <CopyHex value={proposer}>
+              <FullHexText value={proposer} />
+            </CopyHex>
+          </div>
+        ))}
       </TableLabeledValue>
       <TableLabeledValue>
-        <Text text="Fee Recipient" />
-        <CopyHex value={details.proposer}>
-          <FullHexText value={details.proposer} />
-        </CopyHex>
+        <Text text="Fee Recipients" />
+        {details.proposer.map((recipient, index) => (
+          <div key={index}>
+            <CopyHex value={recipient}>
+              <FullHexText value={recipient} />
+            </CopyHex>
+          </div>
+        ))}
       </TableLabeledValue>
       <TableLabeledValue>
         <Text text="Size" />

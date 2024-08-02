@@ -290,7 +290,7 @@ async function bridgeLatestBlock(
     time: event.latestBlock.time,
     size: event.latestBlock.size,
     transactions: event.latestBlock.numTransactions,
-    proposer: event.latestBlock.proposerID[0],
+    proposer: event.latestBlock.proposerID,
   });
 
   state.blockHeightHistograms.put(event.latestBlock.height);
@@ -351,7 +351,7 @@ async function bridgeBlocksSnapshot(
       time: latestBlock.time,
       size: latestBlock.size,
       transactions: latestBlock.numTransactions,
-      proposer: latestBlock.proposerID[0],
+      proposer: latestBlock.proposerID,
     });
   }
 
