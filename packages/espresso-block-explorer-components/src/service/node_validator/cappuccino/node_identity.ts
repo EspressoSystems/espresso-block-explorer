@@ -5,7 +5,6 @@ import {
   nullableStringCodec,
   nullableURLCodec,
 } from '@/convert/codec';
-import { nullableHexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Converter,
   TypeCheckingCodec,
@@ -28,7 +27,6 @@ import CappuccinoLocationDetails, {
 export default class CappuccinoNodeIdentity {
   readonly publicKey: TaggedBase64;
   readonly name: null | string;
-  readonly walletAddress: null | ArrayBuffer;
   readonly publicURL: null | URL;
   readonly company: null | string;
   readonly location: null | CappuccinoLocationDetails;
@@ -39,7 +37,6 @@ export default class CappuccinoNodeIdentity {
   constructor(
     publicKey: TaggedBase64,
     name: null | string,
-    walletAddress: null | ArrayBuffer,
     publicURL: null | URL,
     company: null | string,
     location: null | CappuccinoLocationDetails,
@@ -49,7 +46,6 @@ export default class CappuccinoNodeIdentity {
   ) {
     this.publicKey = publicKey;
     this.name = name;
-    this.walletAddress = walletAddress;
     this.publicURL = publicURL;
     this.company = company;
     this.location = location;
@@ -70,7 +66,6 @@ class CappuccinoNodeIdentityEncoder
     return {
       public_key: taggedBase64Codec.encode(input.publicKey),
       name: nullableStringCodec.encode(input.name),
-      wallet_address: nullableHexArrayBufferCodec.encode(input.walletAddress),
       public_url: nullableURLCodec.encode(input.publicURL),
       company: nullableStringCodec.encode(input.company),
       location: nullableCappuccinoLocationDetailsCodec.encode(input.location),
@@ -89,7 +84,6 @@ class CappuccinoNodeIdentityDecoder
       input,
       'public_key',
       'name',
-      'wallet_address',
       'public_url',
       'company',
       'location',
@@ -100,7 +94,6 @@ class CappuccinoNodeIdentityDecoder
     return new CappuccinoNodeIdentity(
       taggedBase64Codec.decode(input.public_key),
       nullableStringCodec.decode(input.name),
-      nullableHexArrayBufferCodec.decode(input.wallet_address),
       nullableURLCodec.decode(input.public_url),
       nullableStringCodec.decode(input.company),
       nullableCappuccinoLocationDetailsCodec.decode(input.location),
