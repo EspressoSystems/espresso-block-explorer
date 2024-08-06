@@ -38,11 +38,37 @@ COPY docker/init.sh /app/init.sh
 # to a valid URL of the hotshot query service.
 #
 # Example:
-#   "https://query.gibraltar.aws.espresso.network/"
+#   "https://query.gibraltar.aws.espresso.network/v0/"
+#
+# This config file has also been expanded to support the Node Validator
+# service.  The Node Validator Service is expected to be a URL that
+# points to WebSocket address for the Node Validator API. By default the
+# value `node_validator_service_url` is stored as `null` which will indicate
+# to use the fake generated data.  To use the real data source it should be
+# replaced with a URL that points to the base of a compatible Node Validator
+# API service.
+#
+# Example:
+#   "wss://node-validator.gibraltar.aws.espresso.network/v0/"
+#
+# Alternatively this URL can be set to indicate the contents of an HAR
+# file that is accessbile via the end browser.  This can be useful
+# for troubleshooting and debugging purposes.
+#
+# Example:
+#  "replay:https://example.com/replay-file.har"
+#
+# In both of these cases, primarily for convenience we have introduced an
+# init.sh file that will update the contents of the `hotshot_query_service_url`
+# and the `node_validator_service_url` URLs with the contents of the
+# environment variables `QUERY_SERVICE_URI` and `NODE_VALIDATOR_URI`
+# respectively.  This allows for the configuration of the block explorer
+# to be done at runtime.
 
 EXPOSE 3000
 ENV HOST=0.0.0.0
 ENV QUERY_SERVICE_URI=""
+ENV NODE_VALIDATOR_URI=""
 
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ./init.sh
