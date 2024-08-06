@@ -45,11 +45,16 @@ interface ErrorDisplayWrapperProps {
  * of contents that have errored.  This component is meant to be displayed
  * in the middle of the page, and is meant to have space around it to work with.
  */
-const ErrorDisplayWrapper: React.FC<ErrorDisplayWrapperProps> = (props) => (
+const ErrorDisplayWrapper: React.FC<ErrorDisplayWrapperProps> = ({
+  className,
+  children,
+  ...props
+}) => (
   <div
-    className={addClassToClassName(props.className, 'error-display-wrapper')}
+    className={addClassToClassName(className, 'error-display-wrapper')}
+    {...props}
   >
-    {props.children}
+    {children}
   </div>
 );
 
