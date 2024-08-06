@@ -1,0 +1,57 @@
+@import url(../../../styles/main.css);
+:root {
+  --web-socket-status--connecting--color: var(--color--amber-300);
+  --web-socket-status--connecting--on-color: var(--on-color--amber-300);
+
+  --web-socket-status--disconnected--color: var(--color--red-600);
+  --web-socket-status--disconnected--on-color: var(--on-color--red-600);
+
+  --web-socket-status--connected--color: var(--color--transparent);
+  --web-socket-status--connected--on-color: var(--color--transparent);
+
+  --web-socket-status--border-radius: 0.5em;
+  --web-socket-status--vertical-padding: 0.25em;
+  --web-socket-status--horizontal-padding: 0.5em;
+  --web-socket-status--margin-bottom: 1em;
+
+  --web-socket-status--transition-duration: 230ms;
+  --web-socket-status--transition-timing-function: ease-in-out;
+}
+
+.web-socket-status {
+  border-radius: var(--web-socket-status--border-radius);
+  padding-block: var(--web-socket-status--vertical-padding);
+  padding-inline: var(--web-socket-status--horizontal-padding);
+  margin-bottom: var(--web-socket-status--margin-bottom);
+
+  transition:
+    height var(--web-socket-status--transition-timing-function)
+      var(--web-socket-status--transition-duration),
+    background-color var(--web-socket-status--transition-timing-function)
+      var(--web-socket-status--transition-duration),
+    color var(--web-socket-status--transition-timing-function)
+      var(--web-socket-status--transition-duration),
+    margin-bottom var(--web-socket-status--transition-timing-function)
+      var(--web-socket-status--transition-duration);
+  will-change: height, background-color, color, margin-bottom;
+  box-sizing: border-box;
+}
+
+.web-socket-status--connected {
+  background-color: var(--web-socket-status--connected--color);
+  color: var(--web-socket-status--connected--on-color);
+  height: 0;
+  margin-bottom: 0;
+}
+
+.web-socket-status--connecting {
+  background-color: var(--web-socket-status--connecting--color);
+  color: var(--web-socket-status--connecting--on-color);
+  height: 2em;
+}
+
+.web-socket-status--disconnected {
+  background-color: var(--web-socket-status--disconnected--color);
+  color: var(--web-socket-status--disconnected--on-color);
+  height: 2em;
+}

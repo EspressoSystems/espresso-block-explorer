@@ -1,6 +1,7 @@
 import { validateAndExpandResponse } from '@/async/fetch/response_validators';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer_api';
+import { unwrappedCappuccinoExplorerErrorResponseDecoder } from '../explorer_error_response';
 import { CappuccinoExplorerGetBlockDetailRequest } from '../get_block_detail_request';
 import {
   CappuccinoExplorerGetBlockDetailResponse,
@@ -53,6 +54,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
     return this.fetcher(url.toString()).then(
       validateAndExpandResponse(
         cappuccinoExplorerGetBlockDetailResponseCodec.decoder,
+        unwrappedCappuccinoExplorerErrorResponseDecoder,
       ),
     );
   }
@@ -67,6 +69,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
     return this.fetcher(url.toString()).then(
       validateAndExpandResponse(
         cappuccinoExplorerGetBlockSummariesResponseCodec.decoder,
+        unwrappedCappuccinoExplorerErrorResponseDecoder,
       ),
     );
   }
@@ -92,6 +95,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
     return this.fetcher(url.toString()).then(
       validateAndExpandResponse(
         cappuccinoExplorerGetTransactionDetailResponseCodec.decoder,
+        unwrappedCappuccinoExplorerErrorResponseDecoder,
       ),
     );
   }
@@ -106,6 +110,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
     return this.fetcher(url.toString()).then(
       validateAndExpandResponse(
         cappuccinoExplorerGetTransactionSummariesResponseCodec.decoder,
+        unwrappedCappuccinoExplorerErrorResponseDecoder,
       ),
     );
   }
@@ -115,6 +120,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
     return this.fetcher(url.toString()).then(
       validateAndExpandResponse(
         cappuccinoExplorerGetExplorerSummaryResponseCodec.decoder,
+        unwrappedCappuccinoExplorerErrorResponseDecoder,
       ),
     );
   }
@@ -130,6 +136,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
     return this.fetcher(url.toString()).then(
       validateAndExpandResponse(
         cappuccinoExplorerGetSearchResultResponseCodec.decoder,
+        unwrappedCappuccinoExplorerErrorResponseDecoder,
       ),
     );
   }

@@ -1,6 +1,8 @@
 import { createBufferedChannel } from '@/async/channel/BufferedChannel';
 import { createSinkWithConverter } from '@/async/sink/converted_sink';
 import { Sink } from '@/async/sink/sink';
+import { ErrorStreamContext } from '@/components/contexts/ErrorProvider';
+import { LifeCycleResponseStreamContext } from '@/components/contexts/WebSocketLifeCycleProvider';
 import {
   BlockSizeHistogramData,
   BlockSizeHistogramStreamContext,
@@ -65,6 +67,7 @@ import { CappuccinoNodeIdentitySnapshot } from '@/service/node_validator/cappucc
 import CappuccinoNodeValidatorResponse from '@/service/node_validator/cappuccino/responses/node_validator_response';
 import { CappuccinoVotersSnapshot } from '@/service/node_validator/cappuccino/responses/voters_snapshot';
 import {
+  ErrorResponse,
   LifeCycleResponse,
   NodeValidatorResponse,
 } from '@/service/node_validator/cappuccino/responses/web_worker_proxy_response';
@@ -74,6 +77,7 @@ import {
   compareArrayBuffer,
   firstWhereIterable,
   foldRIterator,
+  mapAsyncIterable,
   mapIterable,
   zipWithIterable,
 } from '../functional';
@@ -527,10 +531,15 @@ async function bridgeStreamIntoIndividualStreams(
   for await (const event of nodeValidatorService.stream) {
     if (event instanceof NodeValidatorResponse) {
       await bridgeNodeValidatorResponse(state, streams, event.response);
+      await streams.errors.publish(null);
     }
 
     if (event instanceof LifeCycleResponse) {
-      // TODO @Ayiga: Handle LifeCycleResponse
+      await streams.lifecycle.publish(event);
+    }
+
+    if (event instanceof ErrorResponse) {
+      await streams.errors.publish(event);
     }
   }
 }
@@ -575,6 +584,11 @@ function createNodeValidatorSplitStreams() {
 
     // Latest Builders
     latestBlockProducers: createBufferedChannel<LatestBlockProducer[]>(4),
+
+    // Errors Stream
+    errors: createBufferedChannel<null | ErrorResponse>(4),
+    // LifeCycle Event Stream
+    lifecycle: createBufferedChannel<LifeCycleResponse>(4),
   };
 }
 
@@ -644,7 +658,18 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
                           <VoterParticipationStreamContext.Provider
                             value={streams.voters}
                           >
-                            {props.children}
+                            <LifeCycleResponseStreamContext.Provider
+                              value={streams.lifecycle}
+                            >
+                              <ErrorStreamContext.Provider
+                                value={mapAsyncIterable(
+                                  streams.errors,
+                                  async (response) => response?.error ?? null,
+                                )}
+                              >
+                                {props.children}
+                              </ErrorStreamContext.Provider>
+                            </LifeCycleResponseStreamContext.Provider>
                           </VoterParticipationStreamContext.Provider>
                         </NodeIdentityInformationStreamContext.Provider>
                       </CountriesPieChartStreamContext.Provider>

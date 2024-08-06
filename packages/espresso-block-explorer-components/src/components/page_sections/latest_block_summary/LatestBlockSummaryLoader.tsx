@@ -1,4 +1,5 @@
 import { AsyncRetriever } from '@/async/AsyncRetriever';
+import { ErrorCarry, ErrorJoiner } from '@/components/contexts/ErrorProvider';
 import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';
@@ -90,8 +91,10 @@ export const LatestBlockSummaryStreamConsumer: React.FC<
   const stream = React.useContext(LatestBlockSummaryStreamContext);
 
   return (
-    <AsyncIterableResolver asyncIterable={stream}>
-      {props.children}
-    </AsyncIterableResolver>
+    <ErrorCarry>
+      <AsyncIterableResolver asyncIterable={stream}>
+        <ErrorJoiner>{props.children}</ErrorJoiner>
+      </AsyncIterableResolver>
+    </ErrorCarry>
   );
 };

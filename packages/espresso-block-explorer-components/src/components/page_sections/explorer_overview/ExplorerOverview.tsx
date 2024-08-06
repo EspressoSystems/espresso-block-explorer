@@ -1,3 +1,4 @@
+import { ErrorContext } from '@/components/contexts/ErrorProvider';
 import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import { CardNoPadding } from '@/layout/card/Card';
@@ -106,8 +107,13 @@ interface ExplorerOverviewProps {
 export const ExplorerOverviewAsyncHandler: React.FC<ExplorerOverviewProps> = (
   props,
 ) => {
+  const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
   const data = React.useContext(DataContext);
+
+  if (error) {
+    return <></>;
+  }
 
   if (loading) {
     return <ExplorerOverviewPlaceholder {...props} />;

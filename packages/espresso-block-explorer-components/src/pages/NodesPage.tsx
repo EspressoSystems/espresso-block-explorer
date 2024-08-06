@@ -1,3 +1,6 @@
+import { ErrorStreamConsumer } from '@/components/contexts/ErrorStreamConsumer';
+import { LifeCycleResponseStreamConsumer } from '@/components/contexts/WebSocketLifeCycleProvider';
+import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import { addClassToClassName } from '@/components/higher_order';
 import Card, { CardNoPadding } from '@/components/layout/card/Card';
 import { CountriesPieChart } from '@/components/page_sections/countries_pie_chart/CountriesPieChart';
@@ -28,6 +31,7 @@ import {
   NodeInformationToDotPopulation,
 } from '@/components/visual/geo_json/WorldMapDotsPopulationResolver';
 import { HistogramSectionTitle } from '@/components/visual/histogram/histogram_section_title/HistogramSectionTitle';
+import { LifeCycleEventStatus } from '@/components/visual/web_socket/LifeCycleEventStatus';
 import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
 import React from 'react';
 import {
@@ -49,127 +53,143 @@ interface NodesPageProps {
  * NodesPage is a component that renders the Nodes page.
  */
 const NodesPage: React.FC<NodesPageProps> = (props) => (
-  <OverridePagePath page={PageType.nodes}>
-    <Header />
+  <LifeCycleResponseStreamConsumer>
+    <ErrorStreamConsumer>
+      <OverridePagePath page={PageType.nodes}>
+        <Header />
 
-    {/*
+        {/*
       We're going to have a continually updating Data source.  So we want that
       data source to transform these continual updates into snapshot updates
     */}
 
-    <div
-      {...props}
-      className={addClassToClassName(
-        props.className,
-        'node-validator-grid edge-margin',
-      )}
-    >
-      {/* Latest Block */}
-      <LatestBlockSummaryStreamConsumer>
-        <LatestBlockSummaryAsyncHandler className="latest-block" />
-      </LatestBlockSummaryStreamConsumer>
+        {/*
+        This component displays the current Lifecycle state of the page.  It
+        reflects what's happening with the underlying Web Socket connection.
+        */}
+        <LifeCycleEventStatus className="edge-margin" />
 
-      {/* Latest Block Producers */}
-      <LatestBlockProducersStreamConsumer>
-        <LatestBlockProducersAsyncHandler className="latest-block-producers" />
-      </LatestBlockProducersStreamConsumer>
+        {/*
+          This component displays any errors that have occurred while attempting
+          to retrieve the data.
+          */}
+        <ErrorDisplay className="edge-margin" />
 
-      {/* Block Time Histogram */}
-      <CardNoPadding className="block-time-histogram">
-        <BlockTimeHistogramStreamConsumer>
-          <BlockTimeHistogram />
-        </BlockTimeHistogramStreamConsumer>
-      </CardNoPadding>
+        <div
+          {...props}
+          className={addClassToClassName(
+            props.className,
+            'node-validator-grid edge-margin',
+          )}
+        >
+          {/* Latest Block */}
+          <LatestBlockSummaryStreamConsumer>
+            <LatestBlockSummaryAsyncHandler className="latest-block" />
+          </LatestBlockSummaryStreamConsumer>
 
-      {/* Block Size Histogram */}
-      <CardNoPadding className="block-size-histogram">
-        <BlockSizeHistogramStreamConsumer>
-          <BlockSizeHistogram />
-        </BlockSizeHistogramStreamConsumer>
-      </CardNoPadding>
+          {/* Latest Block Producers */}
+          <LatestBlockProducersStreamConsumer>
+            <LatestBlockProducersAsyncHandler className="latest-block-producers" />
+          </LatestBlockProducersStreamConsumer>
 
-      {/* Throughput Histogram */}
-      <CardNoPadding className="throughput-histogram">
-        <BlockThroughputHistogramStreamConsumer>
-          <BlockThroughputHistogram />
-        </BlockThroughputHistogramStreamConsumer>
-      </CardNoPadding>
+          {/* Block Time Histogram */}
+          <CardNoPadding className="block-time-histogram">
+            <BlockTimeHistogramStreamConsumer>
+              <BlockTimeHistogram />
+            </BlockTimeHistogramStreamConsumer>
+          </CardNoPadding>
 
-      {/* CDN Status */}
-      <Card className="cdn">
-        <HistogramSectionTitle>
-          <div>
-            <div>
-              <Text text="CDN Status" />
-            </div>
-            <div>
-              <Text text="Online" />
-            </div>
-          </div>
-          <div></div>
-        </HistogramSectionTitle>
-      </Card>
+          {/* Block Size Histogram */}
+          <CardNoPadding className="block-size-histogram">
+            <BlockSizeHistogramStreamConsumer>
+              <BlockSizeHistogram />
+            </BlockSizeHistogramStreamConsumer>
+          </CardNoPadding>
 
-      {/* Network Map */}
-      <Card className="network-map">
-        <HistogramSectionTitle>
-          <Text text="Network Map" />
-          <div></div>
-        </HistogramSectionTitle>
-        <NodeInformationToDotPopulation>
-          <WorldMapAutoSizer>
-            <ProjectionProvider>
-              <WorldMapDotsFullResolution />
-              <DotPopulationStreamConsumer>
-                <WorldMapDotsPopulationFullResolution />
-              </DotPopulationStreamConsumer>
-            </ProjectionProvider>
-          </WorldMapAutoSizer>
-        </NodeInformationToDotPopulation>
-      </Card>
+          {/* Throughput Histogram */}
+          <CardNoPadding className="throughput-histogram">
+            <BlockThroughputHistogramStreamConsumer>
+              <BlockThroughputHistogram />
+            </BlockThroughputHistogramStreamConsumer>
+          </CardNoPadding>
 
-      {/* Nodes Histogram (Not needed currently) */}
+          {/* CDN Status */}
+          <Card className="cdn">
+            <HistogramSectionTitle>
+              <div>
+                <div>
+                  <Text text="CDN Status" />
+                </div>
+                <div>
+                  <Text text="Online" />
+                </div>
+              </div>
+              <div></div>
+            </HistogramSectionTitle>
+          </Card>
 
-      {/* Node Countries Pie Chart */}
-      <Card className="countries">
-        <CountriesPieChartStreamConsumer>
-          <CountriesPieChart />
-        </CountriesPieChartStreamConsumer>
-      </Card>
+          {/* Network Map */}
+          <Card className="network-map">
+            <HistogramSectionTitle>
+              <Text text="Network Map" />
+              <div></div>
+            </HistogramSectionTitle>
+            <NodeInformationToDotPopulation>
+              <WorldMapAutoSizer>
+                <ProjectionProvider>
+                  <WorldMapDotsFullResolution />
+                  <DotPopulationStreamConsumer>
+                    <WorldMapDotsPopulationFullResolution />
+                  </DotPopulationStreamConsumer>
+                </ProjectionProvider>
+              </WorldMapAutoSizer>
+            </NodeInformationToDotPopulation>
+          </Card>
 
-      {/* Network Types Pie Chart */}
-      <Card className="network-types">
-        <NetworkTypesPieChartStreamConsumer>
-          <NetworkTypesPieChart />
-        </NetworkTypesPieChartStreamConsumer>
-      </Card>
+          {/* Nodes Histogram (Not needed currently) */}
 
-      {/* Node Types Pie Chart */}
-      <Card className="node-types">
-        <NodeTypesPieChartStreamConsumer>
-          <NodeTypesPieChart />
-        </NodeTypesPieChartStreamConsumer>
-      </Card>
+          {/* Node Countries Pie Chart */}
+          <Card className="countries">
+            <CountriesPieChartStreamConsumer>
+              <CountriesPieChart />
+            </CountriesPieChartStreamConsumer>
+          </Card>
 
-      {/* Operating Systems Pie Chart */}
-      <Card className="operating-systems">
-        <OperatingSystemPieChartStreamConsumer>
-          <OperatingSystemPieChart />
-        </OperatingSystemPieChartStreamConsumer>
-      </Card>
+          {/* Network Types Pie Chart */}
+          <Card className="network-types">
+            <NetworkTypesPieChartStreamConsumer>
+              <NetworkTypesPieChart />
+            </NetworkTypesPieChartStreamConsumer>
+          </Card>
 
-      {/* Recent Node Updates Data Table */}
-      <CardNoPadding className="nodes">
-        <VotersParticipationStatsConsumer>
-          <NodeSummaryStreamConsumer>
-            <NodesSummaryDataTable />
-          </NodeSummaryStreamConsumer>
-        </VotersParticipationStatsConsumer>
-      </CardNoPadding>
-    </div>
+          {/* Node Types Pie Chart */}
+          <Card className="node-types">
+            <NodeTypesPieChartStreamConsumer>
+              <NodeTypesPieChart />
+            </NodeTypesPieChartStreamConsumer>
+          </Card>
 
-    <Footer />
-  </OverridePagePath>
+          {/* Operating Systems Pie Chart */}
+          <Card className="operating-systems">
+            <OperatingSystemPieChartStreamConsumer>
+              <OperatingSystemPieChart />
+            </OperatingSystemPieChartStreamConsumer>
+          </Card>
+
+          {/* Recent Node Updates Data Table */}
+          <CardNoPadding className="nodes">
+            <VotersParticipationStatsConsumer>
+              <NodeSummaryStreamConsumer>
+                <NodesSummaryDataTable />
+              </NodeSummaryStreamConsumer>
+            </VotersParticipationStatsConsumer>
+          </CardNoPadding>
+        </div>
+
+        <Footer />
+      </OverridePagePath>
+    </ErrorStreamConsumer>
+  </LifeCycleResponseStreamConsumer>
 );
 
 export default NodesPage;

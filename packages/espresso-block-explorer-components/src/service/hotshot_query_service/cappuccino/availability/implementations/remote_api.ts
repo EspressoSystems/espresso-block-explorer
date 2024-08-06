@@ -10,6 +10,7 @@ import {
   takeAsyncIterator,
 } from '@/functional/functional_async';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
+import { unwrappedCappuccinoAvailabilityErrorResponseDecoder } from '../availability_error_response';
 import { CappuccinoAPIBlock, cappuccinoAPIBlockCodec } from '../block';
 import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
@@ -40,7 +41,10 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI
   getLeafFromHeight(height: number): Promise<CappuccinoAPILeafResponse> {
     const url = new URL(`leaf/${height}`, this.baseURL);
     return this.fetcher(url.toString()).then(
-      validateAndExpandResponse(cappuccinoAPILeafResponseCodec.decoder),
+      validateAndExpandResponse(
+        cappuccinoAPILeafResponseCodec.decoder,
+        unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+      ),
     );
   }
 
@@ -50,7 +54,10 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI
   ): Promise<CappuccinoAPITransactionResponse> {
     const url = new URL(`transaction/${height}/${index}`, this.baseURL);
     return this.fetcher(url.toString()).then(
-      validateAndExpandResponse(cappuccinoAPITransactionResponseCodec.decoder),
+      validateAndExpandResponse(
+        cappuccinoAPITransactionResponseCodec.decoder,
+        unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+      ),
     );
   }
 
@@ -79,7 +86,10 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI
   getBlockFromHeight(height: number): Promise<CappuccinoAPIBlock> {
     const url = new URL(`block/${height}`, this.baseURL);
     return this.fetcher(url.toString()).then(
-      validateAndExpandResponse(cappuccinoAPIBlockCodec.decoder),
+      validateAndExpandResponse(
+        cappuccinoAPIBlockCodec.decoder,
+        unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+      ),
     );
   }
 

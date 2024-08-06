@@ -1,4 +1,4 @@
-import ErrorContextGuard from '@/components/data/async_data/ErrorContextGuard';
+import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import {
   BlockDetailsContent,
   BlockDetailsContentPlaceholder,
@@ -17,6 +17,7 @@ import { WithEdgeMargin } from '@/layout/margin/margins';
 import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
 import Text from '@/text/Text';
 import React from 'react';
+import { ErrorContext } from '../components';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const GuardBlockDetailsProps = WithLoadingShimmer(EdgeMarginCard);
@@ -29,7 +30,16 @@ interface GuardBlockDetailsProps {}
  * content so long as the component is not in a loading or error state.
  */
 const GuardBlockDetails: React.FC<GuardBlockDetailsProps> = (props) => {
+  const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
+
+  if (error) {
+    return (
+      <EdgeMarginCard>
+        <ErrorDisplay />
+      </EdgeMarginCard>
+    );
+  }
 
   if (loading) {
     return (
@@ -41,11 +51,9 @@ const GuardBlockDetails: React.FC<GuardBlockDetailsProps> = (props) => {
 
   return (
     <EdgeMarginCard {...props}>
-      <ErrorContextGuard>
-        <ProvideBlockDetails>
-          <BlockDetailsContent />
-        </ProvideBlockDetails>
-      </ErrorContextGuard>
+      <ProvideBlockDetails>
+        <BlockDetailsContent />
+      </ProvideBlockDetails>
     </EdgeMarginCard>
   );
 };

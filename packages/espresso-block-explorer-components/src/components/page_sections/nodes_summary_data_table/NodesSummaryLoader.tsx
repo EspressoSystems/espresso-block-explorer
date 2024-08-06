@@ -1,4 +1,4 @@
-import { DataContext } from '@/components/contexts';
+import { DataContext, ErrorCarry, ErrorJoiner } from '@/components/contexts';
 import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';
 import { TaggedBase64 } from '@/models/espresso';
@@ -76,11 +76,13 @@ export const VotersParticipationStatsConsumer: React.FC<
   // const stats = React.useContext(VotersParticipationStatsContext);
 
   return (
-    <AsyncIterableResolver asyncIterable={stream}>
-      <VotersParticipationStatesProvider>
-        {props.children}
-      </VotersParticipationStatesProvider>
-    </AsyncIterableResolver>
+    <ErrorCarry>
+      <AsyncIterableResolver asyncIterable={stream}>
+        <VotersParticipationStatesProvider>
+          <ErrorJoiner>{props.children}</ErrorJoiner>
+        </VotersParticipationStatesProvider>
+      </AsyncIterableResolver>
+    </ErrorCarry>
   );
 };
 
@@ -94,8 +96,10 @@ export const NodeSummaryStreamConsumer: React.FC<
   const stream = React.useContext(NodeSummaryStreamContext);
 
   return (
-    <AsyncIterableResolver asyncIterable={stream}>
-      {props.children}
-    </AsyncIterableResolver>
+    <ErrorCarry>
+      <AsyncIterableResolver asyncIterable={stream}>
+        <ErrorJoiner>{props.children}</ErrorJoiner>
+      </AsyncIterableResolver>
+    </ErrorCarry>
   );
 };

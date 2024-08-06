@@ -1,5 +1,6 @@
 import { numberCodec } from '@/convert/codec/number';
 import { EspressoError } from '@/errors/EspressoError';
+import FetchError from '@/errors/FetchError';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { BlockHeightResponse } from '../types';
 import {
@@ -316,6 +317,21 @@ class WebWorkerProxyHotShotQueryService {
   }
 }
 
+/**
+ * wrappedFetch is a wrapper around the fetch function that throws a FetchError
+ * when the fetch operation fails.
+ *
+ * This is done so fetch doesn't have to suffer binding issues, and so that the
+ * resulting error can be encodable.
+ */
+const wrappedFetch: typeof fetch = async (input: unknown, init?: unknown) => {
+  try {
+    return await fetch(input as RequestInfo | URL, init as RequestInit);
+  } catch (error) {
+    throw new FetchError(error);
+  }
+};
+
 type PostMessageFunction = typeof postMessage;
 
 async function determineServiceImplementation(): Promise<CappuccinoHotShotQueryService> {
@@ -324,7 +340,7 @@ async function determineServiceImplementation(): Promise<CappuccinoHotShotQueryS
     const config: Config = await response.json();
     if (config.hotshot_query_service_url) {
       const url = new URL(config.hotshot_query_service_url);
-      return new FetchBasedCappuccinoHotShotQueryService(fetch.bind(self), url);
+      return new FetchBasedCappuccinoHotShotQueryService(wrappedFetch, url);
     }
   } catch (err) {
     // We ignore this error for now, and fallback to fake data.

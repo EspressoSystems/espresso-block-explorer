@@ -1,3 +1,4 @@
+import FetchError from '@/errors/FetchError';
 import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
 import { WebWorkerClientBasedCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hotshot_query_service_web_worker_client_based';
 import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
@@ -25,13 +26,20 @@ export interface ProviderCappuccinoLiveServiceProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
-function getFetch(): typeof fetch {
-  if (typeof window === 'undefined') {
-    return fetch;
+/**
+ * wrappedFetch is a wrapper around the fetch function that throws a FetchError
+ * when the fetch operation fails.
+ *
+ * This is done so fetch doesn't have to suffer binding issues, and so that the
+ * resulting error can be encodable.
+ */
+const wrappedFetch: typeof fetch = async (input: unknown, init?: unknown) => {
+  try {
+    return await fetch(input as RequestInfo | URL, init as RequestInit);
+  } catch (error) {
+    throw new FetchError(error);
   }
-
-  return fetch.bind(window);
-}
+};
 
 /**
  * ProvideCappuccinoLiveService is a component that provides a Cappuccino
@@ -42,7 +50,7 @@ export const ProvideCappuccinoLiveService: React.FC<
 > = ({ url, children }) => {
   return (
     <CappuccinoHotShotQueryServiceAPIContext.Provider
-      value={new FetchBasedCappuccinoHotShotQueryService(getFetch(), url)}
+      value={new FetchBasedCappuccinoHotShotQueryService(wrappedFetch, url)}
     >
       {children}
     </CappuccinoHotShotQueryServiceAPIContext.Provider>

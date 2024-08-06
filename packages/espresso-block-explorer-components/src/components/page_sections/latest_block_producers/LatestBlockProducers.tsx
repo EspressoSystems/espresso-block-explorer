@@ -1,3 +1,4 @@
+import { ErrorContext } from '@/components/contexts';
 import FullHexText from '@/components/text/FullHexText';
 import { HistogramSectionTitle } from '@/components/visual/histogram/histogram_section_title/HistogramSectionTitle';
 import { DataContext } from '@/contexts/DataProvider';
@@ -100,8 +101,13 @@ interface LatestBlockProducersProps {
 export const LatestBlockProducersAsyncHandler: React.FC<
   LatestBlockProducersProps
 > = (props) => {
+  const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
   const data = React.useContext(DataContext);
+
+  if (error) {
+    return <></>;
+  }
 
   if (loading) {
     return <LatestBlockProducersPlaceholder {...props} />;

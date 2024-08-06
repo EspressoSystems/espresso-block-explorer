@@ -1,4 +1,5 @@
-import ErrorContextGuard from '@/components/data/async_data/ErrorContextGuard';
+import { ErrorContext } from '@/components/contexts/ErrorProvider';
+import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import LabeledAnchorButton from '@/components/hid/buttons/labeled_anchor_button/LabeledAnchorButton';
 import { addClassToClassName } from '@/components/higher_order';
 import { SearchInput } from '@/components/input/search/SearchInput';
@@ -51,7 +52,12 @@ interface GuardedBlocksSummaryDataTableProps {}
 const GuardedBlocksSummaryDataTable: React.FC<
   GuardedBlocksSummaryDataTableProps
 > = (props) => {
+  const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
+
+  if (error) {
+    return <ErrorDisplay />;
+  }
 
   if (loading) {
     return (
@@ -61,11 +67,7 @@ const GuardedBlocksSummaryDataTable: React.FC<
     );
   }
 
-  return (
-    <ErrorContextGuard>
-      <BlockSummaryDataTable />
-    </ErrorContextGuard>
-  );
+  return <BlockSummaryDataTable />;
 };
 
 interface GuardedTransactionsSummaryDataTableProps {
@@ -74,7 +76,13 @@ interface GuardedTransactionsSummaryDataTableProps {
 const GuardedTransactionsSummaryDataTable: React.FC<
   GuardedTransactionsSummaryDataTableProps
 > = (props) => {
+  const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
+
+  if (error) {
+    return <ErrorDisplay />;
+  }
+
   if (loading) {
     return (
       <EdgeShimmerDiv {...props}>
@@ -83,11 +91,7 @@ const GuardedTransactionsSummaryDataTable: React.FC<
     );
   }
 
-  return (
-    <ErrorContextGuard>
-      <TransactionsSummaryDataTable />
-    </ErrorContextGuard>
-  );
+  return <TransactionsSummaryDataTable />;
 };
 
 interface GuardedRollUpsSummaryDataTableProps {}
@@ -95,7 +99,12 @@ interface GuardedRollUpsSummaryDataTableProps {}
 const GuardedRollUpsSummaryDataTable: React.FC<
   GuardedRollUpsSummaryDataTableProps
 > = (props) => {
+  const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
+
+  if (error) {
+    return <ErrorDisplay />;
+  }
 
   if (loading) {
     return (
@@ -105,11 +114,7 @@ const GuardedRollUpsSummaryDataTable: React.FC<
     );
   }
 
-  return (
-    <ErrorContextGuard>
-      <RollUpsSummaryDataTable />
-    </ErrorContextGuard>
-  );
+  return <RollUpsSummaryDataTable />;
 };
 
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);

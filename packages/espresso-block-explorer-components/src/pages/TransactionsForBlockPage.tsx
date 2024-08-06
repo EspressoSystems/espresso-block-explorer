@@ -1,4 +1,3 @@
-import ErrorContextGuard from '@/components/data/async_data/ErrorContextGuard';
 import Link from '@/components/links/link/Link';
 import {
   BlockDetailsLoader,
@@ -84,9 +83,7 @@ const GuardedTransactionsSummaryDataTable: React.FC<
 
   return (
     <EdgeMarginCard {...props}>
-      <ErrorContextGuard>
-        <TransactionsSummaryDataTable />
-      </ErrorContextGuard>
+      <TransactionsSummaryDataTable />
     </EdgeMarginCard>
   );
 };

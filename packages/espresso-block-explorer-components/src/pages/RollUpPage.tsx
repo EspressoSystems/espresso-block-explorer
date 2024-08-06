@@ -1,4 +1,4 @@
-import ErrorContextGuard from '@/components/data/async_data/ErrorContextGuard';
+import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import Footer from '@/components/page_sections/footer/Footer';
 import Header from '@/components/page_sections/header/Header';
 import PageTitle from '@/components/page_sections/page_title/PageTitle';
@@ -19,6 +19,7 @@ import Heading1 from '@/layout/heading/Heading1';
 import { WithEdgeMargin } from '@/layout/margin/margins';
 import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
 import React from 'react';
+import { ErrorContext } from '../components';
 
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginRollUpInfo = WithEdgeMargin(RollUpInfo);
@@ -35,7 +36,16 @@ interface GuardRollUpPageDetailDataTableProps {}
 const GuardRollUpPageDetailDataTable: React.FC<
   GuardRollUpPageDetailDataTableProps
 > = (props) => {
+  const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
+
+  if (error) {
+    return (
+      <EdgeMarginCard>
+        <ErrorDisplay />
+      </EdgeMarginCard>
+    );
+  }
 
   if (loading) {
     return (
@@ -47,9 +57,7 @@ const GuardRollUpPageDetailDataTable: React.FC<
 
   return (
     <EdgeMarginCard {...props}>
-      <ErrorContextGuard>
-        <RollUpDetailDataTable />
-      </ErrorContextGuard>
+      <RollUpDetailDataTable />
     </EdgeMarginCard>
   );
 };
