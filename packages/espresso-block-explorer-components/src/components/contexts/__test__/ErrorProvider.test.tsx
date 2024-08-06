@@ -2,7 +2,12 @@ import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { ErrorContext, SetError } from '../ErrorProvider';
+import {
+  ErrorCarry,
+  ErrorContext,
+  ErrorJoiner,
+  SetError,
+} from '../ErrorProvider';
 
 let localError: null | unknown = null;
 const ConsumeErrorComponent: React.FC = () => {
@@ -44,5 +49,58 @@ describe('Error Provider', () => {
 
       expect(loading1).not.equal(loading2);
     });
+  });
+});
+
+describe('Error Joiner', () => {
+  const err1 = new Error('1');
+  const err2 = new Error('2');
+
+  it('should carry the error, and return it if no other error', () => {
+    render(
+      <ErrorContext.Provider value={err2}>
+        <ErrorCarry>
+          <ErrorContext.Provider value={null}>
+            <ErrorJoiner>
+              <ConsumeErrorComponent />
+            </ErrorJoiner>
+          </ErrorContext.Provider>
+        </ErrorCarry>
+      </ErrorContext.Provider>,
+    );
+
+    expect(localError).to.equal(err2);
+  });
+
+  it('should prioritize the first error', () => {
+    render(
+      <ErrorContext.Provider value={err2}>
+        <ErrorCarry>
+          <ErrorContext.Provider value={err1}>
+            <ErrorJoiner>
+              <ConsumeErrorComponent />
+            </ErrorJoiner>
+          </ErrorContext.Provider>
+        </ErrorCarry>
+      </ErrorContext.Provider>,
+    );
+
+    expect(localError).to.equal(err1);
+  });
+
+  it('should have no error if nothing is in error', () => {
+    render(
+      <ErrorContext.Provider value={null}>
+        <ErrorCarry>
+          <ErrorContext.Provider value={null}>
+            <ErrorJoiner>
+              <ConsumeErrorComponent />
+            </ErrorJoiner>
+          </ErrorContext.Provider>
+        </ErrorCarry>
+      </ErrorContext.Provider>,
+    );
+
+    expect(localError).to.equal(null);
   });
 });
