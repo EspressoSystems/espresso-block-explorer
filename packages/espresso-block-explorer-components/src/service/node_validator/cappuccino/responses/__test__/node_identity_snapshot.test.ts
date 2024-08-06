@@ -2,13 +2,6 @@ import { describe, it } from 'vitest';
 import { cappuccinoNodeIdentitySnapshotCodec } from '../node_identity_snapshot';
 import { cappuccinoNodeValidatorResponseCodec } from '../node_validator_response_codec';
 
-function populateWalletAddress(lastByte: number): ArrayBuffer {
-  const walletAddress = new Uint8Array(20);
-  walletAddress.fill(0);
-  walletAddress[19] = lastByte;
-  return walletAddress.buffer;
-}
-
 describe('NodeIdentitySnapshot', () => {
   it('should decode from json', () => {
     const rawString =
@@ -30,7 +23,6 @@ describe('NodeIdentitySnapshot', () => {
       const node0 = next.value;
 
       expect(node0.name).toBe(null);
-      expect(node0.walletAddress).toBe(null);
       expect(node0.publicURL).toBe(null);
       expect(node0.company).toBe(null);
       expect(node0.location).toBe(null);
@@ -48,7 +40,6 @@ describe('NodeIdentitySnapshot', () => {
       const node1 = next.value;
 
       expect(node1.name).toBe(null);
-      expect(node1.walletAddress).toBe(null);
       expect(node1.publicURL).toBe(null);
       expect(node1.company).toBe(null);
       expect(node1.location).toBe(null);
@@ -66,7 +57,6 @@ describe('NodeIdentitySnapshot', () => {
       const node2 = next.value;
 
       expect(node2.name).toBe('sequencer3');
-      expect(node2.walletAddress).toStrictEqual(populateWalletAddress(3));
       expect(node2.publicURL).toBe(null);
       expect(node2.company).toBe('Espresso Systems');
       expect(node2.location).not.toBe(null);
@@ -86,7 +76,6 @@ describe('NodeIdentitySnapshot', () => {
       const node3 = next.value;
 
       expect(node3.name).toBe('sequencer0');
-      expect(node3.walletAddress).toStrictEqual(populateWalletAddress(0));
       expect(node3.publicURL).toBe(null);
       expect(node3.company).toBe('Espresso Systems');
       expect(node3.location).not.toBe(null);
@@ -107,7 +96,6 @@ describe('NodeIdentitySnapshot', () => {
       const node4 = next.value;
 
       expect(node4.name).toBe('sequencer1');
-      expect(node4.walletAddress).toStrictEqual(populateWalletAddress(1));
       expect(node4.publicURL).toBe(null);
       expect(node4.company).toBe('Espresso Systems');
       expect(node4.location).not.toBe(null);
@@ -128,7 +116,6 @@ describe('NodeIdentitySnapshot', () => {
       const node5 = next.value;
 
       expect(node5.name).toBe(null);
-      expect(node5.walletAddress).toBe(null);
       expect(node5.publicURL).toBe(null);
       expect(node5.company).toBe(null);
       expect(node5.location).toBe(null);
@@ -146,7 +133,6 @@ describe('NodeIdentitySnapshot', () => {
       const node6 = next.value;
 
       expect(node6.name).toBe(null);
-      expect(node6.walletAddress).toBe(null);
       expect(node6.publicURL).toBe(null);
       expect(node6.company).toBe(null);
       expect(node6.location).toBe(null);

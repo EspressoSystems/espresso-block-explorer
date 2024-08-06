@@ -2,13 +2,6 @@ import { describe, it } from 'vitest';
 import { cappuccinoLatestNodeIdentityCodec } from '../latest_node_identity';
 import { cappuccinoNodeValidatorResponseCodec } from '../node_validator_response_codec';
 
-function populateWalletAddress(lastByte: number): ArrayBuffer {
-  const walletAddress = new Uint8Array(20);
-  walletAddress.fill(0);
-  walletAddress[19] = lastByte;
-  return walletAddress.buffer;
-}
-
 describe('LatestNodeIdentity', () => {
   it('should decode from json', () => {
     const rawString =
@@ -25,9 +18,6 @@ describe('LatestNodeIdentity', () => {
       const nodeIdentity = response.nodeIdentity;
 
       expect(nodeIdentity.name).toBe('sequencer3');
-      expect(nodeIdentity.walletAddress).to.deep.equal(
-        populateWalletAddress(3),
-      );
       expect(nodeIdentity.publicURL).toBe(null);
       expect(nodeIdentity.company).toBe('Espresso Systems');
       expect(nodeIdentity.location).not.toBe(null);
