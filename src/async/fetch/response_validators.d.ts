@@ -7,7 +7,7 @@ import { Converter } from '../../../../../../../../../../src/convert/codec/conve
  * Before attempting to decode the response, checks are performed to ensure that
  * the response is valid, and if the returned content-type is in face JSON.
  */
-export declare function validateAndExpandResponse<A>(converter: Converter<unknown, A>): (response: Response) => Promise<A>;
+export declare function validateAndExpandResponse<A, E>(successConverter: Converter<unknown, A>, errorConverter?: Converter<unknown, E> | undefined): (response: Response) => Promise<A>;
 /**
  * validateResponseIsOk checks if the response is 'ok', and if not will throw
  * an error.
@@ -23,7 +23,7 @@ export declare function validateAndExpandResponse<A>(converter: Converter<unknow
  * All errors thrown at this point will be a subclass of BadResponseError, and
  * will contains the response object that caused the error.
  */
-export declare function validateResponseIsOk(response: Response): void;
+export declare function validateResponseIsOk<E>(response: Response, errorConverter?: undefined | Converter<unknown, E>): Promise<void>;
 /**
  * validateResponseIsJSON checks if the response has a 'Content-Type' header
  * starting with 'application/json', and if not will throw a
