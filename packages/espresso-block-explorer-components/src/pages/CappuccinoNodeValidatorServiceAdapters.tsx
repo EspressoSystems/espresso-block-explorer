@@ -218,14 +218,22 @@ function computeLatestBuilders(
 
       // Find our existing key, or if we cannot find one, use the current
       // block's key
-      const keys =
-        firstWhereIterable(builderCounts.keys(), (key) => {
-          // Compare the ArrayBuffers
-          return compareArrayBuffer(key, block.proposerID[0]) === 0;
-        }) ?? block.proposerID[0];
+      const keys = mapIterable(block.proposerID, (key) => {
+        // ArrayBuffers cannot be directly compared with equality, so we must
+        // compare the underlying sequencer to see if they are equal.  If they
+        // are then we want to use the key that's already stored.
+
+        return (
+          firstWhereIterable(builderCounts.keys(), (existingKey) => {
+            return compareArrayBuffer(existingKey, key) === 0;
+          }) ?? key
+        );
+      });
 
       // Set the new count, incrementing the old count by 1.
-      builderCounts.set(keys, (builderCounts.get(keys) ?? 0) + 1);
+      for (const key of keys) {
+        builderCounts.set(key, (builderCounts.get(key) ?? 0) + 1);
+      }
 
       return builderCounts;
     },
