@@ -1,6 +1,6 @@
 import { assertInstanceOf } from '@/assert/assert';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { backwardsCompatibleHexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Converter,
   TypeCheckingCodec,
@@ -22,14 +22,14 @@ export class CappuccinoDerivedBlockSummary {
   readonly hash: TaggedBase64;
   readonly size: number;
   readonly num_transactions: number;
-  readonly proposer_id: ArrayBuffer;
+  readonly proposer_id: ArrayBuffer[];
 
   constructor(
     header: CappuccinoAPIHeader,
     hash: TaggedBase64,
     size: number,
     num_transactions: number,
-    proposer_id: ArrayBuffer,
+    proposer_id: ArrayBuffer[],
   ) {
     this.header = header;
     this.hash = hash;
@@ -61,7 +61,7 @@ export class CappuccinoDerivedBlockSummaryDecoder
       taggedBase64Codec.decode(input.hash),
       numberCodec.decode(input.size),
       numberCodec.decode(input.num_transactions),
-      hexArrayBufferCodec.decode(input.proposer_id),
+      backwardsCompatibleHexArrayBufferCodec.decode(input.proposer_id),
     );
   }
 }
@@ -77,7 +77,9 @@ export class CappuccinoDerivedBlockSummaryEncoder
       hash: taggedBase64Codec.encode(input.hash),
       size: numberCodec.encode(input.size),
       num_transactions: numberCodec.encode(input.num_transactions),
-      proposer_id: hexArrayBufferCodec.encode(input.proposer_id),
+      proposer_id: backwardsCompatibleHexArrayBufferCodec.encode(
+        input.proposer_id,
+      ),
     };
   }
 }

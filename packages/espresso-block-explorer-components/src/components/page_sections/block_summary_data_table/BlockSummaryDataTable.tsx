@@ -39,11 +39,13 @@ const BlockCell: React.FC = () => {
 const ProposerCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as BlockSummary;
 
-  return (
-    <CopyHex value={row.proposer}>
-      <HexText value={row.proposer} />
-    </CopyHex>
-  );
+  return row.proposer.map((proposer, index) => (
+    <div key={index}>
+      <CopyHex value={proposer}>
+        <HexText value={proposer} />
+      </CopyHex>
+    </div>
+  ));
 };
 
 /**
@@ -108,7 +110,7 @@ const BlockSummaryDataTableLayout: React.FC<
           buildCell: props.components[0],
         },
         {
-          label: 'Builder',
+          label: 'Builders',
           columnType: BlockSummaryColumn.proposer,
           buildCell: props.components[1],
         },

@@ -1,6 +1,6 @@
 import { assertInstanceOf } from '@/assert/assert';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { backwardsCompatibleHexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   Codec,
   Converter,
@@ -16,7 +16,7 @@ import {
 export class CappuccinoExplorerBlockSummary {
   readonly hash: TaggedBase64;
   readonly height: number;
-  readonly proposerID: ArrayBuffer;
+  readonly proposerID: ArrayBuffer[];
   readonly numTransactions: number;
   readonly size: number;
   readonly time: Date;
@@ -24,7 +24,7 @@ export class CappuccinoExplorerBlockSummary {
   constructor(
     hash: TaggedBase64,
     height: number,
-    proposerID: ArrayBuffer,
+    proposerID: ArrayBuffer[],
     numTransactions: number,
     size: number,
     time: Date,
@@ -59,7 +59,7 @@ class CappuccinoExplorerBlockSummaryDecoder
     return new CappuccinoExplorerBlockSummary(
       taggedBase64Codec.decode(input.hash),
       numberCodec.decode(input.height),
-      hexArrayBufferCodec.decode(input.proposer_id),
+      backwardsCompatibleHexArrayBufferCodec.decode(input.proposer_id),
       numberCodec.decode(input.num_transactions),
       numberCodec.decode(input.size),
       rfc3999DateCodec.decode(input.time),
@@ -76,7 +76,9 @@ class CappuccinoExplorerBlockSummaryEncoder
     return {
       hash: taggedBase64Codec.encode(input.hash),
       height: numberCodec.encode(input.height),
-      proposer_id: hexArrayBufferCodec.encode(input.proposerID),
+      proposer_id: backwardsCompatibleHexArrayBufferCodec.encode(
+        input.proposerID,
+      ),
       num_transactions: numberCodec.encode(input.numTransactions),
       size: numberCodec.encode(input.size),
       time: rfc3999DateCodec.encode(input.time),

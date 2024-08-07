@@ -2,6 +2,7 @@ import { assertInstanceOf } from '@/assert/assert';
 import InvalidTypeError from '@/errors/InvalidTypeError';
 import * as base64 from '../base64/base64';
 import { encodeNumberIterableToHexits, parseHexString } from '../hex/hex';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from './array';
 import { Converter, TypeCheckingCodec } from './convert';
 import { NullCodec, NullDecoder, NullEncoder } from './null';
 
@@ -39,6 +40,43 @@ export const nullableHexArrayBufferCodec = new NullCodec(
   new NullDecoder(hexArrayBufferCodec),
   new NullEncoder(hexArrayBufferCodec),
 );
+export const hexArrayBufferArrayCodec = new ArrayCodec(
+  new ArrayDecoder(hexArrayBufferCodec),
+  new ArrayEncoder(hexArrayBufferCodec),
+);
+
+class BackwardsCompatibleHexArrayBufferDecoder
+  implements Converter<unknown, ArrayBuffer[]>
+{
+  convert(input: unknown): ArrayBuffer[] {
+    if (input instanceof Array) {
+      // This is the new format.
+      return hexArrayBufferArrayCodec.decode(input);
+    }
+
+    // Fall back to the old format, and wrap it in an Array
+    return [hexArrayBufferCodec.decode(input)];
+  }
+}
+
+class BackwardsCompatibleHexArrayBufferEncoder
+  implements Converter<ArrayBuffer[], unknown>
+{
+  convert(input: ArrayBuffer[]): unknown {
+    return hexArrayBufferArrayCodec.encode(input);
+  }
+}
+
+class BackwardsCompatibleHexArrayBufferCodec extends TypeCheckingCodec<
+  ArrayBuffer[],
+  unknown
+> {
+  readonly encoder = new BackwardsCompatibleHexArrayBufferEncoder();
+  readonly decoder = new BackwardsCompatibleHexArrayBufferDecoder();
+}
+
+export const backwardsCompatibleHexArrayBufferCodec =
+  new BackwardsCompatibleHexArrayBufferCodec();
 
 export class Base64ArrayBufferDecoder
   implements Converter<unknown, ArrayBuffer>

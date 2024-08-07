@@ -3,7 +3,6 @@ import {
   BlockDetailAsyncRetriever,
   BlockDetailEntry,
 } from '@/models/block_explorer/block_detail';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import React from 'react';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
@@ -22,11 +21,11 @@ export const BlockDetailContext: React.Context<BlockDetailEntry> =
     height: 0,
     time: new Date(),
     transactions: 0,
-    proposer: new ArrayBuffer(0),
-    recipient: new ArrayBuffer(0),
+    proposer: [],
+    recipient: [],
     size: 0,
-    rewards: [] as MonetaryValue[],
-  });
+    rewards: [],
+  } as BlockDetailEntry);
 
 /**
  * RetrieverContext is a React Context for retrieving a BlockDetail from a

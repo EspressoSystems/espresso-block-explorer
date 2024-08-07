@@ -54,7 +54,7 @@ export function createGenesisBlock(): GeneratedBlock {
     genTime: 0,
     transactions: asyncGenerateNothing(),
     numTransactions: 0,
-    proposer: allZeros,
+    proposer: [],
     size: 0,
     fees: [],
   };
@@ -136,7 +136,7 @@ export type GeneratedBlock = {
   genTime: number;
   transactions: AsyncIterable<GeneratedTransaction>;
   numTransactions: number;
-  proposer: ArrayBuffer;
+  proposer: ArrayBuffer[];
   size: number;
   fees: MonetaryValue[];
 };
@@ -176,7 +176,7 @@ export function generateIndividualBlock(
       end,
       numTransactions,
     ),
-    proposer: node.address,
+    proposer: [node.address],
     size: Math.floor(prng.nextFloat() * 1024 * numTransactions) + 8,
     fees: [MonetaryValue.ESP(BigInt(prng.nextRange(0, 1000000000) * 1000))],
   };
