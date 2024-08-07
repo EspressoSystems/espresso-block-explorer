@@ -34,7 +34,7 @@ describe('ErrorDisplay Component', () => {
     expect(screen.getByTestId('1').children).toHaveLength(1);
   });
 
-  it('should display an Unimplemented Error on unimplemented error', () => {
+  it('should start with text "Unimplemented Error" on unimplemented error', () => {
     render(
       <ErrorContext.Provider value={new UnimplementedError()}>
         <div data-testid="1">
@@ -47,7 +47,7 @@ describe('ErrorDisplay Component', () => {
     expect(screen.getByTestId('1')).toHaveTextContent(/^Unimplemented Error/);
   });
 
-  it('should display a fetch error message on fetch error', () => {
+  it('should start with text "Fetch Error" on fetch error', () => {
     render(
       <ErrorContext.Provider value={new FetchError({}, 'fetch error')}>
         <div data-testid="1">
@@ -60,7 +60,7 @@ describe('ErrorDisplay Component', () => {
     expect(screen.getByTestId('1')).toHaveTextContent(/^Fetch Error/);
   });
 
-  it('should display a WebSocket error on WebSocket error', () => {
+  it('should start with text "WebSocket Error" on WebSocket error', () => {
     render(
       <ErrorContext.Provider value={new WebSocketError({}, 'websocket error')}>
         <div data-testid="1">
@@ -73,7 +73,7 @@ describe('ErrorDisplay Component', () => {
     expect(screen.getByTestId('1')).toHaveTextContent(/^WebSocket Error/);
   });
 
-  it('should display an unhandled native error message on native error', () => {
+  it('should start with text "Native JavaScript Error" on native error', () => {
     render(
       <ErrorContext.Provider value={new TypeError('type')}>
         <div data-testid="1">
@@ -88,7 +88,7 @@ describe('ErrorDisplay Component', () => {
     );
   });
 
-  it('should display an unhandled error message developer error', () => {
+  it('should start with text "Unhandled Error" on developer error', () => {
     render(
       <ErrorContext.Provider value={new BufferFullError()}>
         <div data-testid="1">
