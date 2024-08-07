@@ -1,0 +1,56 @@
+@import url(../../../styles/main.css);
+
+:root {
+  --cdn-status--online--color: var(--color--green-600);
+}
+
+.cdn-status .cdn-status--heading {
+  margin: 0;
+}
+
+.cdn-status--status.online {
+  color: var(--cdn-status--online--color);
+}
+
+.cdn-status.card-padding {
+  padding: 16px;
+}
+
+/* Mobile Layout */
+.cdn-status {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+.cdn-status--status {
+  text-align: end;
+}
+
+/* Small */
+@media screen and (min-width: 640px) {
+}
+
+/* Medium */
+@media screen and (min-width: 768px) {
+}
+
+/* Large */
+@media screen and (min-width: 1024px) {
+  .cdn-status {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .cdn-status--status {
+    text-align: start;
+  }
+}
+
+/* Extra Large */
+@media screen and (min-width: 1280px) {
+}
+
+/* 2 Extra Large */
+@media screen and (min-width: 1536px) {
+}
