@@ -111,7 +111,6 @@ function convertCappuccinoNodeIdentity(
   return {
     publicKey: node.publicKey,
     name: node.name,
-    address: node.walletAddress,
     companyDetails: {
       name: node.company,
       website: null,

@@ -79,7 +79,6 @@ function convertGeneratedNodeIdentity(
   return new CappuccinoNodeIdentity(
     node.pubkey,
     node.name,
-    node.address,
     null,
     node.company.name,
     // new CappuccinoCompanyIdentity(node.company.name, node.company.website),

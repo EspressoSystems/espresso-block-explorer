@@ -3,7 +3,6 @@ import { DataContext } from '@/components/contexts/DataProvider';
 import { SortDirection } from '@/components/data/types';
 import { NumberText } from '@/components/text';
 import CopyTaggedBase64 from '@/components/text/CopyTaggedBase64';
-import FullHexText from '@/components/text/FullHexText';
 import PercentageText from '@/components/text/PercentageText';
 import TaggedBase64Text from '@/components/text/TaggedBase64Text';
 import { compareArrayBuffer, iota } from '@/functional/functional';
@@ -44,16 +43,6 @@ const PubKey: React.FC = () => {
       <TaggedBase64Text value={row.publicKey} />
     </CopyTaggedBase64>
   );
-};
-
-const AddressCell: React.FC = () => {
-  const [row] = React.useContext(DataTableRowContext) as NodeSummaryDataPair;
-
-  if (row.address === null) {
-    return <Text text="-" />;
-  }
-
-  return <FullHexText value={row.address} />;
 };
 
 const CompanyName: React.FC = () => {
@@ -142,7 +131,6 @@ interface NodesSummaryDataTableLayoutProps {
     React.ComponentType,
     React.ComponentType,
     React.ComponentType,
-    React.ComponentType,
   ];
 }
 
@@ -163,30 +151,20 @@ const NodesSummaryDataTableLayout: React.FC<
           buildCell: props.components[1],
         },
         {
-          label: 'Address',
-          columnType: NodeSummaryColumn.address,
-          buildCell: props.components[2],
-        },
-        {
           label: 'Company',
           columnType: NodeSummaryColumn.companyName,
-          buildCell: props.components[3],
+          buildCell: props.components[2],
         },
         {
           label: 'Website',
           columnType: NodeSummaryColumn.companyWebSite,
-          buildCell: props.components[4],
+          buildCell: props.components[3],
         },
         {
           label: 'Vote Participation',
           columnType: NodeSummaryColumn.voteParticipation,
-          buildCell: props.components[5],
+          buildCell: props.components[4],
         },
-        // {
-        //   label: 'Location',
-        //   columnType: NodeSummaryColumn.location,
-        //   buildCell: props.components[5],
-        // },
       ]}
     />
   );
@@ -214,7 +192,6 @@ export const NodesSummaryDataTablePlaceholder: React.FC<
           SkeletonContent,
           SkeletonContent,
           SkeletonContent,
-          SkeletonContent,
         ]}
       />
     </DataContext.Provider>
@@ -231,7 +208,6 @@ export const NodesSummaryDataTablePopulated: React.FC = () => {
       components={[
         PubKey,
         NameCell,
-        AddressCell,
         CompanyName,
         WebSiteCell,
         VoterParticipation,
@@ -274,30 +250,6 @@ function sortName(
   }
 
   return a.name.localeCompare(b.name);
-}
-
-/**
- * sortAddress sorts the data by the wallet address.
- */
-function sortAddress(
-  aPair: NodeSummaryDataPair,
-  bPair: NodeSummaryDataPair,
-): number {
-  const [a] = aPair;
-  const [b] = bPair;
-  if (a.address === null && b.address === null) {
-    return 0;
-  }
-
-  if (a.address === null) {
-    return 1;
-  }
-
-  if (b.address === null) {
-    return -1;
-  }
-
-  return compareArrayBuffer(a.address, b.address);
 }
 
 /**
@@ -418,9 +370,6 @@ function nodeSummaryDataPairSortFunction(
 
     case NodeSummaryColumn.name:
       return sortName;
-
-    case NodeSummaryColumn.address:
-      return sortAddress;
 
     case NodeSummaryColumn.companyName:
       return sortCompanyName;

@@ -7,7 +7,6 @@ import React from 'react';
 export interface NodeSummaryData {
   publicKey: TaggedBase64;
   name: null | string;
-  address: null | ArrayBuffer;
   companyDetails: null | {
     name: null | string;
     website: null | string;
