@@ -101,13 +101,19 @@ export default class VariableBytesNumberFormat implements Intl.NumberFormat {
     ]);
   }
 
-  formatToParts(number?: number | bigint | undefined): Intl.NumberFormatPart[] {
+  formatToParts(
+    number?: number | bigint | Intl.StringNumericLiteral | undefined,
+  ): Intl.NumberFormatPart[] {
     if (typeof number === 'number') {
       return this.formatNumberToParts(number);
     }
 
     if (typeof number === 'bigint') {
       return this.formatBigintToParts(number);
+    }
+
+    if (typeof number === 'string') {
+      return this.bytesFormatter.formatToParts(Number(number));
     }
 
     return this.bytesFormatter.formatToParts(number);
@@ -172,8 +178,8 @@ export default class VariableBytesNumberFormat implements Intl.NumberFormat {
   }
 
   formatRangeToParts(
-    start: number | bigint,
-    end: number | bigint,
+    start: number | bigint | Intl.StringNumericLiteral,
+    end: number | bigint | Intl.StringNumericLiteral,
   ): Intl.NumberRangeFormatPart[] {
     if (typeof start === 'number' && typeof end === 'number') {
       return this.formatNumberRangeToParts(start, end);
@@ -186,11 +192,14 @@ export default class VariableBytesNumberFormat implements Intl.NumberFormat {
     return this.bytesFormatter.formatRangeToParts(start, end);
   }
 
-  format(number?: number | bigint | undefined): string {
+  format(number: number | bigint | Intl.StringNumericLiteral): string {
     return this.formatToParts(number).map(this.extractValue).join('');
   }
 
-  formatRange(start: number | bigint, end: number | bigint): string {
+  formatRange(
+    start: number | bigint | Intl.StringNumericLiteral,
+    end: number | bigint | Intl.StringNumericLiteral,
+  ): string {
     return this.formatRangeToParts(start, end).map(this.extractValue).join('');
   }
 }

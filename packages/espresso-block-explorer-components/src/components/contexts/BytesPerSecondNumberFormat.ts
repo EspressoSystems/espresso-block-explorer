@@ -101,13 +101,19 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
     ]);
   }
 
-  formatToParts(number?: number | bigint | undefined): Intl.NumberFormatPart[] {
+  formatToParts(
+    number?: number | bigint | Intl.StringNumericLiteral | undefined,
+  ): Intl.NumberFormatPart[] {
     if (typeof number === 'number') {
       return this.formatNumberToParts(number);
     }
 
     if (typeof number === 'bigint') {
       return this.formatBigintToParts(number);
+    }
+
+    if (typeof number === 'string') {
+      return this.bytesPerSecondFormatter.formatToParts(Number(number));
     }
 
     return this.bytesPerSecondFormatter.formatToParts(number);
@@ -186,7 +192,7 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
     return this.bytesPerSecondFormatter.formatRangeToParts(start, end);
   }
 
-  format(number?: number | bigint | undefined): string {
+  format(number: number | bigint | Intl.StringNumericLiteral): string {
     return this.formatToParts(number).map(this.extractValue).join('');
   }
 
