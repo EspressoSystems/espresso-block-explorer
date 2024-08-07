@@ -5,11 +5,11 @@ import { TaggedBase64 } from '../../../../../../../../../../../../src/models/esp
 export declare class CappuccinoExplorerBlockSummary {
     readonly hash: TaggedBase64;
     readonly height: number;
-    readonly proposerID: ArrayBuffer;
+    readonly proposerID: ArrayBuffer[];
     readonly numTransactions: number;
     readonly size: number;
     readonly time: Date;
-    constructor(hash: TaggedBase64, height: number, proposerID: ArrayBuffer, numTransactions: number, size: number, time: Date);
+    constructor(hash: TaggedBase64, height: number, proposerID: ArrayBuffer[], numTransactions: number, size: number, time: Date);
     toJSON(): unknown;
 }
 declare class CappuccinoExplorerBlockSummaryDecoder implements Converter<unknown, CappuccinoExplorerBlockSummary> {

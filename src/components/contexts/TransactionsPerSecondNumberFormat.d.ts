@@ -15,8 +15,8 @@ export default class TransactionPerSecondNumberFormat implements Intl.NumberForm
     private findUnitInFormatParts;
     private replaceUnitInFormatParts;
     private extractValue;
-    formatToParts(number?: number | bigint | undefined): Intl.NumberFormatPart[];
+    formatToParts(number?: number | bigint | Intl.StringNumericLiteral | undefined): Intl.NumberFormatPart[];
     formatRangeToParts(start: number | bigint, end: number | bigint): Intl.NumberRangeFormatPart[];
-    format(number?: number | bigint | undefined): string;
+    format(number: number | bigint | Intl.StringNumericLiteral): string;
     formatRange(start: number | bigint, end: number | bigint): string;
 }

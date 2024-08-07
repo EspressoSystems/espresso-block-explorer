@@ -10,7 +10,7 @@ export interface LatestBlock {
     time: Date;
     size: number;
     transactions: number;
-    proposer: ArrayBuffer;
+    proposer: ArrayBuffer[];
 }
 /**
  * The LatestBlockAsyncRetriever is an interface that is used to

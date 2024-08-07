@@ -7,8 +7,8 @@ export interface BlockDetailEntry {
     readonly height: number;
     readonly time: Date;
     readonly transactions: number;
-    readonly proposer: ArrayBuffer;
-    readonly recipient: ArrayBuffer;
+    readonly proposer: ArrayBuffer[];
+    readonly recipient: ArrayBuffer[];
     readonly size: number;
     readonly rewards: MonetaryValue[];
 }

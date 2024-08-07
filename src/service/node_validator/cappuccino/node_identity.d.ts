@@ -12,21 +12,19 @@ import { default as CappuccinoLocationDetails } from './node_location_details';
 export default class CappuccinoNodeIdentity {
     readonly publicKey: TaggedBase64;
     readonly name: null | string;
-    readonly walletAddress: null | ArrayBuffer;
     readonly publicURL: null | URL;
     readonly company: null | string;
     readonly location: null | CappuccinoLocationDetails;
     readonly operatingSystem: null | string;
     readonly nodeType: null | string;
     readonly networkType: null | string;
-    constructor(publicKey: TaggedBase64, name: null | string, walletAddress: null | ArrayBuffer, publicURL: null | URL, company: null | string, location: null | CappuccinoLocationDetails, operatingSystem: null | string, nodeType: null | string, networkType: null | string);
+    constructor(publicKey: TaggedBase64, name: null | string, publicURL: null | URL, company: null | string, location: null | CappuccinoLocationDetails, operatingSystem: null | string, nodeType: null | string, networkType: null | string);
     toJSON(): unknown;
 }
 declare class CappuccinoNodeIdentityEncoder implements Converter<CappuccinoNodeIdentity> {
     convert(input: CappuccinoNodeIdentity): {
         public_key: string;
         name: string | null;
-        wallet_address: string | null;
         public_url: string | null;
         company: string | null;
         location: unknown;

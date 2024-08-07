@@ -26,7 +26,7 @@ export type GeneratedBlock = {
     genTime: number;
     transactions: AsyncIterable<GeneratedTransaction>;
     numTransactions: number;
-    proposer: ArrayBuffer;
+    proposer: ArrayBuffer[];
     size: number;
     fees: MonetaryValue[];
 };

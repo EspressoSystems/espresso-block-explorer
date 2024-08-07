@@ -4,7 +4,7 @@ import { DataTableState } from '../../data/data_table/DataTable';
 
 export interface BlockSummary {
     block: number;
-    proposer: ArrayBuffer;
+    proposer: ArrayBuffer[];
     transactions: number;
     size: number;
     time: Date;

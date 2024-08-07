@@ -8,11 +8,11 @@ export declare class CappuccinoExplorerBlockDetail {
     readonly height: number;
     readonly time: Date;
     readonly numTransactions: number;
-    readonly proposerID: ArrayBuffer;
-    readonly feeRecipient: ArrayBuffer;
+    readonly proposerID: ArrayBuffer[];
+    readonly feeRecipient: ArrayBuffer[];
     readonly size: number;
     readonly blockReward: MonetaryValue[];
-    constructor(hash: TaggedBase64, height: number, time: Date, numTransactions: number, proposerID: ArrayBuffer, feeRecipient: ArrayBuffer, size: number, blockReward: MonetaryValue[]);
+    constructor(hash: TaggedBase64, height: number, time: Date, numTransactions: number, proposerID: ArrayBuffer[], feeRecipient: ArrayBuffer[], size: number, blockReward: MonetaryValue[]);
     toJSON(): unknown;
 }
 declare class CappuccinoExplorerBlockDetailDecoder implements Converter<unknown, CappuccinoExplorerBlockDetail> {

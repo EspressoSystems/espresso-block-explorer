@@ -12,8 +12,8 @@ export declare class CappuccinoDerivedBlockSummary {
     readonly hash: TaggedBase64;
     readonly size: number;
     readonly num_transactions: number;
-    readonly proposer_id: ArrayBuffer;
-    constructor(header: CappuccinoAPIHeader, hash: TaggedBase64, size: number, num_transactions: number, proposer_id: ArrayBuffer);
+    readonly proposer_id: ArrayBuffer[];
+    constructor(header: CappuccinoAPIHeader, hash: TaggedBase64, size: number, num_transactions: number, proposer_id: ArrayBuffer[]);
     toJSON(): {
         header: {
             readonly height: number;
@@ -43,7 +43,7 @@ export declare class CappuccinoDerivedBlockSummary {
         hash: string;
         size: number;
         num_transactions: number;
-        proposer_id: string;
+        proposer_id: unknown;
     };
 }
 export declare class CappuccinoDerivedBlockSummaryDecoder implements Converter<unknown, CappuccinoDerivedBlockSummary> {
@@ -79,7 +79,7 @@ export declare class CappuccinoDerivedBlockSummaryEncoder implements Converter<C
         hash: string;
         size: number;
         num_transactions: number;
-        proposer_id: string;
+        proposer_id: unknown;
     };
 }
 export declare class CappuccinoDerivedBlockSummaryCodec extends TypeCheckingCodec<CappuccinoDerivedBlockSummary, ReturnType<InstanceType<new () => CappuccinoDerivedBlockSummaryEncoder>['convert']>> {
@@ -116,5 +116,5 @@ export declare const listCappuccinoDerivedBlockSummaryCodec: ArrayCodec<Cappucci
     hash: string;
     size: number;
     num_transactions: number;
-    proposer_id: string;
+    proposer_id: unknown;
 }>;
