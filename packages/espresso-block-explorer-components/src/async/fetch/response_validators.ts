@@ -64,6 +64,11 @@ export async function validateResponseIsOk<E>(
         // forward it up
         throw error;
       }
+
+      console.error(
+        'encountered an error attempting to decode a server error from the server',
+        error,
+      );
     }
 
     throw new BadResponseServerError(response.status, response);
@@ -85,6 +90,11 @@ export async function validateResponseIsOk<E>(
         // forward it up
         throw error;
       }
+
+      console.error(
+        'encountered an error attempting to decode a client error from the server',
+        error,
+      );
     }
 
     throw new BadResponseClientError(response.status, response);
