@@ -1,3 +1,4 @@
+import { ErrorContext } from '@/components/contexts';
 import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import ValueLabeled from '@/layout/value_labeled/ValueLabeled';
@@ -28,12 +29,13 @@ const LabelValue: React.FC<HistogramLabelProps> = (props) => {
 };
 
 export const BlockThroughputHistogram: React.FC = () => {
+  const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
   const histogramData = React.useContext(
     DataContext,
   ) as BlockThroughputHistogramData;
 
-  if (loading) {
+  if (loading || error) {
     return <></>;
   }
 

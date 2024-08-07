@@ -1,4 +1,4 @@
-import ErrorContextGuard from '@/components/data/async_data/ErrorContextGuard';
+import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import Footer from '@/components/page_sections/footer/Footer';
 import Header from '@/components/page_sections/header/Header';
 import PageTitle from '@/components/page_sections/page_title/PageTitle';
@@ -51,6 +51,15 @@ const GuardedTransactionsSummaryDataTable: React.FC<
   GuardedTransactionsSummaryDataTableProps
 > = (props) => {
   const loading = React.useContext(LoadingContext);
+  const error = React.useContext(ErrorContext);
+  if (error) {
+    return (
+      <EdgeMarginCard>
+        <ErrorDisplay />
+      </EdgeMarginCard>
+    );
+  }
+
   if (loading) {
     return (
       <EdgeMarginShimmerCard {...props}>
@@ -61,9 +70,7 @@ const GuardedTransactionsSummaryDataTable: React.FC<
 
   return (
     <EdgeMarginCard {...props}>
-      <ErrorContextGuard>
-        <TransactionsSummaryDataTable />
-      </ErrorContextGuard>
+      <TransactionsSummaryDataTable />
     </EdgeMarginCard>
   );
 };

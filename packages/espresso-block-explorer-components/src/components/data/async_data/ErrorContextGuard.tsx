@@ -1,5 +1,5 @@
+import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import { ErrorContext } from '@/contexts/ErrorProvider';
-import Text from '@/text/Text';
 import React from 'react';
 
 export interface ErrorContextGuardProps {
@@ -16,13 +16,7 @@ const ErrorContextGuard: React.FC<ErrorContextGuardProps> = (props) => {
   const error = React.useContext(ErrorContext);
 
   if (error) {
-    return (
-      <>
-        <Text text="Encountered Error" />
-        <br />
-        <Text text={error.toString()} />
-      </>
-    );
+    return <ErrorDisplay />;
   }
 
   return <>{props.children}</>;

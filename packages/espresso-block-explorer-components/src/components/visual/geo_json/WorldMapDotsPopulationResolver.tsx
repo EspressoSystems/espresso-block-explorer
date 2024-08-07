@@ -1,3 +1,4 @@
+import { ErrorCarry, ErrorJoiner } from '@/components/contexts';
 import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
 import { NodeSummaryData } from '@/components/page_sections/nodes_summary_data_table/NodesSummaryLoader';
 import {
@@ -176,8 +177,10 @@ export const DotPopulationStreamConsumer: React.FC<
   const stream = React.useContext(DotPopulationStreamContext);
 
   return (
-    <AsyncIterableResolver asyncIterable={stream}>
-      {props.children}
-    </AsyncIterableResolver>
+    <ErrorCarry>
+      <AsyncIterableResolver asyncIterable={stream}>
+        <ErrorJoiner>{props.children}</ErrorJoiner>
+      </AsyncIterableResolver>
+    </ErrorCarry>
   );
 };

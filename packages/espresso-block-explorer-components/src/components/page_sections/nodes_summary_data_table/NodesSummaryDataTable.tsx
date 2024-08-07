@@ -1,6 +1,7 @@
-import { LoadingContext } from '@/components/contexts';
+import { ErrorContext, LoadingContext } from '@/components/contexts';
 import { DataContext } from '@/components/contexts/DataProvider';
 import { SortDirection } from '@/components/data/types';
+import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import { NumberText } from '@/components/text';
 import CopyTaggedBase64 from '@/components/text/CopyTaggedBase64';
 import PercentageText from '@/components/text/PercentageText';
@@ -439,10 +440,14 @@ export const NodesSummaryDataTable: React.FC = () => {
     sortDir: SortDirection.asc,
   });
 
+  const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
   const data = React.useContext(DataContext) as NodeSummaryData[];
   const voterData = React.useContext(VotersParticipationStatsContext);
-  // Sort the data.
+
+  if (error) {
+    return <ErrorDisplay />;
+  }
 
   if ((!data || (data instanceof Array && data.length <= 0)) && loading) {
     return <NodesSummaryDataTablePlaceholder />;
@@ -451,6 +456,7 @@ export const NodesSummaryDataTable: React.FC = () => {
   const dataPairs = combineNodeIdentityAndVoterStats(data, voterData);
   const { sortColumn, sortDir } = initialState;
 
+  // Sort the data.
   const sortedData = sortDataWithColumnAndDirection(
     dataPairs,
     sortColumn,

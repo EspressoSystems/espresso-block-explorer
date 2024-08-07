@@ -1,4 +1,4 @@
-import ErrorContextGuard from '@/components/data/async_data/ErrorContextGuard';
+import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import {
   BlockSummaryDataLoader,
   BlocksNavigation,
@@ -46,8 +46,16 @@ interface GuardedBlocksSummaryDataTableProps {}
 const GuardedBlocksSummaryDataTable: React.FC<
   GuardedBlocksSummaryDataTableProps
 > = (props) => {
+  const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
 
+  if (error) {
+    return (
+      <EdgeMarginCard>
+        <ErrorDisplay />
+      </EdgeMarginCard>
+    );
+  }
   if (loading) {
     return (
       <EdgeMarginShimmerCard {...props}>
@@ -58,9 +66,7 @@ const GuardedBlocksSummaryDataTable: React.FC<
 
   return (
     <EdgeMarginCard {...props}>
-      <ErrorContextGuard>
-        <BlockSummaryDataTable />
-      </ErrorContextGuard>
+      <BlockSummaryDataTable />
     </EdgeMarginCard>
   );
 };

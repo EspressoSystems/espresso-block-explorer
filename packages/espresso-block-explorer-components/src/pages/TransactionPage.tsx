@@ -1,4 +1,4 @@
-import ErrorContextGuard from '@/components/data/async_data/ErrorContextGuard';
+import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import Footer from '@/components/page_sections/footer/Footer';
 import Header from '@/components/page_sections/header/Header';
 import PageTitle from '@/components/page_sections/page_title/PageTitle';
@@ -19,6 +19,7 @@ import { WithEdgeMargin } from '@/layout/margin/margins';
 import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
 import Text from '@/text/Text';
 import React from 'react';
+import { ErrorContext } from '../components';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
@@ -36,6 +37,16 @@ const GuardedTransactionDetailsContent: React.FC<
   GuardedTransactionDetailsContentProps
 > = (props) => {
   const loading = React.useContext(LoadingContext);
+  const error = React.useContext(ErrorContext);
+
+  if (error) {
+    return (
+      <EdgeMarginCard>
+        <ErrorDisplay />
+      </EdgeMarginCard>
+    );
+  }
+
   if (loading) {
     return (
       <EdgeMarginShimmerCard {...props}>
@@ -46,9 +57,7 @@ const GuardedTransactionDetailsContent: React.FC<
 
   return (
     <EdgeMarginCard {...props}>
-      <ErrorContextGuard>
-        <TransactionDetailsContent />
-      </ErrorContextGuard>
+      <TransactionDetailsContent />
     </EdgeMarginCard>
   );
 };
@@ -75,9 +84,7 @@ const GuardedTransactionDataContents: React.FC<
 
   return (
     <EdgeMarginCard {...props}>
-      <ErrorContextGuard>
-        <TransactionDataContents />
-      </ErrorContextGuard>
+      <TransactionDataContents />
     </EdgeMarginCard>
   );
 };

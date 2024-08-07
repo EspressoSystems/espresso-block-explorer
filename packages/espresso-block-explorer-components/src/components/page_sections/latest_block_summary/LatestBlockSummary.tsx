@@ -1,3 +1,4 @@
+import { ErrorContext } from '@/components/contexts';
 import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
@@ -135,8 +136,13 @@ interface LatestBlockSummaryProps {
 export const LatestBlockSummaryAsyncHandler: React.FC<
   LatestBlockSummaryProps
 > = (props) => {
+  const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
   const data = React.useContext(DataContext);
+
+  if (error) {
+    return <></>;
+  }
 
   if (loading) {
     return <LatestBlockSummaryPlaceholder {...props} />;

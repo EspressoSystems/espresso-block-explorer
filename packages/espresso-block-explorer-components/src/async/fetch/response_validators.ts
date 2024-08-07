@@ -2,6 +2,7 @@ import { Converter } from '@/convert/codec/convert';
 import BadResponseClientError from '@/errors/BadResponseClientError';
 import BadResponseError from '@/errors/BadResponseError';
 import BadResponseServerError from '@/errors/BadResponseServerError';
+import BaseError from '@/errors/BaseError';
 import ResponseContentTypeIsNotApplicationJSONError from '@/errors/ResponseContentTypeIsNotApplicationJSONError';
 
 /**
@@ -11,11 +12,14 @@ import ResponseContentTypeIsNotApplicationJSONError from '@/errors/ResponseConte
  * Before attempting to decode the response, checks are performed to ensure that
  * the response is valid, and if the returned content-type is in face JSON.
  */
-export function validateAndExpandResponse<A>(converter: Converter<unknown, A>) {
+export function validateAndExpandResponse<A, E>(
+  successConverter: Converter<unknown, A>,
+  errorConverter?: Converter<unknown, E> | undefined,
+) {
   return async (response: Response): Promise<A> => {
-    validateResponseIsOk(response);
+    await validateResponseIsOk(response, errorConverter);
     validateResponseIsJSON(response);
-    return converter.convert(await response.json());
+    return successConverter.convert(await response.json());
   };
 }
 
@@ -34,18 +38,69 @@ export function validateAndExpandResponse<A>(converter: Converter<unknown, A>) {
  * All errors thrown at this point will be a subclass of BadResponseError, and
  * will contains the response object that caused the error.
  */
-export function validateResponseIsOk(response: Response): void {
-  if (!response.ok) {
-    if (response.status >= 500 && response.status < 600) {
-      throw new BadResponseServerError(response.status, response);
-    }
-
-    if (response.status >= 400 && response.status < 500) {
-      throw new BadResponseClientError(response.status, response);
-    }
-
-    throw new BadResponseError(response.status, response);
+export async function validateResponseIsOk<E>(
+  response: Response,
+  errorConverter?: undefined | Converter<unknown, E>,
+): Promise<void> {
+  if (response.ok) {
+    // Everything is just fine
+    return;
   }
+
+  if (response.status >= 500 && response.status < 600) {
+    try {
+      validateResponseIsJSON(response);
+
+      if (errorConverter !== undefined) {
+        const json = await response.json();
+        const decoded = errorConverter.convert(json);
+        throw decoded;
+      }
+    } catch (error) {
+      // This indicates that the response is not JSON, and we don't really know
+      // what it is.
+      if (error instanceof BaseError) {
+        // Check to ensure that this is an error we understand, and if it is
+        // forward it up
+        throw error;
+      }
+
+      console.error(
+        'encountered an error attempting to decode a server error from the server',
+        error,
+      );
+    }
+
+    throw new BadResponseServerError(response.status, response);
+  }
+
+  if (response.status >= 400 && response.status < 500) {
+    try {
+      validateResponseIsJSON(response);
+
+      if (errorConverter !== undefined) {
+        const json = await response.json();
+        const decoded = errorConverter.convert(json);
+        throw decoded;
+      }
+    } catch (error) {
+      // This indicates that the response is not JSON, and we don't really know
+      if (error instanceof BaseError) {
+        // Check to ensure that this is an error we understand, and if it is
+        // forward it up
+        throw error;
+      }
+
+      console.error(
+        'encountered an error attempting to decode a client error from the server',
+        error,
+      );
+    }
+
+    throw new BadResponseClientError(response.status, response);
+  }
+
+  throw new BadResponseError(response.status, response);
 }
 
 /**

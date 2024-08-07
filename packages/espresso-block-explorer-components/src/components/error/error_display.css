@@ -1,0 +1,15 @@
+:root {
+  --error-display--background-color: var(--color--red-600);
+  --error-display--foreground-color: var(--on-color--red-600);
+  --error-display--horizontal-padding: 16px;
+  --error-display--vertical-padding: 8px;
+  --error-display--border-radius: 8px;
+}
+
+.error-display-wrapper {
+  background-color: var(--error-display--background-color);
+  color: var(--error-display--foreground-color);
+  padding-inline: var(--error-display--horizontal-padding);
+  padding-block: var(--error-display--vertical-padding);
+  border-radius: var(--error-display--border-radius);
+}
