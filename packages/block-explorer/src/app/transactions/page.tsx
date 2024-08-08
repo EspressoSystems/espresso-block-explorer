@@ -8,12 +8,21 @@ import {
   TransactionsPage,
 } from 'espresso-block-explorer-components';
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 /**
  * Transactions is a page that lists a summary of all transactions within the
  * block chain in a paginated manner.
  */
 export default function Transactions() {
+  return (
+    <Suspense>
+      <TransactionsPageSuspended />
+    </Suspense>
+  );
+}
+
+function TransactionsPageSuspended() {
   const searchParams = useSearchParams();
 
   const getNumberFromParams = (
