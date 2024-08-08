@@ -7,6 +7,7 @@ import {
   isArrayMemberFunction,
   isNumber,
 } from './convert';
+import { NullCodec, NullDecoder, NullEncoder } from './null';
 
 export const isNumberArray = isArrayMemberFunction(isNumber);
 
@@ -49,7 +50,15 @@ export class NumberCodec extends TypeCheckingCodec<number, number> {
 }
 
 export const numberCodec = new NumberCodec();
+export const nullableNumberCodec = new NullCodec(
+  new NullDecoder(numberCodec),
+  new NullEncoder(numberCodec),
+);
 export const numberArrayCodec = new ArrayCodec(
   new ArrayDecoder(numberCodec),
   new ArrayEncoder(numberCodec),
+);
+export const nullableNumberArrayCodec = new ArrayCodec(
+  new ArrayDecoder(nullableNumberCodec),
+  new ArrayEncoder(nullableNumberCodec),
 );

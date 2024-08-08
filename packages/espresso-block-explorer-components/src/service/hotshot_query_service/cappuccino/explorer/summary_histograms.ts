@@ -4,7 +4,7 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import { numberArrayCodec } from '@/convert/codec/number';
+import { nullableNumberArrayCodec } from '@/convert/codec/number';
 
 /**
  * isNotNull is a null checker that is used to filter out null values from
@@ -20,9 +20,9 @@ function isNotNull<T>(value: T | null): value is T {
  * gaps within the data, and that it is given in the correct order.
  */
 interface HistogramGroup {
-  blockTime: number;
-  blockSize: number;
-  blockTransactions: number;
+  blockTime: null | number;
+  blockSize: null | number;
+  blockTransactions: null | number;
   blockHeights: number;
 }
 
@@ -41,10 +41,10 @@ export class CappuccinoSummaryHistograms {
   readonly blockHeights: (null | number)[];
 
   constructor(
-    blockTime: number[],
-    blockSize: number[],
-    blockTransactions: number[],
-    blockHeights: number[],
+    blockTime: (null | number)[],
+    blockSize: (null | number)[],
+    blockTransactions: (null | number)[],
+    blockHeights: (null | number)[],
   ) {
     // Let's ensure that these things are sorted in the correct order,
     // and that they are contiguous.  If missing blocks, we should fill
@@ -53,11 +53,18 @@ export class CappuccinoSummaryHistograms {
     const groups: HistogramGroup[] = [];
     const l = blockHeights.length;
     for (let i = 0; i < l; i++) {
+      const height = blockHeights[i];
+      if (height === null) {
+        // We skip over any null values for block heights, so we can just
+        // operate on it as if it were missing.
+        continue;
+      }
+
       groups.push({
         blockTime: blockTime[i],
         blockSize: blockSize[i],
         blockTransactions: blockTransactions[i],
-        blockHeights: blockHeights[i],
+        blockHeights: height,
       });
     }
     groups.sort(sortGroup);
@@ -118,10 +125,10 @@ class CappuccinoSummaryHistogramsDecoder
     );
 
     return new CappuccinoSummaryHistograms(
-      numberArrayCodec.decode(input.block_time),
-      numberArrayCodec.decode(input.block_size),
-      numberArrayCodec.decode(input.block_transactions),
-      numberArrayCodec.decode(input.block_heights),
+      nullableNumberArrayCodec.decode(input.block_time),
+      nullableNumberArrayCodec.decode(input.block_size),
+      nullableNumberArrayCodec.decode(input.block_transactions),
+      nullableNumberArrayCodec.decode(input.block_heights),
     );
   }
 }
@@ -135,12 +142,16 @@ class CappuccinoSummaryHistogramsEncoder
     // Because we can store null data, but we don't want to encode null data,
     // we must filter out the nulls.
     return {
-      block_time: numberArrayCodec.encode(input.blockTime.filter(isNotNull)),
-      block_size: numberArrayCodec.encode(input.blockSize.filter(isNotNull)),
-      block_transactions: numberArrayCodec.encode(
+      block_time: nullableNumberArrayCodec.encode(
+        input.blockTime.filter(isNotNull),
+      ),
+      block_size: nullableNumberArrayCodec.encode(
+        input.blockSize.filter(isNotNull),
+      ),
+      block_transactions: nullableNumberArrayCodec.encode(
         input.blockTransactions.filter(isNotNull),
       ),
-      block_heights: numberArrayCodec.encode(
+      block_heights: nullableNumberArrayCodec.encode(
         input.blockHeights.filter(isNotNull),
       ),
     };
