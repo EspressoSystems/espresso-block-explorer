@@ -3,6 +3,7 @@ export * from './block_size_histogram';
 export * from './block_summary_data_table';
 export * from './block_throughput_histogram';
 export * from './block_time_histogram';
+export * from './cdn_status';
 export * from './explorer_overview';
 export * from './explorer_summary';
 export * from './footer';
