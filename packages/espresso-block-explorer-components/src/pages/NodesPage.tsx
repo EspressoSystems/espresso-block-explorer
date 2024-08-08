@@ -3,12 +3,20 @@ import { LifeCycleResponseStreamConsumer } from '@/components/contexts/WebSocket
 import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import { addClassToClassName } from '@/components/higher_order';
 import Card, { CardNoPadding } from '@/components/layout/card/Card';
+import { BlockSizeHistogram } from '@/components/page_sections/block_size_histogram/BlockSizeHistogram';
+import { BlockSizeHistogramStreamConsumer } from '@/components/page_sections/block_size_histogram/BlockSizeHistogramDataLoader';
+import { BlockThroughputHistogram } from '@/components/page_sections/block_throughput_histogram/BlockThroughputHistogram';
+import { BlockThroughputHistogramStreamConsumer } from '@/components/page_sections/block_throughput_histogram/BlockThroughputHistogramDataLoader';
+import { BlockTimeHistogram } from '@/components/page_sections/block_time_histogram/BlockTimeHistogram';
+import { BlockTimeHistogramStreamConsumer } from '@/components/page_sections/block_time_histogram/BlockTimeHistogramDataLoader';
+import { CDNStatus } from '@/components/page_sections/cdn_status/CDNStatus';
 import { CountriesPieChart } from '@/components/page_sections/countries_pie_chart/CountriesPieChart';
 import { CountriesPieChartStreamConsumer } from '@/components/page_sections/countries_pie_chart/CountriesPieChartLoader';
 import Footer from '@/components/page_sections/footer/Footer';
 import Header from '@/components/page_sections/header/Header';
 import { LatestBlockProducersAsyncHandler } from '@/components/page_sections/latest_block_producers/LatestBlockProducers';
 import { LatestBlockProducersStreamConsumer } from '@/components/page_sections/latest_block_producers/LatestBlockProducersLoader';
+import { LatestBlockSummaryAsyncHandler } from '@/components/page_sections/latest_block_summary/LatestBlockSummary';
 import { LatestBlockSummaryStreamConsumer } from '@/components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
 import { NetworkTypesPieChart } from '@/components/page_sections/network_types_pie_chart/NetworkTypesPieChart';
 import { NetworkTypesPieChartStreamConsumer } from '@/components/page_sections/network_types_pie_chart/NetworkTypesPieChartLoader';
@@ -34,15 +42,6 @@ import { HistogramSectionTitle } from '@/components/visual/histogram/histogram_s
 import { LifeCycleEventStatus } from '@/components/visual/web_socket/LifeCycleEventStatus';
 import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
 import React from 'react';
-import {
-  BlockSizeHistogram,
-  BlockSizeHistogramStreamConsumer,
-  BlockThroughputHistogram,
-  BlockThroughputHistogramStreamConsumer,
-  BlockTimeHistogram,
-  BlockTimeHistogramStreamConsumer,
-  LatestBlockSummaryAsyncHandler,
-} from '../components';
 import './node_validator.css';
 
 interface NodesPageProps {
@@ -115,17 +114,7 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
 
           {/* CDN Status */}
           <Card className="cdn">
-            <HistogramSectionTitle>
-              <div>
-                <div>
-                  <Text text="CDN Status" />
-                </div>
-                <div>
-                  <Text text="Online" />
-                </div>
-              </div>
-              <div></div>
-            </HistogramSectionTitle>
+            <CDNStatus className="card-padding" />
           </Card>
 
           {/* Network Map */}
