@@ -42,7 +42,7 @@ jobs:
           images: ghcr.io/EspressoSystems/espresso-block-explorer
 
       - name: Build and Push Docker
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./docker/block-explorer.Dockerfile
