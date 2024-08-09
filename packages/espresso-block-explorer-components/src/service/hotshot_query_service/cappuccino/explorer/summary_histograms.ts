@@ -7,14 +7,6 @@ import {
 import { nullableNumberArrayCodec } from '@/convert/codec/number';
 
 /**
- * isNotNull is a null checker that is used to filter out null values from
- * an array, or other collections.
- */
-function isNotNull<T>(value: T | null): value is T {
-  return value !== null;
-}
-
-/**
  * HistogramGroup is a group of values that are associated with a block height.
  * We use this to combine the histogram data together, so we can account for
  * gaps within the data, and that it is given in the correct order.
@@ -51,7 +43,12 @@ export class CappuccinoSummaryHistograms {
     // with null.
 
     const groups: HistogramGroup[] = [];
-    const l = blockHeights.length;
+    const l = Math.min(
+      blockTime.length,
+      blockSize.length,
+      blockTransactions.length,
+      blockHeights.length,
+    );
     for (let i = 0; i < l; i++) {
       const height = blockHeights[i];
       if (height === null) {
@@ -70,7 +67,7 @@ export class CappuccinoSummaryHistograms {
     groups.sort(sortGroup);
 
     const minBlock = groups[0].blockHeights;
-    const maxBlock = groups[l - 1].blockHeights;
+    const maxBlock = groups[groups.length - 1].blockHeights;
 
     const times: (null | number)[] = [];
     const sizes: (null | number)[] = [];
@@ -142,18 +139,12 @@ class CappuccinoSummaryHistogramsEncoder
     // Because we can store null data, but we don't want to encode null data,
     // we must filter out the nulls.
     return {
-      block_time: nullableNumberArrayCodec.encode(
-        input.blockTime.filter(isNotNull),
-      ),
-      block_size: nullableNumberArrayCodec.encode(
-        input.blockSize.filter(isNotNull),
-      ),
+      block_time: nullableNumberArrayCodec.encode(input.blockTime),
+      block_size: nullableNumberArrayCodec.encode(input.blockSize),
       block_transactions: nullableNumberArrayCodec.encode(
-        input.blockTransactions.filter(isNotNull),
+        input.blockTransactions,
       ),
-      block_heights: nullableNumberArrayCodec.encode(
-        input.blockHeights.filter(isNotNull),
-      ),
+      block_heights: nullableNumberArrayCodec.encode(input.blockHeights),
     };
   }
 }
