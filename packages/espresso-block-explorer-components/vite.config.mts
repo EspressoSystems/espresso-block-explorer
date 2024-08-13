@@ -60,6 +60,7 @@ export default defineConfig({
       exclude: [
         '**/__docs__/**',
         '**/__test__/**',
+        '**/__shared__/**',
         '**/.storybook/**',
         '**/storybook-static/**',
         '**/index.ts',
