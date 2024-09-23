@@ -1,12 +1,17 @@
-import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec';
 import {
+  nullableStringCodec,
+  NullCodec,
+  NullDecoder,
+  NullEncoder,
+  preferNullOverEmptyString,
+} from '@/convert/codec';
+import {
+  assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
-  assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import { stringCodec } from '@/convert/codec/string';
 import Degrees from '@/models/geo/units/Degrees';
-import LatLng, { latLngDegreesCodec } from '@/models/geo/units/LatLng';
+import LatLng, { nullableLatLngDegreesCodec } from '@/models/geo/units/LatLng';
 
 /**
  * CappuccinoLocationDetails represents the location details of a Cappuccino
@@ -14,10 +19,10 @@ import LatLng, { latLngDegreesCodec } from '@/models/geo/units/LatLng';
  * identity as well as a pair of latitude and longitude coordinates.
  */
 export default class CappuccinoLocationDetails {
-  readonly coords: LatLng<Degrees>;
-  readonly country: string;
+  readonly coords: null | LatLng<Degrees>;
+  readonly country: null | string;
 
-  constructor(coords: LatLng<Degrees>, country: string) {
+  constructor(coords: null | LatLng<Degrees>, country: null | string) {
     this.coords = coords;
     this.country = country;
   }
@@ -32,8 +37,8 @@ class CappuccinoLocationDetailsEncoder
 {
   convert(input: CappuccinoLocationDetails) {
     return {
-      coords: latLngDegreesCodec.encode(input.coords),
-      country: stringCodec.encode(input.country),
+      coords: nullableLatLngDegreesCodec.encode(input.coords),
+      country: nullableStringCodec.encode(input.country),
     };
   }
 }
@@ -44,8 +49,8 @@ class CappuccinoLocationDetailsDecoder
   convert(input: unknown) {
     assertRecordWithKeys(input, 'coords', 'country');
     return new CappuccinoLocationDetails(
-      latLngDegreesCodec.decode(input.coords),
-      stringCodec.decode(input.country),
+      nullableLatLngDegreesCodec.decode(input.coords),
+      preferNullOverEmptyString(nullableStringCodec.decode(input.country)),
     );
   }
 }

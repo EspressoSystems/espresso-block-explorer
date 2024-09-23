@@ -35,6 +35,7 @@ import {
 import { OperatingSystemPieChartStreamContext } from '@/components/page_sections/operating_system_pie_chart/OperatingSystemPieChartLoader';
 import { NodeIdentityInformationStreamContext } from '@/components/visual/geo_json/WorldMapDotsPopulationResolver';
 import { PieChartEntry } from '@/components/visual/pie_chart/PieChart';
+import { preferNullOverEmptyString } from '@/convert/codec/string';
 import {
   CircularBuffer,
   createCircularBuffer,
@@ -114,9 +115,9 @@ function convertCappuccinoNodeIdentity(
 ): NodeSummaryData {
   return {
     publicKey: node.publicKey,
-    name: node.name,
+    name: preferNullOverEmptyString(node.name),
     companyDetails: {
-      name: node.company,
+      name: preferNullOverEmptyString(node.company),
       website: null,
     },
     location: {
@@ -126,7 +127,7 @@ function convertCappuccinoNodeIdentity(
             node.location.coords.lng.valueOf(),
           ]
         : null,
-      country: node.location?.country ?? null,
+      country: preferNullOverEmptyString(node.location?.country ?? null),
     },
   };
 }

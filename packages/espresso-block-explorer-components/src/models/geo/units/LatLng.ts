@@ -1,3 +1,4 @@
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec';
 import { Codec, Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import InvalidTypeError from '@/errors/InvalidTypeError';
 import { NumberLike, max, min } from '../../numeric/numeric';
@@ -92,3 +93,11 @@ export class LatLngCodec<Unit extends NumberLike> extends TypeCheckingCodec<
 
 export const latLngDegreesCodec = new LatLngCodec(degreesCodec);
 export const latLngRadiansCodec = new LatLngCodec(radiansCodec);
+export const nullableLatLngDegreesCodec = new NullCodec(
+  new NullDecoder(latLngDegreesCodec),
+  new NullEncoder(latLngDegreesCodec),
+);
+export const nullableLatLngRadiansCodec = new NullCodec(
+  new NullDecoder(latLngRadiansCodec),
+  new NullEncoder(latLngRadiansCodec),
+);
