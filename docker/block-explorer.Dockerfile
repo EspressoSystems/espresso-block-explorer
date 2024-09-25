@@ -71,4 +71,4 @@ ENV QUERY_SERVICE_URI=""
 ENV NODE_VALIDATOR_URI=""
 
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ./init.sh
+CMD ["./init.sh"]
