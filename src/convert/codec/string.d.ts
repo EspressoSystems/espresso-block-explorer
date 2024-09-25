@@ -31,3 +31,9 @@ export declare class StringCodec<S extends string = string> extends TypeChecking
 export declare const stringCodec: StringCodec<string>;
 export declare const stringArrayCodec: ArrayCodec<string, string>;
 export declare const nullableStringCodec: NullCodec<string, string>;
+/**
+ * preferNullOverEmptyString is a function that is used to ensure that strings
+ * that have no meaningful content, and where a `null` value is allowable, will
+ * prefer to return `null` instead of the empty string value.
+ */
+export declare function preferNullOverEmptyString(input: undefined | null | string): null | string;

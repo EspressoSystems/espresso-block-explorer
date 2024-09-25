@@ -9,15 +9,15 @@ import { default as LatLng } from '../../../../../../../../../../../src/models/g
  * identity as well as a pair of latitude and longitude coordinates.
  */
 export default class CappuccinoLocationDetails {
-    readonly coords: LatLng<Degrees>;
-    readonly country: string;
-    constructor(coords: LatLng<Degrees>, country: string);
+    readonly coords: null | LatLng<Degrees>;
+    readonly country: null | string;
+    constructor(coords: null | LatLng<Degrees>, country: null | string);
     toJSON(): unknown;
 }
 declare class CappuccinoLocationDetailsEncoder implements Converter<CappuccinoLocationDetails> {
     convert(input: CappuccinoLocationDetails): {
         coords: unknown;
-        country: string;
+        country: string | null;
     };
 }
 declare class CappuccinoLocationDetailsDecoder implements Converter<unknown, CappuccinoLocationDetails> {

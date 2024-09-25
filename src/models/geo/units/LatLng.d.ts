@@ -1,3 +1,4 @@
+import { NullCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Codec, Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { NumberLike } from '../../numeric/numeric';
 import { default as Latitude } from './Latitude';
@@ -36,3 +37,5 @@ export declare class LatLngCodec<Unit extends NumberLike> extends TypeCheckingCo
 }
 export declare const latLngDegreesCodec: LatLngCodec<import('./Degrees').default>;
 export declare const latLngRadiansCodec: LatLngCodec<import('./Radians').default>;
+export declare const nullableLatLngDegreesCodec: NullCodec<LatLng<import('./Degrees').default>, unknown>;
+export declare const nullableLatLngRadiansCodec: NullCodec<LatLng<import('./Radians').default>, unknown>;
