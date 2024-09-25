@@ -65,3 +65,18 @@ export const nullableStringCodec = new NullCodec(
   new NullDecoder(stringCodec),
   new NullEncoder(stringCodec),
 );
+
+/**
+ * preferNullOverEmptyString is a function that is used to ensure that strings
+ * that have no meaningful content, and where a `null` value is allowable, will
+ * prefer to return `null` instead of the empty string value.
+ */
+export function preferNullOverEmptyString(
+  input: undefined | null | string,
+): null | string {
+  if (!input || !input.trim()) {
+    return null;
+  }
+
+  return input;
+}

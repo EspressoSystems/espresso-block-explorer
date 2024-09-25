@@ -4,6 +4,7 @@ import {
   ArrayEncoder,
   nullableStringCodec,
   nullableURLCodec,
+  preferNullOverEmptyString,
 } from '@/convert/codec';
 import {
   Converter,
@@ -93,13 +94,15 @@ class CappuccinoNodeIdentityDecoder
     );
     return new CappuccinoNodeIdentity(
       taggedBase64Codec.decode(input.public_key),
-      nullableStringCodec.decode(input.name),
+      preferNullOverEmptyString(nullableStringCodec.decode(input.name)),
       nullableURLCodec.decode(input.public_url),
-      nullableStringCodec.decode(input.company),
+      preferNullOverEmptyString(nullableStringCodec.decode(input.company)),
       nullableCappuccinoLocationDetailsCodec.decode(input.location),
-      nullableStringCodec.decode(input.operating_system),
-      nullableStringCodec.decode(input.node_type),
-      nullableStringCodec.decode(input.network_type),
+      preferNullOverEmptyString(
+        nullableStringCodec.decode(input.operating_system),
+      ),
+      preferNullOverEmptyString(nullableStringCodec.decode(input.node_type)),
+      preferNullOverEmptyString(nullableStringCodec.decode(input.network_type)),
     );
   }
 }
