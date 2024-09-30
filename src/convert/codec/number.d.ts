@@ -1,5 +1,6 @@
 import { ArrayCodec } from './array';
 import { Converter, TypeCheckingCodec } from './convert';
+import { NullCodec } from './null';
 
 export declare const isNumberArray: (input: unknown) => input is number[];
 /**
@@ -28,4 +29,6 @@ export declare class NumberCodec extends TypeCheckingCodec<number, number> {
     readonly decoder: NumberDecoder;
 }
 export declare const numberCodec: NumberCodec;
+export declare const nullableNumberCodec: NullCodec<number, number>;
 export declare const numberArrayCodec: ArrayCodec<number, number>;
+export declare const nullableNumberArrayCodec: ArrayCodec<number | null, number | null>;

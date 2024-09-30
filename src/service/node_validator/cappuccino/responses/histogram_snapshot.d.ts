@@ -20,10 +20,10 @@ export declare class CappuccinoHistogramSnapshot extends CappuccinoNodeValidator
     constructor(histograms: CappuccinoSummaryHistograms);
     toJSON(): {
         HistogramSnapshot: {
-            block_time: number[];
-            block_size: number[];
-            block_transactions: number[];
-            block_heights: number[];
+            block_time: (number | null)[];
+            block_size: (number | null)[];
+            block_transactions: (number | null)[];
+            block_heights: (number | null)[];
         };
     };
 }
@@ -33,10 +33,10 @@ declare class CappuccinoHistogramSnapshotDecoder implements Converter<unknown, C
 declare class CappuccinoHistogramSnapshotEncoder implements Converter<CappuccinoHistogramSnapshot> {
     convert(input: CappuccinoHistogramSnapshot): {
         HistogramSnapshot: {
-            block_time: number[];
-            block_size: number[];
-            block_transactions: number[];
-            block_heights: number[];
+            block_time: (number | null)[];
+            block_size: (number | null)[];
+            block_transactions: (number | null)[];
+            block_heights: (number | null)[];
         };
     };
 }

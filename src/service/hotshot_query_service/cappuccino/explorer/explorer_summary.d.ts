@@ -29,10 +29,10 @@ export declare class CappuccinoExplorerSummary {
             num_transactions: number;
         }[];
         histograms: {
-            block_time: number[];
-            block_size: number[];
-            block_transactions: number[];
-            block_heights: number[];
+            block_time: (number | null)[];
+            block_size: (number | null)[];
+            block_transactions: (number | null)[];
+            block_heights: (number | null)[];
         };
     };
 }
@@ -57,10 +57,10 @@ declare class CappuccinoExplorerSummaryEncoder implements Converter<CappuccinoEx
             num_transactions: number;
         }[];
         histograms: {
-            block_time: number[];
-            block_size: number[];
-            block_transactions: number[];
-            block_heights: number[];
+            block_time: (number | null)[];
+            block_size: (number | null)[];
+            block_transactions: (number | null)[];
+            block_heights: (number | null)[];
         };
     };
 }

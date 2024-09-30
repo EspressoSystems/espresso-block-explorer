@@ -14,10 +14,10 @@ export declare class NodeValidatorResponse extends WebWorkerProxyResponse {
             BlocksSnapshot: unknown[];
         } | {
             HistogramSnapshot: {
-                block_time: number[];
-                block_size: number[];
-                block_transactions: number[];
-                block_heights: number[];
+                block_time: (number | null)[];
+                block_size: (number | null)[];
+                block_transactions: (number | null)[];
+                block_heights: (number | null)[];
             };
         } | {
             LatestBlock: unknown;
@@ -54,10 +54,10 @@ declare class NodeValidatorResponseEncoder implements Converter<NodeValidatorRes
             BlocksSnapshot: unknown[];
         } | {
             HistogramSnapshot: {
-                block_time: number[];
-                block_size: number[];
-                block_transactions: number[];
-                block_heights: number[];
+                block_time: (number | null)[];
+                block_size: (number | null)[];
+                block_transactions: (number | null)[];
+                block_heights: (number | null)[];
             };
         } | {
             LatestBlock: unknown;
