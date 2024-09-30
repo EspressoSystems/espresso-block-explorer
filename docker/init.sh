@@ -23,8 +23,6 @@ else
   rm /app/packages/block-explorer/public/config.bk.json
 fi
 
-NODE_VALIDATOR_URI
-
 cat /app/packages/block-explorer/public/config.json
 # Actually start app
 npm run start --workspace=packages/block-explorer
