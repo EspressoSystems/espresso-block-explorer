@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 COPY package.json package-lock.json /app/
@@ -19,7 +19,7 @@ RUN npm install --no-audit --save --workspace=packages/block-explorer packages/e
 # Build the Next Application
 RUN npm run build --workspace=packages/block-explorer
 
-FROM --platform=$BUILDPLATFORM node:20-alpine
+FROM node:20-alpine
 RUN apk add --no-cache bash jq tini
 WORKDIR /app
 
