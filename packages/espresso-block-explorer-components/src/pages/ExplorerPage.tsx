@@ -184,9 +184,11 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           </SummaryTabledLabeledValue>
           <br />
 
-          <BlockSummaryDataLoader>
-            <GuardedBlocksSummaryDataTable />
-          </BlockSummaryDataLoader>
+          <div className="card--padding">
+            <BlockSummaryDataLoader>
+              <GuardedBlocksSummaryDataTable />
+            </BlockSummaryDataLoader>
+          </div>
         </Card>
 
         <Card className="latest-transactions-summary">
@@ -200,9 +202,11 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           </SummaryTabledLabeledValue>
           <br />
 
-          <TransactionSummaryDataLoader>
-            <GuardedTransactionsSummaryDataTable />
-          </TransactionSummaryDataLoader>
+          <div className="card--padding">
+            <TransactionSummaryDataLoader>
+              <GuardedTransactionsSummaryDataTable />
+            </TransactionSummaryDataLoader>
+          </div>
         </Card>
 
         <Card className="latest-rollups-summary">
@@ -216,9 +220,11 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           </SummaryTabledLabeledValue>
           <br />
 
-          <RollUpsSummaryLoader>
-            <GuardedRollUpsSummaryDataTable />
-          </RollUpsSummaryLoader>
+          <div className="card--padding">
+            <RollUpsSummaryLoader>
+              <GuardedRollUpsSummaryDataTable />
+            </RollUpsSummaryLoader>
+          </div>
         </Card>
       </div>
 
