@@ -51,7 +51,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
     request: CappuccinoExplorerGetBlockDetailRequest,
   ): Promise<CappuccinoExplorerGetBlockDetailResponse> {
     const url = new URL(`block/${request.target}`, this.baseURL);
-    return this.fetcher(url.toString()).then(
+    return this.fetcher(url).then(
       validateAndExpandResponse(
         cappuccinoExplorerGetBlockDetailResponseCodec.decoder,
         unwrappedCappuccinoExplorerErrorResponseDecoder,
@@ -66,7 +66,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
       `blocks/${request.from}/${request.limit}`,
       this.baseURL,
     );
-    return this.fetcher(url.toString()).then(
+    return this.fetcher(url).then(
       validateAndExpandResponse(
         cappuccinoExplorerGetBlockSummariesResponseCodec.decoder,
         unwrappedCappuccinoExplorerErrorResponseDecoder,
@@ -92,7 +92,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
     if (!url) {
       throw new UnimplementedError();
     }
-    return this.fetcher(url.toString()).then(
+    return this.fetcher(url).then(
       validateAndExpandResponse(
         cappuccinoExplorerGetTransactionDetailResponseCodec.decoder,
         unwrappedCappuccinoExplorerErrorResponseDecoder,
@@ -107,7 +107,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
     let url = target.convertURL(this.baseURL);
     url = filter.convertURL(url);
 
-    return this.fetcher(url.toString()).then(
+    return this.fetcher(url).then(
       validateAndExpandResponse(
         cappuccinoExplorerGetTransactionSummariesResponseCodec.decoder,
         unwrappedCappuccinoExplorerErrorResponseDecoder,
@@ -117,7 +117,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
 
   async getExplorerOverview(): Promise<CappuccinoExplorerGetExplorerSummaryResponse> {
     const url = new URL('explorer-summary', this.baseURL);
-    return this.fetcher(url.toString()).then(
+    return this.fetcher(url).then(
       validateAndExpandResponse(
         cappuccinoExplorerGetExplorerSummaryResponseCodec.decoder,
         unwrappedCappuccinoExplorerErrorResponseDecoder,
@@ -133,7 +133,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
       this.baseURL,
     );
 
-    return this.fetcher(url.toString()).then(
+    return this.fetcher(url).then(
       validateAndExpandResponse(
         cappuccinoExplorerGetSearchResultResponseCodec.decoder,
         unwrappedCappuccinoExplorerErrorResponseDecoder,
