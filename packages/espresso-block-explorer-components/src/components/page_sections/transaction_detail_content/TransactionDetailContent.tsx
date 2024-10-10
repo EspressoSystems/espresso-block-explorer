@@ -50,27 +50,27 @@ export const TransactionDetailsContentPlaceholder: React.FC<
 > = () => {
   return (
     <>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Block" />
         <SkeletonContent />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Transaction index in block" />
         <SkeletonContent />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Transaction Size" />
         <SkeletonContent />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Espresso Sequencer Hash" />
         <SkeletonContent />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Time" />
         <SkeletonContent />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Sender" />
         <SkeletonContent />
       </TableLabeledValue>
@@ -92,33 +92,33 @@ export const TransactionDetailsContent: React.FC<
 
   return (
     <>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Block" />
         <Link href={pathResolver.block(details.block)}>
           <NumberText number={details.block} />
         </Link>
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Transaction index in block" />
         <Text
           text={`index ${details.index} out of ${details.total} transactions`}
         />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Transaction Size" />
         <ByteSizeText bytes={details.size} />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Espresso Sequencer Hash" />
         <CopyTaggedBase64 value={details.hash}>
           <FullTaggedBase64Text value={details.hash} />
         </CopyTaggedBase64>
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Time" />
         <DateTimeText date={details.time} />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Sender" />
         <CopyTaggedBase64 value={details.sender}>
           <FullTaggedBase64Text value={details.sender} />
@@ -131,11 +131,11 @@ export const TransactionDetailsContent: React.FC<
 export const TransactionDataContentsPlaceholder: React.FC = () => {
   return (
     <>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Rollup" />
         <SkeletonContent />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Transaction data" />
         <SkeletonContent />
       </TableLabeledValue>
@@ -154,7 +154,7 @@ export const TransactionDataContents: React.FC = () => {
   const data = details.tree;
   return (
     <>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Rollup" />
         <>
           <RollUpSimple namespace={data.namespace} />
@@ -164,7 +164,7 @@ export const TransactionDataContents: React.FC = () => {
           </Link>
         </>
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Transaction data" />
         <>
           <HexDump value={data.data} />
