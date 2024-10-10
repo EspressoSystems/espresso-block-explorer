@@ -1,7 +1,7 @@
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import { urlEncoding } from '@/convert/base64/base64';
 import { encodeNumberIterableToHexits } from '@/convert/hex/hex';
-import TableLabeledValue from '@/layout/table_labeled_value/TabledLabeledValue';
+import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
 import SkeletonContent from '@/loading/SkeletonContent';
 import ByteSizeText from '@/text/ByteSizeText';
 import CopyTaggedBase64 from '@/text/CopyTaggedBase64';

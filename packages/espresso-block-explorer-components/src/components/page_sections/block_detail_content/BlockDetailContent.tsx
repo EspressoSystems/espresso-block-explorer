@@ -1,6 +1,6 @@
 import { DataContext } from '@/contexts/DataProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
-import TableLabeledValue from '@/layout/table_labeled_value/TabledLabeledValue';
+import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
 import SkeletonContent from '@/loading/SkeletonContent';
 import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
