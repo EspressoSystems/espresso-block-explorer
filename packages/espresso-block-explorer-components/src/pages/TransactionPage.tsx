@@ -109,7 +109,7 @@ const TransactionPage: React.FC<TransactionPageProps> = (props) => (
       <GuardedTransactionDetailsContent {...props} />
 
       {/* For Each Payload within the Transaction */}
-      <EdgeMarginHeading2>
+      <EdgeMarginHeading2 className="heading--margin">
         <Text text="Data" />
       </EdgeMarginHeading2>
 
