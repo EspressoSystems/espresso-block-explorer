@@ -21,11 +21,11 @@ div.card > hr {
 
 /* Mobile Size */
 .card--padding {
-  padding: 0 8px;
+  padding-inline: 8px;
 }
 /* Large */
 @media screen and (min-width: 1024px) {
   .card--padding {
-    padding: 0 16px;
+    padding-inline: 16px;
   }
 }

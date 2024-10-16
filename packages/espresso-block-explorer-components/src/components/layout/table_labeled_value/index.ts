@@ -1,2 +1,2 @@
-export * from './TabledLabeledValue';
-export { default as TabledLabeledValue } from './TabledLabeledValue';
+export * from './TableLabeledValue';
+export { default as TableLabeledValue } from './TableLabeledValue';

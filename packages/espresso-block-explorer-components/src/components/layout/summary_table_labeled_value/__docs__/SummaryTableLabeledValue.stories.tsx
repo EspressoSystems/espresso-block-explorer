@@ -1,7 +1,7 @@
 import Text from '@/text/Text';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import TabledLabeledValueComp from '../TabledLabeledValue';
+import SummaryTableLabeledValueComp from '../SummaryTabledLabeledValue';
 
 interface ExampleProps {
   label: string;
@@ -9,21 +9,21 @@ interface ExampleProps {
 }
 
 const Example: React.FC<ExampleProps> = ({ label, value, ...props }) => (
-  <TabledLabeledValueComp {...props}>
+  <SummaryTableLabeledValueComp {...props}>
     <Text text={label} />
     <Text text={value} />
-  </TabledLabeledValueComp>
+  </SummaryTableLabeledValueComp>
 );
 
 const meta: Meta<typeof Example> = {
-  title: 'Components/Layout/Tabled Labeled Value',
+  title: 'Components/Layout/Summary Tabled Labeled Value',
   component: Example,
 };
 
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const TabledLabeledValue: Story = {
+export const SummaryTableLabeledValue: Story = {
   args: {
     label: 'Label',
     value: '100',

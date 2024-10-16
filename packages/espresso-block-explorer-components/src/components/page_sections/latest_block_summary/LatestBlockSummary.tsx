@@ -3,7 +3,7 @@ import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import { CardNoPadding } from '@/layout/card/Card';
-import SummaryTabledLabeledValue from '@/layout/summary_table_labeled_value/SummaryTabledLabeledValue';
+import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/SummaryTableLabeledValue';
 import SummaryValueLabeled from '@/layout/summary_value_labeled/SummaryValueLabeled';
 import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
 import SkeletonContent from '@/loading/SkeletonContent';
@@ -25,7 +25,7 @@ export const LatestBlockSummaryHeading: React.FC = () => {
   const pathResolver = React.useContext(PathResolverContext);
 
   return (
-    <SummaryTabledLabeledValue className="card--padding">
+    <SummaryTableLabeledValue className="card--padding">
       <SummaryValueLabeled>
         <NumberText number={block.height} />
         <Text text="Latest Block" />
@@ -33,19 +33,19 @@ export const LatestBlockSummaryHeading: React.FC = () => {
       <LabeledAnchorButton href={pathResolver.block(block.height)}>
         <Text text="Go to Block" />
       </LabeledAnchorButton>
-    </SummaryTabledLabeledValue>
+    </SummaryTableLabeledValue>
   );
 };
 
 export const LatestBlockSummaryHeadingPlaceholder: React.FC = () => {
   return (
-    <SummaryTabledLabeledValue className="card--padding">
+    <SummaryTableLabeledValue className="card--padding">
       <SummaryValueLabeled>
         <SkeletonContent />
         <SkeletonContent />
       </SummaryValueLabeled>
       <SkeletonContent />
-    </SummaryTabledLabeledValue>
+    </SummaryTableLabeledValue>
   );
 };
 
@@ -54,26 +54,26 @@ export const LatestBlockSummaryDetails: React.FC = () => {
 
   return (
     <div className="card--padding">
-      <SummaryTabledLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Time" />
         <RelativeTimeText date={block.time} />
-      </SummaryTabledLabeledValue>
-      <SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Size" />
         <ByteSizeText bytes={block.size} />
-      </SummaryTabledLabeledValue>
-      <SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Transactions" />
         <NumberText number={block.transactions} />
-      </SummaryTabledLabeledValue>
-      <SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Builder" />
         {block.proposer.map((proposer, index) => (
           <div key={index}>
             <HexText value={proposer} />
           </div>
         ))}
-      </SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
     </div>
   );
 };
@@ -81,22 +81,22 @@ export const LatestBlockSummaryDetails: React.FC = () => {
 export const LatestBlockSummaryDetailsPlaceholder: React.FC = () => {
   return (
     <div className="card--padding">
-      <SummaryTabledLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Time" />
         <SkeletonContent />
-      </SummaryTabledLabeledValue>
-      <SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Size" />
         <SkeletonContent />
-      </SummaryTabledLabeledValue>
-      <SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Transactions" />
         <SkeletonContent />
-      </SummaryTabledLabeledValue>
-      <SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Builder" />
         <SkeletonContent />
-      </SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
     </div>
   );
 };

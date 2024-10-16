@@ -1,1 +1,1 @@
-export { default as SummaryTabledLabeledValue } from './SummaryTabledLabeledValue';
+export { default as SummaryTableLabeledValue } from './SummaryTableLabeledValue';

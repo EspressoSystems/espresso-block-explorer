@@ -1,6 +1,6 @@
 import { DataContext } from '@/contexts/DataProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
-import TableLabeledValue from '@/layout/table_labeled_value/TabledLabeledValue';
+import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
 import SkeletonContent from '@/loading/SkeletonContent';
 import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
@@ -112,31 +112,31 @@ export const BlockDetailsContentPlaceholder: React.FC<
 > = () => {
   return (
     <>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Block Height" />
         <SkeletonContent />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Timestamp" />
         <SkeletonContent />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Transactions" />
         <SkeletonContent />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Builders" />
         <SkeletonContent />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Fee Recipients" />
         <SkeletonContent />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Size" />
         <SkeletonContent />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Block Reward" />
         <SkeletonContent />
       </TableLabeledValue>
@@ -156,24 +156,24 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
 
   return (
     <>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Block Height" />
         <NumberText number={details.height} />
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Timestamp" />
         <>
           <RelativeTimeText date={details.time} /> (
           <DateTimeText date={details.time} />)
         </>
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Transactions" />
         <Link href={pathResolver.transactionsForBlock(details.height)}>
           <NumberText number={details.transactions} />
         </Link>
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Builders" />
         {details.proposer.map((proposer, index) => (
           <div key={index}>
@@ -183,7 +183,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
           </div>
         ))}
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Fee Recipients" />
         {details.proposer.map((recipient, index) => (
           <div key={index}>
@@ -193,7 +193,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
           </div>
         ))}
       </TableLabeledValue>
-      <TableLabeledValue>
+      <TableLabeledValue className="card--padding">
         <Text text="Size" />
         <ByteSizeText bytes={details.size} />
       </TableLabeledValue>

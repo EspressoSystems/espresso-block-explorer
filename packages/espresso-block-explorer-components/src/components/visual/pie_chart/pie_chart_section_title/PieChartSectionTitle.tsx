@@ -15,7 +15,7 @@ export const PieChartSectionTitle: React.FC<PieChartSectionTitleProps> = (
   props,
 ) => {
   return (
-    <div className="pie-chart-section-title">
+    <div className="pie-chart-section-title card--padding heading--margin">
       <Heading2>{props.children}</Heading2>
     </div>
   );
