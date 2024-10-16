@@ -7,5 +7,5 @@ import { CopyArrayBufferAsTextProps } from './CopyArrayBufferAsTextProps';
  * standard encoding of base64 as the `content` of the `CopyButton` to be
  * copied into the end-users clipboard.
  */
-declare const CopyHex: React.FC<CopyArrayBufferAsTextProps>;
-export default CopyHex;
+declare const CopyBase64: React.FC<CopyArrayBufferAsTextProps>;
+export default CopyBase64;
