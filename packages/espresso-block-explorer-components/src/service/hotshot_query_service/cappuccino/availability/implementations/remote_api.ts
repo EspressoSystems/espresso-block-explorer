@@ -40,7 +40,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI
 
   getLeafFromHeight(height: number): Promise<CappuccinoAPILeafResponse> {
     const url = new URL(`leaf/${height}`, this.baseURL);
-    return this.fetcher(url.toString()).then(
+    return this.fetcher(url).then(
       validateAndExpandResponse(
         cappuccinoAPILeafResponseCodec.decoder,
         unwrappedCappuccinoAvailabilityErrorResponseDecoder,
@@ -53,7 +53,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI
     index: number,
   ): Promise<CappuccinoAPITransactionResponse> {
     const url = new URL(`transaction/${height}/${index}`, this.baseURL);
-    return this.fetcher(url.toString()).then(
+    return this.fetcher(url).then(
       validateAndExpandResponse(
         cappuccinoAPITransactionResponseCodec.decoder,
         unwrappedCappuccinoAvailabilityErrorResponseDecoder,
@@ -85,7 +85,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI
 
   getBlockFromHeight(height: number): Promise<CappuccinoAPIBlock> {
     const url = new URL(`block/${height}`, this.baseURL);
-    return this.fetcher(url.toString()).then(
+    return this.fetcher(url).then(
       validateAndExpandResponse(
         cappuccinoAPIBlockCodec.decoder,
         unwrappedCappuccinoAvailabilityErrorResponseDecoder,
