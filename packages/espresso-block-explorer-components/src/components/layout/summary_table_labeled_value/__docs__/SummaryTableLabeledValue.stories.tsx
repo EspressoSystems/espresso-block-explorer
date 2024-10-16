@@ -1,7 +1,7 @@
 import Text from '@/text/Text';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import SummaryTableLabeledValueComp from '../SummaryTabledLabeledValue';
+import SummaryTableLabeledValueComp from '../SummaryTableLabeledValue';
 
 interface ExampleProps {
   label: string;
