@@ -38,6 +38,12 @@
   grid-area: lrs;
 }
 
+.latest-blocks-summary > .summary-tabled-labeled-value,
+.latest-transactions-summary > .summary-tabled-labeled-value,
+.latest-rollups-summary > .summary-tabled-labeled-value {
+  padding: 1em;
+}
+
 .block-time-histogram {
   grid-area: gbt;
 }
