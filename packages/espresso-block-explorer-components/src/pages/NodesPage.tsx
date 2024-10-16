@@ -119,7 +119,7 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
 
           {/* Network Map */}
           <Card className="network-map">
-            <HistogramSectionTitle>
+            <HistogramSectionTitle className="card--padding heading--margin">
               <Text text="Network Map" />
               <div></div>
             </HistogramSectionTitle>

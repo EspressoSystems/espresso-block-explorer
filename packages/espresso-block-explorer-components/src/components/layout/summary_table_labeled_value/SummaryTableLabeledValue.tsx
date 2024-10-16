@@ -1,7 +1,7 @@
 import { addClassToClassName } from '@/higher_order';
 import { WithUiSmall, WithUiText600 } from '@/typography/typography';
 import React from 'react';
-import './summary_tabled_labeled_value.css';
+import './summary_table_labeled_value.css';
 
 const DivText600 = WithUiText600('div');
 const LabelTextSmall = WithUiSmall('label');
@@ -12,7 +12,7 @@ interface LabelProps {
 }
 
 /**
- * Label represents the Label portion of the TabledLabeledValue component.
+ * Label represents the Label portion of the TableLabeledValue component.
  * It ensures that text rendered within the label has the correct typography.
  */
 const Label: React.FC<LabelProps> = ({ className, children, ...props }) => (
@@ -27,7 +27,7 @@ interface ValueProps {
 }
 
 /**
- * Value represents the Value portion of the TabledLabeledValue component.
+ * Value represents the Value portion of the TableLabeledValue component.
  * It ensures that text rendered within the value has the correct typography.
  */
 const Value: React.FC<ValueProps> = ({ className, children, ...props }) => (
@@ -42,7 +42,7 @@ export interface SummaryTableLabeledValueProps {
 }
 
 /**
- * TabledLabeledValue is a component that is meant to display a label and
+ * TableLabeledValue is a component that is meant to display a label and
  * value pair of components, and lay them out depending on the screen size
  * of the device in question.
  *
@@ -50,7 +50,7 @@ export interface SummaryTableLabeledValueProps {
  * if in a full sized table element. Otherwise, they should appear as
  * a single element of sufficient size.
  */
-const SummaryTabledLabeledValue: React.FC<SummaryTableLabeledValueProps> = ({
+const SummaryTableLabeledValue: React.FC<SummaryTableLabeledValueProps> = ({
   className,
   children,
   ...props
@@ -64,4 +64,4 @@ const SummaryTabledLabeledValue: React.FC<SummaryTableLabeledValueProps> = ({
   </div>
 );
 
-export default SummaryTabledLabeledValue;
+export default SummaryTableLabeledValue;

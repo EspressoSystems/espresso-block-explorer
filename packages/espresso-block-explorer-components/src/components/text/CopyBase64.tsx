@@ -10,7 +10,7 @@ import './inline.css';
  * standard encoding of base64 as the `content` of the `CopyButton` to be
  * copied into the end-users clipboard.
  */
-const CopyHex: React.FC<CopyArrayBufferAsTextProps> = (props) => {
+const CopyBase64: React.FC<CopyArrayBufferAsTextProps> = (props) => {
   const string = stdEncoding.encodeToString(props.value);
 
   return (
@@ -21,4 +21,4 @@ const CopyHex: React.FC<CopyArrayBufferAsTextProps> = (props) => {
   );
 };
 
-export default CopyHex;
+export default CopyBase64;

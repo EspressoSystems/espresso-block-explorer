@@ -37,7 +37,7 @@ import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import Card, { CardNoPadding } from '@/layout/card/Card';
 import Heading1 from '@/layout/heading/Heading1';
 import { WithEdgeMargin } from '@/layout/margin/margins';
-import SummaryTabledLabeledValue from '@/layout/summary_table_labeled_value/SummaryTabledLabeledValue';
+import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/SummaryTableLabeledValue';
 import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
 import Text from '@/text/Text';
 import { WithUiText300 } from '@/typography/typography';
@@ -174,51 +174,54 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
         </CardNoPadding>
 
         <Card className="latest-blocks-summary">
-          <SummaryTabledLabeledValue>
+          <SummaryTableLabeledValue>
             <Text300H2>
               <Text text="Latest Blocks" />
             </Text300H2>
             <LabeledAnchorButton href={pathResolver.blocks()}>
               <Text text="View all" />
             </LabeledAnchorButton>
-          </SummaryTabledLabeledValue>
-          <br />
+          </SummaryTableLabeledValue>
 
-          <BlockSummaryDataLoader>
-            <GuardedBlocksSummaryDataTable />
-          </BlockSummaryDataLoader>
+          <div className="card--padding">
+            <BlockSummaryDataLoader>
+              <GuardedBlocksSummaryDataTable />
+            </BlockSummaryDataLoader>
+          </div>
         </Card>
 
         <Card className="latest-transactions-summary">
-          <SummaryTabledLabeledValue>
+          <SummaryTableLabeledValue>
             <Text300H2>
               <Text text="Latest Transactions" />
             </Text300H2>
             <LabeledAnchorButton href={pathResolver.transactions()}>
               <Text text="View all" />
             </LabeledAnchorButton>
-          </SummaryTabledLabeledValue>
-          <br />
+          </SummaryTableLabeledValue>
 
-          <TransactionSummaryDataLoader>
-            <GuardedTransactionsSummaryDataTable />
-          </TransactionSummaryDataLoader>
+          <div className="card--padding">
+            <TransactionSummaryDataLoader>
+              <GuardedTransactionsSummaryDataTable />
+            </TransactionSummaryDataLoader>
+          </div>
         </Card>
 
         <Card className="latest-rollups-summary">
-          <SummaryTabledLabeledValue>
+          <SummaryTableLabeledValue>
             <Text300H2>
               <Text text="Most active rollups" />
             </Text300H2>
             <LabeledAnchorButton href={pathResolver.rollUps()}>
               <Text text="View all" />
             </LabeledAnchorButton>
-          </SummaryTabledLabeledValue>
-          <br />
+          </SummaryTableLabeledValue>
 
-          <RollUpsSummaryLoader>
-            <GuardedRollUpsSummaryDataTable />
-          </RollUpsSummaryLoader>
+          <div className="card--padding">
+            <RollUpsSummaryLoader>
+              <GuardedRollUpsSummaryDataTable />
+            </RollUpsSummaryLoader>
+          </div>
         </Card>
       </div>
 

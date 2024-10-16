@@ -2,7 +2,7 @@ import { ErrorContext } from '@/components/contexts/ErrorProvider';
 import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import { CardNoPadding } from '@/layout/card/Card';
-import SummaryTabledLabeledValue from '@/layout/summary_table_labeled_value/SummaryTabledLabeledValue';
+import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/SummaryTableLabeledValue';
 import SummaryValueLabeled from '@/layout/summary_value_labeled/SummaryValueLabeled';
 import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
 import SkeletonContent from '@/loading/SkeletonContent';
@@ -29,22 +29,22 @@ export const ExplorerOverviewDetails: React.FC = () => {
 
   return (
     <div className="card--padding">
-      <SummaryTabledLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Rollups" />
         <NumberText number={overview.rollups} />
-      </SummaryTabledLabeledValue>
-      <SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Transactions" />
         <NumberText number={overview.transactions} />
-      </SummaryTabledLabeledValue>
-      <SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Blocks" />
         <NumberText number={overview.blocks} />
-      </SummaryTabledLabeledValue>
-      <SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Sequencer nodes" />
         <NumberText number={overview.sequencerNodes} />
-      </SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
     </div>
   );
 };
@@ -52,22 +52,22 @@ export const ExplorerOverviewDetails: React.FC = () => {
 export const ExplorerOverviewDetailsPlaceholder: React.FC = () => {
   return (
     <div className="card--padding">
-      <SummaryTabledLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Rollups" />
         <SkeletonContent />
-      </SummaryTabledLabeledValue>
-      <SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Transactions" />
         <SkeletonContent />
-      </SummaryTabledLabeledValue>
-      <SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Blocks" />
         <SkeletonContent />
-      </SummaryTabledLabeledValue>
-      <SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
         <Text text="Sequencer nodes" />
         <SkeletonContent />
-      </SummaryTabledLabeledValue>
+      </SummaryTableLabeledValue>
     </div>
   );
 };

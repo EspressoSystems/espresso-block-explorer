@@ -4,7 +4,7 @@ import { HistogramSectionTitle } from '@/components/visual/histogram/histogram_s
 import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import { CardNoPadding } from '@/layout/card/Card';
-import SummaryTabledLabeledValue from '@/layout/summary_table_labeled_value/SummaryTabledLabeledValue';
+import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/SummaryTableLabeledValue';
 import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
 import SkeletonContent from '@/loading/SkeletonContent';
 import NumberText from '@/text/NumberText';
@@ -27,10 +27,10 @@ export const LatestBlockProducersHeading: React.FC = () => {
 
 export const LatestBlockProducersHeadingPlaceholder: React.FC = () => {
   return (
-    <SummaryTabledLabeledValue className="card--padding">
+    <SummaryTableLabeledValue className="card--padding">
       <Text text="Latest Block Producers" />
       <></>
-    </SummaryTabledLabeledValue>
+    </SummaryTableLabeledValue>
   );
 };
 
@@ -44,10 +44,10 @@ export const LatestBlockProducersDetails: React.FC = () => {
   return (
     <div className="card--padding">
       {slicedProducers.map((producer, index) => (
-        <SummaryTabledLabeledValue key={index}>
+        <SummaryTableLabeledValue key={index}>
           <FullHexText value={producer.proposer} />
           <NumberText number={producer.count} />
-        </SummaryTabledLabeledValue>
+        </SummaryTableLabeledValue>
       ))}
     </div>
   );
