@@ -57,18 +57,6 @@ function createFetcherWithJSONResponse<V>(
   );
 }
 
-/**
- * createFetcherSuccessResponse is another utility function used for mocking
- * tests. This function provides a quick interface for creating a successful
- * JSON response with the given value.
- */
-function createFetcherSuccessResponse<T>(
-  requestSink: Channel<ArgumentsType<typeof fetch>>,
-  value: T,
-): typeof fetch {
-  return createFetcherWithJSONResponse(requestSink, 200, value);
-}
-
 describe('HotShot Query Service - Cappuccino - Availability API', () => {
   describe('Mock', () => {
     describe('getBlockFromHeight', () => {
@@ -115,7 +103,7 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
         const requestChannel =
           createBufferedChannel<ArgumentsType<typeof fetch>>(4);
         const client = new FetchBasedCappuccinoHotShotQueryService(
-          createFetcherSuccessResponse(requestChannel, returnedValue),
+          createFetcherWithJSONResponse(requestChannel, 200, returnedValue),
           new URL('https://example.com/v0/'),
         );
 
