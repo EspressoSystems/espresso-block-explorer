@@ -11,6 +11,6 @@ export { default as ExternalLink } from './ExternalLink';
 export { default as InfoCircle } from './InfoCircle';
 export { default as MediumIcon } from './MediumIcon';
 export { default as Menu } from './Menu';
-export { default as SVGIconBase } from './SVGIconBase';
 export { default as SearchGlass } from './SearchGlass';
+export { default as SVGIconBase } from './SVGIconBase';
 export { default as TwitterIcon } from './TwitterIcon';
