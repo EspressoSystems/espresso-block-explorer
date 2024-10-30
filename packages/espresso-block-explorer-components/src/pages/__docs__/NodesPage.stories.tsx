@@ -1,6 +1,7 @@
 import { ProvideTickEverySecond } from '@/components/contexts/NowProvider';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import { ProvideCappuccinoNodeValidatorStreams } from 'pages/CappuccinoNodeValidatorServiceAdapters';
+import { ProvideCappuccinoNodeValidatorServiceAPIContext } from 'pages/CappuccinoNodeValidatorServiceAPIContext';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
 import FakeDataNotice from '../FakeDataNotice';
@@ -13,11 +14,13 @@ const Example: React.FC<ExampleProps> = (props) => (
   <>
     <FakeDataNotice />
     <ProvideTickEverySecond>
-      <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideCappuccinoNodeValidatorStreams>
-          <NodesPage {...props} />
-        </ProvideCappuccinoNodeValidatorStreams>
-      </OverridePathResolver>
+      <ProvideCappuccinoNodeValidatorServiceAPIContext>
+        <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
+          <ProvideCappuccinoNodeValidatorStreams>
+            <NodesPage {...props} />
+          </ProvideCappuccinoNodeValidatorStreams>
+        </OverridePathResolver>
+      </ProvideCappuccinoNodeValidatorServiceAPIContext>
     </ProvideTickEverySecond>
   </>
 );

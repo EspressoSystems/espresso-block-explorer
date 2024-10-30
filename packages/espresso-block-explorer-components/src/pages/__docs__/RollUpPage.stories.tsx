@@ -1,6 +1,7 @@
 import { ProvideTickEverySecond } from '@/components';
 import { NamespaceContext } from '@/components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
+import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
 import { ProvideCappuccinoRollUpDetailDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
@@ -17,11 +18,13 @@ const Example: React.FC<ExampleProps> = ({ namespace, ...props }) => (
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideCappuccinoRollUpDetailDataSource>
-          <NamespaceContext.Provider value={namespace}>
-            <RollUpPage {...props} />
-          </NamespaceContext.Provider>
-        </ProvideCappuccinoRollUpDetailDataSource>
+        <ProvideCappuccinoHotShotQueryServiceAPIContext>
+          <ProvideCappuccinoRollUpDetailDataSource>
+            <NamespaceContext.Provider value={namespace}>
+              <RollUpPage {...props} />
+            </NamespaceContext.Provider>
+          </ProvideCappuccinoRollUpDetailDataSource>
+        </ProvideCappuccinoHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </>

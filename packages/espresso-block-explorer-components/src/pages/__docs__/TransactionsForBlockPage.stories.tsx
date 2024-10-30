@@ -1,5 +1,6 @@
 import { ProvideTickEverySecond } from '@/components';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
+import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
 import {
@@ -20,11 +21,13 @@ const Example: React.FC<ExampleProps> = (props) => (
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideCappuccinoBlockDetailDataSource>
-          <ProvideCappuccinoTransactionsForBlockSummaryDataSource>
-            <TransactionsForBlockPage {...props} />
-          </ProvideCappuccinoTransactionsForBlockSummaryDataSource>
-        </ProvideCappuccinoBlockDetailDataSource>
+        <ProvideCappuccinoHotShotQueryServiceAPIContext>
+          <ProvideCappuccinoBlockDetailDataSource>
+            <ProvideCappuccinoTransactionsForBlockSummaryDataSource>
+              <TransactionsForBlockPage {...props} />
+            </ProvideCappuccinoTransactionsForBlockSummaryDataSource>
+          </ProvideCappuccinoBlockDetailDataSource>
+        </ProvideCappuccinoHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </>

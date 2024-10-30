@@ -1,6 +1,7 @@
 import { BlockNumberContext } from '@/components/page_sections/block_detail_content/BlockDetailContentLoader';
 import { ProvideTickEverySecond } from '@/contexts/NowProvider';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
+import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
 import BlockPage from '../BlockPage';
@@ -17,11 +18,13 @@ const Example: React.FC<ExampleProps> = ({ block, ...props }) => (
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <BlockNumberContext.Provider value={block}>
-          <ProvideCappuccinoBlockDetailDataSource>
-            <BlockPage {...props} />
-          </ProvideCappuccinoBlockDetailDataSource>
-        </BlockNumberContext.Provider>
+        <ProvideCappuccinoHotShotQueryServiceAPIContext>
+          <BlockNumberContext.Provider value={block}>
+            <ProvideCappuccinoBlockDetailDataSource>
+              <BlockPage {...props} />
+            </ProvideCappuccinoBlockDetailDataSource>
+          </BlockNumberContext.Provider>
+        </ProvideCappuccinoHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </>
