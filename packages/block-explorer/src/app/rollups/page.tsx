@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  ProvideCappuccinoHotShotQueryServiceAPIContext,
   ProvideCappuccinoRollUpsSummaryDataSource,
   RollUpsPage,
 } from 'espresso-block-explorer-components';
@@ -12,8 +13,10 @@ import {
  */
 export default function RollUps() {
   return (
-    <ProvideCappuccinoRollUpsSummaryDataSource>
-      <RollUpsPage />
-    </ProvideCappuccinoRollUpsSummaryDataSource>
+    <ProvideCappuccinoHotShotQueryServiceAPIContext>
+      <ProvideCappuccinoRollUpsSummaryDataSource>
+        <RollUpsPage />
+      </ProvideCappuccinoRollUpsSummaryDataSource>
+    </ProvideCappuccinoHotShotQueryServiceAPIContext>
   );
 }

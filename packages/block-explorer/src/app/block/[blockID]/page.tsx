@@ -3,6 +3,7 @@ import {
   BlockNumberContext,
   BlockPage,
   ProvideCappuccinoBlockDetailDataSource,
+  ProvideCappuccinoHotShotQueryServiceAPIContext,
 } from 'espresso-block-explorer-components';
 import { notFound, useParams } from 'next/navigation';
 
@@ -33,9 +34,11 @@ export default function Block() {
 
   return (
     <BlockNumberContext.Provider value={Number(blockID)}>
-      <ProvideCappuccinoBlockDetailDataSource>
-        <BlockPage />
-      </ProvideCappuccinoBlockDetailDataSource>
+      <ProvideCappuccinoHotShotQueryServiceAPIContext>
+        <ProvideCappuccinoBlockDetailDataSource>
+          <BlockPage />
+        </ProvideCappuccinoBlockDetailDataSource>
+      </ProvideCappuccinoHotShotQueryServiceAPIContext>
     </BlockNumberContext.Provider>
   );
 }

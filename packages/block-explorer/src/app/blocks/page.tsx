@@ -3,6 +3,7 @@
 import {
   BlocksPage,
   ProvideCappuccinoBlocksSummaryDataSource,
+  ProvideCappuccinoHotShotQueryServiceAPIContext,
 } from 'espresso-block-explorer-components';
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
@@ -40,8 +41,10 @@ function BlocksPageSuspended() {
   const startAtBlock = getNumberFromParams(searchParams, 'height');
 
   return (
-    <ProvideCappuccinoBlocksSummaryDataSource>
-      <BlocksPage startAtBlock={startAtBlock} />
-    </ProvideCappuccinoBlocksSummaryDataSource>
+    <ProvideCappuccinoHotShotQueryServiceAPIContext>
+      <ProvideCappuccinoBlocksSummaryDataSource>
+        <BlocksPage startAtBlock={startAtBlock} />
+      </ProvideCappuccinoBlocksSummaryDataSource>
+    </ProvideCappuccinoHotShotQueryServiceAPIContext>
   );
 }

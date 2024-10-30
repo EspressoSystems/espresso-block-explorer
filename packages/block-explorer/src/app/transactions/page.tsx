@@ -2,6 +2,7 @@
 
 import {
   ProvideCappuccinoBlockDetailDataSource,
+  ProvideCappuccinoHotShotQueryServiceAPIContext,
   ProvideCappuccinoTransactionsForBlockSummaryDataSource,
   ProvideCappuccinoTransactionsSummaryDataSource,
   TransactionsForBlockPage,
@@ -45,17 +46,21 @@ function TransactionsPageSuspended() {
 
   if (block !== undefined) {
     return (
-      <ProvideCappuccinoTransactionsForBlockSummaryDataSource>
-        <ProvideCappuccinoBlockDetailDataSource>
-          <TransactionsForBlockPage block={block} offset={offset} />
-        </ProvideCappuccinoBlockDetailDataSource>
-      </ProvideCappuccinoTransactionsForBlockSummaryDataSource>
+      <ProvideCappuccinoHotShotQueryServiceAPIContext>
+        <ProvideCappuccinoTransactionsForBlockSummaryDataSource>
+          <ProvideCappuccinoBlockDetailDataSource>
+            <TransactionsForBlockPage block={block} offset={offset} />
+          </ProvideCappuccinoBlockDetailDataSource>
+        </ProvideCappuccinoTransactionsForBlockSummaryDataSource>
+      </ProvideCappuccinoHotShotQueryServiceAPIContext>
     );
   }
 
   return (
-    <ProvideCappuccinoTransactionsSummaryDataSource>
-      <TransactionsPage startAtBlock={startAtBlock} offset={offset} />
-    </ProvideCappuccinoTransactionsSummaryDataSource>
+    <ProvideCappuccinoHotShotQueryServiceAPIContext>
+      <ProvideCappuccinoTransactionsSummaryDataSource>
+        <TransactionsPage startAtBlock={startAtBlock} offset={offset} />
+      </ProvideCappuccinoTransactionsSummaryDataSource>
+    </ProvideCappuccinoHotShotQueryServiceAPIContext>
   );
 }
