@@ -10,6 +10,7 @@ import Copy from '../Copy';
 import DiscordIcon from '../DiscordIcon';
 import EspressoLogo from '../EspressoLogo';
 import EspressoLogoAndTitle from '../EspressoLogoAndTitle';
+import ExternalLink from '../ExternalLink';
 import InfoCircle from '../InfoCircle';
 import MediumIcon from '../MediumIcon';
 import MenuIcon from '../Menu';
@@ -29,6 +30,7 @@ const Example: React.FC = () => (
     <ChevronUp />
     <Copy />
     <DiscordIcon />
+    <ExternalLink />
     <InfoCircle />
     <MediumIcon />
     <MenuIcon />

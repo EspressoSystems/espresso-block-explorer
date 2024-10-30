@@ -7,6 +7,7 @@ export { default as ChevronUp } from './ChevronUp';
 export { default as DiscordIcon } from './DiscordIcon';
 export { default as EspressoLogo } from './EspressoLogo';
 export { default as EspressoLogoAndTitle } from './EspressoLogoAndTitle';
+export { default as ExternalLink } from './ExternalLink';
 export { default as InfoCircle } from './InfoCircle';
 export { default as MediumIcon } from './MediumIcon';
 export { default as Menu } from './Menu';
