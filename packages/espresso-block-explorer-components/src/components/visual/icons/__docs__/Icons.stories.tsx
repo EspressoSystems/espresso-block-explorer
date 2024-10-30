@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import ArrowLeft from '../ArrowLeft';
 import ArrowRight from '../ArrowRight';
+import Check from '../Check';
 import CheckCircle from '../CheckCircle';
 import ChevronDown from '../ChevronDown';
 import ChevronUp from '../ChevronUp';
@@ -22,6 +23,7 @@ const Example: React.FC = () => (
     <hr />
     <ArrowLeft />
     <ArrowRight />
+    <Check />
     <CheckCircle />
     <ChevronDown />
     <ChevronUp />
