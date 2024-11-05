@@ -1,4 +1,4 @@
-import { ProvideTickEverySecond } from '@/components';
+import { ProvideTickEverySecond } from '@/components/contexts/NowProvider';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';

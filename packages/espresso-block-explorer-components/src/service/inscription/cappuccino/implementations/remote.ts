@@ -1,10 +1,14 @@
 import { Channel, createChannelToSink } from '@/async/channel';
-import { createSinkWithConverter } from '@/async/sink/converted_sink';
+import { createSinkWithConverter } from '@/async/sink';
 import { Sink } from '@/async/sink/sink';
 import {
   Completer,
   createCompleter,
 } from '@/data_structures/async/completer/Completer';
+import BadResponseServerError from '@/errors/BadResponseServerError';
+import FetchError from '@/errors/FetchError';
+import ResponseContentTypeIsNotApplicationJSONError from '@/errors/ResponseContentTypeIsNotApplicationJSONError';
+import UnimplementedError from '@/errors/UnimplementedError';
 import WebSocketError from '@/errors/WebSocketError';
 import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
 import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
@@ -20,43 +24,40 @@ import {
   espressoErrorToWebWorkerProxyResponseConverter,
   webSocketStatusToWebWorkerProxyResponseConverter,
 } from '@/models/web_worker/web_worker_proxy_response_codec';
-import { inscriptionResponseToWebWorkerProxyResponseConverter } from '@/service/inscription/cappuccino/responses/inscription_service_response';
-import CappuccinoNodeValidatorRequest from '../requests/node_validator_request';
-import { cappuccinoNodeValidatorRequestCodec } from '../requests/node_validator_request_codec';
-import { NodeValidatorServiceRequest } from '../requests/node_validator_service_request';
-import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
-import { cappuccinoNodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
-import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
+import CappuccinoInscriptionRequest from '../requests/inscription_request';
+import { InscriptionServiceRequest } from '../requests/inscription_service_request';
+import { PutInscription } from '../requests/put_inscription';
+import CappuccinoInscriptionResponse from '../responses/inscription_response';
+import { cappuccinoInscriptionResponseCodec } from '../responses/inscription_response_codec';
+import { inscriptionResponseToWebWorkerProxyResponseConverter } from '../responses/inscription_service_response';
+import { WebWorkerInscriptionAPI } from '../web_worker_proxy_api';
 
-// URL expected to be replay:<url>
-// Examples:
-//   wss://example.com/v0/
-//   ws://localhost:9000/v0/
-
-export default class WebSocketDataCappuccinoNodeValidatorAPI
-  implements WebWorkerNodeValidatorAPI
-{
+export default class RemoteInscriptionAPI implements WebWorkerInscriptionAPI {
   readonly responseStream: Channel<WebWorkerProxyResponse>;
   readonly requestStream: Channel<WebWorkerProxyRequest>;
+  readonly serviceBaseWebSocketURL: URL;
   readonly serviceBaseURL: URL;
 
   readonly lifecycleResponseSink: Sink<WebSocketStatus>;
-  readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
+  readonly inscriptionResponseSink: Sink<CappuccinoInscriptionResponse>;
   readonly errorResponseSink: Sink<unknown>;
+
   constructor(
     requestStream: Channel<WebWorkerProxyRequest>,
     responseStream: Channel<WebWorkerProxyResponse>,
+    serviceBaseWebsocketURL: URL,
     serviceBaseURL: URL,
   ) {
     this.requestStream = requestStream;
     this.responseStream = responseStream;
+    this.serviceBaseWebSocketURL = serviceBaseWebsocketURL;
     this.serviceBaseURL = serviceBaseURL;
 
     this.lifecycleResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
       webSocketStatusToWebWorkerProxyResponseConverter,
     );
-    this.nodeValidatorResponseSink = createSinkWithConverter(
+    this.inscriptionResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
       inscriptionResponseToWebWorkerProxyResponseConverter,
     );
@@ -87,48 +88,48 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
   private async handleRequest(request: WebWorkerProxyRequest) {
     if (request instanceof WebSocketRequest) {
       try {
-        await this.handleWebSocketCommand(request.command);
+        await this.handleWebSocketRequest(request.command);
       } catch (err) {
         console.error('failed to handle life cycle request', request, err);
       }
       return;
     }
 
-    if (request instanceof NodeValidatorServiceRequest) {
+    if (request instanceof InscriptionServiceRequest) {
       try {
-        await this.handleNodeValidatorRequest(request.request);
+        await this.handleInscriptionsRequest(request.request);
       } catch (err) {
-        console.error('failed to handle node validator request', request, err);
+        console.error('failed to handle inscription request', request, err);
       }
       return;
     }
 
-    console.error('unrecognized request', request);
+    console.error('unrecognized request type', request);
   }
 
-  private async handleWebSocketCommand(command: WebSocketCommand) {
-    if (command instanceof WebSocketCommandConnect) {
+  private async handleWebSocketRequest(request: WebSocketCommand) {
+    if (request instanceof WebSocketCommandConnect) {
       await this.handleConnect();
       return;
     }
 
-    if (command instanceof WebSocketCommandClose) {
+    if (request instanceof WebSocketCommandClose) {
       await this.handleClose();
       return;
     }
   }
 
-  private async handleNodeValidatorRequest(
-    request: CappuccinoNodeValidatorRequest,
+  private async handleInscriptionsRequest(
+    request: CappuccinoInscriptionRequest,
   ) {
-    this.assertConnected();
     await this.webSocketCompleter!.promise;
-    const webSocket = this.webSocket!;
 
-    // Every other message should be forwarded to the server.
-    webSocket.send(
-      JSON.stringify(cappuccinoNodeValidatorRequestCodec.encode(request)),
-    );
+    if (request instanceof PutInscription) {
+      await this.handlePutInscription(request);
+      return;
+    }
+
+    throw new UnimplementedError();
   }
 
   private assertNotConnected() {
@@ -151,14 +152,17 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     await this.lifecycleResponseSink.send(
       new WebSocketStatusConnectionConnecting(),
     );
-    const url = new URL('node-validator/details', this.serviceBaseURL);
+    const url = new URL(
+      'inscriptions/inscriptions',
+      this.serviceBaseWebSocketURL,
+    );
 
     const webSocketCompleter = createCompleter<WebSocket>();
     this.webSocketCompleter = webSocketCompleter;
 
     try {
       const messageHandler = new WebSocketMessageHandler(
-        this.nodeValidatorResponseSink,
+        this.inscriptionResponseSink,
       );
       const openHandler = new WebSocketOpenHandler(
         webSocketCompleter,
@@ -205,26 +209,63 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     // Explicitly disconnect
     webSocket.close(1000, 'done');
   }
+
+  private async handlePutInscriptionFetch(request: PutInscription) {
+    try {
+      const response = await fetch(
+        new URL('inscriptions/put_inscription', this.serviceBaseURL),
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(request.inscriptionAndSignature),
+        },
+      );
+
+      return response;
+    } catch (err) {
+      throw new FetchError(err);
+    }
+  }
+
+  private async handlePutInscription(request: PutInscription) {
+    const response = await this.handlePutInscriptionFetch(request);
+
+    if (!response.ok) {
+      throw new BadResponseServerError(response.status, response);
+    }
+
+    if (response.headers.get('content-type') !== 'application/json') {
+      throw new ResponseContentTypeIsNotApplicationJSONError(
+        response.headers.get('content-type') ?? 'undefined',
+        response.status,
+        response,
+      );
+    }
+
+    // This doesn't return a response worth inspecting.
+    // const body = await response.json();
+    return null;
+  }
 }
 
 class WebSocketMessageHandler implements EventListenerObject {
-  private readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
+  private readonly inscriptionResponseSink: Sink<CappuccinoInscriptionResponse>;
 
-  constructor(
-    nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>,
-  ) {
-    this.nodeValidatorResponseSink = nodeValidatorResponseSink;
+  constructor(inscriptionResponseSink: Sink<CappuccinoInscriptionResponse>) {
+    this.inscriptionResponseSink = inscriptionResponseSink;
   }
 
   private decodeMessage(event: MessageEvent) {
-    return cappuccinoNodeValidatorResponseCodec.decode(
+    return cappuccinoInscriptionResponseCodec.decode(
       JSON.parse(event.data as string),
     );
   }
 
-  private async relayMessage(message: CappuccinoNodeValidatorResponse) {
+  private async relayMessage(message: CappuccinoInscriptionResponse) {
     try {
-      await this.nodeValidatorResponseSink.send(message);
+      await this.inscriptionResponseSink.send(message);
     } catch (error) {
       console.error(
         'attempt to publish message to response stream failed',

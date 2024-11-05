@@ -21,8 +21,8 @@ describe('LatestNodeIdentity', () => {
       expect(nodeIdentity.publicURL).toBe(null);
       expect(nodeIdentity.company).toBe('Espresso Systems');
       expect(nodeIdentity.location).not.toBe(null);
-      expect(nodeIdentity.location?.coords.lat.valueOf()).toBe(35.8617);
-      expect(nodeIdentity.location?.coords.lng.valueOf()).toBe(104.1954);
+      expect(nodeIdentity.location?.coords?.lat.valueOf()).toBe(35.8617);
+      expect(nodeIdentity.location?.coords?.lng.valueOf()).toBe(104.1954);
       expect(nodeIdentity.location?.country).toBe('CN');
       expect(nodeIdentity.operatingSystem).toBe(
         'Microsoft Windows NT 10.0.22621.0',

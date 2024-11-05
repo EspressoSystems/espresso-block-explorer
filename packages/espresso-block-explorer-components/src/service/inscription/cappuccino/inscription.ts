@@ -1,4 +1,4 @@
-import { rfc3999DateCodec, stringCodec } from '@/convert/codec';
+import { numberCodec, stringCodec } from '@/convert/codec';
 import {
   Converter,
   TypeCheckingCodec,
@@ -37,7 +37,7 @@ class InscriptionEncoder implements Converter<Inscription> {
   convert(input: Inscription) {
     return {
       address: walletAddressCodec.encode(input.address),
-      time: rfc3999DateCodec.encode(input.time),
+      time: numberCodec.encode(Math.floor(input.time.valueOf() / 1000)),
       message: stringCodec.encode(input.message),
     };
   }
@@ -52,7 +52,7 @@ class InscriptionDecoder implements Converter<unknown, Inscription> {
     assertRecordWithKeys(input, 'address', 'time', 'message');
     return new Inscription(
       walletAddressCodec.decode(input.address),
-      rfc3999DateCodec.decode(input.time),
+      new Date(numberCodec.decode(input.time) * 1000),
       stringCodec.decode(input.message),
     );
   }

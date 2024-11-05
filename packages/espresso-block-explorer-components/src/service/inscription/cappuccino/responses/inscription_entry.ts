@@ -12,7 +12,7 @@ import CappuccinoInscriptionResponse from './inscription_response';
  * kCappuccinoInscriptionType is the type string for the
  * CappuccinoInscriptionEntry class.
  */
-export const kCappuccinoInscriptionType = 'Inscription' as const;
+export const kCappuccinoInscriptionType = 'LatestInscription' as const;
 
 /**
  * CappuccinoInscriptionEntry is a response from the Cappuccino node

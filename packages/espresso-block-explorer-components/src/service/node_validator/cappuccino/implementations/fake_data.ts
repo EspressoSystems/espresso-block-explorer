@@ -13,6 +13,17 @@ import {
 } from '@/data_source/fake_data_source/generateFakeData';
 import { createCircularBuffer } from '@/data_structures/circular_buffer';
 import { Degrees, LatLng, Latitude, Longitude } from '@/models/geo';
+import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
+import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
+import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
+import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
+import { WebSocketStatusConnectionConnecting } from '@/models/web_worker/web_socket/status/connecting';
+import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
+import WebSocketStatus from '@/models/web_worker/web_socket/status/web_socket_status';
+import { WebSocketRequest } from '@/models/web_worker/web_socket/web_socket_request';
+import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
+import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
+import { webSocketStatusToWebWorkerProxyResponseConverter } from '@/models/web_worker/web_worker_proxy_response_codec';
 import {
   CappuccinoAPIBitVec,
   CappuccinoAPIBitVecHead,
@@ -31,31 +42,15 @@ import CappuccinoNodeValidatorRequest, {
   SubscribeNodeIdentity,
   SubscribeVoters,
 } from '../requests/node_validator_request';
-import WebWorkerLifeCycleRequest, {
-  Close,
-  Connect,
-} from '../requests/web_worker_life_cycle_request';
-import {
-  LifeCycleRequest,
-  NodeValidatorRequest,
-  WebWorkerProxyRequest,
-} from '../requests/web_worker_proxy_request';
+import { NodeValidatorServiceRequest } from '../requests/node_validator_service_request';
 import { CappuccinoBlocksSnapshot } from '../responses/blocks_snapshot';
-import { CappuccinoConnectionClosed } from '../responses/connection_closed';
-import { CappuccinoConnectionConnecting } from '../responses/connection_connecting';
-import { CappuccinoConnectionOpened } from '../responses/connection_opened';
 import { CappuccinoHistogramSnapshot } from '../responses/histogram_snapshot';
 import { CappuccinoLatestBlock } from '../responses/latest_block';
 import { CappuccinoLatestVoters } from '../responses/latest_voters';
 import { CappuccinoNodeIdentitySnapshot } from '../responses/node_identity_snapshot';
 import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
+import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
 import { CappuccinoVotersSnapshot } from '../responses/voters_snapshot';
-import WebWorkerLifeCycleResponse from '../responses/web_worker_life_cycle_response';
-import {
-  WebWorkerProxyResponse,
-  lifeCycleResponseToWebWorkerProxyResponseConverter,
-  nodeValidatorResponseToWebWorkerProxyResponseConverter,
-} from '../responses/web_worker_proxy_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 
 function createBlockDetailFromGeneratedBlock(
@@ -101,7 +96,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
   readonly responseStream: Channel<WebWorkerProxyResponse>;
   readonly requestStream: Channel<WebWorkerProxyRequest>;
 
-  readonly lifecycleResponseSink: Sink<WebWorkerLifeCycleResponse>;
+  readonly lifecycleResponseSink: Sink<WebSocketStatus>;
   readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
 
   constructor(
@@ -113,7 +108,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
 
     this.lifecycleResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
-      lifeCycleResponseToWebWorkerProxyResponseConverter,
+      webSocketStatusToWebWorkerProxyResponseConverter,
     );
     this.nodeValidatorResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
@@ -125,7 +120,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
     return this.responseStream;
   }
 
-  async send(request: CappuccinoNodeValidatorRequest): Promise<void> {
+  async send(request: WebWorkerProxyRequest): Promise<void> {
     await this.requestStream.publish(request);
   }
 
@@ -256,16 +251,16 @@ export default class FakeDataCappuccinoNodeValidatorAPI
   }
 
   private async handleRequest(request: WebWorkerProxyRequest) {
-    if (request instanceof LifeCycleRequest) {
+    if (request instanceof WebSocketRequest) {
       try {
-        await this.handleLifeCycleRequest(request.request);
+        await this.handleWebSocketCommand(request.command);
       } catch (err) {
         console.error('failed to handle life cycle request', request, err);
       }
       return;
     }
 
-    if (request instanceof NodeValidatorRequest) {
+    if (request instanceof NodeValidatorServiceRequest) {
       try {
         await this.handleNodeValidatorRequest(request.request);
       } catch (err) {
@@ -277,13 +272,13 @@ export default class FakeDataCappuccinoNodeValidatorAPI
     console.error('unrecognized request type', request);
   }
 
-  private async handleLifeCycleRequest(request: WebWorkerLifeCycleRequest) {
-    if (request instanceof Connect) {
+  private async handleWebSocketCommand(command: WebSocketCommand) {
+    if (command instanceof WebSocketCommandConnect) {
       await this.handleConnect();
       return;
     }
 
-    if (request instanceof Close) {
+    if (command instanceof WebSocketCommandClose) {
       await this.handleClose();
       return;
     }
@@ -339,8 +334,12 @@ export default class FakeDataCappuccinoNodeValidatorAPI
 
     this.isConnected = true;
 
-    await this.lifecycleResponseSink.send(new CappuccinoConnectionConnecting());
-    await this.lifecycleResponseSink.send(new CappuccinoConnectionOpened());
+    await this.lifecycleResponseSink.send(
+      new WebSocketStatusConnectionConnecting(),
+    );
+    await this.lifecycleResponseSink.send(
+      new WebSocketStatusConnectionOpened(),
+    );
   }
 
   private async handleClose() {
@@ -351,7 +350,9 @@ export default class FakeDataCappuccinoNodeValidatorAPI
     this.isConnected = false;
     this.isSubscribedToLatestBlock = false;
     this.isSubscribedToVoters = false;
-    await this.lifecycleResponseSink.send(new CappuccinoConnectionClosed());
+    await this.lifecycleResponseSink.send(
+      new WebSocketStatusConnectionClosed(),
+    );
   }
 
   private async assertIsConnected() {

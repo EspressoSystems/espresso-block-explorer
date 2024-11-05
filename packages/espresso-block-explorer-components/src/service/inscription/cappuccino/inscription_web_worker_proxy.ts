@@ -1,10 +1,34 @@
 import { createBufferedChannel } from '@/async/channel';
+import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
+import {
+  registerWebWorkerProxyRequestCodec,
+  webWorkerProxyRequestCodec,
+} from '@/models/web_worker/web_worker_proxy_request_codec';
+import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
+import {
+  registerWebWorkerProxyResponseCodec,
+  webWorkerProxyResponseCodec,
+} from '@/models/web_worker/web_worker_proxy_response_codec';
 import FakeDataCappuccinoInscriptionAPI from './implementations/fake_data';
-import { WebWorkerProxyRequest } from './requests/web_worker_proxy_request';
-import { webWorkerProxyRequestCodec } from './requests/web_worker_proxy_request_codec';
-import { WebWorkerProxyResponse } from './responses/web_worker_proxy_response';
-import { webWorkerProxyResponseCodec } from './responses/web_worker_proxy_response_codec';
+import RemoteInscriptionAPI from './implementations/remote';
+import {
+  inscriptionServiceRequestCodec,
+  kInscriptionRequestType,
+} from './requests/inscription_service_request';
+import {
+  inscriptionServiceResponseCodec,
+  kInscriptionResponseType,
+} from './responses/inscription_service_response';
 import { WebWorkerInscriptionAPI } from './web_worker_proxy_api';
+
+registerWebWorkerProxyResponseCodec(
+  kInscriptionResponseType,
+  inscriptionServiceResponseCodec,
+);
+registerWebWorkerProxyRequestCodec(
+  kInscriptionRequestType,
+  inscriptionServiceRequestCodec,
+);
 
 type Config = {
   inscription_service_url: undefined | null | string;
@@ -12,8 +36,32 @@ type Config = {
 
 type PostMessageFunction = typeof postMessage;
 
-async function determineServiceImplementationFromServiceURL(/*serviceURL: string,*/): Promise<null | WebWorkerInscriptionAPI> {
-  return null;
+async function determineServiceImplementationFromServiceURL(
+  baseServiceURL: string,
+): Promise<WebWorkerInscriptionAPI> {
+  const baseURL = new URL(baseServiceURL);
+  const baseWebSocketURL = new URL(
+    `${baseURL.protocol.replace(/^http?/, 'ws')}//${baseURL.host}${baseURL.pathname}`,
+  );
+
+  console.info(
+    '<<<< HERE determineServiceImplementationFromServiceURL',
+    baseURL,
+    baseWebSocketURL,
+  );
+
+  const requestChannel = createBufferedChannel<WebWorkerProxyRequest>(1024);
+  const responseChannel = createBufferedChannel<WebWorkerProxyResponse>(1024);
+  const service = new RemoteInscriptionAPI(
+    requestChannel,
+    responseChannel,
+    baseWebSocketURL,
+    baseURL,
+  );
+
+  service.startProcessing();
+
+  return service;
 }
 
 async function determineServiceImplementation(): Promise<WebWorkerInscriptionAPI> {
@@ -22,8 +70,9 @@ async function determineServiceImplementation(): Promise<WebWorkerInscriptionAPI
     const config: Config = await response.json();
 
     if (config.inscription_service_url) {
-      const service =
-        await determineServiceImplementationFromServiceURL(/* config.inscription_service_url, */);
+      const service = await determineServiceImplementationFromServiceURL(
+        config.inscription_service_url,
+      );
       if (service !== null) {
         return service;
       }

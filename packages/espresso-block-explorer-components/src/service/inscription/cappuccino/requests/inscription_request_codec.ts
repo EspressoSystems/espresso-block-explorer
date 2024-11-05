@@ -5,10 +5,8 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import InvalidTypeError from '@/errors/InvalidTypeError';
-import CappuccinoInscriptionRequest, {
-  kPutInscriptionValue,
-  putInscriptionCodec,
-} from './inscription_request';
+import CappuccinoInscriptionRequest from './inscription_request';
+import { kPutInscriptionValue, putInscriptionCodec } from './put_inscription';
 
 class CappuccinoInscriptionRequestEncoder
   implements Converter<CappuccinoInscriptionRequest, unknown>

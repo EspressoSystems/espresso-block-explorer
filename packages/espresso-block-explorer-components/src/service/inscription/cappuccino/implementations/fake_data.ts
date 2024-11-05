@@ -7,34 +7,31 @@ import { getStartingSeed } from '@/data_source/fake_data_source/generateFakeData
 import { createCircularBuffer } from '@/data_structures/circular_buffer';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { lastIterable } from '@/functional/functional';
+import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
+import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
+import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
+import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
+import { WebSocketStatusConnectionConnecting } from '@/models/web_worker/web_socket/status/connecting';
+import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
+import WebSocketStatus from '@/models/web_worker/web_socket/status/web_socket_status';
+import { WebSocketRequest } from '@/models/web_worker/web_socket/web_socket_request';
+import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
+import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
+import { webSocketStatusToWebWorkerProxyResponseConverter } from '@/models/web_worker/web_worker_proxy_response_codec';
 import ChainDetails from '../chain_details';
 import Inscription from '../inscription';
 import InscriptionAndChainDetails from '../inscription_and_chain_details';
-import CappuccinoInscriptionRequest, {
-  PutInscription,
-} from '../requests/inscription_request';
-import WebWorkerLifeCycleRequest, {
-  Close,
-  Connect,
-} from '../requests/web_worker_life_cycle_request';
-import {
-  InscriptionRequest,
-  LifeCycleRequest,
-  WebWorkerProxyRequest,
-} from '../requests/web_worker_proxy_request';
-import { CappuccinoConnectionClosed } from '../responses/connection_closed';
-import { CappuccinoConnectionConnecting } from '../responses/connection_connecting';
-import { CappuccinoConnectionOpened } from '../responses/connection_opened';
+import CappuccinoInscriptionRequest from '../requests/inscription_request';
+import { InscriptionServiceRequest } from '../requests/inscription_service_request';
+import { PutInscription } from '../requests/put_inscription';
 import { CappuccinoInscriptionEntry } from '../responses/inscription_entry';
 import CappuccinoInscriptionResponse from '../responses/inscription_response';
-import WebWorkerLifeCycleResponse from '../responses/web_worker_life_cycle_response';
-import {
-  WebWorkerProxyResponse,
-  inscriptionResponseToWebWorkerProxyResponseConverter,
-  lifeCycleResponseToWebWorkerProxyResponseConverter,
-} from '../responses/web_worker_proxy_response';
+import { inscriptionResponseToWebWorkerProxyResponseConverter } from '../responses/inscription_service_response';
 import WalletAddress from '../wallet_address';
-import { WebWorkerInscriptionAPI } from '../web_worker_proxy_api';
+import {
+  kInscriptionMessageToSign,
+  WebWorkerInscriptionAPI,
+} from '../web_worker_proxy_api';
 
 function* generateAllInscriptions(prng: PseudoRandomNumberGenerator) {
   const now = new Date();
@@ -86,8 +83,6 @@ async function* generateStreamOfFutureInscriptions(
   }
 }
 
-const messages = ['An Infinite Garden has no walls'];
-
 function generateInscriptionAndChainDetails(
   ts: Date,
   lastBlock: number,
@@ -101,7 +96,7 @@ function generateInscriptionAndChainDetails(
   const inscription = new Inscription(
     generateWalletAddress(prng),
     new Date(ts.valueOf() + elapsed),
-    messages[prng.nextInt() % messages.length],
+    kInscriptionMessageToSign,
   );
 
   const chianDetails = new ChainDetails(lastBlock + nextBlock, nextOffset);
@@ -122,7 +117,7 @@ export default class FakeDataInscriptionAPI implements WebWorkerInscriptionAPI {
   readonly responseStream: Channel<WebWorkerProxyResponse>;
   readonly requestStream: Channel<WebWorkerProxyRequest>;
 
-  readonly lifecycleResponseSink: Sink<WebWorkerLifeCycleResponse>;
+  readonly webSocketStatusSink: Sink<WebSocketStatus>;
   readonly inscriptionResponseSink: Sink<CappuccinoInscriptionResponse>;
 
   constructor(
@@ -132,9 +127,9 @@ export default class FakeDataInscriptionAPI implements WebWorkerInscriptionAPI {
     this.requestStream = requestStream;
     this.responseStream = responseStream;
 
-    this.lifecycleResponseSink = createSinkWithConverter(
+    this.webSocketStatusSink = createSinkWithConverter(
       createChannelToSink(responseStream),
-      lifeCycleResponseToWebWorkerProxyResponseConverter,
+      webSocketStatusToWebWorkerProxyResponseConverter,
     );
     this.inscriptionResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
@@ -146,7 +141,7 @@ export default class FakeDataInscriptionAPI implements WebWorkerInscriptionAPI {
     return this.responseStream;
   }
 
-  async send(request: CappuccinoInscriptionRequest): Promise<void> {
+  async send(request: WebWorkerProxyRequest): Promise<void> {
     await this.requestStream.publish(request);
   }
 
@@ -195,16 +190,16 @@ export default class FakeDataInscriptionAPI implements WebWorkerInscriptionAPI {
   }
 
   private async handleRequest(request: WebWorkerProxyRequest) {
-    if (request instanceof LifeCycleRequest) {
+    if (request instanceof WebSocketRequest) {
       try {
-        await this.handleLifeCycleRequest(request.request);
+        await this.handleWebSocketCommand(request.command);
       } catch (err) {
         console.error('failed to handle life cycle request', request, err);
       }
       return;
     }
 
-    if (request instanceof InscriptionRequest) {
+    if (request instanceof InscriptionServiceRequest) {
       try {
         await this.handleInscriptionsRequest(request.request);
       } catch (err) {
@@ -216,13 +211,13 @@ export default class FakeDataInscriptionAPI implements WebWorkerInscriptionAPI {
     console.error('unrecognized request type', request);
   }
 
-  private async handleLifeCycleRequest(request: WebWorkerLifeCycleRequest) {
-    if (request instanceof Connect) {
+  private async handleWebSocketCommand(request: WebSocketCommand) {
+    if (request instanceof WebSocketCommandConnect) {
       await this.handleConnect();
       return;
     }
 
-    if (request instanceof Close) {
+    if (request instanceof WebSocketCommandClose) {
       await this.handleClose();
       return;
     }
@@ -247,8 +242,10 @@ export default class FakeDataInscriptionAPI implements WebWorkerInscriptionAPI {
 
     this.isConnected = true;
 
-    await this.lifecycleResponseSink.send(new CappuccinoConnectionConnecting());
-    await this.lifecycleResponseSink.send(new CappuccinoConnectionOpened());
+    await this.webSocketStatusSink.send(
+      new WebSocketStatusConnectionConnecting(),
+    );
+    await this.webSocketStatusSink.send(new WebSocketStatusConnectionOpened());
 
     for (const inscription of this.latestInscriptions.immutableIterable()) {
       this.inscriptionResponseSink.send(
@@ -263,7 +260,7 @@ export default class FakeDataInscriptionAPI implements WebWorkerInscriptionAPI {
     }
 
     this.isConnected = false;
-    await this.lifecycleResponseSink.send(new CappuccinoConnectionClosed());
+    await this.webSocketStatusSink.send(new WebSocketStatusConnectionClosed());
   }
 
   private async handlePutInscription(request: PutInscription) {

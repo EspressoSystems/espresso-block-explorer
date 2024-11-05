@@ -1,24 +1,21 @@
 import { createBufferedChannel } from '@/async/channel/BufferedChannel';
 import { createSinkWithConverter } from '@/async/sink/converted_sink';
 import { Sink } from '@/async/sink/sink';
+import { ErrorStreamContext } from '@/components/contexts/ErrorProvider';
+import { WebSocketResponseStreamContext } from '@/components/contexts/WebSocketResponseProvider';
 import { LatestInscriptionListStreamContext } from '@/components/page_sections/latest_inscriptions_summary/LatestInscriptionListLoader';
 import { createCircularBuffer } from '@/data_structures/circular_buffer/CircularBuffer';
+import { mapAsyncIterable } from '@/functional/functional_async';
+import { ErrorResponse } from '@/models/web_worker/error_response';
+import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
+import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
+import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
+import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';
+import { webSocketCommandToWebWorkerProxyRequestConverter } from '@/models/web_worker/web_worker_proxy_request_codec';
 import InscriptionAndChainDetails from '@/service/inscription/cappuccino/inscription_and_chain_details';
-import WebWorkerInscriptionLifeCycleRequest, {
-  Close,
-  Connect,
-} from '@/service/inscription/cappuccino/requests/web_worker_life_cycle_request';
-import {
-  LifeCycleRequest,
-  lifeCycleRequestToWebWorkerProxyRequestConverter,
-} from '@/service/inscription/cappuccino/requests/web_worker_proxy_request';
 import { CappuccinoInscriptionEntry } from '@/service/inscription/cappuccino/responses/inscription_entry';
 import CappuccinoInscriptionResponse from '@/service/inscription/cappuccino/responses/inscription_response';
-import {
-  ErrorResponse,
-  InscriptionResponse,
-  LifeCycleResponse,
-} from '@/service/inscription/cappuccino/responses/web_worker_proxy_response';
+import { InscriptionServiceResponse } from '@/service/inscription/cappuccino/responses/inscription_service_response';
 import { WebWorkerInscriptionAPI } from '@/service/inscription/cappuccino/web_worker_proxy_api';
 import React from 'react';
 import { CappuccinoInscriptionServiceAPIContext } from './CappuccinoInscriptionServiceAPIContext';
@@ -63,26 +60,29 @@ async function bridgeStreamIntoIndividualStreams(
   const state = createBridgeState();
 
   for await (const event of inscriptionService.stream) {
-    if (event instanceof InscriptionResponse) {
+    if (event instanceof InscriptionServiceResponse) {
       await bridgeInscriptionResponse(state, streams, event.response);
-      // await streams.errors.publish(null);
+      await streams.errors.publish(null);
+      continue;
     }
 
-    if (event instanceof LifeCycleResponse) {
+    if (event instanceof WebSocketResponse) {
       await streams.lifecycle.publish(event);
+      continue;
     }
 
     if (event instanceof ErrorResponse) {
       await streams.errors.publish(event);
+      continue;
     }
   }
 }
 
 async function startInscriptionService(
-  lifecycleRequestSink: Sink<WebWorkerInscriptionLifeCycleRequest>,
+  webSocketCommandSink: Sink<WebSocketCommand>,
 ) {
   // We need to "connect" to the service.
-  await lifecycleRequestSink.send(new Connect());
+  await webSocketCommandSink.send(new WebSocketCommandConnect());
 }
 
 function createInscriptionSplitStreams() {
@@ -91,7 +91,7 @@ function createInscriptionSplitStreams() {
     // Errors Stream
     errors: createBufferedChannel<null | ErrorResponse>(4),
     // LifeCycle Event Stream
-    lifecycle: createBufferedChannel<LifeCycleResponse>(4),
+    lifecycle: createBufferedChannel<WebSocketResponse>(4),
   };
 }
 
@@ -112,7 +112,7 @@ export const ProvideCappuccinoInscriptionStreams: React.FC<
 
     const lifeCycleRequestSink = createSinkWithConverter(
       inscriptionService,
-      lifeCycleRequestToWebWorkerProxyRequestConverter,
+      webSocketCommandToWebWorkerProxyRequestConverter,
     );
     bridgeStreamIntoIndividualStreams(streams, inscriptionService);
     startInscriptionService(lifeCycleRequestSink);
@@ -120,7 +120,7 @@ export const ProvideCappuccinoInscriptionStreams: React.FC<
     return () => {
       // Tear Down
       // Tell the service to Close the connection.
-      inscriptionService.send(new LifeCycleRequest(new Close()));
+      lifeCycleRequestSink.send(new WebSocketCommandClose());
     };
   });
 
@@ -128,7 +128,16 @@ export const ProvideCappuccinoInscriptionStreams: React.FC<
     <LatestInscriptionListStreamContext.Provider
       value={streams.latestInscriptions}
     >
-      {props.children}
+      <WebSocketResponseStreamContext.Provider value={streams.lifecycle}>
+        <ErrorStreamContext.Provider
+          value={mapAsyncIterable(
+            streams.errors,
+            async (response) => response?.error ?? null,
+          )}
+        >
+          {props.children}
+        </ErrorStreamContext.Provider>
+      </WebSocketResponseStreamContext.Provider>
     </LatestInscriptionListStreamContext.Provider>
   );
 };

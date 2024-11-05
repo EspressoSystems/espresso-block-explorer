@@ -60,8 +60,8 @@ describe('NodeIdentitySnapshot', () => {
       expect(node2.publicURL).toBe(null);
       expect(node2.company).toBe('Espresso Systems');
       expect(node2.location).not.toBe(null);
-      expect(node2.location?.coords.lat.valueOf()).toBe(35.8617);
-      expect(node2.location?.coords.lng.valueOf()).toBe(104.1954);
+      expect(node2.location?.coords?.lat.valueOf()).toBe(35.8617);
+      expect(node2.location?.coords?.lng.valueOf()).toBe(104.1954);
       expect(node2.location?.country).toBe('CN');
       expect(node2.operatingSystem).toBe('Microsoft Windows NT 10.0.22621.0');
       expect(node2.nodeType).toBe('espresso-sequencer 0.1');
@@ -79,8 +79,8 @@ describe('NodeIdentitySnapshot', () => {
       expect(node3.publicURL).toBe(null);
       expect(node3.company).toBe('Espresso Systems');
       expect(node3.location).not.toBe(null);
-      expect(node3.location?.coords.lat.valueOf()).toBe(40.7128);
-      expect(node3.location?.coords.lng.valueOf()).toBe(-74.006);
+      expect(node3.location?.coords?.lat.valueOf()).toBe(40.7128);
+      expect(node3.location?.coords?.lng.valueOf()).toBe(-74.006);
       expect(node3.location?.country).toBe('US');
       expect(node3.operatingSystem).toBe('Linux 5.15.153.1');
       expect(node3.nodeType).toBe('espresso-sequencer 0.1');
@@ -99,8 +99,8 @@ describe('NodeIdentitySnapshot', () => {
       expect(node4.publicURL).toBe(null);
       expect(node4.company).toBe('Espresso Systems');
       expect(node4.location).not.toBe(null);
-      expect(node4.location?.coords.lat.valueOf()).toBe(39.0742);
-      expect(node4.location?.coords.lng.valueOf()).toBe(21.8243);
+      expect(node4.location?.coords?.lat.valueOf()).toBe(39.0742);
+      expect(node4.location?.coords?.lng.valueOf()).toBe(21.8243);
       expect(node4.location?.country).toBe('GR');
       expect(node4.operatingSystem).toBe('Darwin 23.5.0');
       expect(node4.nodeType).toBe('espresso-sequencer 0.1');

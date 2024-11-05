@@ -1,4 +1,4 @@
-import { ProvideTickEverySecond } from '@/components';
+import { ProvideTickEverySecond } from '@/components/contexts/NowProvider';
 import { NamespaceContext } from '@/components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';

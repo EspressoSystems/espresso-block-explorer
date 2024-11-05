@@ -1,7 +1,4 @@
 export * from './blocks_snapshot';
-export * from './connection_closed';
-export * from './connection_connecting';
-export * from './connection_opened';
 export * from './histogram_snapshot';
 export * from './latest_block';
 export * from './latest_node_identity';
@@ -9,8 +6,5 @@ export * from './latest_voters';
 export * from './node_identity_snapshot';
 export * from './node_validator_response';
 export * from './node_validator_response_codec';
+export * from './node_validator_service_response';
 export * from './voters_snapshot';
-export * from './web_worker_life_cycle_response';
-export * from './web_worker_lifecycle_response_codec';
-export * from './web_worker_proxy_response';
-export * from './web_worker_proxy_response_codec';

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   ArrowRight,
   DiscordLink,
+  ErrorDisplay,
   EspressoLogo,
   Heading2,
   TwitterIcon,
@@ -10,6 +11,8 @@ import {
 import Text from '../components/text/Text';
 import './inscriptions_page.css';
 
+import { ErrorStreamConsumer } from '@/components/contexts/ErrorStreamConsumer';
+import { WebSocketResponseStreamConsumer } from '@/components/contexts/WebSocketResponseProvider';
 import { addClassToClassName } from '@/components/higher_order';
 import { LatestInscriptionListAsyncHandler } from '@/components/page_sections/latest_inscriptions_summary/LatestInscriptionList';
 import { LatestInscriptionListStreamConsumer } from '@/components/page_sections/latest_inscriptions_summary/LatestInscriptionListLoader';
@@ -23,10 +26,11 @@ import {
 } from '@/components/rainbowkit/contexts/contexts';
 import Check from '@/components/visual/icons/Check';
 import Close from '@/components/visual/icons/Close';
+import { WebSocketStatus } from '@/components/visual/web_socket/WebSocketStatus';
 import Inscription from '@/service/inscription/cappuccino/inscription';
 import InscriptionAndSignature from '@/service/inscription/cappuccino/inscription_and_signature';
-import { PutInscription } from '@/service/inscription/cappuccino/requests/inscription_request';
-import { InscriptionRequest } from '@/service/inscription/cappuccino/requests/web_worker_proxy_request';
+import { InscriptionServiceRequest } from '@/service/inscription/cappuccino/requests/inscription_service_request';
+import { PutInscription } from '@/service/inscription/cappuccino/requests/put_inscription';
 import WalletAddress from '@/service/inscription/cappuccino/wallet_address';
 import { kInscriptionMessageToSign } from '@/service/inscription/cappuccino/web_worker_proxy_api';
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
@@ -316,14 +320,21 @@ function determineInscribeAction(
 
       const signature = await signTypedData.signTypedDataAsync({
         account: account.address,
+        domain: {
+          name: 'Espresso Inscription',
+          // chainId: 1,
+          // verifyingContract: '0x0000000000000000000000000000000000000000',
+          // version: '1',
+          // salt:
+        },
         types: {
-          'Espresso Inscription': [
+          EspressoInscription: [
             { name: 'address', type: 'address' },
             { name: 'message', type: 'string' },
-            { name: 'time', type: 'int64' },
+            { name: 'time', type: 'uint64' },
           ],
         },
-        primaryType: 'Espresso Inscription',
+        primaryType: 'EspressoInscription',
         message: {
           address: account.address,
           message: inscription.message,
@@ -331,7 +342,11 @@ function determineInscribeAction(
         },
       });
 
-      console.info('signature', signature);
+      console.info('signature', signature, {
+        address: account.address,
+        message: inscription.message,
+        time: BigInt(Math.floor(inscription.time.getTime() / 1000)),
+      });
       signatureCallback(
         new InscriptionAndSignature(inscription, parseHexString(signature)),
       );
@@ -374,7 +389,7 @@ const EngageSteps: React.FC = () => {
       >
         <EngageStep>
           <Text text="1" />
-          <Text text="Connect your Wallet" />
+          <Text text="Connect Wallet" />
           <ArrowRight />
         </EngageStep>
       </EngageStepStatus>
@@ -394,7 +409,7 @@ const EngageSteps: React.FC = () => {
 
             // Now let's submit it to the service.
             inscriptionService.send(
-              new InscriptionRequest(
+              new InscriptionServiceRequest(
                 new PutInscription(signatureAndInscription),
               ),
             );
@@ -403,7 +418,7 @@ const EngageSteps: React.FC = () => {
       >
         <EngageStep>
           <Text text="2" />
-          <Text text="Inscribe your commitment" />
+          <Text text="Sign Espresso Mainnet" />
           <ArrowRight />
         </EngageStep>
       </EngageStepStatus>
@@ -423,7 +438,7 @@ const EngageSteps: React.FC = () => {
       >
         <EngageStep>
           <Text text="3" />
-          <Text text="Share your commitment on X" />
+          <Text text="Share on X" />
           <ArrowRight />
         </EngageStep>
       </EngageStepStatus>
@@ -442,6 +457,18 @@ const InscriptionsSection: React.FC = () => {
     <GuidedStory className="infinite-garden">
       <InscriptionHeader />
 
+      {/*
+        This component displays the current Lifecycle state of the page.  It
+        reflects what's happening with the underlying Web Socket connection.
+      */}
+      <WebSocketStatus className="edge-margin" />
+
+      {/*
+        This component displays any errors that have occurred while attempting
+        to retrieve the data.
+      */}
+      <ErrorDisplay className="edge-margin" />
+
       <InscriptionsContent>
         <Heading2>
           <Text text="An Infinite Garden has no walls" />
@@ -449,6 +476,12 @@ const InscriptionsSection: React.FC = () => {
 
         <p>
           <Text text="Join us on our mission to safeguard against silos, ensuring all chains work together as one." />
+          <br />
+          <Text text="Leave your mark on Espersso Mainnet by signing with your wallet, showing you've escaped." />
+          <br />
+          <span style={{ fontSize: '0.8em', opacity: '0.8' }}>
+            <Text text="(No transaction or fees required)" />
+          </span>
         </p>
 
         <EngageSteps />
@@ -619,12 +652,16 @@ const InscriptionsPage: React.FC<InscriptionsPageProps> = () => {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
           <RainbowKitContextInjector>
-            <ProvideInscriptionsModalContext>
-              <div className="inscriptions">
-                <InscriptionsSection />
-              </div>
-              <ThankYouModal />
-            </ProvideInscriptionsModalContext>
+            <WebSocketResponseStreamConsumer>
+              <ErrorStreamConsumer>
+                <ProvideInscriptionsModalContext>
+                  <div className="inscriptions">
+                    <InscriptionsSection />
+                  </div>
+                  <ThankYouModal />
+                </ProvideInscriptionsModalContext>
+              </ErrorStreamConsumer>
+            </WebSocketResponseStreamConsumer>
           </RainbowKitContextInjector>
         </RainbowKitProvider>
       </QueryClientProvider>

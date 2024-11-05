@@ -1,19 +1,59 @@
 import { Channel, createBufferedChannel } from '@/async/channel';
+import BadResponseServerError from '@/errors/BadResponseServerError';
+import FetchError from '@/errors/FetchError';
+import ResponseContentTypeIsNotApplicationJSONError from '@/errors/ResponseContentTypeIsNotApplicationJSONError';
+import UnimplementedError from '@/errors/UnimplementedError';
 import WebSocketError from '@/errors/WebSocketError';
+import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
+import {
+  registerWebWorkerProxyRequestCodec,
+  webWorkerProxyRequestCodec,
+} from '@/models/web_worker/web_worker_proxy_request_codec';
+import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
+import {
+  registerWebWorkerProxyResponseCodec,
+  webWorkerProxyResponseCodec,
+} from '@/models/web_worker/web_worker_proxy_response_codec';
 import ProxyWorker from './inscription_web_worker_api.js?worker';
-import CappuccinoInscriptionRequest from './requests/inscription_request';
-import { WebWorkerProxyRequest } from './requests/web_worker_proxy_request';
-import { webWorkerProxyRequestCodec } from './requests/web_worker_proxy_request_codec';
-import CappuccinoInscriptionResponse from './responses/inscription_response';
-import { WebWorkerProxyResponse } from './responses/web_worker_proxy_response';
-import { webWorkerProxyResponseCodec } from './responses/web_worker_proxy_response_codec';
+import {
+  inscriptionServiceRequestCodec,
+  kInscriptionRequestType,
+} from './requests/inscription_service_request';
+import {
+  inscriptionServiceResponseCodec,
+  kInscriptionResponseType,
+} from './responses/inscription_service_response';
 import { WebWorkerInscriptionAPI } from './web_worker_proxy_api';
 
-const _: unknown = null;
+registerWebWorkerProxyResponseCodec(
+  kInscriptionResponseType,
+  inscriptionServiceResponseCodec,
+);
+registerWebWorkerProxyRequestCodec(
+  kInscriptionRequestType,
+  inscriptionServiceRequestCodec,
+);
 
-// We're performing this useless check to ensure that WebSocketError is imported
-// for it's side-effect.
-_ instanceof WebSocketError;
+// This block of code exists just to ensure that we are referencing these errors
+// correctly, and that they are not being excluded via tree-shaking.  We want
+// this code to register the error's codecs.
+{
+  const checks = [
+    FetchError,
+    UnimplementedError,
+    BadResponseServerError,
+    ResponseContentTypeIsNotApplicationJSONError,
+    WebSocketError,
+  ];
+
+  const _: unknown = null;
+
+  for (const check of checks) {
+    if (_ instanceof check) {
+      break;
+    }
+  }
+}
 
 export class WebWorkerClientBasedInscriptionService
   implements WebWorkerInscriptionAPI
@@ -42,11 +82,11 @@ export class WebWorkerClientBasedInscriptionService
     bridgeRequestsToWebWorker(worker, requestChannel);
   }
 
-  get stream(): AsyncIterable<CappuccinoInscriptionResponse> {
+  get stream(): AsyncIterable<WebWorkerProxyResponse> {
     return this.responseChannel;
   }
 
-  async send(request: CappuccinoInscriptionRequest) {
+  async send(request: WebWorkerProxyRequest) {
     this.requestChannel.publish(request);
   }
 
