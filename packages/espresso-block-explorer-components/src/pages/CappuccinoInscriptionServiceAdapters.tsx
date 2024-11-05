@@ -1,6 +1,7 @@
 import { createBufferedChannel } from '@/async/channel/BufferedChannel';
 import { createSinkWithConverter } from '@/async/sink/converted_sink';
 import { Sink } from '@/async/sink/sink';
+import { sleep } from '@/async/sleep';
 import { ErrorStreamContext } from '@/components/contexts/ErrorProvider';
 import { WebSocketResponseStreamContext } from '@/components/contexts/WebSocketResponseProvider';
 import { LatestInscriptionListStreamContext } from '@/components/page_sections/latest_inscriptions_summary/LatestInscriptionListLoader';
@@ -10,6 +11,8 @@ import { ErrorResponse } from '@/models/web_worker/error_response';
 import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
 import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
 import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
+import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
+import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
 import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';
 import { webSocketCommandToWebWorkerProxyRequestConverter } from '@/models/web_worker/web_worker_proxy_request_codec';
 import InscriptionAndChainDetails from '@/service/inscription/cappuccino/inscription_and_chain_details';
@@ -53,9 +56,60 @@ async function bridgeInscriptionResponse(
   }
 }
 
+async function handleAutoReconnects(
+  event: WebSocketResponse,
+  streams: ReturnType<typeof createInscriptionSplitStreams>,
+  state: ReturnType<typeof createBridgeState>,
+  webSocketCommandSink: Sink<WebSocketCommand>,
+) {
+  const status = event.status;
+  if (status instanceof WebSocketStatusConnectionOpened) {
+    streams.reconnectAttempt = 0;
+    streams.errors.publish(null);
+    streams.latestInscriptions.publish([]);
+    // Drain the inscriptions from the state
+    const it = state.latestInscriptions[Symbol.iterator]();
+    for (let next = it.next(); !next.done; next = it.next()) {
+      // Drain all of the inscriptions stored within the state.
+    }
+    return;
+  }
+
+  if (!(status instanceof WebSocketStatusConnectionClosed)) {
+    // We don't care about non-closed events.
+    return;
+  }
+
+  if (!streams.mounted) {
+    // The component has been unmounted, we do not need to reconnect.
+    return;
+  }
+
+  // Alright, we want to try to reconnect.  We want to perform exponential
+  // backoff as well, so we don't overwhelm the server.
+
+  streams.reconnectAttempt += 1;
+
+  const reconnectDelay =
+    Math.min(4 ** streams.reconnectAttempt, 4000) * (Math.random() + 1);
+  console.info(
+    'disconnected from inscriptions web socket, attempting to reconnect',
+    'attempting reconnect, attempt',
+    streams.reconnectAttempt,
+    'sleeping for',
+    reconnectDelay,
+  );
+
+  await sleep(reconnectDelay);
+
+  // Try to reconnect
+  webSocketCommandSink.send(new WebSocketCommandConnect());
+}
+
 async function bridgeStreamIntoIndividualStreams(
   streams: ReturnType<typeof createInscriptionSplitStreams>,
   inscriptionService: WebWorkerInscriptionAPI,
+  webSocketCommandSink: Sink<WebSocketCommand>,
 ) {
   const state = createBridgeState();
 
@@ -68,6 +122,7 @@ async function bridgeStreamIntoIndividualStreams(
 
     if (event instanceof WebSocketResponse) {
       await streams.lifecycle.publish(event);
+      handleAutoReconnects(event, streams, state, webSocketCommandSink);
       continue;
     }
 
@@ -92,6 +147,10 @@ function createInscriptionSplitStreams() {
     errors: createBufferedChannel<null | ErrorResponse>(4),
     // LifeCycle Event Stream
     lifecycle: createBufferedChannel<WebSocketResponse>(4),
+
+    // These are extra pieces of state that we want to keep track of.
+    mounted: true,
+    reconnectAttempt: 0,
   };
 }
 
@@ -114,13 +173,18 @@ export const ProvideCappuccinoInscriptionStreams: React.FC<
       inscriptionService,
       webSocketCommandToWebWorkerProxyRequestConverter,
     );
-    bridgeStreamIntoIndividualStreams(streams, inscriptionService);
+    bridgeStreamIntoIndividualStreams(
+      streams,
+      inscriptionService,
+      lifeCycleRequestSink,
+    );
     startInscriptionService(lifeCycleRequestSink);
 
     return () => {
       // Tear Down
       // Tell the service to Close the connection.
       lifeCycleRequestSink.send(new WebSocketCommandClose());
+      streams.mounted = false;
     };
   });
 
