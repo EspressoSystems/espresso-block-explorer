@@ -357,6 +357,61 @@ function determineInscribeAction(
   };
 }
 
+/**
+ * useEngageStepsState is a hook that provides the state, and setState functions
+ * for the EngageSteps components.
+ */
+function useEngageStepsState() {
+  return useState({
+    likeAndRetweetActivated: false,
+    inscribeYourCommitmentActivated: false,
+    makeANewPostOnXActivated: false,
+  });
+}
+
+/**
+ * EngageStepsStateContext is a context that provides the state and setState
+ * functions for the EngageSteps components.
+ */
+const EngageStepsStateContext = React.createContext<
+  ReturnType<typeof useEngageStepsState>
+>([
+  {
+    likeAndRetweetActivated: false,
+    inscribeYourCommitmentActivated: false,
+    makeANewPostOnXActivated: false,
+  },
+  () => {},
+]);
+
+interface ProvideEngageStepsStateProps {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+/**
+ * ProvideEngageStepsStates is a component that provides the context for the
+ * EngageSteps to downstream components.
+ */
+const ProvideEngageStepsStates: React.FC<ProvideEngageStepsStateProps> = (
+  props,
+) => {
+  const engageSteps = useEngageStepsState();
+
+  return (
+    <EngageStepsStateContext.Provider value={engageSteps}>
+      {props.children}
+    </EngageStepsStateContext.Provider>
+  );
+};
+
+/**
+ * useEngageSteps is a hook that automatically retrieves the state of the
+ * EngageStepsStateContext.
+ */
+function useEngageSteps() {
+  return React.useContext(EngageStepsStateContext);
+}
+
 /*
  * EngageSteps is a component that represents the steps that the user is meant
  * to take on their guided engagement journey.
@@ -368,12 +423,23 @@ const EngageSteps: React.FC = () => {
   const inscriptionService = React.useContext(
     CappuccinoInscriptionServiceAPIContext,
   );
+  const context = useInscriptionsModalContext();
+  const [engageStepsState, setEngageStepsState] = useEngageSteps();
 
-  const [state, setState] = useState({
-    likeAndRetweetActivated: false,
-    inscribeYourCommitmentActivated: false,
-    makeANewPostOnXActivated: false,
-  });
+  if (
+    engageStepsState.makeANewPostOnXActivated &&
+    engageStepsState.inscribeYourCommitmentActivated
+  ) {
+    // If both of these conditions are met, we want to display a thank you message instead of the
+    // engagement steps.
+
+    return (
+      <p className="engage-steps-thank-you">
+        <Text text="Thank you! " />
+        <YourSupportHasBeenNotedMessage />
+      </p>
+    );
+  }
 
   return (
     <div className="engage-steps">
@@ -394,16 +460,16 @@ const EngageSteps: React.FC = () => {
         </EngageStep>
       </EngageStepStatus>
       <EngageStepStatus
-        done={state.inscribeYourCommitmentActivated}
+        done={engageStepsState.inscribeYourCommitmentActivated}
         onClick={determineInscribeAction(
-          state.inscribeYourCommitmentActivated,
+          engageStepsState.inscribeYourCommitmentActivated,
           account,
           modalContext,
           signTypedData,
           (signatureAndInscription) => {
             // Let's record the current state, so that we don't double trigger.
-            setState({
-              ...state,
+            setEngageStepsState({
+              ...engageStepsState,
               inscribeYourCommitmentActivated: true,
             });
 
@@ -413,6 +479,9 @@ const EngageSteps: React.FC = () => {
                 new PutInscription(signatureAndInscription),
               ),
             );
+
+            // Let's open the thank you modal.
+            context.openThankYouModal();
           },
         )}
       >
@@ -423,14 +492,14 @@ const EngageSteps: React.FC = () => {
         </EngageStep>
       </EngageStepStatus>
       <EngageStepStatus
-        done={state.makeANewPostOnXActivated}
+        done={engageStepsState.makeANewPostOnXActivated}
         onClick={
-          state.makeANewPostOnXActivated
+          engageStepsState.makeANewPostOnXActivated
             ? undefined
             : () => {
                 window.open('about:blank', '_blank');
-                setState({
-                  ...state,
+                setEngageStepsState({
+                  ...engageStepsState,
                   makeANewPostOnXActivated: true,
                 });
               }
@@ -516,10 +585,15 @@ const YourSupportHasBeenNotedMessage: React.FC = () => {
 
 interface ModalBarrierProps {
   children?: React.ReactNode | React.ReactNode[];
+  display: boolean;
 }
 
 const ModalBarrier: React.FC<ModalBarrierProps> = (props) => {
-  return <div className="modal-barrier">{props.children}</div>;
+  return (
+    <div className="modal-barrier" data-display={props.display}>
+      {props.children}
+    </div>
+  );
 };
 
 interface DialogHeadingProps {
@@ -613,26 +687,42 @@ function useInscriptionsModalContext() {
 
 const ThankYouModal: React.FC = () => {
   const context = useInscriptionsModalContext();
-
-  if (!context.isThankYouModalOpen) {
-    return <></>;
-  }
+  const [engageStepsState, setEngageStepsState] = useEngageSteps();
 
   return (
-    <ModalBarrier>
+    <ModalBarrier display={context.isThankYouModalOpen}>
       <dialog open>
         <DialogHeading>
           <Heading2>
             <Text text="Thank you" />
           </Heading2>
-          <Close onClick={() => {}} />
+          <button className="btn-close">
+            <Close
+              onClick={() => {
+                context.closeThankYouModal();
+              }}
+            />
+          </button>
         </DialogHeading>
         <p className="dialog-inline-padding dialog-block-end-padding">
           <YourSupportHasBeenNotedMessage />
         </p>
         <hr />
         <div className="dialog--footer">
-          <a href="about:blank" className="btn--dialog" rel="noreferrer">
+          <a
+            href="about:blank"
+            className="btn--dialog"
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => {
+              setEngageStepsState({
+                ...engageStepsState,
+                makeANewPostOnXActivated: true,
+              });
+
+              context.closeThankYouModal();
+            }}
+          >
             <TwitterIcon />
             <Text text="Share" />
           </a>
@@ -654,12 +744,14 @@ const InscriptionsPage: React.FC<InscriptionsPageProps> = () => {
           <RainbowKitContextInjector>
             <WebSocketResponseStreamConsumer>
               <ErrorStreamConsumer>
-                <ProvideInscriptionsModalContext>
-                  <div className="inscriptions">
-                    <InscriptionsSection />
-                  </div>
-                  <ThankYouModal />
-                </ProvideInscriptionsModalContext>
+                <ProvideEngageStepsStates>
+                  <ProvideInscriptionsModalContext>
+                    <div className="inscriptions">
+                      <InscriptionsSection />
+                    </div>
+                    <ThankYouModal />
+                  </ProvideInscriptionsModalContext>
+                </ProvideEngageStepsStates>
               </ErrorStreamConsumer>
             </WebSocketResponseStreamConsumer>
           </RainbowKitContextInjector>
