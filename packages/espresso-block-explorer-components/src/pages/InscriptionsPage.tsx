@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { ForwardedRef, useState } from 'react';
 import {
   ArrowRight,
   DiscordLink,
   ErrorDisplay,
   EspressoLogo,
+  Heading1,
   Heading2,
   TwitterIcon,
   TwitterLink,
@@ -59,13 +60,23 @@ interface GuidedStoryProps {
   className?: string;
   children?: React.ReactNode | React.ReactNode[];
 }
-const GuidedStory: React.FC<GuidedStoryProps> = (props) => {
+const GuidedStoryRaw: (
+  props: GuidedStoryProps,
+  ref: ForwardedRef<HTMLElement>,
+) => JSX.Element = (props, ref) => {
   return (
-    <section className={addClassToClassName(props.className, 'guided-story')}>
+    <section
+      ref={ref}
+      // eslint-disable-next-line react/prop-types
+      className={addClassToClassName(props.className, 'guided-story')}
+    >
+      {/* eslint-disable-next-line react/prop-types */}
       {props.children}
     </section>
   );
 };
+
+const GuidedStory = React.forwardRef(GuidedStoryRaw);
 
 interface RainbowKitMountedGuardProps {
   children?: React.ReactNode | React.ReactNode[];
@@ -188,17 +199,60 @@ const HeaderActions: React.FC = () => {
   );
 };
 
+function useThemeState() {
+  return useState({
+    theme: '',
+  });
+}
+
+const ThemeContext = React.createContext<ReturnType<typeof useThemeState>>([
+  {
+    theme: '',
+  },
+  () => {},
+]);
+
+interface ProvideThemeStateProps {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+const ProvideThemeState: React.FC<ProvideThemeStateProps> = (props) => {
+  const theme = useThemeState();
+
+  return (
+    <ThemeContext.Provider value={theme}>
+      {props.children}
+    </ThemeContext.Provider>
+  );
+};
+
+function useTheme() {
+  return React.useContext(ThemeContext);
+}
+
 /**
  * InscriptionHeader represents the header of the inscriptions page.  The header
  * contains various navigation and branding elements.
  */
 const InscriptionHeader: React.FC = () => {
+  const [theme] = useTheme();
+
   return (
-    <div className="inscriptions--header">
+    <div className={addClassToClassName(theme.theme, 'inscriptions--header')}>
       <a href="https://espressosys.com/" target="_blank" rel="noreferrer">
         <EspressoLogo />
       </a>
       <HeaderActions />
+    </div>
+  );
+};
+
+const InscriptionFooter: React.FC = () => {
+  const [theme] = useTheme();
+
+  return (
+    <div className={addClassToClassName(theme.theme, 'inscriptions--footer')}>
+      <ScrollToContinue />
     </div>
   );
 };
@@ -342,11 +396,6 @@ function determineInscribeAction(
         },
       });
 
-      console.info('signature', signature, {
-        address: account.address,
-        message: inscription.message,
-        time: BigInt(Math.floor(inscription.time.getTime() / 1000)),
-      });
       signatureCallback(
         new InscriptionAndSignature(inscription, parseHexString(signature)),
       );
@@ -522,10 +571,11 @@ const EngageSteps: React.FC = () => {
  * own to the list.
  */
 const InscriptionsSection: React.FC = () => {
-  return (
-    <GuidedStory className="infinite-garden">
-      <InscriptionHeader />
+  const ref = useIntersectionObserver('transparent');
 
+  return (
+    <GuidedStory ref={ref} className="inscription-wall">
+      <div></div>
       {/*
         This component displays the current Lifecycle state of the page.  It
         reflects what's happening with the underlying Web Socket connection.
@@ -732,6 +782,134 @@ const ThankYouModal: React.FC = () => {
   );
 };
 
+interface ScrollToContinueProps {
+  className?: string;
+}
+
+const ScrollToContinue: React.FC<ScrollToContinueProps> = (props) => {
+  return (
+    <div
+      className={addClassToClassName(
+        props.className,
+        'scroll-to-continue-section',
+      )}
+    >
+      <Text text="Scroll to continue" />
+    </div>
+  );
+};
+
+const EscapeTheWalledGardensSection: React.FC = () => {
+  return (
+    <GuidedStory className="escape-the-walled-garden">
+      <div className="guided-story--content">
+        <Heading1>
+          <Text text="Escape the Walled Gardens" />
+        </Heading1>
+      </div>
+    </GuidedStory>
+  );
+};
+
+const OurDataSection: React.FC = () => {
+  return (
+    <GuidedStory className="our-data">
+      <div className="guided-story--content">
+        <Heading2>
+          <Text text="Our assets. Our apps. Our data." />
+          <Text text=" " />
+          <br />
+          <Text text="All exist in walled gardens." />
+          <Text text=" " />
+          <br />
+          <Text text="Silos created by corporate giants." />
+        </Heading2>
+
+        <p>
+          <Text text="Controlling our experiences, deciding what we build, limiting how we interact." />
+        </p>
+      </div>
+    </GuidedStory>
+  );
+};
+
+function useIntersectionObserver(
+  themeToSet: string,
+): React.RefObject<HTMLElement> {
+  const ref = React.useRef<HTMLElement>(null);
+  const [theme, setTheme] = useTheme();
+
+  React.useEffect(() => {
+    const options: IntersectionObserverInit = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+
+      if (entry.isIntersecting && theme.theme !== themeToSet) {
+        setTheme({
+          ...theme,
+          theme: themeToSet,
+        });
+      }
+
+      if (!entry.isIntersecting && theme.theme === themeToSet) {
+        setTheme({
+          ...theme,
+          theme: '',
+        });
+      }
+    }, options);
+
+    if (!ref.current) {
+      return () => {
+        // No cleanup to perform
+      };
+    }
+
+    const { current } = ref;
+    observer.observe(current);
+
+    return () => {
+      observer.unobserve(current);
+    };
+  }, [ref, theme, setTheme, themeToSet]);
+
+  return ref;
+}
+
+const ThereIsABetterWaySection: React.FC = () => {
+  const ref = useIntersectionObserver('light');
+
+  return (
+    <GuidedStory ref={ref} className="there-is-a-better-way">
+      <div className="guided-story--content">
+        <Heading2>
+          <Text text="There is a better way." />
+        </Heading2>
+      </div>
+    </GuidedStory>
+  );
+};
+
+const InfiniteGarden: React.FC = () => {
+  return (
+    <GuidedStory className="infinite-garden">
+      <div className="guided-story--content">
+        <Heading2>
+          <Text text="The Infinite Garden" />
+        </Heading2>
+        <p>
+          <Text text="Escape onchain, where anyone can contribute, anything can be built, and everyone has access. Join the enterprises, artists, degens and dreamers who make their home in the infinite garden. Scaling across hundreds of chains, there is room for all of us." />
+        </p>
+      </div>
+    </GuidedStory>
+  );
+};
+
 /**
  * InscriptionsPage represents the entire Inscriptions page.  This is the main
  * entry point for the Inscriptions page.
@@ -746,10 +924,19 @@ const InscriptionsPage: React.FC<InscriptionsPageProps> = () => {
               <ErrorStreamConsumer>
                 <ProvideEngageStepsStates>
                   <ProvideInscriptionsModalContext>
-                    <div className="inscriptions">
-                      <InscriptionsSection />
-                    </div>
-                    <ThankYouModal />
+                    <ProvideThemeState>
+                      <main className="inscriptions">
+                        <InscriptionHeader />
+                        <InscriptionFooter />
+
+                        <EscapeTheWalledGardensSection />
+                        <OurDataSection />
+                        <ThereIsABetterWaySection />
+                        <InfiniteGarden />
+                        <InscriptionsSection />
+                      </main>
+                      <ThankYouModal />
+                    </ProvideThemeState>
                   </ProvideInscriptionsModalContext>
                 </ProvideEngageStepsStates>
               </ErrorStreamConsumer>

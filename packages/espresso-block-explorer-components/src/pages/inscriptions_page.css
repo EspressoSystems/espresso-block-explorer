@@ -2,8 +2,24 @@
   background-color: #d9d9d9;
 }
 
+html,
+body {
+  scroll-snap-type: y mandatory;
+}
+
 .guided-story {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  scroll-snap-align: start;
+  box-sizing: border-box;
+}
+
+.guided-story::before,
+.guided-story::after {
+  content: '';
+  flex-basis: 100px;
 }
 
 .actions {
@@ -11,36 +27,81 @@
   justify-content: space-between;
 }
 
-/* .scroll-to-continue-section {
-  color: #00000080;
-}
-
-.scroll-to-continue-section::before {
-  content: '';
-  display: block;
-  height: 92px;
-  width: 1px;
-  background-color: #00000080;
-  margin-bottom: 16px;
-} */
-
 :root {
   --guided-story--foreground-color: #fff;
 }
 
-.guided-story.infinite-garden {
-  min-height: 100vh;
-  height: auto;
+.inscriptions {
   background-color: #605812;
-  background-image: url(/infinite_garden.jpeg);
   background-size: cover;
   background-blend-mode: multiply;
   background-position: 50% 50%;
   background-attachment: fixed;
+}
 
+.guided-story {
   color: var(--guided-story--foreground-color);
   --icon--fill-color: var(--guided-story--foreground-color);
   --text--color: var(--guided-story--foreground-color);
+}
+
+.guided-story.escape-the-walled-garden {
+  background-color: #000;
+}
+
+.escape-the-walled-garden .guided-story--content {
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: auto;
+  flex: 1;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.guided-story h1.type--ui--text-100 {
+  --text--font-weight: 400;
+  --text--line-height: 1.2;
+}
+
+.guided-story.our-data {
+  background-color: #000;
+  justify-content: flex-start;
+}
+
+.guided-story h2.type--ui--text-300 {
+  --text--font-weight: 400;
+  --text--line-height: 1.2;
+}
+
+.guided-story.our-data p {
+  --text--font-weight: 400;
+  --text--font-size: 16px;
+  --text--line-height: 1.2;
+  opacity: 60%;
+}
+
+.guided-story.there-is-a-better-way {
+  background-color: #fcebde;
+  --guided-story--foreground-color: #000;
+}
+
+.guided-story.infinite-garden .guided-story--content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.guided-story.infinite-garden .guided-story--content p {
+  align-self: flex-end;
+}
+
+.guided-story.inscription-wall {
+  min-height: 100vh;
+  height: auto;
+  display: block;
 }
 
 .inscriptions--content h2 {
@@ -54,6 +115,12 @@
   --inscriptions-header--on-color: #000;
 }
 
+.inscriptions--header.light {
+  --inscriptions-header--color: #000;
+  --inscriptions-header--color-15p: #00000026;
+  --inscriptions-header--on-color: #fff;
+}
+
 .inscriptions--header {
   display: flex;
   justify-content: space-between;
@@ -63,11 +130,12 @@
   color: var(--inscriptions-header--color);
   --icon--fill-color: var(--inscriptions-header--color);
   --text--color: var(--inscriptions-header--color);
+  will-change: color;
   transition: color ease-in-out var(--inscriptions--transition-duration);
 
-  position: sticky;
+  position: fixed;
   top: 0;
-  /* width: 100vw; */
+  width: 100vw;
   box-sizing: border-box;
 }
 
@@ -76,6 +144,48 @@
   gap: 24px;
   justify-content: flex-end;
   align-items: center;
+}
+
+:root {
+  --inscriptions--footer--color: #fff;
+}
+
+.inscriptions--footer.light {
+  --inscriptions--footer--color: #000;
+}
+
+.inscriptions--footer.transparent {
+  --inscriptions--footer--color: transparent;
+}
+
+.inscriptions--footer {
+  opacity: 60%;
+  pointer-events: none;
+  touch-action: none;
+
+  color: var(--inscriptions--footer--color);
+  --icon--fill-color: var(--inscriptions--footer--color);
+  --text--color: var(--inscriptions--footer--color);
+  will-change: color;
+  transition: color ease-in-out var(--inscriptions--transition-duration);
+
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+
+  will-change: color;
+}
+
+.scroll-to-continue-section::before {
+  content: '';
+  display: block;
+  height: 92px;
+  width: 1px;
+  margin-bottom: 16px;
+
+  background-color: var(--inscriptions--footer--color);
+  will-change: border-color;
+  transition: border-color ease-in-out var(--inscriptions--transition-duration);
 }
 
 .ibm-plex-mono-regular {
@@ -216,6 +326,44 @@ a:not(:hover) {
 
 /* Mobile */
 @media screen and (min-width: 0px) {
+  .inscriptions--header {
+    padding: 24px;
+  }
+
+  .guided-story--content {
+    padding-inline-start: 44px;
+  }
+
+  .guided-story h1.type--ui--text-100 {
+    --text--font-size: 40px;
+  }
+
+  .guided-story h2.type--ui--text-300 {
+    --text--font-size: 32px;
+  }
+
+  .our-data h2 br {
+    display: none;
+  }
+
+  .guided-story.our-data p {
+    margin-block-start: 16px;
+  }
+
+  .guided-story.infinite-garden .guided-story--content p {
+    margin-block-start: 16px;
+    padding-inline-start: 0;
+    opacity: 80%;
+    --text--font-size: 16px;
+    --text--line-height: 1.2;
+    --text--font-weight: 400;
+  }
+
+  .inscriptions--footer {
+    padding-block: 24px;
+    padding-inline: 68px;
+  }
+
   .guided-story {
     padding: 24px;
   }
@@ -250,6 +398,40 @@ a:not(:hover) {
     margin-block-start: 120px;
     margin-inline-start: 120px;
     margin-inline-end: 400px;
+  }
+
+  .guided-story--content {
+    padding-inline: 130px;
+  }
+
+  .guided-story h1.type--ui--text-100 {
+    --text--font-size: 60px;
+  }
+
+  .guided-story h2.type--ui--text-300 {
+    --text--font-size: 60px;
+  }
+
+  .our-data h2 br {
+    display: inline;
+  }
+
+  .guided-story.our-data p {
+    margin-block-start: 32px;
+  }
+
+  .guided-story.infinite-garden .guided-story--content p {
+    margin-block-start: 24px;
+    padding-inline-start: 252px;
+  }
+
+  .inscriptions--header {
+    padding: 60px;
+  }
+
+  .inscriptions--footer {
+    padding-block: 60px;
+    padding-inline: 181px;
   }
 
   .guided-story {
@@ -416,4 +598,47 @@ dialog .btn-close {
 .btn--dialog svg {
   width: 20px;
   height: 20px;
+}
+
+/* Device Pixel Ratio Background Image Sizes */
+
+/* @1x */
+.escape-the-walled-garden .guided-story--content {
+  background-image: url(/escape_the_walled_gardens@1x.jpg);
+}
+
+.inscriptions {
+  background-image: url(/infinite_garden@1x.jpg);
+}
+
+/* @2x */
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min--moz-device-pixel-ratio: 2),
+  only screen and (-o-min-device-pixel-ratio: 2/1),
+  only screen and (min-device-pixel-ratio: 2),
+  only screen and (min-resolution: 192dpi),
+  only screen and (min-resolution: 2dppx) {
+  .escape-the-walled-garden .guided-story--content {
+    background-image: url(/escape_the_walled_gardens@2x.jpg);
+  }
+
+  .inscriptions {
+    background-image: url(/infinite_garden@2x.jpg);
+  }
+}
+
+/* @3x */
+@media only screen and (-webkit-min-device-pixel-ratio: 3),
+  only screen and (min--moz-device-pixel-ratio: 3),
+  only screen and (-o-min-device-pixel-ratio: 3/1),
+  only screen and (min-device-pixel-ratio: 3),
+  only screen and (min-resolution: 288dpi),
+  only screen and (min-resolution: 3dppx) {
+  .escape-the-walled-garden .guided-story--content {
+    background-image: url(/escape_the_walled_gardens@3x.jpg);
+  }
+
+  .inscriptions {
+    background-image: url(/infinite_garden@3x.jpg);
+  }
 }
