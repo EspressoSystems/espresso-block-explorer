@@ -15,12 +15,14 @@ import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/
 import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
 import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';
 import { webSocketCommandToWebWorkerProxyRequestConverter } from '@/models/web_worker/web_worker_proxy_request_codec';
+import ChainDetails from '@/service/inscription/cappuccino/chain_details';
 import InscriptionAndChainDetails from '@/service/inscription/cappuccino/inscription_and_chain_details';
 import { CappuccinoInscriptionEntry } from '@/service/inscription/cappuccino/responses/inscription_entry';
 import CappuccinoInscriptionResponse from '@/service/inscription/cappuccino/responses/inscription_response';
 import { InscriptionServiceResponse } from '@/service/inscription/cappuccino/responses/inscription_service_response';
 import { WebWorkerInscriptionAPI } from '@/service/inscription/cappuccino/web_worker_proxy_api';
 import React from 'react';
+import { filterIterable, firstWhereIterable } from '../functional';
 import { CappuccinoInscriptionServiceAPIContext } from './CappuccinoInscriptionServiceAPIContext';
 
 const kTrailingHistorySamples = 100;
@@ -35,12 +37,89 @@ function createBridgeState() {
   };
 }
 
+/**
+ * compareChainDetails is a simple comparison function that compares two
+ * ChainDetails objects.
+ */
+function compareChainDetails(a: ChainDetails, b: ChainDetails) {
+  const blockCompare = a.block - b.block;
+  if (blockCompare !== 0) {
+    return blockCompare;
+  }
+
+  return a.offset - b.offset;
+}
+
+/**
+ * compareInscriptionsAndChainDetails is a comparison function that compares
+ * two InscriptionAndChainDetails objects.
+ */
+function compareInscriptionAndChainDetails(
+  a: InscriptionAndChainDetails,
+  b: InscriptionAndChainDetails,
+) {
+  const chainCompare = compareChainDetails(a.chainDetails, b.chainDetails);
+  if (chainCompare !== 0) {
+    return chainCompare;
+  }
+
+  return a.inscription.time.valueOf() - b.inscription.time.valueOf();
+}
+
+/**
+ * invertCompare is a utility function that inverts the comparison function
+ * provided to it.
+ */
+function invertCompare<T>(
+  comparer: (a: T, b: T) => number,
+): (A: T, B: T) => number {
+  return (a, b) => -comparer(a, b);
+}
+
+/**
+ * bridgeLatestInscription is a function that bridges the latest inscription
+ * event into the latest inscriptions state.
+ */
 async function bridgeLatestInscription(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createInscriptionSplitStreams>,
   event: CappuccinoInscriptionEntry,
 ) {
-  state.latestInscriptions.put(event.inscriptionAndChainDetails);
+  // We'll want to clean this up if we see that there's a duplicate.
+
+  const existing = firstWhereIterable(
+    state.latestInscriptions.immutableIterable(),
+    (inscription) =>
+      compareChainDetails(
+        inscription.chainDetails,
+        event.inscriptionAndChainDetails.chainDetails,
+      ) === 0,
+  );
+
+  if (!existing) {
+    state.latestInscriptions.put(event.inscriptionAndChainDetails);
+    streams.latestInscriptions.publish(
+      Array.from(state.latestInscriptions.immutableIterable()),
+    );
+    return;
+  }
+
+  // We already have this inscription, we'll need to reconstruct the list.
+  const filtered = Array.from(
+    filterIterable(
+      state.latestInscriptions,
+      (inscriptionAndDetail) => inscriptionAndDetail !== existing,
+    ),
+  );
+
+  filtered.push(event.inscriptionAndChainDetails);
+
+  filtered.sort(invertCompare(compareInscriptionAndChainDetails));
+
+  for (const inscription of filtered) {
+    state.latestInscriptions.put(inscription);
+  }
+
   streams.latestInscriptions.publish(
     Array.from(state.latestInscriptions.immutableIterable()),
   );
@@ -66,12 +145,6 @@ async function handleAutoReconnects(
   if (status instanceof WebSocketStatusConnectionOpened) {
     streams.reconnectAttempt = 0;
     streams.errors.publish(null);
-    streams.latestInscriptions.publish([]);
-    // Drain the inscriptions from the state
-    const it = state.latestInscriptions[Symbol.iterator]();
-    for (let next = it.next(); !next.done; next = it.next()) {
-      // Drain all of the inscriptions stored within the state.
-    }
     return;
   }
 
