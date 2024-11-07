@@ -1,10 +1,21 @@
-.inscriptions {
-  background-color: #d9d9d9;
+@font-face {
+  font-family: 'PP Neue Montreal';
+  font-weight: 100;
+  src: url('/fonts/PPNeueMontreal-Thin.otf') format('opentype');
 }
 
 html,
-body {
-  scroll-snap-type: y mandatory;
+body,
+div[data-rk] {
+  background-color: #000;
+}
+
+html,
+body,
+div[data-rk],
+body > div.storybook-root {
+  width: 100vw;
+  height: 100vh;
 }
 
 .guided-story {
@@ -16,27 +27,58 @@ body {
   box-sizing: border-box;
 }
 
-.guided-story::before,
-.guided-story::after {
-  content: '';
-  flex-basis: 100px;
-}
-
 .actions {
   display: flex;
   justify-content: space-between;
 }
 
 :root {
-  --guided-story--foreground-color: #fff;
+  /* --font-family--ibm-plex-mono: 'IBM Plex Mono', serif; */
+  --font-family--neue-montreal: 'PP Neue Montreal', sans-serif;
 }
 
 .inscriptions {
+  scroll-snap-type: y mandatory;
+  height: 100vh;
+  overflow-y: auto;
+
   background-color: #605812;
   background-size: cover;
   background-blend-mode: multiply;
   background-position: 50% 50%;
   background-attachment: fixed;
+
+  --text--font-size: 16px;
+  --text--font-family: var(--font-family--ibm-plex-mono);
+  --text--font-weight: 400;
+  --text--font-style: normal;
+  --text--line-height: 1.2;
+
+  font-family: var(--text--font-family);
+  font-size: var(--text--font-size);
+  font-weight: var(--text--font-weight);
+  font-style: var(--text--font-style);
+  line-height: var(--text--line-height);
+}
+
+.inscriptions.transparent {
+  scroll-snap-type: none;
+}
+
+h1,
+h2 {
+  --text--font-family: var(--font-family--neue-montreal);
+  --text--font-weight: 400;
+
+  font-family: var(--text--font-family);
+  font-weight: var(--text--font-weight);
+  font-style: var(--text--font-style);
+  font-size: var(--text--font-size);
+  line-height: var(--text--line-height);
+}
+
+:root {
+  --guided-story--foreground-color: #fff;
 }
 
 .guided-story {
@@ -51,8 +93,8 @@ body {
 
 .escape-the-walled-garden .guided-story--content {
   background-repeat: no-repeat;
-  background-position: 50% 50%;
-  background-size: auto;
+  background-position: 60% 20%;
+  background-size: cover;
   flex: 1;
 
   display: flex;
@@ -60,7 +102,7 @@ body {
   align-items: center;
 }
 
-.guided-story h1.type--ui--text-100 {
+.guided-story h1 {
   --text--font-weight: 400;
   --text--line-height: 1.2;
 }
@@ -70,7 +112,7 @@ body {
   justify-content: flex-start;
 }
 
-.guided-story h2.type--ui--text-300 {
+.guided-story h2 {
   --text--font-weight: 400;
   --text--line-height: 1.2;
 }
@@ -104,6 +146,11 @@ body {
   display: block;
 }
 
+.inscriptions--content {
+  will-change: margin;
+  transition: margin ease-in-out 100ms;
+}
+
 .inscriptions--content h2 {
   font-size: 60px;
   line-height: 1.2;
@@ -135,6 +182,7 @@ body {
 
   position: fixed;
   top: 0;
+  left: 0;
   width: 100vw;
   box-sizing: border-box;
 }
@@ -166,6 +214,9 @@ body {
   color: var(--inscriptions--footer--color);
   --icon--fill-color: var(--inscriptions--footer--color);
   --text--color: var(--inscriptions--footer--color);
+  --text--font-size: 14px;
+  font-size: var(--text--font-size);
+
   will-change: color;
   transition: color ease-in-out var(--inscriptions--transition-duration);
 
@@ -188,12 +239,6 @@ body {
   transition: border-color ease-in-out var(--inscriptions--transition-duration);
 }
 
-.ibm-plex-mono-regular {
-  font-family: 'IBM Plex Mono', serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
 .engage-steps-thank-you {
   background: #ffffff26;
   padding: 24px;
@@ -205,6 +250,9 @@ body {
   padding-block: 27px;
   gap: 16px;
   justify-content: flex-start;
+
+  --text--font-family: var(--font-family--neue-montreal);
+  font-family: var(--font-family--neue-montreal);
 }
 
 .engage-step--status:not(:nth-last-child(1)) {
@@ -326,6 +374,11 @@ a:not(:hover) {
 
 /* Mobile */
 @media screen and (min-width: 0px) {
+  .guided-story::before,
+  .guided-story::after {
+    content: '';
+    flex-basis: 84px;
+  }
   .inscriptions--header {
     padding: 24px;
   }
@@ -334,11 +387,11 @@ a:not(:hover) {
     padding-inline-start: 44px;
   }
 
-  .guided-story h1.type--ui--text-100 {
+  .guided-story h1 {
     --text--font-size: 40px;
   }
 
-  .guided-story h2.type--ui--text-300 {
+  .guided-story h2 {
     --text--font-size: 32px;
   }
 
@@ -394,21 +447,35 @@ a:not(:hover) {
 
 /* Large */
 @media screen and (min-width: 1024px) {
+  .guided-story.escape-the-walled-garden::before {
+    flex-basis: 100px;
+  }
+
+  .guided-story::before,
+  .guided-story::after {
+    content: '';
+    flex-basis: 100px;
+  }
+
   .inscriptions--content {
     margin-block-start: 120px;
     margin-inline-start: 120px;
-    margin-inline-end: 400px;
+    margin-inline-end: 0;
   }
 
   .guided-story--content {
     padding-inline: 130px;
   }
 
-  .guided-story h1.type--ui--text-100 {
+  .guided-story h1 {
     --text--font-size: 60px;
   }
 
-  .guided-story h2.type--ui--text-300 {
+  .escape-the-walled-garden h1 br {
+    display: none;
+  }
+
+  .guided-story h2 {
     --text--font-size: 60px;
   }
 
@@ -450,6 +517,14 @@ a:not(:hover) {
 
 /* Extra Large */
 @media screen and (min-width: 1280px) {
+  .inscriptions--content {
+    margin-inline-end: 400px;
+  }
+
+  .inscriptions--content > h2,
+  .inscriptions--content > p {
+    margin-inline-end: -400px;
+  }
 }
 
 /* 2 Extra Large */

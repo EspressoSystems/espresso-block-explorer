@@ -1,4 +1,4 @@
-import { PathResolver } from '@/contexts/PathResolverProvider';
+import { PathResolver } from '@/contexts/PathResolver';
 
 export class StoryBookPathResolver implements PathResolver {
   explorer(): string {

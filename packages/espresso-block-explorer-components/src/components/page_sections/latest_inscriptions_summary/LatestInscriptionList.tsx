@@ -1,8 +1,10 @@
-import { ErrorContext } from '@/components/contexts';
+import { ErrorContext, PathResolverContext } from '@/components/contexts';
 import { RainbowKitAccountContext } from '@/components/rainbowkit/contexts/contexts';
 import { HexText } from '@/components/text';
 import FriendlyDateTimeText from '@/components/text/FriendlyDateTimeText';
 import FullHexText from '@/components/text/FullHexText';
+import Text from '@/components/text/Text';
+import { ExternalLink } from '@/components/visual';
 import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import { parseHexString } from '@/convert/hex';
@@ -45,10 +47,32 @@ const InscriptionDisplay: React.FC = () => {
     <div className="inscription-display" data-self={isMyAddress}>
       <div className="inscription-display--full-address">
         <FullHexText value={inscription.address.address} />
+        {isMyAddress ? (
+          <span className="your-inscription">
+            <Text text="Your inscription" />
+          </span>
+        ) : null}
       </div>
+
       <div className="inscription-display--trunc-address">
         <HexText value={inscription.address.address} />
+        {isMyAddress ? (
+          <span className="your-inscription">
+            <Text text="Your inscription" />
+          </span>
+        ) : null}
       </div>
+
+      <a
+        href={pathResolver.transaction(chainDetails.block, chainDetails.offset)}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <ExternalLink />
+      </a>
+
+      <div className="spacer"></div>
+
       <div className="inscription-display--time">
         <FriendlyDateTimeText date={inscription.time} />
       </div>
@@ -78,16 +102,14 @@ export const LatestInscriptionList: React.FC = () => {
 
   return (
     <>
-      {Array.from(reversedInscriptions).map(
-        (inscriptionAndChainDetails, index) => (
-          <InscriptionAndChainDetailsContext.Provider
-            key={index}
-            value={inscriptionAndChainDetails}
-          >
-            <InscriptionDisplay />
-          </InscriptionAndChainDetailsContext.Provider>
-        ),
-      )}
+      {Array.from(reversedInscriptions).map((inscriptionAndChainDetails) => (
+        <InscriptionAndChainDetailsContext.Provider
+          key={`${inscriptionAndChainDetails.chainDetails.block}-${inscriptionAndChainDetails.chainDetails.offset}`}
+          value={inscriptionAndChainDetails}
+        >
+          <InscriptionDisplay />
+        </InscriptionAndChainDetailsContext.Provider>
+      ))}
     </>
   );
 };

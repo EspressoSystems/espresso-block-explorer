@@ -19,7 +19,7 @@ const HexText: React.FC<HexTextProps> = (props) => {
 
   return (
     <span title={string}>
-      {string.substring(0, 8)}...{string.substring(string.length - 6)}
+      {string.substring(0, 4)}...{string.substring(string.length - 4)}
     </span>
   );
 };

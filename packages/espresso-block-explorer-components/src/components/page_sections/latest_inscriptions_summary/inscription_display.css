@@ -1,7 +1,8 @@
 .inscription-display {
   padding-block: 24px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: center;
 
   /* Default font for things under the Inscriptions List */
   font-family: 'IBM Plex Mono', serif;
@@ -25,18 +26,26 @@
 .inscription-display--trunc-address {
   color: #b9ad3e;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   gap: 8px;
   align-items: center;
   --icon--fill-color: #b9ad3e;
 }
 
-.inscription-display--time {
-  color: #ffffff;
+.inscription-display--full-address > span,
+.inscription-display--trunc-address > span {
+  color: #fff;
+  align-self: flex-start;
 }
 
-.inscription-display[data-self='true'] {
-  background-color: #ffffff33;
+.spacer {
+  flex: 1;
+}
+
+.inscription-display--time {
+  color: #fff;
 }
 
 .inscription-display--full-address {
@@ -53,16 +62,16 @@
 
 /* Medium */
 @media screen and (min-width: 768px) {
+}
+
+/* Large */
+@media screen and (min-width: 1024px) {
   .inscription-display--full-address {
     display: flex;
   }
   .inscription-display--trunc-address {
     display: none;
   }
-}
-
-/* Large */
-@media screen and (min-width: 1024px) {
 }
 
 /* Extra Large */

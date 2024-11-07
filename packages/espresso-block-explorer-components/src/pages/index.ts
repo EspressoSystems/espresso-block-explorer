@@ -1,3 +1,4 @@
+export { AbsolutePathResolver } from './AbsolutePathResolver';
 export { default as BlockPage } from './BlockPage';
 export { default as BlocksPage } from './BlocksPage';
 export * from './CappuccinoHotShotQueryServiceAdapters';

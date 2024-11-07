@@ -1,11 +1,9 @@
-import React, { ForwardedRef, useState } from 'react';
+import React, { ForwardedRef, HTMLProps, useState } from 'react';
 import {
   ArrowRight,
   DiscordLink,
   ErrorDisplay,
   EspressoLogo,
-  Heading1,
-  Heading2,
   TwitterIcon,
   TwitterLink,
 } from '../components';
@@ -27,7 +25,6 @@ import {
 } from '@/components/rainbowkit/contexts/contexts';
 import Check from '@/components/visual/icons/Check';
 import Close from '@/components/visual/icons/Close';
-import { WebSocketStatus } from '@/components/visual/web_socket/WebSocketStatus';
 import Inscription from '@/service/inscription/cappuccino/inscription';
 import InscriptionAndSignature from '@/service/inscription/cappuccino/inscription_and_signature';
 import { InscriptionServiceRequest } from '@/service/inscription/cappuccino/requests/inscription_service_request';
@@ -47,14 +44,20 @@ import { parseHexString } from '../convert';
 import { CappuccinoInscriptionServiceAPIContext } from './CappuccinoInscriptionServiceAPIContext';
 
 const config = getDefaultConfig({
-  appName: 'My Test App',
-  projectId: 'YOUR_PROJECT_ID',
+  appName: 'Espresso Inscriptions',
+  projectId: '9538d52db1aab41aa364a1a95cd57b2a',
   chains: [mainnet /*, polygon, optimism, arbitrum, base*/],
   ssr: true,
 });
 const queryClient = new QueryClient();
 
-interface InscriptionsPageProps {}
+const Heading1: React.FC<HTMLProps<HTMLHeadingElement>> = (props) => {
+  return React.createElement('h1', props);
+};
+
+const Heading2: React.FC<HTMLProps<HTMLHeadingElement>> = (props) => {
+  return React.createElement('h2', props);
+};
 
 interface GuidedStoryProps {
   className?: string;
@@ -461,6 +464,28 @@ function useEngageSteps() {
   return React.useContext(EngageStepsStateContext);
 }
 
+/**
+ * generateTweetIntentURL generates a URL that will trigger a user to post
+ * a tweet with a preset message and a URL.
+ */
+function generateTweetIntentURL() {
+  const url = new URL('https://twitter.com/intent/tweet');
+  url.searchParams.set(
+    'text',
+    "I've escaped the walled gardens. And you can too!",
+  );
+  url.searchParams.set('url', 'https://infinitegarden.espressosys.com/');
+  return url;
+}
+
+/**
+ * performTweetIntent is a function that will open a new window with the
+ * generated tweet intent URL.
+ */
+function performTweetIntent() {
+  window.open(generateTweetIntentURL(), '_blank');
+}
+
 /*
  * EngageSteps is a component that represents the steps that the user is meant
  * to take on their guided engagement journey.
@@ -546,7 +571,7 @@ const EngageSteps: React.FC = () => {
           engageStepsState.makeANewPostOnXActivated
             ? undefined
             : () => {
-                window.open('about:blank', '_blank');
+                performTweetIntent();
                 setEngageStepsState({
                   ...engageStepsState,
                   makeANewPostOnXActivated: true,
@@ -571,16 +596,15 @@ const EngageSteps: React.FC = () => {
  * own to the list.
  */
 const InscriptionsSection: React.FC = () => {
-  const ref = useIntersectionObserver('transparent');
+  const ref = useIntersectionObserver('transparent', {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1,
+  });
 
   return (
     <GuidedStory ref={ref} className="inscription-wall">
-      <div></div>
-      {/*
-        This component displays the current Lifecycle state of the page.  It
-        reflects what's happening with the underlying Web Socket connection.
-      */}
-      <WebSocketStatus className="edge-margin" />
+      <InscriptionHeader />
 
       {/*
         This component displays any errors that have occurred while attempting
@@ -596,7 +620,7 @@ const InscriptionsSection: React.FC = () => {
         <p>
           <Text text="Join us on our mission to safeguard against silos, ensuring all chains work together as one." />
           <br />
-          <Text text="Leave your mark on Espersso Mainnet by signing with your wallet, showing you've escaped." />
+          <Text text="Leave your mark on Espresso Mainnet by signing with your wallet, showing you've escaped." />
           <br />
           <span style={{ fontSize: '0.8em', opacity: '0.8' }}>
             <Text text="(No transaction or fees required)" />
@@ -760,11 +784,12 @@ const ThankYouModal: React.FC = () => {
         <hr />
         <div className="dialog--footer">
           <a
-            href="about:blank"
+            href={generateTweetIntentURL().toString()}
             className="btn--dialog"
             target="_blank"
             rel="noreferrer"
             onClick={() => {
+              performTweetIntent();
               setEngageStepsState({
                 ...engageStepsState,
                 makeANewPostOnXActivated: true,
@@ -804,7 +829,10 @@ const EscapeTheWalledGardensSection: React.FC = () => {
     <GuidedStory className="escape-the-walled-garden">
       <div className="guided-story--content">
         <Heading1>
-          <Text text="Escape the Walled Gardens" />
+          <Text text="Escape the" />
+          <Text text=" " />
+          <br />
+          <Text text="Walled Gardens" />
         </Heading1>
       </div>
     </GuidedStory>
@@ -835,17 +863,16 @@ const OurDataSection: React.FC = () => {
 
 function useIntersectionObserver(
   themeToSet: string,
+  options: IntersectionObserverInit = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5,
+  },
 ): React.RefObject<HTMLElement> {
   const ref = React.useRef<HTMLElement>(null);
   const [theme, setTheme] = useTheme();
 
   React.useEffect(() => {
-    const options: IntersectionObserverInit = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.5,
-    };
-
     const observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
 
@@ -876,7 +903,7 @@ function useIntersectionObserver(
     return () => {
       observer.unobserve(current);
     };
-  }, [ref, theme, setTheme, themeToSet]);
+  }, [ref, options, theme, setTheme, themeToSet]);
 
   return ref;
 }
@@ -910,6 +937,21 @@ const InfiniteGarden: React.FC = () => {
   );
 };
 
+interface InscriptionsMainProps {
+  children?: React.ReactNode | React.ReactNode[];
+}
+
+const InscriptionsMain: React.FC<InscriptionsMainProps> = (props) => {
+  const [theme] = useTheme();
+  return (
+    <main className={addClassToClassName(theme.theme, 'inscriptions')}>
+      {props.children}
+    </main>
+  );
+};
+
+interface InscriptionsPageProps {}
+
 /**
  * InscriptionsPage represents the entire Inscriptions page.  This is the main
  * entry point for the Inscriptions page.
@@ -925,8 +967,7 @@ const InscriptionsPage: React.FC<InscriptionsPageProps> = () => {
                 <ProvideEngageStepsStates>
                   <ProvideInscriptionsModalContext>
                     <ProvideThemeState>
-                      <main className="inscriptions">
-                        <InscriptionHeader />
+                      <InscriptionsMain>
                         <InscriptionFooter />
 
                         <EscapeTheWalledGardensSection />
@@ -934,7 +975,7 @@ const InscriptionsPage: React.FC<InscriptionsPageProps> = () => {
                         <ThereIsABetterWaySection />
                         <InfiniteGarden />
                         <InscriptionsSection />
-                      </main>
+                      </InscriptionsMain>
                       <ThankYouModal />
                     </ProvideThemeState>
                   </ProvideInscriptionsModalContext>
