@@ -77,6 +77,14 @@ h2 {
   line-height: var(--text--line-height);
 }
 
+p {
+  font-family: var(--text--font-family);
+  font-weight: var(--text--font-weight);
+  font-style: var(--text--font-style);
+  font-size: var(--text--font-size);
+  line-height: var(--text--line-height);
+}
+
 :root {
   --guided-story--foreground-color: #fff;
 }
@@ -118,9 +126,7 @@ h2 {
 }
 
 .guided-story.our-data p {
-  --text--font-weight: 400;
-  --text--font-size: 16px;
-  --text--line-height: 1.2;
+  --text--font-size: 20px;
   opacity: 60%;
 }
 
@@ -138,12 +144,18 @@ h2 {
 
 .guided-story.infinite-garden .guided-story--content p {
   align-self: flex-end;
+  opacity: 80%;
+  --text--font-size: 20px;
 }
 
 .guided-story.inscription-wall {
   min-height: 100vh;
   height: auto;
   display: block;
+}
+
+.guided-story.inscription-wall p {
+  --text--font-size: 20px;
 }
 
 .inscriptions--content {
@@ -406,10 +418,6 @@ a:not(:hover) {
   .guided-story.infinite-garden .guided-story--content p {
     margin-block-start: 16px;
     padding-inline-start: 0;
-    opacity: 80%;
-    --text--font-size: 16px;
-    --text--line-height: 1.2;
-    --text--font-weight: 400;
   }
 
   .inscriptions--footer {
