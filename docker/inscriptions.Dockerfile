@@ -3,34 +3,37 @@ FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json /app/
 COPY packages/espresso-block-explorer-components /app/packages/espresso-block-explorer-components
-COPY packages/block-explorer /app/packages/block-explorer
+COPY packages/inscriptions /app/packages/inscriptions
 
-RUN npm ci --no-audit --all-workspaces
+RUN apk add --no-cache python3 make g++
+
+RUN npm ci --no-audit --workspace=packages/espresso-block-explorer-components
 
 # Build the Components Library
 RUN npm run build --workspace=packages/espresso-block-explorer-components
 
 # Copy over public, and asset files, then install again, for the block-explorer-components
-RUN rm -rf packages/block-explorer/public && \
-    cp -r packages/espresso-block-explorer-components/public packages/block-explorer/public && \
-    cp -r packages/espresso-block-explorer-components/dist/assets packages/block-explorer/public/assets
-RUN npm install --no-audit --save --workspace=packages/block-explorer packages/espresso-block-explorer-components/
+RUN rm -rf packages/inscriptions/public && \
+    cp -r packages/espresso-block-explorer-components/public packages/inscriptions/public && \
+    cp -r packages/espresso-block-explorer-components/dist/assets packages/inscriptions/public/assets
+RUN npm install --no-audit --save --workspace=packages/inscriptions
 
 # Build the Next Application
-RUN npm run build --workspace=packages/block-explorer
+RUN npm run build --workspace=packages/inscriptions
 
 FROM --platform=$BUILDPLATFORM node:20-alpine
-RUN apk add --no-cache bash jq tini
+RUN apk add --no-cache bash jq tini python3 make g++
 WORKDIR /app
 
 COPY --from=builder /app/package.json /app/package-lock.json /app/
-COPY --from=builder /app/packages/block-explorer/package.json /app/packages/block-explorer/
+COPY --from=builder /app/packages/inscriptions/package.json /app/packages/inscriptions/
 RUN NODE_ENV=production npm ci --only=production
-COPY --from=builder /app/packages/block-explorer/.next /app/packages/block-explorer/.next
-COPY --from=builder /app/packages/block-explorer/public/ /app/packages/block-explorer/public/
-COPY docker/block-explorer-init.sh /app/block-explorer-init.sh
+RUN apk del python3 make g++
+COPY --from=builder /app/packages/inscriptions/.next /app/packages/inscriptions/.next
+COPY --from=builder /app/packages/inscriptions/public/ /app/packages/inscriptions/public/
+COPY docker/inscriptions-init.sh /app/inscriptions-init.sh
 
-# The configuration for the pre-built block-explorer is specified by
+# The configuration for the pre-built inscription is specified by
 # a file named config.json contained within the public folder of the
 # docker image.  By default the value `hotshot_query_service_url` is
 # stored as `null` which will indicate to use the fake generated data.
@@ -59,16 +62,16 @@ COPY docker/block-explorer-init.sh /app/block-explorer-init.sh
 #  "replay:https://example.com/replay-file.har"
 #
 # In both of these cases, primarily for convenience we have introduced an
-# block-explorer-init.sh file that will update the contents of the
-# `hotshot_query_service_url` and the `node_validator_service_url` URLs
-# with the contents of the environment variables `QUERY_SERVICE_URI` and
-# `NODE_VALIDATOR_URI` respectively.  This allows for the configuration of
-# the block explorer to be done at runtime.
+# inscriptions-init.sh file that will update the contents of the `hotshot_query_service_url`
+# and the `node_validator_service_url` URLs with the contents of the
+# environment variables `QUERY_SERVICE_URI` and `NODE_VALIDATOR_URI`
+# respectively.  This allows for the configuration of the block explorer
+# to be done at runtime.
 
 EXPOSE 3000
 ENV HOST=0.0.0.0
-ENV QUERY_SERVICE_URI=""
-ENV NODE_VALIDATOR_URI=""
+ENV INSCRIPTION_SERVICE_WEBSOCKET_URI=""
+ENV INSCRIPTION_SERVICE_URI=""
 
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["./block-explorer-init.sh"]
+CMD ["./inscriptions-init.sh"]
