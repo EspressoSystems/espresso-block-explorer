@@ -620,7 +620,7 @@ const InscriptionsSection: React.FC = () => {
         <p>
           <Text text="Join us on our mission to safeguard against silos, ensuring all chains work together as one." />
           <br />
-          <Text text="Leave your mark on Espresso Mainnet by signing with your wallet, showing you've escaped." />
+          <Text text="Leave your mark on Espresso Mainnet by signing with your wallet." />
           <br />
           <span style={{ fontSize: '0.8em', opacity: '0.8' }}>
             <Text text="(No transaction or fees required)" />
