@@ -26,11 +26,12 @@ import './inscription_display.css';
  */
 const InscriptionDisplay: React.FC = () => {
   const account = React.useContext(RainbowKitAccountContext);
+  const pathResolver = React.useContext(PathResolverContext);
   const inscriptionAndChainDetails = React.useContext(
     InscriptionAndChainDetailsContext,
   );
 
-  const { inscription } = inscriptionAndChainDetails;
+  const { inscription, chainDetails } = inscriptionAndChainDetails;
   const isMyAddress =
     account !== null &&
     compareArrayBuffer(
