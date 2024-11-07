@@ -1,6 +1,8 @@
 'use client';
 
 import {
+  AbsolutePathResolver,
+  PathResolverContext,
   ProvideDerivedDateTimeFormatters,
   ProvideDerivedNumberFormatters,
   ProvideNavigatorLanguage,
@@ -48,9 +50,17 @@ export default function RootLayout({
       <ProvideDerivedNumberFormatters>
         <ProvideDerivedDateTimeFormatters>
           <ProvideTickEverySecond>
-            <html lang="en">
-              <body className={ibm.className}>{children}</body>
-            </html>
+            <PathResolverContext.Provider
+              value={
+                new AbsolutePathResolver(
+                  new URL('https://explorer.decaf.testnet.espresso.network/'),
+                )
+              }
+            >
+              <html lang="en">
+                <body className={ibm.className}>{children}</body>
+              </html>
+            </PathResolverContext.Provider>
           </ProvideTickEverySecond>
         </ProvideDerivedDateTimeFormatters>
       </ProvideDerivedNumberFormatters>
