@@ -1,14 +1,18 @@
 .inscription-display {
   padding-block: 24px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
   /* Default font for things under the Inscriptions List */
-  font-family: 'IBM Plex Mono', serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 14px;
+  --text--font-size: 14px;
+  font-family: var(--text--font-family);
+  font-weight: var(--text--font-weight);
+  font-style: var(--text--font-style);
+  font-size: var(--text--font-size);
+
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  grid-template-areas:
+    'address link spacer time'
+    'label b b b';
+  column-gap: 8px;
 }
 
 .inscription-display:not(:nth-last-child(1)) {
@@ -25,26 +29,25 @@
 .inscription-display--full-address,
 .inscription-display--trunc-address {
   color: #b9ad3e;
-  display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 8px;
   align-items: center;
   --icon--fill-color: #b9ad3e;
+  grid-area: address;
+  align-self: center;
 }
 
-.inscription-display--full-address > span,
-.inscription-display--trunc-address > span {
+.block-explorer-link {
+  grid-area: link;
+}
+
+.your-inscription {
   color: #fff;
-  align-self: flex-start;
-}
-
-.spacer {
-  flex: 1;
+  grid-area: label;
 }
 
 .inscription-display--time {
+  grid-area: time;
+  align-self: center;
   color: #fff;
 }
 

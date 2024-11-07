@@ -48,31 +48,26 @@ const InscriptionDisplay: React.FC = () => {
     <div className="inscription-display" data-self={isMyAddress}>
       <div className="inscription-display--full-address">
         <FullHexText value={inscription.address.address} />
-        {isMyAddress ? (
-          <span className="your-inscription">
-            <Text text="Your inscription" />
-          </span>
-        ) : null}
       </div>
 
       <div className="inscription-display--trunc-address">
         <HexText value={inscription.address.address} />
-        {isMyAddress ? (
-          <span className="your-inscription">
-            <Text text="Your inscription" />
-          </span>
-        ) : null}
       </div>
+
+      {isMyAddress ? (
+        <span className="your-inscription">
+          <Text text="Your inscription" />
+        </span>
+      ) : null}
 
       <a
         href={pathResolver.transaction(chainDetails.block, chainDetails.offset)}
+        className="block-explorer-link"
         target="_blank"
         rel="noreferrer"
       >
         <ExternalLink />
       </a>
-
-      <div className="spacer"></div>
 
       <div className="inscription-display--time">
         <FriendlyDateTimeText date={inscription.time} />
