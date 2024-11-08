@@ -248,6 +248,7 @@ p {
   padding-block: 27px;
   gap: 16px;
   justify-content: flex-start;
+  align-items: center;
 
   --text--font-family: var(--font-family--neue-montreal);
   font-family: var(--font-family--neue-montreal);
