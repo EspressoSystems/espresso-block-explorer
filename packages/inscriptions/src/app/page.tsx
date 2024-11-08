@@ -8,14 +8,15 @@ const description =
 export const metadata = {
   title,
   description,
-  canonical: '/',
+  alternates: {
+    canonical: '/',
+  },
 
   twitter: {
     card: 'summary',
     site: '@espressosys',
     title: title,
     description: description,
-    image: 'https://infinitegarden.espressosys.com/infinite_garden.png',
   },
 
   openGraph: {
@@ -23,7 +24,6 @@ export const metadata = {
     description: description,
     type: 'website',
     url: 'https://infinitegarden.espressosys.com/',
-    image: 'https://infinitegarden.espressosys.com/infinite_garden.png',
   },
 };
 

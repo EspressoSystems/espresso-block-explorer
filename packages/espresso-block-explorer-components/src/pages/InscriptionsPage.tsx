@@ -472,7 +472,7 @@ function generateTweetIntentURL() {
   const url = new URL('https://twitter.com/intent/tweet');
   url.searchParams.set(
     'text',
-    "I've escaped the walled gardens. And you can too!",
+    'Join me in the Infinite Garden.\n\nA place where composability means anyone can contribute, anything can be built, and everyone has access.',
   );
   url.searchParams.set('url', 'https://infinitegarden.espressosys.com/');
   return url;
