@@ -644,7 +644,7 @@ const InscriptionsSection: React.FC = () => {
 const YourSupportHasBeenNotedMessage: React.FC = () => {
   return (
     <>
-      <Text text="Your support has been noted. To learn more about how Espresso is working to safeguard the Infinite Garden, visit our " />
+      <Text text="Your support is now being inscribed on the Espresso Mainnet in perpetuity. To learn more about how Espresso is working to safeguard the Infinite Garden, visit our " />
       <a href="https://espressosys.com/" target="_blank" rel="noreferrer">
         <Text text="website" />
       </a>
