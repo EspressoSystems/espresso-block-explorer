@@ -6,6 +6,7 @@ const description =
   'Join us on our mission to safeguard against silos, ensuring all chains work together as one. Espresso mainnet is live.';
 
 export const metadata = {
+  metadataBase: new URL('https://infinitegarden.espressosys.com/'),
   title,
   description,
   alternates: {
