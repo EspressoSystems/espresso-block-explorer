@@ -47,11 +47,31 @@ const InscriptionDisplay: React.FC = () => {
   return (
     <div className="inscription-display" data-self={isMyAddress}>
       <div className="inscription-display--full-address">
-        <FullHexText value={inscription.address.address} />
+        <a
+          href={pathResolver.transaction(
+            chainDetails.block,
+            chainDetails.offset,
+          )}
+          className="block-explorer-link"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FullHexText value={inscription.address.address} />
+        </a>
       </div>
 
       <div className="inscription-display--trunc-address">
-        <HexText value={inscription.address.address} />
+        <a
+          href={pathResolver.transaction(
+            chainDetails.block,
+            chainDetails.offset,
+          )}
+          className="block-explorer-link"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <HexText value={inscription.address.address} />
+        </a>
       </div>
 
       {isMyAddress ? (
