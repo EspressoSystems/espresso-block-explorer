@@ -13,7 +13,7 @@ RUN npm ci --no-audit --workspace=packages/espresso-block-explorer-components
 RUN npm run build --workspace=packages/espresso-block-explorer-components
 
 # Copy over public, and asset files, then install again, for the block-explorer-components
-RUN cp -r packages/espresso-block-explorer-components/public packages/inscriptions/public && \
+RUN cp -r packages/espresso-block-explorer-components/public/* packages/inscriptions/public/. && \
     cp -r packages/espresso-block-explorer-components/dist/assets packages/inscriptions/public/assets
 RUN npm install --no-audit --save --workspace=packages/inscriptions
 
