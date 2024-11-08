@@ -576,7 +576,9 @@ const EngageSteps: React.FC = () => {
           target="_blank"
           rel="noreferrer"
           onClick={(event) => {
-              }
+            if (event.button !== 0) {
+              return;
+            }
 
             setEngageStepsState({
               ...engageStepsState,
@@ -601,7 +603,7 @@ const InscriptionsSection: React.FC = () => {
   const ref = useIntersectionObserver('transparent', {
     root: null,
     rootMargin: '0px',
-    threshold: 0.1,
+    threshold: 0.0001,
   });
 
   return (
@@ -774,7 +776,11 @@ const ThankYouModal: React.FC = () => {
           </Heading2>
           <button className="btn-close">
             <Close
-              onClick={() => {
+              onClick={(event) => {
+                if (event.button !== 0) {
+                  return;
+                }
+
                 context.closeThankYouModal();
               }}
             />
@@ -790,8 +796,11 @@ const ThankYouModal: React.FC = () => {
             className="btn--dialog"
             target="_blank"
             rel="noreferrer"
-            onClick={() => {
-              performTweetIntent();
+            onClick={(event) => {
+              if (event.button !== 0) {
+                return;
+              }
+
               setEngageStepsState({
                 ...engageStepsState,
                 makeANewPostOnXActivated: true,
