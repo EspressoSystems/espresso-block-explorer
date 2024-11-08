@@ -478,14 +478,6 @@ function generateTweetIntentURL() {
   return url;
 }
 
-/**
- * performTweetIntent is a function that will open a new window with the
- * generated tweet intent URL.
- */
-function performTweetIntent() {
-  window.open(generateTweetIntentURL(), '_blank');
-}
-
 /*
  * EngageSteps is a component that represents the steps that the user is meant
  * to take on their guided engagement journey.
@@ -514,6 +506,16 @@ const EngageSteps: React.FC = () => {
       </p>
     );
   }
+
+  const step3 = (
+    <EngageStepStatus done={engageStepsState.makeANewPostOnXActivated}>
+      <EngageStep>
+        <Text text="3" />
+        <Text text="Share on X" />
+        <ArrowRight />
+      </EngageStep>
+    </EngageStepStatus>
+  );
 
   return (
     <div className="engage-steps">
@@ -565,26 +567,26 @@ const EngageSteps: React.FC = () => {
           <ArrowRight />
         </EngageStep>
       </EngageStepStatus>
-      <EngageStepStatus
-        done={engageStepsState.makeANewPostOnXActivated}
-        onClick={
-          engageStepsState.makeANewPostOnXActivated
-            ? undefined
-            : () => {
-                performTweetIntent();
-                setEngageStepsState({
-                  ...engageStepsState,
-                  makeANewPostOnXActivated: true,
-                });
+
+      {engageStepsState.makeANewPostOnXActivated ? (
+        step3
+      ) : (
+        <a
+          href={generateTweetIntentURL().toString()}
+          target="_blank"
+          rel="noreferrer"
+          onClick={(event) => {
               }
-        }
-      >
-        <EngageStep>
-          <Text text="3" />
-          <Text text="Share on X" />
-          <ArrowRight />
-        </EngageStep>
-      </EngageStepStatus>
+
+            setEngageStepsState({
+              ...engageStepsState,
+              makeANewPostOnXActivated: true,
+            });
+          }}
+        >
+          {step3}
+        </a>
+      )}
     </div>
   );
 };

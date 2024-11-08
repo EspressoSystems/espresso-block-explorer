@@ -266,6 +266,7 @@ p {
 .engage-step--status {
   display: flex;
   justify-content: space-between;
+  color: #fff;
 }
 
 .engage-step--status[data-completed='true'] > :nth-child(1) {
