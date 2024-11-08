@@ -941,7 +941,7 @@ const InfiniteGarden: React.FC = () => {
           <Text text="The Infinite Garden" />
         </Heading2>
         <p>
-          <Text text="Escape onchain, where anyone can contribute, anything can be built, and everyone has access. Join the enterprises, artists, degens and dreamers who make their home in the infinite garden. Scaling across hundreds of chains, there is room for all of us." />
+          <Text text="Escape onchain, where anyone can contribute, anything can be built, and everyone has access. Join the enterprises, artists, degens, and dreamers who make their home in the infinite garden. Scaling across hundreds of chains, there is room for all of us." />
         </p>
       </div>
     </GuidedStory>
