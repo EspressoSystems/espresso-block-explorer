@@ -15,7 +15,7 @@ export const metadata = {
     site: '@espressosys',
     title: title,
     description: description,
-    image: '',
+    image: 'https://infinitegarden.espressosys.com/infinite_garden.png',
   },
 
   openGraph: {
@@ -23,7 +23,7 @@ export const metadata = {
     description: description,
     type: 'website',
     url: 'https://infinitegarden.espressosys.com/',
-    image: '',
+    image: 'https://infinitegarden.espressosys.com/infinite_garden.png',
   },
 };
 
