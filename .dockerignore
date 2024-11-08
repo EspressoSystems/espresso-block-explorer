@@ -13,7 +13,7 @@
 !package.json
 !package-lock.json
 
-# Explicitly allow esporess-block-explorer-components pieces
+# Explicitly allow espresso-block-explorer-components pieces
 
 !packages/espresso-block-explorer-components/public
 !packages/espresso-block-explorer-components/src
@@ -21,7 +21,7 @@
 !packages/espresso-block-explorer-components/tsconfig.json
 !packages/espresso-block-explorer-components/vite.config.ts
 
-# Explicitly allow block-explorer pices
+# Explicitly allow block-explorer pieces
 
 !packages/block-explorer/public
 !packages/block-explorer/src
@@ -30,3 +30,13 @@
 !packages/block-explorer/tsconfig.base.json
 !packages/block-explorer/tsconfig.build.json
 !packages/block-explorer/next.config.js
+
+# Explicitly allow inscriptions pieces
+
+!packages/inscriptions/public
+!packages/inscriptions/src
+!packages/inscriptions/package.json
+!packages/inscriptions/tsconfig.json
+!packages/inscriptions/tsconfig.base.json
+!packages/inscriptions/tsconfig.build.json
+!packages/inscriptions/next.config.js
