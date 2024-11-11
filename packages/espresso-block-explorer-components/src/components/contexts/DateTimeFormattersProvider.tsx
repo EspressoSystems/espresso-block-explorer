@@ -19,8 +19,8 @@ function createDefaultDateTimeFormatters(locale: string) {
     friendly: new Intl.DateTimeFormat(locale, {
       year: 'numeric',
       month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
+      day: '2-digit',
+      hour: '2-digit',
       minute: '2-digit',
       timeZoneName: 'short',
     }),
