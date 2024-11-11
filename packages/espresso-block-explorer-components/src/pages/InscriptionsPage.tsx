@@ -470,13 +470,13 @@ function useEngageSteps() {
  * generateTweetIntentURL generates a URL that will trigger a user to post
  * a tweet with a preset message and a URL.
  */
-function generateTweetIntentURL() {
+function generateTweetIntentURL(tweetURL: URL) {
   const url = new URL('https://twitter.com/intent/tweet');
   url.searchParams.set(
     'text',
-    'Join me in the Infinite Garden.\n\nA place where composability means anyone can contribute, anything can be built, and everyone has access.',
+    'Join me in the Infinite Garden: infinitegarden.espressosys.com',
   );
-  url.searchParams.set('url', 'https://infinitegarden.espressosys.com/');
+  url.searchParams.set('url', tweetURL.toString());
   return url;
 }
 
@@ -485,6 +485,7 @@ function generateTweetIntentURL() {
  * to take on their guided engagement journey.
  */
 const EngageSteps: React.FC = () => {
+  const tweetURL = React.useContext(TweetURLProvider);
   const account = React.useContext(RainbowKitAccountContext);
   const modalContext = React.useContext(RainbowKitModalContext);
   const signTypedData = useSignTypedData();
@@ -574,7 +575,7 @@ const EngageSteps: React.FC = () => {
         step3
       ) : (
         <a
-          href={generateTweetIntentURL().toString()}
+          href={generateTweetIntentURL(tweetURL).toString()}
           target="_blank"
           rel="noreferrer"
           onClick={(event) => {
@@ -771,6 +772,7 @@ function useInscriptionsModalContext() {
 
 const ThankYouModal: React.FC = () => {
   const context = useInscriptionsModalContext();
+  const tweetURL = React.useContext(TweetURLProvider);
   const [engageStepsState, setEngageStepsState] = useEngageSteps();
 
   return (
@@ -798,7 +800,7 @@ const ThankYouModal: React.FC = () => {
         <hr />
         <div className="dialog--footer">
           <a
-            href={generateTweetIntentURL().toString()}
+            href={generateTweetIntentURL(tweetURL).toString()}
             className="btn--dialog"
             target="_blank"
             rel="noreferrer"
@@ -978,6 +980,14 @@ interface InscriptionsPageProps {
   backgroundImage: React.ReactNode;
   escapeTheWalledGardensImage: React.ReactNode;
 }
+
+/**
+ * TweetURLProvider is a context that provides the URL of the tweet that the
+ * user is meant to share as part of the guided engagement journey.
+ */
+export const TweetURLProvider = React.createContext<URL>(
+  new URL('https://x.com/EspressoSys/status/1855973751982309624'),
+);
 
 /**
  * InscriptionsPage represents the entire Inscriptions page.  This is the main
