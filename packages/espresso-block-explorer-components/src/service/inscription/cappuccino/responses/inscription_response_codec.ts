@@ -10,6 +10,11 @@ import {
   kCappuccinoInscriptionType,
 } from './inscription_entry';
 import CappuccinoInscriptionResponse from './inscription_response';
+import {
+  CappuccinoInscriptionStats,
+  cappuccinoInscriptionStatsCodec,
+  kCappuccinoStatsType,
+} from './stats_entry';
 
 class CappuccinoInscriptionResponseDecoder
   implements Converter<unknown, CappuccinoInscriptionResponse>
@@ -17,6 +22,10 @@ class CappuccinoInscriptionResponseDecoder
   convert(input: unknown): CappuccinoInscriptionResponse {
     if (isRecordWithKeys(input, kCappuccinoInscriptionType)) {
       return cappuccinoInscriptionCodec.decode(input);
+    }
+
+    if (isRecordWithKeys(input, kCappuccinoStatsType)) {
+      return cappuccinoInscriptionStatsCodec.decode(input);
     }
 
     throw new UnimplementedError();
@@ -29,6 +38,10 @@ class CappuccinoInscriptionResponseEncoder
   convert(input: CappuccinoInscriptionResponse) {
     if (input instanceof CappuccinoInscriptionEntry) {
       return cappuccinoInscriptionCodec.encode(input);
+    }
+
+    if (input instanceof CappuccinoInscriptionStats) {
+      return cappuccinoInscriptionStatsCodec.encode(input);
     }
 
     throw new UnimplementedError();

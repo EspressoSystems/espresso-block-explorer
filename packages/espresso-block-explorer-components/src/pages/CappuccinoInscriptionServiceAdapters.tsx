@@ -4,6 +4,7 @@ import { Sink } from '@/async/sink/sink';
 import { sleep } from '@/async/sleep';
 import { ErrorStreamContext } from '@/components/contexts/ErrorProvider';
 import { WebSocketResponseStreamContext } from '@/components/contexts/WebSocketResponseProvider';
+import { InscriptionsStatsStreamContext } from '@/components/page_sections/inscriptions_stats_summary/InscriptionsStatsLoader';
 import { LatestInscriptionListStreamContext } from '@/components/page_sections/latest_inscriptions_summary/LatestInscriptionListLoader';
 import { createCircularBuffer } from '@/data_structures/circular_buffer/CircularBuffer';
 import { mapAsyncIterable } from '@/functional/functional_async';
@@ -17,9 +18,11 @@ import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_res
 import { webSocketCommandToWebWorkerProxyRequestConverter } from '@/models/web_worker/web_worker_proxy_request_codec';
 import ChainDetails from '@/service/inscription/cappuccino/chain_details';
 import InscriptionAndChainDetails from '@/service/inscription/cappuccino/inscription_and_chain_details';
+import { InscriptionStats } from '@/service/inscription/cappuccino/inscription_stats';
 import { CappuccinoInscriptionEntry } from '@/service/inscription/cappuccino/responses/inscription_entry';
 import CappuccinoInscriptionResponse from '@/service/inscription/cappuccino/responses/inscription_response';
 import { InscriptionServiceResponse } from '@/service/inscription/cappuccino/responses/inscription_service_response';
+import { CappuccinoInscriptionStats } from '@/service/inscription/cappuccino/responses/stats_entry';
 import { WebWorkerInscriptionAPI } from '@/service/inscription/cappuccino/web_worker_proxy_api';
 import React from 'react';
 import { filterIterable, firstWhereIterable } from '../functional';
@@ -133,6 +136,10 @@ async function bridgeInscriptionResponse(
   if (event instanceof CappuccinoInscriptionEntry) {
     return bridgeLatestInscription(state, streams, event);
   }
+
+  if (event instanceof CappuccinoInscriptionStats) {
+    await streams.stats.publish(event.stats);
+  }
 }
 
 async function handleAutoReconnects(
@@ -216,6 +223,7 @@ async function startInscriptionService(
 function createInscriptionSplitStreams() {
   return {
     latestInscriptions: createBufferedChannel<InscriptionAndChainDetails[]>(4),
+    stats: createBufferedChannel<InscriptionStats>(4),
     // Errors Stream
     errors: createBufferedChannel<null | ErrorResponse>(4),
     // LifeCycle Event Stream
@@ -265,16 +273,18 @@ export const ProvideCappuccinoInscriptionStreams: React.FC<
     <LatestInscriptionListStreamContext.Provider
       value={streams.latestInscriptions}
     >
-      <WebSocketResponseStreamContext.Provider value={streams.lifecycle}>
-        <ErrorStreamContext.Provider
-          value={mapAsyncIterable(
-            streams.errors,
-            async (response) => response?.error ?? null,
-          )}
-        >
-          {props.children}
-        </ErrorStreamContext.Provider>
-      </WebSocketResponseStreamContext.Provider>
+      <InscriptionsStatsStreamContext.Provider value={streams.stats}>
+        <WebSocketResponseStreamContext.Provider value={streams.lifecycle}>
+          <ErrorStreamContext.Provider
+            value={mapAsyncIterable(
+              streams.errors,
+              async (response) => response?.error ?? null,
+            )}
+          >
+            {props.children}
+          </ErrorStreamContext.Provider>
+        </WebSocketResponseStreamContext.Provider>
+      </InscriptionsStatsStreamContext.Provider>
     </LatestInscriptionListStreamContext.Provider>
   );
 };

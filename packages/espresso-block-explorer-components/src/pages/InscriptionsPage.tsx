@@ -13,6 +13,8 @@ import './inscriptions_page.css';
 import { ErrorStreamConsumer } from '@/components/contexts/ErrorStreamConsumer';
 import { WebSocketResponseStreamConsumer } from '@/components/contexts/WebSocketResponseProvider';
 import { addClassToClassName } from '@/components/higher_order';
+import { InscriptionsStatsStreamConsumer } from '@/components/page_sections/inscriptions_stats_summary/InscriptionsStatsLoader';
+import { InscriptionStatsSummaryAsyncHandler } from '@/components/page_sections/inscriptions_stats_summary/InscriptionStatsSummary';
 import { LatestInscriptionListAsyncHandler } from '@/components/page_sections/latest_inscriptions_summary/LatestInscriptionList';
 import { LatestInscriptionListStreamConsumer } from '@/components/page_sections/latest_inscriptions_summary/LatestInscriptionListLoader';
 import { RainbowKitContextInjector } from '@/components/rainbowkit/components/provider';
@@ -633,6 +635,10 @@ const InscriptionsSection: React.FC = () => {
 
         <EngageSteps />
 
+        <InscriptionsStatsStreamConsumer>
+          <InscriptionStatsSummaryAsyncHandler />
+        </InscriptionsStatsStreamConsumer>
+
         <LatestInscriptionListStreamConsumer>
           <LatestInscriptionListAsyncHandler />
         </LatestInscriptionListStreamConsumer>
@@ -835,10 +841,17 @@ const ScrollToContinue: React.FC<ScrollToContinueProps> = (props) => {
   );
 };
 
-const EscapeTheWalledGardensSection: React.FC = () => {
+interface EscapeTheWalledGardensSectionProps {
+  backgroundImage: React.ReactNode;
+}
+
+const EscapeTheWalledGardensSection: React.FC<
+  EscapeTheWalledGardensSectionProps
+> = (props) => {
   return (
     <GuidedStory className="escape-the-walled-garden">
       <div className="guided-story--content">
+        <div className="background-image">{props.backgroundImage}</div>
         <Heading1>
           <Text text="Escape the" />
           <Text text=" " />
@@ -961,13 +974,16 @@ const InscriptionsMain: React.FC<InscriptionsMainProps> = (props) => {
   );
 };
 
-interface InscriptionsPageProps {}
+interface InscriptionsPageProps {
+  backgroundImage: React.ReactNode;
+  escapeTheWalledGardensImage: React.ReactNode;
+}
 
 /**
  * InscriptionsPage represents the entire Inscriptions page.  This is the main
  * entry point for the Inscriptions page.
  */
-const InscriptionsPage: React.FC<InscriptionsPageProps> = () => {
+const InscriptionsPage: React.FC<InscriptionsPageProps> = (props) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
@@ -979,9 +995,14 @@ const InscriptionsPage: React.FC<InscriptionsPageProps> = () => {
                   <ProvideInscriptionsModalContext>
                     <ProvideThemeState>
                       <InscriptionsMain>
+                        <div className="background-image">
+                          {props.backgroundImage}
+                        </div>
                         <InscriptionFooter />
 
-                        <EscapeTheWalledGardensSection />
+                        <EscapeTheWalledGardensSection
+                          backgroundImage={props.escapeTheWalledGardensImage}
+                        />
                         <OurDataSection />
                         <ThereIsABetterWaySection />
                         <InfiniteGarden />
