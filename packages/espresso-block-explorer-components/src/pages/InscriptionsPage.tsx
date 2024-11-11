@@ -563,7 +563,7 @@ const EngageSteps: React.FC = () => {
       >
         <EngageStep>
           <Text text="2" />
-          <Text text="Sign Espresso Mainnet" />
+          <Text text="Inscribe and Leave Your Mark on Espresso Mainnet" />
           <ArrowRight />
         </EngageStep>
       </EngageStepStatus>
