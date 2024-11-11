@@ -24,6 +24,7 @@ const ibm = IBM_Plex_Mono({
 });
 
 const neue = localFont({
+  variable: '--font-family--neue-montreal',
   src: [
     {
       path: './PPNeueMontreal-Book.otf',
