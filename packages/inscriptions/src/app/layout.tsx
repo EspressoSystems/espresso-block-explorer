@@ -43,16 +43,17 @@ export default function RootLayout({
   return (
     <ProvideProviders>
       <html lang="en">
-        <body
-          className={ibm.className}
-          style={
-            {
-              '--font-family--ibm-plex-mono': ibm.style.fontFamily,
-              '--font-family--neue-montreal': neue.style.fontFamily,
-            } as any
-          }
-        >
-          {children}
+        <body>
+          <div
+            style={
+              {
+                '--font-family--ibm-plex-mono': ibm.style.fontFamily,
+                '--font-family--neue-montreal': neue.style.fontFamily,
+              } as any
+            }
+          >
+            {children}
+          </div>
         </body>
       </html>
     </ProvideProviders>

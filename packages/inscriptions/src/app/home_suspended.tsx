@@ -7,8 +7,8 @@ import infiniteGardenPng from './infinite_garden@1x.jpg';
 import {
   InscriptionsPage,
   ProvideCappuccinoInscriptionStreams,
+  ProvideLocalStorage,
   ProvideWebWorkerCappuccinoInscriptionServiceAPIContext,
-  ReducedStorageProvider,
   TweetURLProvider,
 } from 'espresso-block-explorer-components';
 
