@@ -5,7 +5,7 @@ import { ProvideWebWorkerCappuccinoInscriptionServiceAPIContext } from 'pages/Ca
 import { StoryBookPathResolver } from 'pages/StoryBookPathResolver';
 import React, { DetailedHTMLProps, HTMLAttributes } from 'react';
 import { Meta, StoryObj } from 'storybook';
-import InscriptionsPage, { ReducedStorageProvider } from '../InscriptionsPage';
+import InscriptionsPage, { ProvideLocalStorage } from '../InscriptionsPage';
 
 interface ExampleProps {}
 
@@ -45,13 +45,13 @@ const Example: React.FC<ExampleProps> = ({ ...props }) => {
         <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
           <ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
             <ProvideCappuccinoInscriptionStreams>
-              <ReducedStorageProvider.Provider value={localStorage}>
+              <ProvideLocalStorage>
                 <InscriptionsPage
                   backgroundImage={backgroundImage}
                   escapeTheWalledGardensImage={escapeTheWalledGardensImage}
                   {...props}
                 />
-              </ReducedStorageProvider.Provider>
+              </ProvideLocalStorage>
             </ProvideCappuccinoInscriptionStreams>
           </ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
         </OverridePathResolver>

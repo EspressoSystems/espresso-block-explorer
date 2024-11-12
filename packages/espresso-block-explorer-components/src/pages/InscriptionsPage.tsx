@@ -528,6 +528,28 @@ export const ReducedStorageProvider = React.createContext<
   Pick<Storage, 'getItem' | 'removeItem' | 'setItem'>
 >(new InMemoryStorage());
 
+export interface ProvideLocalStorageProps {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+/**
+ * ProvideLocalStorage is a component that provides the ReducedStorageProvider
+ * of the localStorage.
+ */
+export const ProvideLocalStorage: React.FC<ProvideLocalStorageProps> = (
+  props,
+) => {
+  if (typeof localStorage === 'undefined') {
+    return props.children;
+  }
+
+  return (
+    <ReducedStorageProvider.Provider value={localStorage}>
+      {props.children}
+    </ReducedStorageProvider.Provider>
+  );
+};
+
 /**
  * useEngageStepsPersistence is a hook that provides the state and setState
  * functions for the EngageSteps components.  This hook will persist the state

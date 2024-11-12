@@ -11,6 +11,7 @@ export { default as ExplorerPage } from './ExplorerPage';
 export { default as FakeDataNotice } from './FakeDataNotice';
 export {
   default as InscriptionsPage,
+  ProvideLocalStorage,
   ReducedStorageProvider,
   TweetURLProvider,
 } from './InscriptionsPage';
