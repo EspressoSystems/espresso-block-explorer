@@ -13,7 +13,7 @@ export const metadata = {
   },
 
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     site: '@espressosys',
     title: title,
     description: description,
