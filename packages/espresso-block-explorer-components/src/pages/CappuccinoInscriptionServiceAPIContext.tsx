@@ -33,10 +33,14 @@ export interface ProvideWebWorkerCappuccinoInscriptionServiceAPIContextProps {
 export const ProvideWebWorkerCappuccinoInscriptionServiceAPIContext: React.FC<
   ProvideWebWorkerCappuccinoInscriptionServiceAPIContextProps
 > = (props) => {
+  // memoize the service so that we do not spawn multiple service workers.
+  const service = React.useMemo(
+    () => createDefaultCappuccinoInscriptionService(),
+    [],
+  );
+
   return (
-    <CappuccinoInscriptionServiceAPIContext.Provider
-      value={createDefaultCappuccinoInscriptionService()}
-    >
+    <CappuccinoInscriptionServiceAPIContext.Provider value={service}>
       {props.children}
     </CappuccinoInscriptionServiceAPIContext.Provider>
   );
