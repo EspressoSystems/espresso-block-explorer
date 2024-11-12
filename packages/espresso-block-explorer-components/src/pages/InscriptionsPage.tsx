@@ -488,14 +488,57 @@ const nullableStorageStateCodec = new NullCodec(
 );
 
 /**
+ * RestrictedStorage is a type that represents the subset of the Storage API
+ * that we will use for the EngageSteps.
+ */
+type RestrictedStorage = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
+
+/**
+ * InMemoryStorage is a simple in-memory storage mechanism that can be used for
+ * the EngageSteps.
+ *
+ * This will also be the default storage mechanism if no other storage mechanism
+ * is provided via overwriting.
+ */
+class InMemoryStorage implements RestrictedStorage {
+  private map: Map<string, string>;
+
+  constructor() {
+    this.map = new Map<string, string>();
+  }
+
+  removeItem(key: string): void {
+    this.map.delete(key);
+  }
+
+  getItem(key: string): string | null {
+    return this.map.get(key) ?? null;
+  }
+
+  setItem(key: string, value: string): void {
+    this.map.set(key, value);
+  }
+}
+
+/**
+ * ReducedStorageProvider is a context that provides the storage mechanism that
+ * the EngageSteps will use to persist their state.
+ */
+export const ReducedStorageProvider = React.createContext<
+  Pick<Storage, 'getItem' | 'removeItem' | 'setItem'>
+>(new InMemoryStorage());
+
+/**
  * useEngageStepsPersistence is a hook that provides the state and setState
  * functions for the EngageSteps components.  This hook will persist the state
  * of the EngageSteps to a storage mechanism, such as localStorage, or
  * sessionStorage.
  */
-function useEngageStepsPersistence(
-  storage: Storage = localStorage,
-): [StorageState, (newState: StorageState) => void] {
+function useEngageStepsPersistence(): [
+  StorageState,
+  (newState: StorageState) => void,
+] {
+  const storage = React.useContext(ReducedStorageProvider);
   const [, setLastUpdated] = useState(new Date());
   const account = React.useContext(RainbowKitAccountContext);
 
