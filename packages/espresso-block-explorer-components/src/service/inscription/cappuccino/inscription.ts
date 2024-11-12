@@ -1,4 +1,10 @@
-import { numberCodec, stringCodec } from '@/convert/codec';
+import {
+  ArrayCodec,
+  ArrayDecoder,
+  ArrayEncoder,
+  numberCodec,
+  stringCodec,
+} from '@/convert/codec';
 import {
   Converter,
   TypeCheckingCodec,
@@ -70,3 +76,8 @@ class InscriptionCodec extends TypeCheckingCodec<Inscription> {
  * inscriptionCodec is an instance of InscriptionCodec.
  */
 export const inscriptionCodec = new InscriptionCodec();
+
+export const listInscriptionCodec = new ArrayCodec(
+  new ArrayDecoder(inscriptionCodec),
+  new ArrayEncoder(inscriptionCodec),
+);

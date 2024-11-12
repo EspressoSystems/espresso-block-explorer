@@ -27,7 +27,17 @@ import {
 } from '@/components/rainbowkit/contexts/contexts';
 import Check from '@/components/visual/icons/Check';
 import Close from '@/components/visual/icons/Close';
-import Inscription from '@/service/inscription/cappuccino/inscription';
+import { booleanCodec } from '@/convert/codec/boolean';
+import {
+  assertRecordWithKeys,
+  Converter,
+  TypeCheckingCodec,
+} from '@/convert/codec/convert';
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
+import { parseHexString } from '@/convert/hex/hex';
+import Inscription, {
+  listInscriptionCodec,
+} from '@/service/inscription/cappuccino/inscription';
 import InscriptionAndSignature from '@/service/inscription/cappuccino/inscription_and_signature';
 import { InscriptionServiceRequest } from '@/service/inscription/cappuccino/requests/inscription_service_request';
 import { PutInscription } from '@/service/inscription/cappuccino/requests/put_inscription';
@@ -42,7 +52,7 @@ import {
   WagmiProvider,
 } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { parseHexString } from '../convert';
+import { UnimplementedError } from '../errors';
 import { CappuccinoInscriptionServiceAPIContext } from './CappuccinoInscriptionServiceAPIContext';
 
 const config = getDefaultConfig({
@@ -411,16 +421,154 @@ function determineInscribeAction(
   };
 }
 
+interface EngageStepsState {
+  inscribeYourCommitmentActivated: boolean;
+  makeANewPostOnXActivated: boolean;
+}
+
+class EngageStepsStateEncoder implements Converter<EngageStepsState, unknown> {
+  convert(input: EngageStepsState): unknown {
+    return {
+      inscribed: input.inscribeYourCommitmentActivated,
+      post: input.makeANewPostOnXActivated,
+    };
+  }
+}
+
+class EngageStepsDecoder implements Converter<unknown, EngageStepsState> {
+  convert(input: unknown): EngageStepsState {
+    assertRecordWithKeys(input, 'inscribed', 'post');
+    return {
+      inscribeYourCommitmentActivated: booleanCodec.decode(input.inscribed),
+      makeANewPostOnXActivated: booleanCodec.decode(input.post),
+    };
+  }
+}
+
+class EngageStepsCodec extends TypeCheckingCodec<EngageStepsState> {
+  readonly decoder = new EngageStepsDecoder();
+  readonly encoder = new EngageStepsStateEncoder();
+}
+
+const engageStepsCodec = new EngageStepsCodec();
+
+interface StorageState {
+  engageSteps: EngageStepsState;
+  inscriptions: Inscription[];
+}
+
+class StorageStateEncoder implements Converter<StorageState, unknown> {
+  convert(input: StorageState): unknown {
+    return {
+      engageSteps: engageStepsCodec.encode(input.engageSteps),
+      inscriptions: listInscriptionCodec.encode(input.inscriptions),
+    };
+  }
+}
+
+class StorageStateDecoder implements Converter<unknown, StorageState> {
+  convert(input: unknown): StorageState {
+    assertRecordWithKeys(input, 'engageSteps', 'inscriptions');
+    return {
+      engageSteps: engageStepsCodec.decode(input.engageSteps),
+      inscriptions: listInscriptionCodec.decode(input.inscriptions),
+    };
+  }
+}
+
+class StorageStateCodec extends TypeCheckingCodec<StorageState> {
+  readonly decoder = new StorageStateDecoder();
+  readonly encoder = new StorageStateEncoder();
+}
+
+const storageStateCodec = new StorageStateCodec();
+const nullableStorageStateCodec = new NullCodec(
+  new NullDecoder(storageStateCodec),
+  new NullEncoder(storageStateCodec),
+);
+
+/**
+ * useEngageStepsPersistence is a hook that provides the state and setState
+ * functions for the EngageSteps components.  This hook will persist the state
+ * of the EngageSteps to a storage mechanism, such as localStorage, or
+ * sessionStorage.
+ */
+function useEngageStepsPersistence(
+  storage: Storage = localStorage,
+): [StorageState, (newState: StorageState) => void] {
+  const [, setLastUpdated] = useState(new Date());
+  const account = React.useContext(RainbowKitAccountContext);
+
+  const initialState = {
+    engageSteps: {
+      inscribeYourCommitmentActivated: false,
+      makeANewPostOnXActivated: false,
+    },
+    inscriptions: [],
+  };
+  if (!account) {
+    return [
+      initialState,
+      () => {
+        // If you're not logged in, you have no ability to change your persistence state.
+      },
+    ];
+  }
+
+  const storageKey = `engageSteps-${account.address}`;
+
+  const entry = storage.getItem(storageKey);
+  if (!entry) {
+    // We quickly write the initial state.
+    storage.setItem(
+      storageKey,
+      JSON.stringify(storageStateCodec.encode(initialState)),
+    );
+  }
+
+  const storedEncoded = storage.getItem(storageKey);
+  if (!storedEncoded) {
+    throw new UnimplementedError();
+  }
+  const existingState = nullableStorageStateCodec.decode(
+    JSON.parse(storedEncoded),
+  );
+
+  if (!existingState) {
+    throw new UnimplementedError();
+  }
+
+  return [
+    existingState,
+    (newState: StorageState) => {
+      storage.setItem(
+        storageKey,
+        JSON.stringify(storageStateCodec.encode(newState)),
+      );
+      setLastUpdated(new Date());
+    },
+  ];
+}
+
 /**
  * useEngageStepsState is a hook that provides the state, and setState functions
  * for the EngageSteps components.
  */
-function useEngageStepsState() {
-  return useState({
-    likeAndRetweetActivated: false,
-    inscribeYourCommitmentActivated: false,
-    makeANewPostOnXActivated: false,
-  });
+function useEngageStepsState(): [
+  EngageStepsState,
+  (newState: EngageStepsState) => void,
+] {
+  const [storedState, setStoredState] = useEngageStepsPersistence();
+
+  return [
+    storedState.engageSteps,
+    (newState: EngageStepsState) => {
+      setStoredState({
+        ...storedState,
+        engageSteps: newState,
+      });
+    },
+  ];
 }
 
 /**
@@ -431,7 +579,6 @@ const EngageStepsStateContext = React.createContext<
   ReturnType<typeof useEngageStepsState>
 >([
   {
-    likeAndRetweetActivated: false,
     inscribeYourCommitmentActivated: false,
     makeANewPostOnXActivated: false,
   },
