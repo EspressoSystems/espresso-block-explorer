@@ -513,7 +513,7 @@ a:not(:hover) {
   }
 
   .inscriptions--content > h2,
-  .inscriptions--content > p {
+  .inscriptions--content > p:not(.engage-steps-thank-you) {
     margin-inline-end: -400px;
   }
 }
