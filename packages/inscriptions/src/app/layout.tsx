@@ -1,18 +1,10 @@
-'use client';
-
-import {
-  AbsolutePathResolver,
-  PathResolverContext,
-  ProvideDerivedDateTimeFormatters,
-  ProvideDerivedNumberFormatters,
-  ProvideNavigatorLanguage,
-  ProvideTickEverySecond,
-} from 'espresso-block-explorer-components';
 import 'espresso-block-explorer-components/dist/style.css';
+import { Metadata } from 'next';
 import { IBM_Plex_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
 import React from 'react';
 import './globals.css';
+import { ProvideProviders } from './provide_providers';
 
 const ibm = IBM_Plex_Mono({
   weight: '400',
@@ -32,6 +24,10 @@ const neue = localFont({
   ],
 });
 
+export const metadata: Metadata = {
+  metadataBase: new URL('https://infinitegarden.espressosys.com'),
+};
+
 /**
  * RootLayout is the default layout of the NextJS Application.  All Pages,
  * by default, have this layout as their default layout.
@@ -45,32 +41,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ProvideNavigatorLanguage>
-      <ProvideDerivedNumberFormatters>
-        <ProvideDerivedDateTimeFormatters>
-          <ProvideTickEverySecond>
-            <PathResolverContext.Provider
-              value={
-                new AbsolutePathResolver(
-                  new URL('https://explorer.decaf.testnet.espresso.network/'),
-                )
-              }
-            >
-              <html lang="en">
-                <body
-                  className={ibm.className}
-                  style={{
-                    '--font-family--ibm-plex-mono': ibm.style.fontFamily,
-                    '--font-family--neue-montreal': neue.style.fontFamily,
-                  }}
-                >
-                  {children}
-                </body>
-              </html>
-            </PathResolverContext.Provider>
-          </ProvideTickEverySecond>
-        </ProvideDerivedDateTimeFormatters>
-      </ProvideDerivedNumberFormatters>
-    </ProvideNavigatorLanguage>
+    <ProvideProviders>
+      <html lang="en">
+        <body
+          className={ibm.className}
+          style={
+            {
+              '--font-family--ibm-plex-mono': ibm.style.fontFamily,
+              '--font-family--neue-montreal': neue.style.fontFamily,
+            } as any
+          }
+        >
+          {children}
+        </body>
+      </html>
+    </ProvideProviders>
   );
 }
