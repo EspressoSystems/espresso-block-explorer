@@ -610,6 +610,7 @@ dialog hr {
 
   pointer-events: none;
   touch-action: none;
+  z-index: 1;
 }
 
 .modal-barrier[data-display='true'] {
