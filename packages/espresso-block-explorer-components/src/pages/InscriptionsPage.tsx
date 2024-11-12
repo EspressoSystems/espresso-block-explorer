@@ -656,11 +656,7 @@ const YourSupportHasBeenNotedMessage: React.FC = () => {
         <Text text="website" />
       </a>
       <Text text=" and " />
-      <a
-        href="https://docs.espressosys.com/sequencer"
-        target="_blank"
-        rel="noreferrer"
-      >
+      <a href="https://docs.espressosys.com/" target="_blank" rel="noreferrer">
         <Text text="documentation" />
       </a>
       <Text text="." />
