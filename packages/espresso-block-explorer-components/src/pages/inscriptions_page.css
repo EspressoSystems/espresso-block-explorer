@@ -218,6 +218,7 @@ p {
   width: 100vw;
 
   will-change: color;
+  z-index: 2;
 }
 
 .scroll-to-continue-section::before {
