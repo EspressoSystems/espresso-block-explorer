@@ -19,12 +19,10 @@ const ibm = IBM_Plex_Mono({
   style: 'normal',
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-family--ibm-plex-mono',
   fallback: ['monospace'],
 });
 
 const neue = localFont({
-  variable: '--font-family--neue-montreal',
   src: [
     {
       path: './PPNeueMontreal-Book.otf',
@@ -59,7 +57,15 @@ export default function RootLayout({
               }
             >
               <html lang="en">
-                <body className={ibm.className}>{children}</body>
+                <body
+                  className={ibm.className}
+                  style={{
+                    '--font-family--ibm-plex-mono': ibm.style.fontFamily,
+                    '--font-family--neue-montreal': neue.style.fontFamily,
+                  }}
+                >
+                  {children}
+                </body>
               </html>
             </PathResolverContext.Provider>
           </ProvideTickEverySecond>
