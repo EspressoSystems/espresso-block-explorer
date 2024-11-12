@@ -15,7 +15,7 @@ export default function HomeSuspended() {
     <Image src={infiniteGardenPng} alt="Infinite Garden" />
   );
   const escapeTheWalledGardenImage = (
-    <Image src={walledGardenPng} alt="Escape the Walled Gardens" />
+    <Image src={walledGardenPng} alt="Escape the Walled Gardens" priority />
   );
   return (
     <ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
