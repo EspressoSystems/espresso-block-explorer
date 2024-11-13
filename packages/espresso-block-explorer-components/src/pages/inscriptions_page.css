@@ -211,13 +211,15 @@ p {
   font-size: var(--text--font-size);
 
   will-change: color;
-  transition: color ease-in-out var(--inscriptions--transition-duration);
+  transition:
+    color ease-in-out var(--inscriptions--transition-duration),
+    padding ease-in-out var(--inscriptions--transition-duration);
 
   position: fixed;
   bottom: 0;
   width: 100vw;
 
-  will-change: color;
+  will-change: color, padding;
   z-index: 2;
 }
 
@@ -406,7 +408,7 @@ a:not(:hover) {
 
   .inscriptions--footer {
     padding-block: 24px;
-    padding-inline: 68px;
+    padding-inline: 24px;
   }
 
   .guided-story {
