@@ -1,6 +1,6 @@
 FROM node:20-alpine AS builder
 ARG BLOCK_EXPLORER_BASE_URL=https://explorer.decaf.testnet.espresso.network/
-ARG TWEET_URL=https://x.com/EspressoSys/status/1855973751982309624
+ARG TWEET_URL=
 
 WORKDIR /app
 COPY package.json package-lock.json /app/
