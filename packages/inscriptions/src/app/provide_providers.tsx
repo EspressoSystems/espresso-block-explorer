@@ -7,6 +7,7 @@ import {
   ProvideDerivedNumberFormatters,
   ProvideNavigatorLanguage,
   ProvideTickEverySecond,
+  TweetURLProvider,
 } from 'espresso-block-explorer-components';
 import 'espresso-block-explorer-components/dist/style.css';
 import React from 'react';
@@ -25,11 +26,23 @@ export const ProvideProviders: React.FC<ProvideProvidersProps> = (props) => {
             <PathResolverContext.Provider
               value={
                 new AbsolutePathResolver(
-                  new URL('https://explorer.main.net.espresso.network/'),
+                  new URL(
+                    process.env.NEXT_PUBLIC_BLOCK_EXPLORER_BASE_URL ??
+                      'https://explorer.decaf.testnet.espresso.network/',
+                  ),
                 )
               }
             >
-              {props.children}
+              <TweetURLProvider.Provider
+                value={
+                  new URL(
+                    process.env.NEXT_PUBLIC_TWEET_URL ??
+                      'https://x.com/EspressoSys/status/1855973751982309624',
+                  )
+                }
+              >
+                {props.children}
+              </TweetURLProvider.Provider>
             </PathResolverContext.Provider>
           </ProvideTickEverySecond>
         </ProvideDerivedDateTimeFormatters>

@@ -1,4 +1,6 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM node:20-alpine AS builder
+ARG BLOCK_EXPLORER_BASE_URL=https://explorer.decaf.testnet.espresso.network/
+ARG TWEET_URL=https://x.com/EspressoSys/status/1855973751982309624
 
 WORKDIR /app
 COPY package.json package-lock.json /app/
@@ -19,9 +21,11 @@ RUN cp -r packages/espresso-block-explorer-components/public/* packages/inscript
 RUN npm install --no-audit --save --workspace=packages/inscriptions
 
 # Build the Next Application
-RUN npm run build --workspace=packages/inscriptions
+RUN NEXT_PUBLIC_BLOCK_EXPLORER_BASE_URL=${BLOCK_EXPLORER_BASE_URL} \
+    NEXT_PUBLIC_TWEET_URL=${TWEET_URL} \
+    npm run build --workspace=packages/inscriptions
 
-FROM --platform=$BUILDPLATFORM node:20-alpine
+FROM node:20-alpine
 RUN apk add --no-cache bash jq tini python3 make g++
 WORKDIR /app
 

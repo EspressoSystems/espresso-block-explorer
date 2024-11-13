@@ -9,7 +9,6 @@ import {
   ProvideCappuccinoInscriptionStreams,
   ProvideLocalStorage,
   ProvideWebWorkerCappuccinoInscriptionServiceAPIContext,
-  TweetURLProvider,
 } from 'espresso-block-explorer-components';
 
 export default function HomeSuspended() {
@@ -22,18 +21,12 @@ export default function HomeSuspended() {
   return (
     <ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
       <ProvideCappuccinoInscriptionStreams>
-        <TweetURLProvider.Provider
-          value={
-            new URL('https://x.com/EspressoSys/status/1855973751982309624')
-          }
-        >
-          <ProvideLocalStorage>
-            <InscriptionsPage
-              backgroundImage={backgroundImage}
-              escapeTheWalledGardensImage={escapeTheWalledGardenImage}
-            />
-          </ProvideLocalStorage>
-        </TweetURLProvider.Provider>
+        <ProvideLocalStorage>
+          <InscriptionsPage
+            backgroundImage={backgroundImage}
+            escapeTheWalledGardensImage={escapeTheWalledGardenImage}
+          />
+        </ProvideLocalStorage>
       </ProvideCappuccinoInscriptionStreams>
     </ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
   );
