@@ -25,7 +25,7 @@ export const ProvideProviders: React.FC<ProvideProvidersProps> = (props) => {
             <PathResolverContext.Provider
               value={
                 new AbsolutePathResolver(
-                  new URL('https://explorer.decaf.testnet.espresso.network/'),
+                  new URL('https://explorer.main.net.espresso.network/'),
                 )
               }
             >
