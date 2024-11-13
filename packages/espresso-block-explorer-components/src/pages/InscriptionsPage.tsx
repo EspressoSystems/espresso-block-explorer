@@ -681,13 +681,22 @@ function useEngageSteps() {
  * generateTweetIntentURL generates a URL that will trigger a user to post
  * a tweet with a preset message and a URL.
  */
-function generateTweetIntentURL(tweetURL: URL) {
+function generateTweetIntentURL(tweetURL: null | URL) {
   const url = new URL('https://twitter.com/intent/tweet');
-  url.searchParams.set(
-    'text',
-    'Join me in the Infinite Garden: infinitegarden.espressosys.com',
-  );
-  url.searchParams.set('url', tweetURL.toString());
+
+  if (tweetURL !== null) {
+    url.searchParams.set(
+      'text',
+      'Join me in the Infinite Garden: https://infinitegarden.espressosys.com',
+    );
+    url.searchParams.set('url', tweetURL.toString());
+  } else {
+    url.searchParams.set(
+      'text',
+      'Safeguard against silos in the Infinite Garden: https://infinitegarden.espressosys.com\n\nJoin me in making sure all chains work together as one. Inscribe Espresso Mainnet now.',
+    );
+  }
+
   return url;
 }
 
@@ -1274,9 +1283,7 @@ interface InscriptionsPageProps {
  * TweetURLProvider is a context that provides the URL of the tweet that the
  * user is meant to share as part of the guided engagement journey.
  */
-export const TweetURLProvider = React.createContext<URL>(
-  new URL('https://x.com/EspressoSys/status/1855973751982309624'),
-);
+export const TweetURLProvider = React.createContext<null | URL>(null);
 
 /**
  * InscriptionsPage represents the entire Inscriptions page.  This is the main
