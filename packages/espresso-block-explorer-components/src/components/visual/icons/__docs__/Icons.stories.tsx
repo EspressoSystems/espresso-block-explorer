@@ -16,6 +16,7 @@ import MediumIcon from '../MediumIcon';
 import MenuIcon from '../Menu';
 import SearchGlass from '../SearchGlass';
 import TwitterIcon from '../TwitterIcon';
+import XIcon from '../XIcon';
 
 const Example: React.FC = () => (
   <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -36,6 +37,7 @@ const Example: React.FC = () => (
     <MenuIcon />
     <SearchGlass />
     <TwitterIcon />
+    <XIcon />
   </div>
 );
 
