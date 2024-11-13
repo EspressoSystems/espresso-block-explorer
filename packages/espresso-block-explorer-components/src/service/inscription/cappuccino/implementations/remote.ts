@@ -6,6 +6,7 @@ import {
   createCompleter,
 } from '@/data_structures/async/completer/Completer';
 import BadResponseServerError from '@/errors/BadResponseServerError';
+import BaseError from '@/errors/BaseError';
 import FetchError from '@/errors/FetchError';
 import ResponseContentTypeIsNotApplicationJSONError from '@/errors/ResponseContentTypeIsNotApplicationJSONError';
 import UnimplementedError from '@/errors/UnimplementedError';
@@ -99,7 +100,16 @@ export default class RemoteInscriptionAPI implements WebWorkerInscriptionAPI {
       try {
         await this.handleInscriptionsRequest(request.request);
       } catch (err) {
-        console.error('failed to handle inscription request', request, err);
+        if (!(err instanceof BaseError)) {
+          console.error(
+            'unhandled error from put inscription request',
+            request,
+            err,
+          );
+          return;
+        }
+
+        await this.errorResponseSink.send(err);
       }
       return;
     }

@@ -172,7 +172,7 @@ export const LatestInscriptionListAsyncHandler: React.FC<
   const loading = React.useContext(LoadingContext);
   const data = React.useContext(DataContext);
 
-  if (error) {
+  if (error && !data) {
     return <></>;
   }
 

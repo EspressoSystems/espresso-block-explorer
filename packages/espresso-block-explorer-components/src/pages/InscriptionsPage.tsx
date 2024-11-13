@@ -1,18 +1,14 @@
 import React, { ForwardedRef, HTMLProps, useState } from 'react';
-import {
-  ArrowRight,
-  DiscordLink,
-  ErrorDisplay,
-  EspressoLogo,
-  TwitterIcon,
-  TwitterLink,
-} from '../components';
 import Text from '../components/text/Text';
 import './inscriptions_page.css';
 
+import { ErrorContext } from '@/components/contexts/ErrorProvider';
 import { ErrorStreamConsumer } from '@/components/contexts/ErrorStreamConsumer';
 import { WebSocketResponseStreamConsumer } from '@/components/contexts/WebSocketResponseProvider';
+import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import { addClassToClassName } from '@/components/higher_order';
+import DiscordLink from '@/components/links/social_media/DiscordLink';
+import TwitterLink from '@/components/links/social_media/TwitterLink';
 import { InscriptionsStatsStreamConsumer } from '@/components/page_sections/inscriptions_stats_summary/InscriptionsStatsLoader';
 import { InscriptionStatsSummaryAsyncHandler } from '@/components/page_sections/inscriptions_stats_summary/InscriptionStatsSummary';
 import { LatestInscriptionListAsyncHandler } from '@/components/page_sections/latest_inscriptions_summary/LatestInscriptionList';
@@ -25,8 +21,11 @@ import {
   RainbowKitModalContext,
   RainbowKitMountedContext,
 } from '@/components/rainbowkit/contexts/contexts';
+import ArrowRight from '@/components/visual/icons/ArrowRight';
 import Check from '@/components/visual/icons/Check';
 import Close from '@/components/visual/icons/Close';
+import EspressoLogo from '@/components/visual/icons/EspressoLogo';
+import TwitterIcon from '@/components/visual/icons/TwitterIcon';
 import { booleanCodec } from '@/convert/codec/boolean';
 import {
   assertRecordWithKeys,
@@ -52,7 +51,7 @@ import {
   WagmiProvider,
 } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { UnimplementedError } from '../errors';
+import { BadResponseServerError, UnimplementedError } from '../errors';
 import { CappuccinoInscriptionServiceAPIContext } from './CappuccinoInscriptionServiceAPIContext';
 
 const config = getDefaultConfig({
@@ -809,6 +808,46 @@ const EngageSteps: React.FC = () => {
 };
 
 /**
+ * ErrorHandler is a generic error handler that will handle specific errors.
+ *
+ * This will translate 429 to a modal that will inform the user that we are
+ * over capacity.
+ */
+const ErrorHandler: React.FC = () => {
+  const error = React.useContext(ErrorContext);
+  const modalContext = React.useContext(InscriptionsModalContext);
+  const [engageStepsState, setEngageStepsState] = useEngageSteps();
+
+  if (!error) {
+    return <></>;
+  }
+
+  if (error instanceof BadResponseServerError) {
+    if (error.status === 429 && !modalContext.isOverCapacityModalOpen) {
+      if (modalContext.isThankYouModalOpen) {
+        /// If this modal is already open, then we want to close it, and
+        /// unset the state that we have inscribed successfully.
+        setEngageStepsState({
+          ...engageStepsState,
+          inscribeYourCommitmentActivated: false,
+        });
+      }
+
+      modalContext.openOverCapacityModal();
+      // We don't want to display anything as we're handling this in a different way.
+    }
+
+    return <></>;
+  }
+
+  if (!(error instanceof BadResponseServerError)) {
+    console.info('<<<< HERE', error);
+  }
+
+  return <ErrorDisplay className="edge-margin" />;
+};
+
+/**
  * InscriptionsSection is a component that represents the last section of the
  * Guided Engagement Journey.  This is where the user will be able to see the
  * latest inscriptions that have been made by the community, and to add their
@@ -829,7 +868,7 @@ const InscriptionsSection: React.FC = () => {
         This component displays any errors that have occurred while attempting
         to retrieve the data.
       */}
-      <ErrorDisplay className="edge-margin" />
+      <ErrorHandler />
 
       <InscriptionsContent>
         <Heading2>
@@ -935,6 +974,7 @@ function useInscriptionModalContextState() {
       setState({
         ...state,
         isThankYouModalOpen: true,
+        isOverCapacityModalOpen: false,
       });
     },
     closeThankYouModal: () => {
@@ -947,6 +987,7 @@ function useInscriptionModalContextState() {
       setState({
         ...state,
         isOverCapacityModalOpen: true,
+        isThankYouModalOpen: false,
       });
     },
     closeOverCapacityModal: () => {
