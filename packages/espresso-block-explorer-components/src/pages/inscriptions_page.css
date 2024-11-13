@@ -422,6 +422,10 @@ a:not(:hover) {
   nav.inscription-links {
     display: none;
   }
+
+  dialog {
+    --dialog--margin-inline: 24px;
+  }
 }
 
 .engage-steps,
@@ -431,6 +435,9 @@ a:not(:hover) {
 
 /* Small */
 @media screen and (min-width: 640px) {
+  dialog {
+    --dialog--margin-inline: auto;
+  }
 }
 
 /* Medium */
