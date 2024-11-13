@@ -1034,6 +1034,46 @@ const ThankYouModal: React.FC = () => {
   );
 };
 
+const WereOverCapacityModal: React.FC = () => {
+  const context = useInscriptionsModalContext();
+
+  return (
+    <ModalBarrier display={context.isOverCapacityModalOpen}>
+      <dialog open>
+        <DialogHeading>
+          <Heading2>
+            <Text text="We're over capacity" />
+          </Heading2>
+          <button className="btn-close" title="Close">
+            <Close
+              onClick={(event) => {
+                if (event.button !== 0) {
+                  return;
+                }
+
+                context.closeOverCapacityModal();
+              }}
+            />
+          </button>
+        </DialogHeading>
+        <p className="dialog-inline-padding dialog-block-end-padding">
+          <Text text="Your inscription has not gone through. Espresso Mainnet is currently in beta and is under heavy load.  Please try again later." />
+        </p>
+        <hr />
+        <div className="dialog--footer">
+          <button
+            className="btn--dialog"
+            onClick={context.closeOverCapacityModal}
+            title="Close"
+          >
+            <Text text="OK" />
+          </button>
+        </div>
+      </dialog>
+    </ModalBarrier>
+  );
+};
+
 interface ScrollToContinueProps {
   className?: string;
 }
@@ -1227,6 +1267,7 @@ const InscriptionsPage: React.FC<InscriptionsPageProps> = (props) => {
                         <InscriptionsSection />
                       </InscriptionsMain>
                       <ThankYouModal />
+                      <WereOverCapacityModal />
                     </ProvideThemeState>
                   </ProvideInscriptionsModalContext>
                 </ProvideEngageStepsStates>
