@@ -44,12 +44,6 @@ async function determineServiceImplementationFromServiceURL(
     `${baseURL.protocol.replace(/^http?/, 'ws')}//${baseURL.host}${baseURL.pathname}`,
   );
 
-  console.info(
-    '<<<< HERE determineServiceImplementationFromServiceURL',
-    baseURL,
-    baseWebSocketURL,
-  );
-
   const requestChannel = createBufferedChannel<WebWorkerProxyRequest>(1024);
   const responseChannel = createBufferedChannel<WebWorkerProxyResponse>(1024);
   const service = new RemoteInscriptionAPI(
