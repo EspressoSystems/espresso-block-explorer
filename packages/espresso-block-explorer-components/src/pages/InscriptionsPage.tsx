@@ -990,7 +990,7 @@ const ThankYouModal: React.FC = () => {
           <Heading2>
             <Text text="Thank you" />
           </Heading2>
-          <button className="btn-close">
+          <button className="btn-close" title="Close">
             <Close
               onClick={(event) => {
                 if (event.button !== 0) {
