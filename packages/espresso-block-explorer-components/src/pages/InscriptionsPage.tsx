@@ -51,7 +51,12 @@ import {
   WagmiProvider,
 } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { BadResponseServerError, UnimplementedError } from '../errors';
+import {
+  BadResponseClientError,
+  BadResponseServerError,
+  FetchError,
+  UnimplementedError,
+} from '../errors';
 import { CappuccinoInscriptionServiceAPIContext } from './CappuccinoInscriptionServiceAPIContext';
 
 const config = getDefaultConfig({
@@ -831,26 +836,52 @@ const ErrorHandler: React.FC = () => {
     return <></>;
   }
 
-  if (error instanceof BadResponseServerError) {
-    if (error.status === 429 && !modalContext.isOverCapacityModalOpen) {
-      if (modalContext.isThankYouModalOpen) {
-        /// If this modal is already open, then we want to close it, and
-        /// unset the state that we have inscribed successfully.
-        setEngageStepsState({
-          ...engageStepsState,
-          inscribeYourCommitmentActivated: false,
-        });
-      }
+  if (error instanceof FetchError) {
+    // This is a fetch error, likely indicating that the client might have
+    // network issues.
+    if (modalContext.isThankYouModalOpen) {
+      /// If this modal is already open, then we want to close it, and
+      /// unset the state that we have inscribed successfully.
+      setEngageStepsState({
+        ...engageStepsState,
+        inscribeYourCommitmentActivated: false,
+      });
+    }
+  }
 
+  if (error instanceof BadResponseClientError) {
+    if (modalContext.isThankYouModalOpen) {
+      /// If this modal is already open, then we want to close it, and
+      /// unset the state that we have inscribed successfully.
+      setEngageStepsState({
+        ...engageStepsState,
+        inscribeYourCommitmentActivated: false,
+      });
+    }
+
+    if (error.status === 429 && !modalContext.isOverCapacityModalOpen) {
       modalContext.openOverCapacityModal();
       // We don't want to display anything as we're handling this in a different way.
     }
 
+    // TODO: Handle some other client class of errors errors.
+
     return <></>;
   }
 
-  if (!(error instanceof BadResponseServerError)) {
-    console.info('<<<< HERE', error);
+  if (error instanceof BadResponseServerError) {
+    if (modalContext.isThankYouModalOpen) {
+      /// If this modal is already open, then we want to close it, and
+      /// unset the state that we have inscribed successfully.
+      setEngageStepsState({
+        ...engageStepsState,
+        inscribeYourCommitmentActivated: false,
+      });
+    }
+
+    // TODO: Handle other specific server errors.
+
+    return <></>;
   }
 
   return <ErrorDisplay className="edge-margin" />;

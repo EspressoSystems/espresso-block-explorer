@@ -243,7 +243,15 @@ export default class RemoteInscriptionAPI implements WebWorkerInscriptionAPI {
     const response = await this.handlePutInscriptionFetch(request);
 
     if (!response.ok) {
-      throw new BadResponseServerError(response.status, response);
+      if (response.status >= 400 && response.status < 500) {
+        throw new BadResponseClientError(response.status, response);
+      }
+
+      if (response.status >= 500 && response.status < 600) {
+        throw new BadResponseServerError(response.status, response);
+      }
+
+      throw new BadResponseError(response.status, response);
     }
 
     if (response.headers.get('content-type') !== 'application/json') {
