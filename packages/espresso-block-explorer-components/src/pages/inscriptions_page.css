@@ -176,6 +176,13 @@ p {
   left: 0;
   width: 100vw;
   box-sizing: border-box;
+  pointer-events: none;
+  touch-action: none;
+}
+
+.inscriptions--header > * {
+  pointer-events: auto;
+  touch-action: auto;
 }
 
 .inscriptions--header--actions {
