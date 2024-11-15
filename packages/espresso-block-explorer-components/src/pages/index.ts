@@ -9,6 +9,7 @@ export * from './CappuccinoNodeValidatorServiceAdapters';
 export * from './CappuccinoNodeValidatorServiceAPIContext';
 export { default as ExplorerPage } from './ExplorerPage';
 export { default as FakeDataNotice } from './FakeDataNotice';
+export { default as InscriptionsConcludedPage } from './InscriptionsConcludedPage';
 export {
   default as InscriptionsPage,
   ProvideLocalStorage,
