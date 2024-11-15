@@ -5,6 +5,8 @@ import {
   Completer,
   createCompleter,
 } from '@/data_structures/async/completer/Completer';
+import BadResponseClientError from '@/errors/BadResponseClientError';
+import BadResponseError from '@/errors/BadResponseError';
 import BadResponseServerError from '@/errors/BadResponseServerError';
 import BaseError from '@/errors/BaseError';
 import FetchError from '@/errors/FetchError';
