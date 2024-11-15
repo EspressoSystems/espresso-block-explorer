@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import HomeSuspended from './home_suspended';
+import HomeConcludedSuspended from './home_concluded_suspended';
 
 const title = 'Espresso Infinite Garden';
 const description =
@@ -35,7 +35,7 @@ export const metadata = {
 export default function Home() {
   return (
     <Suspense>
-      <HomeSuspended />
+      <HomeConcludedSuspended />
     </Suspense>
   );
 }
