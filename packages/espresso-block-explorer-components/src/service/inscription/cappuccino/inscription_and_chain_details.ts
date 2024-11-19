@@ -1,3 +1,4 @@
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec';
 import {
   assertRecordWithKeys,
   Converter,
@@ -77,3 +78,8 @@ class InscriptionAndChainDetailsCodec extends TypeCheckingCodec<
  */
 export const inscriptionAndChainDetailsCodec =
   new InscriptionAndChainDetailsCodec();
+
+export const arrayInscriptionAndChainDetailsCodec = new ArrayCodec(
+  new ArrayDecoder(inscriptionAndChainDetailsCodec),
+  new ArrayEncoder(inscriptionAndChainDetailsCodec),
+);

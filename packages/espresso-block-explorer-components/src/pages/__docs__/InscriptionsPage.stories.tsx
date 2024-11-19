@@ -5,7 +5,10 @@ import { ProvideWebWorkerCappuccinoInscriptionServiceAPIContext } from 'pages/Ca
 import { StoryBookPathResolver } from 'pages/StoryBookPathResolver';
 import React, { DetailedHTMLProps, HTMLAttributes } from 'react';
 import { Meta, StoryObj } from 'storybook';
-import InscriptionsPage, { ProvideLocalStorage } from '../InscriptionsPage';
+import InscriptionsPage, {
+  ProvideLocalStorage,
+  TweetURLProvider,
+} from '../InscriptionsPage';
 
 interface ExampleProps {}
 
@@ -43,17 +46,23 @@ const Example: React.FC<ExampleProps> = ({ ...props }) => {
       />
       <ProvideTickEverySecond>
         <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-          <ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
-            <ProvideCappuccinoInscriptionStreams>
-              <ProvideLocalStorage>
-                <InscriptionsPage
-                  backgroundImage={backgroundImage}
-                  escapeTheWalledGardensImage={escapeTheWalledGardensImage}
-                  {...props}
-                />
-              </ProvideLocalStorage>
-            </ProvideCappuccinoInscriptionStreams>
-          </ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
+          <TweetURLProvider.Provider
+            value={
+              new URL('https://x.com/EspressoSys/status/1856848477466378284')
+            }
+          >
+            <ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
+              <ProvideCappuccinoInscriptionStreams>
+                <ProvideLocalStorage>
+                  <InscriptionsPage
+                    backgroundImage={backgroundImage}
+                    escapeTheWalledGardensImage={escapeTheWalledGardensImage}
+                    {...props}
+                  />
+                </ProvideLocalStorage>
+              </ProvideCappuccinoInscriptionStreams>
+            </ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
+          </TweetURLProvider.Provider>
         </OverridePathResolver>
       </ProvideTickEverySecond>
     </div>

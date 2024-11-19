@@ -11,6 +11,11 @@ import {
 } from './inscription_entry';
 import CappuccinoInscriptionResponse from './inscription_response';
 import {
+  CappuccinoRetrievedInscriptionsForWalletAddress,
+  cappuccinoRetrievedInscriptionsForWalletAddressCodec,
+  kRetrievedInscriptionsForWalletAddressType,
+} from './retrieved_inscriptions';
+import {
   CappuccinoInscriptionStats,
   cappuccinoInscriptionStatsCodec,
   kCappuccinoStatsType,
@@ -28,6 +33,10 @@ class CappuccinoInscriptionResponseDecoder
       return cappuccinoInscriptionStatsCodec.decode(input);
     }
 
+    if (isRecordWithKeys(input, kRetrievedInscriptionsForWalletAddressType)) {
+      return cappuccinoRetrievedInscriptionsForWalletAddressCodec.decode(input);
+    }
+
     throw new UnimplementedError();
   }
 }
@@ -42,6 +51,10 @@ class CappuccinoInscriptionResponseEncoder
 
     if (input instanceof CappuccinoInscriptionStats) {
       return cappuccinoInscriptionStatsCodec.encode(input);
+    }
+
+    if (input instanceof CappuccinoRetrievedInscriptionsForWalletAddress) {
+      return cappuccinoRetrievedInscriptionsForWalletAddressCodec.encode(input);
     }
 
     throw new UnimplementedError();

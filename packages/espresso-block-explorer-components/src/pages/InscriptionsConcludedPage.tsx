@@ -5,6 +5,10 @@ import './inscriptions_page.css';
 import { addClassToClassName } from '@/components/higher_order';
 import DiscordLink from '@/components/links/social_media/DiscordLink';
 import TwitterLink from '@/components/links/social_media/TwitterLink';
+import {
+  YourInscriptionsListStreamConsumer,
+  YourInscriptionsListStreamContext,
+} from '@/components/page_sections/latest_inscriptions_summary/YourInscriptionListLoader';
 import { RainbowKitContextInjector } from '@/components/rainbowkit/components/provider';
 import {
   RainbowKitAccountContext,
@@ -12,12 +16,15 @@ import {
   RainbowKitMountedContext,
 } from '@/components/rainbowkit/contexts/contexts';
 import EspressoLogo from '@/components/visual/icons/EspressoLogo';
+import { InscriptionServiceRequest } from '@/service/inscription/cappuccino/requests/inscription_service_request';
+import { RetrieveInscriptionsForAddress } from '@/service/inscription/cappuccino/requests/retrieve_inscriptions_for_address';
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { NumberText } from '../components';
+import { LatestInscriptionListAsyncHandler, NumberText } from '../components';
+import { CappuccinoInscriptionServiceAPIContext } from './CappuccinoInscriptionServiceAPIContext';
 import { TweetURLProvider } from './InscriptionsPage';
 
 const config = getDefaultConfig({
@@ -293,6 +300,62 @@ const ThankYouMessage: React.FC = () => {
   );
 };
 
+const ZeroNonAccountResults: React.FC = () => {
+  const account = React.useContext(RainbowKitAccountContext);
+  const yourInscriptionsStream = React.useContext(
+    YourInscriptionsListStreamContext,
+  );
+  const walletAddress = account?.address ?? null;
+
+  React.useEffect(() => {
+    if (!walletAddress) {
+      if (
+        'publish' in yourInscriptionsStream &&
+        typeof yourInscriptionsStream.publish === 'function'
+      ) {
+        // We want to zero our your inscription list, so that we don't show
+        // any entries when you're not logged in.
+        //
+        // By default this wouldn't happen, but this needs to exist to cover
+        // an edge case involved when the user disconnects his/her wallet.
+        yourInscriptionsStream.publish([]);
+      }
+      return () => {};
+    }
+
+    return () => {};
+  }, [walletAddress, yourInscriptionsStream]);
+
+  return <></>;
+};
+
+const RetrieveInscriptionsRequest: React.FC = () => {
+  const inscriptionService = React.useContext(
+    CappuccinoInscriptionServiceAPIContext,
+  );
+  const account = React.useContext(RainbowKitAccountContext);
+  const walletAddress = account?.address ?? null;
+
+  React.useEffect(() => {
+    if (!walletAddress) {
+      return () => {};
+    }
+
+    // Alright we have an account, we want to make a request to fetch the
+    // current list of inscriptions for the given wallet address.
+
+    inscriptionService.send(
+      new InscriptionServiceRequest(
+        new RetrieveInscriptionsForAddress(walletAddress),
+      ),
+    );
+
+    return () => {};
+  }, [walletAddress, inscriptionService]);
+
+  return <></>;
+};
+
 /**
  * InscriptionsPage represents the entire Inscriptions page.  This is the main
  * entry point for the Inscriptions page.
@@ -315,6 +378,16 @@ const InscriptionsConcludedPage: React.FC<InscriptionsConcludedPageProps> = (
                     <Text text="An Infinite Garden has no walls" />
                   </Heading1>
                   <ThankYouMessage />
+
+                  {/* This will govern the requests submitted for the user based on his / her current account */}
+                  <ZeroNonAccountResults />
+                  <RetrieveInscriptionsRequest />
+
+                  {/* We want to show the user his/her inscriptions */}
+
+                  <YourInscriptionsListStreamConsumer>
+                    <LatestInscriptionListAsyncHandler />
+                  </YourInscriptionsListStreamConsumer>
                 </InscriptionsContent>
               </GuidedStory>
             </InscriptionsMain>

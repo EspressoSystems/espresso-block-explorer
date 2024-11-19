@@ -6,6 +6,7 @@ import { ErrorStreamContext } from '@/components/contexts/ErrorProvider';
 import { WebSocketResponseStreamContext } from '@/components/contexts/WebSocketResponseProvider';
 import { InscriptionsStatsStreamContext } from '@/components/page_sections/inscriptions_stats_summary/InscriptionsStatsLoader';
 import { LatestInscriptionListStreamContext } from '@/components/page_sections/latest_inscriptions_summary/LatestInscriptionListLoader';
+import { YourInscriptionsListStreamContext } from '@/components/page_sections/latest_inscriptions_summary/YourInscriptionListLoader';
 import { createCircularBuffer } from '@/data_structures/circular_buffer/CircularBuffer';
 import { mapAsyncIterable } from '@/functional/functional_async';
 import { ErrorResponse } from '@/models/web_worker/error_response';
@@ -22,6 +23,7 @@ import { InscriptionStats } from '@/service/inscription/cappuccino/inscription_s
 import { CappuccinoInscriptionEntry } from '@/service/inscription/cappuccino/responses/inscription_entry';
 import CappuccinoInscriptionResponse from '@/service/inscription/cappuccino/responses/inscription_response';
 import { InscriptionServiceResponse } from '@/service/inscription/cappuccino/responses/inscription_service_response';
+import { CappuccinoRetrievedInscriptionsForWalletAddress } from '@/service/inscription/cappuccino/responses/retrieved_inscriptions';
 import { CappuccinoInscriptionStats } from '@/service/inscription/cappuccino/responses/stats_entry';
 import { WebWorkerInscriptionAPI } from '@/service/inscription/cappuccino/web_worker_proxy_api';
 import React from 'react';
@@ -137,6 +139,10 @@ async function bridgeInscriptionResponse(
     return bridgeLatestInscription(state, streams, event);
   }
 
+  if (event instanceof CappuccinoRetrievedInscriptionsForWalletAddress) {
+    streams.yourInscriptions.publish(event.inscriptionAndChainDetails);
+  }
+
   if (event instanceof CappuccinoInscriptionStats) {
     await streams.stats.publish(event.stats);
   }
@@ -145,7 +151,6 @@ async function bridgeInscriptionResponse(
 async function handleAutoReconnects(
   event: WebSocketResponse,
   streams: ReturnType<typeof createInscriptionSplitStreams>,
-  state: ReturnType<typeof createBridgeState>,
   webSocketCommandSink: Sink<WebSocketCommand>,
 ) {
   const status = event.status;
@@ -202,7 +207,7 @@ async function bridgeStreamIntoIndividualStreams(
 
     if (event instanceof WebSocketResponse) {
       await streams.lifecycle.publish(event);
-      handleAutoReconnects(event, streams, state, webSocketCommandSink);
+      handleAutoReconnects(event, streams, webSocketCommandSink);
       continue;
     }
 
@@ -223,6 +228,7 @@ async function startInscriptionService(
 function createInscriptionSplitStreams() {
   return {
     latestInscriptions: createBufferedChannel<InscriptionAndChainDetails[]>(4),
+    yourInscriptions: createBufferedChannel<InscriptionAndChainDetails[]>(4),
     stats: createBufferedChannel<InscriptionStats>(4),
     // Errors Stream
     errors: createBufferedChannel<null | ErrorResponse>(4),
@@ -237,6 +243,7 @@ function createInscriptionSplitStreams() {
 
 interface ProvideCappuccinoInscriptionStreamsProps {
   children: React.ReactNode | React.ReactNode[];
+  connectToWebSocket?: boolean;
 }
 
 export const ProvideCappuccinoInscriptionStreams: React.FC<
@@ -259,7 +266,12 @@ export const ProvideCappuccinoInscriptionStreams: React.FC<
       inscriptionService,
       lifeCycleRequestSink,
     );
-    startInscriptionService(lifeCycleRequestSink);
+
+    const connectToWebSocket = props.connectToWebSocket ?? true;
+
+    if (connectToWebSocket) {
+      startInscriptionService(lifeCycleRequestSink);
+    }
 
     return () => {
       // Tear Down
@@ -273,18 +285,22 @@ export const ProvideCappuccinoInscriptionStreams: React.FC<
     <LatestInscriptionListStreamContext.Provider
       value={streams.latestInscriptions}
     >
-      <InscriptionsStatsStreamContext.Provider value={streams.stats}>
-        <WebSocketResponseStreamContext.Provider value={streams.lifecycle}>
-          <ErrorStreamContext.Provider
-            value={mapAsyncIterable(
-              streams.errors,
-              async (response) => response?.error ?? null,
-            )}
-          >
-            {props.children}
-          </ErrorStreamContext.Provider>
-        </WebSocketResponseStreamContext.Provider>
-      </InscriptionsStatsStreamContext.Provider>
+      <YourInscriptionsListStreamContext.Provider
+        value={streams.yourInscriptions}
+      >
+        <InscriptionsStatsStreamContext.Provider value={streams.stats}>
+          <WebSocketResponseStreamContext.Provider value={streams.lifecycle}>
+            <ErrorStreamContext.Provider
+              value={mapAsyncIterable(
+                streams.errors,
+                async (response) => response?.error ?? null,
+              )}
+            >
+              {props.children}
+            </ErrorStreamContext.Provider>
+          </WebSocketResponseStreamContext.Provider>
+        </InscriptionsStatsStreamContext.Provider>
+      </YourInscriptionsListStreamContext.Provider>
     </LatestInscriptionListStreamContext.Provider>
   );
 };

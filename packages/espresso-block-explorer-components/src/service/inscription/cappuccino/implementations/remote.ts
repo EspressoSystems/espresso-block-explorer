@@ -27,12 +27,15 @@ import {
   espressoErrorToWebWorkerProxyResponseConverter,
   webSocketStatusToWebWorkerProxyResponseConverter,
 } from '@/models/web_worker/web_worker_proxy_response_codec';
+import { arrayInscriptionAndChainDetailsCodec } from '../inscription_and_chain_details';
 import CappuccinoInscriptionRequest from '../requests/inscription_request';
 import { InscriptionServiceRequest } from '../requests/inscription_service_request';
 import { PutInscription } from '../requests/put_inscription';
+import { RetrieveInscriptionsForAddress } from '../requests/retrieve_inscriptions_for_address';
 import CappuccinoInscriptionResponse from '../responses/inscription_response';
 import { cappuccinoInscriptionResponseCodec } from '../responses/inscription_response_codec';
 import { inscriptionResponseToWebWorkerProxyResponseConverter } from '../responses/inscription_service_response';
+import { CappuccinoRetrievedInscriptionsForWalletAddress } from '../responses/retrieved_inscriptions';
 import { WebWorkerInscriptionAPI } from '../web_worker_proxy_api';
 
 export default class RemoteInscriptionAPI implements WebWorkerInscriptionAPI {
@@ -100,7 +103,11 @@ export default class RemoteInscriptionAPI implements WebWorkerInscriptionAPI {
 
     if (request instanceof InscriptionServiceRequest) {
       try {
-        await this.handleInscriptionsRequest(request.request);
+        const result = await this.handleInscriptionsRequest(request.request);
+
+        if (result) {
+          await this.inscriptionResponseSink.send(result);
+        }
       } catch (err) {
         if (!(err instanceof BaseError)) {
           console.error(
@@ -134,11 +141,16 @@ export default class RemoteInscriptionAPI implements WebWorkerInscriptionAPI {
   private async handleInscriptionsRequest(
     request: CappuccinoInscriptionRequest,
   ) {
-    await this.webSocketCompleter!.promise;
-
     if (request instanceof PutInscription) {
+      await this.webSocketCompleter!.promise;
       await this.handlePutInscription(request);
       return;
+    }
+
+    if (request instanceof RetrieveInscriptionsForAddress) {
+      const result =
+        await this.handleRetrieveInscriptionsForAddressMemoized(request);
+      return result;
     }
 
     throw new UnimplementedError();
@@ -241,9 +253,7 @@ export default class RemoteInscriptionAPI implements WebWorkerInscriptionAPI {
     }
   }
 
-  private async handlePutInscription(request: PutInscription) {
-    const response = await this.handlePutInscriptionFetch(request);
-
+  private validateResponse(response: Response) {
     if (!response.ok) {
       if (response.status >= 400 && response.status < 500) {
         throw new BadResponseClientError(response.status, response);
@@ -263,10 +273,84 @@ export default class RemoteInscriptionAPI implements WebWorkerInscriptionAPI {
         response,
       );
     }
+  }
+
+  private async handlePutInscription(request: PutInscription) {
+    const response = await this.handlePutInscriptionFetch(request);
+    this.validateResponse(response);
 
     // This doesn't return a response worth inspecting.
     // const body = await response.json();
     return null;
+  }
+
+  /**
+   * handleRetrieveInscriptionsForAddressFetch is a method that will fetch the
+   * most recent inscription and chain details from the API service for the
+   * given Wallet Address.
+   */
+  private async handleRetrieveInscriptionsForAddressFetch(
+    request: RetrieveInscriptionsForAddress,
+  ) {
+    try {
+      const response = await fetch(
+        new URL(
+          `inscriptions/inscriptions_for_wallet_address/${request.address}`,
+          this.serviceBaseURL,
+        ),
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      return response;
+    } catch (err) {
+      throw new FetchError(err);
+    }
+  }
+
+  /**
+   * handleRetrieveInscriptionsForAddress is a method that will fetch the
+   * most recent inscription and chain details from the API service for the
+   * given Wallet Address.
+   */
+  private async handleRetrieveInscriptionsForAddress(
+    request: RetrieveInscriptionsForAddress,
+  ) {
+    const response =
+      await this.handleRetrieveInscriptionsForAddressFetch(request);
+    this.validateResponse(response);
+
+    return new CappuccinoRetrievedInscriptionsForWalletAddress(
+      arrayInscriptionAndChainDetailsCodec.decode(await response.json()),
+    );
+  }
+
+  private retrieveInscriptionsForAddressCache = new Map<
+    string,
+    CappuccinoInscriptionResponse
+  >();
+
+  /**
+   * This method performs the same action as handleRetrieveInscriptionsForAddress
+   * however, it will cache a successful response for a request with the same
+   * given address.
+   *
+   * This will help reduce unnecessary re-requests to the API service.
+   */
+  private async handleRetrieveInscriptionsForAddressMemoized(
+    request: RetrieveInscriptionsForAddress,
+  ) {
+    if (this.retrieveInscriptionsForAddressCache.has(request.address)) {
+      return this.retrieveInscriptionsForAddressCache.get(request.address);
+    }
+
+    const result = await this.handleRetrieveInscriptionsForAddress(request);
+    this.retrieveInscriptionsForAddressCache.set(request.address, result);
+    return result;
   }
 }
 

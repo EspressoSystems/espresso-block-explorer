@@ -1,5 +1,7 @@
 import { ProvideTickEverySecond } from '@/components/contexts/NowProvider';
 import { OverridePathResolver } from '@/components/contexts/PathResolverProvider';
+import { ProvideWebWorkerCappuccinoInscriptionServiceAPIContext } from 'pages/CappuccinoInscriptionServiceAPIContext';
+import { ProvideCappuccinoInscriptionStreams } from 'pages/CappuccinoInscriptionServiceAdapters';
 import { TweetURLProvider } from 'pages/InscriptionsPage';
 import { StoryBookPathResolver } from 'pages/StoryBookPathResolver';
 import React, { DetailedHTMLProps, HTMLAttributes } from 'react';
@@ -47,11 +49,15 @@ const Example: React.FC<ExampleProps> = ({ ...props }) => {
               new URL('https://x.com/EspressoSys/status/1856848477466378284')
             }
           >
-            <InscriptionsConcludedPage
-              backgroundImage={backgroundImage}
-              escapeTheWalledGardensImage={escapeTheWalledGardensImage}
-              {...props}
-            />
+            <ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
+              <ProvideCappuccinoInscriptionStreams connectToWebSocket={false}>
+                <InscriptionsConcludedPage
+                  backgroundImage={backgroundImage}
+                  escapeTheWalledGardensImage={escapeTheWalledGardensImage}
+                  {...props}
+                />
+              </ProvideCappuccinoInscriptionStreams>
+            </ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
           </TweetURLProvider.Provider>
         </OverridePathResolver>
       </ProvideTickEverySecond>

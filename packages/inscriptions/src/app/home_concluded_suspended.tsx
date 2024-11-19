@@ -4,7 +4,11 @@ import Image from 'next/image';
 import walledGardenPng from './escape_the_walled_gardens@1x.jpg';
 import infiniteGardenPng from './infinite_garden@1x.jpg';
 
-import { InscriptionsConcludedPage } from 'espresso-block-explorer-components';
+import {
+  InscriptionsConcludedPage,
+  ProvideCappuccinoInscriptionStreams,
+  ProvideWebWorkerCappuccinoInscriptionServiceAPIContext,
+} from 'espresso-block-explorer-components';
 
 export default function HomeConcludedSuspended() {
   const backgroundImage = (
@@ -14,9 +18,13 @@ export default function HomeConcludedSuspended() {
     <Image src={walledGardenPng} alt="Escape the Walled Gardens" priority />
   );
   return (
-    <InscriptionsConcludedPage
-      backgroundImage={backgroundImage}
-      escapeTheWalledGardensImage={escapeTheWalledGardenImage}
-    />
+    <ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
+      <ProvideCappuccinoInscriptionStreams connectToWebSocket={false}>
+        <InscriptionsConcludedPage
+          backgroundImage={backgroundImage}
+          escapeTheWalledGardensImage={escapeTheWalledGardenImage}
+        />
+      </ProvideCappuccinoInscriptionStreams>
+    </ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>
   );
 }
