@@ -2,6 +2,7 @@
 
 import {
   NamespaceContext,
+  ProvideCappuccinoHotShotQueryServiceAPIContext,
   ProvideCappuccinoRollUpDetailDataSource,
   RollUpPage,
 } from 'espresso-block-explorer-components';
@@ -57,9 +58,11 @@ export default function SpecificRollUp() {
 
   return (
     <NamespaceContext.Provider value={Number(namespace)}>
-      <ProvideCappuccinoRollUpDetailDataSource>
-        <RollUpPage startAtBlock={startAtBlock} offset={offset} />
-      </ProvideCappuccinoRollUpDetailDataSource>
+      <ProvideCappuccinoHotShotQueryServiceAPIContext>
+        <ProvideCappuccinoRollUpDetailDataSource>
+          <RollUpPage startAtBlock={startAtBlock} offset={offset} />
+        </ProvideCappuccinoRollUpDetailDataSource>
+      </ProvideCappuccinoHotShotQueryServiceAPIContext>
     </NamespaceContext.Provider>
   );
 }

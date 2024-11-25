@@ -1,10 +1,42 @@
-import { CappuccinoHotShotQueryServiceAvailabilityAPI } from './availability/availability_api';
-import { CappuccinoHotShotQueryServiceExplorerAPI } from './explorer/explorer_api';
-import { CappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
+import {
+  CappuccinoHotShotQueryServiceAvailabilityAPI,
+  UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI,
+} from './availability/availability_api';
+import {
+  CappuccinoHotShotQueryServiceExplorerAPI,
+  UnimplementedCappuccinoHotShotQueryServiceExplorerAPI,
+} from './explorer/explorer_api';
+import {
+  CappuccinoHotShotQueryServiceStatusAPI,
+  UnimplementedCappuccinoHotShotQueryServiceStatusAPI,
+} from './status/status_api';
 
+/**
+ * CappuccinoHotShotQueryService is a type that represents the Cappuccino
+ * HotShot Query Service. This interface represents the idealized interactions
+ * for the Cappuccino HotShot Query Service.  This should allow for easy
+ * interactions with the Cappuccino HotShot Query Service, while also allowing
+ * for different implementations for testing purposes.
+ */
 export interface CappuccinoHotShotQueryService {
-  readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI &
-    CappuccinoHotShotQueryServiceAvailabilityAPI;
+  readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI;
   readonly status: CappuccinoHotShotQueryServiceStatusAPI;
   readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;
+}
+
+/**
+ * UnimplementedCappuccinoHotShotQueryService is a class that implements the
+ * CappuccinoHotShotQueryService interface, but throws an UnimplementedError for
+ * all methods. This class is meant to be used as a placeholder for the
+ * Cappuccino HotShot Query Service, and should be replaced with a real
+ * implementation.
+ */
+export class UnimplementedCappuccinoHotShotQueryService
+  implements CappuccinoHotShotQueryService
+{
+  readonly availability =
+    new UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI();
+  readonly status = new UnimplementedCappuccinoHotShotQueryServiceStatusAPI();
+  readonly explorer =
+    new UnimplementedCappuccinoHotShotQueryServiceExplorerAPI();
 }

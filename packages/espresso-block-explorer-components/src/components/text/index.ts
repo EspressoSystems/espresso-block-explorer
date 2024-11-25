@@ -4,6 +4,7 @@ export { type CopyArrayBufferAsTextProps } from './CopyArrayBufferAsTextProps';
 export { default as CopyBase64 } from './CopyBase64';
 export { default as CopyHex } from './CopyHex';
 export { default as DateTimeText } from './DateTimeText';
+export { default as FriendlyDateTimeText } from './FriendlyDateTimeText';
 export { default as FullTextHexText } from './FullHexText';
 export { default as FullTaggedBase64Text } from './FullTaggedBase64Text';
 export { default as HexText } from './HexText';

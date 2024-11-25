@@ -2,6 +2,7 @@ import { BlockNumberContext } from '@/components/page_sections/block_detail_cont
 import { TransactionOffsetContext } from '@/components/page_sections/transaction_detail_content/TransactionDetailLoader';
 import { ProvideTickEverySecond } from '@/contexts/NowProvider';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
+import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
 import { ProvideCappuccinoTransactionDetailDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
@@ -19,13 +20,15 @@ const Example: React.FC<ExampleProps> = ({ height, offset, ...props }) => (
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <BlockNumberContext.Provider value={height}>
-          <TransactionOffsetContext.Provider value={offset}>
-            <ProvideCappuccinoTransactionDetailDataSource>
-              <TransactionPage {...props} />
-            </ProvideCappuccinoTransactionDetailDataSource>
-          </TransactionOffsetContext.Provider>
-        </BlockNumberContext.Provider>
+        <ProvideCappuccinoHotShotQueryServiceAPIContext>
+          <BlockNumberContext.Provider value={height}>
+            <TransactionOffsetContext.Provider value={offset}>
+              <ProvideCappuccinoTransactionDetailDataSource>
+                <TransactionPage {...props} />
+              </ProvideCappuccinoTransactionDetailDataSource>
+            </TransactionOffsetContext.Provider>
+          </BlockNumberContext.Provider>
+        </ProvideCappuccinoHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </>

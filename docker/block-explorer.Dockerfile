@@ -28,7 +28,7 @@ COPY --from=builder /app/packages/block-explorer/package.json /app/packages/bloc
 RUN NODE_ENV=production npm ci --only=production
 COPY --from=builder /app/packages/block-explorer/.next /app/packages/block-explorer/.next
 COPY --from=builder /app/packages/block-explorer/public/ /app/packages/block-explorer/public/
-COPY docker/init.sh /app/init.sh
+COPY docker/block-explorer-init.sh /app/block-explorer-init.sh
 
 # The configuration for the pre-built block-explorer is specified by
 # a file named config.json contained within the public folder of the
@@ -59,11 +59,11 @@ COPY docker/init.sh /app/init.sh
 #  "replay:https://example.com/replay-file.har"
 #
 # In both of these cases, primarily for convenience we have introduced an
-# init.sh file that will update the contents of the `hotshot_query_service_url`
-# and the `node_validator_service_url` URLs with the contents of the
-# environment variables `QUERY_SERVICE_URI` and `NODE_VALIDATOR_URI`
-# respectively.  This allows for the configuration of the block explorer
-# to be done at runtime.
+# block-explorer-init.sh file that will update the contents of the
+# `hotshot_query_service_url` and the `node_validator_service_url` URLs
+# with the contents of the environment variables `QUERY_SERVICE_URI` and
+# `NODE_VALIDATOR_URI` respectively.  This allows for the configuration of
+# the block explorer to be done at runtime.
 
 EXPOSE 3000
 ENV HOST=0.0.0.0
@@ -71,4 +71,4 @@ ENV QUERY_SERVICE_URI=""
 ENV NODE_VALIDATOR_URI=""
 
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["./init.sh"]
+CMD ["./block-explorer-init.sh"]

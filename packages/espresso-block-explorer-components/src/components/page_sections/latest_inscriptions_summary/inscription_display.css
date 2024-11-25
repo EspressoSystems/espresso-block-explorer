@@ -1,0 +1,86 @@
+.inscription-display {
+  padding-block: 24px;
+  /* Default font for things under the Inscriptions List */
+  --text--font-size: 14px;
+  font-family: var(--text--font-family);
+  font-weight: var(--text--font-weight);
+  font-style: var(--text--font-style);
+  font-size: var(--text--font-size);
+
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  grid-template-areas:
+    'address link spacer time'
+    'label b b b';
+  column-gap: 8px;
+}
+
+.inscription-display:not(:nth-last-child(1)) {
+  border-bottom: 1px solid #ffffff33;
+}
+
+.inscription-message {
+  margin-block-end: 24px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.inscription-display--full-address,
+.inscription-display--trunc-address {
+  color: #b9ad3e;
+  flex-direction: column;
+  align-items: center;
+  --icon--fill-color: #b9ad3e;
+  grid-area: address;
+  align-self: center;
+}
+
+.block-explorer-link {
+  grid-area: link;
+}
+
+.your-inscription {
+  color: #fff;
+  grid-area: label;
+}
+
+.inscription-display--time {
+  grid-area: time;
+  align-self: center;
+  color: #fff;
+}
+
+.inscription-display--full-address {
+  display: none;
+}
+
+/* Mobile */
+@media screen and (min-width: 0px) {
+}
+
+/* Small */
+@media screen and (min-width: 640px) {
+}
+
+/* Medium */
+@media screen and (min-width: 768px) {
+}
+
+/* Large */
+@media screen and (min-width: 1024px) {
+  .inscription-display--full-address {
+    display: flex;
+  }
+  .inscription-display--trunc-address {
+    display: none;
+  }
+}
+
+/* Extra Large */
+@media screen and (min-width: 1280px) {
+}
+
+/* 2 Extra Large */
+@media screen and (min-width: 1536px) {
+}

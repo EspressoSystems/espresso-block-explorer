@@ -4,6 +4,7 @@ import {
   ExplorerPage,
   ExplorerSummaryLoader,
   ProvideCappuccinoExplorerSummary,
+  ProvideCappuccinoHotShotQueryServiceAPIContext,
 } from 'espresso-block-explorer-components';
 
 /**
@@ -14,10 +15,12 @@ import {
  */
 export default function Home() {
   return (
-    <ProvideCappuccinoExplorerSummary>
-      <ExplorerSummaryLoader>
-        <ExplorerPage />
-      </ExplorerSummaryLoader>
-    </ProvideCappuccinoExplorerSummary>
+    <ProvideCappuccinoHotShotQueryServiceAPIContext>
+      <ProvideCappuccinoExplorerSummary>
+        <ExplorerSummaryLoader>
+          <ExplorerPage />
+        </ExplorerSummaryLoader>
+      </ProvideCappuccinoExplorerSummary>
+    </ProvideCappuccinoHotShotQueryServiceAPIContext>
   );
 }

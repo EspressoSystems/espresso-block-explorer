@@ -1,12 +1,10 @@
+import { PathResolver } from '@/components/contexts/PathResolver';
 import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { PresentationIconButton } from '@/components/hid/buttons/icon_button/IconButton';
 import { DataContext } from '@/contexts/DataProvider';
 import { ErrorContext } from '@/contexts/ErrorProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
-import {
-  PathResolver,
-  PathResolverContext,
-} from '@/contexts/PathResolverProvider';
+import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import { CardNoPadding } from '@/layout/card/Card';
 import { CappuccinoExplorerBlockSummary } from '@/service/hotshot_query_service/cappuccino/explorer/block_summary';
 import { CappuccinoExplorerGetSearchResultRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_search_result_request';

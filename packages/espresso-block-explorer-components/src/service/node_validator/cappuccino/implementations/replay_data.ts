@@ -3,6 +3,17 @@ import { createSinkWithConverter } from '@/async/sink/converted_sink';
 import { Sink } from '@/async/sink/sink';
 import { sleep } from '@/async/sleep';
 import { expandIterable, filterIterable } from '@/functional/functional';
+import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
+import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
+import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
+import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
+import { WebSocketStatusConnectionConnecting } from '@/models/web_worker/web_socket/status/connecting';
+import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
+import WebSocketStatus from '@/models/web_worker/web_socket/status/web_socket_status';
+import { WebSocketRequest } from '@/models/web_worker/web_socket/web_socket_request';
+import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
+import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
+import { webSocketStatusToWebWorkerProxyResponseConverter } from '@/models/web_worker/web_worker_proxy_response_codec';
 import CappuccinoNodeValidatorRequest, {
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
@@ -12,26 +23,10 @@ import CappuccinoNodeValidatorRequest, {
   SubscribeNodeIdentity,
   SubscribeVoters,
 } from '../requests/node_validator_request';
-import WebWorkerLifeCycleRequest, {
-  Close,
-  Connect,
-} from '../requests/web_worker_life_cycle_request';
-import {
-  LifeCycleRequest,
-  NodeValidatorRequest,
-  WebWorkerProxyRequest,
-} from '../requests/web_worker_proxy_request';
-import { CappuccinoConnectionClosed } from '../responses/connection_closed';
-import { CappuccinoConnectionConnecting } from '../responses/connection_connecting';
-import { CappuccinoConnectionOpened } from '../responses/connection_opened';
+import { NodeValidatorServiceRequest } from '../requests/node_validator_service_request';
 import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
 import { cappuccinoNodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
-import WebWorkerLifeCycleResponse from '../responses/web_worker_life_cycle_response';
-import {
-  lifeCycleResponseToWebWorkerProxyResponseConverter,
-  nodeValidatorResponseToWebWorkerProxyResponseConverter,
-  WebWorkerProxyResponse,
-} from '../responses/web_worker_proxy_response';
+import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 
 export interface HARFormat {
@@ -156,7 +151,7 @@ export default class ReplayDataCappuccinoNodeValidatorAPI
   readonly requestStream: Channel<WebWorkerProxyResponse>;
   readonly capturedHAR: HARFormat;
 
-  readonly lifecycleResponseSink: Sink<WebWorkerLifeCycleResponse>;
+  readonly lifecycleResponseSink: Sink<WebSocketStatus>;
   readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
 
   constructor(
@@ -170,7 +165,7 @@ export default class ReplayDataCappuccinoNodeValidatorAPI
 
     this.lifecycleResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
-      lifeCycleResponseToWebWorkerProxyResponseConverter,
+      webSocketStatusToWebWorkerProxyResponseConverter,
     );
     this.nodeValidatorResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
@@ -197,16 +192,16 @@ export default class ReplayDataCappuccinoNodeValidatorAPI
   }
 
   private async handleRequest(request: WebWorkerProxyRequest) {
-    if (request instanceof LifeCycleRequest) {
+    if (request instanceof WebSocketRequest) {
       try {
-        await this.handleLifeCycleRequest(request.request);
+        await this.handleWebSocketCommand(request.command);
       } catch (err) {
         console.error('failed to handle life cycle request', request, err);
       }
       return;
     }
 
-    if (request instanceof NodeValidatorRequest) {
+    if (request instanceof NodeValidatorServiceRequest) {
       try {
         await this.handleNodeValidatorRequest(request.request);
       } catch (err) {
@@ -218,13 +213,13 @@ export default class ReplayDataCappuccinoNodeValidatorAPI
     console.error('unknown request type', request);
   }
 
-  private async handleLifeCycleRequest(request: WebWorkerLifeCycleRequest) {
-    if (request instanceof Connect) {
+  private async handleWebSocketCommand(command: WebSocketCommand) {
+    if (command instanceof WebSocketCommandConnect) {
       await this.handleConnect();
       return;
     }
 
-    if (request instanceof Close) {
+    if (command instanceof WebSocketCommandClose) {
       await this.handleClose();
       return;
     }
@@ -270,8 +265,12 @@ export default class ReplayDataCappuccinoNodeValidatorAPI
   }
 
   private async handleConnect() {
-    await this.lifecycleResponseSink.send(new CappuccinoConnectionConnecting());
-    await this.lifecycleResponseSink.send(new CappuccinoConnectionOpened());
+    await this.lifecycleResponseSink.send(
+      new WebSocketStatusConnectionConnecting(),
+    );
+    await this.lifecycleResponseSink.send(
+      new WebSocketStatusConnectionOpened(),
+    );
     // Let's start the message replay here.
     const webSocketMessages = expandIterable(
       this.capturedHAR.log.entries,
@@ -311,7 +310,9 @@ export default class ReplayDataCappuccinoNodeValidatorAPI
       }
     }
 
-    await this.lifecycleResponseSink.send(new CappuccinoConnectionClosed());
+    await this.lifecycleResponseSink.send(
+      new WebSocketStatusConnectionClosed(),
+    );
   }
 
   private async handleClose() {}

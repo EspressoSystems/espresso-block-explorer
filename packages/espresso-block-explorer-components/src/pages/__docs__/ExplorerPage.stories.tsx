@@ -1,6 +1,7 @@
 import { ExplorerSummaryLoader } from '@/components/page_sections/explorer_summary/ExplorerSummaryLoader';
 import { ProvideTickEverySecond } from '@/contexts/NowProvider';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
+import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
 import { ProvideCappuccinoExplorerSummary } from '../CappuccinoHotShotQueryServiceAdapters';
@@ -15,11 +16,13 @@ const Example: React.FC<ExampleProps> = (props) => (
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideCappuccinoExplorerSummary>
-          <ExplorerSummaryLoader>
-            <ExplorerPage {...props} />
-          </ExplorerSummaryLoader>
-        </ProvideCappuccinoExplorerSummary>
+        <ProvideCappuccinoHotShotQueryServiceAPIContext>
+          <ProvideCappuccinoExplorerSummary>
+            <ExplorerSummaryLoader>
+              <ExplorerPage {...props} />
+            </ExplorerSummaryLoader>
+          </ProvideCappuccinoExplorerSummary>
+        </ProvideCappuccinoHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </>

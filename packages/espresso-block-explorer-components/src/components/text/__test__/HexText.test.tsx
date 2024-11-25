@@ -22,7 +22,7 @@ describe('Hex Text Component', () => {
     {
       const div = screen.getByTestId('1');
       expect(div).toBeInTheDocument();
-      expect(div).toHaveTextContent('0x012345...543210');
+      expect(div).toHaveTextContent('0x01...3210');
     }
 
     rerender(

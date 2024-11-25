@@ -1,15 +1,38 @@
 import { createBufferedChannel } from '@/async/channel';
 import UnimplementedError from '@/errors/UnimplementedError';
+import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
+import {
+  registerWebWorkerProxyRequestCodec,
+  webWorkerProxyRequestCodec,
+} from '@/models/web_worker/web_worker_proxy_request_codec';
+import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
+import {
+  registerWebWorkerProxyResponseCodec,
+  webWorkerProxyResponseCodec,
+} from '@/models/web_worker/web_worker_proxy_response_codec';
 import FakeDataCappuccinoNodeValidatorAPI from './implementations/fake_data';
 import ReplayDataCappuccinoNodeValidatorAPI, {
   HARFormat,
 } from './implementations/replay_data';
 import WebSocketDataCappuccinoNodeValidatorAPI from './implementations/websocket_data';
-import { WebWorkerProxyRequest } from './requests/web_worker_proxy_request';
-import { webWorkerProxyRequestCodec } from './requests/web_worker_proxy_request_codec';
-import { WebWorkerProxyResponse } from './responses/web_worker_proxy_response';
-import { webWorkerProxyResponseCodec } from './responses/web_worker_proxy_response_codec';
+import {
+  kNodeValidatorRequestType,
+  nodeValidatorServiceRequestCodec,
+} from './requests/node_validator_service_request';
+import {
+  kNodeValidatorServiceResponseType,
+  nodeValidatorServiceResponseCodec,
+} from './responses/node_validator_service_response';
 import { WebWorkerNodeValidatorAPI } from './web_worker_proxy_api';
+
+registerWebWorkerProxyRequestCodec(
+  kNodeValidatorRequestType,
+  nodeValidatorServiceRequestCodec,
+);
+registerWebWorkerProxyResponseCodec(
+  kNodeValidatorServiceResponseType,
+  nodeValidatorServiceResponseCodec,
+);
 
 type Config = {
   node_validator_service_url: undefined | null | string;

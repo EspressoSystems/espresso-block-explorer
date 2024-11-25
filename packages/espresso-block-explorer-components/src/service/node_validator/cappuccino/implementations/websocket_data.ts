@@ -6,29 +6,26 @@ import {
   createCompleter,
 } from '@/data_structures/async/completer/Completer';
 import WebSocketError from '@/errors/WebSocketError';
+import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
+import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
+import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
+import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
+import { WebSocketStatusConnectionConnecting } from '@/models/web_worker/web_socket/status/connecting';
+import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
+import WebSocketStatus from '@/models/web_worker/web_socket/status/web_socket_status';
+import { WebSocketRequest } from '@/models/web_worker/web_socket/web_socket_request';
+import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
+import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
+import {
+  espressoErrorToWebWorkerProxyResponseConverter,
+  webSocketStatusToWebWorkerProxyResponseConverter,
+} from '@/models/web_worker/web_worker_proxy_response_codec';
+import { inscriptionResponseToWebWorkerProxyResponseConverter } from '@/service/inscription/cappuccino/responses/inscription_service_response';
 import CappuccinoNodeValidatorRequest from '../requests/node_validator_request';
 import { cappuccinoNodeValidatorRequestCodec } from '../requests/node_validator_request_codec';
-import WebWorkerLifeCycleRequest, {
-  Close,
-  Connect,
-} from '../requests/web_worker_life_cycle_request';
-import {
-  LifeCycleRequest,
-  NodeValidatorRequest,
-  WebWorkerProxyRequest,
-} from '../requests/web_worker_proxy_request';
-import { CappuccinoConnectionClosed } from '../responses/connection_closed';
-import { CappuccinoConnectionConnecting } from '../responses/connection_connecting';
-import { CappuccinoConnectionOpened } from '../responses/connection_opened';
+import { NodeValidatorServiceRequest } from '../requests/node_validator_service_request';
 import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
 import { cappuccinoNodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
-import WebWorkerLifeCycleResponse from '../responses/web_worker_life_cycle_response';
-import {
-  espressoErrorResponseToWebWorkerProxyResponseConverter,
-  lifeCycleResponseToWebWorkerProxyResponseConverter,
-  nodeValidatorResponseToWebWorkerProxyResponseConverter,
-  WebWorkerProxyResponse,
-} from '../responses/web_worker_proxy_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 
 // URL expected to be replay:<url>
@@ -43,10 +40,9 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
   readonly requestStream: Channel<WebWorkerProxyRequest>;
   readonly serviceBaseURL: URL;
 
-  readonly lifecycleResponseSink: Sink<WebWorkerLifeCycleResponse>;
+  readonly lifecycleResponseSink: Sink<WebSocketStatus>;
   readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
   readonly errorResponseSink: Sink<unknown>;
-
   constructor(
     requestStream: Channel<WebWorkerProxyRequest>,
     responseStream: Channel<WebWorkerProxyResponse>,
@@ -58,15 +54,15 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
 
     this.lifecycleResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
-      lifeCycleResponseToWebWorkerProxyResponseConverter,
+      webSocketStatusToWebWorkerProxyResponseConverter,
     );
     this.nodeValidatorResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
-      nodeValidatorResponseToWebWorkerProxyResponseConverter,
+      inscriptionResponseToWebWorkerProxyResponseConverter,
     );
     this.errorResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
-      espressoErrorResponseToWebWorkerProxyResponseConverter,
+      espressoErrorToWebWorkerProxyResponseConverter,
     );
   }
 
@@ -89,16 +85,16 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
   }
 
   private async handleRequest(request: WebWorkerProxyRequest) {
-    if (request instanceof LifeCycleRequest) {
+    if (request instanceof WebSocketRequest) {
       try {
-        await this.handleLifeCycleRequest(request.request);
+        await this.handleWebSocketCommand(request.command);
       } catch (err) {
         console.error('failed to handle life cycle request', request, err);
       }
       return;
     }
 
-    if (request instanceof NodeValidatorRequest) {
+    if (request instanceof NodeValidatorServiceRequest) {
       try {
         await this.handleNodeValidatorRequest(request.request);
       } catch (err) {
@@ -110,13 +106,13 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     console.error('unrecognized request', request);
   }
 
-  private async handleLifeCycleRequest(request: WebWorkerLifeCycleRequest) {
-    if (request instanceof Connect) {
+  private async handleWebSocketCommand(command: WebSocketCommand) {
+    if (command instanceof WebSocketCommandConnect) {
       await this.handleConnect();
       return;
     }
 
-    if (request instanceof Close) {
+    if (command instanceof WebSocketCommandClose) {
       await this.handleClose();
       return;
     }
@@ -152,7 +148,9 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
   private async handleConnect() {
     this.assertNotConnected();
 
-    await this.lifecycleResponseSink.send(new CappuccinoConnectionConnecting());
+    await this.lifecycleResponseSink.send(
+      new WebSocketStatusConnectionConnecting(),
+    );
     const url = new URL('node-validator/details', this.serviceBaseURL);
 
     const webSocketCompleter = createCompleter<WebSocket>();
@@ -250,10 +248,10 @@ class WebSocketMessageHandler implements EventListenerObject {
 
 class WebSocketOpenHandler implements EventListenerObject {
   private readonly completer: Completer<WebSocket>;
-  private readonly lifecycleResponseSink: Sink<WebWorkerLifeCycleResponse>;
+  private readonly lifecycleResponseSink: Sink<WebSocketStatus>;
   constructor(
     completer: Completer<WebSocket>,
-    lifecycleResponseSink: Sink<WebWorkerLifeCycleResponse>,
+    lifecycleResponseSink: Sink<WebSocketStatus>,
   ) {
     this.completer = completer;
     this.lifecycleResponseSink = lifecycleResponseSink;
@@ -261,19 +259,21 @@ class WebSocketOpenHandler implements EventListenerObject {
 
   handleEvent(event: Event) {
     this.completer.complete(event.target as WebSocket);
-    this.lifecycleResponseSink.send(new CappuccinoConnectionOpened());
+    this.lifecycleResponseSink.send(new WebSocketStatusConnectionOpened());
   }
 }
 
 class WebSocketCloseHandler implements EventListenerObject {
-  private readonly lifecycleResponseSink: Sink<WebWorkerLifeCycleResponse>;
+  private readonly lifecycleResponseSink: Sink<WebSocketStatus>;
 
-  constructor(lifecycleResponseSink: Sink<WebWorkerLifeCycleResponse>) {
+  constructor(lifecycleResponseSink: Sink<WebSocketStatus>) {
     this.lifecycleResponseSink = lifecycleResponseSink;
   }
 
   async handleEvent() {
-    await this.lifecycleResponseSink.send(new CappuccinoConnectionClosed());
+    await this.lifecycleResponseSink.send(
+      new WebSocketStatusConnectionClosed(),
+    );
   }
 }
 

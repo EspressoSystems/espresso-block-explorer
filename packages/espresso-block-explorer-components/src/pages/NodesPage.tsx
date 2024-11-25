@@ -1,5 +1,5 @@
 import { ErrorStreamConsumer } from '@/components/contexts/ErrorStreamConsumer';
-import { LifeCycleResponseStreamConsumer } from '@/components/contexts/WebSocketLifeCycleProvider';
+import { WebSocketResponseStreamConsumer } from '@/components/contexts/WebSocketResponseProvider';
 import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import { addClassToClassName } from '@/components/higher_order';
 import Card, { CardNoPadding } from '@/components/layout/card/Card';
@@ -39,7 +39,7 @@ import {
   NodeInformationToDotPopulation,
 } from '@/components/visual/geo_json/WorldMapDotsPopulationResolver';
 import { HistogramSectionTitle } from '@/components/visual/histogram/histogram_section_title/HistogramSectionTitle';
-import { LifeCycleEventStatus } from '@/components/visual/web_socket/LifeCycleEventStatus';
+import { WebSocketStatus } from '@/components/visual/web_socket/WebSocketStatus';
 import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
 import React from 'react';
 import './node_validator.css';
@@ -52,7 +52,7 @@ interface NodesPageProps {
  * NodesPage is a component that renders the Nodes page.
  */
 const NodesPage: React.FC<NodesPageProps> = (props) => (
-  <LifeCycleResponseStreamConsumer>
+  <WebSocketResponseStreamConsumer>
     <ErrorStreamConsumer>
       <OverridePagePath page={PageType.nodes}>
         <Header />
@@ -66,7 +66,7 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
         This component displays the current Lifecycle state of the page.  It
         reflects what's happening with the underlying Web Socket connection.
         */}
-        <LifeCycleEventStatus className="edge-margin" />
+        <WebSocketStatus className="edge-margin" />
 
         {/*
           This component displays any errors that have occurred while attempting
@@ -178,7 +178,7 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
         <Footer />
       </OverridePagePath>
     </ErrorStreamConsumer>
-  </LifeCycleResponseStreamConsumer>
+  </WebSocketResponseStreamConsumer>
 );
 
 export default NodesPage;

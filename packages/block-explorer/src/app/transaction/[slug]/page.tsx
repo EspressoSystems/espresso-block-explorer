@@ -2,6 +2,7 @@
 
 import {
   BlockNumberContext,
+  ProvideCappuccinoHotShotQueryServiceAPIContext,
   ProvideCappuccinoTransactionDetailDataSource,
   TransactionOffsetContext,
   TransactionPage,
@@ -35,9 +36,11 @@ export default function Transaction() {
   return (
     <BlockNumberContext.Provider value={height}>
       <TransactionOffsetContext.Provider value={offset}>
-        <ProvideCappuccinoTransactionDetailDataSource>
-          <TransactionPage />
-        </ProvideCappuccinoTransactionDetailDataSource>
+        <ProvideCappuccinoHotShotQueryServiceAPIContext>
+          <ProvideCappuccinoTransactionDetailDataSource>
+            <TransactionPage />
+          </ProvideCappuccinoTransactionDetailDataSource>
+        </ProvideCappuccinoHotShotQueryServiceAPIContext>
       </TransactionOffsetContext.Provider>
     </BlockNumberContext.Provider>
   );

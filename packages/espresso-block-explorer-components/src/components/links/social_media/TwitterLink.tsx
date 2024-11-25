@@ -1,4 +1,4 @@
-import TwitterIcon from '@/visual/icons/TwitterIcon';
+import XIcon from '@/components/visual/icons/XIcon';
 import React from 'react';
 import SocialMediaIconLink from './SocialMediaIconLink';
 
@@ -10,7 +10,7 @@ const TwitterLink: React.FC = () => (
     href="https://twitter.com/EspressoSys"
     title="Follow Espresso on X"
   >
-    <TwitterIcon />
+    <XIcon />
   </SocialMediaIconLink>
 );
 

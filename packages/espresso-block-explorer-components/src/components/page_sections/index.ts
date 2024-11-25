@@ -11,6 +11,7 @@ export * from './header';
 export * from './hex_dump';
 export * from './latest_block_producers';
 export * from './latest_block_summary';
+export * from './latest_inscriptions_summary';
 export * from './page_title';
 export * from './roll_up';
 export * from './rollup_detail_data_table';

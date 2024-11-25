@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import ArrowLeft from '../ArrowLeft';
 import ArrowRight from '../ArrowRight';
+import Check from '../Check';
 import CheckCircle from '../CheckCircle';
 import ChevronDown from '../ChevronDown';
 import ChevronUp from '../ChevronUp';
@@ -9,11 +10,13 @@ import Copy from '../Copy';
 import DiscordIcon from '../DiscordIcon';
 import EspressoLogo from '../EspressoLogo';
 import EspressoLogoAndTitle from '../EspressoLogoAndTitle';
+import ExternalLink from '../ExternalLink';
 import InfoCircle from '../InfoCircle';
 import MediumIcon from '../MediumIcon';
 import MenuIcon from '../Menu';
 import SearchGlass from '../SearchGlass';
 import TwitterIcon from '../TwitterIcon';
+import XIcon from '../XIcon';
 
 const Example: React.FC = () => (
   <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -22,16 +25,19 @@ const Example: React.FC = () => (
     <hr />
     <ArrowLeft />
     <ArrowRight />
+    <Check />
     <CheckCircle />
     <ChevronDown />
     <ChevronUp />
     <Copy />
     <DiscordIcon />
+    <ExternalLink />
     <InfoCircle />
     <MediumIcon />
     <MenuIcon />
     <SearchGlass />
     <TwitterIcon />
+    <XIcon />
   </div>
 );
 

@@ -2,6 +2,7 @@
 
 import {
   NodesPage,
+  ProvideCappuccinoNodeValidatorServiceAPIContext,
   ProvideCappuccinoNodeValidatorStreams,
 } from 'espresso-block-explorer-components';
 
@@ -13,8 +14,10 @@ import {
  */
 export default function Nodes() {
   return (
-    <ProvideCappuccinoNodeValidatorStreams>
-      <NodesPage />
-    </ProvideCappuccinoNodeValidatorStreams>
+    <ProvideCappuccinoNodeValidatorServiceAPIContext>
+      <ProvideCappuccinoNodeValidatorStreams>
+        <NodesPage />
+      </ProvideCappuccinoNodeValidatorStreams>
+    </ProvideCappuccinoNodeValidatorServiceAPIContext>
   );
 }

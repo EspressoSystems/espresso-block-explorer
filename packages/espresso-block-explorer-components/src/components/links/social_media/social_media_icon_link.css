@@ -1,8 +1,11 @@
 a.link.link--social {
-  --icon--fill-color: var(--on-color--coffee);
   padding: 10px;
 }
 
-a.link.link--social:hover {
+.social-media-links a.link.link--social {
+  --icon--fill-color: var(--on-color--coffee);
+}
+
+.social-media-links a.link.link--social:hover {
   --icon--fill-color: var(--color--caramel);
 }

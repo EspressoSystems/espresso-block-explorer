@@ -1,5 +1,8 @@
 import FetchError from '@/errors/FetchError';
-import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
+import {
+  CappuccinoHotShotQueryService,
+  UnimplementedCappuccinoHotShotQueryService,
+} from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
 import { WebWorkerClientBasedCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hotshot_query_service_web_worker_client_based';
 import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
 import { FetchBasedCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/remote_api';
@@ -7,7 +10,7 @@ import React from 'react';
 
 export const CappuccinoHotShotQueryServiceAPIContext =
   React.createContext<CappuccinoHotShotQueryService>(
-    createDefaultCappuccinoHotShotQueryService(),
+    new UnimplementedCappuccinoHotShotQueryService(),
   );
 
 function createDefaultCappuccinoHotShotQueryService(): CappuccinoHotShotQueryService {
@@ -20,6 +23,22 @@ function createDefaultCappuccinoHotShotQueryService(): CappuccinoHotShotQuerySer
 
   return new FakeDataCappuccinoHotShotQueryService();
 }
+
+interface ProvideCappuccinoHotShotQueryServiceAPIContextProps {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+export const ProvideCappuccinoHotShotQueryServiceAPIContext: React.FC<
+  ProvideCappuccinoHotShotQueryServiceAPIContextProps
+> = (props) => {
+  return (
+    <CappuccinoHotShotQueryServiceAPIContext.Provider
+      value={createDefaultCappuccinoHotShotQueryService()}
+    >
+      {props.children}
+    </CappuccinoHotShotQueryServiceAPIContext.Provider>
+  );
+};
 
 export interface ProviderCappuccinoLiveServiceProps {
   url: URL;

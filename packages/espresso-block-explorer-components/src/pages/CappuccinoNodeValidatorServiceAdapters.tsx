@@ -2,7 +2,7 @@ import { createBufferedChannel } from '@/async/channel/BufferedChannel';
 import { createSinkWithConverter } from '@/async/sink/converted_sink';
 import { Sink } from '@/async/sink/sink';
 import { ErrorStreamContext } from '@/components/contexts/ErrorProvider';
-import { LifeCycleResponseStreamContext } from '@/components/contexts/WebSocketLifeCycleProvider';
+import { WebSocketResponseStreamContext } from '@/components/contexts/WebSocketResponseProvider';
 import {
   BlockSizeHistogramData,
   BlockSizeHistogramStreamContext,
@@ -40,6 +40,12 @@ import {
   CircularBuffer,
   createCircularBuffer,
 } from '@/data_structures/circular_buffer/CircularBuffer';
+import { ErrorResponse } from '@/models/web_worker/error_response';
+import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
+import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
+import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
+import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';
+import { webSocketCommandToWebWorkerProxyRequestConverter } from '@/models/web_worker/web_worker_proxy_request_codec';
 import CappuccinoNodeIdentity from '@/service/node_validator/cappuccino/node_identity';
 import CappuccinoNodeValidatorRequest, {
   RequestBlocksSnapshot,
@@ -50,15 +56,7 @@ import CappuccinoNodeValidatorRequest, {
   SubscribeNodeIdentity,
   SubscribeVoters,
 } from '@/service/node_validator/cappuccino/requests/node_validator_request';
-import WebWorkerLifeCycleRequest, {
-  Close,
-  Connect,
-} from '@/service/node_validator/cappuccino/requests/web_worker_life_cycle_request';
-import {
-  LifeCycleRequest,
-  lifeCycleRequestToWebWorkerProxyRequestConverter,
-  nodeValidatorRequestToWebWorkerProxyRequestConverter,
-} from '@/service/node_validator/cappuccino/requests/web_worker_proxy_request';
+import { nodeValidatorRequestToWebWorkerProxyRequestConverter } from '@/service/node_validator/cappuccino/requests/node_validator_service_request';
 import { CappuccinoBlocksSnapshot } from '@/service/node_validator/cappuccino/responses/blocks_snapshot';
 import { CappuccinoHistogramSnapshot } from '@/service/node_validator/cappuccino/responses/histogram_snapshot';
 import { CappuccinoLatestBlock } from '@/service/node_validator/cappuccino/responses/latest_block';
@@ -66,12 +64,8 @@ import { CappuccinoLatestNodeIdentity } from '@/service/node_validator/cappuccin
 import { CappuccinoLatestVoters } from '@/service/node_validator/cappuccino/responses/latest_voters';
 import { CappuccinoNodeIdentitySnapshot } from '@/service/node_validator/cappuccino/responses/node_identity_snapshot';
 import CappuccinoNodeValidatorResponse from '@/service/node_validator/cappuccino/responses/node_validator_response';
+import { NodeValidatorServiceResponse } from '@/service/node_validator/cappuccino/responses/node_validator_service_response';
 import { CappuccinoVotersSnapshot } from '@/service/node_validator/cappuccino/responses/voters_snapshot';
-import {
-  ErrorResponse,
-  LifeCycleResponse,
-  NodeValidatorResponse,
-} from '@/service/node_validator/cappuccino/responses/web_worker_proxy_response';
 import { WebWorkerNodeValidatorAPI } from '@/service/node_validator/cappuccino/web_worker_proxy_api';
 import React from 'react';
 import {
@@ -537,12 +531,12 @@ async function bridgeStreamIntoIndividualStreams(
   const state = createBridgeState();
 
   for await (const event of nodeValidatorService.stream) {
-    if (event instanceof NodeValidatorResponse) {
+    if (event instanceof NodeValidatorServiceResponse) {
       await bridgeNodeValidatorResponse(state, streams, event.response);
       await streams.errors.publish(null);
     }
 
-    if (event instanceof LifeCycleResponse) {
+    if (event instanceof WebSocketResponse) {
       await streams.lifecycle.publish(event);
     }
 
@@ -553,11 +547,11 @@ async function bridgeStreamIntoIndividualStreams(
 }
 
 async function startValidatorService(
-  lifecycleRequestSink: Sink<WebWorkerLifeCycleRequest>,
+  webSocketCommandSink: Sink<WebSocketCommand>,
   nodeValidatorRequestSink: Sink<CappuccinoNodeValidatorRequest>,
 ) {
   // We need to "connect" to the service.
-  await lifecycleRequestSink.send(new Connect());
+  await webSocketCommandSink.send(new WebSocketCommandConnect());
 
   // Setup our subscriptions.
   await nodeValidatorRequestSink.send(new SubscribeLatestBlock());
@@ -596,7 +590,7 @@ function createNodeValidatorSplitStreams() {
     // Errors Stream
     errors: createBufferedChannel<null | ErrorResponse>(4),
     // LifeCycle Event Stream
-    lifecycle: createBufferedChannel<LifeCycleResponse>(4),
+    lifecycle: createBufferedChannel<WebSocketResponse>(4),
   };
 }
 
@@ -621,7 +615,7 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
     );
     const lifeCycleRequestSink = createSinkWithConverter(
       nodeValidatorService,
-      lifeCycleRequestToWebWorkerProxyRequestConverter,
+      webSocketCommandToWebWorkerProxyRequestConverter,
     );
     bridgeStreamIntoIndividualStreams(streams, nodeValidatorService);
     startValidatorService(lifeCycleRequestSink, nodeValidatorRequestSink);
@@ -629,7 +623,7 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
     return () => {
       // Tear Down
       // Tell the service to Close the connection.
-      nodeValidatorService.send(new LifeCycleRequest(new Close()));
+      lifeCycleRequestSink.send(new WebSocketCommandClose());
     };
   });
 
@@ -666,7 +660,7 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
                           <VoterParticipationStreamContext.Provider
                             value={streams.voters}
                           >
-                            <LifeCycleResponseStreamContext.Provider
+                            <WebSocketResponseStreamContext.Provider
                               value={streams.lifecycle}
                             >
                               <ErrorStreamContext.Provider
@@ -677,7 +671,7 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
                               >
                                 {props.children}
                               </ErrorStreamContext.Provider>
-                            </LifeCycleResponseStreamContext.Provider>
+                            </WebSocketResponseStreamContext.Provider>
                           </VoterParticipationStreamContext.Provider>
                         </NodeIdentityInformationStreamContext.Provider>
                       </CountriesPieChartStreamContext.Provider>
