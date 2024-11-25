@@ -13,7 +13,7 @@ export default class GeoJSONLineString extends GeoJSONGeometry {
     readonly coordinates: LatLng<Degrees>[];
     readonly bbox: GeoJSONBoundingBox;
     constructor(coordinates: LatLng<Degrees>[]);
-    [Symbol.iterator](): IterableIterator<LatLng<Degrees>>;
+    [Symbol.iterator](): ArrayIterator<LatLng<Degrees>>;
     toJSON(): {
         readonly type: "LineString";
         readonly coordinates: unknown;

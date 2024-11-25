@@ -1,9 +1,9 @@
 import { Channel } from '../../../../../../../../../../../../src/async/channel';
 import { Sink } from '../../../../../../../../../../../../src/async/sink/sink';
-import { WebWorkerProxyRequest } from '../requests/web_worker_proxy_request';
+import { default as WebSocketStatus } from '../../../../../../../../../../../../src/models/web_worker/web_socket/status/web_socket_status';
+import { WebWorkerProxyRequest } from '../../../../../../../../../../../../src/models/web_worker/web_worker_proxy_request';
+import { WebWorkerProxyResponse } from '../../../../../../../../../../../../src/models/web_worker/web_worker_proxy_response';
 import { default as CappuccinoNodeValidatorResponse } from '../responses/node_validator_response';
-import { default as WebWorkerLifeCycleResponse } from '../responses/web_worker_life_cycle_response';
-import { WebWorkerProxyResponse } from '../responses/web_worker_proxy_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 
 export interface HARFormat {
@@ -98,7 +98,7 @@ export default class ReplayDataCappuccinoNodeValidatorAPI implements WebWorkerNo
     readonly responseStream: Channel<WebWorkerProxyRequest>;
     readonly requestStream: Channel<WebWorkerProxyResponse>;
     readonly capturedHAR: HARFormat;
-    readonly lifecycleResponseSink: Sink<WebWorkerLifeCycleResponse>;
+    readonly lifecycleResponseSink: Sink<WebSocketStatus>;
     readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
     constructor(requestStream: Channel<WebWorkerProxyRequest>, responseStream: Channel<WebWorkerProxyResponse>, capturedHAR: HARFormat);
     get stream(): AsyncIterable<WebWorkerProxyResponse>;
@@ -106,7 +106,7 @@ export default class ReplayDataCappuccinoNodeValidatorAPI implements WebWorkerNo
     startProcessing(): Promise<void>;
     handleRequests(): Promise<void>;
     private handleRequest;
-    private handleLifeCycleRequest;
+    private handleWebSocketCommand;
     private handleNodeValidatorRequest;
     private handleConnect;
     private handleClose;

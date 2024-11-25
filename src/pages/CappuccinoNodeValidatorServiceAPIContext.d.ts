@@ -2,3 +2,8 @@ import { WebWorkerNodeValidatorAPI } from '../../../../../../../../../src/servic
 import { default as React } from '../../../../node_modules/react';
 
 export declare const CappuccinoNodeValidatorServiceAPIContext: React.Context<WebWorkerNodeValidatorAPI>;
+interface ProvideCappuccinoNodeValidatorServiceAPIContextProps {
+    children: React.ReactNode | React.ReactNode[];
+}
+export declare const ProvideCappuccinoNodeValidatorServiceAPIContext: React.FC<ProvideCappuccinoNodeValidatorServiceAPIContextProps>;
+export {};

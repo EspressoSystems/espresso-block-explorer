@@ -14,7 +14,7 @@ export default class GeoJSONMultiPoint extends GeoJSONGeometry {
     readonly coordinates: GeoJSONPoint[];
     readonly bbox: GeoJSONBoundingBox;
     constructor(coordinates: GeoJSONPoint[]);
-    [Symbol.iterator](): IterableIterator<GeoJSONPoint>;
+    [Symbol.iterator](): ArrayIterator<GeoJSONPoint>;
     toJSON(): {
         readonly type: "MultiPoint";
         readonly coordinates: unknown;

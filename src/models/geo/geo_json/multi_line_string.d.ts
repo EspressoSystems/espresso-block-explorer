@@ -14,7 +14,7 @@ export default class GeoJSONMultiLineString extends GeoJSONGeometry {
     readonly coordinates: GeoJSONLineString[];
     readonly bbox: GeoJSONBoundingBox;
     constructor(coordinates: GeoJSONLineString[]);
-    [Symbol.iterator](): IterableIterator<GeoJSONLineString>;
+    [Symbol.iterator](): ArrayIterator<GeoJSONLineString>;
     toJSON(): {
         readonly type: "MultiLineString";
         readonly coordinates: unknown;

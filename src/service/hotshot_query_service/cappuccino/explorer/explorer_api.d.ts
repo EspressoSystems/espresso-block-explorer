@@ -11,4 +11,26 @@ import { CappuccinoExplorerGetTransactionDetailResponse } from './get_transactio
 import { CappuccinoExplorerGetTransactionSummariesRequest } from './get_transaction_summaries_request';
 import { CappuccinoExplorerGetTransactionSummariesResponse } from './get_transaction_summaries_response';
 
+/**
+ * CappuccinoHotShotQueryServiceExplorerAPI is a type that represents the
+ * Explorer API for the Cappuccino HotShot Query Service. This interface
+ * represents the idealized interactions for the Explorer API.  This should
+ * allow for easy interactions with the Explorer API, while also allowing for
+ * different implementations for testing purposes.
+ */
 export type CappuccinoHotShotQueryServiceExplorerAPI = HotShotQueryServiceExplorerAPI<CappuccinoExplorerGetBlockDetailRequest, CappuccinoExplorerGetBlockDetailResponse, CappuccinoExplorerGetBlockSummariesRequest, CappuccinoExplorerGetBlockSummariesResponse, CappuccinoExplorerGetTransactionDetailRequest, CappuccinoExplorerGetTransactionDetailResponse, CappuccinoExplorerGetTransactionSummariesRequest, CappuccinoExplorerGetTransactionSummariesResponse, void, CappuccinoExplorerGetExplorerSummaryResponse, CappuccinoExplorerGetSearchResultRequest, CappuccinoExplorerGetSearchResultResponse>;
+/**
+ * UnimplementedCappuccinoHotShotQueryServiceExplorerAPI is a class that
+ * implements the CappuccinoHotShotQueryServiceExplorerAPI interface, but
+ * throws an UnimplementedError for all methods. This class is meant to be used
+ * as a placeholder for the Explorer API, and should be replaced with a real
+ * implementation.
+ */
+export declare class UnimplementedCappuccinoHotShotQueryServiceExplorerAPI implements CappuccinoHotShotQueryServiceExplorerAPI {
+    getBlockDetail(): Promise<CappuccinoExplorerGetBlockDetailResponse>;
+    getBlockSummaries(): Promise<CappuccinoExplorerGetBlockSummariesResponse>;
+    getTransactionDetail(): Promise<CappuccinoExplorerGetTransactionDetailResponse>;
+    getTransactionSummaries(): Promise<CappuccinoExplorerGetTransactionSummariesResponse>;
+    getExplorerOverview(): Promise<CappuccinoExplorerGetExplorerSummaryResponse>;
+    getSearchResult(): Promise<CappuccinoExplorerGetSearchResultResponse>;
+}

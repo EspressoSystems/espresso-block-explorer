@@ -88,12 +88,12 @@ export declare function lastAsyncIterable<T>(iterable: AsyncIterable<T>): Promis
  * expandAsyncIterator is a flatMap function, but operating on Javascript
  * AsyncIterators.
  */
-export declare function expandAsyncIterator<T, U>(iterator: AsyncIterator<T>, expander: (t: T) => AsyncIterable<U>): AsyncGenerator<Awaited<U>, void, undefined>;
+export declare function expandAsyncIterator<T, U>(iterator: AsyncIterator<T>, expander: (t: T) => AsyncIterable<U>): AsyncGenerator<Awaited<U>, void, any>;
 /**
  * expandAsyncIterable is a convenience function for invoking
  * expandAsyncIterator with an AsyncIterable instead.
  */
-export declare function expandAsyncIterable<T, U>(it: AsyncIterable<T>, fn: (t: T) => AsyncIterable<U>): AsyncGenerator<Awaited<U>, void, undefined>;
+export declare function expandAsyncIterable<T, U>(it: AsyncIterable<T>, fn: (t: T) => AsyncIterable<U>): AsyncGenerator<Awaited<U>, void, any>;
 /**
  * iotaAsync represents a sequence of integers that adhere to the sequence
  * {0, 1, ..., n-2, n-1}.

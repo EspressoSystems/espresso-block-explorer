@@ -1,14 +1,16 @@
 export { default as ArrowLeft } from './ArrowLeft';
 export { default as ArrowRight } from './ArrowRight';
+export { default as Check } from './Check';
 export { default as CheckCircle } from './CheckCircle';
 export { default as ChevronDown } from './ChevronDown';
 export { default as ChevronUp } from './ChevronUp';
 export { default as DiscordIcon } from './DiscordIcon';
 export { default as EspressoLogo } from './EspressoLogo';
 export { default as EspressoLogoAndTitle } from './EspressoLogoAndTitle';
+export { default as ExternalLink } from './ExternalLink';
 export { default as InfoCircle } from './InfoCircle';
 export { default as MediumIcon } from './MediumIcon';
 export { default as Menu } from './Menu';
-export { default as SVGIconBase } from './SVGIconBase';
 export { default as SearchGlass } from './SearchGlass';
+export { default as SVGIconBase } from './SVGIconBase';
 export { default as TwitterIcon } from './TwitterIcon';

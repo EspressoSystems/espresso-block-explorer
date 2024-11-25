@@ -1,6 +1,6 @@
 export declare function convertStringToArrayBuffer(s: string): Uint8Array;
 export declare function convertArrayBufferToString(ab: ArrayBuffer): string;
-export declare function charCodesFromString(s: string): Generator<number, void, undefined>;
+export declare function charCodesFromString(s: string): Generator<number, void, unknown>;
 export declare const noPadding = -1;
 export declare const stdPadding: number;
 /**

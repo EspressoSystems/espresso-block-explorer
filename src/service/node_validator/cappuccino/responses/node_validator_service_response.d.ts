@@ -1,0 +1,101 @@
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
+import { WebWorkerProxyResponse } from '../../../../../../../../../../../../src/models/web_worker/web_worker_proxy_response';
+import { default as CappuccinoNodeValidatorResponse } from './node_validator_response';
+
+export declare const kNodeValidatorServiceResponseType: "NodeValidatorResponse";
+export declare class NodeValidatorServiceResponse extends WebWorkerProxyResponse {
+    readonly response: CappuccinoNodeValidatorResponse;
+    get type(): string;
+    constructor(response: CappuccinoNodeValidatorResponse);
+    toJson(): {
+        NodeValidatorResponse: {
+            BlocksSnapshot: unknown[];
+        } | {
+            HistogramSnapshot: {
+                block_time: (number | null)[];
+                block_size: (number | null)[];
+                block_transactions: (number | null)[];
+                block_heights: (number | null)[];
+            };
+        } | {
+            LatestBlock: unknown;
+        } | {
+            LatestVoters: {
+                order: string;
+                head: {
+                    width: number;
+                    index: number;
+                };
+                bits: number;
+                data: number[];
+            };
+        } | {
+            NodeIdentitySnapshot: unknown[];
+        } | {
+            LatestNodeIdentity: unknown;
+        } | {
+            VotersSnapshot: {
+                order: string;
+                head: {
+                    width: number;
+                    index: number;
+                };
+                bits: number;
+                data: number[];
+            }[];
+        };
+    };
+}
+declare class NodeValidatorServiceResponseEncoder implements Converter<NodeValidatorServiceResponse> {
+    convert(input: NodeValidatorServiceResponse): {
+        NodeValidatorResponse: {
+            BlocksSnapshot: unknown[];
+        } | {
+            HistogramSnapshot: {
+                block_time: (number | null)[];
+                block_size: (number | null)[];
+                block_transactions: (number | null)[];
+                block_heights: (number | null)[];
+            };
+        } | {
+            LatestBlock: unknown;
+        } | {
+            LatestVoters: {
+                order: string;
+                head: {
+                    width: number;
+                    index: number;
+                };
+                bits: number;
+                data: number[];
+            };
+        } | {
+            NodeIdentitySnapshot: unknown[];
+        } | {
+            LatestNodeIdentity: unknown;
+        } | {
+            VotersSnapshot: {
+                order: string;
+                head: {
+                    width: number;
+                    index: number;
+                };
+                bits: number;
+                data: number[];
+            }[];
+        };
+    };
+}
+declare class NodeValidatorServiceResponseDecoder implements Converter<unknown, NodeValidatorServiceResponse> {
+    convert(input: unknown): NodeValidatorServiceResponse;
+}
+declare class NodeValidatorServiceResponseCodec extends TypeCheckingCodec<NodeValidatorServiceResponse, ReturnType<InstanceType<new () => NodeValidatorServiceResponseEncoder>['convert']>> {
+    readonly encoder: NodeValidatorServiceResponseEncoder;
+    readonly decoder: NodeValidatorServiceResponseDecoder;
+}
+export declare const nodeValidatorServiceResponseCodec: NodeValidatorServiceResponseCodec;
+declare class NodeValidatorResponseToWebWorkerProxyResponseConverter implements Converter<CappuccinoNodeValidatorResponse, WebWorkerProxyResponse> {
+    convert(input: CappuccinoNodeValidatorResponse): WebWorkerProxyResponse;
+}
+export declare const nodeValidatorResponseToWebWorkerProxyResponseConverter: NodeValidatorResponseToWebWorkerProxyResponseConverter;
+export {};

@@ -1,4 +1,4 @@
-import { PathResolver } from '../../../../../../../../../src/components/contexts/PathResolverProvider';
+import { PathResolver } from '../../../../../../../../../src/components/contexts/PathResolver';
 
 export declare class StoryBookPathResolver implements PathResolver {
     explorer(): string;

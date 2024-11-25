@@ -1,4 +1,5 @@
 {
   "hotshot_query_service_url": null,
-  "node_validator_service_url": null
+  "node_validator_service_url": null,
+  "inscription_service_url": null
 }

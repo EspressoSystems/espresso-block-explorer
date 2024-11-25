@@ -6,6 +6,7 @@ import { default as React } from '../../../../../node_modules/react';
  */
 declare function createDefaultDateTimeFormatters(locale: string): {
     default: Intl.DateTimeFormat;
+    friendly: Intl.DateTimeFormat;
     utcFullDateTime: Intl.DateTimeFormat;
     time: Intl.DateTimeFormat;
     seconds: Intl.NumberFormat;
@@ -21,6 +22,7 @@ declare function createDefaultDateTimeFormatters(locale: string): {
  */
 declare const CurrentDateTimeFormatters: React.Context<{
     default: Intl.DateTimeFormat;
+    friendly: Intl.DateTimeFormat;
     utcFullDateTime: Intl.DateTimeFormat;
     time: Intl.DateTimeFormat;
     seconds: Intl.NumberFormat;

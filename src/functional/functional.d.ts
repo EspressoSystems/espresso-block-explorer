@@ -104,12 +104,12 @@ export declare function firstWhereIterable<T>(iterable: Iterable<T>, predicate: 
 /**
  * expandIterator is a flatMap function, but operating on Javascript iterators.
  */
-export declare function expandIterator<T, U>(iterator: Iterator<T>, expander: (value: T) => Iterable<U>): Generator<U, void, undefined>;
+export declare function expandIterator<T, U>(iterator: Iterator<T>, expander: (value: T) => Iterable<U>): Generator<U, void, any>;
 /**
  * expandIterable is a convenience function for invoking expandIterator with
  * an Iterable instead.
  */
-export declare function expandIterable<T, U>(iterable: Iterable<T>, expander: (value: T) => Iterable<U>): Generator<U, void, undefined>;
+export declare function expandIterable<T, U>(iterable: Iterable<T>, expander: (value: T) => Iterable<U>): Generator<U, void, any>;
 /**
  * compareIterators is able to compare Iterators of the same type.
  * It consumes both Iterators in order to achieve this. You are able to
@@ -148,7 +148,7 @@ export declare function inf(): Generator<number>;
  * {0, 1, ..., n-2, n-1}
  * @param count the number to bound the ending of the sequence.
  */
-export declare function iota(count: number): Generator<number, any, unknown>;
+export declare function iota(count: number): Generator<number, any, any>;
 export declare function reverseIterator<T>(iterator: Iterator<T>): Generator<T>;
 export declare function reverseIterable<T>(iterable: Iterable<T>): Generator<T>;
 /**

@@ -2,6 +2,10 @@ import { CappuccinoHotShotQueryService } from '../../../../../../../../../src/se
 import { default as React } from '../../../../node_modules/react';
 
 export declare const CappuccinoHotShotQueryServiceAPIContext: React.Context<CappuccinoHotShotQueryService>;
+interface ProvideCappuccinoHotShotQueryServiceAPIContextProps {
+    children: React.ReactNode | React.ReactNode[];
+}
+export declare const ProvideCappuccinoHotShotQueryServiceAPIContext: React.FC<ProvideCappuccinoHotShotQueryServiceAPIContextProps>;
 export interface ProviderCappuccinoLiveServiceProps {
     url: URL;
     children: React.ReactNode | React.ReactNode[];
@@ -11,3 +15,4 @@ export interface ProviderCappuccinoLiveServiceProps {
  * HotShot Query Service API targeting the given URL.
  */
 export declare const ProvideCappuccinoLiveService: React.FC<ProviderCappuccinoLiveServiceProps>;
+export {};

@@ -17,7 +17,7 @@ export default class GeoJSONPolygon extends GeoJSONGeometry {
     readonly coordinates: GeoJSONMultiPoint[];
     readonly bbox: GeoJSONBoundingBox;
     constructor(coordinates: GeoJSONMultiPoint[]);
-    [Symbol.iterator](): IterableIterator<GeoJSONMultiPoint>;
+    [Symbol.iterator](): ArrayIterator<GeoJSONMultiPoint>;
     toJSON(): {
         readonly type: "Polygon";
         readonly coordinates: unknown;

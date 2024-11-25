@@ -6,6 +6,7 @@ export * from './layout';
 export * from './links';
 export * from './loading';
 export * from './page_sections';
+export * from './rainbowkit';
 export * from './text';
 export * from './typography';
 export * from './visual';
