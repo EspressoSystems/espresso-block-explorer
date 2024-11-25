@@ -4,7 +4,7 @@ import { IBM_Plex_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
 import React from 'react';
 import './globals.css';
-import { ProvideProviders } from './provide_providers';
+import { ProvideProviders } from './provide_providers.jsx';
 
 const ibm = IBM_Plex_Mono({
   weight: '400',

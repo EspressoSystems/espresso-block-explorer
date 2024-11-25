@@ -12,10 +12,21 @@ import {
 
 export default function HomeConcludedSuspended() {
   const backgroundImage = (
-    <Image src={infiniteGardenPng} alt="Infinite Garden" />
+    <Image
+      src={infiniteGardenPng}
+      width={1512}
+      height={982}
+      alt="Infinite Garden"
+    />
   );
   const escapeTheWalledGardenImage = (
-    <Image src={walledGardenPng} alt="Escape the Walled Gardens" priority />
+    <Image
+      src={walledGardenPng}
+      width={1392}
+      height={662}
+      alt="Escape the Walled Gardens"
+      priority
+    />
   );
   return (
     <ProvideWebWorkerCappuccinoInscriptionServiceAPIContext>

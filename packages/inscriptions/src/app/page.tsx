@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import HomeConcludedSuspended from './home_concluded_suspended';
+import HomeConcludedSuspended from './home_concluded_suspended.jsx';
 
 const title = 'Espresso Infinite Garden';
 const description =

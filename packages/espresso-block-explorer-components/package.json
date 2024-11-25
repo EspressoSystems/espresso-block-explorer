@@ -48,7 +48,7 @@
   ],
   "keywords": [],
   "license": "ISC",
-  "main": "dist/index.cjs.js",
+  "main": "dist/index.es.js",
   "module": "dist/index.es.js",
   "name": "espresso-block-explorer-components",
   "peerDependencies": {

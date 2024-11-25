@@ -9,7 +9,6 @@ import {
   ProvideTickEverySecond,
   TweetURLProvider,
 } from 'espresso-block-explorer-components';
-import 'espresso-block-explorer-components/dist/style.css';
 import React from 'react';
 import './globals.css';
 
