@@ -1,11 +1,11 @@
+import { EspressoLogo } from '@/components/visual';
 import { addClassNameToComponent, addClassToClassName } from '@/higher_order';
 import React from 'react';
 import './images.css';
 
 export interface AvatarLogoProps {
   className?: string;
-  src: string;
-  alt?: string;
+  children?: React.ReactNode | React.ReactNode[];
 }
 
 /**
@@ -16,15 +16,10 @@ export interface AvatarLogoProps {
  * being just a picture element, and nothing else.  It will automatically
  * add the 'avatar' class to the picture element.
  */
-const AvatarLogo: React.FC<AvatarLogoProps> = ({
-  className,
-  alt,
-  src,
-  ...props
-}) => {
+const AvatarLogo: React.FC<AvatarLogoProps> = ({ className, ...props }) => {
   return (
     <picture {...props} className={addClassToClassName(className, 'avatar')}>
-      <img src={src} alt={alt} />
+      {props.children}
     </picture>
   );
 };
@@ -38,21 +33,33 @@ type PreFedSrcAvatarLogoProps = Omit<AvatarLogoProps, 'src'>;
  */
 export const AltLayerAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
   props,
-) => <AvatarLogo {...props} src="/alt_layer_logo.png" alt="Alt Layer Logo" />;
+) => (
+  <AvatarLogo {...props}>
+    <img src="/alt_layer_logo.png" alt="Alt Layer Logo" />
+  </AvatarLogo>
+);
 
 /**
  * ArbitrumAvatarLogo represents the Arbitrum Logo
  */
 export const ArbitrumAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
   props,
-) => <AvatarLogo {...props} src="/arbitrum_logo.png" alt="Arbitrum Logo" />;
+) => (
+  <AvatarLogo {...props}>
+    <img src="/arbitrum_logo.png" alt="Arbitrum Logo" />
+  </AvatarLogo>
+);
 
 /**
  * CalderaAvatarLogo represents the Caldera Logo
  */
 export const CalderaAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
   props,
-) => <AvatarLogo {...props} src="/caldera_logo.png" alt="Caldera Logo" />;
+) => (
+  <AvatarLogo {...props}>
+    <img src="/caldera_logo.png" alt="Caldera Logo" />
+  </AvatarLogo>
+);
 
 /**
  * EigenLayerAvatarLogo represents the Eigen Layer Logo
@@ -60,7 +67,9 @@ export const CalderaAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
 export const EigenLayerAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
   props,
 ) => (
-  <AvatarLogo {...props} src="/eigen_layer_logo.png" alt="Eigen Layer Logo" />
+  <AvatarLogo {...props}>
+    <img src="/eigen_layer_logo.png" alt="Eigen Layer Logo" />
+  </AvatarLogo>
 );
 
 /**
@@ -68,20 +77,30 @@ export const EigenLayerAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
  */
 export const OpStackAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
   props,
-) => <AvatarLogo {...props} src="/op_stack_logo.png" alt="Op Stack Logo" />;
+) => (
+  <AvatarLogo {...props}>
+    <img src="/op_stack_logo.png" alt="Op Stack Logo" />
+  </AvatarLogo>
+);
 
 /**
  * PolygonAvatarLogo represents the Polygon Logo
  */
 export const PolygonAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
   props,
-) => <AvatarLogo {...props} src="/polygon_logo.png" alt="Polygon Logo" />;
+) => (
+  <AvatarLogo {...props}>
+    <img src="/polygon_logo.png" alt="Polygon Logo" />
+  </AvatarLogo>
+);
 
 /**
  * SpireAvatarLogo represents the Spire Logo
  */
 export const SpireAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
-  <AvatarLogo {...props} src="/spire_logo.png" alt="Spire Logo" />
+  <AvatarLogo {...props}>
+    <img src="/spire_logo.png" alt="Spire Logo" />
+  </AvatarLogo>
 );
 
 /**
@@ -89,7 +108,19 @@ export const SpireAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
  */
 export const VistaraAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
   props,
-) => <AvatarLogo {...props} src="/vistara_logo.png" alt="Vistara Logo" />;
+) => (
+  <AvatarLogo {...props}>
+    <img src="/vistara_logo.png" alt="Vistara Logo" />
+  </AvatarLogo>
+);
+
+export const EspressoAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
+  props,
+) => (
+  <AvatarLogo {...props}>
+    <EspressoLogo />
+  </AvatarLogo>
+);
 
 /**
  * With24PxSquare is a higher order component that adds the class

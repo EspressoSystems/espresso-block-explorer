@@ -20,12 +20,12 @@ import {
   espressoErrorToWebWorkerProxyResponseConverter,
   webSocketStatusToWebWorkerProxyResponseConverter,
 } from '@/models/web_worker/web_worker_proxy_response_codec';
-import { inscriptionResponseToWebWorkerProxyResponseConverter } from '@/service/inscription/cappuccino/responses/inscription_service_response';
 import CappuccinoNodeValidatorRequest from '../requests/node_validator_request';
 import { cappuccinoNodeValidatorRequestCodec } from '../requests/node_validator_request_codec';
 import { NodeValidatorServiceRequest } from '../requests/node_validator_service_request';
 import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
 import { cappuccinoNodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
+import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 
 // URL expected to be replay:<url>
@@ -58,7 +58,7 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     );
     this.nodeValidatorResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
-      inscriptionResponseToWebWorkerProxyResponseConverter,
+      nodeValidatorResponseToWebWorkerProxyResponseConverter,
     );
     this.errorResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),

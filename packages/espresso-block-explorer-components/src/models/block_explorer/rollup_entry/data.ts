@@ -117,6 +117,19 @@ const kyoto = new RollUpEntry(
   new URL('https://kyoto-explorer.altlayer.io/'),
 );
 
+export const kInfiniteGardenNamespace = 1_397_311_310;
+
+/**
+ * infiniteGarden is a namespace id that was utilized for the Espresso
+ * Inscriptions Demo.
+ */
+const infiniteGarden = new RollUpEntry(
+  kInfiniteGardenNamespace,
+  'Infinite Garden',
+  new URL('https://infinitegarden.espressosys.com/'),
+  new URL('https://explorer.main.net.espressosys.com/'),
+);
+
 export const curatedRollupMap = new Map(
   [
     vienna,
@@ -130,5 +143,6 @@ export const curatedRollupMap = new Map(
     vistara,
     milan,
     kyoto,
+    infiniteGarden,
   ].map((entry) => [entry.namespace, entry]),
 );
