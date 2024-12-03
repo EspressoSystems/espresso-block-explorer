@@ -198,16 +198,6 @@ const InfiniteGardenDisplay: React.FC = () => {
           <Text text="Time" />
           <DateTimeText date={inscriptionAndSignature.inscription.time} />
         </TableLabeledValue>
-        <TableLabeledValue>
-          <Text text="Inscription Signature" />
-          <>
-            <HexDump value={inscriptionAndSignature.signature} />
-            <br />
-            <CopyAsHex data={inscriptionAndSignature.signature} />
-            &nbsp;
-            <CopyAsBase64 data={inscriptionAndSignature.signature} />
-          </>
-        </TableLabeledValue>
       </>
     </TableLabeledValue>
   );

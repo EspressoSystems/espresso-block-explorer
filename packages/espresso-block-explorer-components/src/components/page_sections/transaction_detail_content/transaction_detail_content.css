@@ -6,9 +6,9 @@
 }
 
 .inscription--section {
-  grid-template-columns: 2fr 8fr;
+  grid-template-columns: 1fr 2fr;
 }
 
 .inscription--section > .value > .tabled-labeled-value {
-  grid-template-columns: 2fr 8fr;
+  grid-template-columns: 1fr 2fr;
 }
