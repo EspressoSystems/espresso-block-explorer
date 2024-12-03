@@ -267,7 +267,7 @@ function createBridgeState() {
     kTrailingHistorySamples + 1,
   );
   const votersBitVecs = createCircularBuffer<CappuccinoAPIBitVec>(
-    kTrailingHistorySamples + 1,
+    2 * kTrailingHistorySamples + 1,
   );
   const nodes: CappuccinoNodeIdentity[] = [];
 

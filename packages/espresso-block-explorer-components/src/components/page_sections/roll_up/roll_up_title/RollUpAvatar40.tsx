@@ -13,7 +13,11 @@ export interface RollUpAvatar40Props {
 const RollUpAvatar40: React.FC<RollUpAvatar40Props> = (props) => {
   const namespace = props.entry.namespace;
   const images = rollUpImagesMap.get(namespace);
-  return React.createElement(images!.logo40);
+  if (!images) {
+    return <></>;
+  }
+
+  return React.createElement(images.logo40);
 };
 
 export default RollUpAvatar40;

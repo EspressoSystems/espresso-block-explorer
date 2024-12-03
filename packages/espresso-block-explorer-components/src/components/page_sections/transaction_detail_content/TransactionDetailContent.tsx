@@ -1,8 +1,16 @@
+import FullHexText from '@/components/text/FullHexText';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
-import { urlEncoding } from '@/convert/base64/base64';
-import { encodeNumberIterableToHexits } from '@/convert/hex/hex';
+import {
+  hexArrayBufferCodec,
+  stdBase64ArrayBufferCodec,
+} from '@/convert/codec/array_buffer';
+import { Converter } from '@/convert/codec/convert';
 import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
 import SkeletonContent from '@/loading/SkeletonContent';
+import { kInfiniteGardenNamespace } from '@/models/block_explorer/rollup_entry/data';
+import InscriptionAndSignature, {
+  inscriptionAndSignatureBincodeCodec,
+} from '@/service/inscription/cappuccino/inscription_and_signature';
 import ByteSizeText from '@/text/ByteSizeText';
 import CopyTaggedBase64 from '@/text/CopyTaggedBase64';
 import DateTimeText from '@/text/DateTimeText';
@@ -143,6 +151,113 @@ export const TransactionDataContentsPlaceholder: React.FC = () => {
   );
 };
 
+const InfiniteGardenDisplay: React.FC = () => {
+  const details = React.useContext(TransactionDetailContext);
+  const data = details.tree;
+
+  if (data.namespace !== kInfiniteGardenNamespace) {
+    return <></>;
+  }
+
+  let inscriptionAndSignature: null | InscriptionAndSignature = null;
+  try {
+    inscriptionAndSignature = inscriptionAndSignatureBincodeCodec.decode(
+      data.data,
+    );
+  } catch (err) {
+    // All errors would be issues with Decoding
+    console.error(
+      'encountered error attempting to decode inscription and signature',
+    );
+  }
+
+  if (inscriptionAndSignature === null) {
+    return (
+      <TableLabeledValue className="card--padding">
+        <Text text="Inscription" />
+        <Text text="Invalid Inscription Data" />
+      </TableLabeledValue>
+    );
+  }
+
+  return (
+    <TableLabeledValue className="card--padding inscription--section">
+      <Text text="Inscription" />
+      <>
+        <TableLabeledValue>
+          <Text text="Address" />
+          <FullHexText
+            value={inscriptionAndSignature.inscription.address.address}
+          />
+        </TableLabeledValue>
+        <TableLabeledValue>
+          <Text text="Message" />
+          <Text text={inscriptionAndSignature.inscription.message} />
+        </TableLabeledValue>
+        <TableLabeledValue>
+          <Text text="Time" />
+          <DateTimeText date={inscriptionAndSignature.inscription.time} />
+        </TableLabeledValue>
+        <TableLabeledValue>
+          <Text text="Inscription Signature" />
+          <>
+            <HexDump value={inscriptionAndSignature.signature} />
+            <br />
+            <CopyAsHex data={inscriptionAndSignature.signature} />
+            &nbsp;
+            <CopyAsBase64 data={inscriptionAndSignature.signature} />
+          </>
+        </TableLabeledValue>
+      </>
+    </TableLabeledValue>
+  );
+};
+
+interface CopyAsProps {
+  data: ArrayBuffer;
+  encoder: Converter<ArrayBuffer, string>;
+  children?: React.ReactNode | React.ReactNode[];
+}
+
+const CopyAs: React.FC<CopyAsProps> = ({ data, encoder, children }) => {
+  return (
+    <LabeledButton
+      onClick={(event) => {
+        event.stopPropagation();
+        event.preventDefault();
+
+        if (
+          typeof window === 'undefined' ||
+          !navigator ||
+          !navigator.clipboard
+        ) {
+          return;
+        }
+
+        navigator.clipboard.writeText(encoder.convert(data));
+      }}
+    >
+      {children}
+    </LabeledButton>
+  );
+};
+
+const CopyAsHex: React.FC<{ data: ArrayBuffer }> = ({ data }) => {
+  return (
+    <CopyAs data={data} encoder={hexArrayBufferCodec.encoder}>
+      <Text text="Copy as Hex" />
+    </CopyAs>
+  );
+};
+
+const CopyAsBase64: React.FC<{ data: ArrayBuffer }> = ({ data }) => {
+  return (
+    <CopyAs data={data} encoder={stdBase64ArrayBufferCodec.encoder}>
+      <Text text="Copy as Base64" />
+    </CopyAs>
+  );
+};
+
 /**
  * TransactionDataContents is a component that displays details for the
  * individual rollup data for a Transaction
@@ -169,51 +284,12 @@ export const TransactionDataContents: React.FC = () => {
         <>
           <HexDump value={data.data} />
           <br />
-          <LabeledButton
-            onClick={(event) => {
-              event.stopPropagation();
-              event.preventDefault();
-
-              if (
-                typeof window === 'undefined' ||
-                !navigator ||
-                !navigator.clipboard
-              ) {
-                return;
-              }
-
-              navigator.clipboard.writeText(
-                Array.from(
-                  encodeNumberIterableToHexits(new Uint8Array(data.data)),
-                ).join(''),
-              );
-            }}
-          >
-            <Text text="Copy as Hex" />
-          </LabeledButton>
+          <CopyAsHex data={data.data} />
           &nbsp;
-          <LabeledButton
-            onClick={(event) => {
-              event.stopPropagation();
-              event.preventDefault();
-
-              if (
-                typeof window === 'undefined' ||
-                !navigator ||
-                !navigator.clipboard
-              ) {
-                return;
-              }
-
-              navigator.clipboard.writeText(
-                urlEncoding.encodeToString(data.data),
-              );
-            }}
-          >
-            <Text text="Copy as Base64" />
-          </LabeledButton>
+          <CopyAsBase64 data={data.data} />
         </>
       </TableLabeledValue>
+      <InfiniteGardenDisplay />
     </>
   );
 };
