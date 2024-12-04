@@ -19,7 +19,7 @@ export interface BincodeDeserializer {
   deserializeBytes(): Uint8Array;
 }
 
-export abstract class BincodeDesieraliazerBase implements BincodeDeserializer {
+export abstract class BincodeDeserializerBase implements BincodeDeserializer {
   abstract deserializeUint8(): number;
   abstract deserializeUint16(): number;
   abstract deserializeUint32(): number;
@@ -36,7 +36,7 @@ export abstract class BincodeDesieraliazerBase implements BincodeDeserializer {
 }
 
 class BincodeDeserializerImpl
-  extends BincodeDesieraliazerBase
+  extends BincodeDeserializerBase
   implements BincodeDeserializer
 {
   private readonly bufferedDataView: BufferedDataView;

@@ -1,6 +1,6 @@
 import {
   BincodeDeserializer,
-  BincodeDesieraliazerBase,
+  BincodeDeserializerBase,
 } from '@/convert/bincode/deserializer';
 import { BincodeSerializer } from '@/convert/bincode/serializer';
 import {
@@ -91,8 +91,8 @@ export const listInscriptionCodec = new ArrayCodec(
 export function deserializeBincodeInscription(
   input: BincodeDeserializer,
 ): Inscription {
-  if (!(input instanceof BincodeDesieraliazerBase)) {
-    throw new InvalidTypeError(typeof input, 'BincodeDesieraliazer');
+  if (!(input instanceof BincodeDeserializerBase)) {
+    throw new InvalidTypeError(typeof input, 'BincodeDeserializer');
   }
 
   // Each Number is encoded as a Uint64
