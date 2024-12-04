@@ -1,3 +1,4 @@
+import { Now } from '@/components/contexts/NowProvider';
 import FullHexText from '@/components/text/FullHexText';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import {
@@ -207,9 +208,24 @@ interface CopyAsProps {
   data: ArrayBuffer;
   encoder: Converter<ArrayBuffer, string>;
   children?: React.ReactNode | React.ReactNode[];
+  copiedChildren?: React.ReactNode | React.ReactNode[];
 }
 
-const CopyAs: React.FC<CopyAsProps> = ({ data, encoder, children }) => {
+const SHOW_THRESHOLD_MS = 1000;
+
+const CopyAs: React.FC<CopyAsProps> = ({
+  data,
+  encoder,
+  children,
+  copiedChildren,
+}) => {
+  const now = React.useContext(Now);
+  const [lastClicked, setLastClicked] = React.useState<Date>(new Date(0));
+
+  if (now.valueOf() - lastClicked.valueOf() < SHOW_THRESHOLD_MS) {
+    return <LabeledButton>{copiedChildren ?? children}</LabeledButton>;
+  }
+
   return (
     <LabeledButton
       onClick={(event) => {
@@ -224,6 +240,8 @@ const CopyAs: React.FC<CopyAsProps> = ({ data, encoder, children }) => {
           return;
         }
 
+        setLastClicked(new Date());
+
         navigator.clipboard.writeText(encoder.convert(data));
       }}
     >
@@ -234,7 +252,11 @@ const CopyAs: React.FC<CopyAsProps> = ({ data, encoder, children }) => {
 
 const CopyAsHex: React.FC<{ data: ArrayBuffer }> = ({ data }) => {
   return (
-    <CopyAs data={data} encoder={hexArrayBufferCodec.encoder}>
+    <CopyAs
+      data={data}
+      encoder={hexArrayBufferCodec.encoder}
+      copiedChildren={<Text text="Copied" />}
+    >
       <Text text="Copy as Hex" />
     </CopyAs>
   );
@@ -242,7 +264,11 @@ const CopyAsHex: React.FC<{ data: ArrayBuffer }> = ({ data }) => {
 
 const CopyAsBase64: React.FC<{ data: ArrayBuffer }> = ({ data }) => {
   return (
-    <CopyAs data={data} encoder={stdBase64ArrayBufferCodec.encoder}>
+    <CopyAs
+      data={data}
+      encoder={stdBase64ArrayBufferCodec.encoder}
+      copiedChildren={<Text text="Copied" />}
+    >
       <Text text="Copy as Base64" />
     </CopyAs>
   );
