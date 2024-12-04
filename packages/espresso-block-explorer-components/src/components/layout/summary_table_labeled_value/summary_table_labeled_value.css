@@ -15,6 +15,10 @@
   color: var(--color--slate-950);
 }
 
+.summary-tabled-labeled-value:not(:nth-child(1)) {
+  margin-block-start: 8px;
+}
+
 /* Mobile */
 .summary-tabled-labeled-value {
   grid-template-columns: 1fr 1fr;
