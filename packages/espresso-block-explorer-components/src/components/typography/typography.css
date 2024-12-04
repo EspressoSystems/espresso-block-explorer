@@ -37,7 +37,7 @@
 }
 
 .type--ui--text-100 {
-  --text--font-weight: 700;
+  --text--font-weight: 600;
   --text--font-size: 32px;
   --text--line-height: 32px;
 }
