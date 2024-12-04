@@ -11,7 +11,7 @@ import Header from '@/components/page_sections/header/Header';
 import PageTitle from '@/components/page_sections/page_title/PageTitle';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
-import Card from '@/layout/card/Card';
+import { CardNoPadding } from '@/layout/card/Card';
 import Heading1 from '@/layout/heading/Heading1';
 import { WithEdgeMargin } from '@/layout/margin/margins';
 import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
@@ -19,7 +19,7 @@ import Text from '@/text/Text';
 import React from 'react';
 import { ErrorContext } from '../components';
 
-const EdgeMarginCard = WithEdgeMargin(Card);
+const EdgeMarginCard = WithEdgeMargin(CardNoPadding);
 const GuardBlockDetailsProps = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 

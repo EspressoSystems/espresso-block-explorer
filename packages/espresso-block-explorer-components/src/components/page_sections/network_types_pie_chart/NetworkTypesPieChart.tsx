@@ -34,7 +34,9 @@ export const NetworkTypesPieChart: React.FC = () => {
         <Text text="Network Types" />
       </PieChartSectionTitle>
 
-      <PieChart values={histogramData} />
+      <div className="card--padding">
+        <PieChart values={histogramData} />
+      </div>
     </PieChartLabelContext.Provider>
   );
 };

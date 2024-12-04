@@ -34,7 +34,9 @@ export const OperatingSystemPieChart: React.FC = () => {
         <Text text="Operating System" />
       </PieChartSectionTitle>
 
-      <PieChart values={histogramData} />
+      <div className="card--padding">
+        <PieChart values={histogramData} />
+      </div>
     </PieChartLabelContext.Provider>
   );
 };

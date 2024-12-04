@@ -34,7 +34,9 @@ export const NodeTypesPieChart: React.FC = () => {
         <Text text="Node Types" />
       </PieChartSectionTitle>
 
-      <PieChart values={histogramData} />
+      <div className="card--padding">
+        <PieChart values={histogramData} />
+      </div>
     </PieChartLabelContext.Provider>
   );
 };
