@@ -4,15 +4,7 @@ span.inline {
   position: relative;
 }
 
-span.inline::after {
-  content: '';
-  display: block;
-  width: 24px;
-  margin-inline: 1em;
-}
-
 span.inline > button.btn--copy {
-  position: absolute;
   top: 0;
   right: 0;
   margin-block: -5px;
