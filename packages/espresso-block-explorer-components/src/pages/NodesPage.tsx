@@ -113,12 +113,12 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
           </CardNoPadding>
 
           {/* CDN Status */}
-          <Card className="cdn">
+          <CardNoPadding className="cdn">
             <CDNStatus className="card-padding" />
-          </Card>
+          </CardNoPadding>
 
           {/* Network Map */}
-          <Card className="network-map">
+          <CardNoPadding className="network-map">
             <HistogramSectionTitle className="card--padding heading--margin">
               <Text text="Network Map" />
               <div></div>
@@ -133,46 +133,46 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
                 </ProjectionProvider>
               </WorldMapAutoSizer>
             </NodeInformationToDotPopulation>
-          </Card>
+          </CardNoPadding>
 
           {/* Nodes Histogram (Not needed currently) */}
 
           {/* Node Countries Pie Chart */}
-          <Card className="countries">
+          <CardNoPadding className="countries">
             <CountriesPieChartStreamConsumer>
               <CountriesPieChart />
             </CountriesPieChartStreamConsumer>
-          </Card>
+          </CardNoPadding>
 
           {/* Network Types Pie Chart */}
-          <Card className="network-types">
+          <CardNoPadding className="network-types">
             <NetworkTypesPieChartStreamConsumer>
               <NetworkTypesPieChart />
             </NetworkTypesPieChartStreamConsumer>
-          </Card>
+          </CardNoPadding>
 
           {/* Node Types Pie Chart */}
-          <Card className="node-types">
+          <CardNoPadding className="node-types">
             <NodeTypesPieChartStreamConsumer>
               <NodeTypesPieChart />
             </NodeTypesPieChartStreamConsumer>
-          </Card>
+          </CardNoPadding>
 
           {/* Operating Systems Pie Chart */}
-          <Card className="operating-systems">
+          <CardNoPadding className="operating-systems">
             <OperatingSystemPieChartStreamConsumer>
               <OperatingSystemPieChart />
             </OperatingSystemPieChartStreamConsumer>
-          </Card>
+          </CardNoPadding>
 
           {/* Recent Node Updates Data Table */}
-          <CardNoPadding className="nodes">
+          <Card className="nodes">
             <VotersParticipationStatsConsumer>
               <NodeSummaryStreamConsumer>
                 <NodesSummaryDataTable />
               </NodeSummaryStreamConsumer>
             </VotersParticipationStatsConsumer>
-          </CardNoPadding>
+          </Card>
         </div>
 
         <Footer />

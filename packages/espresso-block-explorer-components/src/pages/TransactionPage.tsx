@@ -12,7 +12,7 @@ import {
 import { TransactionDetailContentLoader } from '@/components/page_sections/transaction_detail_content/TransactionDetailLoader';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
-import Card from '@/layout/card/Card';
+import { CardNoPadding } from '@/layout/card/Card';
 import Heading1 from '@/layout/heading/Heading1';
 import Heading2 from '@/layout/heading/Heading2';
 import { WithEdgeMargin } from '@/layout/margin/margins';
@@ -21,7 +21,7 @@ import Text from '@/text/Text';
 import React from 'react';
 import { ErrorContext } from '../components';
 
-const EdgeMarginCard = WithEdgeMargin(Card);
+const EdgeMarginCard = WithEdgeMargin(CardNoPadding);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginHeading2 = WithEdgeMargin(Heading2);

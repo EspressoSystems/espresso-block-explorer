@@ -21,7 +21,10 @@ export interface CardProps extends HigherOrderComponentWithClassNameProps {}
  * provided by this module as well.
  */
 const Card: React.FC<CardProps> = (props) => (
-  <div {...props} className={addClassToClassName(props.className, 'card')} />
+  <div
+    {...props}
+    className={addClassToClassName(props.className, 'card card--padding')}
+  />
 );
 
 /**
