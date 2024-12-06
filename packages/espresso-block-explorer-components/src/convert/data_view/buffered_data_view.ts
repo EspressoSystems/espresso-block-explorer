@@ -17,6 +17,7 @@ export interface BufferedDataView {
 
   changeEndianess(endianess: Endianess): void;
 
+  getBoolean(): boolean;
   getUint8(): number;
   getUint16(): number;
   getUint32(): number;
@@ -27,9 +28,12 @@ export interface BufferedDataView {
   getInt64(): bigint;
   getFloat32(): number;
   getFloat64(): number;
+  getInt128(): bigint;
+  getUint128(): bigint;
 
   getBytes(length: number): Uint8Array;
 
+  setBoolean(input: boolean): void;
   setUint8(input: number): void;
   setUint16(input: number): void;
   setUint32(input: number): void;
@@ -40,6 +44,8 @@ export interface BufferedDataView {
   setInt64(input: bigint): void;
   setFloat32(input: number): void;
   setFloat64(input: number): void;
+  setInt128(input: bigint): void;
+  setUint128(input: bigint): void;
 
   setBytes(input: Uint8Array): void;
 }
@@ -56,19 +62,23 @@ export abstract class BufferedDataViewBase implements BufferedDataView {
   abstract get arrayBuffer(): ArrayBuffer;
   abstract reset(offset?: number): void;
   abstract changeEndianess(endianess: Endianess): void;
-  abstract getUint16(): number;
-  abstract getUint8(): number;
-  abstract getUint32(): number;
-  abstract getUint64(): bigint;
+  abstract getBoolean(): boolean;
   abstract getInt8(): number;
   abstract getInt16(): number;
   abstract getInt32(): number;
   abstract getInt64(): bigint;
+  abstract getUint8(): number;
+  abstract getUint16(): number;
+  abstract getUint32(): number;
+  abstract getUint64(): bigint;
   abstract getFloat32(): number;
   abstract getFloat64(): number;
+  abstract getInt128(): bigint;
+  abstract getUint128(): bigint;
 
   abstract getBytes(length: number): Uint8Array;
 
+  abstract setBoolean(input: boolean): void;
   abstract setUint8(input: number): void;
   abstract setUint16(input: number): void;
   abstract setUint32(input: number): void;
@@ -79,6 +89,8 @@ export abstract class BufferedDataViewBase implements BufferedDataView {
   abstract setInt64(input: bigint): void;
   abstract setFloat32(input: number): void;
   abstract setFloat64(input: number): void;
+  abstract setInt128(input: bigint): void;
+  abstract setUint128(input: bigint): void;
 
   abstract setBytes(input: Uint8Array): void;
 }
@@ -117,6 +129,14 @@ class BufferedDataViewImpl extends BufferedDataViewBase {
 
   changeEndianess(endianess: Endianess): void {
     this.currentEndianess = endianess;
+  }
+
+  getBoolean(): boolean {
+    try {
+      return this.dataView.getUint8(this.offset) !== 0;
+    } finally {
+      this.offset += 1;
+    }
   }
 
   getUint8(): number {
@@ -223,6 +243,45 @@ class BufferedDataViewImpl extends BufferedDataViewBase {
     }
   }
 
+  getInt128(): bigint {
+    try {
+      const { isLittleEndian } = this.currentEndianess;
+      const first = this.dataView.getBigUint64(this.offset, isLittleEndian);
+
+      const second = this.dataView.getBigUint64(
+        this.offset + 8,
+        isLittleEndian,
+      );
+
+      const low = isLittleEndian ? first : second;
+      const high = isLittleEndian ? second : first;
+
+      const reconstructed = (high << 64n) | low;
+      return BigInt.asIntN(128, reconstructed);
+    } finally {
+      this.offset += 16;
+    }
+  }
+
+  getUint128(): bigint {
+    try {
+      const { isLittleEndian } = this.currentEndianess;
+      const first = this.dataView.getBigUint64(this.offset, isLittleEndian);
+
+      const second = this.dataView.getBigUint64(
+        this.offset + 8,
+        isLittleEndian,
+      );
+
+      const low = isLittleEndian ? first : second;
+      const high = isLittleEndian ? second : first;
+
+      return (high << 64n) | low;
+    } finally {
+      this.offset += 16;
+    }
+  }
+
   getBytes(length: number): Uint8Array {
     try {
       const bytes = new Uint8Array(length);
@@ -230,6 +289,14 @@ class BufferedDataViewImpl extends BufferedDataViewBase {
       return bytes;
     } finally {
       this.offset += length;
+    }
+  }
+
+  setBoolean(input: boolean): void {
+    try {
+      this.dataView.setUint8(this.offset, input ? 1 : 0);
+    } finally {
+      this.offset += 1;
     }
   }
 
@@ -352,6 +419,40 @@ class BufferedDataViewImpl extends BufferedDataViewBase {
       );
     } finally {
       this.offset += input.length;
+    }
+  }
+
+  setInt128(input: bigint): void {
+    try {
+      const trunc = BigInt.asIntN(128, input);
+      const low = (trunc >> 0n) & 0xffffffffffffffffn;
+      const high = (trunc >> 64n) & 0xffffffffffffffffn;
+
+      const { isLittleEndian } = this.currentEndianess;
+      const first = isLittleEndian ? low : high;
+      const second = isLittleEndian ? high : low;
+
+      this.dataView.setBigUint64(this.offset, first, isLittleEndian);
+      this.dataView.setBigUint64(this.offset + 8, second, isLittleEndian);
+    } finally {
+      this.offset += 16;
+    }
+  }
+
+  setUint128(input: bigint): void {
+    try {
+      const trunc = BigInt.asIntN(128, input);
+      const low = (trunc >> 0n) & 0xffffffffffffffffn;
+      const high = (trunc >> 64n) & 0xffffffffffffffffn;
+
+      const { isLittleEndian } = this.currentEndianess;
+      const first = isLittleEndian ? low : high;
+      const second = isLittleEndian ? high : low;
+
+      this.dataView.setBigUint64(this.offset, first, isLittleEndian);
+      this.dataView.setBigUint64(this.offset + 8, second, isLittleEndian);
+    } finally {
+      this.offset += 16;
     }
   }
 }
