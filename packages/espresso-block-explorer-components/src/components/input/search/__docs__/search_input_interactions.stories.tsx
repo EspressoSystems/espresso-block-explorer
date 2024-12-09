@@ -1,4 +1,6 @@
+import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
 import type { Meta, StoryObj } from '@storybook/react';
+import { CappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
 import {
   InitialSearchState,
@@ -20,7 +22,13 @@ interface ExampleProps {
 }
 
 const Example: React.FC<ExampleProps> = (props) => {
-  return <SearchInputComp {...props} />;
+  return (
+    <CappuccinoHotShotQueryServiceAPIContext.Provider
+      value={new FakeDataCappuccinoHotShotQueryService()}
+    >
+      <SearchInputComp {...props} />
+    </CappuccinoHotShotQueryServiceAPIContext.Provider>
+  );
 };
 
 const meta: Meta<typeof Example> = {
