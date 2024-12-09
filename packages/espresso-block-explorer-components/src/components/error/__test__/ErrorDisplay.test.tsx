@@ -98,7 +98,9 @@ describe('ErrorDisplay Component', () => {
     );
 
     expect(screen.getByTestId('1').children).toHaveLength(1);
-    expect(screen.getByTestId('1')).toHaveTextContent(/^Unhandled Error/);
+    expect(screen.getByTestId('1')).toHaveTextContent(
+      /^An Unexpected Exception/,
+    );
   });
 
   it('should automatically unwrap proxy response error', () => {

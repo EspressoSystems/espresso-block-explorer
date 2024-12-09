@@ -239,10 +239,10 @@ const UnhandledErrorDisplay: React.FC = () => {
   return (
     <>
       <ErrorTitle>
-        <Text text="Unhandled Error" />
+        <Text text="An Unexpected Exception has Occurred" />
       </ErrorTitle>
       <ErrorDescription>
-        <Text text="An unhandled error has been thrown that prevents progress.  There is no dedicated error message for this error, so please check the developer console for the specific details." />
+        <Text text="The Explorer is currently experiencing a technical issue that is preventing it from displaying the relevant information. We are sorry, and our team is working to resolve the issue." />
       </ErrorDescription>
     </>
   );
