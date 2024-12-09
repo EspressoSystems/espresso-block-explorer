@@ -11,6 +11,26 @@
  */
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 
+export type PartialLocationHref = Pick<Location, 'href'>;
+
+/**
+ * MockLocation is a mock implementation of the Location interface. This is
+ * useful for testing that the location is being updated correctly when
+ * appropriate.
+ */
+export class MockLocation implements PartialLocationHref {
+  // We don't actually care about ancestorOrigins, so we'll ignore this here.
+  public lastHref: null | string = null;
+
+  get href(): string {
+    return this.lastHref ?? '';
+  }
+
+  set href(value: string) {
+    this.lastHref = value;
+  }
+}
+
 /**
  * getSearchBar is a helper function that will return the search bar element
  * from the canvasElement provided.
@@ -43,15 +63,26 @@ export const interactionSelectSearchBar = async (
 };
 
 /**
+ * interactiveKeyInSearchString is a helper function that will key in the
+ * given search term into the search bar element provided.
+ */
+export const interactiveKeyInSearchString = async (
+  canvasElement: HTMLElement,
+  searchTerm: string,
+) => {
+  await interactionSelectSearchBar(canvasElement);
+  // Alright, let's enter some text
+  await userEvent.keyboard(searchTerm);
+};
+
+/**
  * interactionKeyInBlocksForSearch is a helper function that will key in the
  * search term "block~" into the search bar element provided.
  */
 export const interactionKeyInBlocksForSearch = async (
   canvasElement: HTMLElement,
 ) => {
-  await interactionSelectSearchBar(canvasElement);
-  // Alright, let's enter some text
-  await userEvent.keyboard('block~');
+  await interactiveKeyInSearchString(canvasElement, 'block~');
 
   // We need to wait for the search results to load
   await waitFor(
@@ -81,9 +112,7 @@ export const interactionKeyInBlocksForSearch = async (
 export const interactionKeyInTransactionsForSearch = async (
   canvasElement: HTMLElement,
 ) => {
-  await interactionSelectSearchBar(canvasElement);
-  // Alright, let's enter some text
-  await userEvent.keyboard('commit~');
+  await interactiveKeyInSearchString(canvasElement, 'commit~');
 
   // We need to wait for the search results to load
   await waitFor(
@@ -229,6 +258,40 @@ export const interactionNavigateDownThroughAllSearchResults = async (
 
     expect(dataRow).toHaveAttribute('data-selected', 'true');
   }
+};
+
+/**
+ * interactionHitEnterOnSearchShouldNotNavigate is a helper function
+ * that will hit Enter on the search input which should not result in
+ * any navigation action.
+ */
+export const interactionHitEnterOnSearchShouldNotNavigate = async (
+  location: MockLocation,
+  canvasElement: HTMLElement,
+) => {
+  await interactionSelectSearchBar(canvasElement);
+  // Pressing Down again should have nothing selected (reset back to original search input entry).
+  await userEvent.keyboard('{Enter}');
+
+  // We were told to navigate to a search result.
+  expect(location.href).toEqual('');
+};
+
+/**
+ * interactionHitEnterOnSearchShouldNavigate is a helper function that will hit
+ * Enter on the search input in order to submit the request to navigate to the
+ * selected search result.
+ */
+export const interactionHitEnterOnSearchShouldNavigate = async (
+  location: MockLocation,
+  canvasElement: HTMLElement,
+) => {
+  await interactionSelectSearchBar(canvasElement);
+  // Pressing Down again should have nothing selected (reset back to original search input entry).
+  await userEvent.keyboard('{Enter}');
+
+  // We were told to navigate to a search result.
+  expect(location.href).not.toEqual('');
 };
 
 /**
