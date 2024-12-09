@@ -5,7 +5,9 @@ import { CappuccinoExplorerTransactionSummary } from '@/service/hotshot_query_se
 import { CappuccinoExplorerBlockSummary } from '@/service/hotshot_query_service/cappuccino/explorer/block_summary';
 import { CappuccinoExplorerGetSearchResultResponse } from '@/service/hotshot_query_service/cappuccino/explorer/get_search_result_response';
 import { CappuccinoExplorerSearchResults } from '@/service/hotshot_query_service/cappuccino/explorer/search_results';
+import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
 import type { Meta, StoryObj } from '@storybook/react';
+import { CappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
 import {
   InitialSearchState,
@@ -18,7 +20,13 @@ interface ExampleProps {
 }
 
 const Example: React.FC<ExampleProps> = (props) => {
-  return <SearchInputComp {...props} />;
+  return (
+    <CappuccinoHotShotQueryServiceAPIContext.Provider
+      value={new FakeDataCappuccinoHotShotQueryService()}
+    >
+      <SearchInputComp {...props} />
+    </CappuccinoHotShotQueryServiceAPIContext.Provider>
+  );
 };
 
 const meta: Meta<typeof Example> = {
@@ -46,7 +54,7 @@ const fakeBlockSearchResults = Array.from(
       new CappuccinoExplorerBlockSummary(
         new TaggedBase64('BLOCK', rng.fillBytes(32)),
         rng.nextInt(),
-        rng.fillBytes(32),
+        [rng.fillBytes(32)],
         rng.nextInt(),
         rng.nextInt(),
         new Date(),
