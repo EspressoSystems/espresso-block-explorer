@@ -30,6 +30,7 @@ export default class CappuccinoNodeIdentity {
   readonly name: null | string;
   readonly publicURL: null | URL;
   readonly company: null | string;
+  readonly companyWebsite: null | URL;
   readonly location: null | CappuccinoLocationDetails;
   readonly operatingSystem: null | string;
   readonly nodeType: null | string;
@@ -40,6 +41,7 @@ export default class CappuccinoNodeIdentity {
     name: null | string,
     publicURL: null | URL,
     company: null | string,
+    companyWebsite: null | URL,
     location: null | CappuccinoLocationDetails,
     operatingSystem: null | string,
     nodeType: null | string,
@@ -49,6 +51,7 @@ export default class CappuccinoNodeIdentity {
     this.name = name;
     this.publicURL = publicURL;
     this.company = company;
+    this.companyWebsite = companyWebsite;
     this.location = location;
     this.operatingSystem = operatingSystem;
     this.nodeType = nodeType;
@@ -69,6 +72,7 @@ class CappuccinoNodeIdentityEncoder
       name: nullableStringCodec.encode(input.name),
       public_url: nullableURLCodec.encode(input.publicURL),
       company: nullableStringCodec.encode(input.company),
+      company_website: nullableURLCodec.encode(input.companyWebsite),
       location: nullableCappuccinoLocationDetailsCodec.encode(input.location),
       operating_system: nullableStringCodec.encode(input.operatingSystem),
       node_type: nullableStringCodec.encode(input.nodeType),
@@ -87,6 +91,7 @@ class CappuccinoNodeIdentityDecoder
       'name',
       'public_url',
       'company',
+      'company_website',
       'location',
       'operating_system',
       'node_type',
@@ -97,6 +102,7 @@ class CappuccinoNodeIdentityDecoder
       preferNullOverEmptyString(nullableStringCodec.decode(input.name)),
       nullableURLCodec.decode(input.public_url),
       preferNullOverEmptyString(nullableStringCodec.decode(input.company)),
+      nullableURLCodec.decode(input.company_website),
       nullableCappuccinoLocationDetailsCodec.decode(input.location),
       preferNullOverEmptyString(
         nullableStringCodec.decode(input.operating_system),

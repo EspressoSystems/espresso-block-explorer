@@ -112,7 +112,7 @@ function convertCappuccinoNodeIdentity(
     name: preferNullOverEmptyString(node.name),
     companyDetails: {
       name: preferNullOverEmptyString(node.company),
-      website: null,
+      website: node.companyWebsite?.toString() ?? null,
     },
     location: {
       coords: node.location?.coords
