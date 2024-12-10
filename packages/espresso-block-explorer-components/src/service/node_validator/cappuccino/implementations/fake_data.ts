@@ -76,7 +76,7 @@ function convertGeneratedNodeIdentity(
     node.name,
     null,
     node.company.name,
-    // new CappuccinoCompanyIdentity(node.company.name, node.company.website),
+    new URL(node.company.website),
     new CappuccinoLocationDetails(
       new LatLng(
         new Latitude(new Degrees(node.location.coords[0])),
