@@ -8,7 +8,7 @@ const { Inscriptions } = composeStories(stories);
 
 describe('InscriptionsPage', async () => {
   it('should render the story', async () => {
-    const { rerender } = render(<Inscriptions data-testid="1" />);
+    render(<Inscriptions data-testid="1" />);
 
     // Wait for the component to be rendered
     await waitFor(() => {
