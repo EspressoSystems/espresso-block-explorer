@@ -220,11 +220,17 @@ interface InscriptionsMainProps {
   children?: React.ReactNode | React.ReactNode[];
 }
 
-const InscriptionsMain: React.FC<InscriptionsMainProps> = (props) => {
+const InscriptionsMain: React.FC<InscriptionsMainProps> = ({
+  children,
+  ...props
+}) => {
   const [theme] = useTheme();
   return (
-    <main className={addClassToClassName(theme.theme, 'inscriptions')}>
-      {props.children}
+    <main
+      className={addClassToClassName(theme.theme, 'inscriptions')}
+      {...props}
+    >
+      {children}
     </main>
   );
 };
@@ -360,16 +366,17 @@ const RetrieveInscriptionsRequest: React.FC = () => {
  * InscriptionsPage represents the entire Inscriptions page.  This is the main
  * entry point for the Inscriptions page.
  */
-const InscriptionsConcludedPage: React.FC<InscriptionsConcludedPageProps> = (
-  props,
-) => {
+const InscriptionsConcludedPage: React.FC<InscriptionsConcludedPageProps> = ({
+  backgroundImage,
+  ...props
+}) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
           <RainbowKitContextInjector>
-            <InscriptionsMain>
-              <div className="background-image">{props.backgroundImage}</div>
+            <InscriptionsMain {...props}>
+              <div className="background-image">{backgroundImage}</div>
 
               <GuidedStory className="inscription-wall">
                 <InscriptionsContent>
