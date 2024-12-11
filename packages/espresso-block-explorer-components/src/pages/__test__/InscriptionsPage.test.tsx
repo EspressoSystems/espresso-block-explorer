@@ -8,15 +8,42 @@ const { Inscriptions } = composeStories(stories);
 
 describe('InscriptionsPage', async () => {
   it('should render the story', async () => {
-    render(<Inscriptions data-testid="1" />);
+    const { rerender } = render(<Inscriptions data-testid="1" />);
 
+    // Wait for the component to be rendered
     await waitFor(() => {
       const ele = screen.getByTestId('1');
-      const elements = ele.querySelectorAll('section');
-      expect(elements.length).greaterThan(0);
+      expect(ele).toBeInTheDocument();
     });
 
     const inscriptionsPage = screen.getByTestId('1');
+
+    // wait for the sections to be rendered.
+    // (This should already be the case, but no harm in making it explicit)
+    await waitFor(() => {
+      const sections = inscriptionsPage.querySelectorAll('section');
+      expect(sections).toHaveLength(5);
+    });
+
+    const inscriptionsContent: HTMLElement | null =
+      inscriptionsPage.querySelector('.inscriptions--content');
+    expect(inscriptionsContent).not.toBeNull();
+    if (!inscriptionsContent) {
+      return;
+    }
+    expect(inscriptionsContent).toBeInTheDocument();
+
+    // wait until our inscription elements are populated.
+    await waitFor(
+      () => {
+        const inscriptionElements = inscriptionsPage.querySelectorAll(
+          '.inscription-display',
+        );
+        expect(inscriptionElements.length).toBeGreaterThan(0);
+      },
+      { container: inscriptionsContent },
+    );
+
     expect(inscriptionsPage).toBeInTheDocument();
   });
 });
