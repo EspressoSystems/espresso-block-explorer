@@ -79,6 +79,11 @@ import {
 import { CappuccinoAPIBitVec, CappuccinoExplorerBlockDetail } from '../service';
 import { CappuccinoNodeValidatorServiceAPIContext } from './CappuccinoNodeValidatorServiceAPIContext';
 
+/**
+ * publishHistogramUpdates is a helper function that will publish the updates
+ * to the various histogram streams so that the consumers can update their
+ * populated graphs.
+ */
 async function publishHistogramUpdates(
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
   blockHeightHistograms: CircularBuffer<number>,
@@ -104,6 +109,10 @@ async function publishHistogramUpdates(
   ]);
 }
 
+/**
+ * convertCappuccinoNodeIdentity converts a CappuccinoNodeIdentity into a
+ * NodeSummaryData object that can be used to populate the Node Summary Table.
+ */
 function convertCappuccinoNodeIdentity(
   node: CappuccinoNodeIdentity,
 ): NodeSummaryData {
@@ -126,6 +135,10 @@ function convertCappuccinoNodeIdentity(
   };
 }
 
+/**
+ * sortPieChartLabelPercentagePairs is a helper function that will sort the
+ * PieChartEntry objects by their value.
+ */
 function sortPieChartLabelPercentagePairs(
   a: PieChartEntry,
   b: PieChartEntry,
@@ -133,6 +146,11 @@ function sortPieChartLabelPercentagePairs(
   return a.value - b.value;
 }
 
+/**
+ * aggregateCountsForNodes is a helper function that will aggregate the counts
+ * of the number of nodes based on teh unique values returned from the value
+ * returned from teh keyExtractor function.
+ */
 function aggregateCountsForNodes(
   nodes: CappuccinoNodeIdentity[],
   keyExtractor: (node: CappuccinoNodeIdentity) => null | string,
@@ -154,10 +172,18 @@ function aggregateCountsForNodes(
     .sort(sortPieChartLabelPercentagePairs);
 }
 
+/**
+ * computeOperatingSystemsPieChartData is a helper function that will compute
+ * the operating system pie chart data based on the nodes provided.
+ */
 function computeOperatingSystemsPieChartData(nodes: CappuccinoNodeIdentity[]) {
   return aggregateCountsForNodes(nodes, (node) => node.operatingSystem);
 }
 
+/**
+ * computeCountriesPieChartData is a helper function that will compute the
+ * countries pie chart data based on the nodes provided.
+ */
 function computeCountriesPieChartData(nodes: CappuccinoNodeIdentity[]) {
   return aggregateCountsForNodes(
     nodes,
@@ -165,14 +191,28 @@ function computeCountriesPieChartData(nodes: CappuccinoNodeIdentity[]) {
   );
 }
 
+/**
+ * computeNetworkTypesPieChartData is a helper function that will compute the
+ * network types pie chart data based on the nodes provided.
+ */
 function computeNetworkTypesPieChartData(nodes: CappuccinoNodeIdentity[]) {
   return aggregateCountsForNodes(nodes, (node) => node.networkType);
 }
 
+/**
+ * computeNodeTypesPieChartData is a helper function that will compute the
+ * node types pie chart data based on the nodes provided.
+ */
 function computeNodeTypesPieChartData(nodes: CappuccinoNodeIdentity[]) {
   return aggregateCountsForNodes(nodes, (node) => node.nodeType);
 }
 
+/**
+ * computeVoterParticipationStats is a helper function that will compute the
+ * voter participation stats based on the nodes and the bit vectors provided.
+ * This will return an array of NodeVoteParticipationStats objects that
+ * represent the vote participation stats for each node.
+ */
 function computeVoterParticipationStats(
   nodes: CappuccinoNodeIdentity[],
   bitVecs: Iterable<CappuccinoAPIBitVec>,
@@ -202,6 +242,11 @@ function computeVoterParticipationStats(
   return results;
 }
 
+/**
+ * computeLatestBuilders is a helper function that will compute the latest
+ * builders based on the blocks provided.  This will return an array of
+ * LatestBlockProducer objects that represent the latest block producers.
+ */
 function computeLatestBuilders(
   blocks: Iterable<CappuccinoExplorerBlockDetail>,
 ): LatestBlockProducer[] {
@@ -248,8 +293,26 @@ function computeLatestBuilders(
   );
 }
 
+/**
+ * kTrailingHistorySamples is the number of samples that we want to keep in
+ * our history for the Node Validator Page.
+ *
+ * If we track too many, then the the histograms will have bars that are too
+ * narrow to effectively read and utilize.
+ */
 const kTrailingHistorySamples = 50;
 
+/**
+ * createBridgeState creates a tracked state object for processing and
+ * maintaining the state of history that we'd like to maintain for the
+ * Node Validator Page.
+ *
+ * This represents the specific state that we are tracking, and displaying
+ * to the end-user.
+ *
+ * The individual states themselves will be updated with other functions
+ * based on incoming data updates from the node validator service.
+ */
 function createBridgeState() {
   const latestBlocks = createCircularBuffer<CappuccinoExplorerBlockDetail>(
     kTrailingHistorySamples + 1,
@@ -283,6 +346,11 @@ function createBridgeState() {
   };
 }
 
+/**
+ * bridgeLatestBlock is a helper function that will bridge the latest block
+ * event into the various streams that we have setup for the Node Validator
+ * Page.
+ */
 async function bridgeLatestBlock(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
@@ -323,6 +391,11 @@ async function bridgeLatestBlock(
   );
 }
 
+/**
+ * bridgeBlocksSnapshot is a helper function that will bridge the block
+ * snapshot event into the various streams that we have setup for the Node
+ * Validator Page.
+ */
 async function bridgeBlocksSnapshot(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
@@ -366,6 +439,11 @@ async function bridgeBlocksSnapshot(
   );
 }
 
+/**
+ * bridgeHistogramSnapshot is a helper function that will bridge the histogram
+ * snapshot event into the various streams that we have setup for the Node
+ * Validator Page.
+ */
 async function bridgeHistogramSnapshot(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
@@ -400,6 +478,11 @@ async function bridgeHistogramSnapshot(
   );
 }
 
+/**
+ * bridgeNodeIdentitySnapshot is a helper function that will bridge the node
+ * identity snapshot event into the various streams that we have setup for the
+ * Node Validator Page.
+ */
 async function bridgeNodeIdentitySnapshot(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
@@ -423,6 +506,11 @@ async function bridgeNodeIdentitySnapshot(
   ]);
 }
 
+/**
+ * bridgeLatestNodeIdentity is a helper function that will bridge the latest
+ * node identity event into the various streams that we have setup for the
+ * Node Validator Page.
+ */
 async function bridgeLatestNodeIdentity(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
@@ -458,6 +546,11 @@ async function bridgeLatestNodeIdentity(
   ]);
 }
 
+/**
+ * bridgeVotersSnapshot is a helper function that will bridge the voters
+ * snapshot event into the various streams that we have setup for the Node
+ * Validator Page.
+ */
 async function bridgeVotersSnapshot(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
@@ -475,6 +568,11 @@ async function bridgeVotersSnapshot(
   await streams.voters.publish(voteStats);
 }
 
+/**
+ * bridgeLatestVoters is a helper function that will bridge the latest voters
+ * event into the various streams that we have setup for the Node Validator
+ * Page.
+ */
 async function bridgeLatestVoters(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
@@ -490,6 +588,11 @@ async function bridgeLatestVoters(
   await streams.voters.publish(voteStats);
 }
 
+/**
+ * bridgeNodeValidatorResponse is a helper function that will bridge the
+ * various node validator responses into the various streams that we have
+ * setup for the Node Validator Page.
+ */
 async function bridgeNodeValidatorResponse(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
@@ -524,6 +627,11 @@ async function bridgeNodeValidatorResponse(
   }
 }
 
+/**
+ * bridgeStreamIntoIndividualStreams is a helper function that will bridge the
+ * incoming stream of events from the Node Validator Service into the various
+ * streams that we have setup for the Node Validator Page.
+ */
 async function bridgeStreamIntoIndividualStreams(
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
   nodeValidatorService: WebWorkerNodeValidatorAPI,
@@ -546,6 +654,10 @@ async function bridgeStreamIntoIndividualStreams(
   }
 }
 
+/**
+ * startValidatorService is a simple function that will start the validator
+ * service by sending a connect command to the WebSocketCommand sink.
+ */
 async function startValidatorService(
   webSocketCommandSink: Sink<WebSocketCommand>,
   nodeValidatorRequestSink: Sink<CappuccinoNodeValidatorRequest>,
@@ -565,6 +677,13 @@ async function startValidatorService(
   await nodeValidatorRequestSink.send(new RequestVotersSnapshot());
 }
 
+/**
+ * createNodeValidatorSplitStreams is a helper function that will create the
+ * various streams that we have setup for the Node Validator Page.
+ *
+ * These streams are useful as they get consumed from for the various
+ * components separately.
+ */
 function createNodeValidatorSplitStreams() {
   return {
     latestBlockStream: createBufferedChannel<LatestBlock>(4),
@@ -598,6 +717,12 @@ interface ProvideCappuccinoNodeValidatorStreamsProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * ProvideCappuccinoNodeValidatorStream is a React Context Provider that will
+ * setup the node validator state, and provide React Contexts to distribute
+ * the underlying node validator data to the components on the Node Validator
+ * Page.
+ */
 export const ProvideCappuccinoNodeValidatorStreams: React.FC<
   ProvideCappuccinoNodeValidatorStreamsProps
 > = (props) => {
