@@ -89,7 +89,13 @@ export interface InitialSearchState {
  * This allows for us to address the difficulty of navigation with storybook
  * as well as without it.
  */
-function resolveDefaultLocation(): Location {
+function resolveDefaultLocation(): PartialLocationHref {
+  if (typeof window === 'undefined') {
+    return {
+      href: '',
+    };
+  }
+
   let targetWindow: Window = window;
   while (targetWindow !== targetWindow.parent) {
     targetWindow = targetWindow.parent;
