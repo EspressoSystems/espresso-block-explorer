@@ -49,3 +49,15 @@ circle.value-pointer--inner {
 text.tooltip--value-label {
   fill: var(--color--slate-950);
 }
+
+.histogram--placeholder {
+  position: relative;
+}
+
+.histogram--placeholder > .skeleton-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}

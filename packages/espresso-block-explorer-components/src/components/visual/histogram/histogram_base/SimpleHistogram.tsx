@@ -1,3 +1,4 @@
+import { SkeletonContent } from '@/components/loading';
 import React from 'react';
 import { useSVGSize } from '../../svg/hooks';
 import { AffineTransform } from './AffineTransform';
@@ -136,5 +137,24 @@ const RecalculatePlotWidth: React.FC<RecalculatePlotWidthProps> = (props) => {
     >
       {props.children}
     </HistogramPlotWidth.Provider>
+  );
+};
+
+/**
+ * SimpleHistogramPlaceholder is a placeholder component that is displayed when
+ * the histogram is loading.
+ */
+export const SimpleHistogramPlaceholder: React.FC = () => {
+  const plotWidth = React.useContext(HistogramPlotWidth);
+  const plotHeight = React.useContext(HistogramPlotHeight);
+  const aspectRatio = plotWidth / plotHeight;
+
+  return (
+    <div
+      className="histogram--placeholder"
+      style={{ paddingBottom: `${(1 / aspectRatio) * 100}%` }}
+    >
+      <SkeletonContent />
+    </div>
   );
 };
