@@ -155,23 +155,17 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           <ExplorerOverviewAsyncHandler className="overview" />
         </ExplorerOverviewLoader>
 
-        <CardNoPadding className="block-time-histogram">
-          <BlockTimeHistogramLoader>
-            <BlockTimeHistogram />
-          </BlockTimeHistogramLoader>
-        </CardNoPadding>
+        <BlockTimeHistogramLoader>
+          <BlockTimeHistogram />
+        </BlockTimeHistogramLoader>
 
-        <CardNoPadding className="block-size-histogram">
-          <BlockSizeHistogramLoader>
-            <BlockSizeHistogram />
-          </BlockSizeHistogramLoader>
-        </CardNoPadding>
+        <BlockSizeHistogramLoader>
+          <BlockSizeHistogram />
+        </BlockSizeHistogramLoader>
 
-        <CardNoPadding className="throughput-histogram">
-          <BlockThroughputHistogramLoader>
-            <BlockThroughputHistogram />
-          </BlockThroughputHistogramLoader>
-        </CardNoPadding>
+        <BlockThroughputHistogramLoader>
+          <BlockThroughputHistogram />
+        </BlockThroughputHistogramLoader>
 
         <CardNoPadding className="latest-blocks-summary">
           <SummaryTableLabeledValue>
