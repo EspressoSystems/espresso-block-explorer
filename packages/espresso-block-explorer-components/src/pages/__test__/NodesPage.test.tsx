@@ -77,10 +77,20 @@ describe('NodesPage', async () => {
       );
     }
 
+    const histogramDataQuery = '.histogram-plot[role="graphics-datagroup"]';
+
     // Block Time Histogram Section
     {
+      const elementQuery = '.block-time-histogram.card';
+
+      await waitFor(() => {
+        const blockSizeHistogram = nodePage.querySelector(elementQuery);
+        expect(blockSizeHistogram).not.toBeNull();
+        expect(blockSizeHistogram).not.toHaveClass('loading-shimmer');
+      });
+
       const blockTimeHistogramSection: HTMLElement | null =
-        nodePage.querySelector('.block-time-histogram.card');
+        nodePage.querySelector(elementQuery);
       expect(blockTimeHistogramSection).not.toBeNull();
       if (!blockTimeHistogramSection) {
         // This is here just to satisfy typescript. In reality, this should
@@ -92,18 +102,14 @@ describe('NodesPage', async () => {
       await waitFor(
         () => {
           const histogramPlotGraphics: HTMLElement | null =
-            blockTimeHistogramSection.querySelector(
-              '.histogram-plot[role="graphics-datagroup"]',
-            );
+            blockTimeHistogramSection.querySelector(histogramDataQuery);
           expect(histogramPlotGraphics).not.toBeNull();
         },
         { container: blockTimeHistogramSection },
       );
 
       const histogramPlotGraphics: HTMLElement | null =
-        blockTimeHistogramSection.querySelector(
-          '.histogram-plot[role="graphics-datagroup"]',
-        );
+        blockTimeHistogramSection.querySelector(histogramDataQuery);
 
       if (!histogramPlotGraphics) {
         return;
@@ -120,8 +126,16 @@ describe('NodesPage', async () => {
 
     // Block Size Histogram Section
     {
+      const elementQuery = '.block-size-histogram.card';
+
+      await waitFor(() => {
+        const blockSizeHistogram = nodePage.querySelector(elementQuery);
+        expect(blockSizeHistogram).not.toBeNull();
+        expect(blockSizeHistogram).not.toHaveClass('loading-shimmer');
+      });
+
       const blockSizeHistogramSection: HTMLElement | null =
-        nodePage.querySelector('.block-size-histogram.card');
+        nodePage.querySelector(elementQuery);
       expect(blockSizeHistogramSection).not.toBeNull();
       if (!blockSizeHistogramSection) {
         // This is here just to satisfy typescript. In reality, this should
@@ -133,18 +147,14 @@ describe('NodesPage', async () => {
       await waitFor(
         () => {
           const histogramPlotGraphics: HTMLElement | null =
-            blockSizeHistogramSection.querySelector(
-              '.histogram-plot[role="graphics-datagroup"]',
-            );
+            blockSizeHistogramSection.querySelector(histogramDataQuery);
           expect(histogramPlotGraphics).not.toBeNull();
         },
         { container: blockSizeHistogramSection },
       );
 
       const histogramPlotGraphics: HTMLElement | null =
-        blockSizeHistogramSection.querySelector(
-          '.histogram-plot[role="graphics-datagroup"]',
-        );
+        blockSizeHistogramSection.querySelector(histogramDataQuery);
 
       if (!histogramPlotGraphics) {
         return;
@@ -161,8 +171,16 @@ describe('NodesPage', async () => {
 
     // Throughput Histogram Section
     {
+      const elementQuery = '.throughput-histogram.card';
+
+      await waitFor(() => {
+        const blockSizeHistogram = nodePage.querySelector(elementQuery);
+        expect(blockSizeHistogram).not.toBeNull();
+        expect(blockSizeHistogram).not.toHaveClass('loading-shimmer');
+      });
+
       const throughputHistogramSection: HTMLElement | null =
-        nodePage.querySelector('.throughput-histogram.card');
+        nodePage.querySelector(elementQuery);
       expect(throughputHistogramSection).not.toBeNull();
       if (!throughputHistogramSection) {
         // This is here just to satisfy typescript. In reality, this should
@@ -174,18 +192,14 @@ describe('NodesPage', async () => {
       await waitFor(
         () => {
           const histogramPlotGraphics: HTMLElement | null =
-            throughputHistogramSection.querySelector(
-              '.histogram-plot[role="graphics-datagroup"]',
-            );
+            throughputHistogramSection.querySelector(histogramDataQuery);
           expect(histogramPlotGraphics).not.toBeNull();
         },
         { container: throughputHistogramSection },
       );
 
       const histogramPlotGraphics: HTMLElement | null =
-        throughputHistogramSection.querySelector(
-          '.histogram-plot[role="graphics-datagroup"]',
-        );
+        throughputHistogramSection.querySelector(histogramDataQuery);
 
       if (!histogramPlotGraphics) {
         return;
