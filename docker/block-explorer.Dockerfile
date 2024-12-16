@@ -1,9 +1,11 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 COPY package.json package-lock.json /app/
 COPY packages/espresso-block-explorer-components /app/packages/espresso-block-explorer-components
 COPY packages/block-explorer /app/packages/block-explorer
+
+RUN apk add --no-cache python3 make g++
 
 RUN npm ci --no-audit --all-workspaces
 
@@ -11,16 +13,16 @@ RUN npm ci --no-audit --all-workspaces
 RUN npm run build --workspace=packages/espresso-block-explorer-components
 
 # Copy over public, and asset files, then install again, for the block-explorer-components
-RUN rm -rf packages/block-explorer/public && \
-    cp -r packages/espresso-block-explorer-components/public packages/block-explorer/public && \
-    cp -r packages/espresso-block-explorer-components/dist/assets packages/block-explorer/public/assets
+RUN cp -r packages/espresso-block-explorer-components/public/* packages/block-explorer/public/. && \
+    rm -rf packages/block-explorer/public/assets/* && \
+    cp -r packages/espresso-block-explorer-components/dist/assets/*.js packages/block-explorer/public/assets/.
 RUN npm install --no-audit --save --workspace=packages/block-explorer packages/espresso-block-explorer-components/
 
 # Build the Next Application
 RUN npm run build --workspace=packages/block-explorer
 
-FROM --platform=$BUILDPLATFORM node:20-alpine
-RUN apk add --no-cache bash jq tini
+FROM node:20-alpine
+RUN apk add --no-cache bash jq tini python3 make g++
 WORKDIR /app
 
 COPY --from=builder /app/package.json /app/package-lock.json /app/
