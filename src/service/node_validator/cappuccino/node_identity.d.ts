@@ -14,11 +14,12 @@ export default class CappuccinoNodeIdentity {
     readonly name: null | string;
     readonly publicURL: null | URL;
     readonly company: null | string;
+    readonly companyWebsite: null | URL;
     readonly location: null | CappuccinoLocationDetails;
     readonly operatingSystem: null | string;
     readonly nodeType: null | string;
     readonly networkType: null | string;
-    constructor(publicKey: TaggedBase64, name: null | string, publicURL: null | URL, company: null | string, location: null | CappuccinoLocationDetails, operatingSystem: null | string, nodeType: null | string, networkType: null | string);
+    constructor(publicKey: TaggedBase64, name: null | string, publicURL: null | URL, company: null | string, companyWebsite: null | URL, location: null | CappuccinoLocationDetails, operatingSystem: null | string, nodeType: null | string, networkType: null | string);
     toJSON(): unknown;
 }
 declare class CappuccinoNodeIdentityEncoder implements Converter<CappuccinoNodeIdentity> {
@@ -27,6 +28,7 @@ declare class CappuccinoNodeIdentityEncoder implements Converter<CappuccinoNodeI
         name: string | null;
         public_url: string | null;
         company: string | null;
+        company_website: string | null;
         location: unknown;
         operating_system: string | null;
         node_type: string | null;
