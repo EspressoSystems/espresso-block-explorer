@@ -436,7 +436,7 @@ export const NodesSummaryDataTable: React.FC = () => {
   const [initialState, setState] = React.useState<
     DataTableState<NodeSummaryColumn>
   >({
-    sortColumn: NodeSummaryColumn.publicKey,
+    sortColumn: NodeSummaryColumn.voteParticipation,
     sortDir: SortDirection.asc,
   });
 
