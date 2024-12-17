@@ -92,7 +92,8 @@ export function registerWebWorkerProxyResponseCodec(
   codec: TypeCheckingCodec<WebWorkerProxyResponse, unknown>,
 ) {
   if (registry.has(type)) {
-    throw new UnimplementedError();
+    // We already have this type registered.
+    return;
   }
 
   registry.set(type, codec);

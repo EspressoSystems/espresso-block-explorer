@@ -20,6 +20,7 @@ import SearchGlass from '@/visual/icons/SearchGlass';
 import React from 'react';
 import { CappuccinoHotShotQueryServiceAPIContext } from '../../../pages/CappuccinoHotShotQueryServiceAPIContext';
 import { InputContainer } from '../container/Container';
+import { PartialLocationHref } from './__shared__/search_input_shared';
 import './search.css';
 
 /**
@@ -75,10 +76,32 @@ export interface InitialSearchState {
   rawQuery?: string;
   query?: string;
   searchResultsQuery?: string;
-  lastActivity?: Date;
   searchResults?: CappuccinoExplorerGetSearchResultResponse;
   isLoading?: boolean;
   offset?: null | number;
+  location?: PartialLocationHref;
+}
+
+/***
+ * resolveDefaultLocation is a function that will resolve the default location
+ * that we wish to manipulate if one isn't provided.
+ *
+ * This allows for us to address the difficulty of navigation with storybook
+ * as well as without it.
+ */
+function resolveDefaultLocation(): PartialLocationHref {
+  if (typeof window === 'undefined') {
+    return {
+      href: '',
+    };
+  }
+
+  let targetWindow: Window = window;
+  while (targetWindow !== targetWindow.parent) {
+    targetWindow = targetWindow.parent;
+  }
+
+  return targetWindow.location;
 }
 
 /**
@@ -94,32 +117,32 @@ export interface InitialSearchState {
 class SearchStateController {
   private pRawQuery: string;
   private pQuery: string;
-  private pLastActivity;
   private pSearchResults: CappuccinoExplorerGetSearchResultResponse;
-  private pSearchResultsQuery;
-  private pIsLoading;
-  private pOffset;
+  private pSearchResultsQuery: string;
+  private pIsLoading: boolean;
+  private pOffset: number | null;
+  private pLocation: PartialLocationHref;
 
   constructor(initialState?: InitialSearchState) {
     const {
       rawQuery = '',
       query = '',
-      lastActivity = new Date(),
       searchResults = new CappuccinoExplorerGetSearchResultResponse(
         new CappuccinoExplorerSearchResults([], []),
       ),
       searchResultsQuery = '',
       isLoading = false,
       offset = null,
+      location = resolveDefaultLocation(),
     } = initialState || {};
 
     this.pRawQuery = rawQuery;
     this.pQuery = query;
     this.pSearchResultsQuery = searchResultsQuery;
-    this.pLastActivity = lastActivity;
     this.pSearchResults = searchResults;
     this.pIsLoading = isLoading;
     this.pOffset = offset;
+    this.pLocation = location;
   }
 
   get rawQuery(): string {
@@ -127,9 +150,6 @@ class SearchStateController {
   }
   get query(): string {
     return this.pQuery;
-  }
-  get lastActivity(): Date {
-    return this.pLastActivity;
   }
   get searchResults(): CappuccinoExplorerGetSearchResultResponse {
     return this.pSearchResults;
@@ -154,10 +174,6 @@ class SearchStateController {
     this.pRawQuery = query;
     this.pQuery = caseInsensitiveTaggedBase64Query(query);
     this.pOffset = null;
-  }
-
-  setLastActivity(date: Date) {
-    this.pLastActivity = date;
   }
 
   setSearchResults(
@@ -188,19 +204,17 @@ class SearchStateController {
     this.pOffset = offset;
 
     const ele = document.querySelector(`[data-index="${offset}"]`);
-    if (ele) {
+    if (
+      ele &&
+      'scrollIntoView' in ele &&
+      typeof ele.scrollIntoView === 'function'
+    ) {
       ele.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     }
   }
 
   private navigateTo(href: string) {
-    // Get the target window.
-    let targetWindow: Window = window;
-    while (targetWindow !== targetWindow.parent) {
-      targetWindow = targetWindow.parent;
-    }
-
-    targetWindow.location.href = href;
+    this.pLocation.href = href;
   }
 
   async activate(
@@ -257,10 +271,6 @@ class SearchStateController {
     const result = this.getResultForOffset(this.offset);
 
     // Get the target window.
-    let targetWindow: Window = window;
-    while (targetWindow !== targetWindow.parent) {
-      targetWindow = targetWindow.parent;
-    }
 
     if (result instanceof CappuccinoExplorerBlockSummary) {
       this.navigateTo(pathResolver.block(result.height));

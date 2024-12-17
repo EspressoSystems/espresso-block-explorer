@@ -1228,6 +1228,12 @@ function useIntersectionObserver(
   const [theme, setTheme] = useTheme();
 
   React.useEffect(() => {
+    if (!('IntersectionObserver' in window)) {
+      // Protect ourselves from non-browsers, or browsers that do not
+      // support the IntersectionObserver API.
+      return () => {};
+    }
+
     const observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
 
@@ -1296,11 +1302,17 @@ interface InscriptionsMainProps {
   children?: React.ReactNode | React.ReactNode[];
 }
 
-const InscriptionsMain: React.FC<InscriptionsMainProps> = (props) => {
+const InscriptionsMain: React.FC<InscriptionsMainProps> = ({
+  children,
+  ...props
+}) => {
   const [theme] = useTheme();
   return (
-    <main className={addClassToClassName(theme.theme, 'inscriptions')}>
-      {props.children}
+    <main
+      className={addClassToClassName(theme.theme, 'inscriptions')}
+      {...props}
+    >
+      {children}
     </main>
   );
 };
@@ -1320,7 +1332,11 @@ export const TweetURLProvider = React.createContext<null | URL>(null);
  * InscriptionsPage represents the entire Inscriptions page.  This is the main
  * entry point for the Inscriptions page.
  */
-const InscriptionsPage: React.FC<InscriptionsPageProps> = (props) => {
+const InscriptionsPage: React.FC<InscriptionsPageProps> = ({
+  backgroundImage,
+  escapeTheWalledGardensImage,
+  ...props
+}) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
@@ -1331,14 +1347,14 @@ const InscriptionsPage: React.FC<InscriptionsPageProps> = (props) => {
                 <ProvideEngageStepsStates>
                   <ProvideInscriptionsModalContext>
                     <ProvideThemeState>
-                      <InscriptionsMain>
+                      <InscriptionsMain {...props}>
                         <div className="background-image">
-                          {props.backgroundImage}
+                          {backgroundImage}
                         </div>
                         <InscriptionFooter />
 
                         <EscapeTheWalledGardensSection
-                          backgroundImage={props.escapeTheWalledGardensImage}
+                          backgroundImage={escapeTheWalledGardensImage}
                         />
                         <OurDataSection />
                         <ThereIsABetterWaySection />
