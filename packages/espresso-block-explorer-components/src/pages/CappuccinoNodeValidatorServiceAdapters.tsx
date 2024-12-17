@@ -1,6 +1,7 @@
 import { createBufferedChannel } from '@/async/channel/BufferedChannel';
 import { createSinkWithConverter } from '@/async/sink/converted_sink';
 import { Sink } from '@/async/sink/sink';
+import { sleep } from '@/async/sleep';
 import { ErrorStreamContext } from '@/components/contexts/ErrorProvider';
 import { WebSocketResponseStreamContext } from '@/components/contexts/WebSocketResponseProvider';
 import {
@@ -44,6 +45,8 @@ import { ErrorResponse } from '@/models/web_worker/error_response';
 import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
 import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
 import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
+import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
+import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
 import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';
 import { webSocketCommandToWebWorkerProxyRequestConverter } from '@/models/web_worker/web_worker_proxy_request_codec';
 import CappuccinoNodeIdentity from '@/service/node_validator/cappuccino/node_identity';
@@ -121,7 +124,7 @@ function convertCappuccinoNodeIdentity(
     name: preferNullOverEmptyString(node.name),
     companyDetails: {
       name: preferNullOverEmptyString(node.company),
-      website: null,
+      website: node.companyWebsite?.toString() ?? null,
     },
     location: {
       coords: node.location?.coords
@@ -628,6 +631,68 @@ async function bridgeNodeValidatorResponse(
 }
 
 /**
+ * handleWebSocketEvents is a helper function that will handle the various
+ * WebSocket events that are emitted from the WebSocketResponse stream.
+ *
+ * This will handle the connection opened and closed events, and will attempt
+ * to reconnect to the WebSocket if the connection is closed.
+ */
+async function handleWebSocketEvents(
+  event: WebSocketResponse,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  webSocketCommandSink: Sink<WebSocketCommand>,
+  nodeValidatorRequestSink: Sink<CappuccinoNodeValidatorRequest>,
+) {
+  const status = event.status;
+  if (status instanceof WebSocketStatusConnectionOpened) {
+    streams.reconnectAttempt = 0;
+    streams.errors.publish(null);
+
+    // Setup our subscriptions.
+    await nodeValidatorRequestSink.send(new SubscribeLatestBlock());
+    await nodeValidatorRequestSink.send(new SubscribeNodeIdentity());
+    await nodeValidatorRequestSink.send(new SubscribeVoters());
+
+    // Request the latest information
+    await nodeValidatorRequestSink.send(new RequestNodeIdentitySnapshot());
+    await nodeValidatorRequestSink.send(new RequestBlocksSnapshot());
+    await nodeValidatorRequestSink.send(new RequestHistogramSnapshot());
+    await nodeValidatorRequestSink.send(new RequestVotersSnapshot());
+    return;
+  }
+
+  if (!(status instanceof WebSocketStatusConnectionClosed)) {
+    // We don't care about non-closed events.
+    return;
+  }
+
+  if (!streams.mounted) {
+    // The component has been unmounted, we do not need to reconnect.
+    return;
+  }
+
+  // Alright, we want to try to reconnect.  We want to perform exponential
+  // backoff as well, so we don't overwhelm the server.
+
+  streams.reconnectAttempt += 1;
+
+  const reconnectDelay =
+    Math.min(4 ** streams.reconnectAttempt, 4000) * (Math.random() + 1);
+  console.info(
+    'disconnected from inscriptions web socket, attempting to reconnect',
+    'attempting reconnect, attempt',
+    streams.reconnectAttempt,
+    'sleeping for',
+    reconnectDelay,
+  );
+
+  await sleep(reconnectDelay);
+
+  // Try to reconnect
+  webSocketCommandSink.send(new WebSocketCommandConnect());
+}
+
+/**
  * bridgeStreamIntoIndividualStreams is a helper function that will bridge the
  * incoming stream of events from the Node Validator Service into the various
  * streams that we have setup for the Node Validator Page.
@@ -635,6 +700,8 @@ async function bridgeNodeValidatorResponse(
 async function bridgeStreamIntoIndividualStreams(
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
   nodeValidatorService: WebWorkerNodeValidatorAPI,
+  webSocketCommandSink: Sink<WebSocketCommand>,
+  nodeValidatorRequestSink: Sink<CappuccinoNodeValidatorRequest>,
 ) {
   const state = createBridgeState();
 
@@ -642,14 +709,23 @@ async function bridgeStreamIntoIndividualStreams(
     if (event instanceof NodeValidatorServiceResponse) {
       await bridgeNodeValidatorResponse(state, streams, event.response);
       await streams.errors.publish(null);
+      continue;
     }
 
     if (event instanceof WebSocketResponse) {
       await streams.lifecycle.publish(event);
+      handleWebSocketEvents(
+        event,
+        streams,
+        webSocketCommandSink,
+        nodeValidatorRequestSink,
+      );
+      continue;
     }
 
     if (event instanceof ErrorResponse) {
       await streams.errors.publish(event);
+      continue;
     }
   }
 }
@@ -660,21 +736,9 @@ async function bridgeStreamIntoIndividualStreams(
  */
 async function startValidatorService(
   webSocketCommandSink: Sink<WebSocketCommand>,
-  nodeValidatorRequestSink: Sink<CappuccinoNodeValidatorRequest>,
 ) {
   // We need to "connect" to the service.
   await webSocketCommandSink.send(new WebSocketCommandConnect());
-
-  // Setup our subscriptions.
-  await nodeValidatorRequestSink.send(new SubscribeLatestBlock());
-  await nodeValidatorRequestSink.send(new SubscribeNodeIdentity());
-  await nodeValidatorRequestSink.send(new SubscribeVoters());
-
-  // Request the latest information
-  await nodeValidatorRequestSink.send(new RequestNodeIdentitySnapshot());
-  await nodeValidatorRequestSink.send(new RequestBlocksSnapshot());
-  await nodeValidatorRequestSink.send(new RequestHistogramSnapshot());
-  await nodeValidatorRequestSink.send(new RequestVotersSnapshot());
 }
 
 /**
@@ -710,6 +774,9 @@ function createNodeValidatorSplitStreams() {
     errors: createBufferedChannel<null | ErrorResponse>(4),
     // LifeCycle Event Stream
     lifecycle: createBufferedChannel<WebSocketResponse>(4),
+
+    reconnectAttempt: 0,
+    mounted: true,
   };
 }
 
@@ -742,13 +809,19 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
       nodeValidatorService,
       webSocketCommandToWebWorkerProxyRequestConverter,
     );
-    bridgeStreamIntoIndividualStreams(streams, nodeValidatorService);
-    startValidatorService(lifeCycleRequestSink, nodeValidatorRequestSink);
+    bridgeStreamIntoIndividualStreams(
+      streams,
+      nodeValidatorService,
+      lifeCycleRequestSink,
+      nodeValidatorRequestSink,
+    );
+    startValidatorService(lifeCycleRequestSink);
 
     return () => {
       // Tear Down
       // Tell the service to Close the connection.
       lifeCycleRequestSink.send(new WebSocketCommandClose());
+      streams.mounted = false;
     };
   });
 

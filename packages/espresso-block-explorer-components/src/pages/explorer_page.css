@@ -44,6 +44,14 @@
   padding: 1em;
 }
 
+.latest-blocks-summary > .summary-tabled-labeled-value > label,
+.latest-transactions-summary > .summary-tabled-labeled-value > label,
+.latest-rollups-summary > .summary-tabled-labeled-value > label {
+  --text--color: var(--color--slate-950);
+  color: var(--color--slate-950);
+  align-self: center;
+}
+
 .block-time-histogram {
   grid-area: gbt;
 }
