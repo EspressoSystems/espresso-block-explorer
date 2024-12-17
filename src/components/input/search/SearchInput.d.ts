@@ -1,14 +1,15 @@
 import { CappuccinoExplorerGetSearchResultResponse } from '../../../../../../../../../../../src/service/hotshot_query_service/cappuccino/explorer/get_search_result_response';
 import { default as React } from '../../../../../../node_modules/react';
+import { PartialLocationHref } from './__shared__/search_input_shared';
 
 export interface InitialSearchState {
     rawQuery?: string;
     query?: string;
     searchResultsQuery?: string;
-    lastActivity?: Date;
     searchResults?: CappuccinoExplorerGetSearchResultResponse;
     isLoading?: boolean;
     offset?: null | number;
+    location?: PartialLocationHref;
 }
 export interface SearchInputProps {
     initialState?: InitialSearchState;
