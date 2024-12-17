@@ -35,7 +35,9 @@ export const CountriesPieChart: React.FC = () => {
         <Text text="Countries" />
       </PieChartSectionTitle>
 
-      <PieChart values={histogramData.map(expandPieChartEntry)} />
+      <div className="card--padding">
+        <PieChart values={histogramData.map(expandPieChartEntry)} />
+      </div>
     </>
   );
 };
