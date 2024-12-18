@@ -12,7 +12,7 @@ import React from 'react';
 import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
-import Link from '../../links/link/Link';
+import { InternalLink } from '../../links/link/Link';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
 import { TransactionSummary } from './TransactionSummaryDataLoader';
 
@@ -26,9 +26,9 @@ const TransactionCell: React.FC = () => {
 
   return (
     <CopyTaggedBase64 value={row.hash}>
-      <Link href={pathResolver.transaction(row.block, row.offset)}>
+      <InternalLink href={pathResolver.transaction(row.block, row.offset)}>
         <TaggedBase64Text value={row.hash} />
-      </Link>
+      </InternalLink>
     </CopyTaggedBase64>
   );
 };
@@ -48,9 +48,9 @@ const RollUpCell: React.FC = () => {
   if (rollups.length === 1) {
     const rollup = rollups[0];
     return (
-      <Link href={pathResolver.rollUp(rollup)}>
+      <InternalLink href={pathResolver.rollUp(rollup)}>
         <RollUpSimple namespace={rollup} />
-      </Link>
+      </InternalLink>
     );
   }
 
@@ -66,12 +66,12 @@ const BlockCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as TransactionSummary;
 
   return (
-    <Link
+    <InternalLink
       href={pathResolver.block(row.block)}
       title={`Link to Block ${row.block}`}
     >
       <NumberText number={row.block} />
-    </Link>
+    </InternalLink>
   );
 };
 

@@ -1,6 +1,6 @@
 import { CurrentPagePathContext, PageType } from '@/contexts/PagePathProvider';
 import React from 'react';
-import Link from '../link/Link';
+import { InternalLink } from '../link/Link';
 import './nav_link.css';
 
 export interface NavLinkProps {
@@ -25,9 +25,9 @@ const NavLink: React.FC<NavLinkProps> = (props) => {
   const className = linkClasses.filter(Boolean).join(' ');
 
   return (
-    <Link href={props.href} className={className}>
+    <InternalLink href={props.href} className={className}>
       {props.children}
-    </Link>
+    </InternalLink>
   );
 };
 

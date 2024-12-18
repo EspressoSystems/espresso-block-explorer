@@ -1,5 +1,5 @@
 import { PathResolverContext } from '@/components/contexts/PathResolverProvider';
-import Link from '@/components/links/link/Link';
+import { InternalLink } from '@/components/links/link/Link';
 import EspressoLogoAndTitle from '@/visual/icons/EspressoLogoAndTitle';
 import React from 'react';
 import NavBar from '../../links/nav_bar/NavBar';
@@ -16,9 +16,9 @@ const Header: React.FC<HeaderProps> = (props) => {
 
   return (
     <header {...props}>
-      <Link href={resolver.explorer()}>
+      <InternalLink href={resolver.explorer()}>
         <EspressoLogoAndTitle />
-      </Link>
+      </InternalLink>
       {/* Spacer */}
       <NavBar />
     </header>

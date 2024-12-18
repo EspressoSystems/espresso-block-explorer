@@ -12,7 +12,7 @@ import React from 'react';
 import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
-import Link from '../../links/link/Link';
+import { InternalLink } from '../../links/link/Link';
 import { BlockSummary } from './BlockSummaryDataLoader';
 
 /**
@@ -25,9 +25,9 @@ const BlockCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as BlockSummary;
 
   return (
-    <Link href={pathResolver.block(row.block)}>
+    <InternalLink href={pathResolver.block(row.block)}>
       <NumberText number={row.block} />
-    </Link>
+    </InternalLink>
   );
 };
 
@@ -57,9 +57,9 @@ const TransactionsCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as BlockSummary;
 
   return (
-    <Link href={pathResolver.transactionsForBlock(row.block)}>
+    <InternalLink href={pathResolver.transactionsForBlock(row.block)}>
       <NumberText number={row.transactions} />
-    </Link>
+    </InternalLink>
   );
 };
 

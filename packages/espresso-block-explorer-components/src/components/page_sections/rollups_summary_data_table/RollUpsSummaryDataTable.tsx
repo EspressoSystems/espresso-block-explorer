@@ -10,7 +10,7 @@ import React from 'react';
 import DataTable, {
   DataTableRowContext,
 } from '../../data/data_table/DataTable';
-import Link from '../../links/link/Link';
+import { EgressLink, InternalLink } from '../../links/link/Link';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
 import { RollUpSummary } from './RollUpsSummaryLoader';
 
@@ -24,9 +24,9 @@ const RollupCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as RollUpSummary;
 
   return (
-    <Link href={pathResolver.rollUp(row.namespace)}>
+    <InternalLink href={pathResolver.rollUp(row.namespace)}>
       <RollUpSimple namespace={row.namespace} />
-    </Link>
+    </InternalLink>
   );
 };
 
@@ -40,9 +40,9 @@ const NamespaceCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as RollUpSummary;
 
   return (
-    <Link href={pathResolver.rollUp(row.namespace)}>
+    <InternalLink href={pathResolver.rollUp(row.namespace)}>
       <NumberText number={row.namespace} />
-    </Link>
+    </InternalLink>
   );
 };
 
@@ -71,9 +71,9 @@ const OfficialSiteCell: React.FC = () => {
   }
 
   return (
-    <Link href={rollUp.site.toString()} target="_blank">
+    <EgressLink href={rollUp.site.toString()} target="_blank">
       <Text text={rollUp.site.toString()} />
-    </Link>
+    </EgressLink>
   );
 };
 
@@ -91,9 +91,9 @@ const BlockExplorerCell: React.FC = () => {
   }
 
   return (
-    <Link href={rollUp.blockExplorer.toString()} target="_blank">
+    <EgressLink href={rollUp.blockExplorer.toString()} target="_blank">
       <Text text={rollUp.blockExplorer.toString()} />
-    </Link>
+    </EgressLink>
   );
 };
 

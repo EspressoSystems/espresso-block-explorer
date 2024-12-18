@@ -16,7 +16,7 @@ import DataTable, {
   DataTableState,
   DataTableStateContext,
 } from '../../data/data_table/DataTable';
-import Link from '../../links/link/Link';
+import { EgressLink } from '../../links/link/Link';
 import {
   NodeSummaryColumn,
   NodeSummaryData,
@@ -76,9 +76,9 @@ const WebSiteCell: React.FC = () => {
   }
 
   return (
-    <Link href={row.companyDetails.website} target="_blank">
+    <EgressLink href={row.companyDetails.website} target="_blank">
       <Text text={row.companyDetails.website} />
-    </Link>
+    </EgressLink>
   );
 };
 

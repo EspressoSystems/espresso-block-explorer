@@ -12,7 +12,7 @@ import Text from '@/text/Text';
 import { WithUiSmall } from '@/typography/typography';
 import React from 'react';
 import LabeledButton from '../../hid/buttons/labeled_button/LabeledButton';
-import Link from '../../links/link/Link';
+import { InternalLink } from '../../links/link/Link';
 import { BlockNumberContext } from '../block_detail_content/BlockDetailContentLoader';
 import HexDump from '../hex_dump/HexDump';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
@@ -94,9 +94,9 @@ export const TransactionDetailsContent: React.FC<
     <>
       <TableLabeledValue className="card--padding">
         <Text text="Block" />
-        <Link href={pathResolver.block(details.block)}>
+        <InternalLink href={pathResolver.block(details.block)}>
           <NumberText number={details.block} />
-        </Link>
+        </InternalLink>
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Transaction index in block" />
@@ -159,9 +159,9 @@ export const TransactionDataContents: React.FC = () => {
         <>
           <RollUpSimple namespace={data.namespace} />
           <br />
-          <Link href={pathResolver.rollUp(data.namespace)}>
+          <InternalLink href={pathResolver.rollUp(data.namespace)}>
             <NumberText number={data.namespace} />
-          </Link>
+          </InternalLink>
         </>
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
