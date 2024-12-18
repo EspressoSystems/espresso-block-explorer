@@ -55,6 +55,15 @@ registerWebWorkerProxyRequestCodec(
   }
 }
 
+let singletonWorker: null | Worker = null;
+function createWorker(): Worker {
+  if (!singletonWorker) {
+    singletonWorker = new ProxyWorker();
+  }
+
+  return singletonWorker;
+}
+
 export class WebWorkerClientBasedInscriptionService
   implements WebWorkerInscriptionAPI
 {
@@ -69,7 +78,7 @@ export class WebWorkerClientBasedInscriptionService
       1024,
     ),
   ) {
-    const worker = new ProxyWorker();
+    const worker = createWorker();
 
     this.requestChannel = requestChannel;
     this.responseChannel = responseChannel;

@@ -353,6 +353,15 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceExplorerAPI
   }
 }
 
+let singletonWorker: null | Worker = null;
+function createWorker(): Worker {
+  if (!singletonWorker) {
+    singletonWorker = new ProxyWorker();
+  }
+
+  return singletonWorker;
+}
+
 export class WebWorkerClientBasedCappuccinoHotShotQueryService
   implements CappuccinoHotShotQueryService
 {
@@ -361,7 +370,7 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryService
   public readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;
 
   constructor() {
-    const worker = new ProxyWorker();
+    const worker = createWorker();
     const helper = new AsyncRequestHelper(worker);
     this.availability =
       new WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI(
