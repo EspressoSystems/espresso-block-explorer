@@ -38,6 +38,10 @@ import { NodeIdentityInformationStreamContext } from '@/components/visual/geo_js
 import { PieChartEntry } from '@/components/visual/pie_chart/PieChart';
 import { preferNullOverEmptyString } from '@/convert/codec/string';
 import {
+  Completer,
+  createCompleter,
+} from '@/data_structures/async/completer/Completer';
+import {
   CircularBuffer,
   createCircularBuffer,
 } from '@/data_structures/circular_buffer/CircularBuffer';
@@ -692,6 +696,8 @@ async function handleWebSocketEvents(
   webSocketCommandSink.send(new WebSocketCommandConnect());
 }
 
+const kCancelStream = 1;
+
 /**
  * bridgeStreamIntoIndividualStreams is a helper function that will bridge the
  * incoming stream of events from the Node Validator Service into the various
@@ -699,13 +705,30 @@ async function handleWebSocketEvents(
  */
 async function bridgeStreamIntoIndividualStreams(
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  cancelCompleter: Completer<typeof kCancelStream>,
   nodeValidatorService: WebWorkerNodeValidatorAPI,
   webSocketCommandSink: Sink<WebSocketCommand>,
   nodeValidatorRequestSink: Sink<CappuccinoNodeValidatorRequest>,
 ) {
   const state = createBridgeState();
+  const it = nodeValidatorService.stream[Symbol.asyncIterator]();
 
-  for await (const event of nodeValidatorService.stream) {
+  // We will be racing each iteration of the stream with the cancelCompleter
+  // promise. We don't want to lose an event from the stream if we end up
+  // receiving the cancel signal, so we initialize it outside of the loop,
+  // so that we can refer to the next event when we drain the stream until
+  // we close.
+  let next = it.next();
+
+  for (
+    let signal = await Promise.race([cancelCompleter.promise, next]);
+    signal !== kCancelStream && !signal.done;
+    next = it.next(),
+      signal = await Promise.race([cancelCompleter.promise, next])
+  ) {
+    // We now have an event.
+    const event = signal.value;
+
     if (event instanceof NodeValidatorServiceResponse) {
       await bridgeNodeValidatorResponse(state, streams, event.response);
       await streams.errors.publish(null);
@@ -726,6 +749,21 @@ async function bridgeStreamIntoIndividualStreams(
     if (event instanceof ErrorResponse) {
       await streams.errors.publish(event);
       continue;
+    }
+  }
+
+  // Drain the stream until we receive the Closed Signal
+  for (let signal = await next; !signal.done; signal = await it.next()) {
+    const event = signal.value;
+
+    if (!(event instanceof WebSocketResponse)) {
+      // Ignore all non WebSocketResponses
+      continue;
+    }
+
+    if (event.status instanceof WebSocketStatusConnectionClosed) {
+      // Break out when we receive the closed signal.
+      break;
     }
   }
 }
@@ -797,6 +835,7 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
     CappuccinoNodeValidatorServiceAPIContext,
   );
   const streams = createNodeValidatorSplitStreams();
+  const cancelCompleter = createCompleter<typeof kCancelStream>();
 
   React.useEffect(() => {
     // Bridge these streams
@@ -811,6 +850,7 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
     );
     bridgeStreamIntoIndividualStreams(
       streams,
+      cancelCompleter,
       nodeValidatorService,
       lifeCycleRequestSink,
       nodeValidatorRequestSink,
@@ -822,8 +862,9 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
       // Tell the service to Close the connection.
       lifeCycleRequestSink.send(new WebSocketCommandClose());
       streams.mounted = false;
+      cancelCompleter.complete(kCancelStream);
     };
-  });
+  }, [streams, nodeValidatorService, cancelCompleter]);
 
   return (
     <LatestBlockSummaryStreamContext.Provider value={streams.latestBlockStream}>
