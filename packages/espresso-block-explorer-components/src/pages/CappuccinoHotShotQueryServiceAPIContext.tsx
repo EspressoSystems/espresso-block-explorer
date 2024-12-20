@@ -13,12 +13,33 @@ export const CappuccinoHotShotQueryServiceAPIContext =
     new UnimplementedCappuccinoHotShotQueryService(),
   );
 
+let singletonService: CappuccinoHotShotQueryService | null = null;
+/**
+ * createWebWorkerCappuccinoHotShotQueryService returns a singleton instanceof
+ * a CappuccinoHotShotQueryService implemented using Web Workers.
+ */
+function createWebWorkerCappuccinoHotShotQueryService(): CappuccinoHotShotQueryService {
+  if (singletonService === null) {
+    singletonService = new WebWorkerClientBasedCappuccinoHotShotQueryService();
+  }
+
+  return singletonService;
+}
+
+/**
+ * createDefaultCappuccinoHotShotQueryService creates a default instance of a
+ * CappuccinoHotShotQueryService depending on the environment that the code is
+ * being run within.
+ *
+ * If support for Web Workers is available, then a Web Worker based solution
+ * will returned, otherwise, it will default ot a fake implementation.
+ */
 function createDefaultCappuccinoHotShotQueryService(): CappuccinoHotShotQueryService {
   if (
     (typeof window !== 'undefined' && 'Worker' in window) ||
     (typeof self !== 'undefined' && 'Worker' in self)
   ) {
-    return new WebWorkerClientBasedCappuccinoHotShotQueryService();
+    return createWebWorkerCappuccinoHotShotQueryService();
   }
 
   return new FakeDataCappuccinoHotShotQueryService();
@@ -28,6 +49,11 @@ interface ProvideCappuccinoHotShotQueryServiceAPIContextProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * ProvideCappuccinoHotShotQueryServiceAPIContext is a component that provides a
+ * Cappuccino HotShot Query Service API using a default implementation that is
+ * dependent on the environment that the code is being run within.
+ */
 export const ProvideCappuccinoHotShotQueryServiceAPIContext: React.FC<
   ProvideCappuccinoHotShotQueryServiceAPIContextProps
 > = (props) => {
