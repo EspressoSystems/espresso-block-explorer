@@ -131,12 +131,6 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     );
   }
 
-  private assertNotConnected() {
-    if (this.webSocket !== null) {
-      throw new Error('Already connected');
-    }
-  }
-
   private assertConnected() {
     if (this.webSocket === null) {
       throw new Error('Not connected');
@@ -144,13 +138,18 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
   }
 
   private webSocket: null | WebSocket = null;
+  private webSocketStatus: WebSocketStatus =
+    new WebSocketStatusConnectionClosed();
   private webSocketCompleter: null | Completer<WebSocket> = null;
   private async handleConnect() {
-    this.assertNotConnected();
+    if (this.webSocket !== null) {
+      // We're already connected.
+      // Normally, I would consider this an error, but for convenience, we'll
+      // just echo the current status of the websocket back.
+      this.lifecycleResponseSink.send(this.webSocketStatus);
+      return;
+    }
 
-    await this.lifecycleResponseSink.send(
-      new WebSocketStatusConnectionConnecting(),
-    );
     const url = new URL('node-validator/details', this.serviceBaseURL);
 
     const webSocketCompleter = createCompleter<WebSocket>();
@@ -175,6 +174,9 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
       webSocket.addEventListener('message', messageHandler);
       webSocket.addEventListener('close', closeHandler);
       webSocket.addEventListener('error', errorHandler);
+      webSocket.addEventListener('open', () => {
+        this.webSocketStatus = new WebSocketStatusConnectionOpened();
+      });
 
       webSocket.addEventListener('close', () => {
         // Let's clean up our handlers.
@@ -186,9 +188,13 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
 
         // Let's remove our reference to the web socket.
         this.webSocket = null;
+        this.webSocketStatus = new WebSocketStatusConnectionClosed();
       });
 
       this.webSocket = webSocket;
+      const connecting = new WebSocketStatusConnectionConnecting();
+      this.webSocketStatus = connecting;
+      await this.lifecycleResponseSink.send(connecting);
     } catch (error) {
       const err = new WebSocketError(error);
       this.errorResponseSink.send(err);
@@ -197,10 +203,27 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
   }
 
   private async handleClose() {
-    this.assertConnected();
+    const webSocket = this.webSocket;
+    if (webSocket === null) {
+      // We're not connected, so we're already closed.
+      this.lifecycleResponseSink.send(new WebSocketStatusConnectionClosed());
+      return;
+    }
+
+    if (this.webSocketStatus instanceof WebSocketStatusConnectionConnecting) {
+      // We were asked to close, while we're still connecting.
+      // It's unclear as to whether we can close a connection that is not quite
+      // open yet.  So we'll try to close it, and add an event listener to
+      // further try and close the connection.
+
+      webSocket.close(1000, 'hangup');
+      webSocket.addEventListener('open', () => {
+        webSocket.close(1000, 'done');
+      });
+      return;
+    }
 
     // We want to disconnect from the webSocket
-    const webSocket = this.webSocket!;
 
     // Explicitly disconnect
     webSocket.close(1000, 'done');
