@@ -34,7 +34,7 @@ import {
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
-import { CardNoPadding } from '@/layout/card/Card';
+import Card from '@/layout/card/Card';
 import Heading1 from '@/layout/heading/Heading1';
 import { WithEdgeMargin } from '@/layout/margin/margins';
 import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/SummaryTableLabeledValue';
@@ -155,25 +155,19 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           <ExplorerOverviewAsyncHandler className="overview" />
         </ExplorerOverviewLoader>
 
-        <CardNoPadding className="block-time-histogram">
-          <BlockTimeHistogramLoader>
-            <BlockTimeHistogram />
-          </BlockTimeHistogramLoader>
-        </CardNoPadding>
+        <BlockTimeHistogramLoader>
+          <BlockTimeHistogram />
+        </BlockTimeHistogramLoader>
 
-        <CardNoPadding className="block-size-histogram">
-          <BlockSizeHistogramLoader>
-            <BlockSizeHistogram />
-          </BlockSizeHistogramLoader>
-        </CardNoPadding>
+        <BlockSizeHistogramLoader>
+          <BlockSizeHistogram />
+        </BlockSizeHistogramLoader>
 
-        <CardNoPadding className="throughput-histogram">
-          <BlockThroughputHistogramLoader>
-            <BlockThroughputHistogram />
-          </BlockThroughputHistogramLoader>
-        </CardNoPadding>
+        <BlockThroughputHistogramLoader>
+          <BlockThroughputHistogram />
+        </BlockThroughputHistogramLoader>
 
-        <CardNoPadding className="latest-blocks-summary">
+        <Card className="latest-blocks-summary">
           <SummaryTableLabeledValue>
             <Text300H2>
               <Text text="Latest Blocks" />
@@ -188,9 +182,9 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
               <GuardedBlocksSummaryDataTable />
             </BlockSummaryDataLoader>
           </div>
-        </CardNoPadding>
+        </Card>
 
-        <CardNoPadding className="latest-transactions-summary">
+        <Card className="latest-transactions-summary">
           <SummaryTableLabeledValue>
             <Text300H2>
               <Text text="Latest Transactions" />
@@ -205,9 +199,9 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
               <GuardedTransactionsSummaryDataTable />
             </TransactionSummaryDataLoader>
           </div>
-        </CardNoPadding>
+        </Card>
 
-        <CardNoPadding className="latest-rollups-summary">
+        <Card className="latest-rollups-summary">
           <SummaryTableLabeledValue>
             <Text300H2>
               <Text text="Most active rollups" />
@@ -222,7 +216,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
               <GuardedRollUpsSummaryDataTable />
             </RollUpsSummaryLoader>
           </div>
-        </CardNoPadding>
+        </Card>
       </div>
 
       <Footer />

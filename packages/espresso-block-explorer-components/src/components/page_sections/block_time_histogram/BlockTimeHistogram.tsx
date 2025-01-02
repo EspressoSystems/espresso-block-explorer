@@ -1,4 +1,7 @@
 import { ErrorContext } from '@/components/contexts/ErrorProvider';
+import { CardNoPadding } from '@/components/layout/card/Card';
+import { WithLoadingShimmer } from '@/components/loading/LoadingShimmer';
+import SkeletonContent from '@/components/loading/SkeletonContent';
 import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import ValueLabeled from '@/layout/value_labeled/ValueLabeled';
@@ -8,6 +11,7 @@ import { HistogramLabelProps } from '@/visual/histogram/histogram_base/Histogram
 import {
   ProvideDataStatistics,
   SimpleHistogram,
+  SimpleHistogramPlaceholder,
 } from '@/visual/histogram/histogram_base/SimpleHistogram';
 import {
   HistogramDomain,
@@ -19,12 +23,22 @@ import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_titl
 import React from 'react';
 import { BlockTimeHistogramData } from './BlockTimeHistogramDataLoader';
 
+const CardNoPaddingWithShimmer = WithLoadingShimmer(CardNoPadding);
+
 const ValueText: React.FC = () => {
   const rangeStatistics = React.useContext(HistogramRangeStatistics);
+  if (Number.isNaN(rangeStatistics.mean)) {
+    return <Text text="-" />;
+  }
+
   return <SecondsText seconds={rangeStatistics.mean} />;
 };
 
 const LabelValue: React.FC<HistogramLabelProps> = (props) => {
+  if (Number.isNaN(props.value)) {
+    return <Text text="-" />;
+  }
+
   return <SecondsText seconds={props.value} />;
 };
 
@@ -33,12 +47,27 @@ export const BlockTimeHistogram: React.FC = () => {
   const loading = React.useContext(LoadingContext);
   const histogramData = React.useContext(DataContext) as BlockTimeHistogramData;
 
-  if (loading || error) {
+  if (loading) {
+    return (
+      <CardNoPaddingWithShimmer className="block-time-histogram">
+        <HistogramSectionTitle>
+          <Text text="Block time" />
+          <ValueLabeled>
+            <SkeletonContent />
+            <Text text="Average" />
+          </ValueLabeled>
+        </HistogramSectionTitle>
+        <SimpleHistogramPlaceholder />
+      </CardNoPaddingWithShimmer>
+    );
+  }
+
+  if (error) {
     return <></>;
   }
 
   return (
-    <>
+    <CardNoPadding className="block-time-histogram">
       <HistogramRange.Provider value={histogramData.blockTime}>
         <HistogramDomain.Provider value={histogramData.blocks}>
           <HistogramYAxisLabelComponent.Provider value={LabelValue}>
@@ -56,6 +85,6 @@ export const BlockTimeHistogram: React.FC = () => {
           </HistogramYAxisLabelComponent.Provider>
         </HistogramDomain.Provider>
       </HistogramRange.Provider>
-    </>
+    </CardNoPadding>
   );
 };

@@ -92,25 +92,19 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
           </LatestBlockProducersStreamConsumer>
 
           {/* Block Time Histogram */}
-          <CardNoPadding className="block-time-histogram">
-            <BlockTimeHistogramStreamConsumer>
-              <BlockTimeHistogram />
-            </BlockTimeHistogramStreamConsumer>
-          </CardNoPadding>
+          <BlockTimeHistogramStreamConsumer>
+            <BlockTimeHistogram />
+          </BlockTimeHistogramStreamConsumer>
 
           {/* Block Size Histogram */}
-          <CardNoPadding className="block-size-histogram">
-            <BlockSizeHistogramStreamConsumer>
-              <BlockSizeHistogram />
-            </BlockSizeHistogramStreamConsumer>
-          </CardNoPadding>
+          <BlockSizeHistogramStreamConsumer>
+            <BlockSizeHistogram />
+          </BlockSizeHistogramStreamConsumer>
 
           {/* Throughput Histogram */}
-          <CardNoPadding className="throughput-histogram">
-            <BlockThroughputHistogramStreamConsumer>
-              <BlockThroughputHistogram />
-            </BlockThroughputHistogramStreamConsumer>
-          </CardNoPadding>
+          <BlockThroughputHistogramStreamConsumer>
+            <BlockThroughputHistogram />
+          </BlockThroughputHistogramStreamConsumer>
 
           {/* CDN Status */}
           <CardNoPadding className="cdn">
