@@ -4,3 +4,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.inscription--section {
+  grid-template-columns: 1fr 2fr;
+}
+
+.inscription--section > .value > .tabled-labeled-value {
+  grid-template-columns: 1fr 2fr;
+}

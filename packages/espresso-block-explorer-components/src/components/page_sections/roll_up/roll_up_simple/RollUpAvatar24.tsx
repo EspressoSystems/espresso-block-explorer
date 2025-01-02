@@ -1,4 +1,10 @@
+import { kInfiniteGardenNamespace } from '@/models/block_explorer/rollup_entry/data';
 import { rollUpImagesMap } from '@/models/block_explorer/rollup_entry/data_images';
+import {
+  EspressoAvatarLogo,
+  With24PxSquare,
+  WithCircleBorder,
+} from '@/models/block_explorer/rollup_entry/images';
 import { RollUpEntry } from '@/models/block_explorer/rollup_entry/types';
 import React from 'react';
 
@@ -12,8 +18,18 @@ export interface RollUpAvatar24Props {
  */
 const RollUpAvatar24: React.FC<RollUpAvatar24Props> = (props) => {
   const namespace = props.entry.namespace;
+  if (namespace === kInfiniteGardenNamespace) {
+    return React.createElement(
+      WithCircleBorder(With24PxSquare(EspressoAvatarLogo)),
+    );
+  }
+
   const images = rollUpImagesMap.get(namespace);
-  return React.createElement(images!.logo24);
+  if (!images) {
+    return <></>;
+  }
+
+  return React.createElement(images.logo24);
 };
 
 export default RollUpAvatar24;

@@ -1,4 +1,9 @@
 import {
+  BincodeDeserializer,
+  BincodeDeserializerBase,
+} from '@/convert/bincode/deserializer';
+import { BincodeSerializer } from '@/convert/bincode/serializer';
+import {
   ArrayCodec,
   ArrayDecoder,
   ArrayEncoder,
@@ -10,6 +15,7 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
+import InvalidTypeError from '@/errors/InvalidTypeError';
 import WalletAddress, { walletAddressCodec } from './wallet_address';
 
 /**
@@ -81,3 +87,30 @@ export const listInscriptionCodec = new ArrayCodec(
   new ArrayDecoder(inscriptionCodec),
   new ArrayEncoder(inscriptionCodec),
 );
+
+export function deserializeBincodeInscription(
+  input: BincodeDeserializer,
+): Inscription {
+  if (!(input instanceof BincodeDeserializerBase)) {
+    throw new InvalidTypeError(typeof input, 'BincodeDeserializer');
+  }
+
+  // Each Number is encoded as a Uint64
+  const addressData = input.deserializeBytes();
+  const address = new WalletAddress(addressData.buffer);
+
+  const message = input.deserializeStringUTF8();
+
+  const time = Number(input.deserializeUint64());
+
+  return new Inscription(address, new Date(time * 1000), message);
+}
+
+export function serializeBincodeInscription(
+  serializer: BincodeSerializer,
+  input: Inscription,
+) {
+  serializer.serializeBytes(new Uint8Array(input.address.address));
+  serializer.serializeStringUTF8(input.message);
+  serializer.serializeUint64(BigInt(Math.floor(input.time.valueOf() / 1000)));
+}
