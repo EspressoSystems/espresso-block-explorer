@@ -835,9 +835,9 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
     CappuccinoNodeValidatorServiceAPIContext,
   );
   const streams = createNodeValidatorSplitStreams();
-  const cancelCompleter = createCompleter<typeof kCancelStream>();
 
   React.useEffect(() => {
+    const cancelCompleter = createCompleter<typeof kCancelStream>();
     // Bridge these streams
 
     const nodeValidatorRequestSink = createSinkWithConverter(
@@ -864,7 +864,7 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
       streams.mounted = false;
       cancelCompleter.complete(kCancelStream);
     };
-  }, [streams, nodeValidatorService, cancelCompleter]);
+  }, [streams, nodeValidatorService]);
 
   return (
     <LatestBlockSummaryStreamContext.Provider value={streams.latestBlockStream}>

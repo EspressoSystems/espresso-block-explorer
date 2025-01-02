@@ -20,12 +20,12 @@ import {
   espressoErrorToWebWorkerProxyResponseConverter,
   webSocketStatusToWebWorkerProxyResponseConverter,
 } from '@/models/web_worker/web_worker_proxy_response_codec';
-import { inscriptionResponseToWebWorkerProxyResponseConverter } from '@/service/inscription/cappuccino/responses/inscription_service_response';
 import CappuccinoNodeValidatorRequest from '../requests/node_validator_request';
 import { cappuccinoNodeValidatorRequestCodec } from '../requests/node_validator_request_codec';
 import { NodeValidatorServiceRequest } from '../requests/node_validator_service_request';
 import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
 import { cappuccinoNodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
+import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 
 // URL expected to be replay:<url>
@@ -58,7 +58,7 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     );
     this.nodeValidatorResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
-      inscriptionResponseToWebWorkerProxyResponseConverter,
+      nodeValidatorResponseToWebWorkerProxyResponseConverter,
     );
     this.errorResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
@@ -122,7 +122,6 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     request: CappuccinoNodeValidatorRequest,
   ) {
     this.assertConnected();
-    await this.webSocketCompleter!.promise;
     const webSocket = this.webSocket!;
 
     // Every other message should be forwarded to the server.
@@ -138,22 +137,16 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
   }
 
   private webSocket: null | WebSocket = null;
-  private webSocketStatus: WebSocketStatus =
-    new WebSocketStatusConnectionClosed();
-  private webSocketCompleter: null | Completer<WebSocket> = null;
   private async handleConnect() {
     if (this.webSocket !== null) {
       // We're already connected.
-      // Normally, I would consider this an error, but for convenience, we'll
-      // just echo the current status of the websocket back.
-      this.lifecycleResponseSink.send(this.webSocketStatus);
+      // We'll ignore this case
       return;
     }
 
     const url = new URL('node-validator/details', this.serviceBaseURL);
 
     const webSocketCompleter = createCompleter<WebSocket>();
-    this.webSocketCompleter = webSocketCompleter;
 
     try {
       const messageHandler = new WebSocketMessageHandler(
@@ -164,9 +157,13 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
         this.lifecycleResponseSink,
       );
       const closeHandler = new WebSocketCloseHandler(
+        webSocketCompleter,
         this.lifecycleResponseSink,
       );
-      const errorHandler = new WebSocketErrorHandler(this.errorResponseSink);
+      const errorHandler = new WebSocketErrorHandler(
+        webSocketCompleter,
+        this.errorResponseSink,
+      );
       const webSocket = new WebSocket(url);
 
       webSocket.onerror;
@@ -174,9 +171,6 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
       webSocket.addEventListener('message', messageHandler);
       webSocket.addEventListener('close', closeHandler);
       webSocket.addEventListener('error', errorHandler);
-      webSocket.addEventListener('open', () => {
-        this.webSocketStatus = new WebSocketStatusConnectionOpened();
-      });
 
       webSocket.addEventListener('close', () => {
         // Let's clean up our handlers.
@@ -188,45 +182,37 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
 
         // Let's remove our reference to the web socket.
         this.webSocket = null;
-        this.webSocketStatus = new WebSocketStatusConnectionClosed();
       });
 
       this.webSocket = webSocket;
       const connecting = new WebSocketStatusConnectionConnecting();
-      this.webSocketStatus = connecting;
       await this.lifecycleResponseSink.send(connecting);
     } catch (error) {
       const err = new WebSocketError(error);
       this.errorResponseSink.send(err);
       webSocketCompleter.completeError(err);
     }
+
+    await webSocketCompleter.promise;
   }
 
   private async handleClose() {
     const webSocket = this.webSocket;
+    // const webSocketCompleter = this.webSocketCompleter;
     if (webSocket === null) {
       // We're not connected, so we're already closed.
       this.lifecycleResponseSink.send(new WebSocketStatusConnectionClosed());
       return;
     }
 
-    if (this.webSocketStatus instanceof WebSocketStatusConnectionConnecting) {
-      // We were asked to close, while we're still connecting.
-      // It's unclear as to whether we can close a connection that is not quite
-      // open yet.  So we'll try to close it, and add an event listener to
-      // further try and close the connection.
-
-      webSocket.close(1000, 'hangup');
-      webSocket.addEventListener('open', () => {
-        webSocket.close(1000, 'done');
-      });
-      return;
-    }
-
     // We want to disconnect from the webSocket
-
-    // Explicitly disconnect
     webSocket.close(1000, 'done');
+
+    return new Promise<void>((resolve) => {
+      webSocket.addEventListener('close', () => {
+        resolve();
+      });
+    });
   }
 }
 
@@ -287,9 +273,14 @@ class WebSocketOpenHandler implements EventListenerObject {
 }
 
 class WebSocketCloseHandler implements EventListenerObject {
+  private readonly completer: Completer<WebSocket>;
   private readonly lifecycleResponseSink: Sink<WebSocketStatus>;
 
-  constructor(lifecycleResponseSink: Sink<WebSocketStatus>) {
+  constructor(
+    completer: Completer<WebSocket>,
+    lifecycleResponseSink: Sink<WebSocketStatus>,
+  ) {
+    this.completer = completer;
     this.lifecycleResponseSink = lifecycleResponseSink;
   }
 
@@ -297,13 +288,24 @@ class WebSocketCloseHandler implements EventListenerObject {
     await this.lifecycleResponseSink.send(
       new WebSocketStatusConnectionClosed(),
     );
+
+    if (!this.completer.isCompleted) {
+      this.completer.completeError(
+        new WebSocketError(null, 'web socket error: unknown error'),
+      );
+    }
   }
 }
 
 class WebSocketErrorHandler implements EventListenerObject {
+  private readonly completer: Completer<WebSocket>;
   private readonly errorResponseSink: Sink<unknown>;
 
-  constructor(errorResponseSink: Sink<unknown>) {
+  constructor(
+    completer: Completer<WebSocket>,
+    errorResponseSink: Sink<unknown>,
+  ) {
+    this.completer = completer;
     this.errorResponseSink = errorResponseSink;
   }
 
@@ -316,6 +318,11 @@ class WebSocketErrorHandler implements EventListenerObject {
   }
 
   handleEvent(event: Event) {
-    this.errorResponseSink.send(this.errorFromEvent(event));
+    const err = this.errorFromEvent(event);
+    this.errorResponseSink.send(err);
+
+    if (!this.completer.isCompleted) {
+      this.completer.completeError(err);
+    }
   }
 }
