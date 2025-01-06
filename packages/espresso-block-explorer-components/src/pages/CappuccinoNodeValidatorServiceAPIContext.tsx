@@ -16,6 +16,11 @@ interface ProvideCappuccinoNodeValidatorServiceAPIContextProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * ProvideCappuccinoNodeValidatorServiceAPIContext is a component that provides
+ * a Cappuccino Node Validator Service API using a default implementation that
+ * is dependent on the environment that the code is being run within.
+ */
 export const ProvideCappuccinoNodeValidatorServiceAPIContext: React.FC<
   ProvideCappuccinoNodeValidatorServiceAPIContextProps
 > = (props) => {
@@ -28,12 +33,34 @@ export const ProvideCappuccinoNodeValidatorServiceAPIContext: React.FC<
   );
 };
 
+let singletonService: WebWorkerNodeValidatorAPI | null = null;
+
+/**
+ * createWebWorkerNodeValidatorService returns a singleton instance of a
+ * WebWorkerNodeValidatorAPI implemented using Web Workers.
+ */
+function createWebWorkerNodeValidatorService(): WebWorkerNodeValidatorAPI {
+  if (singletonService === null) {
+    singletonService = new WebWorkerClientBasedNodeValidatorService();
+  }
+
+  return singletonService;
+}
+
+/**
+ * createDefaultCappuccinoNodeValidatorService creates a default instance of a
+ * WebWorkerNodeValidatorAPI depending on the environment that the code is
+ * being run within.
+ *
+ * If support for Web Workers is available, then a Web Worker based solution
+ * will returned, otherwise, it will default ot a fake implementation.
+ */
 function createDefaultCappuccinoNodeValidatorService(): WebWorkerNodeValidatorAPI {
   if (
     (typeof window !== 'undefined' && 'Worker' in window) ||
     (typeof self !== 'undefined' && 'Worker' in self)
   ) {
-    return new WebWorkerClientBasedNodeValidatorService();
+    return createWebWorkerNodeValidatorService();
   }
 
   return new FakeDataCappuccinoNodeValidatorAPI(
