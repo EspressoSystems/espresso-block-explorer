@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from '../link/Link';
+import { EgressLink } from '../link/Link';
 import './social_media_icon_link.css';
 
 export interface SocialMediaIconLinkProps {
@@ -13,14 +13,14 @@ export interface SocialMediaIconLinkProps {
  * the footer element of a page.
  */
 const SocialMediaIconLink: React.FC<SocialMediaIconLinkProps> = (props) => (
-  <Link
+  <EgressLink
     className="link--social"
     href={props.href}
     title={props.title}
     target="_blank"
   >
     {props.children}
-  </Link>
+  </EgressLink>
 );
 
 export default SocialMediaIconLink;

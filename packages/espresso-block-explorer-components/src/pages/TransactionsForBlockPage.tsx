@@ -1,4 +1,4 @@
-import Link from '@/components/links/link/Link';
+import { InternalLink } from '@/components/links/link/Link';
 import {
   BlockDetailsLoader,
   BlockNumberContext,
@@ -44,9 +44,9 @@ const GuardedEdgeMarginTransactionsForBlockNavigation: React.FC = () => {
     return (
       <>
         <Text text="For block #" />
-        <Link href={pathResolver.block(block)}>
+        <InternalLink href={pathResolver.block(block)}>
           <NumberText number={block} />
-        </Link>
+        </InternalLink>
       </>
     );
   }
@@ -54,9 +54,9 @@ const GuardedEdgeMarginTransactionsForBlockNavigation: React.FC = () => {
   return (
     <>
       <Text text="For block #" />
-      <Link href={pathResolver.block(block)}>
+      <InternalLink href={pathResolver.block(block)}>
         <NumberText number={block} />
-      </Link>
+      </InternalLink>
       <Text text={` containing ${data.transactions} transactions`} />
     </>
   );

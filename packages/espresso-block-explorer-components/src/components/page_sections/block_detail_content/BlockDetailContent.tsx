@@ -17,7 +17,7 @@ import ArrowLeft from '@/visual/icons/ArrowLeft';
 import ArrowRight from '@/visual/icons/ArrowRight';
 import React from 'react';
 import { IconAnchorButton } from '../../hid/buttons';
-import Link from '../../links/link/Link';
+import { InternalLink } from '../../links/link/Link';
 import { BlockNumberContext } from './BlockDetailContentLoader';
 import './block_detail_content.css';
 
@@ -169,9 +169,9 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Transactions" />
-        <Link href={pathResolver.transactionsForBlock(details.height)}>
+        <InternalLink href={pathResolver.transactionsForBlock(details.height)}>
           <NumberText number={details.transactions} />
-        </Link>
+        </InternalLink>
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Builders" />

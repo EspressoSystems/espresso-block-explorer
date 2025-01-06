@@ -1,12 +1,14 @@
 'use client';
 
 import {
+  InternalLinkAnchorComponentContext,
   ProvideDerivedDateTimeFormatters,
   ProvideDerivedNumberFormatters,
   ProvideNavigatorLanguage,
   ProvideTickEverySecond,
 } from 'espresso-block-explorer-components';
 import 'espresso-block-explorer-components/dist/style.css';
+import Link from 'next/link';
 import React from 'react';
 import './globals.css';
 
@@ -23,16 +25,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ProvideNavigatorLanguage>
-      <ProvideDerivedNumberFormatters>
-        <ProvideDerivedDateTimeFormatters>
-          <ProvideTickEverySecond>
-            <html lang="en">
-              <body>{children}</body>
-            </html>
-          </ProvideTickEverySecond>
-        </ProvideDerivedDateTimeFormatters>
-      </ProvideDerivedNumberFormatters>
-    </ProvideNavigatorLanguage>
+    <InternalLinkAnchorComponentContext.Provider value={Link as any}>
+      <ProvideNavigatorLanguage>
+        <ProvideDerivedNumberFormatters>
+          <ProvideDerivedDateTimeFormatters>
+            <ProvideTickEverySecond>
+              <html lang="en">
+                <body>{children}</body>
+              </html>
+            </ProvideTickEverySecond>
+          </ProvideDerivedDateTimeFormatters>
+        </ProvideDerivedNumberFormatters>
+      </ProvideNavigatorLanguage>
+    </InternalLinkAnchorComponentContext.Provider>
   );
 }

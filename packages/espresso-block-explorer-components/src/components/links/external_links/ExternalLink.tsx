@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from '../link/Link';
+import { EgressLink } from '../link/Link';
 import './external_link.css';
 
 export interface ExternalLinkProps {
@@ -13,9 +13,9 @@ export interface ExternalLinkProps {
  * will link to many resources.
  */
 const ExternalLink: React.FC<ExternalLinkProps> = (props) => (
-  <Link className="link--external" href={props.href} target="_blank">
+  <EgressLink className="link--external" href={props.href} target="_blank">
     {props.children}
-  </Link>
+  </EgressLink>
 );
 
 export default ExternalLink;

@@ -5,7 +5,7 @@ import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
 import NumberText from '@/text/NumberText';
 import Text from '@/text/Text';
 import React from 'react';
-import Link from '../../../links/link/Link';
+import { EgressLink } from '../../../links/link/Link';
 import './roll_up_info.css';
 
 export interface RollUpInfoProps {
@@ -36,15 +36,15 @@ const RollUpInfo: React.FC<RollUpInfoProps> = ({
           <Text text="Namespace" />
         </ValueLabeled>
         <ValueLabeled>
-          <Link href={rollUp.site.toString()}>
+          <EgressLink href={rollUp.site.toString()}>
             <Text text={rollUp.site.toString()} />
-          </Link>
+          </EgressLink>
           <Text text="Site" />
         </ValueLabeled>
         <ValueLabeled>
-          <Link href={rollUp.blockExplorer.toString()}>
+          <EgressLink href={rollUp.blockExplorer.toString()}>
             <Text text={rollUp.blockExplorer.toString()} />
-          </Link>
+          </EgressLink>
           <Text text="Block Explorer" />
         </ValueLabeled>
       </Card>
