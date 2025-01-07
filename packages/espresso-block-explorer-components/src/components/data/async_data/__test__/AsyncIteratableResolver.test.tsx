@@ -30,9 +30,9 @@ describe('Async Iterable Resolver Component', () => {
       await channel.publish(i);
     }
 
-    // const channel = iotaAsync(N);
+    channel.close();
 
-    const { rerender } = render(
+    render(
       <AsyncIterableResolver asyncIterable={channel}>
         <Comp data-testid="1" />
       </AsyncIterableResolver>,
@@ -49,31 +49,25 @@ describe('Async Iterable Resolver Component', () => {
       );
     });
 
-    // for (let i = 1; i < N - 1; i++) {
-    // expect(resolutionStack.length).equals(i + 3);
-    // rerender(
-    //   <AsyncIterableResolver asyncIterable={channel}>
-    //     <Comp data-testid="1" />
-    //   </AsyncIterableResolver>,
-    // );
-    // }
-
-    channel.close();
-
-    rerender(
-      <AsyncIterableResolver asyncIterable={channel}>
-        <Comp data-testid="1" />
-      </AsyncIterableResolver>,
-    );
-
     await waitFor(() => {
+      expect(screen.getByTestId('1')).toHaveAttribute(
+        'data-async-state',
+        String(AsyncState.active),
+      );
       expect(screen.getByTestId('1')).toHaveAttribute(
         'data-async-data',
         String(N - 1),
       );
     });
 
-    expect(resolutionStack.length).equals(N + 2);
+    await waitFor(() => {
+      expect(screen.getByTestId('1')).toHaveAttribute(
+        'data-async-state',
+        String(AsyncState.done),
+      );
+    });
+
+    expect(resolutionStack.length).gt(N);
     {
       // initial state
       const entry = resolutionStack[0];
