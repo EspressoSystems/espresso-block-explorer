@@ -14,7 +14,8 @@ import {
   firstIterator,
   mapIterator,
 } from '@/functional/functional';
-import { expect, userEvent, waitFor, within } from '@storybook/test';
+import { expect, waitFor, within } from '@storybook/test';
+import userEvent from '@testing-library/user-event';
 
 /**
  * getHistogram is a helper function that will return the histogram svg element
@@ -38,7 +39,7 @@ async function hoverElementFromCanvas(canvasElement: Element, ele: Element) {
   unhoverAllElementsFromCanvas(canvasElement);
   // Fake the hover event
   ele.setAttribute('data-hover', 'true');
-  return userEvent.hover(ele);
+  await userEvent.hover(ele);
 }
 
 const getBarHitboxes = (histogram: SVGSVGElement) => {

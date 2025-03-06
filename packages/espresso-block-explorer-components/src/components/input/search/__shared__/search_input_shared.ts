@@ -9,7 +9,8 @@
  * that can share the common functionality to make the component work in both
  * the Storybook and vitest environments.
  */
-import { expect, userEvent, waitFor, within } from '@storybook/test';
+import { expect, waitFor, within } from '@storybook/test';
+import userEvent from '@testing-library/user-event';
 
 export type PartialLocationHref = Pick<Location, 'href'>;
 
@@ -251,6 +252,7 @@ export const interactionNavigateDownThroughAllSearchResults = async (
   // Let's go through all of the elements.
   for (let i = 0; i < numSearchResults; i++) {
     await userEvent.keyboard('{ArrowDown}');
+
     // We should now have the ith element selected.
     // The first child should have the 'data-selected="true"' attribute.
     const dataRow = searchResultElements[i].children[0];
@@ -306,6 +308,7 @@ export const interactionEnteringKeyDownAgainShouldReturnToSearchTerm = async (
     await getSearchResultsParentContainer(canvasElement);
   // Pressing Down again should have nothing selected (reset back to original search input entry).
   await userEvent.keyboard('{ArrowDown}');
+
   expect(
     searchResultsParentContainer.querySelector('[data-selected="true"]'),
   ).not.toBeInTheDocument();
@@ -324,6 +327,7 @@ export const interactionNavigateUpThroughAllSearchResults = async (
   const numSearchResults = searchResultElements.length;
   for (let i = 0; i < numSearchResults; i++) {
     await userEvent.keyboard('{ArrowUp}');
+
     // We should now have the ith element selected.
     // The first child should have the 'data-selected="true"' attribute.
     const dataRow = searchResultElements[numSearchResults - 1 - i].children[0];
@@ -345,6 +349,7 @@ export const interactionEnteringKeyUpAgainShouldReturnToSearchTerm = async (
     await getSearchResultsParentContainer(canvasElement);
   // Pressing Down again should have nothing selected (reset back to original search input entry).
   await userEvent.keyboard('{ArrowUp}');
+
   expect(
     searchResultsParentContainer.querySelector('[data-selected="true"]'),
   ).not.toBeInTheDocument();
