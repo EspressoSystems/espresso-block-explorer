@@ -75,6 +75,12 @@ nav.nav--main > ul {
   padding: 8px 8px 0;
 }
 
+div.card.block-time-histogram,
+div.card.block-size-histogram,
+div.card.throughput-histogram {
+  overflow: visible;
+}
+
 nav.nav--main > button.btn.icon {
   display: inline-flex;
 }

@@ -1,4 +1,5 @@
 import { ErrorContext } from '@/components/contexts/ErrorProvider';
+import { PrefixMoreInfoElement } from '@/components/hid/hover/more_info_element';
 import { CardNoPadding } from '@/components/layout/card/Card';
 import { WithLoadingShimmer } from '@/components/loading/LoadingShimmer';
 import SkeletonContent from '@/components/loading/SkeletonContent';
@@ -75,7 +76,12 @@ export const BlockTimeHistogram: React.FC = () => {
               <HistogramSectionTitle>
                 <Text text="Block time" />
                 <ValueLabeled>
-                  <ValueText />
+                  <PrefixMoreInfoElement className="sm-right" hoverWidth={320}>
+                    <p>
+                      <Text text="Espresso blocktimes are adaptive. Blocks currently average ~2s under load, and ~8s when idle for efficiency." />
+                    </p>
+                    <ValueText />
+                  </PrefixMoreInfoElement>
                   <Text text="Average" />
                 </ValueLabeled>
               </HistogramSectionTitle>
