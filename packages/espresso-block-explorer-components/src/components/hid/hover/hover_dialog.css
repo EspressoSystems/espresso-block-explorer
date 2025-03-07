@@ -13,6 +13,7 @@
   max-width: calc(100vw - 50px);
   bottom: 2.5em;
   left: 0.75em;
+  transform: translateX(-50%);
 
   background-color: var(--hover-dialog--background-color);
   color: var(--hover-dialog--font-color);
@@ -27,6 +28,7 @@
   bottom: -0.5em;
   height: 1em;
   width: 1em;
+  left: 50%;
   background-color: var(--hover-dialog--background-color);
   transform: translateX(-50%) rotate(45deg);
 }
@@ -35,21 +37,21 @@
   margin: 0;
 }
 
-.sm-right .hover-dialog {
-  transform: translateX(-80%);
+.sm-end .hover-dialog {
+  transform: translateX(-90%);
 }
 
-.sm-right .hover-dialog::after {
-  left: 80%;
+.sm-end .hover-dialog::after {
+  left: 90%;
 }
 
 /* Small */
 @media screen and (min-width: 640px) {
-  .sm-right .hover-dialog {
+  .sm-end .hover-dialog {
     transform: translateX(-50%);
   }
 
-  .sm-right .hover-dialog::after {
+  .sm-end .hover-dialog::after {
     left: 50%;
   }
 }

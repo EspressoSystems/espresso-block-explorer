@@ -20,7 +20,8 @@
   opacity: 100%;
 }
 
-.prefix-more-info-element {
+.prefix-more-info-element,
+.suffix-more-info-element {
   display: flex;
   align-items: center;
   gap: 8px;

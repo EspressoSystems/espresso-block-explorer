@@ -76,3 +76,32 @@ export const PrefixMoreInfoElement: React.FC<PrefixMoreInfoElementProps> = ({
     </div>
   );
 };
+
+/**
+ * SuffixMoreInfoElement is a convenience component that wraps the
+ * MoreInfoElement ensuring that it is inline with the contents it is
+ * mean to be displayed next to.
+ *
+ * It has the following layout:
+ * <content> (i)
+ *
+ * where the (i) represents the info element
+ */
+export const SuffixMoreInfoElement: React.FC<PrefixMoreInfoElementProps> = ({
+  className,
+  children,
+  hoverWidth,
+  ...props
+}) => {
+  const [content, hoverContent] = children;
+
+  return (
+    <div
+      {...props}
+      className={addClassToClassName(className, 'suffix-more-info-element')}
+    >
+      {content}
+      <MoreInfoElement hoverWidth={hoverWidth}>{hoverContent}</MoreInfoElement>
+    </div>
+  );
+};

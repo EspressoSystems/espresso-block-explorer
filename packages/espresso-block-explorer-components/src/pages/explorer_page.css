@@ -79,6 +79,10 @@ div.card.block-time-histogram,
 div.card.block-size-histogram,
 div.card.throughput-histogram {
   overflow: visible;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content auto;
+  align-items: flex-end;
 }
 
 nav.nav--main > button.btn.icon {
