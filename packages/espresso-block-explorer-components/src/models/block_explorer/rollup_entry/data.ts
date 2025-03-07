@@ -119,14 +119,14 @@ const kyoto = new RollUpEntry(
 
 const rariDevNet = new RollUpEntry(
   1918988905,
-  'Rari',
+  'RARI',
   new URL('https://rarichain.org/'),
   new URL('https://mainnet.explorer.rarichain.org/'),
 );
 
 const rari = new RollUpEntry(
   1380012617,
-  'Rari',
+  'RARI',
   new URL('https://rarichain.org/'),
   new URL('https://mainnet.explorer.rarichain.org/'),
 );
