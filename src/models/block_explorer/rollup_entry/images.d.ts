@@ -2,8 +2,7 @@ import { default as React } from '../../../../../../node_modules/react';
 
 export interface AvatarLogoProps {
     className?: string;
-    src: string;
-    alt?: string;
+    children?: React.ReactNode | React.ReactNode[];
 }
 /**
  * AvatarLogo represents an Avatar Logo representation of an Avatar Logo.
@@ -48,6 +47,7 @@ export declare const SpireAvatarLogo: React.FC<PreFedSrcAvatarLogoProps>;
  * VistaraAvatarLogo represents the Vistara Logo
  */
 export declare const VistaraAvatarLogo: React.FC<PreFedSrcAvatarLogoProps>;
+export declare const EspressoAvatarLogo: React.FC<PreFedSrcAvatarLogoProps>;
 /**
  * With24PxSquare is a higher order component that adds the class
  * avatar-24x24 to the given component.

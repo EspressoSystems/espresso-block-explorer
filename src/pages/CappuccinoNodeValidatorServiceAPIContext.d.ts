@@ -5,5 +5,10 @@ export declare const CappuccinoNodeValidatorServiceAPIContext: React.Context<Web
 interface ProvideCappuccinoNodeValidatorServiceAPIContextProps {
     children: React.ReactNode | React.ReactNode[];
 }
+/**
+ * ProvideCappuccinoNodeValidatorServiceAPIContext is a component that provides
+ * a Cappuccino Node Validator Service API using a default implementation that
+ * is dependent on the environment that the code is being run within.
+ */
 export declare const ProvideCappuccinoNodeValidatorServiceAPIContext: React.FC<ProvideCappuccinoNodeValidatorServiceAPIContextProps>;
 export {};

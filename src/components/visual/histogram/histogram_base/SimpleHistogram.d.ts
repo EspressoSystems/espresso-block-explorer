@@ -31,4 +31,9 @@ interface ProvideDataStatisticsProps {
  */
 export declare const ProvideDataStatistics: React.FC<ProvideDataStatisticsProps>;
 export declare const SimpleHistogram: React.FC;
+/**
+ * SimpleHistogramPlaceholder is a placeholder component that is displayed when
+ * the histogram is loading.
+ */
+export declare const SimpleHistogramPlaceholder: React.FC;
 export {};

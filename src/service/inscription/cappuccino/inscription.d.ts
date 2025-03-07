@@ -1,3 +1,5 @@
+import { BincodeDeserializer } from '../../../../../../../../../../../src/convert/bincode/deserializer';
+import { BincodeSerializer } from '../../../../../../../../../../../src/convert/bincode/serializer';
 import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { default as WalletAddress } from './wallet_address';
@@ -45,4 +47,6 @@ declare class InscriptionCodec extends TypeCheckingCodec<Inscription> {
  */
 export declare const inscriptionCodec: InscriptionCodec;
 export declare const listInscriptionCodec: ArrayCodec<Inscription, unknown>;
+export declare function deserializeBincodeInscription(input: BincodeDeserializer): Inscription;
+export declare function serializeBincodeInscription(serializer: BincodeSerializer, input: Inscription): void;
 export {};

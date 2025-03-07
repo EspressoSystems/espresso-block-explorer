@@ -21,10 +21,8 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI implements WebWorke
     private handleRequest;
     private handleWebSocketCommand;
     private handleNodeValidatorRequest;
-    private assertNotConnected;
     private assertConnected;
     private webSocket;
-    private webSocketCompleter;
     private handleConnect;
     private handleClose;
 }

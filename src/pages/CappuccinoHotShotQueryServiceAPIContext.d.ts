@@ -5,6 +5,11 @@ export declare const CappuccinoHotShotQueryServiceAPIContext: React.Context<Capp
 interface ProvideCappuccinoHotShotQueryServiceAPIContextProps {
     children: React.ReactNode | React.ReactNode[];
 }
+/**
+ * ProvideCappuccinoHotShotQueryServiceAPIContext is a component that provides a
+ * Cappuccino HotShot Query Service API using a default implementation that is
+ * dependent on the environment that the code is being run within.
+ */
 export declare const ProvideCappuccinoHotShotQueryServiceAPIContext: React.FC<ProvideCappuccinoHotShotQueryServiceAPIContextProps>;
 export interface ProviderCappuccinoLiveServiceProps {
     url: URL;
