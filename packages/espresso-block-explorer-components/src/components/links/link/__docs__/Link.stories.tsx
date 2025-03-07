@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import LocalLink from '../Link';
+import { InternalLink } from '../Link';
 
-const meta: Meta<typeof LocalLink> = {
-  title: 'Components/Links/Link',
-  component: LocalLink,
+const meta: Meta<typeof InternalLink> = {
+  title: 'Components/Links/InternalLink',
+  component: InternalLink,
 };
 
 export default meta;
-type Story = StoryObj<typeof LocalLink>;
+type Story = StoryObj<typeof InternalLink>;
 
 export const Normal: Story = {
   args: {
