@@ -117,6 +117,20 @@ const kyoto = new RollUpEntry(
   new URL('https://kyoto-explorer.altlayer.io/'),
 );
 
+const rariDevNet = new RollUpEntry(
+  1918988905,
+  'RARI',
+  new URL('https://rarichain.org/'),
+  new URL('https://mainnet.explorer.rarichain.org/'),
+);
+
+const rari = new RollUpEntry(
+  1380012617,
+  'RARI',
+  new URL('https://rarichain.org/'),
+  new URL('https://mainnet.explorer.rarichain.org/'),
+);
+
 export const kInfiniteGardenNamespace = 1_397_311_310;
 
 /**
@@ -144,5 +158,7 @@ export const curatedRollupMap = new Map(
     milan,
     kyoto,
     infiniteGarden,
+    rariDevNet,
+    rari,
   ].map((entry) => [entry.namespace, entry]),
 );

@@ -5,6 +5,7 @@ import {
   EigenLayerAvatarLogo,
   OpStackAvatarLogo,
   PolygonAvatarLogo,
+  RariLogo,
   SpireAvatarLogo,
   VistaraAvatarLogo,
   With24PxSquare,
@@ -148,6 +149,20 @@ const kyoto = new RollUpImages(
   With40PxSquare(AltLayerAvatarLogo),
 );
 
+const rariDevNet = new RollUpImages(
+  1918988905,
+  With24PxSquare(RariLogo),
+  With32PxSquare(RariLogo),
+  With40PxSquare(RariLogo),
+);
+
+const rari = new RollUpImages(
+  1380012617,
+  With24PxSquare(RariLogo),
+  With32PxSquare(RariLogo),
+  With40PxSquare(RariLogo),
+);
+
 export const rollUpImagesMap = new Map(
   [
     vienna,
@@ -161,5 +176,7 @@ export const rollUpImagesMap = new Map(
     vistara,
     milan,
     kyoto,
+    rariDevNet,
+    rari,
   ].map((entry) => [entry.namespace, entry]),
 );

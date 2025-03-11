@@ -123,6 +123,20 @@ export const EspressoAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
 );
 
 /**
+ * RariLogo represents the Rari Logo through all of its various sizing
+ * classes that we support
+ */
+export const RariLogo: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/rari_logo20x20@1x.png"
+      alt="Rari Logo"
+      srcSet="/rari_logo20x20@1px.png 20w, /rari_logo20x20@2x.png 40w, /rari_logo20x20@3x.png 60w, /rari_logo32x32@1x.png 32w, /rari_logo32x32@2x.png 64w, /rari_logo32x32@3x.png 96w, /rari_logo40x40@1x.png 40w, /rari_logo40x40@2x.png 80w, /rari_logo40x40@3x.png 120w"
+    />
+  </AvatarLogo>
+);
+
+/**
  * With24PxSquare is a higher order component that adds the class
  * avatar-24x24 to the given component.
  *
