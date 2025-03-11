@@ -49,6 +49,11 @@ export declare const SpireAvatarLogo: React.FC<PreFedSrcAvatarLogoProps>;
 export declare const VistaraAvatarLogo: React.FC<PreFedSrcAvatarLogoProps>;
 export declare const EspressoAvatarLogo: React.FC<PreFedSrcAvatarLogoProps>;
 /**
+ * RariLogo represents the Rari Logo through all of its various sizing
+ * classes that we support
+ */
+export declare const RariLogo: React.FC<PreFedSrcAvatarLogoProps>;
+/**
  * With24PxSquare is a higher order component that adds the class
  * avatar-24x24 to the given component.
  *
