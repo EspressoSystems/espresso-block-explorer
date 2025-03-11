@@ -90,6 +90,16 @@ nav.nav--main > button.btn.icon {
   display: inline-flex;
 }
 
+div.card.block-time-histogram,
+div.card.block-size-histogram,
+div.card.throughput-histogram {
+  overflow: visible;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content auto;
+  align-items: flex-end;
+}
+
 /* Small */
 @media screen and (min-width: 640px) {
   nav.nav--main > ul {
