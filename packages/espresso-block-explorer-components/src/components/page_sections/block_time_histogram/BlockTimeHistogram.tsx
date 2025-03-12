@@ -3,8 +3,15 @@ import { PrefixMoreInfoElement } from '@/components/hid/hover/more_info_element'
 import { CardNoPadding } from '@/components/layout/card/Card';
 import { WithLoadingShimmer } from '@/components/loading/LoadingShimmer';
 import SkeletonContent from '@/components/loading/SkeletonContent';
+import { DataStatistics } from '@/components/visual/histogram/histogram_base/DataStatistics';
 import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
+import {
+  filterIterable,
+  firstIterable,
+  mapIterable,
+  zipWithIterable,
+} from '@/functional/functional';
 import ValueLabeled from '@/layout/value_labeled/ValueLabeled';
 import { HistogramEntry } from '@/models/block_explorer/explorer_summary';
 import SecondsText from '@/text/SecondsText';
@@ -47,6 +54,37 @@ const LabelValue: React.FC<HistogramLabelProps> = (props) => {
   return <SecondsOrUnknownText value={props.value} />;
 };
 
+/**
+ * pairSizeAndTime pairs the blocks size and the block times together by
+ * zipping them into a single array.
+ */
+function pairSizeAndTime(
+  histogramData: HistogramEntry,
+): [HistogramEntry['blockTime'][0], HistogramEntry['blockSize'][0]][] {
+  return Array.from(
+    zipWithIterable(
+      histogramData.blockTime,
+      histogramData.blockSize,
+      (time, size) => [time, size],
+    ),
+  );
+}
+
+/**
+ * resamplePairs resamples the given pair array based on the given
+ * filter condition parameter fn. For convenience it will also return an
+ * array comprised of the first elements of the pair, as it is assumed that
+ * the first element will be the value that is being resampled.
+ */
+function resamplePairs(
+  sizeAndTimePairs: [number | null, number | null][],
+  fn: (value: [number | null, number | null]) => boolean,
+) {
+  return Array.from(
+    mapIterable(filterIterable(sizeAndTimePairs, fn), firstIterable),
+  );
+}
+
 export const BlockTimeHistogram: React.FC = () => {
   const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
@@ -71,36 +109,13 @@ export const BlockTimeHistogram: React.FC = () => {
     return <></>;
   }
 
-  const nonEmptyBlockTimes = histogramData.blockTime.filter(
-    (_, idx) =>
-      histogramData.blockSize[idx] !== null && histogramData.blockSize[idx] > 0,
-  ) as number[];
-
-  const nonEmptyBlockTimeSumOrNull: null | number = nonEmptyBlockTimes.reduce(
-    (acc: null | number, val) => (acc === null ? val : acc + val),
-    null,
+  const sizeAndTimePairs = pairSizeAndTime(histogramData);
+  const nonEmptyBlockTimesStatistics = DataStatistics.compute(
+    resamplePairs(sizeAndTimePairs, ([, size]) => (size ?? 0) > 0),
   );
-
-  const nonEmptyBlockTimeAverageOrNull =
-    nonEmptyBlockTimeSumOrNull === null
-      ? null
-      : nonEmptyBlockTimeSumOrNull / nonEmptyBlockTimes.length;
-
-  const emptyBlockTimes = histogramData.blockTime.filter(
-    (_, idx) =>
-      histogramData.blockSize[idx] !== null &&
-      histogramData.blockSize[idx] === 0,
-  ) as number[];
-
-  const emptyBlockTimeSumOrNull: null | number = emptyBlockTimes.reduce(
-    (acc: null | number, val) => (acc === null ? val : acc + val),
-    null,
+  const emptyBlockStatistics = DataStatistics.compute(
+    resamplePairs(sizeAndTimePairs, ([, size]) => (size ?? 0) === 0),
   );
-
-  const emptyBlockTimeAverageOrNull =
-    emptyBlockTimeSumOrNull === null
-      ? null
-      : emptyBlockTimeSumOrNull / emptyBlockTimes.length;
 
   return (
     <CardNoPadding className="block-time-histogram">
@@ -122,7 +137,7 @@ export const BlockTimeHistogram: React.FC = () => {
                         </label>
                         &nbsp;
                         <SecondsOrUnknownText
-                          value={nonEmptyBlockTimeAverageOrNull}
+                          value={nonEmptyBlockTimesStatistics.nullableMean}
                         />
                       </div>
                       <div>
@@ -131,7 +146,7 @@ export const BlockTimeHistogram: React.FC = () => {
                         </label>
                         &nbsp;
                         <SecondsOrUnknownText
-                          value={emptyBlockTimeAverageOrNull}
+                          value={emptyBlockStatistics.nullableMean}
                         />
                       </div>
                       <ValueText />

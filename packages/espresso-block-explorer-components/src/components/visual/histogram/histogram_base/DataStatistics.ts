@@ -13,6 +13,18 @@ export class DataStatistics {
   readonly count: number;
   readonly length: number;
 
+  /**
+   * nullableMean will return `null` if the `count` is 0, otherwise it will
+   * return what value is currently stored in `mean`.
+   */
+  get nullableMean(): null | number {
+    if (this.count === 0) {
+      return null;
+    }
+
+    return this.mean;
+  }
+
   constructor(
     min: number,
     max: number,
