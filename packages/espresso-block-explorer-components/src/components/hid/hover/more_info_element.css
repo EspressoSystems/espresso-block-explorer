@@ -1,0 +1,28 @@
+.more-info-element {
+  display: inline-block;
+  position: relative;
+}
+
+.more-info-element:hover .hover-dialog,
+.more-info-element[data-toggle='true'] .hover-dialog {
+  visibility: visible;
+}
+
+.more-info-element .icon {
+  opacity: 50%;
+
+  transition: opacity 0.2s ease-in-out;
+  will-change: opacity;
+}
+
+.more-info-element:hover .icon,
+.more-info-element[data-toggle='true'] .icon {
+  opacity: 100%;
+}
+
+.prefix-more-info-element,
+.suffix-more-info-element {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

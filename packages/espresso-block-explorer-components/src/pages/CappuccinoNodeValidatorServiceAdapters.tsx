@@ -104,6 +104,7 @@ async function publishHistogramUpdates(
       blockSize: Array.from(blockSizeHistograms.immutableIterable()),
     }),
     streams.blockTimeHistogramStream.publish({
+      blockSize: Array.from(blockSizeHistograms.immutableIterable()),
       blocks: Array.from(blockHeightHistograms.immutableIterable()),
       blockTime: Array.from(blockTimeHistograms.immutableIterable()),
     }),
@@ -789,7 +790,9 @@ async function startValidatorService(
 function createNodeValidatorSplitStreams() {
   return {
     latestBlockStream: createBufferedChannel<LatestBlock>(4),
-    blockTimeHistogramStream: createBufferedChannel<BlockTimeHistogramData>(4),
+    blockTimeHistogramStream: createBufferedChannel<
+      BlockTimeHistogramData & BlockSizeHistogramData
+    >(4),
     blockSizeHistogramStream: createBufferedChannel<BlockSizeHistogramData>(4),
     blockThroughputHistogramStream:
       createBufferedChannel<BlockThroughputHistogramData>(4),

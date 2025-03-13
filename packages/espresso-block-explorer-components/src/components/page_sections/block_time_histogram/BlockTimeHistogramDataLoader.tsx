@@ -3,6 +3,7 @@ import { ErrorCarry, ErrorJoiner } from '@/components/contexts';
 import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';
+import { HistogramEntry } from '@/models/block_explorer/explorer_summary';
 import React from 'react';
 import PromiseResolver from '../../data/async_data/PromiseResolver';
 
@@ -22,7 +23,7 @@ export interface BlockTimeHistogramData {
  * Histogram.
  */
 export interface BlockTimeHistogramAsyncRetriever
-  extends AsyncRetriever<void, BlockTimeHistogramData> {}
+  extends AsyncRetriever<void, HistogramEntry> {}
 
 /**
  * The BlockTimeHistogramAsyncRetrieverContext is a React context that is
