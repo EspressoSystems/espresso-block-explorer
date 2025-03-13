@@ -1,4 +1,5 @@
 import { AsyncRetriever } from '../../../../../../../../../../../src/async/AsyncRetriever';
+import { HistogramEntry } from '../../../../../../../../../../../src/models/block_explorer/explorer_summary';
 import { default as React } from '../../../../../../node_modules/react';
 
 /**
@@ -15,7 +16,7 @@ export interface BlockTimeHistogramData {
  * retrieve the data that is expected to be displayed on the Block Time
  * Histogram.
  */
-export interface BlockTimeHistogramAsyncRetriever extends AsyncRetriever<void, BlockTimeHistogramData> {
+export interface BlockTimeHistogramAsyncRetriever extends AsyncRetriever<void, HistogramEntry> {
 }
 /**
  * The BlockTimeHistogramAsyncRetrieverContext is a React context that is

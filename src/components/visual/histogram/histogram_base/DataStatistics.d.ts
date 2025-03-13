@@ -12,6 +12,11 @@ export declare class DataStatistics {
     readonly total: number;
     readonly count: number;
     readonly length: number;
+    /**
+     * nullableMean will return `null` if the `count` is 0, otherwise it will
+     * return what value is currently stored in `mean`.
+     */
+    get nullableMean(): null | number;
     constructor(min: number, max: number, total: number, count: number, length: number);
     static compute(data: (null | number)[]): DataStatistics;
     static empty: DataStatistics;
