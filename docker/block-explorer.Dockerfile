@@ -1,4 +1,4 @@
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 COPY package.json package-lock.json /app/
@@ -21,7 +21,7 @@ RUN npm install --no-audit --save --workspace=packages/block-explorer packages/e
 # Build the Next Application
 RUN npm run build --workspace=packages/block-explorer
 
-FROM node:20-alpine
+FROM node:22-alpine
 RUN apk add --no-cache bash jq tini python3 make g++
 WORKDIR /app
 
