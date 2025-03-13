@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   docker:
-    runs-on: ubuntu-latest
+    runs-on: buildjet-8vcpu-ubuntu-2204
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -22,6 +22,7 @@ jobs:
       - name: Install QEMU
         uses: docker/setup-qemu-action@v3
         with:
+          cache-image: false
           platforms: arm64,amd64
 
       - name: Setup Docker BuildKit
