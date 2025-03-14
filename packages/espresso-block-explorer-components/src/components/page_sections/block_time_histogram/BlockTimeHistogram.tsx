@@ -7,6 +7,7 @@ import { DataStatistics } from '@/components/visual/histogram/histogram_base/Dat
 import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import {
+  dropIterable,
   filterIterable,
   firstIterable,
   mapIterable,
@@ -63,7 +64,7 @@ function pairSizeAndTime(
 ): [HistogramEntry['blockTime'][0], HistogramEntry['blockSize'][0]][] {
   return Array.from(
     zipWithIterable(
-      histogramData.blockTime,
+      dropIterable(histogramData.blockTime, 1),
       histogramData.blockSize,
       (time, size) => [time, size],
     ),
