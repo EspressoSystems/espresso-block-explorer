@@ -123,15 +123,168 @@ export const EspressoAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
 );
 
 /**
- * RariLogo represents the Rari Logo through all of its various sizing
- * classes that we support
+ * RariLogo24 represents the Rari Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
  */
-export const RariLogo: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+export const RariLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
   <AvatarLogo {...props}>
     <img
-      src="/rari_logo20x20@1x.png"
+      src="/rari_logo24x24@1x.png"
       alt="Rari Logo"
-      srcSet="/rari_logo20x20@1px.png 20w, /rari_logo20x20@2x.png 40w, /rari_logo20x20@3x.png 60w, /rari_logo32x32@1x.png 32w, /rari_logo32x32@2x.png 64w, /rari_logo32x32@3x.png 96w, /rari_logo40x40@1x.png 40w, /rari_logo40x40@2x.png 80w, /rari_logo40x40@3x.png 120w"
+      srcSet="/rari_logo24x24@1x.png 1x, /rari_logo24x24@2x.png 2x, /rari_logo24x24@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * RariLogo32 represents the Rari Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const RariLogo32: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/rari_logo32x32@1x.png"
+      alt="Rari Logo"
+      srcSet="/rari_logo32x32@1x.png 1x, /rari_logo32x32@2x.png 2x, /rari_logo32x32@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * RariLogo40 represents the Rari Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const RariLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/rari_logo40x40@1x.png"
+      alt="Rari Logo"
+      srcSet="/rari_logo40x40@1x.png 1x, /rari_logo40x40@2x.png 2x, /rari_logo40x40@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+/**
+ * LogXLogo24 represents the LogX Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const LogXLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/logx_logo24x24@1x.png"
+      alt="Rari Logo"
+      srcSet="/logx_logo24x24@1x.png 1x, /logx_logo24x24@2x.png 2x, /logx_logo24x24@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * LogXLogo32 represents the LogX Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const LogXLogo32: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/logx_logo32x32@1x.png"
+      alt="LogX Logo"
+      srcSet="/logx_logo32x32@1x.png 1x, /logx_logo32x32@2x.png 2x, /logx_logo32x32@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * LogXLogo40 represents the LogX Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const LogXLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/logx_logo40x40@1x.png"
+      alt="LogX Logo"
+      srcSet="/logx_logo40x40@1x.png 1x, /logx_logo40x40@2x.png 2x, /logx_logo40x40@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * AppChainLogo24 represents the AppChain Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const AppChainLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/appchain_logo24x24@1x.png"
+      alt="AppChain Logo"
+      srcSet="/appchain_logo24x24@1x.png 1x, /appchain_logo24x24@2x.png 2x, /appchain_logo24x24@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * AppChainLogo32 represents the AppChain Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const AppChainLogo32: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/appchain_logo32x32@1x.png"
+      alt="AppChain Logo"
+      srcSet="/appchain_logo32x32@1x.png 1x, /appchain_logo32x32@2x.png 2x, /appchain_logo32x32@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * AppChainLogo40 represents the AppChain Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const AppChainLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/appchain_logo40x40@1x.png"
+      alt="AppChain Logo"
+      srcSet="/appchain_logo40x40@1x.png 1x, /appchain_logo40x40@2x.png 2x, /appchain_logo40x40@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * ApeChainLogo24 represents the ApeChain Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const ApeChainLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/apechain_logo24x24@1x.png"
+      alt="ApeChain Logo"
+      srcSet="/apechain_logo24x24@1x.png 1x, /apechain_logo24x24@2x.png 2x, /apechain_logo24x24@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * ApeChainLogo32 represents the ApeChain Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const ApeChainLogo32: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/apechain_logo32x32@1x.png"
+      alt="ApeChain Logo"
+      srcSet="/apechain_logo32x32@1x.png 1x, /apechain_logo32x32@2x.png 2x, /apechain_logo32x32@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * ApeChainLogo40 represents the ApeChain Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const ApeChainLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/apechain_logo40x40@1x.png"
+      alt="ApeChain Logo"
+      srcSet="/apechain_logo40x40@1x.png 1x, /apechain_logo40x40@2x.png 2x, /apechain_logo40x40@3x.png 3x"
     />
   </AvatarLogo>
 );

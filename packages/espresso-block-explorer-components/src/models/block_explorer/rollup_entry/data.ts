@@ -121,7 +121,7 @@ const rariDevNet = new RollUpEntry(
   1918988905,
   'RARI',
   new URL('https://rarichain.org/'),
-  new URL('https://mainnet.explorer.rarichain.org/'),
+  new URL('https://explorer.rarichain.org/'),
 );
 
 const rari = new RollUpEntry(
@@ -130,6 +130,36 @@ const rari = new RollUpEntry(
   new URL('https://rarichain.org/'),
   new URL('https://mainnet.explorer.rarichain.org/'),
 );
+
+const logXDecaf = new RollUpEntry(
+  9369,
+  'LogX',
+  new URL('https://logx.network/'),
+  new URL('https://kartel-testnet-explorer.alt.technology/'),
+);
+
+const logX = new RollUpEntry(
+  936369,
+  'LogX',
+  new URL('https://logx.network/'),
+  new URL('https://vzjuxmhfn70kgnlds27h-explorer.alt.technology'),
+);
+
+const appChainDecaf = new RollUpEntry(
+  4661,
+  'AppChain',
+  new URL('https://appchain.xyz/'),
+  new URL('https://appchaintestnet.explorer.caldera.xyz/'),
+);
+
+/*
+const apeChainDecaf = new RollUpEntry(
+  33139,
+  'APECHAIN',
+  new URL('https://apechain.com/'),
+  new URL('https://apescan.io/'),
+);
+*/
 
 export const kInfiniteGardenNamespace = 1_397_311_310;
 
@@ -160,5 +190,8 @@ export const curatedRollupMap = new Map(
     infiniteGarden,
     rariDevNet,
     rari,
+    logXDecaf,
+    logX,
+    appChainDecaf,
   ].map((entry) => [entry.namespace, entry]),
 );
