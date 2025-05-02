@@ -1,11 +1,19 @@
 import {
   AltLayerAvatarLogo,
+  AppChainLogo24,
+  AppChainLogo32,
+  AppChainLogo40,
   ArbitrumAvatarLogo,
   CalderaAvatarLogo,
   EigenLayerAvatarLogo,
+  LogXLogo24,
+  LogXLogo32,
+  LogXLogo40,
   OpStackAvatarLogo,
   PolygonAvatarLogo,
-  RariLogo,
+  RariLogo24,
+  RariLogo32,
+  RariLogo40,
   SpireAvatarLogo,
   VistaraAvatarLogo,
   With24PxSquare,
@@ -151,17 +159,47 @@ const kyoto = new RollUpImages(
 
 const rariDevNet = new RollUpImages(
   1918988905,
-  With24PxSquare(RariLogo),
-  With32PxSquare(RariLogo),
-  With40PxSquare(RariLogo),
+  With24PxSquare(RariLogo24),
+  With32PxSquare(RariLogo32),
+  With40PxSquare(RariLogo40),
 );
 
 const rari = new RollUpImages(
   1380012617,
-  With24PxSquare(RariLogo),
-  With32PxSquare(RariLogo),
-  With40PxSquare(RariLogo),
+  With24PxSquare(RariLogo24),
+  With32PxSquare(RariLogo32),
+  With40PxSquare(RariLogo40),
 );
+
+const logXDecaf = new RollUpImages(
+  9369,
+  With24PxSquare(LogXLogo24),
+  With32PxSquare(LogXLogo32),
+  With40PxSquare(LogXLogo40),
+);
+
+const logX = new RollUpImages(
+  936369,
+  With24PxSquare(LogXLogo24),
+  With32PxSquare(LogXLogo32),
+  With40PxSquare(LogXLogo40),
+);
+
+const appChainDecaf = new RollUpImages(
+  4661,
+  With24PxSquare(AppChainLogo24),
+  With32PxSquare(AppChainLogo32),
+  With40PxSquare(AppChainLogo40),
+);
+
+/*
+const apeChainDecaf = new RollUpImages(
+  33139,
+  With24PxSquare(ApeChainLogo),
+  With32PxSquare(ApeChainLogo),
+  With40PxSquare(ApeChainLogo),
+);
+*/
 
 export const rollUpImagesMap = new Map(
   [
@@ -178,5 +216,8 @@ export const rollUpImagesMap = new Map(
     kyoto,
     rariDevNet,
     rari,
+    logXDecaf,
+    logX,
+    appChainDecaf,
   ].map((entry) => [entry.namespace, entry]),
 );
