@@ -49,10 +49,65 @@ export declare const SpireAvatarLogo: React.FC<PreFedSrcAvatarLogoProps>;
 export declare const VistaraAvatarLogo: React.FC<PreFedSrcAvatarLogoProps>;
 export declare const EspressoAvatarLogo: React.FC<PreFedSrcAvatarLogoProps>;
 /**
- * RariLogo represents the Rari Logo through all of its various sizing
- * classes that we support
+ * RariLogo24 represents the Rari Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
  */
-export declare const RariLogo: React.FC<PreFedSrcAvatarLogoProps>;
+export declare const RariLogo24: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * RariLogo32 represents the Rari Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const RariLogo32: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * RariLogo40 represents the Rari Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const RariLogo40: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * LogXLogo24 represents the LogX Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const LogXLogo24: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * LogXLogo32 represents the LogX Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const LogXLogo32: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * LogXLogo40 represents the LogX Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const LogXLogo40: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * AppChainLogo24 represents the AppChain Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const AppChainLogo24: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * AppChainLogo32 represents the AppChain Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const AppChainLogo32: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * AppChainLogo40 represents the AppChain Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const AppChainLogo40: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * ApeChainLogo24 represents the ApeChain Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const ApeChainLogo24: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * ApeChainLogo32 represents the ApeChain Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const ApeChainLogo32: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * ApeChainLogo40 represents the ApeChain Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const ApeChainLogo40: React.FC<PreFedSrcAvatarLogoProps>;
 /**
  * With24PxSquare is a higher order component that adds the class
  * avatar-24x24 to the given component.
