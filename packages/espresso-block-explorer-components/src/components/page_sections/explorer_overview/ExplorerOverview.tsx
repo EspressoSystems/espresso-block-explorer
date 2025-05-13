@@ -6,6 +6,7 @@ import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/Summa
 import SummaryValueLabeled from '@/layout/summary_value_labeled/SummaryValueLabeled';
 import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
 import SkeletonContent from '@/loading/SkeletonContent';
+import { curatedMainnetList } from '@/models/block_explorer/rollup_entry/data';
 import NumberText from '@/text/NumberText';
 import Text from '@/text/Text';
 import React from 'react';
@@ -31,7 +32,11 @@ export const ExplorerOverviewDetails: React.FC = () => {
     <div className="card--padding">
       <SummaryTableLabeledValue>
         <Text text="Rollups" />
-        <NumberText number={overview.rollups} />
+        {/*
+        TODO: revert this back to `overview.rollups` when the server is able to
+        return the correct number of rollups.
+         */}
+        <NumberText number={curatedMainnetList.length} />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
         <Text text="Transactions" />
