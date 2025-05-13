@@ -9,6 +9,9 @@ import {
   LogXLogo24,
   LogXLogo32,
   LogXLogo40,
+  MoltenLogo24,
+  MoltenLogo32,
+  MoltenLogo40,
   OpStackAvatarLogo,
   PolygonAvatarLogo,
   RariLogo24,
@@ -192,6 +195,27 @@ const appChainDecaf = new RollUpImages(
   With40PxSquare(AppChainLogo40),
 );
 
+const appChain = new RollUpImages(
+  466,
+  With24PxSquare(AppChainLogo24),
+  With32PxSquare(AppChainLogo32),
+  With40PxSquare(AppChainLogo40),
+);
+
+const molten = new RollUpImages(
+  360,
+  With24PxSquare(MoltenLogo24),
+  With32PxSquare(MoltenLogo32),
+  With40PxSquare(MoltenLogo40),
+);
+
+const moltenDecaf = new RollUpImages(
+  3609,
+  With24PxSquare(MoltenLogo24),
+  With32PxSquare(MoltenLogo32),
+  With40PxSquare(MoltenLogo40),
+);
+
 /*
 const apeChainDecaf = new RollUpImages(
   33139,
@@ -218,6 +242,9 @@ export const rollUpImagesMap = new Map(
     rari,
     logXDecaf,
     logX,
+    appChain,
     appChainDecaf,
+    molten,
+    moltenDecaf,
   ].map((entry) => [entry.namespace, entry]),
 );

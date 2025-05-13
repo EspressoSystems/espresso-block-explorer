@@ -145,11 +145,34 @@ const logX = new RollUpEntry(
   new URL('https://vzjuxmhfn70kgnlds27h-explorer.alt.technology'),
 );
 
+/*
+const appChain = new RollUpEntry(
+  466,
+  'AppChain',
+  new URL('https://appchain.xyz/'),
+  new URL('https://explorer.appchain.xyz/'),
+);
+*/
+
 const appChainDecaf = new RollUpEntry(
   4661,
   'AppChain',
   new URL('https://appchain.xyz/'),
   new URL('https://appchaintestnet.explorer.caldera.xyz/'),
+);
+
+const molten = new RollUpEntry(
+  360,
+  'Molten',
+  new URL('https://www.moltennetwork.com/'),
+  new URL('https://molten.explorer.caldera.dev/'),
+);
+
+const moltenDecaf = new RollUpEntry(
+  3609,
+  'Molten',
+  new URL('https://www.moltennetwork.com/'),
+  new URL('https://molten.explorer.caldera.dev/'),
 );
 
 /*
@@ -174,6 +197,23 @@ const infiniteGarden = new RollUpEntry(
   new URL('https://explorer.main.net.espressosys.com/'),
 );
 
+export const curatedMainnetList = [
+  infiniteGarden,
+  rari,
+  logX,
+  molten,
+  // Add more mainnet rollups here
+];
+
+export const curatedDecafList = [
+  infiniteGarden,
+  rariDevNet,
+  logXDecaf,
+  appChainDecaf,
+  moltenDecaf,
+  // Add more Decaf rollups here
+];
+
 export const curatedRollupMap = new Map(
   [
     vienna,
@@ -187,11 +227,7 @@ export const curatedRollupMap = new Map(
     vistara,
     milan,
     kyoto,
-    infiniteGarden,
-    rariDevNet,
-    rari,
-    logXDecaf,
-    logX,
-    appChainDecaf,
+    ...curatedMainnetList,
+    ...curatedDecafList,
   ].map((entry) => [entry.namespace, entry]),
 );

@@ -290,6 +290,48 @@ export const ApeChainLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
 );
 
 /**
+ * MoltenLogo24 represents the Molten Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const MoltenLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/molten_logo24x24@1x.png"
+      alt="Molten Logo"
+      srcSet="/molten_logo24x24@1x.png 1x, /molten_logo24x24@2x.png 2x, /molten_logo24x24@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * MoltenLogo32 represents the Molten Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const MoltenLogo32: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/molten_logo32x32@1x.png"
+      alt="Molten Logo"
+      srcSet="/molten_logo32x32@1x.png 1x, /molten_logo32x32@2x.png 2x, /molten_logo32x32@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * MoltenLogo40 represents the Molten Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const MoltenLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/molten_logo40x40@1x.png"
+      alt="Molten Logo"
+      srcSet="/molten_logo40x40@1x.png 1x, /molten_logo40x40@2x.png 2x, /molten_logo40x40@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
  * With24PxSquare is a higher order component that adds the class
  * avatar-24x24 to the given component.
  *
