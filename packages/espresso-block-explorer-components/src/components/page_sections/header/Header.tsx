@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = (props) => {
   const resolver = React.useContext(PathResolverContext);
 
   return (
-    <header {...props}>
+    <header className="main" {...props}>
       <InternalLink href={resolver.explorer()}>
         <EspressoLogoAndTitle />
       </InternalLink>

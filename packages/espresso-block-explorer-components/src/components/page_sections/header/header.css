@@ -1,4 +1,4 @@
-header {
+header.main {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,20 +11,20 @@ header {
 }
 
 /* Mobile Size */
-header {
+header.main {
   padding: 10px 16px;
 }
 
 /* Medium */
 @media screen and (min-width: 768px) {
-  header > nav {
+  header.main > nav {
     display: initial;
   }
 }
 
 /* Large */
 @media screen and (min-width: 1024px) {
-  header {
+  header.main {
     padding: 10px 24px;
   }
 }
