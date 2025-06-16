@@ -16,7 +16,9 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import InvalidTypeError from '@/errors/InvalidTypeError';
-import WalletAddress, { walletAddressCodec } from './wallet_address';
+import WalletAddress, {
+  walletAddressCodec,
+} from '../wallet_address/wallet_address';
 
 /**
  * Inscription represents the basic data that is conveyed for an inscription.

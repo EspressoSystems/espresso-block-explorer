@@ -11,7 +11,7 @@ import SkeletonContent from '@/loading/SkeletonContent';
 import { kInfiniteGardenNamespace } from '@/models/block_explorer/rollup_entry/data';
 import InscriptionAndSignature, {
   inscriptionAndSignatureBincodeCodec,
-} from '@/service/inscription/cappuccino/inscription_and_signature';
+} from '@/models/inscription/inscription_and_signature';
 import ByteSizeText from '@/text/ByteSizeText';
 import CopyTaggedBase64 from '@/text/CopyTaggedBase64';
 import DateTimeText from '@/text/DateTimeText';
