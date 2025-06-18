@@ -8,6 +8,7 @@
       "@/contexts/*": ["./components/contexts/*"],
       "@/contracts/*": ["./contracts/*"],
       "@/convert/*": ["./convert/*"],
+      "@/crypto/*": ["./crypto/*"],
       "@/data_source/*": ["./data_source/*"],
       "@/data_structures/*": ["./data_structures/*"],
       "@/errors/*": ["./errors/*"],

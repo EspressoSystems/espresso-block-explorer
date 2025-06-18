@@ -1,6 +1,7 @@
 export * from './async';
 export * from './components';
 export * from './convert';
+export * from './crypto';
 export * from './data_source';
 export * from './data_structures';
 export * from './errors';

@@ -9,7 +9,7 @@ import MediumIcon from '@/visual/icons/MediumIcon';
 import Menu from '@/visual/icons/Menu';
 import SearchGlass from '@/visual/icons/SearchGlass';
 import TwitterIcon from '@/visual/icons/TwitterIcon';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import IconAnchorButtonComp from '../IconAnchorButton';
 

@@ -6,7 +6,7 @@ import { CappuccinoExplorerBlockSummary } from '@/service/hotshot_query_service/
 import { CappuccinoExplorerGetSearchResultResponse } from '@/service/hotshot_query_service/cappuccino/explorer/get_search_result_response';
 import { CappuccinoExplorerSearchResults } from '@/service/hotshot_query_service/cappuccino/explorer/search_results';
 import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
 import {

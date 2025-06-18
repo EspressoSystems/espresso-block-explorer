@@ -1,10 +1,6 @@
-'use client';
-
-import {
-  NodesPage,
-  ProvideCappuccinoNodeValidatorServiceAPIContext,
-  ProvideCappuccinoNodeValidatorStreams,
-} from 'espresso-block-explorer-components';
+import NodesClientComponent from '@/client_components/nodes';
+import { DeriveEnvironmentFromEnv } from '@/helpers/environment';
+import { readFromEnv } from '@/helpers/read_from_env';
 
 /**
  * Nodes represents the Node Validator Page.
@@ -12,12 +8,11 @@ import {
  * It displays a summary of the state of the Block Chain and the nodes that
  * are connected to the network.
  */
-export default function Nodes() {
+export default async function Nodes() {
+  const env = readFromEnv();
   return (
-    <ProvideCappuccinoNodeValidatorServiceAPIContext>
-      <ProvideCappuccinoNodeValidatorStreams>
-        <NodesPage />
-      </ProvideCappuccinoNodeValidatorStreams>
-    </ProvideCappuccinoNodeValidatorServiceAPIContext>
+    <DeriveEnvironmentFromEnv env={env}>
+      <NodesClientComponent />
+    </DeriveEnvironmentFromEnv>
   );
 }

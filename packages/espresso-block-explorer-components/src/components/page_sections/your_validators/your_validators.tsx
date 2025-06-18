@@ -326,7 +326,7 @@ export const YourDelegationsDataTable: React.FC = () => {
     return <ErrorDisplay />;
   }
 
-  if ((!data || (data instanceof Array && data.length <= 0)) && loading) {
+  if (!data || (data instanceof Array && data.length <= 0 && loading)) {
     return <NodesSummaryDataTablePlaceholder />;
   }
 

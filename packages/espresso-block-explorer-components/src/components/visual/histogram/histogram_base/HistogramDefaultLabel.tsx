@@ -1,5 +1,4 @@
 import NumberText from '@/text/NumberText';
-import PropTypes from 'prop-types';
 
 export interface HistogramLabelProps {
   value: number;
@@ -13,8 +12,4 @@ export interface HistogramLabelProps {
  */
 export const HistogramDefaultLabel: React.FC<HistogramLabelProps> = (props) => {
   return <NumberText number={props.value} />;
-};
-
-HistogramDefaultLabel.propTypes = {
-  value: PropTypes.number.isRequired,
 };

@@ -94,19 +94,4 @@ const ESPText: React.FC<SpecificCodeProps> = (props) => {
   return <>{formatters.ESP.format(props.value)}</>;
 };
 
-/**
- * GweiText is a component that will render a value in Gwei. It is used when
- * currencies have a large amount of precision to display currency in terms
- * that do not require as much precision.
- */
-const GweiText: React.FC<SpecificCodeProps> = (props) => {
-  const formatters = React.useContext(CurrentNumberFormatters);
-  const parts = formatters.gwei.formatToParts(props.value);
-  const transformed = parts.map((part) =>
-    part.type === 'currency' ? { ...part, value: 'Gwei' } : part,
-  );
-
-  return transformed.map((value) => value.value).join('');
-};
-
 export default MoneyText;

@@ -1,66 +1,32 @@
-'use client';
-
+import TransactionsClientComponent from '@/client_components/transactions';
+import { DeriveEnvironmentFromEnv } from '@/helpers/environment';
+import { readFromEnv } from '@/helpers/read_from_env';
 import {
-  ProvideCappuccinoBlockDetailDataSource,
-  ProvideCappuccinoHotShotQueryServiceAPIContext,
-  ProvideCappuccinoTransactionsForBlockSummaryDataSource,
-  ProvideCappuccinoTransactionsSummaryDataSource,
-  TransactionsForBlockPage,
-  TransactionsPage,
-} from 'espresso-block-explorer-components';
-import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+  getNumberFromParams,
+  ServerComponentSearchParamsProps,
+} from '@/helpers/server_component_search_params_props';
 
 /**
  * Transactions is a page that lists a summary of all transactions within the
  * block chain in a paginated manner.
  */
-export default function Transactions() {
-  return (
-    <Suspense>
-      <TransactionsPageSuspended />
-    </Suspense>
-  );
-}
-
-function TransactionsPageSuspended() {
-  const searchParams = useSearchParams();
-
-  const getNumberFromParams = (
-    params: ReadonlyURLSearchParams,
-    key: string,
-  ) => {
-    if (params.has(key)) {
-      const value = params.get(key);
-      if (value !== null) {
-        return Number(value);
-      }
-    }
-
-    return undefined;
-  };
+export default async function Transactions(
+  props: ServerComponentSearchParamsProps,
+) {
+  const env = readFromEnv();
+  const searchParams = await props.searchParams;
 
   const startAtBlock = getNumberFromParams(searchParams, 'height');
   const offset = getNumberFromParams(searchParams, 'offset');
   const block = getNumberFromParams(searchParams, 'block');
 
-  if (block !== undefined) {
-    return (
-      <ProvideCappuccinoHotShotQueryServiceAPIContext>
-        <ProvideCappuccinoTransactionsForBlockSummaryDataSource>
-          <ProvideCappuccinoBlockDetailDataSource>
-            <TransactionsForBlockPage block={block} offset={offset} />
-          </ProvideCappuccinoBlockDetailDataSource>
-        </ProvideCappuccinoTransactionsForBlockSummaryDataSource>
-      </ProvideCappuccinoHotShotQueryServiceAPIContext>
-    );
-  }
-
   return (
-    <ProvideCappuccinoHotShotQueryServiceAPIContext>
-      <ProvideCappuccinoTransactionsSummaryDataSource>
-        <TransactionsPage startAtBlock={startAtBlock} offset={offset} />
-      </ProvideCappuccinoTransactionsSummaryDataSource>
-    </ProvideCappuccinoHotShotQueryServiceAPIContext>
+    <DeriveEnvironmentFromEnv env={env}>
+      <TransactionsClientComponent
+        startAtBlock={startAtBlock}
+        offset={offset}
+        block={block}
+      />
+    </DeriveEnvironmentFromEnv>
   );
 }

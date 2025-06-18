@@ -1,3 +1,4 @@
+export * from './config';
 export * from './contexts';
 export * from './data';
 export * from './error';

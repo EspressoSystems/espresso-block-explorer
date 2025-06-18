@@ -32,7 +32,7 @@ describe('TaggedBase64', () => {
     it('should revive into a TaggedBase64', () => {
       expect(
         TaggedBase64.inflate(JSON.parse(JSON.stringify(taggedBase64))),
-      ).satisfies((a) => a instanceof TaggedBase64);
+      ).satisfies((a: unknown) => a instanceof TaggedBase64);
     });
   });
 });

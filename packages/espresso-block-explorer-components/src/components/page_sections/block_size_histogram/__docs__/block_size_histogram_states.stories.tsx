@@ -4,7 +4,7 @@ import {
   LoadingContext,
 } from '@/components/contexts';
 import { iota, mapIterator } from '@/functional/functional';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { BlockSizeHistogram } from '../BlockSizeHistogram';
 import { BlockSizeHistogramData } from '../BlockSizeHistogramDataLoader';

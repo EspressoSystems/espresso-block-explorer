@@ -1,7 +1,7 @@
 import NotFoundError from '@/errors/NotFoundError';
 import CircularProgressIndicator from '@/loading/CircularProgressIndicator';
 import Text from '@/text/Text';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { AsyncState } from '../AsyncSnapshot';
 import { AsyncSnapshotContext } from '../AsyncSnapshotContext';

@@ -2,7 +2,7 @@ import { Keccak } from './keccak';
 
 export function createKeccakHash(name: unknown) {
   if (typeof name !== 'string') {
-    throw new TypeError('invalid alogirthm: ' + name);
+    throw new TypeError('invalid algorithm: ' + name);
   }
 
   switch (name.toLowerCase()) {

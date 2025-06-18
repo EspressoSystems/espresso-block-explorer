@@ -1,7 +1,7 @@
 import { ProvideDerivedDateTimeFormatters } from '@/contexts/DateTimeFormattersProvider';
 import { OverrideLocale } from '@/contexts/LocaleProvider';
 import { ProvideTickEverySecond } from '@/contexts/NowProvider';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import RelativeTimeText from '../RelativeTimeText';
 

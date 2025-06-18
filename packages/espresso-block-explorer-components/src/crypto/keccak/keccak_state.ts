@@ -8,7 +8,7 @@ export class KeccakState {
   count: number = 0;
   squeezing: boolean = false;
 
-  initialize(rate: number, capacity: number): void {
+  initialize(rate: number, _capacity: number): void {
     for (let i = 0; i < 50; ++i) this.state[i] = 0;
     this.blockSize = rate / 8;
     this.count = 0;

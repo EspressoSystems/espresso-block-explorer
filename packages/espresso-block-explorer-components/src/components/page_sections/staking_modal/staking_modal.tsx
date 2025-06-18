@@ -90,7 +90,7 @@ function useStakingModalState() {
 }
 
 interface StakingModalLifecycleProps {
-  dialogRef: React.RefObject<HTMLDialogElement>;
+  dialogRef: React.RefObject<HTMLDialogElement | null>;
   // The dialogRef is used to control the dialog lifecycle
 }
 
@@ -110,19 +110,6 @@ const DialogHeading: React.FC = () => {
         <Close />
       </IconButton>
     </header>
-  );
-};
-
-const StakingSteps: React.FC = () => {
-  return (
-    <div className="staking-steps">
-      <ol>
-        {/* <li>Select Chain</li> */}
-        <li>Select a Validator</li>
-        <li>Delegate</li>
-        {/* <li>Confirm Transaction</li> */}
-      </ol>
-    </div>
   );
 };
 
@@ -670,9 +657,6 @@ const DialogContent: React.FC = () => {
 const StakingModalLifecycle: React.FC<StakingModalLifecycleProps> = (props) => {
   // We want to have a barrier, and the modal should be shown when the state
   // indicates to do so.
-  const state = React.useContext(StakingModalStateContext);
-  const controls = React.useContext(StakingModalControlsContext);
-
   return (
     <dialog ref={props.dialogRef} className="staking-modal">
       {/* Heading */}

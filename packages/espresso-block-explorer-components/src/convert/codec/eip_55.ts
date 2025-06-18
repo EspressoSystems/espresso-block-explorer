@@ -1,4 +1,5 @@
 import { assertInstanceOf } from '@/assert/assert';
+import { createKeccakHash } from '@/crypto/keccak/family';
 import InvalidTypeError from '@/errors/InvalidTypeError';
 import UnimplementedError from '@/errors/UnimplementedError';
 import {
@@ -7,7 +8,6 @@ import {
   mapIterable,
   zipWithIterable,
 } from '@/functional/functional';
-import { createKeccakHash } from 'crypto/keccak';
 import { encodeNumberIterableToHexits } from '../hex/hex';
 import { Converter } from './convert';
 

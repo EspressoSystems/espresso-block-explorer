@@ -14,7 +14,7 @@ import {
   WithUiText500,
   WithUiText600,
 } from '@/typography';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 
 const ParagraphBase = WithParagraphBase('div');

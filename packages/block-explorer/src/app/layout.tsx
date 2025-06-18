@@ -1,15 +1,7 @@
-'use client';
-
-import {
-  InternalLinkAnchorComponentContext,
-  ProvideDerivedDateTimeFormatters,
-  ProvideDerivedNumberFormatters,
-  ProvideNavigatorLanguage,
-  ProvideTickEverySecond,
-} from 'espresso-block-explorer-components';
-import 'espresso-block-explorer-components/dist/style.css';
-import Link from 'next/link';
+import 'espresso-block-explorer-components/dist/espresso-block-explorer-components.css';
 import React from 'react';
+
+import LayoutClientComponent from '@/client_components/layout';
 import './globals.css';
 
 /**
@@ -25,18 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <InternalLinkAnchorComponentContext.Provider value={Link as any}>
-      <ProvideNavigatorLanguage>
-        <ProvideDerivedNumberFormatters>
-          <ProvideDerivedDateTimeFormatters>
-            <ProvideTickEverySecond>
-              <html lang="en">
-                <body>{children}</body>
-              </html>
-            </ProvideTickEverySecond>
-          </ProvideDerivedDateTimeFormatters>
-        </ProvideDerivedNumberFormatters>
-      </ProvideNavigatorLanguage>
-    </InternalLinkAnchorComponentContext.Provider>
+    <LayoutClientComponent>
+      <html lang="en">
+        <body>{children}</body>
+      </html>
+    </LayoutClientComponent>
   );
 }

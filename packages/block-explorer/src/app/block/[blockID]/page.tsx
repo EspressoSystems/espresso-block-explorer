@@ -1,11 +1,8 @@
-'use client';
-import {
-  BlockNumberContext,
-  BlockPage,
-  ProvideCappuccinoBlockDetailDataSource,
-  ProvideCappuccinoHotShotQueryServiceAPIContext,
-} from 'espresso-block-explorer-components';
-import { notFound, useParams } from 'next/navigation';
+import BlockClientComponent from '@/client_components/block';
+import { DeriveEnvironmentFromEnv } from '@/helpers/environment';
+import { readFromEnv } from '@/helpers/read_from_env';
+import { ServerComponentParamsProps } from '@/helpers/server_component_search_params_props';
+import { notFound } from 'next/navigation';
 
 /**
  * Block is a Page for an individual Block.  It's blockID is provided by
@@ -13,8 +10,11 @@ import { notFound, useParams } from 'next/navigation';
  *
  * Using this, it will attempt to display information concerning this Block ID.
  */
-export default function Block() {
-  const params = useParams();
+export default async function Block(
+  props: ServerComponentParamsProps<'blockID'>,
+) {
+  const env = readFromEnv();
+  const params = await props.params;
 
   // Let's make sure that we have our BlockID param
   const { blockID = null } = params;
@@ -33,12 +33,8 @@ export default function Block() {
   }
 
   return (
-    <BlockNumberContext.Provider value={Number(blockID)}>
-      <ProvideCappuccinoHotShotQueryServiceAPIContext>
-        <ProvideCappuccinoBlockDetailDataSource>
-          <BlockPage />
-        </ProvideCappuccinoBlockDetailDataSource>
-      </ProvideCappuccinoHotShotQueryServiceAPIContext>
-    </BlockNumberContext.Provider>
+    <DeriveEnvironmentFromEnv env={env}>
+      <BlockClientComponent blockID={Number(blockID)} />
+    </DeriveEnvironmentFromEnv>
   );
 }

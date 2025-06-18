@@ -1,20 +1,18 @@
-'use client';
-
-import {
-  BlockNumberContext,
-  ProvideCappuccinoHotShotQueryServiceAPIContext,
-  ProvideCappuccinoTransactionDetailDataSource,
-  TransactionOffsetContext,
-  TransactionPage,
-} from 'espresso-block-explorer-components';
-import { notFound, useParams } from 'next/navigation';
+import TransactionClientComponent from '@/client_components/transaction';
+import { DeriveEnvironmentFromEnv } from '@/helpers/environment';
+import { readFromEnv } from '@/helpers/read_from_env';
+import { ServerComponentParamsProps } from '@/helpers/server_component_search_params_props';
+import { notFound } from 'next/navigation';
 
 /**
  * Transaction is a detail page concerning an individual Transaction.
  * The transaction is identified by the Hash of the specifid Transaction.
  */
-export default function Transaction() {
-  const params = useParams();
+export default async function Transaction(
+  props: ServerComponentParamsProps<'slug'>,
+) {
+  const env = readFromEnv();
+  const params = await props.params;
 
   // Let's make sure that we have our BlockID param
   const { slug = null } = params;
@@ -34,14 +32,8 @@ export default function Transaction() {
   }
 
   return (
-    <BlockNumberContext.Provider value={height}>
-      <TransactionOffsetContext.Provider value={offset}>
-        <ProvideCappuccinoHotShotQueryServiceAPIContext>
-          <ProvideCappuccinoTransactionDetailDataSource>
-            <TransactionPage />
-          </ProvideCappuccinoTransactionDetailDataSource>
-        </ProvideCappuccinoHotShotQueryServiceAPIContext>
-      </TransactionOffsetContext.Provider>
-    </BlockNumberContext.Provider>
+    <DeriveEnvironmentFromEnv env={env}>
+      <TransactionClientComponent height={height} offset={offset} />
+    </DeriveEnvironmentFromEnv>
   );
 }

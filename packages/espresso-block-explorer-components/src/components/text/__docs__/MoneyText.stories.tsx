@@ -2,7 +2,7 @@ import { OverrideLocale } from '@/contexts/LocaleProvider';
 import { ProvideDerivedNumberFormatters } from '@/contexts/NumberFormattersProvider';
 import { currencyCodeCodec } from '@/models/block_explorer/currency_code';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import MoneyText from '../MoneyText';
 
