@@ -1,6 +1,7 @@
 import { Channel, createChannelToSink } from '@/async/channel';
 import { createSinkWithConverter } from '@/async/sink/converted_sink';
 import { Sink } from '@/async/sink/sink';
+import { sleep } from '@/async/sleep';
 import {
   Completer,
   createCompleter,
@@ -27,6 +28,81 @@ import CappuccinoNodeValidatorResponse from '../responses/node_validator_respons
 import { cappuccinoNodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
 import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
+
+/**
+ * ProxyWebSocket is a wrapper around the WebSocket API that allows us to
+ * handle the WebSocket lifecycle and message events in a more controlled
+ * manner. It allows us to clean up event listeners and handle the WebSocket
+ * lifecycle in a more predictable way.
+ */
+class ProxyWebSocket {
+  private webSocket: null | WebSocket = null;
+  constructor(
+    url: URL,
+    messageHandler: WebSocketMessageHandler,
+    openHandler: WebSocketOpenHandler,
+    closeHandler: WebSocketCloseHandler,
+    errorHandler: WebSocketErrorHandler,
+  ) {
+    const webSocket = new WebSocket(url);
+
+    webSocket.onerror;
+    webSocket.addEventListener('open', openHandler);
+    webSocket.addEventListener('message', messageHandler);
+    webSocket.addEventListener('close', closeHandler);
+    webSocket.addEventListener('error', errorHandler);
+
+    webSocket.addEventListener('close', () => {
+      // Let's clean up our handlers.
+
+      webSocket.removeEventListener('open', openHandler);
+      webSocket.removeEventListener('message', messageHandler);
+      webSocket.removeEventListener('close', closeHandler);
+      webSocket.removeEventListener('error', errorHandler);
+      // Explicit reference drop
+      this.webSocket = null;
+    });
+    this.webSocket = webSocket;
+  }
+
+  send(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
+    if (this.webSocket === null) {
+      throw new Error('WebSocket is not connected');
+    }
+
+    this.webSocket.send(data);
+  }
+
+  async close(code: number = 1000, reason: string = 'done') {
+    if (this.webSocket === null) {
+      // We're not connected, so we're already closed.
+      return;
+    }
+
+    // We want to disconnect from the webSocket
+    const completer = createCompleter<void>();
+    this.webSocket.addEventListener('close', () => {
+      completer.complete();
+    });
+
+    this.webSocket.close(code, reason);
+
+    return completer.promise;
+  }
+}
+
+// RAPID_RECONNECT_THRESHOLD is the threshold in milliseconds that specifies
+// the threshold within which we will consider a connection request as having
+// been "rapid".
+const RAPID_RECONNECT_THRESHOLD = 1000;
+
+// RAPID_RECONNECT_PENALTY is the penalty in milliseconds that we will apply
+// to the connection request if we have been connecting too rapidly.
+const RAPID_RECONNECT_PENALTY = 250;
+
+// RAPID_RECONNECT_PENALTY_MAX is the maximum penalty in milliseconds that we
+// will apply to the connection request if we have been connecting too rapidly.
+const RAPID_RECONNECT_PENALTY_MAX = 5000;
 
 // URL expected to be replay:<url>
 // Examples:
@@ -136,7 +212,49 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     }
   }
 
-  private webSocket: null | WebSocket = null;
+  private lastConnectTime: null | Date = null;
+  private rapidConnectCount: number = 0;
+
+  /**
+   * rapidREconnectProtection is a function that will delay the connection
+   * attempts if the last connection request was made too rapidly.
+   */
+  private async rapidReconnectProtection() {
+    if (this.lastConnectTime === null) {
+      this.lastConnectTime = new Date();
+      return;
+    }
+
+    const now = new Date();
+    const timeSinceLastConnect = now.getTime() - this.lastConnectTime.getTime();
+    if (timeSinceLastConnect < RAPID_RECONNECT_THRESHOLD) {
+      this.rapidConnectCount++;
+    } else {
+      // reset the rapid connect count
+      this.rapidConnectCount = 0;
+    }
+
+    if (this.rapidConnectCount <= 0) {
+      return;
+    }
+
+    // Compute the
+    const penalty = 2 ** (this.rapidConnectCount - 1);
+    const delay = Math.min(
+      RAPID_RECONNECT_PENALTY * penalty,
+      RAPID_RECONNECT_PENALTY_MAX,
+    );
+    console.info(
+      'Delaying connection attempt due to rapid connects:',
+      this.rapidConnectCount,
+      penalty,
+      delay,
+    );
+    await sleep(delay);
+    this.lastConnectTime = new Date();
+  }
+
+  private webSocket: null | ProxyWebSocket = null;
   private async handleConnect() {
     if (this.webSocket !== null) {
       // We're already connected.
@@ -145,10 +263,16 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     }
 
     const url = new URL('node-validator/details', this.serviceBaseURL);
-
     const webSocketCompleter = createCompleter<WebSocket>();
 
     try {
+      const connecting = new WebSocketStatusConnectionConnecting();
+      await this.lifecycleResponseSink.send(connecting);
+
+      // Have we been connecting too rapidly?
+      // We should delay our connection attempts if we have been.
+      await this.rapidReconnectProtection();
+
       const messageHandler = new WebSocketMessageHandler(
         this.nodeValidatorResponseSink,
       );
@@ -159,35 +283,21 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
       const closeHandler = new WebSocketCloseHandler(
         webSocketCompleter,
         this.lifecycleResponseSink,
+        () => (this.webSocket = null),
       );
       const errorHandler = new WebSocketErrorHandler(
         webSocketCompleter,
         this.errorResponseSink,
       );
-      const webSocket = new WebSocket(url);
-
-      webSocket.onerror;
-      webSocket.addEventListener('open', openHandler);
-      webSocket.addEventListener('message', messageHandler);
-      webSocket.addEventListener('close', closeHandler);
-      webSocket.addEventListener('error', errorHandler);
-
-      webSocket.addEventListener('close', () => {
-        // Let's clean up our handlers.
-
-        webSocket.removeEventListener('open', openHandler);
-        webSocket.removeEventListener('message', messageHandler);
-        webSocket.removeEventListener('close', closeHandler);
-        webSocket.removeEventListener('error', errorHandler);
-
-        // Let's remove our reference to the web socket.
-        this.webSocket = null;
-      });
-
-      this.webSocket = webSocket;
-      const connecting = new WebSocketStatusConnectionConnecting();
-      await this.lifecycleResponseSink.send(connecting);
+      this.webSocket = new ProxyWebSocket(
+        url,
+        messageHandler,
+        openHandler,
+        closeHandler,
+        errorHandler,
+      );
     } catch (error) {
+      console.error('<<<< HERE failed to connect to web socket >>>>', error);
       const err = new WebSocketError(error);
       this.errorResponseSink.send(err);
       webSocketCompleter.completeError(err);
@@ -206,13 +316,7 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     }
 
     // We want to disconnect from the webSocket
-    webSocket.close(1000, 'done');
-
-    return new Promise<void>((resolve) => {
-      webSocket.addEventListener('close', () => {
-        resolve();
-      });
-    });
+    await webSocket.close();
   }
 }
 
@@ -275,13 +379,16 @@ class WebSocketOpenHandler implements EventListenerObject {
 class WebSocketCloseHandler implements EventListenerObject {
   private readonly completer: Completer<WebSocket>;
   private readonly lifecycleResponseSink: Sink<WebSocketStatus>;
+  private readonly onClose: () => void;
 
   constructor(
     completer: Completer<WebSocket>,
     lifecycleResponseSink: Sink<WebSocketStatus>,
+    onClose: () => void,
   ) {
     this.completer = completer;
     this.lifecycleResponseSink = lifecycleResponseSink;
+    this.onClose = onClose;
   }
 
   async handleEvent() {
@@ -294,6 +401,8 @@ class WebSocketCloseHandler implements EventListenerObject {
         new WebSocketError(null, 'web socket error: unknown error'),
       );
     }
+
+    this.onClose();
   }
 }
 
