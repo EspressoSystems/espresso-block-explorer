@@ -5,6 +5,7 @@ import ArrowRight from '../ArrowRight';
 import Check from '../Check';
 import CheckCircle from '../CheckCircle';
 import ChevronDown from '../ChevronDown';
+import ChevronRight from '../ChevronRight';
 import ChevronUp from '../ChevronUp';
 import Copy from '../Copy';
 import DiscordIcon from '../DiscordIcon';
@@ -29,6 +30,7 @@ const Example: React.FC = () => (
     <CheckCircle />
     <ChevronDown />
     <ChevronUp />
+    <ChevronRight />
     <Copy />
     <DiscordIcon />
     <ExternalLink />
