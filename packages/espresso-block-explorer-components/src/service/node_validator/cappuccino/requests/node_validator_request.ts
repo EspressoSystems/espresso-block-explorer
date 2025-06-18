@@ -39,6 +39,30 @@ export class SubscribeVoters extends CappuccinoNodeValidatorRequest {
   }
 }
 
+export const kSubscribeValidatorsValue = 'SubscribeValidators' as const;
+
+/**
+ * SubscribeValidators is a request to subscribe to the Validators real time updates
+ * from the data source.
+ */
+export class SubscribeValidators extends CappuccinoNodeValidatorRequest {
+  valueOf(): string {
+    return kSubscribeValidatorsValue;
+  }
+}
+
+export const kSubscribeStakeTablesValue = 'SubscribeStakeTables' as const;
+
+/**
+ * SubscribeStakeTables is a request to subscribe to the StakeTables real time updates
+ * from the data source.
+ */
+export class SubscribeStakeTables extends CappuccinoNodeValidatorRequest {
+  valueOf(): string {
+    return kSubscribeStakeTablesValue;
+  }
+}
+
 export const kRequestNodeIdentitySnapshotValue =
   'RequestNodeIdentitySnapshot' as const;
 
@@ -86,5 +110,31 @@ export const kRequestVotersSnapshotValue = 'RequestVotersSnapshot' as const;
 export class RequestVotersSnapshot extends CappuccinoNodeValidatorRequest {
   valueOf(): string {
     return kRequestVotersSnapshotValue;
+  }
+}
+
+export const kRequestValidatorsSnapshotValue =
+  'RequestValidatorsSnapshot' as const;
+
+/**
+ * RequestValidatorsSnapshot is a request to get the Validators snapshot
+ * from the data source.
+ */
+export class RequestValidatorsSnapshot extends CappuccinoNodeValidatorRequest {
+  valueOf(): string {
+    return kRequestValidatorsSnapshotValue;
+  }
+}
+
+export const kRequestStakeTableSnapshotValue =
+  'RequestStakeTableSnapshot' as const;
+
+/**
+ * RequestStakeTableSnapshot is a request to get the StakeTable snapshot
+ * from the data source.
+ */
+export class RequestStakeTableSnapshot extends CappuccinoNodeValidatorRequest {
+  valueOf(): string {
+    return kRequestStakeTableSnapshotValue;
   }
 }
