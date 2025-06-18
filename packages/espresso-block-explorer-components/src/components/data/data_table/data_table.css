@@ -62,3 +62,33 @@ table.data-table th[data-sort-column-active='false'] svg.icon--sort {
 table.data-table th[data-sort-column-dir='1'] svg.icon--sort {
   transform: rotateZ(180deg);
 }
+
+table.data-table th > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+table.data-table th[data-alignment='start'] > div {
+  justify-content: space-between;
+}
+
+table.data-table th[data-alignment='end'] > div {
+  justify-content: flex-end;
+}
+
+table.data-table th[data-alignment='center'] > div {
+  justify-content: center;
+}
+
+table.data-table td[data-alignment='start'] {
+  text-align: start;
+}
+
+table.data-table td[data-alignment='end'] {
+  text-align: end;
+}
+
+table.data-table td[data-alignment='center'] {
+  text-align: center;
+}
