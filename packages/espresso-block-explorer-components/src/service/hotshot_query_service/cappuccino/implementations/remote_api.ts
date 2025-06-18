@@ -1,3 +1,4 @@
+import UnimplementedError from '@/errors/UnimplementedError';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability/availability_api';
 import { FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability/implementations/remote_api';
 import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer/explorer_api';
@@ -37,4 +38,7 @@ export class FetchBasedCappuccinoHotShotQueryService
       );
   }
 
+  public async setURL(): Promise<boolean> {
+    throw new UnimplementedError();
+  }
 }

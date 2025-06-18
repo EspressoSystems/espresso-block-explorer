@@ -1,3 +1,4 @@
+import UnimplementedError from '@/errors/UnimplementedError';
 import {
   CappuccinoHotShotQueryServiceAvailabilityAPI,
   UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI,
@@ -27,6 +28,8 @@ export interface CappuccinoHotShotQueryService {
   readonly status: CappuccinoHotShotQueryServiceStatusAPI;
   readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;
   readonly rewardState: CappuccinoHotShotQueryServiceRewardStateAPI;
+
+  setURL(url: string): Promise<boolean>;
 }
 
 /**
@@ -46,4 +49,8 @@ export class UnimplementedCappuccinoHotShotQueryService
     new UnimplementedCappuccinoHotShotQueryServiceExplorerAPI();
   readonly rewardState =
     new UnimplementedCappuccinoHotShotQueryServiceRewardStateAPI();
+
+  setURL(): Promise<boolean> {
+    throw new UnimplementedError();
+  }
 }

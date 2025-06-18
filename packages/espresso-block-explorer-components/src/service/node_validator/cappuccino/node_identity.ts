@@ -7,9 +7,9 @@ import {
   preferNullOverEmptyString,
 } from '@/convert/codec';
 import {
+  assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
-  assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import {
   TaggedBase64,

@@ -1,4 +1,8 @@
-import { nullableBigintCodec } from '@/convert/codec';
+import {
+  booleanCodec,
+  nullableBigintCodec,
+  stringCodec,
+} from '@/convert/codec';
 import { Codec } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 import {
@@ -397,10 +401,12 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryService
   public readonly status: CappuccinoHotShotQueryServiceStatusAPI;
   public readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;
   public readonly rewardState: CappuccinoHotShotQueryServiceRewardStateAPI;
+  private helper: AsyncRequestHelper;
 
   constructor() {
     const worker = createWorker();
     const helper = new AsyncRequestHelper(worker);
+    this.helper = helper;
     this.availability =
       new WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI(
         helper,
@@ -412,6 +418,22 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryService
     this.rewardState =
       new WebWorkerClientBasedCappuccinoHotShotQueryServiceRewardStateAPI(
         helper,
+      );
+  }
+
+  private async sendRequest<T, Param = unknown>(
+    codec: Codec<T, unknown>,
+    method: 'set-url',
+    ...param: Param[]
+  ): Promise<T> {
+    return this.helper.submitRequest<T>(codec, 'proxy', method, param);
+  }
+
+  async setURL(url: string): Promise<boolean> {
+    return await this.sendRequest(
+      booleanCodec,
+      'set-url',
+      stringCodec.encode(url),
     );
   }
 }

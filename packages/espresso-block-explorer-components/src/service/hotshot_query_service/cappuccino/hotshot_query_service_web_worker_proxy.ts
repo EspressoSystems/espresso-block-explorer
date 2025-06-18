@@ -88,6 +88,7 @@ type RewardStateRequest<
   Method,
   Parameters<CappuccinoHotShotQueryServiceRewardStateAPI[Method]>
 >;
+type ProxyRequest = WebWorkerRequest<'proxy', 'set-url', [string]>;
 
 class WebWorkerProxyStatusAPI
   implements CappuccinoHotShotQueryServiceStatusAPI
@@ -299,6 +300,7 @@ class WebWorkerProxyExplorerAPI {
     }
   }
 }
+
 class WebWorkerProxyRewardStateAPI {
   private service: CappuccinoHotShotQueryServiceRewardStateAPI;
   constructor(service: CappuccinoHotShotQueryServiceRewardStateAPI) {
@@ -405,6 +407,7 @@ export class WebWorkerProxy {
     | StatusRequest
     | ExplorerRequest
     | RewardStateRequest
+    | ProxyRequest
   >;
 
   constructor(postMessage: PostMessageFunction) {
@@ -416,11 +419,37 @@ export class WebWorkerProxy {
     this.processRequests();
   }
 
+  async handleProxyRequest(request: ProxyRequest): Promise<boolean> {
+    if (request.method === 'set-url') {
+      const url = request.param[0];
+      if (!url || typeof url !== 'string') {
+        throw new UnimplementedError('Invalid URL provided');
+      }
+
+      this.service = Promise.resolve(
+        new WebWorkerProxyHotShotQueryService(
+          new FetchBasedCappuccinoHotShotQueryService(
+            wrappedFetch,
+            new URL(url),
+          ),
+        ),
+      );
+      return true;
+    } else {
+      throw new UnimplementedError(`Unknown proxy method: ${request.method}`);
+    }
+  }
+
   private async processRequests() {
     for await (const request of this.requestChannel) {
       try {
         const service = await this.service;
-        let response = await service.handleRequest(request);
+        let response: unknown;
+        if (request.api === 'proxy') {
+          response = await this.handleProxyRequest(request as ProxyRequest);
+        } else {
+          response = await service.handleRequest(request);
+        }
 
         this.postMessage(
           webWorkerResponseSuccessCodec.encode(
@@ -446,7 +475,8 @@ export class WebWorkerProxy {
       | AvailabilityRequest
       | StatusRequest
       | ExplorerRequest
-      | RewardStateRequest;
+      | RewardStateRequest
+      | ProxyRequest;
 
     // Each page should only require a single request to an HTTP endpoint.
     // There is some special behavior when it comes to the Storybook itself,
