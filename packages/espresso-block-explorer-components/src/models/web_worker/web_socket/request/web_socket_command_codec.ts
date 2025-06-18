@@ -10,6 +10,11 @@ import {
   WebSocketCommandConnect,
   webSocketCommandConnectCodec,
 } from './connect';
+import {
+  kWebSocketCommandSetURLType,
+  WebSocketCommandSetURL,
+  webSocketCommandSetURLCodec,
+} from './set_url';
 import WebSocketCommand from './web_socket_command';
 
 class WebSocketCommandDecoder implements Converter<unknown, WebSocketCommand> {
@@ -21,6 +26,13 @@ class WebSocketCommandDecoder implements Converter<unknown, WebSocketCommand> {
     }
     if (input === kWebSocketCommandCloseType) {
       return webSocketCommandCloseCodec.decode(input);
+    }
+    if (
+      typeof input === 'object' &&
+      input !== null &&
+      kWebSocketCommandSetURLType in input
+    ) {
+      return webSocketCommandSetURLCodec.decode(input);
     }
 
     throw new UnimplementedError();
@@ -34,6 +46,9 @@ class WebSocketCommandEncoder implements Converter<WebSocketCommand> {
     }
     if (input instanceof WebSocketCommandClose) {
       return webSocketCommandCloseCodec.encode(input);
+    }
+    if (input instanceof WebSocketCommandSetURL) {
+      return webSocketCommandSetURLCodec.encode(input);
     }
 
     throw new UnimplementedError();
