@@ -1,0 +1,16 @@
+:root {
+  --divider--color: var(--color--slate-200);
+  --divider--padding-vertical: 0;
+  --divider--padding-horizontal: 0;
+  --divider--margin-vertical: 16px;
+  --divider--margin-horizontal: 0;
+}
+
+.divider {
+  border: 0;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: var(--divider--color);
+  padding: var(--divider--padding-vertical) var(--divider--padding-horizontal);
+  margin: var(--divider--margin-vertical) var(--divider--margin-horizontal);
+}
