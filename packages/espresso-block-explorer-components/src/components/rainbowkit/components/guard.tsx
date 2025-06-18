@@ -1,5 +1,8 @@
 import React from 'react';
-import { RainbowKitMountedContext } from '../contexts/contexts';
+import {
+  RainbowKitAccountAddressContext,
+  RainbowKitMountedContext,
+} from '../contexts/contexts';
 
 export interface RainbowKitMountedGuardProps {
   children: React.ReactNode | React.ReactNode[];
@@ -21,6 +24,30 @@ export const RainbowKitMountedGuard: React.FC<RainbowKitMountedGuardProps> = ({
   const isMounted = React.useContext(RainbowKitMountedContext);
   if (!isMounted) {
     return null; // If RainbowKit is not mounted, do not render the children
+  }
+
+  return children;
+};
+
+/**
+ * WalletConnectedGuard is a React component that will only render its
+ * children if the user has a wallet connected.
+ *
+ * This guard checks the RainbowKit context to determine if a wallet
+ * address is available, indicating that a wallet is connected.
+ * If no wallet is connected, it will not render the children components.
+ * This is useful for protecting routes or components that should
+ * only be accessible when a user has connected their wallet.
+ */
+export const WalletConnectedGuard: React.FC<RainbowKitMountedGuardProps> = ({
+  children,
+}) => {
+  const isMounted = React.useContext(RainbowKitMountedContext);
+  const address = React.useContext(RainbowKitAccountAddressContext);
+
+  // Only render children if RainbowKit is mounted and the user has a wallet connected
+  if (!isMounted || !address) {
+    return null;
   }
 
   return children;
