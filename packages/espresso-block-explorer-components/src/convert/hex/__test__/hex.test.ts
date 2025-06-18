@@ -31,8 +31,10 @@ describe('hex', () => {
     ).equals(0);
   });
 
-  it('should throw if the hex string is not a multiple of 2', () => {
-    expect(() => parseHexString('1')).toThrow();
+  it('should still pass if the hex string is not a multiple of 2', () => {
+    expect(
+      compareArrayBuffer(parseHexString('1'), new Uint8Array([0x01])),
+    ).equals(0);
   });
 
   it('should throw if the contents of the string are not a hex value', () => {
