@@ -73,7 +73,7 @@ const DefaultFormatterMoneyText: React.FC<DefaultMoneyTextProps> = (props) => {
 };
 
 interface SpecificCodeProps {
-  value: number;
+  value: number | bigint;
 }
 
 /**
@@ -82,12 +82,7 @@ interface SpecificCodeProps {
  */
 const ETHText: React.FC<SpecificCodeProps> = (props) => {
   const formatters = React.useContext(CurrentNumberFormatters);
-  return (
-    <>
-      <GweiText value={props.value * 1e9} /> (
-      {formatters.ETH.format(props.value)})
-    </>
-  );
+  return <>{formatters.ETH.format(props.value)}</>;
 };
 
 /**
@@ -96,12 +91,7 @@ const ETHText: React.FC<SpecificCodeProps> = (props) => {
  */
 const ESPText: React.FC<SpecificCodeProps> = (props) => {
   const formatters = React.useContext(CurrentNumberFormatters);
-  return (
-    <>
-      <GweiText value={props.value * 1e9} /> (
-      {formatters.ESP.format(props.value)})
-    </>
-  );
+  return <>{formatters.ESP.format(props.value)}</>;
 };
 
 /**
