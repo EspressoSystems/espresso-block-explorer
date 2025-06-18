@@ -7,6 +7,10 @@ import {
   UnimplementedCappuccinoHotShotQueryServiceExplorerAPI,
 } from './explorer/explorer_api';
 import {
+  CappuccinoHotShotQueryServiceRewardStateAPI,
+  UnimplementedCappuccinoHotShotQueryServiceRewardStateAPI,
+} from './reward_state/reward_start_api';
+import {
   CappuccinoHotShotQueryServiceStatusAPI,
   UnimplementedCappuccinoHotShotQueryServiceStatusAPI,
 } from './status/status_api';
@@ -22,6 +26,7 @@ export interface CappuccinoHotShotQueryService {
   readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI;
   readonly status: CappuccinoHotShotQueryServiceStatusAPI;
   readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;
+  readonly rewardState: CappuccinoHotShotQueryServiceRewardStateAPI;
 }
 
 /**
@@ -39,4 +44,6 @@ export class UnimplementedCappuccinoHotShotQueryService
   readonly status = new UnimplementedCappuccinoHotShotQueryServiceStatusAPI();
   readonly explorer =
     new UnimplementedCappuccinoHotShotQueryServiceExplorerAPI();
+  readonly rewardState =
+    new UnimplementedCappuccinoHotShotQueryServiceRewardStateAPI();
 }

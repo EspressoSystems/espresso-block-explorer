@@ -1,3 +1,5 @@
+import { Channel, createBufferedChannel } from '@/async/channel';
+import { nullableBigintCodec, stringCodec } from '@/convert/codec';
 import { numberCodec } from '@/convert/codec/number';
 import { EspressoError } from '@/errors/EspressoError';
 import FetchError from '@/errors/FetchError';
@@ -47,6 +49,7 @@ import { cappuccinoExplorerGetTransactionSummariesResponseCodec } from './explor
 import { CappuccinoHotShotQueryService } from './hot_shot_query_service_api';
 import { FakeDataCappuccinoHotShotQueryService } from './implementations/fake_data';
 import { FetchBasedCappuccinoHotShotQueryService } from './implementations/remote_api';
+import { CappuccinoHotShotQueryServiceRewardStateAPI } from './reward_state/reward_start_api';
 import { CappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
 
 type Config = {
@@ -76,6 +79,14 @@ type ExplorerRequest<
   'explorer',
   Method,
   Parameters<CappuccinoHotShotQueryServiceExplorerAPI[Method]>
+>;
+type RewardStateRequest<
+  Method extends
+    keyof CappuccinoHotShotQueryServiceRewardStateAPI = keyof CappuccinoHotShotQueryServiceRewardStateAPI,
+> = WebWorkerRequest<
+  'reward-state',
+  Method,
+  Parameters<CappuccinoHotShotQueryServiceRewardStateAPI[Method]>
 >;
 
 class WebWorkerProxyStatusAPI
@@ -288,20 +299,47 @@ class WebWorkerProxyExplorerAPI {
     }
   }
 }
+class WebWorkerProxyRewardStateAPI {
+  private service: CappuccinoHotShotQueryServiceRewardStateAPI;
+  constructor(service: CappuccinoHotShotQueryServiceRewardStateAPI) {
+    this.service = service;
+  }
+
+  async getLatestRewardBalance(address: string) {
+    return nullableBigintCodec.encode(
+      await this.service.getLatestRewardBalance(address),
+    );
+  }
+
+  async handleRequest(request: RewardStateRequest): Promise<unknown> {
+    switch (request.method) {
+      case 'getLatestRewardBalance':
+        return await this.getLatestRewardBalance(
+          stringCodec.decode(request.param[0]),
+        );
+    }
+  }
+}
 
 class WebWorkerProxyHotShotQueryService {
   public readonly availability: WebWorkerProxyAvailabilityAPI;
   public readonly status: WebWorkerProxyStatusAPI;
   public readonly explorer: WebWorkerProxyExplorerAPI;
+  public readonly rewardState: WebWorkerProxyRewardStateAPI;
 
   constructor(service: CappuccinoHotShotQueryService) {
     this.availability = new WebWorkerProxyAvailabilityAPI(service.availability);
     this.status = new WebWorkerProxyStatusAPI(service.status);
     this.explorer = new WebWorkerProxyExplorerAPI(service.explorer);
+    this.rewardState = new WebWorkerProxyRewardStateAPI(service.rewardState);
   }
 
   async handleRequest(
-    request: AvailabilityRequest | StatusRequest | ExplorerRequest,
+    request:
+      | AvailabilityRequest
+      | StatusRequest
+      | ExplorerRequest
+      | RewardStateRequest,
   ) {
     // This is our entry point, and where we will receive / process messages
     switch (request.api) {
@@ -311,6 +349,8 @@ class WebWorkerProxyHotShotQueryService {
         return this.status.handleRequest(request);
       case 'explorer':
         return this.explorer.handleRequest(request);
+      case 'reward-state':
+        return this.rewardState.handleRequest(request);
       default:
         throw new UnimplementedError();
     }
@@ -334,7 +374,7 @@ const wrappedFetch: typeof fetch = async (input: unknown, init?: unknown) => {
 
 type PostMessageFunction = typeof postMessage;
 
-async function determineServiceImplementation(): Promise<CappuccinoHotShotQueryService> {
+async function determineServiceImplementationFromConfigFile(): Promise<CappuccinoHotShotQueryService> {
   try {
     const response = await fetch('/config.json');
     const config: Config = await response.json();
@@ -351,7 +391,7 @@ async function determineServiceImplementation(): Promise<CappuccinoHotShotQueryS
 
 async function determineService() {
   return new WebWorkerProxyHotShotQueryService(
-    await determineServiceImplementation(),
+    await determineServiceImplementationFromConfigFile(),
   );
 }
 
@@ -360,9 +400,44 @@ export class WebWorkerProxy {
   private service: Promise<WebWorkerProxyHotShotQueryService>;
   private postMessage: PostMessageFunction;
 
+  private requestChannel: Channel<
+    | AvailabilityRequest
+    | StatusRequest
+    | ExplorerRequest
+    | RewardStateRequest
+  >;
+
   constructor(postMessage: PostMessageFunction) {
     this.postMessage = postMessage;
     this.service = determineService();
+    this.requestChannel = createBufferedChannel(10);
+
+    // Kick off request processing promise
+    this.processRequests();
+  }
+
+  private async processRequests() {
+    for await (const request of this.requestChannel) {
+      try {
+        const service = await this.service;
+        let response = await service.handleRequest(request);
+
+        this.postMessage(
+          webWorkerResponseSuccessCodec.encode(
+            new WebWorkerResponseSuccess(request.requestID, response),
+          ),
+        );
+      } catch (error) {
+        this.postMessage(
+          webWorkerResponseErrorCodec.encode(
+            new WebWorkerResponseError(
+              request.requestID,
+              error as EspressoError,
+            ),
+          ),
+        );
+      }
+    }
   }
 
   async handleEvent(event: MessageEvent) {
@@ -370,23 +445,18 @@ export class WebWorkerProxy {
     const request = webWorkerRequestCodec.decode(event.data) as
       | AvailabilityRequest
       | StatusRequest
-      | ExplorerRequest;
+      | ExplorerRequest
+      | RewardStateRequest;
 
-    try {
-      const service = await this.service;
-      const response = await service.handleRequest(request);
+    // Each page should only require a single request to an HTTP endpoint.
+    // There is some special behavior when it comes to the Storybook itself,
+    // specifically being able to overwrite the base URL opf the services
+    // we're requesting from.  We needs these requests to be run serialized,'
+    // otherwise we run into a data race with requesting the data at the same
+    // time we're changing the base URL.
+    // This shouldn't impact the deployed version, or even the performance of
+    // the requests, as we should need, ideally, a single request per page.
 
-      this.postMessage(
-        webWorkerResponseSuccessCodec.encode(
-          new WebWorkerResponseSuccess(request.requestID, response),
-        ),
-      );
-    } catch (error) {
-      this.postMessage(
-        webWorkerResponseErrorCodec.encode(
-          new WebWorkerResponseError(request.requestID, error as EspressoError),
-        ),
-      );
-    }
+    await this.requestChannel.publish(request);
   }
 }
