@@ -297,7 +297,6 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
         errorHandler,
       );
     } catch (error) {
-      console.error('<<<< HERE failed to connect to web socket >>>>', error);
       const err = new WebSocketError(error);
       this.errorResponseSink.send(err);
       webSocketCompleter.completeError(err);

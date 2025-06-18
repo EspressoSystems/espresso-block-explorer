@@ -1,5 +1,16 @@
 import { ProvideTickEverySecond } from '@/components/contexts/NowProvider';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
+import { Environment } from '@/models/config/environment/environment';
+import {
+  environmentArgsDecafWithContracts,
+  environmentArgsFakeDataWithContracts,
+  environmentArgsMainnetWithContracts,
+  environmentArgsMilkWithContracts,
+  environmentArgsWaterWithContracts,
+  environmentArgTypesWithContracts,
+} from '@/models/config/storybook/controls';
+import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybook/storybook';
+import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import { ProvideCappuccinoNodeValidatorStreams } from 'pages/CappuccinoNodeValidatorServiceAdapters';
 import { ProvideCappuccinoNodeValidatorServiceAPIContext } from 'pages/CappuccinoNodeValidatorServiceAPIContext';
 import React from 'react';
@@ -8,20 +19,43 @@ import FakeDataNotice from '../FakeDataNotice';
 import NodesPage from '../NodesPage';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
-interface ExampleProps {}
+interface ExampleProps {
+  environment: Environment;
+  stakeTableContractAddress?: string;
+  espTokenContractAddress?: string;
+  hotshotQueryServiceURL?: string;
+  nodeValidatorWebSocketURL?: string;
+}
 
-const Example: React.FC<ExampleProps> = (props) => (
+const Example: React.FC<ExampleProps> = ({
+  environment,
+  stakeTableContractAddress,
+  espTokenContractAddress,
+  hotshotQueryServiceURL,
+  nodeValidatorWebSocketURL,
+  ...rest
+}) => (
   <>
-    <FakeDataNotice />
-    <ProvideTickEverySecond>
-      <ProvideCappuccinoNodeValidatorServiceAPIContext>
-        <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-          <ProvideCappuccinoNodeValidatorStreams>
-            <NodesPage {...props} />
-          </ProvideCappuccinoNodeValidatorStreams>
-        </OverridePathResolver>
-      </ProvideCappuccinoNodeValidatorServiceAPIContext>
-    </ProvideTickEverySecond>
+    <StoryBookSpecifyEnvironmentAndContracts
+      environment={environment}
+      stakeTableContractAddress={stakeTableContractAddress}
+      espTokenContractAddress={espTokenContractAddress}
+      hotshotQueryServiceURL={hotshotQueryServiceURL}
+      nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
+    >
+      <FakeDataNotice />
+      <ProvideTickEverySecond>
+        <ProvideCappuccinoNodeValidatorServiceAPIContext>
+          <ProvideCappuccinoHotShotQueryServiceAPIContext>
+            <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
+              <ProvideCappuccinoNodeValidatorStreams>
+                <NodesPage {...rest} />
+              </ProvideCappuccinoNodeValidatorStreams>
+            </OverridePathResolver>
+          </ProvideCappuccinoHotShotQueryServiceAPIContext>
+        </ProvideCappuccinoNodeValidatorServiceAPIContext>
+      </ProvideTickEverySecond>
+    </StoryBookSpecifyEnvironmentAndContracts>
   </>
 );
 
@@ -31,11 +65,43 @@ const meta: Meta = {
   parameters: {
     layout: 'fullscreen',
   },
+  args: {
+    environment: Environment.fakeData,
+    stakeTableContractAddress: '',
+    espTokenContractAddress: '',
+    hotshotQueryServiceURL: '',
+    nodeValidatorWebSocketURL: '',
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const Nodes: Story = {
-  argTypes: {},
+export const Default: Story = {
+  argTypes: environmentArgTypesWithContracts,
+};
+
+export const Milk: Story = {
+  args: environmentArgsMilkWithContracts,
+  argTypes: environmentArgTypesWithContracts,
+};
+
+export const Water: Story = {
+  args: environmentArgsWaterWithContracts,
+  argTypes: environmentArgTypesWithContracts,
+};
+
+export const Decaf: Story = {
+  args: environmentArgsDecafWithContracts,
+  argTypes: environmentArgTypesWithContracts,
+};
+
+export const Mainnet: Story = {
+  args: environmentArgsMainnetWithContracts,
+  argTypes: environmentArgTypesWithContracts,
+};
+
+export const FakeData: Story = {
+  args: environmentArgsFakeDataWithContracts,
+  argTypes: environmentArgTypesWithContracts,
 };

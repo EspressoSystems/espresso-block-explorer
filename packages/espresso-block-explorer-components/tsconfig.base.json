@@ -6,6 +6,7 @@
       "@/async/*": ["./async/*"],
       "@/components/*": ["./components/*"],
       "@/contexts/*": ["./components/contexts/*"],
+      "@/contracts/*": ["./contracts/*"],
       "@/convert/*": ["./convert/*"],
       "@/data_source/*": ["./data_source/*"],
       "@/data_structures/*": ["./data_structures/*"],

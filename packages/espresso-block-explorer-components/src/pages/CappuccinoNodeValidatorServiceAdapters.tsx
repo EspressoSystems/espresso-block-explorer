@@ -2,7 +2,12 @@ import { createBufferedChannel } from '@/async/channel/BufferedChannel';
 import { createSinkWithConverter } from '@/async/sink/converted_sink';
 import { Sink } from '@/async/sink/sink';
 import { sleep } from '@/async/sleep';
-import { ErrorStreamContext } from '@/components/contexts/ErrorProvider';
+import { BlockExplorerConfigContext } from '@/components/config/explorer';
+import {
+  ErrorCarry,
+  ErrorJoiner,
+  ErrorStreamContext,
+} from '@/components/contexts/ErrorProvider';
 import { WebSocketResponseStreamContext } from '@/components/contexts/WebSocketResponseProvider';
 import {
   BlockSizeHistogramData,
@@ -45,9 +50,12 @@ import {
   CircularBuffer,
   createCircularBuffer,
 } from '@/data_structures/circular_buffer/CircularBuffer';
+import { StakeTableEntryWrapper } from '@/models/espresso/stake_table/stake_table_entry_wrapper';
+import { Validator } from '@/models/espresso/stake_table/validator';
 import { ErrorResponse } from '@/models/web_worker/error_response';
 import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
 import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
+import { WebSocketCommandSetURL } from '@/models/web_worker/web_socket/request/set_url';
 import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
 import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
 import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
@@ -58,9 +66,13 @@ import CappuccinoNodeValidatorRequest, {
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
+  RequestStakeTableSnapshot,
+  RequestValidatorsSnapshot,
   RequestVotersSnapshot,
   SubscribeLatestBlock,
   SubscribeNodeIdentity,
+  SubscribeStakeTables,
+  SubscribeValidators,
   SubscribeVoters,
 } from '@/service/node_validator/cappuccino/requests/node_validator_request';
 import { nodeValidatorRequestToWebWorkerProxyRequestConverter } from '@/service/node_validator/cappuccino/requests/node_validator_service_request';
@@ -68,13 +80,18 @@ import { CappuccinoBlocksSnapshot } from '@/service/node_validator/cappuccino/re
 import { CappuccinoHistogramSnapshot } from '@/service/node_validator/cappuccino/responses/histogram_snapshot';
 import { CappuccinoLatestBlock } from '@/service/node_validator/cappuccino/responses/latest_block';
 import { CappuccinoLatestNodeIdentity } from '@/service/node_validator/cappuccino/responses/latest_node_identity';
+import { CappuccinoLatestStakeTable } from '@/service/node_validator/cappuccino/responses/latest_stake_table';
+import { CappuccinoLatestValidator } from '@/service/node_validator/cappuccino/responses/latest_validator';
 import { CappuccinoLatestVoters } from '@/service/node_validator/cappuccino/responses/latest_voters';
 import { CappuccinoNodeIdentitySnapshot } from '@/service/node_validator/cappuccino/responses/node_identity_snapshot';
 import CappuccinoNodeValidatorResponse from '@/service/node_validator/cappuccino/responses/node_validator_response';
 import { NodeValidatorServiceResponse } from '@/service/node_validator/cappuccino/responses/node_validator_service_response';
+import { CappuccinoStakeTableSnapshot } from '@/service/node_validator/cappuccino/responses/stake_table_snapshot';
+import { CappuccinoValidatorsSnapshot } from '@/service/node_validator/cappuccino/responses/validators_snapshot';
 import { CappuccinoVotersSnapshot } from '@/service/node_validator/cappuccino/responses/voters_snapshot';
 import { WebWorkerNodeValidatorAPI } from '@/service/node_validator/cappuccino/web_worker_proxy_api';
 import React from 'react';
+import { AsyncIterableResolver, DataContext } from '../components';
 import {
   compareArrayBuffer,
   firstWhereIterable,
@@ -341,6 +358,8 @@ function createBridgeState() {
     kTrailingHistorySamples + 1,
   );
   const nodes: CappuccinoNodeIdentity[] = [];
+  const validators: Map<string, Validator> = new Map();
+  const stakeTable: Map<string, StakeTableEntryWrapper> = new Map();
 
   return {
     lastBlock: null as null | CappuccinoLatestBlock,
@@ -351,6 +370,8 @@ function createBridgeState() {
     blockThroughputHistograms,
     votersBitVecs,
     nodes,
+    validators,
+    stakeTable,
   };
 }
 
@@ -596,6 +617,64 @@ async function bridgeLatestVoters(
   await streams.voters.publish(voteStats);
 }
 
+async function bridgeValidatorsSnapshot(
+  state: ReturnType<typeof createBridgeState>,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  event: CappuccinoValidatorsSnapshot,
+) {
+  state.validators = new Map(
+    mapIterable(
+      event.validators,
+      (validator) => [validator.stakeTableKey.toString(), validator] as const,
+    ),
+  );
+
+  await streams.validatorsStreamer.publish(state.validators);
+}
+
+async function bridgeLatestValidators(
+  state: ReturnType<typeof createBridgeState>,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  event: CappuccinoLatestValidator,
+) {
+  state.validators.set(
+    event.validator.stakeTableKey.toString(),
+    event.validator,
+  );
+
+  await streams.validatorsStreamer.publish(state.validators);
+}
+
+async function bridgeStakeTableSnapshot(
+  state: ReturnType<typeof createBridgeState>,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  event: CappuccinoStakeTableSnapshot,
+) {
+  state.stakeTable = new Map(
+    mapIterable(
+      event.stakeTable,
+      (entry) => [entry.stakeTableEntry.stakeKey.toString(), entry] as const,
+    ),
+  );
+
+  await streams.stakeTableStreamer.publish(state.stakeTable);
+}
+
+async function bridgeLatestStakeTable(
+  state: ReturnType<typeof createBridgeState>,
+  streams: ReturnType<typeof createNodeValidatorSplitStreams>,
+  event: CappuccinoLatestStakeTable,
+) {
+  state.stakeTable = new Map(
+    mapIterable(
+      event.stakeTable,
+      (entry) => [entry.stakeTableEntry.stakeKey.toString(), entry] as const,
+    ),
+  );
+
+  await streams.stakeTableStreamer.publish(state.stakeTable);
+}
+
 /**
  * bridgeNodeValidatorResponse is a helper function that will bridge the
  * various node validator responses into the various streams that we have
@@ -633,6 +712,22 @@ async function bridgeNodeValidatorResponse(
   if (event instanceof CappuccinoLatestVoters) {
     return bridgeLatestVoters(state, streams, event);
   }
+
+  if (event instanceof CappuccinoValidatorsSnapshot) {
+    return bridgeValidatorsSnapshot(state, streams, event);
+  }
+
+  if (event instanceof CappuccinoLatestValidator) {
+    return bridgeLatestValidators(state, streams, event);
+  }
+
+  if (event instanceof CappuccinoStakeTableSnapshot) {
+    return bridgeStakeTableSnapshot(state, streams, event);
+  }
+
+  if (event instanceof CappuccinoLatestStakeTable) {
+    return bridgeLatestStakeTable(state, streams, event);
+  }
 }
 
 /**
@@ -657,12 +752,16 @@ async function handleWebSocketEvents(
     await nodeValidatorRequestSink.send(new SubscribeLatestBlock());
     await nodeValidatorRequestSink.send(new SubscribeNodeIdentity());
     await nodeValidatorRequestSink.send(new SubscribeVoters());
+    await nodeValidatorRequestSink.send(new SubscribeStakeTables());
+    await nodeValidatorRequestSink.send(new SubscribeValidators());
 
     // Request the latest information
     await nodeValidatorRequestSink.send(new RequestNodeIdentitySnapshot());
     await nodeValidatorRequestSink.send(new RequestBlocksSnapshot());
     await nodeValidatorRequestSink.send(new RequestHistogramSnapshot());
     await nodeValidatorRequestSink.send(new RequestVotersSnapshot());
+    await nodeValidatorRequestSink.send(new RequestStakeTableSnapshot());
+    await nodeValidatorRequestSink.send(new RequestValidatorsSnapshot());
     return;
   }
 
@@ -684,7 +783,7 @@ async function handleWebSocketEvents(
   const reconnectDelay =
     Math.min(4 ** streams.reconnectAttempt, 4000) * (Math.random() + 1);
   console.info(
-    'disconnected from inscriptions web socket, attempting to reconnect',
+    'disconnected from node validator web socket, attempting to reconnect',
     'attempting reconnect, attempt',
     streams.reconnectAttempt,
     'sleeping for',
@@ -775,7 +874,14 @@ async function bridgeStreamIntoIndividualStreams(
  */
 async function startValidatorService(
   webSocketCommandSink: Sink<WebSocketCommand>,
+  nodeValidatorServiceURL: null | string = null,
 ) {
+  if (nodeValidatorServiceURL !== null) {
+    await webSocketCommandSink.send(
+      new WebSocketCommandSetURL(nodeValidatorServiceURL),
+    );
+  }
+
   // We need to "connect" to the service.
   await webSocketCommandSink.send(new WebSocketCommandConnect());
 }
@@ -811,6 +917,10 @@ function createNodeValidatorSplitStreams() {
     // Latest Builders
     latestBlockProducers: createBufferedChannel<LatestBlockProducer[]>(4),
 
+    stakeTableStreamer:
+      createBufferedChannel<Map<string, StakeTableEntryWrapper>>(4),
+    validatorsStreamer: createBufferedChannel<Map<string, Validator>>(4),
+
     // Errors Stream
     errors: createBufferedChannel<null | ErrorResponse>(4),
     // LifeCycle Event Stream
@@ -820,6 +930,57 @@ function createNodeValidatorSplitStreams() {
     mounted: true,
   };
 }
+
+export const CurrentStakeTableContext = React.createContext<
+  Map<string, StakeTableEntryWrapper>
+>(new Map());
+export const CurrentValidatorsContext = React.createContext<
+  Map<string, Validator>
+>(new Map());
+
+interface GenericStreamConsumerProps<T> {
+  stream: AsyncIterable<T>;
+  children: React.ReactNode | React.ReactNode[];
+}
+
+const GenericStreamConsumer: React.FC<GenericStreamConsumerProps<any>> = (
+  props,
+) => {
+  return (
+    <ErrorCarry>
+      <AsyncIterableResolver asyncIterable={props.stream}>
+        {props.children}
+      </AsyncIterableResolver>
+    </ErrorCarry>
+  );
+};
+
+interface ChildrenProps {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+const DeriveCurrentStakeTableFromData: React.FC<ChildrenProps> = (props) => {
+  const data = React.useContext(DataContext) as null | Map<
+    string,
+    StakeTableEntryWrapper
+  >;
+
+  return (
+    <CurrentStakeTableContext.Provider value={data ?? new Map()}>
+      <ErrorJoiner>{props.children}</ErrorJoiner>
+    </CurrentStakeTableContext.Provider>
+  );
+};
+
+const DeriveCurrentValidatorsFromData: React.FC<ChildrenProps> = (props) => {
+  const data = React.useContext(DataContext) as null | Map<string, Validator>;
+
+  return (
+    <CurrentValidatorsContext.Provider value={data ?? new Map()}>
+      <ErrorJoiner>{props.children}</ErrorJoiner>
+    </CurrentValidatorsContext.Provider>
+  );
+};
 
 interface ProvideCappuccinoNodeValidatorStreamsProps {
   children: React.ReactNode | React.ReactNode[];
@@ -834,6 +995,7 @@ interface ProvideCappuccinoNodeValidatorStreamsProps {
 export const ProvideCappuccinoNodeValidatorStreams: React.FC<
   ProvideCappuccinoNodeValidatorStreamsProps
 > = (props) => {
+  const explorerConfig = React.useContext(BlockExplorerConfigContext);
   const nodeValidatorService = React.useContext(
     CappuccinoNodeValidatorServiceAPIContext,
   );
@@ -858,7 +1020,10 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
       lifeCycleRequestSink,
       nodeValidatorRequestSink,
     );
-    startValidatorService(lifeCycleRequestSink);
+    startValidatorService(
+      lifeCycleRequestSink,
+      explorerConfig?.nodeValidatorServiceURL,
+    );
 
     return () => {
       // Tear Down
@@ -911,7 +1076,19 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
                                   async (response) => response?.error ?? null,
                                 )}
                               >
-                                {props.children}
+                                <GenericStreamConsumer
+                                  stream={streams.stakeTableStreamer}
+                                >
+                                  <DeriveCurrentStakeTableFromData>
+                                    <GenericStreamConsumer
+                                      stream={streams.validatorsStreamer}
+                                    >
+                                      <DeriveCurrentValidatorsFromData>
+                                        {props.children}
+                                      </DeriveCurrentValidatorsFromData>
+                                    </GenericStreamConsumer>
+                                  </DeriveCurrentStakeTableFromData>
+                                </GenericStreamConsumer>
                               </ErrorStreamContext.Provider>
                             </WebSocketResponseStreamContext.Provider>
                           </VoterParticipationStreamContext.Provider>

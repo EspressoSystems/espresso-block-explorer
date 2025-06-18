@@ -155,26 +155,22 @@ async function handleResponses(
   stop: Promise<Stop>,
   postMessage: PostMessageFunction,
 ) {
-  try {
-    const resolvedService = await service;
-    const it = resolvedService.stream[Symbol.asyncIterator]();
-    while (true) {
-      const result = await Promise.race([stop, it.next()]);
-      if (result instanceof Stop) {
-        // We're being told to stop sending responses
-        return;
-      }
-
-      if (result.done) {
-        // Our stream has ended, we can stop processing
-        return;
-      }
-
-      const response = result.value;
-      postMessage(webWorkerProxyResponseCodec.encode(response));
+  const resolvedService = await service;
+  const it = resolvedService.stream[Symbol.asyncIterator]();
+  while (true) {
+    const result = await Promise.race([stop, it.next()]);
+    if (result instanceof Stop) {
+      // We're being told to stop sending responses
+      return;
     }
-  } finally {
-    console.info('<<<< HERE >>>> handleResponses completed');
+
+    if (result.done) {
+      // Our stream has ended, we can stop processing
+      return;
+    }
+
+    const response = result.value;
+    postMessage(webWorkerProxyResponseCodec.encode(response));
   }
 }
 
@@ -196,7 +192,6 @@ export class WebWorkerProxy {
   }
 
   async setURL(url: string): Promise<boolean> {
-    console.info('<<< HERE >>> setting URL for node validator', url);
     // This method is used to set the URL for the service, if applicable.
     // It will return true if the URL was set successfully, false otherwise.
     try {

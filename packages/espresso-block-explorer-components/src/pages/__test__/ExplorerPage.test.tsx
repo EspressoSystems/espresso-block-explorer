@@ -5,14 +5,15 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import * as stories from '../__docs__/ExplorerPage.stories';
 
-const { Explorer } = composeStories(stories);
+const composedStories = composeStories(stories);
+const Default = composedStories.Default as React.FC;
 
 window.HTMLElement.prototype.scrollIntoView = function () {};
 
 describe('ExplorerPage', async () => {
   it('Search Input Interaction Story', { timeout: 10000 }, async () => {
     const user = userEvent.setup();
-    render(<Explorer data-testid="1" />);
+    render(<Default data-testid="1" />);
 
     await waitFor(() => {
       const ele = screen.getByTestId('1');

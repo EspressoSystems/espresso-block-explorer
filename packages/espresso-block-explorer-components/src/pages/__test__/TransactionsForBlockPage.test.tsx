@@ -4,13 +4,14 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import * as stories from '../__docs__/TransactionsForBlockPage.stories';
 
-const { TransactionsForBlock } = composeStories(stories);
+const composedStories = composeStories(stories);
+const Default = composedStories.Default as React.FC;
 
 window.HTMLElement.prototype.scrollIntoView = function () {};
 
 describe('TransactionsForBlockPage', async () => {
   it('should render the story', async () => {
-    render(<TransactionsForBlock data-testid="1" />);
+    render(<Default data-testid="1" />);
 
     await waitFor(() => {
       const ele = screen.getByTestId('1');

@@ -2,6 +2,16 @@ import { BlockNumberContext } from '@/components/page_sections/block_detail_cont
 import { TransactionOffsetContext } from '@/components/page_sections/transaction_detail_content/TransactionDetailLoader';
 import { ProvideTickEverySecond } from '@/contexts/NowProvider';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
+import { Environment } from '@/models/config/environment/environment';
+import {
+  environmentArgsDecaf,
+  environmentArgsFakeData,
+  environmentArgsMainnet,
+  environmentArgsMilk,
+  environmentArgsWater,
+  environmentArgTypes,
+} from '@/models/config/storybook/controls';
+import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
@@ -11,12 +21,26 @@ import { StoryBookPathResolver } from '../StoryBookPathResolver';
 import TransactionPage from '../TransactionPage';
 
 interface ExampleProps {
+  environment: Environment;
+  hotshotQueryServiceURL?: string;
+  nodeValidatorWebSocketURL?: string;
   height: number;
   offset: number;
 }
 
-const Example: React.FC<ExampleProps> = ({ height, offset, ...props }) => (
-  <>
+const Example: React.FC<ExampleProps> = ({
+  environment,
+  hotshotQueryServiceURL,
+  nodeValidatorWebSocketURL,
+  height,
+  offset,
+  ...rest
+}) => (
+  <StoryBookSpecifyEnvironment
+    environment={environment}
+    hotshotQueryServiceURL={hotshotQueryServiceURL}
+    nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
+  >
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
@@ -24,14 +48,14 @@ const Example: React.FC<ExampleProps> = ({ height, offset, ...props }) => (
           <BlockNumberContext.Provider value={height}>
             <TransactionOffsetContext.Provider value={offset}>
               <ProvideCappuccinoTransactionDetailDataSource>
-                <TransactionPage {...props} />
+                <TransactionPage {...rest} />
               </ProvideCappuccinoTransactionDetailDataSource>
             </TransactionOffsetContext.Provider>
           </BlockNumberContext.Provider>
         </ProvideCappuccinoHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>
-  </>
+  </StoryBookSpecifyEnvironment>
 );
 
 const meta: Meta = {
@@ -45,9 +69,92 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const Transaction: Story = {
+interface TransactionPageArgs {
+  height: number;
+  offset: number;
+}
+
+const defaultTransactionPageArgs: TransactionPageArgs = {
+  height: 20,
+  offset: 0,
+};
+
+const transactionPageArgTypes = {
+  height: {
+    control: 'number',
+    description: 'The block number to offset into for transactions',
+  },
+  offset: {
+    control: 'number',
+    description: 'The transaction offset within the block to display',
+  },
+};
+
+export const Default: Story = {
   args: {
-    height: 20,
-    offset: 0,
+    ...defaultTransactionPageArgs,
+  },
+  argTypes: {
+    ...environmentArgTypes,
+    ...transactionPageArgTypes,
+  },
+};
+
+export const Milk: Story = {
+  args: {
+    ...environmentArgsMilk,
+    ...defaultTransactionPageArgs,
+  },
+  argTypes: {
+    ...environmentArgTypes,
+    ...transactionPageArgTypes,
+  },
+};
+
+export const Water: Story = {
+  args: {
+    ...environmentArgsWater,
+    ...defaultTransactionPageArgs,
+  },
+
+  argTypes: {
+    ...environmentArgTypes,
+    ...transactionPageArgTypes,
+  },
+};
+
+export const Decaf: Story = {
+  args: {
+    ...environmentArgsDecaf,
+    ...defaultTransactionPageArgs,
+  },
+
+  argTypes: {
+    ...environmentArgTypes,
+    ...transactionPageArgTypes,
+  },
+};
+
+export const Mainnet: Story = {
+  args: {
+    ...environmentArgsMainnet,
+    ...defaultTransactionPageArgs,
+  },
+
+  argTypes: {
+    ...environmentArgTypes,
+    ...transactionPageArgTypes,
+  },
+};
+
+export const FakeData: Story = {
+  args: {
+    ...environmentArgsFakeData,
+    ...defaultTransactionPageArgs,
+  },
+
+  argTypes: {
+    ...environmentArgTypes,
+    ...transactionPageArgTypes,
   },
 };

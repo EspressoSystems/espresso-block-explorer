@@ -10,7 +10,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import * as stories from '../__docs__/TransactionPage.stories';
 
-const { Transaction } = composeStories(stories);
+const composedStories = composeStories(stories);
+const Default = composedStories.Default as React.FC<{ hash: string }>;
 
 describe('TransactionPage', async () => {
   it('should render the story', async () => {
@@ -19,7 +20,7 @@ describe('TransactionPage', async () => {
     );
 
     render(
-      <Transaction
+      <Default
         data-testid="1"
         hash={`0x${Array.from(
           encodeNumberIterableToHexits(new Uint8Array(transaction1.hash.data)),

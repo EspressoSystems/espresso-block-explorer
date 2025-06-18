@@ -29,6 +29,13 @@ import {
 } from '@/components/page_sections/nodes_summary_data_table/NodesSummaryLoader';
 import { OperatingSystemPieChart } from '@/components/page_sections/operating_system_pie_chart/OperatingSystemPieChart';
 import { OperatingSystemPieChartStreamConsumer } from '@/components/page_sections/operating_system_pie_chart/OperatingSystemPieChartLoader';
+import { StakingModal } from '@/components/page_sections/staking_modal/staking_modal';
+import { StakingSummarySection } from '@/components/page_sections/staking_summary/staking_summary';
+import OnlyWalletHeading from '@/components/page_sections/wallet/only_wallet_heading';
+import {
+  RainbowKitMountedGuard,
+  WalletConnectedGuard,
+} from '@/components/rainbowkit/components/guard';
 import Text from '@/components/text/Text';
 import { ProjectionProvider } from '@/components/visual/geo_json/ProjectionProvider';
 import WorldMapAutoSizer from '@/components/visual/geo_json/WorldMapAutoSizer';
@@ -42,7 +49,47 @@ import { HistogramSectionTitle } from '@/components/visual/histogram/histogram_s
 import { WebSocketStatus } from '@/components/visual/web_socket/WebSocketStatus';
 import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
 import React from 'react';
+import {
+  RainbowKitAccountAddressContext,
+  RainbowKitMountedContext,
+} from '../components';
 import './node_validator.css';
+
+interface NodeValidatorLayoutProps {
+  className?: string;
+  children?: React.ReactNode | React.ReactNode[];
+}
+
+/**
+ * NodeValidatorLayout is a component that helps to govern the layout of the
+ * Nodes Page.
+ *
+ * We want the page's layout to be somewhat reactive.  In general, we would
+ * like the user's page layout to be modified based on whether or not
+ * he/she has his/her wallet connected.
+ *
+ * With a wallet, the user will have access to more sections of information
+ * that will be relevant to him/her.
+ */
+const NodeValidatorLayout: React.FC<NodeValidatorLayoutProps> = (props) => {
+  const mounted = React.useContext(RainbowKitMountedContext);
+  const address = React.useContext(RainbowKitAccountAddressContext);
+
+  // The user does not have a wallet connected, so we want to render the
+  // layout without the user wallet section.  This is governed by guards
+  // for the components, but we also need to consider layout differences
+  // as a result.
+  const className =
+    !address || !mounted
+      ? 'node-validator-grid edge-margin'
+      : 'node-validator-grid with-wallet edge-margin';
+
+  return (
+    <div {...props} className={addClassToClassName(props.className, className)}>
+      {props.children}
+    </div>
+  );
+};
 
 interface NodesPageProps {
   className?: string;
@@ -56,6 +103,10 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
     <ErrorStreamConsumer>
       <OverridePagePath page={PageType.nodes}>
         <Header />
+
+        <RainbowKitMountedGuard>
+          <OnlyWalletHeading />
+        </RainbowKitMountedGuard>
 
         {/*
       We're going to have a continually updating Data source.  So we want that
@@ -74,100 +125,102 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
           */}
         <ErrorDisplay className="edge-margin" />
 
-        <div
-          {...props}
-          className={addClassToClassName(
-            props.className,
-            'node-validator-grid edge-margin',
-          )}
-        >
-          {/* Latest Block */}
-          <LatestBlockSummaryStreamConsumer>
-            <LatestBlockSummaryAsyncHandler className="latest-block" />
-          </LatestBlockSummaryStreamConsumer>
+        <StakingModal>
+          <NodeValidatorLayout {...props}>
+            {/* Latest Block */}
+            <LatestBlockSummaryStreamConsumer>
+              <LatestBlockSummaryAsyncHandler className="latest-block" />
+            </LatestBlockSummaryStreamConsumer>
 
-          {/* Latest Block Producers */}
-          <LatestBlockProducersStreamConsumer>
-            <LatestBlockProducersAsyncHandler className="latest-block-producers" />
-          </LatestBlockProducersStreamConsumer>
+            {/* Latest Block Producers */}
+            <LatestBlockProducersStreamConsumer>
+              <LatestBlockProducersAsyncHandler className="latest-block-producers" />
+            </LatestBlockProducersStreamConsumer>
 
-          {/* Block Time Histogram */}
-          <BlockTimeHistogramStreamConsumer>
-            <BlockTimeHistogram />
-          </BlockTimeHistogramStreamConsumer>
+            {/* Block Time Histogram */}
+            <BlockTimeHistogramStreamConsumer>
+              <BlockTimeHistogram />
+            </BlockTimeHistogramStreamConsumer>
 
-          {/* Block Size Histogram */}
-          <BlockSizeHistogramStreamConsumer>
-            <BlockSizeHistogram />
-          </BlockSizeHistogramStreamConsumer>
+            {/* Block Size Histogram */}
+            <BlockSizeHistogramStreamConsumer>
+              <BlockSizeHistogram />
+            </BlockSizeHistogramStreamConsumer>
 
-          {/* Throughput Histogram */}
-          <BlockThroughputHistogramStreamConsumer>
-            <BlockThroughputHistogram />
-          </BlockThroughputHistogramStreamConsumer>
+            {/* Throughput Histogram */}
+            <BlockThroughputHistogramStreamConsumer>
+              <BlockThroughputHistogram />
+            </BlockThroughputHistogramStreamConsumer>
 
-          {/* CDN Status */}
-          <CardNoPadding className="cdn">
-            <CDNStatus className="card-padding" />
-          </CardNoPadding>
+            {/* CDN Status */}
+            <CardNoPadding className="cdn">
+              <CDNStatus className="card-padding" />
+            </CardNoPadding>
 
-          {/* Network Map */}
-          <CardNoPadding className="network-map">
-            <HistogramSectionTitle className="card--padding heading--margin">
-              <Text text="Network Map" />
-              <div></div>
-            </HistogramSectionTitle>
-            <NodeInformationToDotPopulation>
-              <WorldMapAutoSizer>
-                <ProjectionProvider>
-                  <WorldMapDotsFullResolution />
-                  <DotPopulationStreamConsumer>
-                    <WorldMapDotsPopulationFullResolution />
-                  </DotPopulationStreamConsumer>
-                </ProjectionProvider>
-              </WorldMapAutoSizer>
-            </NodeInformationToDotPopulation>
-          </CardNoPadding>
+            {/* Network Map */}
+            <CardNoPadding className="network-map">
+              <HistogramSectionTitle className="card--padding heading--margin">
+                <Text text="Network Map" />
+                <div></div>
+              </HistogramSectionTitle>
+              <NodeInformationToDotPopulation>
+                <WorldMapAutoSizer>
+                  <ProjectionProvider>
+                    <WorldMapDotsFullResolution />
+                    <DotPopulationStreamConsumer>
+                      <WorldMapDotsPopulationFullResolution />
+                    </DotPopulationStreamConsumer>
+                  </ProjectionProvider>
+                </WorldMapAutoSizer>
+              </NodeInformationToDotPopulation>
+            </CardNoPadding>
 
-          {/* Nodes Histogram (Not needed currently) */}
+            {/* Nodes Histogram (Not needed currently) */}
 
-          {/* Node Countries Pie Chart */}
-          <CardNoPadding className="countries">
-            <CountriesPieChartStreamConsumer>
-              <CountriesPieChart />
-            </CountriesPieChartStreamConsumer>
-          </CardNoPadding>
+            {/* Node Countries Pie Chart */}
+            <CardNoPadding className="countries">
+              <CountriesPieChartStreamConsumer>
+                <CountriesPieChart />
+              </CountriesPieChartStreamConsumer>
+            </CardNoPadding>
 
-          {/* Network Types Pie Chart */}
-          <CardNoPadding className="network-types">
-            <NetworkTypesPieChartStreamConsumer>
-              <NetworkTypesPieChart />
-            </NetworkTypesPieChartStreamConsumer>
-          </CardNoPadding>
+            {/* Network Types Pie Chart */}
+            <CardNoPadding className="network-types">
+              <NetworkTypesPieChartStreamConsumer>
+                <NetworkTypesPieChart />
+              </NetworkTypesPieChartStreamConsumer>
+            </CardNoPadding>
 
-          {/* Node Types Pie Chart */}
-          <CardNoPadding className="node-types">
-            <NodeTypesPieChartStreamConsumer>
-              <NodeTypesPieChart />
-            </NodeTypesPieChartStreamConsumer>
-          </CardNoPadding>
+            {/* Node Types Pie Chart */}
+            <CardNoPadding className="node-types">
+              <NodeTypesPieChartStreamConsumer>
+                <NodeTypesPieChart />
+              </NodeTypesPieChartStreamConsumer>
+            </CardNoPadding>
 
-          {/* Operating Systems Pie Chart */}
-          <CardNoPadding className="operating-systems">
-            <OperatingSystemPieChartStreamConsumer>
-              <OperatingSystemPieChart />
-            </OperatingSystemPieChartStreamConsumer>
-          </CardNoPadding>
+            {/* Operating Systems Pie Chart */}
+            <CardNoPadding className="operating-systems">
+              <OperatingSystemPieChartStreamConsumer>
+                <OperatingSystemPieChart />
+              </OperatingSystemPieChartStreamConsumer>
+            </CardNoPadding>
 
-          {/* Recent Node Updates Data Table */}
-          <Card className="nodes">
-            <VotersParticipationStatsConsumer>
-              <NodeSummaryStreamConsumer>
-                <NodesSummaryDataTable />
-              </NodeSummaryStreamConsumer>
-            </VotersParticipationStatsConsumer>
-          </Card>
-        </div>
+            <WalletConnectedGuard>
+              <div className="wallet-stake">
+                <StakingSummarySection />
+              </div>
+            </WalletConnectedGuard>
+
+            {/* Recent Node Updates Data Table */}
+            <Card className="nodes">
+              <VotersParticipationStatsConsumer>
+                <NodeSummaryStreamConsumer>
+                  <NodesSummaryDataTable />
+                </NodeSummaryStreamConsumer>
+              </VotersParticipationStatsConsumer>
+            </Card>
+          </NodeValidatorLayout>
+        </StakingModal>
 
         <Footer />
       </OverridePagePath>

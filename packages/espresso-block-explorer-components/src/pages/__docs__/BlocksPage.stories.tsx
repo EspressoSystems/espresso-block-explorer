@@ -1,5 +1,15 @@
 import { ProvideTickEverySecond } from '@/components/contexts/NowProvider';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
+import { Environment } from '@/models/config/environment/environment';
+import {
+  environmentArgsDecaf,
+  environmentArgsFakeData,
+  environmentArgsMainnet,
+  environmentArgsMilk,
+  environmentArgsWater,
+  environmentArgTypes,
+} from '@/models/config/storybook/controls';
+import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
@@ -9,22 +19,34 @@ import FakeDataNotice from '../FakeDataNotice';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
 interface ExampleProps {
+  environment: Environment;
+  hotshotQueryServiceURL?: string;
+  nodeValidatorWebSocketURL?: string;
   startAtBlock?: number;
 }
 
-const Example: React.FC<ExampleProps> = (props) => (
-  <>
+const Example: React.FC<ExampleProps> = ({
+  environment,
+  hotshotQueryServiceURL,
+  nodeValidatorWebSocketURL,
+  ...rest
+}) => (
+  <StoryBookSpecifyEnvironment
+    environment={environment}
+    hotshotQueryServiceURL={hotshotQueryServiceURL}
+    nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
+  >
     <FakeDataNotice />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
         <ProvideCappuccinoHotShotQueryServiceAPIContext>
           <ProvideCappuccinoBlocksSummaryDataSource>
-            <BlocksPage {...props} />
+            <BlocksPage {...rest} />
           </ProvideCappuccinoBlocksSummaryDataSource>
         </ProvideCappuccinoHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>
-  </>
+  </StoryBookSpecifyEnvironment>
 );
 
 const meta: Meta = {
@@ -38,14 +60,87 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const Blocks: Story = {
+interface BlocksPageArgs {
+  startAtBlock?: undefined | number;
+}
+
+const defaultBlocksPageArgs: BlocksPageArgs = {
+  startAtBlock: undefined,
+};
+
+const blockPageArgTypes = {
+  startAtBlock: {
+    control: 'number',
+    description:
+      'The block number to start displaying blocks from, if not specified, will start at the latest block',
+  },
+};
+
+export const Default: Story = {
   args: {
-    startAtBlock: undefined,
+    ...defaultBlocksPageArgs,
+  },
+  argTypes: {
+    ...environmentArgTypes,
+    ...blockPageArgTypes,
+  },
+};
+
+export const Milk: Story = {
+  args: {
+    ...environmentArgsMilk,
+    ...defaultBlocksPageArgs,
+  },
+  argTypes: {
+    ...environmentArgTypes,
+    ...blockPageArgTypes,
+  },
+};
+
+export const Water: Story = {
+  args: {
+    ...environmentArgsWater,
+    ...defaultBlocksPageArgs,
   },
 
   argTypes: {
-    startAtBlock: {
-      control: 'number',
-    },
+    ...environmentArgTypes,
+    ...blockPageArgTypes,
+  },
+};
+
+export const Decaf: Story = {
+  args: {
+    ...environmentArgsDecaf,
+    ...defaultBlocksPageArgs,
+  },
+
+  argTypes: {
+    ...environmentArgTypes,
+    ...blockPageArgTypes,
+  },
+};
+
+export const Mainnet: Story = {
+  args: {
+    ...environmentArgsMainnet,
+    ...defaultBlocksPageArgs,
+  },
+
+  argTypes: {
+    ...environmentArgTypes,
+    ...blockPageArgTypes,
+  },
+};
+
+export const FakeData: Story = {
+  args: {
+    ...environmentArgsFakeData,
+    ...defaultBlocksPageArgs,
+  },
+
+  argTypes: {
+    ...environmentArgTypes,
+    ...blockPageArgTypes,
   },
 };
