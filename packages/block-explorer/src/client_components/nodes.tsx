@@ -16,8 +16,6 @@ export default function NodesClientComponent(props: NodesClientComponentProps) {
   const environment = React.useContext(EnvironmentContext);
   const espresso = React.useContext(EspressoConfigContext);
 
-  console.info('<<<< HERE', environment, espresso);
-
   return (
     <ProvideCappuccinoNodeValidatorServiceAPIContext>
       <ProvideCappuccinoHotShotQueryServiceAPIContext>
