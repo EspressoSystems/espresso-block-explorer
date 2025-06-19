@@ -943,7 +943,7 @@ interface GenericStreamConsumerProps<T> {
   children: React.ReactNode | React.ReactNode[];
 }
 
-const GenericStreamConsumer: React.FC<GenericStreamConsumerProps<any>> = (
+const GenericStreamConsumer: React.FC<GenericStreamConsumerProps<unknown>> = (
   props,
 ) => {
   return (
@@ -1032,7 +1032,7 @@ export const ProvideCappuccinoNodeValidatorStreams: React.FC<
       streams.mounted = false;
       cancelCompleter.complete(kCancelStream);
     };
-  }, [streams, nodeValidatorService]);
+  }, [streams, nodeValidatorService, explorerConfig?.nodeValidatorServiceURL]);
 
   return (
     <LatestBlockSummaryStreamContext.Provider value={streams.latestBlockStream}>

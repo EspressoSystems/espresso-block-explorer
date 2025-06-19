@@ -262,6 +262,7 @@ class SearchStateController {
         }
       } catch (err) {
         // We failed to look up this result
+        console.error('encountered error while searching for query', err);
       }
 
       // Nothing to navigate to, let's skip

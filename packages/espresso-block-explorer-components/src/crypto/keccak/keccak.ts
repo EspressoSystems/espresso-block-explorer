@@ -37,7 +37,7 @@ export class Keccak {
 
     if (this._delimitedSuffix)
       this._state.absorbLastFewBits(this._delimitedSuffix);
-    let digest = this._state.squeeze(this._hashBitLength / 8);
+    const digest = this._state.squeeze(this._hashBitLength / 8);
 
     this._resetState();
 

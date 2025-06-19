@@ -122,7 +122,7 @@ interface ExampleProps {}
 const Example: React.FC<ExampleProps> = (props) => {
   // Create the Data Table State
   const [initialState, setState] = React.useState<
-    DataTableState<ExampleColumns>
+    DataTableState<ExampleColumns> & { page: number }
   >({
     sortColumn: ExampleColumns.one,
     sortDir: SortDirection.asc,

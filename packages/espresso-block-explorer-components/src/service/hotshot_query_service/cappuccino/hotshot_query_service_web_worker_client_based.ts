@@ -100,7 +100,6 @@ class AsyncRequestHelper {
 
   constructor(worker: Worker) {
     this.worker = worker;
-    worker.onmessageerror;
     worker.addEventListener('message', this.handleMessage.bind(this));
     worker.addEventListener('messageerror', this.handleMessageError.bind(this));
     worker.addEventListener('error', this.handleError.bind(this));

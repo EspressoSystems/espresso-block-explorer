@@ -13,6 +13,7 @@ function run(buffer: CircularBuffer<number>) {
     for (let i = 0; i < SAMPLES; i++) {
       try {
         buffer.put(i);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         // Ignore errors for this benchmark
       }

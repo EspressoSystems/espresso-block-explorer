@@ -9,7 +9,6 @@ import AnchorButton, { AnchorButtonProps } from '../anchor_button/AnchorButton';
 const LabeledAnchorButton: React.FC<AnchorButtonProps> = (props) => (
   <AnchorButton
     {...props}
-    // eslint-disable-next-line react/prop-types
     className={addClassToClassName(props.className, 'label type--ui--button')}
   />
 );

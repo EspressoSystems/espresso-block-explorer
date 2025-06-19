@@ -10,7 +10,7 @@ const Menu: React.FC<React.SVGProps<SVGElement>> = (props) =>
     SVGIconBase,
     {
       ...props,
-      // eslint-disable-next-line react/prop-types
+
       className: addClassToClassName(props.className, 'stroked'),
     },
     <path d="M5.99976 17.998L17.9998 5.99805M5.99976 5.99805L17.9998 17.998" />,

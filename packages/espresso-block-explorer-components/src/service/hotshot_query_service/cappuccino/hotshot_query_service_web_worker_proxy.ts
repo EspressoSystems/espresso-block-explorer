@@ -384,6 +384,7 @@ async function determineServiceImplementationFromConfigFile(): Promise<Cappuccin
       const url = new URL(config.hotshot_query_service_url);
       return new FetchBasedCappuccinoHotShotQueryService(wrappedFetch, url);
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     // We ignore this error for now, and fallback to fake data.
   }

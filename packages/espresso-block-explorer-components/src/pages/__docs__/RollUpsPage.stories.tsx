@@ -22,14 +22,12 @@ interface ExampleProps {
   environment: Environment;
   hotshotQueryServiceURL?: string;
   nodeValidatorWebSocketURL?: string;
-  namespace: number;
 }
 
 const Example: React.FC<ExampleProps> = ({
   environment,
   hotshotQueryServiceURL,
   nodeValidatorWebSocketURL,
-  namespace,
   ...rest
 }) => (
   <StoryBookSpecifyEnvironment

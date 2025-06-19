@@ -169,6 +169,7 @@ const InfiniteGardenDisplay: React.FC = () => {
     // All errors would be issues with Decoding
     console.error(
       'encountered error attempting to decode inscription and signature',
+      err,
     );
   }
 

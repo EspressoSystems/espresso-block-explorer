@@ -90,13 +90,9 @@ export interface DataTableProps<ColumnType> {
   columns: ColumnData<ColumnType>[];
 }
 
-export interface SortDirectionComponent {}
-
 const SortDirectionComponent: React.FC = () => (
   <ChevronUp className="icon--sort" />
 );
-
-export interface DataTableHeadProps {}
 
 /**
  * DataTableHead represents a th element under the thead -> tr element of

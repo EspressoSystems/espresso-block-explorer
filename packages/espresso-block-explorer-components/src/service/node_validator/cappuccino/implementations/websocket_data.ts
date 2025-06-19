@@ -46,7 +46,6 @@ class ProxyWebSocket {
   ) {
     const webSocket = new WebSocket(url);
 
-    webSocket.onerror;
     webSocket.addEventListener('open', openHandler);
     webSocket.addEventListener('message', messageHandler);
     webSocket.addEventListener('close', closeHandler);

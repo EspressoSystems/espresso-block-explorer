@@ -305,7 +305,6 @@ export function compareIterators<T>(
   itB: Iterator<T>,
   compare: (a: T, b: T) => number = defaultCompare<T>,
 ): number {
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     const nextA = itA.next();
     const nextB = itB.next();

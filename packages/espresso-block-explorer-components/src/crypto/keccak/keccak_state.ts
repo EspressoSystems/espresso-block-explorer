@@ -8,6 +8,7 @@ export class KeccakState {
   count: number = 0;
   squeezing: boolean = false;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   initialize(rate: number, _capacity: number): void {
     for (let i = 0; i < 50; ++i) this.state[i] = 0;
     this.blockSize = rate / 8;

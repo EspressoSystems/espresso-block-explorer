@@ -27,16 +27,14 @@ interface GeoJSONViewProps {
  * underlying geometry is a MultiPolygon.
  */
 const GeoJSONView: React.FC<GeoJSONViewProps> = (props) => {
-  // eslint-disable-next-line react/prop-types
   const { features } = props.geoJson as GeoJSONFeatureCollection;
   const {
-    // eslint-disable-next-line react/prop-types
     offsetX = 0,
-    // eslint-disable-next-line react/prop-types
+
     offsetY = 0,
-    // eslint-disable-next-line react/prop-types
+
     width = Number(mapWidth),
-    // eslint-disable-next-line react/prop-types
+
     height = Number(mapHeight),
   } = props;
 
