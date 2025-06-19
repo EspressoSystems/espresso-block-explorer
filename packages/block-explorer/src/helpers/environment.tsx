@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   Environment,
   EnvironmentContext,
+  EspressoAddresses,
   EspressoConfigContext,
   RainbowKitContextInjector,
 } from 'espresso-block-explorer-components';
@@ -30,10 +31,12 @@ export const DeriveEnvironmentFromEnv: React.FC<
   return (
     <EnvironmentContext.Provider value={env.environment as Environment}>
       <EspressoConfigContext.Provider
-        value={{
-          contract_address_stake_table: env.contract_address_stake_table,
-          contract_address_esp_token: env.contract_address_esp_token,
-        }}
+        value={
+          {
+            stakeTableContractAddress: env.contract_address_stake_table,
+            espTokenContractAddress: env.contract_address_esp_token,
+          } as EspressoAddresses
+        }
       >
         <DeriveWagmiFromEnvironment>
           <QueryClientProvider client={queryClient}>
