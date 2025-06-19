@@ -63,25 +63,25 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
     const [peta, giga, mega, kilo] = thresholds;
     if (number >= peta) {
       return this.petabytesPerSecondFormatter.formatToParts(
-        (number as number) / (peta as number),
+        Number(number) / Number(peta),
       );
     }
 
     if (number >= giga) {
       return this.gigabytesPerSecondFormatter.formatToParts(
-        (number as number) / (giga as number),
+        Number(number) / Number(giga),
       );
     }
 
     if (number >= mega) {
       return this.megabytesPerSecondFormatter.formatToParts(
-        (number as number) / (mega as number),
+        Number(number) / Number(mega),
       );
     }
 
     if (number >= kilo) {
       return this.kilobytesPerSecondFormatter.formatToParts(
-        (number as number) / (kilo as number),
+        Number(number) / Number(kilo),
       );
     }
 
@@ -113,7 +113,7 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
     }
 
     if (typeof number === 'string') {
-      return this.bytesPerSecondFormatter.formatToParts(Number(number));
+      return this.formatNumberToParts(Number(number));
     }
 
     return this.bytesPerSecondFormatter.formatToParts(number);
@@ -127,28 +127,28 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
     const [peta, giga, mega, kilo] = thresholds;
     if (start >= peta || end >= peta) {
       return this.petabytesPerSecondFormatter.formatRangeToParts(
-        (start as number) / (peta as number),
-        (end as number) / (peta as number),
+        Number(start) / Number(peta),
+        Number(end) / Number(peta),
       );
     }
     if (start >= giga || end >= giga) {
       return this.gigabytesPerSecondFormatter.formatRangeToParts(
-        (start as number) / (giga as number),
-        (end as number) / (giga as number),
+        Number(start) / Number(giga),
+        Number(end) / Number(giga),
       );
     }
 
     if (start >= mega || end >= mega) {
       return this.megabytesPerSecondFormatter.formatRangeToParts(
-        (start as number) / (mega as number),
-        (end as number) / (mega as number),
+        Number(start) / Number(mega),
+        Number(end) / Number(mega),
       );
     }
 
     if (start >= kilo || end >= kilo) {
       return this.kilobytesPerSecondFormatter.formatRangeToParts(
-        (start as number) / (kilo as number),
-        (end as number) / (kilo as number),
+        Number(start) / Number(kilo),
+        Number(end) / Number(kilo),
       );
     }
 
@@ -178,8 +178,8 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
   }
 
   formatRangeToParts(
-    start: number | bigint,
-    end: number | bigint,
+    start: number | bigint | Intl.StringNumericLiteral,
+    end: number | bigint | Intl.StringNumericLiteral,
   ): Intl.NumberRangeFormatPart[] {
     if (typeof start === 'number' && typeof end === 'number') {
       return this.formatNumberRangeToParts(start, end);
@@ -189,7 +189,7 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
       return this.formatBigintRangeToParts(start, end);
     }
 
-    return this.bytesPerSecondFormatter.formatRangeToParts(start, end);
+    return this.formatNumberRangeToParts(Number(start), Number(end));
   }
 
   format(number: number | bigint | Intl.StringNumericLiteral): string {
