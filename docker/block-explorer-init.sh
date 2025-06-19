@@ -24,5 +24,10 @@ else
 fi
 
 cat /app/packages/block-explorer/public/config.json
+
+# Build the Explorer to run.  This will inject the environment variables
+# into the build files.  Otherwise, we wouldn't be able to have a dynamic
+# environment derived configuration
+npm run build --workspace=packages/block-explorer
 # Actually start app
 npm run start --workspace=packages/block-explorer

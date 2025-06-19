@@ -5,7 +5,7 @@ COPY package.json package-lock.json /app/
 COPY packages/espresso-block-explorer-components /app/packages/espresso-block-explorer-components
 COPY packages/block-explorer /app/packages/block-explorer
 
-RUN apk add --no-cache python3 make g++
+RUN apk add --no-cache bash jq tini python3 make g++
 
 RUN npm ci --no-audit --all-workspaces
 
@@ -18,18 +18,6 @@ RUN cp -r packages/espresso-block-explorer-components/public/* packages/block-ex
     cp -r packages/espresso-block-explorer-components/dist/assets/*.js packages/block-explorer/public/assets/.
 RUN npm install --no-audit --save --workspace=packages/block-explorer packages/espresso-block-explorer-components/
 
-# Build the Next Application
-RUN npm run build --workspace=packages/block-explorer
-
-FROM node:22-alpine
-RUN apk add --no-cache bash jq tini python3 make g++
-WORKDIR /app
-
-COPY --from=builder /app/package.json /app/package-lock.json /app/
-COPY --from=builder /app/packages/block-explorer/package.json /app/packages/block-explorer/
-RUN NODE_ENV=production npm ci --only=production
-COPY --from=builder /app/packages/block-explorer/.next /app/packages/block-explorer/.next
-COPY --from=builder /app/packages/block-explorer/public/ /app/packages/block-explorer/public/
 COPY docker/block-explorer-init.sh /app/block-explorer-init.sh
 
 # The configuration for the pre-built block-explorer is specified by
