@@ -32,3 +32,10 @@ export class MockWebSocket
     this.sendCallback(data);
   }
 }
+
+// Add a test, just to appease the testing framework.
+describe('MockWebSocket', () => {
+  it('should pass without error', () => {
+    expect(new MockWebSocket()).toBeInstanceOf(MockWebSocket);
+  });
+});
