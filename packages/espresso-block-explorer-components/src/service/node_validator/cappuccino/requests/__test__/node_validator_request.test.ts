@@ -4,9 +4,13 @@ import {
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
+  RequestStakeTableSnapshot,
+  RequestValidatorsSnapshot,
   RequestVotersSnapshot,
   SubscribeLatestBlock,
   SubscribeNodeIdentity,
+  SubscribeStakeTables,
+  SubscribeValidators,
   SubscribeVoters,
 } from '../node_validator_request';
 import { cappuccinoNodeValidatorRequestCodec } from '../node_validator_request_codec';
@@ -17,20 +21,28 @@ describe('NodeValidatorRequest', () => {
       'SubscribeNodeIdentity',
       'SubscribeLatestBlock',
       'SubscribeVoters',
+      'SubscribeValidators',
+      'SubscribeStakeTables',
       'RequestBlocksSnapshot',
       'RequestVotersSnapshot',
       'RequestHistogramSnapshot',
       'RequestNodeIdentitySnapshot',
+      'RequestValidatorsSnapshot',
+      'RequestStakeTableSnapshot',
     ];
 
     const requestConstructors = [
       SubscribeNodeIdentity,
       SubscribeLatestBlock,
       SubscribeVoters,
+      SubscribeValidators,
+      SubscribeStakeTables,
       RequestBlocksSnapshot,
       RequestVotersSnapshot,
       RequestHistogramSnapshot,
       RequestNodeIdentitySnapshot,
+      RequestValidatorsSnapshot,
+      RequestStakeTableSnapshot,
     ];
 
     for (const [string, constructor] of zipWithIterable(

@@ -23,7 +23,7 @@ export class WebSocketResponse extends WebWorkerProxyResponse {
     this.status = status;
   }
 
-  toJson() {
+  toJSON() {
     return webSocketResponseCodec.encode(this);
   }
 }

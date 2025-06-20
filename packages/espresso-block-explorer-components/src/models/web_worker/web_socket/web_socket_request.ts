@@ -23,7 +23,7 @@ export class WebSocketRequest extends WebWorkerProxyRequest {
     this.command = command;
   }
 
-  toJson() {
+  toJSON() {
     return webSocketRequestCodec.encode(this);
   }
 }

@@ -72,6 +72,7 @@ export default defineConfig({
         'eslint.config.mjs',
         'node_modules/**',
         'dist/**',
+        'src/models/config/storybook/**/*',
       ],
     },
   },

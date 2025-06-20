@@ -20,7 +20,7 @@ export class NodeValidatorServiceRequest extends WebWorkerProxyRequest {
     this.request = request;
   }
 
-  toJson() {
+  toJSON() {
     return nodeValidatorServiceRequestCodec.encode(this);
   }
 }

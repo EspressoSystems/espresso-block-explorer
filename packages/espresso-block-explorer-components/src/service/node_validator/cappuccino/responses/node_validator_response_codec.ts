@@ -32,6 +32,7 @@ import {
 import {
   CappuccinoLatestValidator,
   cappuccinoLatestValidatorCodec,
+  kCappuccinoLatestValidatorType,
 } from './latest_validator';
 import {
   CappuccinoLatestVoters,
@@ -79,7 +80,7 @@ class CappuccinoNodeValidatorResponseDecoder
     if (isRecordWithKeys(input, kCappuccinoLatestVotersType)) {
       return cappuccinoLatestVotersCodec.decode(input);
     }
-    if (isRecordWithKeys(input, kCappuccinoLatestVotersType)) {
+    if (isRecordWithKeys(input, kCappuccinoLatestValidatorType)) {
       return cappuccinoLatestValidatorCodec.decode(input);
     }
     if (isRecordWithKeys(input, kCappuccinoLatestStakeTableType)) {
