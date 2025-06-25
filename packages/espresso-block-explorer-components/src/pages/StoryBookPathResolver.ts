@@ -47,7 +47,7 @@ export class StoryBookPathResolver implements PathResolver {
   }
   block(height: number): string {
     return this.stringForParams(
-      this.paramsForPage('block', [['args', `block:${height}`]]),
+      this.paramsForPage('block', [['block', height]]),
     );
   }
   transactions(startAtBlock?: number, offset?: number): string {
@@ -69,8 +69,8 @@ export class StoryBookPathResolver implements PathResolver {
   }
   transaction(height: number, offset: number): string {
     return this.stringForParams(
-      this.paramsForPage('transactions', [
-        ['startAtBlock', height],
+      this.paramsForPage('transaction', [
+        ['height', height],
         ['offset', offset],
       ]),
     );
