@@ -1,3 +1,4 @@
+import { Divider } from '@/components/layout/divider/divider';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import ArrowLeft from '../ArrowLeft';
@@ -23,7 +24,7 @@ const Example: React.FC = () => (
   <div style={{ display: 'flex', flexDirection: 'column' }}>
     <EspressoLogo />
     <EspressoLogoAndTitle />
-    <hr />
+    <Divider />
     <ArrowLeft />
     <ArrowRight />
     <Check />

@@ -18,7 +18,7 @@ const Example: React.FC<ExampleProps> = (props) => {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'Components/Page Section/Hex Dump',
+  title: 'Components/Page Sections/Hex Dump',
   component: Example,
 };
 
