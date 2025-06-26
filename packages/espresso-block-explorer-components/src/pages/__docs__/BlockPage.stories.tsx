@@ -1,3 +1,4 @@
+import { EnvironmentBanner } from '@/components/layout/environment_banner/environment_banner';
 import { BlockNumberContext } from '@/components/page_sections/block_detail_content/BlockDetailContentLoader';
 import { ProvideTickEverySecond } from '@/contexts/NowProvider';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
@@ -16,7 +17,6 @@ import React from 'react';
 import { Meta, StoryObj } from 'storybook';
 import BlockPage from '../BlockPage';
 import { ProvideCappuccinoBlockDetailDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
-import FakeDataNotice from '../FakeDataNotice';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
 interface ExampleProps {
@@ -38,7 +38,7 @@ const Example: React.FC<ExampleProps> = ({
     hotshotQueryServiceURL={hotshotQueryServiceURL}
     nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
   >
-    <FakeDataNotice />
+    <EnvironmentBanner />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
         <ProvideCappuccinoHotShotQueryServiceAPIContext>

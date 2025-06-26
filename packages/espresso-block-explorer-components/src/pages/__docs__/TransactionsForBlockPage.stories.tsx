@@ -13,11 +13,11 @@ import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
+import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
 import {
   ProvideCappuccinoBlockDetailDataSource,
   ProvideCappuccinoTransactionsForBlockSummaryDataSource,
 } from '../CappuccinoHotShotQueryServiceAdapters';
-import FakeDataNotice from '../FakeDataNotice';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 import TransactionsForBlockPage from '../TransactionsForBlockPage';
 
@@ -42,7 +42,7 @@ const Example: React.FC<ExampleProps> = ({
     hotshotQueryServiceURL={hotshotQueryServiceURL}
     nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
   >
-    <FakeDataNotice />
+    <EnvironmentBanner />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
         <ProvideCappuccinoHotShotQueryServiceAPIContext>

@@ -15,7 +15,7 @@ import { ProvideCappuccinoNodeValidatorStreams } from 'pages/CappuccinoNodeValid
 import { ProvideCappuccinoNodeValidatorServiceAPIContext } from 'pages/CappuccinoNodeValidatorServiceAPIContext';
 import React from 'react';
 import { Meta, StoryObj } from 'storybook';
-import FakeDataNotice from '../FakeDataNotice';
+import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
 import NodesPage from '../NodesPage';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
@@ -43,7 +43,7 @@ const Example: React.FC<ExampleProps> = ({
       hotshotQueryServiceURL={hotshotQueryServiceURL}
       nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
     >
-      <FakeDataNotice />
+      <EnvironmentBanner />
       <ProvideTickEverySecond>
         <ProvideCappuccinoNodeValidatorServiceAPIContext>
           <ProvideCappuccinoHotShotQueryServiceAPIContext>
@@ -103,5 +103,17 @@ export const Mainnet: Story = {
 
 export const FakeData: Story = {
   args: environmentArgsFakeDataWithContracts,
+  argTypes: environmentArgTypesWithContracts,
+};
+
+export const LocalTestingMilk: Story = {
+  args: {
+    environment: 'milk',
+    stakeTableContractAddress: '0x196dbcbb54b8ec4958c959d8949ebfe87ac2aaaf',
+    espTokenContractAddress: '0xf7cd8fa9b94db2aa972023b379c7f72c65e4de9d',
+    hotshotQueryServiceURL: 'https://query-0.milk.devnet.espresso.network/v0/',
+    nodeValidatorWebSocketURL: 'ws://localhost:9000/v0/',
+  },
+
   argTypes: environmentArgTypesWithContracts,
 };

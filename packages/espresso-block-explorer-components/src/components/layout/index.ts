@@ -1,4 +1,5 @@
 export * from './card';
+export * from './environment_banner';
 export * from './heading';
 export * from './label';
 export * from './margin';
