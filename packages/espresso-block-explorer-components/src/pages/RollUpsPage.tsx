@@ -1,4 +1,5 @@
 import { ErrorDisplay } from '@/components/error/ErrorDisplay';
+import { Label } from '@/components/layout/label/label';
 import Footer from '@/components/page_sections/footer/Footer';
 import Header from '@/components/page_sections/header/Header';
 import PageTitle from '@/components/page_sections/page_title/PageTitle';
@@ -72,10 +73,10 @@ const RollUpsPage: React.FC<RollUpsPageProps> = (props) => (
       <Heading1>
         <Text text="Rollups" />
       </Heading1>
-      <label>
+      <Label>
         <NumberText number={curatedRollupMap.size} />{' '}
         <Text text="Participating Rollups" />
-      </label>
+      </Label>
     </EdgeMarginPageTitle>
 
     <RollUpsSummaryLoader>

@@ -1,4 +1,5 @@
 import { Now } from '@/components/contexts/NowProvider';
+import { Label } from '@/components/layout/label/label';
 import FullHexText from '@/components/text/FullHexText';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import {
@@ -18,7 +19,6 @@ import DateTimeText from '@/text/DateTimeText';
 import FullTaggedBase64Text from '@/text/FullTaggedBase64Text';
 import NumberText from '@/text/NumberText';
 import Text from '@/text/Text';
-import { WithUiSmall } from '@/typography/typography';
 import React from 'react';
 import LabeledButton from '../../hid/buttons/labeled_button/LabeledButton';
 import { InternalLink } from '../../links/link/Link';
@@ -31,8 +31,6 @@ import {
 } from './TransactionDetailLoader';
 import './transaction_detail_content.css';
 
-const LabelUiSmall = WithUiSmall('label');
-
 /**
  * TransactionSubHeading represents a sub heading for the Transaction Detail
  * Header.
@@ -43,10 +41,10 @@ export const TransactionSubHeading: React.FC = () => {
   const offset = React.useContext(TransactionOffsetContext);
 
   return (
-    <LabelUiSmall className="sub-heading">
+    <Label className="sub-heading">
       {/* <FullHexText value={hash} /> */}
       <NumberText number={height} /> - <NumberText number={offset} />
-    </LabelUiSmall>
+    </Label>
   );
 };
 

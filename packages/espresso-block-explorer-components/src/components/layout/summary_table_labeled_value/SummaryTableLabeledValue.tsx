@@ -1,10 +1,10 @@
 import { addClassToClassName } from '@/higher_order';
-import { WithUiSmall, WithUiText600 } from '@/typography/typography';
+import { WithUiText600 } from '@/typography/typography';
 import React from 'react';
+import { Label } from '../label/label';
 import './summary_table_labeled_value.css';
 
 const DivText600 = WithUiText600('div');
-const LabelTextSmall = WithUiSmall('label');
 
 interface LabelProps {
   className?: string;
@@ -12,13 +12,17 @@ interface LabelProps {
 }
 
 /**
- * Label represents the Label portion of the TableLabeledValue component.
+ * TableLabel represents the Label portion of the TableLabeledValue component.
  * It ensures that text rendered within the label has the correct typography.
  */
-const Label: React.FC<LabelProps> = ({ className, children, ...props }) => (
-  <LabelTextSmall {...props} className={className}>
+const TableLabel: React.FC<LabelProps> = ({
+  className,
+  children,
+  ...props
+}) => (
+  <Label {...props} className={className}>
     {children}
-  </LabelTextSmall>
+  </Label>
 );
 
 interface ValueProps {
@@ -59,7 +63,7 @@ const SummaryTableLabeledValue: React.FC<SummaryTableLabeledValueProps> = ({
     {...props}
     className={addClassToClassName(className, 'summary-tabled-labeled-value')}
   >
-    <Label key={0}>{children[0]}</Label>
+    <TableLabel key={0}>{children[0]}</TableLabel>
     <Value key={1}>{children[1]}</Value>
   </div>
 );

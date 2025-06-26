@@ -1,6 +1,7 @@
 import { ErrorContext } from '@/components/contexts/ErrorProvider';
 import { PrefixMoreInfoElement } from '@/components/hid/hover/more_info_element';
 import { CardNoPadding } from '@/components/layout/card/Card';
+import { Label } from '@/components/layout/label/label';
 import { WithLoadingShimmer } from '@/components/loading/LoadingShimmer';
 import SkeletonContent from '@/components/loading/SkeletonContent';
 import { DataStatistics } from '@/components/visual/histogram/histogram_base/DataStatistics';
@@ -133,18 +134,18 @@ export const BlockTimeHistogram: React.FC = () => {
                     </p>
                     <div>
                       <div>
-                        <label>
+                        <Label>
                           <Text text="Non-Empty" />
-                        </label>
+                        </Label>
                         &nbsp;
                         <SecondsOrUnknownText
                           value={nonEmptyBlockTimesStatistics.nullableMean}
                         />
                       </div>
                       <div>
-                        <label>
+                        <Label>
                           <Text text="Empty" />
-                        </label>
+                        </Label>
                         &nbsp;
                         <SecondsOrUnknownText
                           value={emptyBlockStatistics.nullableMean}
