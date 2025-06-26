@@ -1,6 +1,4 @@
 import BlocksClientComponent from '@/client_components/blocks';
-import { DeriveEnvironmentFromEnv } from '@/helpers/environment';
-import { readFromEnv } from '@/helpers/read_from_env';
 import {
   getNumberFromParams,
   ServerComponentSearchParamsProps,
@@ -13,13 +11,8 @@ import {
  */
 export default async function Blocks(props: ServerComponentSearchParamsProps) {
   const searchParams = await props.searchParams;
-  const env = readFromEnv();
 
   const startAtBlock = getNumberFromParams(searchParams, 'height');
 
-  return (
-    <DeriveEnvironmentFromEnv env={env}>
-      <BlocksClientComponent startAtBlock={startAtBlock} />
-    </DeriveEnvironmentFromEnv>
-  );
+  return <BlocksClientComponent startAtBlock={startAtBlock} />;
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  EnvironmentBanner,
   InternalLinkAnchorComponentContext,
   ProvideDerivedDateTimeFormatters,
   ProvideDerivedNumberFormatters,
@@ -21,7 +22,10 @@ export default function LayoutClientComponent(
       <ProvideNavigatorLanguage>
         <ProvideDerivedNumberFormatters>
           <ProvideDerivedDateTimeFormatters>
-            <ProvideTickEverySecond>{props.children}</ProvideTickEverySecond>
+            <ProvideTickEverySecond>
+              <EnvironmentBanner />
+              {props.children}
+            </ProvideTickEverySecond>
           </ProvideDerivedDateTimeFormatters>
         </ProvideDerivedNumberFormatters>
       </ProvideNavigatorLanguage>

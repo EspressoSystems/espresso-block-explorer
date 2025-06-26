@@ -10,4 +10,13 @@ body {
   overflow-x: hidden;
   position: relative;
   background-color: var(--color--slate-50) !important;
+  color: var(--on-color--slate-50) !important;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: var(--color--slate-950) !important;
+    color: var(--on-color--slate-950) !important;
+  }
 }

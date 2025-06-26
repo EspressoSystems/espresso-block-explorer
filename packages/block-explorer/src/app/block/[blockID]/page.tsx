@@ -1,6 +1,4 @@
 import BlockClientComponent from '@/client_components/block';
-import { DeriveEnvironmentFromEnv } from '@/helpers/environment';
-import { readFromEnv } from '@/helpers/read_from_env';
 import { ServerComponentParamsProps } from '@/helpers/server_component_search_params_props';
 import { notFound } from 'next/navigation';
 
@@ -13,7 +11,6 @@ import { notFound } from 'next/navigation';
 export default async function Block(
   props: ServerComponentParamsProps<'blockID'>,
 ) {
-  const env = readFromEnv();
   const params = await props.params;
 
   // Let's make sure that we have our BlockID param
@@ -32,9 +29,5 @@ export default async function Block(
     return notFound();
   }
 
-  return (
-    <DeriveEnvironmentFromEnv env={env}>
-      <BlockClientComponent blockID={Number(blockID)} />
-    </DeriveEnvironmentFromEnv>
-  );
+  return <BlockClientComponent blockID={Number(blockID)} />;
 }

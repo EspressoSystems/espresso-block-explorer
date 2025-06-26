@@ -2,6 +2,8 @@ import 'espresso-block-explorer-components/dist/espresso-block-explorer-componen
 import React from 'react';
 
 import LayoutClientComponent from '@/client_components/layout';
+import { DeriveEnvironmentFromEnv } from '@/helpers/environment';
+import { readFromEnv } from '@/helpers/read_from_env';
 import './globals.css';
 
 /**
@@ -11,16 +13,19 @@ import './globals.css';
  * As such, we include a bunch of the provided Contexts at this level in
  * order to ensure that they are available consistently on every page.
  */
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const env = readFromEnv();
   return (
-    <LayoutClientComponent>
-      <html lang="en">
-        <body>{children}</body>
-      </html>
-    </LayoutClientComponent>
+    <DeriveEnvironmentFromEnv env={env}>
+      <LayoutClientComponent>
+        <html lang="en">
+          <body>{children}</body>
+        </html>
+      </LayoutClientComponent>
+    </DeriveEnvironmentFromEnv>
   );
 }

@@ -1,6 +1,4 @@
 import RollupClientComponent from '@/client_components/rollup';
-import { DeriveEnvironmentFromEnv } from '@/helpers/environment';
-import { readFromEnv } from '@/helpers/read_from_env';
 import {
   getNumberFromParams,
   ServerComponentParamsProps,
@@ -18,7 +16,6 @@ export default async function SpecificRollUp(
   props: ServerComponentParamsProps<'namespace'> &
     ServerComponentSearchParamsProps,
 ) {
-  const env = readFromEnv();
   const searchParams = await props.searchParams;
   const params = await props.params;
 
@@ -42,12 +39,10 @@ export default async function SpecificRollUp(
   const offset = getNumberFromParams(searchParams, 'offset');
 
   return (
-    <DeriveEnvironmentFromEnv env={env}>
-      <RollupClientComponent
-        namespace={Number(namespace)}
-        startAtBlock={startAtBlock}
-        offset={offset}
-      />
-    </DeriveEnvironmentFromEnv>
+    <RollupClientComponent
+      namespace={Number(namespace)}
+      startAtBlock={startAtBlock}
+      offset={offset}
+    />
   );
 }

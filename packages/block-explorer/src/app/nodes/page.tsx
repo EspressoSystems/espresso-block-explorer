@@ -1,6 +1,4 @@
 import NodesClientComponent from '@/client_components/nodes';
-import { DeriveEnvironmentFromEnv } from '@/helpers/environment';
-import { readFromEnv } from '@/helpers/read_from_env';
 
 /**
  * Nodes represents the Node Validator Page.
@@ -9,10 +7,5 @@ import { readFromEnv } from '@/helpers/read_from_env';
  * are connected to the network.
  */
 export default async function Nodes() {
-  const env = readFromEnv();
-  return (
-    <DeriveEnvironmentFromEnv env={env}>
-      <NodesClientComponent />
-    </DeriveEnvironmentFromEnv>
-  );
+  return <NodesClientComponent />;
 }

@@ -1,6 +1,4 @@
 import TransactionClientComponent from '@/client_components/transaction';
-import { DeriveEnvironmentFromEnv } from '@/helpers/environment';
-import { readFromEnv } from '@/helpers/read_from_env';
 import { ServerComponentParamsProps } from '@/helpers/server_component_search_params_props';
 import { notFound } from 'next/navigation';
 
@@ -11,7 +9,6 @@ import { notFound } from 'next/navigation';
 export default async function Transaction(
   props: ServerComponentParamsProps<'slug'>,
 ) {
-  const env = readFromEnv();
   const params = await props.params;
 
   // Let's make sure that we have our BlockID param
@@ -31,9 +28,5 @@ export default async function Transaction(
     return notFound();
   }
 
-  return (
-    <DeriveEnvironmentFromEnv env={env}>
-      <TransactionClientComponent height={height} offset={offset} />
-    </DeriveEnvironmentFromEnv>
-  );
+  return <TransactionClientComponent height={height} offset={offset} />;
 }
