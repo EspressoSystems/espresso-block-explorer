@@ -13,7 +13,7 @@
   --text--line-height: 24px;
 }
 
-/* @media screen and (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   :root {
     --text--color: var(--color--white);
   }
@@ -22,7 +22,7 @@
   body {
     background-color: var(--color--black);
   }
-} */
+}
 
 html,
 body {
@@ -40,4 +40,8 @@ h3,
 h4,
 h5 {
   margin: 0;
+}
+
+svg text {
+  fill: var(--text--color);
 }

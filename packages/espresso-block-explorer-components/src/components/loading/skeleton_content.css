@@ -2,6 +2,20 @@
   --skeleton-content--background-color: var(--color--slate-100);
 }
 
+[data-theme='light'] {
+  --skeleton-content--background-color: var(--color--slate-100);
+}
+
+[data-theme='dark'] {
+  --skeleton-content--background-color: var(--color--slate-900);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --skeleton-content--background-color: var(--color--slate-900);
+  }
+}
+
 .skeleton-content {
   position: relative;
   overflow: hidden;

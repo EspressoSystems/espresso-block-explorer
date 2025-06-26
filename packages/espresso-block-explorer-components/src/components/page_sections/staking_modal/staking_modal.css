@@ -1,3 +1,25 @@
+:root {
+  --staking-modal--background-color: var(--color--slate-100);
+  --staking-modal--on-background-color: var(--color--slate-950);
+}
+
+[data-theme='light'] {
+  --staking-modal--background-color: var(--color--slate-100);
+  --staking-modal--on-background-color: var(--color--slate-950);
+}
+
+[data-theme='dark'] {
+  --staking-modal--background-color: var(--color--slate-950);
+  --staking-modal--on-background-color: var(--color--slate-100);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --staking-modal--background-color: var(--color--slate-950);
+    --staking-modal--on-background-color: var(--color--slate-100);
+  }
+}
+
 dialog.staking-modal > header {
   display: flex;
   flex-direction: row;
@@ -45,6 +67,9 @@ dialog.staking-modal {
   border: 0;
   border-radius: 16px;
   margin: auto;
+  background-color: var(--staking-modal--background-color);
+  color: var(--staking-modal--on-background-color);
+  --text--color: var(--staking-modal--on-background-color);
 }
 
 dialog.staking-modal::backdrop {

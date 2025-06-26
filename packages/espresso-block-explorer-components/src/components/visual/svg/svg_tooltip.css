@@ -6,5 +6,5 @@
 }
 
 text.tooltip--value-label {
-  fill: var(--color--slate-950);
+  fill: var(--text--color);
 }

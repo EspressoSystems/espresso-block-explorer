@@ -50,6 +50,44 @@
   --button-flat--hovered--foreground-color: inherit;
 }
 
+[data-theme='light'] {
+  --button--default--background-color: var(--color--white);
+  --button--default--foreground-color: var(--color--slate-700);
+  --button--default--border-color: var(--color--slate-200);
+  --button--hovered--border-color: var(--color--slate-300);
+  --button--pressed--border-color: var(--color--slate-700);
+  --button--pressed--background-color: var(--color--slate-200);
+  --button--disabled--foreground-color: var(--color--slate-300);
+  --button--disabled--background-color: var(--color--slate-200);
+  --button--disabled--border-color: var(--color--slate-300);
+}
+
+[data-theme='dark'] {
+  --button--default--background-color: var(--color--slate-950);
+  --button--default--foreground-color: var(--color--slate-300);
+  --button--default--border-color: var(--color--slate-700);
+  --button--hovered--border-color: var(--color--slate-500);
+  --button--pressed--border-color: var(--color--slate-300);
+  --button--pressed--background-color: var(--color--slate-800);
+  --button--disabled--foreground-color: var(--color--slate-300);
+  --button--disabled--background-color: var(--color--slate-500);
+  --button--disabled--border-color: var(--color--slate-300);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --button--default--background-color: var(--color--slate-950);
+    --button--default--foreground-color: var(--color--slate-300);
+    --button--default--border-color: var(--color--slate-700);
+    --button--hovered--border-color: var(--color--slate-500);
+    --button--pressed--border-color: var(--color--slate-300);
+    --button--pressed--background-color: var(--color--slate-800);
+    --button--disabled--foreground-color: var(--color--slate-300);
+    --button--disabled--background-color: var(--color--slate-500);
+    --button--disabled--border-color: var(--color--slate-300);
+  }
+}
+
 a.btn {
   display: inline-flex;
   text-decoration: none;
@@ -78,8 +116,9 @@ a.btn {
 
   cursor: pointer;
 
-  will-change: background-color, color, border-width, border-radius,
-    border-color, border-style;
+  will-change:
+    background-color, color, border-width, border-radius, border-color,
+    border-style;
   transition:
     background-color ease-in-out var(--button--transition--duration),
     color ease-in-out var(--button--transition--duration),

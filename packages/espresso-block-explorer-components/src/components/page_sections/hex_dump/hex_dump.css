@@ -1,6 +1,31 @@
+:root {
+  --hex-dump--background-color: var(--color--slate-100);
+  --hex-dump--border-color: var(--color--slate-300);
+  --hex-dump--border-radius: 8px;
+  --hex-dump--max-height: 303px;
+  --hex-dump--padding: 16px;
+}
+
+[data-theme='light'] {
+  --hex-dump--background-color: var(--color--slate-100);
+  --hex-dump--border-color: var(--color--slate-300);
+}
+
+[data-theme='dark'] {
+  --hex-dump--background-color: var(--color--slate-950);
+  --hex-dump--border-color: var(--color--slate-500);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --hex-dump--background-color: var(--color--slate-950);
+    --hex-dump--border-color: var(--color--slate-500);
+  }
+}
+
 .hex-dump {
-  background-color: var(--color--slate-100);
-  border: 1px solid var(--color--slate-300);
+  background-color: var(--hex-dump--background-color);
+  border: 1px solid var(--hex-dump--border-color);
   border-radius: 8px;
   max-height: 303px;
   overflow-y: auto;

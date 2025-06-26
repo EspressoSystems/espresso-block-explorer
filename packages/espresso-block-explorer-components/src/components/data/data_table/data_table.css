@@ -1,5 +1,23 @@
 @import url(../../../styles/main.css);
 
+:root {
+  --data-table--border-color: var(--color--slate-100);
+}
+
+[data-theme='light'] {
+  --data-table--border-color: var(--color--slate-100);
+}
+
+[data-theme='dark'] {
+  --data-table--border-color: var(--color--slate-700);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --data-table--border-color: var(--color--slate-700);
+  }
+}
+
 table.data-table {
   width: 100%;
   border-spacing: 0;
@@ -30,12 +48,12 @@ table.data-table thead.type--ui--small th {
 
 table.data-table th:not(:nth-last-child(1)),
 table.data-table td:not(:nth-last-child(1)) {
-  border-right: 1px solid var(--color--slate-100);
+  border-right: 1px solid var(--data-table--border-color);
 }
 
 table.data-table th,
 table.data-table tr:not(:nth-last-child(1)) td {
-  border-bottom: 1px solid var(--color--slate-100);
+  border-bottom: 1px solid var(--data-table--border-color);
 }
 
 table.data-table th > div {

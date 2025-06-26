@@ -1,7 +1,25 @@
+:root {
+  --page-title--text--color: var(--color--slate-950);
+}
+
+[data-theme='light'] {
+  --page-title--text--color: var(--color--slate-950);
+}
+
+[data-theme='dark'] {
+  --page-title--text--color: var(--color--slate-100);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --page-title--text--color: var(--color--slate-100);
+  }
+}
+
 /* Mobile Layout */
 .page-title {
   margin-block-start: 40px;
   margin-block-end: 24px;
-  --text--color: var(--color--slate-950);
-  color: var(--color--slate-950);
+  --text--color: var(--page-title--text--color);
+  color: var(--page-title--text--color);
 }

@@ -6,6 +6,37 @@
   --input--transition--timing: 240ms;
 
   --input--active--border-color: var(--color--slate-400);
+
+  --input--background-color: var(--color--white);
+  --input--on-background-color: var(--color--slate-700);
+}
+
+[data-theme='light'] {
+  --input--normal--border-color: var(--color--slate-300);
+  --input--active--border-color: var(--color--slate-400);
+  --input--background-color: var(--color--white);
+  --input--on-background-color: var(--color--slate-700);
+}
+
+[data-theme='dark'] {
+  --input--normal--border-color: var(--color--slate-700);
+  --input--active--border-color: var(--color--slate-500);
+  --input--background-color: var(--color--slate-950);
+  --input--on-background-color: var(--color--slate-300);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --input--normal--border-color: var(--color--slate-700);
+    --input--active--border-color: var(--color--slate-500);
+    --input--background-color: var(--color--slate-950);
+    --input--on-background-color: var(--color--slate-300);
+  }
+}
+
+input {
+  background-color: var(--input--background-color);
+  color: var(--input--on-background-color);
 }
 
 .input-container {

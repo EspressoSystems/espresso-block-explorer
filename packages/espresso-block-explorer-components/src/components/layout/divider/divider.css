@@ -6,6 +6,20 @@
   --divider--margin-horizontal: 0;
 }
 
+[data-theme='light'] {
+  --divider--color: var(--color--slate-200);
+}
+
+[data-theme='dark'] {
+  --divider--color: var(--color--slate-700);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --divider--color: var(--color--slate-700);
+  }
+}
+
 .divider {
   border: 0;
   border-bottom-width: 1px;

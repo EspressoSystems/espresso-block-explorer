@@ -1,50 +1,52 @@
 :root {
   /* Slate Colors */
-  --color--slate-950: #020617FF;
+  --color--slate-950: #020617ff;
   --on-color--slate-950: var(--color--text-white);
-  --color--slate-700: #334155FF;
+  --color--slate-700: #334155ff;
   --on-color--slate-700: var(--color--text-white);
-  --color--slate-500: #64748BFF;
+  --color--slate-500: #64748bff;
   --on-color--slate-500: var(--color--text-white);
-  --color--slate-300: #CBD5E1FF;
+  --color--slate-300: #cbd5e1ff;
   --on-color--slate-300: var(--color--text-black);
-  --color--slate-200: #E2E8F0FF;
+  --color--slate-200: #e2e8f0ff;
   --on-color--slate-200: var(--color--text-black);
-  --color--slate-100: #F1F5F9FF;
+  --color--slate-100: #f1f5f9ff;
   --on-color--slate-100: var(--color--text-black);
-  --color--slate-50: #F8FAFCFF;
+  --color--slate-50: #f8fafcff;
   --on-color--slate-50: var(--color--text-black);
 
-  --color--white: #FFFF;
+  --color--white: #ffff;
   --on-color--white: var(--color--text-black);
 
   /* Green Colors */
-  --color--green-800: #166534FF;
+  --color--green-800: #166534ff;
   --on-color--green-800: var(--color--text-white);
-  --color--green-700: #15803DFF;
+  --color--green-700: #15803dff;
   --on-color--green-700: var(--color--text-white);
-  --color--green-600: #16A34AFF;
+  --color--green-600: #16a34aff;
   --on-color--green-600: var(--color--text-white);
-  --color--green-100: #DCFCE7FF;
+  --color--green-100: #dcfce7ff;
   --on-color--green-100: var(--color--text-black);
-  --color--green-50: #F0FDF4FF;
+  --color--green-50: #f0fdf4ff;
   --on-color--green-50: var(--color--text-black);
 
   /* Amber Color */
-  --color--amber-500: #F59E08FF;
+  --color--amber-500: #f59e08ff;
   --on-color--amber-500: var(--color--text-black);
-  --color--amber-300: #FCD34DFF;
+  --color--amber-300: #fcd34dff;
   --on-color--amber-300: var(--color--text-black);
-  --color--amber-50: #FFFBEBFF;
+  --color--amber-50: #fffbebff;
   --on-color--amber-50: var(--color--text-black);
 
   /* Red Colors */
-  --color--red-600: #DC2626FF;
+  --color--red-600: #dc2626ff;
   --on-color--red-600: var(--color--text-white);
-  --color--red-100: #FEE2E2FF;
+  --color--red-100: #fee2e2ff;
   --on-color--red100: var(--color--text-black);
 
   /* Blue Colors */
-  --color--sky-700: #0369A1FF;
+  --color--sky-700: #0369a1ff;
   --on-color--sky-700: var(--color--text-white);
+  --color--sky-100: #4092be;
+  --on-color--sky-100: var(--color--text-white);
 }

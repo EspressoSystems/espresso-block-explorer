@@ -1,47 +1,64 @@
 @import url(../../styles/main.css);
 
 :root {
-    --loading-shimmer--dim-color: var(--color--transparent);
-    --loading-shimmer--highlight-color: var(--color--white);
-    --loading-shimmer--animation-duration: 2s;
+  --loading-shimmer--dim-color: var(--color--transparent);
+  --loading-shimmer--highlight-color: var(--color--white);
+  --loading-shimmer--animation-duration: 2s;
+}
+
+[data-theme='light'] {
+  --loading-shimmer--dim-color: var(--color--transparent);
+  --loading-shimmer--highlight-color: var(--color--white);
+}
+
+[data-theme='dark'] {
+  --loading-shimmer--dim-color: var(--color--slate-950);
+  --loading-shimmer--highlight-color: var(--color--slate-700);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --loading-shimmer--dim-color: var(--color--slate-950);
+    --loading-shimmer--highlight-color: var(--color--slate-700);
+  }
 }
 
 .loading-shimmer {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 
 .loading-shimmer::before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100px;
-    height: 100%;
-    background: linear-gradient(
-        to right,
-        var(--loading-shimmer--dim-color) 0%,
-        var(--loading-shimmer--highlight-color) 50%,
-        var(--loading-shimmer--dim-color) 100%
-    );
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    var(--loading-shimmer--dim-color) 0%,
+    var(--loading-shimmer--highlight-color) 50%,
+    var(--loading-shimmer--dim-color) 100%
+  );
 
-    pointer-events: none;
-    touch-action: none;
-    transform: translateX(0) skewX(-15deg);
-    will-change: transform;
-    z-index: 1;
+  pointer-events: none;
+  touch-action: none;
+  transform: translateX(0) skewX(-15deg);
+  will-change: transform;
+  z-index: 1;
 
-
-    animation: loading-shimmer--slide var(--loading-shimmer--animation-duration) infinite linear;
+  animation: loading-shimmer--slide var(--loading-shimmer--animation-duration)
+    infinite linear;
 }
 
 @keyframes loading-shimmer--slide {
-    0% {
-        transform: translateX(-100vw) skewX(-15deg);
-    }
-    50%, 100% {
-        transform: translateX(100vw) skewX(-15deg);
-    }
-    
+  0% {
+    transform: translateX(-100vw) skewX(-15deg);
+  }
+  50%,
+  100% {
+    transform: translateX(100vw) skewX(-15deg);
+  }
 }
