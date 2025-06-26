@@ -46,8 +46,8 @@ circle.value-pointer--inner {
   pointer-events: initial;
 }
 
-text.tooltip--value-label {
-  fill: var(--color--slate-950);
+text {
+  font-size: 14px;
 }
 
 .histogram--placeholder {

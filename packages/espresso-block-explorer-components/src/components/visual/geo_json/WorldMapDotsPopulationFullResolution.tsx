@@ -1,6 +1,7 @@
 import { DataContext } from '@/components/contexts/DataProvider';
 import { LoadingContext } from '@/components/contexts/LoadingProvider';
 import { WithUiText600 } from '@/components/typography/typography';
+import { foldRIterator } from '@/functional/functional';
 import {
   degreesToCoordinateSpaceProjection,
   gridCellRadius,
@@ -30,6 +31,9 @@ const text600FontSize = 14;
 
 const PopulationEntryContext = React.createContext<DotPopulation | null>(null);
 
+const MAX_DOT_POPULATION_SCALE_ADJUSTMENT = 5;
+const MIN_DOT_POPULATION_SCALE_ADJUSTMENT = 1;
+
 /**
  * WorldMapDotsPopulationFullResolution represents dots that are lit up based on
  * the containing coordinate box.  The dots are meant to represent the parts
@@ -38,15 +42,40 @@ const PopulationEntryContext = React.createContext<DotPopulation | null>(null);
 const WorldMapDotsPopulationFullResolution: React.FC = () => {
   const rect = React.useContext(MapCoordinateSpaceRectContext);
   const loading = React.useContext(LoadingContext);
-  const dotPopulation =
+  const dotPopulationUnsorted =
     (React.useContext(DataContext) as DotPopulation[]) || [];
   const centers = React.useContext(MapCoordinateGridSpaceCentersContext);
   const radius =
     (Number(gridCellRadius) / Number(mapWidth)) * Number(rect.width);
 
+  // We sort the population dots by the number of nodes they contain,
+  // so that the largest dots are rendered first, and thus appear on top of
+  // smaller dots in the SVG rendering.
+  const dotPopulation = dotPopulationUnsorted
+    .slice()
+    .sort((a, b) => b.nodes.length - a.nodes.length);
+
+  // We want to know the largest population of nodes in any dot, as this
+  // will allow us to scale the radius of the dots based on the
+  // population of nodes in that dot.
+  const maxPopulation = foldRIterator(
+    (acc, dot) => Math.max(dot.nodes.length, acc),
+    1,
+    dotPopulation[Symbol.iterator](),
+  );
+
   if (loading) {
     return <></>;
   }
+
+  // We scale the radius of the dots based on the population of nodes in that
+  // dot.
+  const dotScaler = (population: number): number => {
+    return Math.max(
+      Math.min(Math.log2(population + 1), MAX_DOT_POPULATION_SCALE_ADJUSTMENT),
+      MIN_DOT_POPULATION_SCALE_ADJUSTMENT,
+    );
+  };
 
   return (
     <>
@@ -56,17 +85,22 @@ const WorldMapDotsPopulationFullResolution: React.FC = () => {
       >
         {dotPopulation.map((dot, index) => {
           const center = centers[dot.offset];
+          const adjustedRadius = radius * dotScaler(dot.nodes.length);
           return (
-            <g key={index}>
+            <g
+              key={index}
+              data-population={dot.nodes.length}
+              data-index={index}
+              data-z-index={maxPopulation - dot.nodes.length}
+            >
               <circle
                 className="node"
                 cx={Number(center.lng)}
                 cy={Number(center.lat)}
-                r={Number(radius)}
+                r={adjustedRadius}
                 data-coord={degreesToCoordinateSpaceProjection
                   .inverseProject(center)
                   .toString()}
-                data-index={index}
               />
             </g>
           );
@@ -78,14 +112,15 @@ const WorldMapDotsPopulationFullResolution: React.FC = () => {
       >
         {dotPopulation.map((dot, index) => {
           const center = centers[dot.offset];
+          const adjustedRadius = radius * dotScaler(dot.nodes.length);
           return (
             <g className="population" key={index}>
               <rect
                 className="node-hitbox"
                 x={Number(center.lng) - Number(radius)}
                 y={Number(center.lat) - Number(radius)}
-                width={Number(radius) * 2}
-                height={Number(radius) * 2}
+                width={Number(adjustedRadius) * 2}
+                height={Number(adjustedRadius) * 2}
                 data-coord={degreesToCoordinateSpaceProjection
                   .inverseProject(center)
                   .toString()}
