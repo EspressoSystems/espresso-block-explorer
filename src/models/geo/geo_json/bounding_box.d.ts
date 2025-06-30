@@ -1,6 +1,5 @@
 import { Degrees, LatLng, Latitude, Longitude } from '../units';
 import { GenericLATLNG } from '../units/latlng_interface';
-
 /**
  * GeoJSONBoundingBox is a class that represents a bounding box for a GeoJSON
  * object.  These are incredibly useful for quickly ruling out if a point needs

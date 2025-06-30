@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 export interface HoverDialogProps extends React.HTMLAttributes<HTMLDivElement> {
     className?: string;
     children?: React.ReactNode | React.ReactNode[];

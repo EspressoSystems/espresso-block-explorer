@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from './convert';
-
 /**
  * ArrayDecoder is a general abstraction of an Array decoder.  It knows how
  * to decode the array semantics of an encoded value, but not it's members.

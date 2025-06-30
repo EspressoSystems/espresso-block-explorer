@@ -1,7 +1,6 @@
 import { default as ChainProjection } from '../projection/ChainProjection';
 import { default as DensityIndependentPoint } from '../units/DensityIndependentPoint';
 import { default as LatLng } from '../units/LatLng';
-
 /**
  * The visual design of the World Map calls for a map of the world whose land
  * masses are represented by dots. The dots are arranged in a grid pattern, and

@@ -39,3 +39,6 @@ export interface HotShotQueryServiceAvailabilityStreamsAPI<Leaf, Block, Header> 
     streamBlocks(height: number): AsyncIterator<Block>;
     streamHeaders(height: number): AsyncIterator<Header>;
 }
+export interface HotShotQueryServiceRewardStateAPI {
+    getLatestRewardBalance(address: string): Promise<null | bigint>;
+}

@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { default as WebSocketStatus } from './web_socket_status';
-
 /**
  * kWebSocketStatusConnectionConnectingType is the type string for the
  * WebSocketStatusConnectionConnecting class.

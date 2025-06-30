@@ -5,7 +5,6 @@ import { WebWorkerProxyRequest } from '../../../../../../../../../../../../src/m
 import { WebWorkerProxyResponse } from '../../../../../../../../../../../../src/models/web_worker/web_worker_proxy_response';
 import { default as CappuccinoNodeValidatorResponse } from '../responses/node_validator_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
-
 export interface HARFormat {
     log: HARLog;
 }

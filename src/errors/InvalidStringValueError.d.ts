@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
 import { default as BaseError } from './BaseError';
-
 export default class InvalidStringValueError extends BaseError {
     readonly have: string;
     readonly want: string;

@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-
 /**
  * CappuccinoAPIBitVecHead represents the head of a bit vector in the Cappuccino API.
  */

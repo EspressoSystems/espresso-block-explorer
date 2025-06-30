@@ -1,6 +1,5 @@
 import { CircularBufferGetFromEmptyBehaviors } from './get_empty';
 import { CircularBuffer, CircularBufferGetFromEmptyBehavior, CircularBufferPutIntoFullBehavior, CircularBufferPutResult } from './types';
-
 export { CircularBufferGetFromEmptyBehaviors, CircularBufferPutResult };
 export type { CircularBuffer, CircularBufferGetFromEmptyBehavior, CircularBufferPutIntoFullBehavior, };
 /**

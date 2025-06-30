@@ -1,5 +1,4 @@
 import { default as GeoJSONFeatureCollection } from '../../../../../../../../../../../src/models/geo/geo_json/feature_collection';
-
 interface GeoJSONViewProps {
     offsetX?: number;
     offsetY?: number;

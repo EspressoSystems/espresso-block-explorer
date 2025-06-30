@@ -1,7 +1,6 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { CappuccinoSummaryHistograms } from '../../../../../../../../../../../../src/service/hotshot_query_service/cappuccino/explorer/summary_histograms';
 import { default as CappuccinoNodeValidatorResponse } from './node_validator_response';
-
 /**
  * Messages from the Cappuccino Node Validator take the form of:
  * { "MessageType": MessageType }

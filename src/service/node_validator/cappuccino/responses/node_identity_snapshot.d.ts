@@ -1,7 +1,6 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { default as CappuccinoNodeIdentity } from '../node_identity';
 import { default as CappuccinoNodeValidatorResponse } from './node_validator_response';
-
 /**
  * Messages from the Cappuccino Node Validator take the form of:
  * { "MessageType": MessageType }

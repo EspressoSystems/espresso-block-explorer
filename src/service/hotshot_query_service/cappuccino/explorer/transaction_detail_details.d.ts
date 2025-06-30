@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
-
 export declare class CappuccinoExplorerTransactionDetailDetails {
     readonly hash: TaggedBase64;
     readonly height: number;

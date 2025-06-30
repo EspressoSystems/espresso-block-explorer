@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 export declare const SVGToolTipDrawAreaHeight: React.Context<number>;
 export declare const SVGToolTipDrawAreaWidth: React.Context<number>;
 export declare const SVGToolTipPointX: React.Context<number>;

@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-
 /**
  * CappuccinoAPIBitVecOrder represents an enumeration of the BitVector's order.
  *

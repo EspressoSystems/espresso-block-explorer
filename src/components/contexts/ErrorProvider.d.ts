@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../node_modules/react';
-
+import { default as React } from 'react';
 /**
  * ErrorContext is a React Context that is used to store and make available
  * any error present in the component tree.

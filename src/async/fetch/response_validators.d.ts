@@ -1,5 +1,4 @@
 import { Converter } from '../../../../../../../../../../src/convert/codec/convert';
-
 /**
  * validateAndExpandResponse is a function that takes a [Converter] and returns
  * a response that should be decoded and inflated by the given [Converter].

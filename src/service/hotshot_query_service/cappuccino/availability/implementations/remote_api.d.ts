@@ -4,7 +4,6 @@ import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
 import { CappuccinoAPILeafResponse } from '../leaf_response';
 import { CappuccinoAPITransactionResponse } from '../transaction_response';
-
 export declare class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements CappuccinoHotShotQueryServiceAvailabilityAPI {
     private readonly fetcher;
     private readonly baseURL;

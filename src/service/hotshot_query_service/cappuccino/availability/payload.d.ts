@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { CappuccinoAPITransactionNMTEntry } from './transaction_nmt_entry';
-
 /**
  * CappuccinoAPIPayload represents the payload in the Cappuccino API.
  */

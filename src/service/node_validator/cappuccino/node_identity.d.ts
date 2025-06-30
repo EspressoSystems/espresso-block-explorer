@@ -2,7 +2,6 @@ import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
 import { default as CappuccinoLocationDetails } from './node_location_details';
-
 /**
  * CappuccinoNodeIdentity represents the identity of a node in the
  * Cappuccino network. It only contains information that is expected to

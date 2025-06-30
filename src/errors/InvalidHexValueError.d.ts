@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
 import { default as BaseError } from './BaseError';
-
 /**
  * InvalidHexValueError is an error that indicates that the encountered value
  * isn't valid for a hex representation.

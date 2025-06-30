@@ -4,7 +4,6 @@ import { NumberLike } from '../../numeric/numeric';
 import { default as Latitude } from './Latitude';
 import { default as Longitude } from './Longitude';
 import { GenericLATLNG } from './latlng_interface';
-
 /**
  * LatLng represents a tuple of latitude and longitude values.
  * It exists for convenience and type safety.

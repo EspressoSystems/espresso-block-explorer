@@ -1,6 +1,5 @@
-import { default as React } from '../../../../../node_modules/react';
+import { default as React } from 'react';
 import { CopyArrayBufferAsTextProps } from './CopyArrayBufferAsTextProps';
-
 /**
  * CopyBase64 is a component that will display a `CopyButton` with the contents
  * of the given ArrayBuffer given in the `value` automatically converted to a

@@ -1,6 +1,5 @@
 import { ArrayCodec, Codec, Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec';
 import { default as GeoJSONBoundingBox } from './bounding_box';
-
 /**
  * GeoJSONGeometry is a parent class of the different types of geometries
  * represented within the GeoJSON specification.

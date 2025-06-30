@@ -2,7 +2,6 @@ import { NumberLike } from '../../numeric/numeric';
 import { default as LatLng } from '../units/LatLng';
 import { EdgeFunction } from './edge_function';
 import { WindingNumber } from './winding_number';
-
 /**
  * sundaysWindingAlgorithm is an implementation of Sunday's Winding Number
  * Algorithm.  It is a simple algorithm that counts the number of times a point

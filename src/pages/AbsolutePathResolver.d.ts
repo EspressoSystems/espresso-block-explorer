@@ -1,5 +1,4 @@
 import { PathResolver } from '../../../../../../../../../src/components/contexts/PathResolver';
-
 /**
  * AbsolutePathResolver is a PathResolver that generates absolute paths.
  * This is useful for generating links that are not relative to the current

@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
-
 /**
  * CurrencyCode is a class that represents a currency code.  Generally speaking
  * it is meant to represents an non-exhaustive list of various currency types

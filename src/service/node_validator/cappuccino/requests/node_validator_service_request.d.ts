@@ -1,13 +1,12 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { WebWorkerProxyRequest } from '../../../../../../../../../../../../src/models/web_worker/web_worker_proxy_request';
 import { default as CappuccinoNodeValidatorRequest } from './node_validator_request';
-
 export declare const kNodeValidatorRequestType: "NodeValidatorRequest";
 export declare class NodeValidatorServiceRequest extends WebWorkerProxyRequest {
     readonly request: CappuccinoNodeValidatorRequest;
     get type(): "NodeValidatorRequest";
     constructor(request: CappuccinoNodeValidatorRequest);
-    toJson(): {
+    toJSON(): {
         NodeValidatorRequest: string;
     };
 }

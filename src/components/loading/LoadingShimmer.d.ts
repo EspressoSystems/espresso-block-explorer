@@ -1,6 +1,5 @@
 import { HigherOrderComponentWithClassNameProps } from '../../../../../../../../../../src/components/higher_order';
-import { default as React } from '../../../../../node_modules/react';
-
+import { default as React } from 'react';
 /**
  * WithLoadingShimmer is a higher order component that adds the loading-shimmer
  * class to the given component.

@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
-
 /**
  * TaggedBase64 is an implementation of the server side type of TaggedBase64.
  * It separates the tag portion from the data portion so that they can be

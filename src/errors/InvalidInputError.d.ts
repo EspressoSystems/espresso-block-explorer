@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
 import { default as BaseError } from './BaseError';
-
 export default class InvalidInputError extends BaseError {
     constructor(message?: string);
     get code(): string;

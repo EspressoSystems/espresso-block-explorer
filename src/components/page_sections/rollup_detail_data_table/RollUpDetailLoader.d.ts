@@ -1,8 +1,7 @@
 import { RollUpDetailAsyncRetriever } from '../../../../../../../../../../../src/models/block_explorer/rollup_detail';
 import { TransactionSummaryColumn } from '../../../../../../../../../../../src/models/block_explorer/transaction_summary';
-import { default as React } from '../../../../../../node_modules/react';
+import { default as React } from 'react';
 import { DataTableState } from '../../data/data_table/DataTable';
-
 /**
  * NamespaceContext is a React Context that holds a reference to the
  * current Namespace

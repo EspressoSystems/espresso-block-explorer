@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 /**
  * Menu is an icon of a hamburger menu
  */

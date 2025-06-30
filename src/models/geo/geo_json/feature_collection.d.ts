@@ -1,6 +1,5 @@
 import { Codec, Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { default as GeoJSONFeature } from './feature';
-
 /**
  * A GeoJSON Feature Collection is a collection of GeoJSON features.  This is
  * the top level object that is used to represent a collection of features.

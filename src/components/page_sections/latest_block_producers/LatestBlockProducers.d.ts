@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 export declare const LatestBlockProducersHeading: React.FC;
 export declare const LatestBlockProducersHeadingPlaceholder: React.FC;
 export declare const LatestBlockProducersDetails: React.FC;

@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { BaseNumeric, NumberLike } from '../../numeric/numeric';
-
 /**
  * Radians is a class that represents that the numeric value that is stored
  * as a quantity of the ratio between a radius and the circumference.  This

@@ -1,7 +1,6 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
 import { default as BaseError } from './BaseError';
 import { EspressoError } from './EspressoError';
-
 export default class WebWorkerErrorResponse extends BaseError {
     readonly error: EspressoError;
     constructor(error: EspressoError, message?: string);

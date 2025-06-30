@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-
 /**
  * CappuccinoNamespaceTable represents the namespace table in the Cappuccino API.
  */

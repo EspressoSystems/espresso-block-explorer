@@ -1,6 +1,5 @@
 import { AsyncRetriever } from '../../../../../../../../../../src/async/AsyncRetriever';
 import { TaggedBase64 } from '../espresso/tagged_base64/TaggedBase64';
-
 export interface TransactionTreeData {
     readonly namespace: number;
     readonly data: ArrayBuffer;

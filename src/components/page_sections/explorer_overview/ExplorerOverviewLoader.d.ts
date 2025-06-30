@@ -1,6 +1,5 @@
 import { AsyncRetriever } from '../../../../../../../../../../../src/async/AsyncRetriever';
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 export interface ExplorerOverview {
     rollups: number;
     transactions: number;

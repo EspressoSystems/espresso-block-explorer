@@ -1,10 +1,9 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec';
 import { default as WebSocketCommand } from './web_socket/request/web_socket_command';
 import { WebWorkerProxyRequest } from './web_worker_proxy_request';
-
 declare class WebWorkerProxyRequestEncoder implements Converter<WebWorkerProxyRequest, unknown> {
     convert(input: WebWorkerProxyRequest): {
-        [x: string]: unknown;
+        [input.type]: unknown;
     };
 }
 declare class WebWorkerProxyRequestDecoder implements Converter<unknown, WebWorkerProxyRequest> {

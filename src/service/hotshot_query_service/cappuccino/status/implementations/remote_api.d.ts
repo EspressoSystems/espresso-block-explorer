@@ -1,5 +1,4 @@
 import { CappuccinoHotShotQueryServiceStatusAPI } from '../status_api';
-
 export declare class FetchBasedCappuccinoHotShotQueryServiceStatusAPI implements CappuccinoHotShotQueryServiceStatusAPI {
     private readonly fetcher;
     private readonly baseURL;

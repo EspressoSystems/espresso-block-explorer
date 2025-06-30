@@ -1,13 +1,12 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { WebWorkerProxyResponse } from '../../../../../../../../../../../../src/models/web_worker/web_worker_proxy_response';
 import { default as CappuccinoNodeValidatorResponse } from './node_validator_response';
-
 export declare const kNodeValidatorServiceResponseType: "NodeValidatorResponse";
 export declare class NodeValidatorServiceResponse extends WebWorkerProxyResponse {
     readonly response: CappuccinoNodeValidatorResponse;
     get type(): string;
     constructor(response: CappuccinoNodeValidatorResponse);
-    toJson(): {
+    toJSON(): {
         NodeValidatorResponse: {
             BlocksSnapshot: unknown[];
         } | {
@@ -19,6 +18,12 @@ export declare class NodeValidatorServiceResponse extends WebWorkerProxyResponse
             };
         } | {
             LatestBlock: unknown;
+        } | {
+            LatestNodeIdentity: unknown;
+        } | {
+            LatestStakeTable: unknown[];
+        } | {
+            LatestValidator: unknown;
         } | {
             LatestVoters: {
                 order: string;
@@ -32,7 +37,9 @@ export declare class NodeValidatorServiceResponse extends WebWorkerProxyResponse
         } | {
             NodeIdentitySnapshot: unknown[];
         } | {
-            LatestNodeIdentity: unknown;
+            StakeTableSnapshot: unknown[];
+        } | {
+            ValidatorsSnapshot: unknown[];
         } | {
             VotersSnapshot: {
                 order: string;
@@ -60,6 +67,12 @@ declare class NodeValidatorServiceResponseEncoder implements Converter<NodeValid
         } | {
             LatestBlock: unknown;
         } | {
+            LatestNodeIdentity: unknown;
+        } | {
+            LatestStakeTable: unknown[];
+        } | {
+            LatestValidator: unknown;
+        } | {
             LatestVoters: {
                 order: string;
                 head: {
@@ -72,7 +85,9 @@ declare class NodeValidatorServiceResponseEncoder implements Converter<NodeValid
         } | {
             NodeIdentitySnapshot: unknown[];
         } | {
-            LatestNodeIdentity: unknown;
+            StakeTableSnapshot: unknown[];
+        } | {
+            ValidatorsSnapshot: unknown[];
         } | {
             VotersSnapshot: {
                 order: string;

@@ -1,7 +1,6 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { WebWorkerProxyResponse } from '../web_worker_proxy_response';
 import { default as WebSocketStatus } from './status/web_socket_status';
-
 /**
  * WebSocketResponse represents a WebWorkerProxyResponse that conveys the
  * a message concerning a WebSocket connection.
@@ -10,7 +9,7 @@ export declare class WebSocketResponse extends WebWorkerProxyResponse {
     readonly status: WebSocketStatus;
     get type(): string;
     constructor(status: WebSocketStatus);
-    toJson(): {
+    toJSON(): {
         WebSocket: "Closed" | "Connecting" | "Opened";
     };
 }

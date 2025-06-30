@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { BaseNumeric, NumberLike } from '../../numeric/numeric';
-
 /**
  * Degrees is a class that represents that the numeric value that is stored
  * is a value that is represented in degrees.  This class exists in an effort

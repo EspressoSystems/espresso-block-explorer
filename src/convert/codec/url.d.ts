@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from './convert';
 import { NullCodec } from './null';
-
 /**
  * URLDecoder is a Converter that converts a string to a URL.
  */

@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
 import { default as BaseError } from './BaseError';
-
 /**
  * QueryError represents an error due to the querying code of the HotShot
  * Query Service.  Specifically it indicates an issue with retrieving, or

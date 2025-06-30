@@ -1,7 +1,6 @@
-import { default as React } from '../../../../../node_modules/react';
-
+import { default as React } from 'react';
 export interface NumberTextProps {
-    number: number;
+    number: number | bigint;
 }
 /**
  * [NumberText] is a component that will format the given `number` prop with

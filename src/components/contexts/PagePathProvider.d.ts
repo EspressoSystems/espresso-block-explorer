@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../node_modules/react';
-
+import { default as React } from 'react';
 /**
  * PageType represents the different page types we are expecting to be on.
  * they may correspond beyond 1 to 1 for different paths.
@@ -12,6 +11,7 @@ export declare enum PageType {
     nodes = "nodes",
     unknown = "unknown"
 }
+export declare function determineBasedOnPathName(pathName?: string): PageType.explorer | PageType.blocks | PageType.transactions | PageType.rollups | PageType.unknown;
 /**
  * CurrentPagePathContext represents the current Page Path of the page that
  * we are currently on.

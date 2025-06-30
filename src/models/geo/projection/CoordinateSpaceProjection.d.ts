@@ -3,7 +3,6 @@ import { default as DensityIndependentPoint } from '../units/DensityIndependentP
 import { default as LatLng } from '../units/LatLng';
 import { default as Radians } from '../units/Radians';
 import { GeodesicProjection } from './GeodesicProjection';
-
 /**
  * CoordinateSpaceProjection is a geodesic projection which converts between
  * latitude and longitude values in radians and density independent points of

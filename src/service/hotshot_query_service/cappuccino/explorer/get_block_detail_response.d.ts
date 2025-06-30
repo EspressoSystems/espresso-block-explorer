@@ -1,6 +1,5 @@
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { CappuccinoExplorerBlockDetail } from './block_detail';
-
 export declare class CappuccinoExplorerGetBlockDetailResponse {
     readonly blockDetail: CappuccinoExplorerBlockDetail;
     constructor(blockDetail: CappuccinoExplorerBlockDetail);

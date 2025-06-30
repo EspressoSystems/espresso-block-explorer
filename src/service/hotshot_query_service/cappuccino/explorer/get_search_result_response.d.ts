@@ -1,6 +1,5 @@
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { CappuccinoExplorerSearchResults } from './search_results';
-
 export declare class CappuccinoExplorerGetSearchResultResponse {
     readonly searchResults: CappuccinoExplorerSearchResults;
     constructor(searchResults: CappuccinoExplorerSearchResults);

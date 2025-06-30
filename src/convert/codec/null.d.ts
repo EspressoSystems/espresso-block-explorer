@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from './convert';
-
 /**
  * NullDecoder is a Decoding Converter that adds `null` as an option for
  * the decoded value.  The other value can be anything and this Decoder

@@ -2,7 +2,6 @@ import { NumberLike } from '../../numeric/numeric';
 import { default as LatLng } from '../units/LatLng';
 import { default as Radians } from '../units/Radians';
 import { GeodesicProjection } from './GeodesicProjection';
-
 /**
  * MercatorProjection is a geodesic projection which favors maintaining
  * parallel lines of latitude and longitude.  This is the most common type

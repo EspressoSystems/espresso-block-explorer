@@ -2,7 +2,6 @@ import { AsyncRetriever } from '../../../../../../../../../../src/async/AsyncRet
 import { BlockDetailEntry } from './block_detail';
 import { BlockSummaryEntry } from './block_summary';
 import { TransactionSummaryEntry } from './transaction_summary';
-
 export interface GenesisOverviewEntry {
     readonly rollups: number;
     readonly transactions: number;

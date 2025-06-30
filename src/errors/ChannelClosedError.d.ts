@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
 import { default as BaseError } from './BaseError';
-
 /**
  * ChannelClosedError is an error that indicates that the buffered channel
  * has been closed and can no longer be read from or written to.

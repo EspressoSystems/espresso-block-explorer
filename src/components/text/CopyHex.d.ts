@@ -1,6 +1,5 @@
-import { default as React } from '../../../../../node_modules/react';
+import { default as React } from 'react';
 import { CopyArrayBufferAsTextProps } from './CopyArrayBufferAsTextProps';
-
 /**
  * CopyHex is a component that will display a `CopyButton` with the contents
  * for the `CopyButton` being the hex representation of the given ArrayBuffer

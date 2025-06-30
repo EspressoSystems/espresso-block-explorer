@@ -1,6 +1,5 @@
 import { AsyncRetriever } from '../../../../../../../../../../../src/async/AsyncRetriever';
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 /**
  * The BlockSizeHistogramData type is the data type that is expected to be
  * displayed on the Block Size Histogram. It is expected to represent a

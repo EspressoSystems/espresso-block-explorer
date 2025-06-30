@@ -2,7 +2,6 @@ import { NumberLike } from '../../numeric/numeric';
 import { default as LatLng } from '../units/LatLng';
 import { default as Radians } from '../units/Radians';
 import { GeodesicProjection } from './GeodesicProjection';
-
 export default class KavrayskiyVIIProjection implements GeodesicProjection<Radians, NumberLike> {
     static min: LatLng<Radians>;
     static max: LatLng<Radians>;

@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-
 /**
  * CappuccinoBuilderSignature represents the signature of a builder in the
  * Cappuccino API.

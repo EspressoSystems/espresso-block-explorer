@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from './convert';
-
 /**
  * BooleanDecoder is a Converter that converts a boolean to a boolean.
  * This is effectively an identity function, so what it really does

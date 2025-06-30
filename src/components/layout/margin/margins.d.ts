@@ -1,6 +1,5 @@
-import { default as React } from '../../../../../../node_modules/react';
+import { default as React } from 'react';
 import { HigherOrderComponentWithClassNameProps } from '../../../../../../../../../../../src/components/higher_order';
-
 /**
  * WithEdgeMargin is a function that takes a component and adds the
  * class 'edge-margin' to its className.

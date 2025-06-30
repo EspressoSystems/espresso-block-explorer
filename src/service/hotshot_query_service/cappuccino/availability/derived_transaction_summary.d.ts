@@ -3,7 +3,6 @@ import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../.
 import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
 import { CappuccinoAPIHeader } from './block_header';
 import { CappuccinoAPITransactionNMTEntry } from './transaction_nmt_entry';
-
 /**
  * CappuccinoDerivedTransactionSummary represents a Transaction summary that
  * is derived from other primitives in the Cappuccino API.

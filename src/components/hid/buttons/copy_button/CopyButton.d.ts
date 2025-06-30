@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 export interface ButtonProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
     content: string;
 }

@@ -3,7 +3,6 @@ import { CappuccinoDerivedBlockSummary } from './derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from './derived_transaction_summary';
 import { CappuccinoAPILeafResponse } from './leaf_response';
 import { CappuccinoAPITransactionResponse } from './transaction_response';
-
 /**
  * convertCappuccinoBlockAndLeafToBlockSummary is a helper function that is able
  * to convert ad CappuccinoAPIBlock and a CappuccinoAPILeafResponse into a

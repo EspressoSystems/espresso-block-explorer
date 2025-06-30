@@ -4,7 +4,6 @@ import { CappuccinoDerivedBlockSummary } from './derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from './derived_transaction_summary';
 import { CappuccinoAPILeafResponse } from './leaf_response';
 import { CappuccinoAPITransactionResponse } from './transaction_response';
-
 /**
  * CappuccinoHotShotQueryServiceAvailabilityAPI is a type that represents the
  * Availability API for the Cappuccino HotShot Query Service. This interface

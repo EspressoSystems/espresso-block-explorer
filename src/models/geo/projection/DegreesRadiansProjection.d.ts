@@ -2,7 +2,6 @@ import { default as Degrees } from '../units/Degrees';
 import { default as LatLng } from '../units/LatLng';
 import { default as Radians } from '../units/Radians';
 import { GeodesicProjection } from './GeodesicProjection';
-
 /**
  * DegreesRadiansProjection is a geodesic projection which converts between
  * latitude and longitude values in degrees and radians.

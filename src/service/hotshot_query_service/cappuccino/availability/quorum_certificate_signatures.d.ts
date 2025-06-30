@@ -2,7 +2,6 @@ import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../.
 import { NullCodec } from '../../../../../../../../../../../../src/convert/codec/null';
 import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
 import { CappuccinoAPIBitVec } from './bit_vec';
-
 /**
  * CappuccinoAPIQuorumCertificateSignatures represents the signatures of a
  * quorum certificate in the Cappuccino API.

@@ -1,7 +1,6 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { CappuccinoExplorerTransactionDetailData } from './transaction_detail_data';
 import { CappuccinoExplorerTransactionDetailDetails } from './transaction_detail_details';
-
 export declare class CappuccinoExplorerTransactionDetail {
     readonly details: CappuccinoExplorerTransactionDetailDetails;
     readonly data: CappuccinoExplorerTransactionDetailData[];

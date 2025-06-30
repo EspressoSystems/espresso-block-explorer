@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
 import { default as BaseError } from './BaseError';
-
 export default class NoURLProvidedError extends BaseError {
     constructor(message?: string);
     get code(): string;

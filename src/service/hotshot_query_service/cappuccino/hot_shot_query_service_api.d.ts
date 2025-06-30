@@ -1,7 +1,7 @@
 import { CappuccinoHotShotQueryServiceAvailabilityAPI, UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI } from './availability/availability_api';
 import { CappuccinoHotShotQueryServiceExplorerAPI, UnimplementedCappuccinoHotShotQueryServiceExplorerAPI } from './explorer/explorer_api';
+import { CappuccinoHotShotQueryServiceRewardStateAPI, UnimplementedCappuccinoHotShotQueryServiceRewardStateAPI } from './reward_state/reward_start_api';
 import { CappuccinoHotShotQueryServiceStatusAPI, UnimplementedCappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
-
 /**
  * CappuccinoHotShotQueryService is a type that represents the Cappuccino
  * HotShot Query Service. This interface represents the idealized interactions
@@ -13,6 +13,8 @@ export interface CappuccinoHotShotQueryService {
     readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI;
     readonly status: CappuccinoHotShotQueryServiceStatusAPI;
     readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;
+    readonly rewardState: CappuccinoHotShotQueryServiceRewardStateAPI;
+    setURL(url: string): Promise<boolean>;
 }
 /**
  * UnimplementedCappuccinoHotShotQueryService is a class that implements the
@@ -25,4 +27,6 @@ export declare class UnimplementedCappuccinoHotShotQueryService implements Cappu
     readonly availability: UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI;
     readonly status: UnimplementedCappuccinoHotShotQueryServiceStatusAPI;
     readonly explorer: UnimplementedCappuccinoHotShotQueryServiceExplorerAPI;
+    readonly rewardState: UnimplementedCappuccinoHotShotQueryServiceRewardStateAPI;
+    setURL(): Promise<boolean>;
 }

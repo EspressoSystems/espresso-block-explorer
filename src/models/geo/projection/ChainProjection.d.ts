@@ -1,7 +1,6 @@
 import { NumberLike } from '../../numeric/numeric';
 import { default as LatLng } from '../units/LatLng';
 import { GeodesicProjection } from './GeodesicProjection';
-
 /**
  * ChainProjection is a class that represents a chain of two geodesic projections.
  * It is used to chain two projections together.

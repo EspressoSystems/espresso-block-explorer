@@ -10,7 +10,6 @@ import { CappuccinoExplorerGetTransactionDetailRequest } from '../get_transactio
 import { CappuccinoExplorerGetTransactionDetailResponse } from '../get_transaction_detail_response';
 import { CappuccinoExplorerGetTransactionSummariesRequest } from '../get_transaction_summaries_request';
 import { CappuccinoExplorerGetTransactionSummariesResponse } from '../get_transaction_summaries_response';
-
 export declare class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements CappuccinoHotShotQueryServiceExplorerAPI {
     getBlockDetail(request: CappuccinoExplorerGetBlockDetailRequest): Promise<CappuccinoExplorerGetBlockDetailResponse>;
     getBlockSummaries(request: CappuccinoExplorerGetBlockSummariesRequest): Promise<CappuccinoExplorerGetBlockSummariesResponse>;

@@ -1,6 +1,5 @@
-import { default as React } from '../../../../../node_modules/react';
+import { default as React } from 'react';
 import { PathResolver } from './PathResolver';
-
 /**
  * PathResolverContext is a context that provides a utility for generating
  * the relative paths for links to various sections within the application.

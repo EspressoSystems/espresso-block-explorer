@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 /**
  * WorldMapDotsPopulationFullResolution represents dots that are lit up based on
  * the containing coordinate box.  The dots are meant to represent the parts

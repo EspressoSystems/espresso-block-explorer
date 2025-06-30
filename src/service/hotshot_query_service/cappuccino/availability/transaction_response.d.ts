@@ -2,7 +2,6 @@ import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../.
 import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
 import { CappuccinoAPITransactionNMTEntry } from './transaction_nmt_entry';
 import { CappuccinoAPITransactionProof } from './transaction_proof';
-
 /**
  * CappuccinoAPITransactionResponse represents a transaction response in the
  * Cappuccino API.

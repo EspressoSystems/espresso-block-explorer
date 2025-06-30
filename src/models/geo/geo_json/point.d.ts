@@ -3,7 +3,6 @@ import { Degrees } from '../units';
 import { default as LatLng } from '../units/LatLng';
 import { default as GeoJSONBoundingBox } from './bounding_box';
 import { default as GeoJSONGeometry } from './geometry';
-
 /**
  * GeoJSONPoint represents a single point within the GeoJSON specification.
  */

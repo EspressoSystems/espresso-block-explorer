@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { default as WebSocketStatus } from './web_socket_status';
-
 declare class WebSocketStatusDecoder implements Converter<unknown, WebSocketStatus> {
     convert(input: unknown): WebSocketStatus;
 }

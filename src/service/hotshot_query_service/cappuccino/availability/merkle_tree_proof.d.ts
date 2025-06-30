@@ -1,7 +1,6 @@
 import { ArrayCodec } from '../../../../../../../../../../../../src/convert/codec/array';
 import { Codec, Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
-
 /**
  * CappuccinoAPIMerkleTreeProof represents a proof in the Merkle Tree.
  */

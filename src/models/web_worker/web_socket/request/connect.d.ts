@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec';
 import { default as WebSocketCommand } from './web_socket_command';
-
 export declare const kWebSocketCommandConnectType: "Connect";
 export declare class WebSocketCommandConnect extends WebSocketCommand {
     valueOf(): string;

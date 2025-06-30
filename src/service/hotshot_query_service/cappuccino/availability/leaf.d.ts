@@ -3,7 +3,6 @@ import { TaggedBase64 } from '../../../../../../../../../../../../src/models/esp
 import { CappuccinoAPIHeader } from './block_header';
 import { CappuccinoAPIPayload } from './payload';
 import { CappuccinoAPIQuorumCertificate } from './quorum_certificate';
-
 /**
  * CappuccinoAPILeaf represents a leaf in the Cappuccino API.
  */

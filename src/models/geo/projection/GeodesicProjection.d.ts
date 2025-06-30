@@ -1,6 +1,5 @@
 import { NumberLike } from '../../numeric/numeric';
 import { default as LatLng } from '../units/LatLng';
-
 /**
  * GeodesicProjection is an interface that represents a geodesic projection
  * which converts between latitude and longitude values in different units.

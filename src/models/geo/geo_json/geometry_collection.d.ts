@@ -1,7 +1,6 @@
 import { Codec, Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { default as GeoJSONBoundingBox } from './bounding_box';
 import { default as GeoJSONGeometry } from './geometry';
-
 /**
  * A GeoJSON Geometry Collection is a collection of GeoJSON geometries.  This is
  * the top level object that is used to represent a collection of geometries.

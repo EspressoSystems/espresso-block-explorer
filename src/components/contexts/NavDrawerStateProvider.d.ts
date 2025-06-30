@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../node_modules/react';
-
+import { default as React } from 'react';
 declare const CurrentNavDrawerStateContext: React.Context<boolean>;
 export { CurrentNavDrawerStateContext };
 declare const CurrentSetNavDrawerStateContext: React.Context<(b: boolean) => void>;

@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-
 export declare class CappuccinoSummaryHistograms {
     readonly blockTime: (null | number)[];
     readonly blockSize: (null | number)[];

@@ -1,5 +1,4 @@
 import { Endianess } from './endianess';
-
 /**
  * BufferedDataView is a wrapper around DataView that automatically keeps
  * track of the current byte offset, and advances it after every get call.

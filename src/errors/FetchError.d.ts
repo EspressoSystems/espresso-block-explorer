@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
 import { default as BaseError } from './BaseError';
-
 /**
  * FetchError is an error that indicates that a fetch operation has failed.
  * This is notably different from an error due a Server response.  These

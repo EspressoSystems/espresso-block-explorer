@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { default as WebSocketCommand } from './web_socket_command';
-
 declare class WebSocketCommandDecoder implements Converter<unknown, WebSocketCommand> {
     convert(input: unknown): WebSocketCommand;
 }

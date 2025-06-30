@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 /**
  * CheckCircle represents a circle with a negative space for a check mark.
  */

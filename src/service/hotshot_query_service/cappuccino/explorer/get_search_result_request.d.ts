@@ -1,5 +1,4 @@
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
-
 export declare class CappuccinoExplorerGetSearchResultRequest {
     readonly query: string;
     constructor(query: string);

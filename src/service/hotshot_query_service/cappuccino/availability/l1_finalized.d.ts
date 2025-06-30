@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { NullCodec } from '../../../../../../../../../../../../src/convert/codec/null';
-
 /**
  * CappuccinoL1Finalized represents the finalized block in the Cappuccino L1.
  */

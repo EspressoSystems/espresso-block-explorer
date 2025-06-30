@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
 import { default as BaseError } from './BaseError';
-
 /**
  * InvalidAlphabetLengthError is an error that indicates the the Base64 alphabet
  * provided does not meet the required criteria.

@@ -1,7 +1,6 @@
 import { AsyncRetriever } from '../../../../../../../../../../../src/async/AsyncRetriever';
 import { HistogramEntry } from '../../../../../../../../../../../src/models/block_explorer/explorer_summary';
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 /**
  * The BlockTimeHistogramData type is the data type that is expected to be
  * displayed on the Block Time Histogram. It is expected to represent a

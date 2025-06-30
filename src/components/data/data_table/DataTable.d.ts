@@ -1,6 +1,5 @@
-import { default as React } from '../../../../../../node_modules/react';
+import { default as React } from 'react';
 import { SortDirection } from '../types';
-
 /**
  * DataTableState represents the underlying DataTableState. The DataTable
  * knows absolutely nothing about the Data being worked with or the ColumnType.
@@ -30,6 +29,11 @@ export declare const DataTableRowContext: React.Context<object>;
  * row within the DataTable.
  */
 export declare const DataTableIndexContext: React.Context<number>;
+export declare enum Alignment {
+    start = "start",
+    center = "center",
+    end = "end"
+}
 /**
  * ColumnData represents the minimum data needed to render a cell, and header
  * column.
@@ -38,13 +42,10 @@ type ColumnData<ColumnType> = {
     label: string;
     columnType: ColumnType;
     buildCell: React.ComponentType;
+    alignment?: Alignment;
 };
 export interface DataTableProps<ColumnType> {
     columns: ColumnData<ColumnType>[];
-}
-export interface SortDirectionComponent {
-}
-export interface DataTableHeadProps {
 }
 /**
  * DataTable is a component that is meant to display data in a tabular form.

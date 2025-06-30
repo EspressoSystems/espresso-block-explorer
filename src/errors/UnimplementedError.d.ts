@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
 import { default as BaseError } from './BaseError';
-
 /**
  * Unimplemented is an error that indicates the logic for this code has not
  * yet been implemented.  It is meant to be a placeholder error.

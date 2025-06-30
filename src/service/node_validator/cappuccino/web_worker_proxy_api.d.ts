@@ -1,7 +1,6 @@
 import { WebWorkerProxyRequest } from '../../../../../../../../../../../src/models/web_worker/web_worker_proxy_request';
 import { WebWorkerProxyResponse } from '../../../../../../../../../../../src/models/web_worker/web_worker_proxy_response';
 import { NodeValidatorAPI } from '../types';
-
 /**
  * WebWorkerNodeValidatorAPI is a type that represents the Node Validator API
  * for the Web Worker. This interface masks the implementation details of

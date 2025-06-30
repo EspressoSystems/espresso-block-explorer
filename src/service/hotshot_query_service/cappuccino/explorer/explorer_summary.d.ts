@@ -4,7 +4,6 @@ import { CappuccinoExplorerBlockSummary } from './block_summary';
 import { CappuccinoGenesisOverview } from './genesis_overview';
 import { CappuccinoSummaryHistograms } from './summary_histograms';
 import { CappuccinoExplorerTransactionSummary } from './transaction_summary';
-
 export declare class CappuccinoExplorerSummary {
     readonly latestBlock: CappuccinoExplorerBlockDetail;
     readonly genesisOverview: CappuccinoGenesisOverview;

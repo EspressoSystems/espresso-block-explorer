@@ -1,7 +1,6 @@
 import { CappuccinoExplorerGetSearchResultResponse } from '../../../../../../../../../../../src/service/hotshot_query_service/cappuccino/explorer/get_search_result_response';
-import { default as React } from '../../../../../../node_modules/react';
+import { default as React } from 'react';
 import { PartialLocationHref } from './__shared__/search_input_shared';
-
 export interface InitialSearchState {
     rawQuery?: string;
     query?: string;

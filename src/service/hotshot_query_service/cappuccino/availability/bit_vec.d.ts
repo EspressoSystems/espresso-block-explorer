@@ -2,7 +2,6 @@ import { ArrayCodec } from '../../../../../../../../../../../../src/convert/code
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { CappuccinoAPIBitVecHead } from './bit_vec_head';
 import { CappuccinoAPIBitVecOrder } from './bit_vec_order';
-
 /**
  * CappuccinoAPIBitVec represents a bit vector in the Cappuccino API.
  * It contains the order, head, bits, and data of the bit vector.

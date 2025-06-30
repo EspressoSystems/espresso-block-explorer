@@ -1,6 +1,5 @@
 import { AsyncRetriever } from '../../../../../../../../../../src/async/AsyncRetriever';
 import { TransactionDetailEntry } from './transaction_detail';
-
 export declare enum TransactionSummaryColumn {
     hash = "hash",
     rollup = "rollup",

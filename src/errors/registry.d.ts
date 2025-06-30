@@ -1,6 +1,5 @@
 import { Codec, Converter } from '../../../../../../../../../src/convert/codec/convert';
 import { EspressoError } from './EspressoError';
-
 declare class EspressoErrorCodec extends Codec<EspressoError, unknown> {
     readonly encoder: Converter<EspressoError, unknown>;
     readonly decoder: Converter<unknown, EspressoError>;

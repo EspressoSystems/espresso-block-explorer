@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from './convert';
-
 /**
  * UndefinedDecoder is a Decoding Converter that adds `undefined` as an option
  * for the decoded value.  The other value can be anything and this Decoder

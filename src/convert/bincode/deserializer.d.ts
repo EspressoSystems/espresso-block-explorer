@@ -1,6 +1,5 @@
 import { BufferedDataView } from '../data_view/buffered_data_view';
 import { Deserializer } from '../serialization/deserializer';
-
 /**
  * BincodeDeserializer represents a generalized Deserializer for Bincode.
  */

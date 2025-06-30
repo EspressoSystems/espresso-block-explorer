@@ -1,6 +1,5 @@
-import { default as React } from '../../../../../node_modules/react';
+import { default as React } from 'react';
 import { default as VariableBytesNumberFormat } from './VariableBytesNumberFormat';
-
 /**
  * createDefaultNumberFormatters will create the default Number formatting
  * data structures required by other parts of the application.

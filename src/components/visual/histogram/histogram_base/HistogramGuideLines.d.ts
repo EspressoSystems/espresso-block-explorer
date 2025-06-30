@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 export interface ProvideGuideLinesProps {
     children: React.ReactNode | React.ReactNode[];
 }
@@ -27,7 +26,7 @@ export declare const ProvideGuideLines: React.FC<ProvideGuideLinesProps>;
  */
 export declare const HistogramGuideLines: React.FC;
 export interface HistogramYAxisLabelsProps {
-    labelsRef: undefined | React.RefObject<SVGGElement>;
+    labelsRef: undefined | React.RefObject<SVGSVGElement | null>;
 }
 /**
  * HistogramYAxisLabels is a component that displays the labels for the y-axis

@@ -1,7 +1,6 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
 import { EspressoError } from '../../../../../../../../../../src/errors/EspressoError';
 import { WebWorkerProxyResponse } from './web_worker_proxy_response';
-
 export declare const kErrorResponseType: "Error";
 /**
  * ErrorResponse represents a WebWorkerProxyResponse that conveys an error
@@ -11,7 +10,7 @@ export declare class ErrorResponse extends WebWorkerProxyResponse {
     readonly error: EspressoError;
     get type(): string;
     constructor(error: EspressoError);
-    toJson(): {
+    toJSON(): {
         Error: unknown;
     };
 }

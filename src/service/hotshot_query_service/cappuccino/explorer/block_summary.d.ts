@@ -1,7 +1,6 @@
 import { ArrayCodec } from '../../../../../../../../../../../../src/convert/codec/array';
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
-
 export declare class CappuccinoExplorerBlockSummary {
     readonly hash: TaggedBase64;
     readonly height: number;

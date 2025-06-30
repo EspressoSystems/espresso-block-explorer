@@ -1,7 +1,6 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { CappuccinoExplorerBlockDetail } from '../../../../../../../../../../../../src/service/hotshot_query_service';
 import { default as CappuccinoNodeValidatorResponse } from './node_validator_response';
-
 export declare const kCappuccinoLatestBlockType: "LatestBlock";
 /**
  * CappuccinoLatestBlock is a response from the Cappuccino node

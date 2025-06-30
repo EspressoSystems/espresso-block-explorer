@@ -1,6 +1,5 @@
 import { default as MonetaryValue } from '../../../../../../../../../../src/models/block_explorer/monetary_value';
-import { default as React } from '../../../../../node_modules/react';
-
+import { default as React } from 'react';
 export interface MoneyTextProps {
     money: MonetaryValue;
 }

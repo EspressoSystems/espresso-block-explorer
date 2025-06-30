@@ -1,5 +1,4 @@
 import { HotShotQueryServiceStatusAPI } from '../../types';
-
 /**
  * CappuccinoHotShotQueryServiceStatusAPI is a type that represents the
  * Status API for the Cappuccino HotShot Query Service. This interface

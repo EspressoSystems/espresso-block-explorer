@@ -4,7 +4,6 @@ import { CappuccinoBuilderSignature } from './builder_signature';
 import { CappuccinoFeeInfo } from './fee_info';
 import { CappuccinoL1Finalized } from './l1_finalized';
 import { CappuccinoNamespaceTable } from './namespace_table';
-
 /**
  * CappuccinoAPIHeader represents the header of a block in the Cappuccino API.
  */

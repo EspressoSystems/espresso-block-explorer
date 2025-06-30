@@ -1,6 +1,9 @@
 import { PathResolver } from '../../../../../../../../../src/components/contexts/PathResolver';
-
 export declare class StoryBookPathResolver implements PathResolver {
+    private readonly suffix;
+    constructor();
+    private paramsForPage;
+    private stringForParams;
     explorer(): string;
     blocks(startAtBlock?: number): string;
     block(height: number): string;

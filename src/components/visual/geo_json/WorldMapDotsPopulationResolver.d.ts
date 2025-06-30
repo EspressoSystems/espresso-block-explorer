@@ -1,6 +1,5 @@
 import { NodeSummaryData } from '../../../../../../../../../../../src/components/page_sections/nodes_summary_data_table/NodesSummaryLoader';
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 export declare const NodeIdentityInformationStreamContext: React.Context<AsyncIterable<NodeSummaryData[]>>;
 export interface DotPopulation {
     offset: number;

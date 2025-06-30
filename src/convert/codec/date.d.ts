@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from './convert';
-
 /**
  * RFC3999DateDecoder is a Converter that converts a string to a Date, provided
  * that that string is an RFC3999 representation of a Date.  If the resulting

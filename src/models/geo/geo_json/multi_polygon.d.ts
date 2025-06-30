@@ -4,7 +4,6 @@ import { default as LatLng } from '../units/LatLng';
 import { default as GeoJSONBoundingBox } from './bounding_box';
 import { default as GeoJSONGeometry } from './geometry';
 import { default as GeoJSONPolygon } from './polygon';
-
 /**
  * A GeoJSON MultiPolygon geometry is a collection of polygons that are
  * used to define bounding areas.

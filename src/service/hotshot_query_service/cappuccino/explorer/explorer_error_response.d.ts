@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { EspressoError } from '../../../../../../../../../../../../src/errors/index';
-
 /**
  * CappuccinoExplorerErrorResponse is a response that is returned when an error
  * occurs while querying the Cappuccino Explorer API.

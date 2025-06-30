@@ -1,7 +1,6 @@
 import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Codec, Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { default as GeoJSONGeometry } from './geometry';
-
 /**
  * A GeoJSON Feature is a single feature in a GeoJSON object.  This is the
  * object that represents a single feature in a GeoJSON object.

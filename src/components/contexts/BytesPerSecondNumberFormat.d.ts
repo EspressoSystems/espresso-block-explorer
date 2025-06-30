@@ -20,7 +20,7 @@ export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
     formatRangeTToParts<T = number>(start: T, end: T, thresholds: [T, T, T, T]): Intl.NumberRangeFormatPart[];
     formatNumberRangeToParts(start: number, end: number): Intl.NumberRangeFormatPart[];
     formatBigintRangeToParts(start: bigint, end: bigint): Intl.NumberRangeFormatPart[];
-    formatRangeToParts(start: number | bigint, end: number | bigint): Intl.NumberRangeFormatPart[];
+    formatRangeToParts(start: number | bigint | Intl.StringNumericLiteral, end: number | bigint | Intl.StringNumericLiteral): Intl.NumberRangeFormatPart[];
     format(number: number | bigint | Intl.StringNumericLiteral): string;
     formatRange(start: number | bigint, end: number | bigint): string;
 }

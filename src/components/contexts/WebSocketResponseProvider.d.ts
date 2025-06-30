@@ -1,6 +1,5 @@
 import { WebSocketResponse } from '../../../../../../../../../../src/models/web_worker/web_socket/web_socket_response';
-import { default as React } from '../../../../../node_modules/react';
-
+import { default as React } from 'react';
 /**
  * WebSocketResponseContext is a React Context that is used to store
  * and make available the current LifeCycleResponse.

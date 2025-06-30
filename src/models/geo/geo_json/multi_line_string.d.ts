@@ -4,7 +4,6 @@ import { default as LatLng } from '../units/LatLng';
 import { default as GeoJSONBoundingBox } from './bounding_box';
 import { default as GeoJSONGeometry } from './geometry';
 import { default as GeoJSONLineString } from './line_string';
-
 /**
  * A GeoJSON MultiLineString geometry is a collection of line strings that are
  * used to define paths.

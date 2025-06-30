@@ -1,6 +1,5 @@
 import { AsyncRetriever } from '../../../../../../../../../../src/async/AsyncRetriever';
 import { BlockDetailEntry } from './block_detail';
-
 export type BlockSummaryEntry = Pick<BlockDetailEntry, 'height' | 'proposer' | 'size' | 'time' | 'transactions'>;
 export declare enum BlockSummaryColumn {
     height = "height",

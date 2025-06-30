@@ -1,7 +1,6 @@
 import { ArrayCodec } from './array';
 import { Converter, TypeCheckingCodec } from './convert';
 import { NullCodec } from './null';
-
 export declare const isNumberArray: (input: unknown) => input is number[];
 /**
  * NumberDecoder is a Converter that converts a number to a number.

@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-
 /**
  * CappuccinoTransactionsRoot represents the transactions root in the Cappuccino
  * API.

@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-
 export declare class CappuccinoGenesisOverview {
     readonly rollups: number;
     readonly transactions: number;

@@ -1,5 +1,5 @@
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
+import { RainbowKitAccount } from '../contexts/contexts';
 export interface RainbowKitContextProviderProps {
     children: React.ReactNode | React.ReactNode[];
 }
@@ -18,3 +18,12 @@ export interface RainbowKitContextProviderProps {
  * - RainbowKitAuthenticationStatusContext
  */
 export declare const RainbowKitContextInjector: React.FC<RainbowKitContextProviderProps>;
+export interface ProvideRainbowKitAccountProps {
+    value: RainbowKitAccount | null;
+    children: React.ReactNode | React.ReactNode[];
+}
+/**
+ * ProvideRainbowKitAccount is a React component that provides the RainbowKit
+ * account information to its children via the RainbowKitAccountContext.
+ */
+export declare const ProvideRainbowKitAccount: React.FC<ProvideRainbowKitAccountProps>;

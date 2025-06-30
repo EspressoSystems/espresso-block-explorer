@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { default as WebSocketCommand } from './web_socket_command';
-
 export declare const kWebSocketCommandCloseType: "Close";
 export declare class WebSocketCommandClose extends WebSocketCommand {
     valueOf(): string;

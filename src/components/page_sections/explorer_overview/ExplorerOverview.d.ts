@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 export declare const ExplorerOverviewHeading: React.FC;
 export declare const ExplorerOverviewDetails: React.FC;
 export declare const ExplorerOverviewDetailsPlaceholder: React.FC;

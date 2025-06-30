@@ -1,6 +1,5 @@
 import { Converter } from '../convert';
 import { EspressoError } from './EspressoError';
-
 /**
  * BaseError is a base class for all custom errors that helps to automatically
  * add a toJSON method to ensure that these errors can be serialized to JSON

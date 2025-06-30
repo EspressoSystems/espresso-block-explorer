@@ -18,8 +18,8 @@ import { CappuccinoExplorerGetTransactionDetailResponse } from './explorer/get_t
 import { CappuccinoExplorerGetTransactionSummariesRequest } from './explorer/get_transaction_summaries_request';
 import { CappuccinoExplorerGetTransactionSummariesResponse } from './explorer/get_transaction_summaries_response';
 import { CappuccinoHotShotQueryService } from './hot_shot_query_service_api';
+import { CappuccinoHotShotQueryServiceRewardStateAPI } from './reward_state/reward_start_api';
 import { CappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
-
 declare class AsyncRequestHelper {
     private worker;
     private nextRequestID;
@@ -63,6 +63,10 @@ export declare class WebWorkerClientBasedCappuccinoHotShotQueryService implement
     readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI;
     readonly status: CappuccinoHotShotQueryServiceStatusAPI;
     readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;
+    readonly rewardState: CappuccinoHotShotQueryServiceRewardStateAPI;
+    private helper;
     constructor();
+    private sendRequest;
+    setURL(url: string): Promise<boolean>;
 }
 export {};

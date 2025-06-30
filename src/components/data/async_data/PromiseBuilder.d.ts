@@ -1,6 +1,5 @@
-import { default as React } from '../../../../../../node_modules/react';
+import { default as React } from 'react';
 import { AsyncSnapshot } from './AsyncSnapshot';
-
 /**
  * The Props of a Builder component passed to the builder of a PromiseBuilder.
  */

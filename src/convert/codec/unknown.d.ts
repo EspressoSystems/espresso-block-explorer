@@ -1,5 +1,4 @@
 import { Codec, Converter } from './convert';
-
 export declare const isUnknownArray: (input: unknown) => input is unknown[];
 /**
  * `UnknownConverter` is a `Converter` that really doesn't do anything.  It's

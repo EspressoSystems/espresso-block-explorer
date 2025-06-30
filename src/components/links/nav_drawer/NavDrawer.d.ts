@@ -1,4 +1,3 @@
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 declare const NavDrawer: React.FC;
 export default NavDrawer;

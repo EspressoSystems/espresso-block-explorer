@@ -1,6 +1,5 @@
 import { BufferedDataView } from '../data_view/buffered_data_view';
 import { Serializer } from '../serialization/serializer';
-
 /**
  * BincodeSerializer represents a generalized Serializer for Bincode.
  */

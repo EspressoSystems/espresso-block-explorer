@@ -4,10 +4,9 @@ import { ErrorResponse } from './error_response';
 import { default as WebSocketStatus } from './web_socket/status/web_socket_status';
 import { WebSocketResponse } from './web_socket/web_socket_response';
 import { WebWorkerProxyResponse } from './web_worker_proxy_response';
-
 declare class WebWorkerProxyResponseEncoder implements Converter<WebWorkerProxyResponse, unknown> {
     convert(input: WebWorkerProxyResponse): {
-        [x: string]: unknown;
+        [input.type]: unknown;
     };
 }
 declare class WebWorkerProxyResponseDecoder implements Converter<unknown, WebWorkerProxyResponse> {

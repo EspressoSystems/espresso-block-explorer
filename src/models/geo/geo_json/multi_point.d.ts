@@ -4,7 +4,6 @@ import { default as LatLng } from '../units/LatLng';
 import { default as GeoJSONBoundingBox } from './bounding_box';
 import { default as GeoJSONGeometry } from './geometry';
 import { default as GeoJSONPoint } from './point';
-
 /**
  * GeoJSONMultiPoint represents a collection of points within the GeoJSON
  * specification.

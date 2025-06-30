@@ -1,5 +1,4 @@
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
-
 export declare abstract class CappuccinoExplorerGetTransactionSummariesFilter {
     constructor();
     static block(block: number): CappuccinoExplorerGetTransactionSummariesFilterBlock;

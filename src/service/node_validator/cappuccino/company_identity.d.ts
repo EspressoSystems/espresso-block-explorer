@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
-
 /**
  * CappuccinoCompanyIdentity represents the identity of a Cappuccino company.
  * It contains information that pertains to the company running this node.

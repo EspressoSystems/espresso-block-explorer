@@ -1,5 +1,8 @@
-import { default as React } from '../../../../node_modules/react';
-
+import { StakeTableEntryWrapper } from '../../../../../../../../../src/models/espresso/stake_table/stake_table_entry_wrapper';
+import { Validator } from '../../../../../../../../../src/models/espresso/stake_table/validator';
+import { default as React } from 'react';
+export declare const CurrentStakeTableContext: React.Context<Map<string, StakeTableEntryWrapper>>;
+export declare const CurrentValidatorsContext: React.Context<Map<string, Validator>>;
 interface ProvideCappuccinoNodeValidatorStreamsProps {
     children: React.ReactNode | React.ReactNode[];
 }

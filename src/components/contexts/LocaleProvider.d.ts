@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../node_modules/react';
-
+import { default as React } from 'react';
 /**
  * LocaleProvider is a Context that provides the current locale that has been
  * determined for the current user.  Other contexts will consume this context

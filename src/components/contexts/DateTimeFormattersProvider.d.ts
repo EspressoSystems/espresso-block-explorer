@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../node_modules/react';
-
+import { default as React } from 'react';
 /**
  * createDefaultDateTimeFormatters will create the desired DateTime Formatters
  * that can be accessed within the application.

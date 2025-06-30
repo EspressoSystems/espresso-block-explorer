@@ -1,7 +1,6 @@
 import { ArrayCodec, Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec';
 import { default as Degrees } from '../units/Degrees';
 import { default as LatLng } from '../units/LatLng';
-
 /**
  * So it turns out that in the GeoJSON specification, their minimum unit of
  * representation, called a "Position", supplies the longitude first rather

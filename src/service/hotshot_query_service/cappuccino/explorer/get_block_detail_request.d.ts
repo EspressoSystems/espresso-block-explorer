@@ -1,6 +1,5 @@
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { latestConstant } from './constants';
-
 export declare abstract class CappuccinoExplorerGetBlockDetailRequest {
     readonly target: number | typeof latestConstant;
     constructor(target: number | typeof latestConstant);

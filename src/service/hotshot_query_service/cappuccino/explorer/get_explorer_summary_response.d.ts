@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { CappuccinoExplorerSummary } from './explorer_summary';
-
 export declare class CappuccinoExplorerGetExplorerSummaryResponse {
     readonly explorerSummary: CappuccinoExplorerSummary;
     constructor(explorerSummary: CappuccinoExplorerSummary);

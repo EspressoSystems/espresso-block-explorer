@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
 import { default as BaseBadResponseError } from './BaseBadResponseError';
-
 /**
  * BadResponseError is a custom error that indicates that the result of a fetch
  * request was a Response that indicates a non-success.

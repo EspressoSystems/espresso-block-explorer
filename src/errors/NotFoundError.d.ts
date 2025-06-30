@@ -1,6 +1,5 @@
 import { Codec, Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
 import { default as BaseError } from './BaseError';
-
 /**
  * NotFoundError is an error that indicates that the resource for the specified
  * key was unable to be found.

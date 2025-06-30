@@ -10,7 +10,6 @@ import { CappuccinoExplorerGetTransactionDetailRequest } from './get_transaction
 import { CappuccinoExplorerGetTransactionDetailResponse } from './get_transaction_detail_response';
 import { CappuccinoExplorerGetTransactionSummariesRequest } from './get_transaction_summaries_request';
 import { CappuccinoExplorerGetTransactionSummariesResponse } from './get_transaction_summaries_response';
-
 /**
  * CappuccinoHotShotQueryServiceExplorerAPI is a type that represents the
  * Explorer API for the Cappuccino HotShot Query Service. This interface

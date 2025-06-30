@@ -5,8 +5,8 @@ import * as base64 from '../base64/base64';
 export declare class HexArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
     convert(input: unknown): ArrayBuffer;
 }
-export declare class HexArrayBufferEncoder implements Converter<ArrayBuffer, string> {
-    convert(input: ArrayBuffer): string;
+export declare class HexArrayBufferEncoder implements Converter<ArrayBuffer | ArrayBufferLike, string> {
+    convert(input: ArrayBuffer | ArrayBufferLike): string;
 }
 export declare class HexArrayBufferCodec extends TypeCheckingCodec<ArrayBuffer, string> {
     encoder: HexArrayBufferEncoder;

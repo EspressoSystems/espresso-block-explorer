@@ -1,6 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { default as CappuccinoNodeValidatorResponse } from './node_validator_response';
-
 declare class CappuccinoNodeValidatorResponseDecoder implements Converter<unknown, CappuccinoNodeValidatorResponse> {
     convert(input: unknown): CappuccinoNodeValidatorResponse;
 }
@@ -17,6 +16,12 @@ declare class CappuccinoNodeValidatorResponseEncoder implements Converter<Cappuc
     } | {
         LatestBlock: unknown;
     } | {
+        LatestNodeIdentity: unknown;
+    } | {
+        LatestStakeTable: unknown[];
+    } | {
+        LatestValidator: unknown;
+    } | {
         LatestVoters: {
             order: string;
             head: {
@@ -29,7 +34,9 @@ declare class CappuccinoNodeValidatorResponseEncoder implements Converter<Cappuc
     } | {
         NodeIdentitySnapshot: unknown[];
     } | {
-        LatestNodeIdentity: unknown;
+        StakeTableSnapshot: unknown[];
+    } | {
+        ValidatorsSnapshot: unknown[];
     } | {
         VotersSnapshot: {
             order: string;

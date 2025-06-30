@@ -1,7 +1,6 @@
 import { ArrayCodec } from './array';
 import { Converter, TypeCheckingCodec } from './convert';
 import { NullCodec } from './null';
-
 export declare const isStringArray: (input: unknown) => input is string[];
 /**
  * StringDecoder is a Converter that converts a string to a string.

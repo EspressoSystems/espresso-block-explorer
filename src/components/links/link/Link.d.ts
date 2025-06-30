@@ -1,5 +1,4 @@
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 /**
  * InternalLinkAnchorComponentContext is a context that is used to determine the
  * underlying component to use for the internal link. This allows the component

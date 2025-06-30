@@ -1,6 +1,5 @@
 import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso';
-import { default as React } from '../../../../../../node_modules/react';
-
+import { default as React } from 'react';
 export interface NodeSummaryData {
     publicKey: TaggedBase64;
     name: null | string;
@@ -22,7 +21,9 @@ export declare enum NodeSummaryColumn {
     location = "location",
     stake = "stake",
     uptime = "uptime",
-    voteParticipation = "voteParticipation"
+    voteParticipation = "voteParticipation",
+    commission = "commission",
+    actions = "actions"
 }
 export interface NodeVoteParticipationStats {
     voteParticipation: number;

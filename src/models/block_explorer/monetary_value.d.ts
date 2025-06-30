@@ -1,7 +1,6 @@
 import { ArrayCodec } from '../../../../../../../../../../src/convert/codec/array';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
 import { CurrencyCode } from './currency_code';
-
 /**
  * MonetaryValue represents a numeric value with monetary significance. It is a
  * representation that ensures the value is stored separately from the currency

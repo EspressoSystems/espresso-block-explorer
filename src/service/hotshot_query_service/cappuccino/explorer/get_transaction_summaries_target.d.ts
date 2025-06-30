@@ -1,6 +1,5 @@
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
-
 export declare abstract class CappuccinoExplorerGetTransactionSummariesTarget {
     readonly limit: number;
     constructor(limit: number);
