@@ -16,14 +16,8 @@ import MoneyText from '../MoneyText';
 describe('Money Text Component', () => {
   it('should format with the correct string', () => {
     const cases = new Map([
-      [
-        new MonetaryValue(ESP, BigInt(1e18 * 1e6)),
-        'Gwei1,000,000,000,000,000 (ESP 1,000,000)',
-      ],
-      [
-        new MonetaryValue(ETH, BigInt(1e18 * 1e6)),
-        'Gwei1,000,000,000,000,000 (ETH 1,000,000)',
-      ],
+      [new MonetaryValue(ESP, BigInt(1e18 * 1e6)), 'ESP 1,000,000'],
+      [new MonetaryValue(ETH, BigInt(1e18 * 1e6)), 'ETH 1,000,000'],
       [new MonetaryValue(BTC, BigInt(1e8 * 1e6)), 'BTC 1,000,000'],
       [new MonetaryValue(USD, BigInt(100 * 1e6)), '$1'],
       [new MonetaryValue(GBP, BigInt(100 * 1e6)), '£1'],

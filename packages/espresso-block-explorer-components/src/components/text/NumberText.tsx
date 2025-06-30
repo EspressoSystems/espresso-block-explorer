@@ -2,7 +2,7 @@ import { CurrentNumberFormatters } from '@/contexts/NumberFormattersProvider';
 import React, { useContext } from 'react';
 
 export interface NumberTextProps {
-  number: number;
+  number: number | bigint;
 }
 
 /**

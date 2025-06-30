@@ -14,7 +14,7 @@ export enum PageType {
   unknown = 'unknown',
 }
 
-function determineBasedOnPathName(pathName: string = location.pathname) {
+export function determineBasedOnPathName(pathName: string = location.pathname) {
   if (pathName.startsWith('/block')) {
     return PageType.blocks;
   }

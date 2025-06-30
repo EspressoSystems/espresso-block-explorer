@@ -4,16 +4,24 @@ import CappuccinoNodeValidatorRequest, {
   kRequestBlocksSnapshotValue,
   kRequestHistogramSnapshotValue,
   kRequestNodeIdentitySnapshotValue,
+  kRequestStakeTableSnapshotValue,
+  kRequestValidatorsSnapshotValue,
   kRequestVotersSnapshotValue,
   kSubscribeLatestBockValue,
   kSubscribeNodeIdentityValue,
+  kSubscribeStakeTablesValue,
+  kSubscribeValidatorsValue,
   kSubscribeVotersValue,
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
+  RequestStakeTableSnapshot,
+  RequestValidatorsSnapshot,
   RequestVotersSnapshot,
   SubscribeLatestBlock,
   SubscribeNodeIdentity,
+  SubscribeStakeTables,
+  SubscribeValidators,
   SubscribeVoters,
 } from './node_validator_request';
 
@@ -48,6 +56,14 @@ class CappuccinoNodeValidatorRequestDecoder
         return new RequestHistogramSnapshot();
       case kRequestVotersSnapshotValue:
         return new RequestVotersSnapshot();
+      case kSubscribeValidatorsValue:
+        return new SubscribeValidators();
+      case kSubscribeStakeTablesValue:
+        return new SubscribeStakeTables();
+      case kRequestValidatorsSnapshotValue:
+        return new RequestValidatorsSnapshot();
+      case kRequestStakeTableSnapshotValue:
+        return new RequestStakeTableSnapshot();
 
       default:
         throw new InvalidTypeError(input, 'CappuccinoNodeValidatorRequest');

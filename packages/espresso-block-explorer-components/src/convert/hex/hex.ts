@@ -12,8 +12,10 @@ export function parseHexString(input: string): ArrayBuffer {
     return parseHexString(input.substring(2));
   }
 
+  // As an optimization, some of our hex strings have their leading zeros
+  // truncated. This should allow us to fill back in the leading zeros
   if ((input.length & 0x01) !== 0) {
-    throw new InvalidHexStringError();
+    return parseHexString('0' + input);
   }
 
   const ab = new ArrayBuffer(input.length / 2);

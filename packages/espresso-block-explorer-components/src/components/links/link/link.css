@@ -9,6 +9,26 @@
   --link--transition--duration: 240ms;
 }
 
+[data-theme='light'] {
+  --link--default--color: var(--color--sky-700);
+  --link--visited--color: var(--color--slate-700);
+  --link--focused--outline-color: var(--color--sky-700);
+}
+
+[data-theme='dark'] {
+  --link--default--color: var(--color--sky-100);
+  --link--visited--color: var(--color--slate-300);
+  --link--focused--outline-color: var(--color--sky-100);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --link--default--color: var(--color--sky-100);
+    --link--visited--color: var(--color--slate-300);
+    --link--focused--outline-color: var(--color--sky-100);
+  }
+}
+
 a.link {
   --text--color: var(--link--default--color);
   --icon--color: var(--link--default--color);

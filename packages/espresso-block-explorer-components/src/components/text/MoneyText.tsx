@@ -73,7 +73,7 @@ const DefaultFormatterMoneyText: React.FC<DefaultMoneyTextProps> = (props) => {
 };
 
 interface SpecificCodeProps {
-  value: number;
+  value: number | bigint;
 }
 
 /**
@@ -82,12 +82,7 @@ interface SpecificCodeProps {
  */
 const ETHText: React.FC<SpecificCodeProps> = (props) => {
   const formatters = React.useContext(CurrentNumberFormatters);
-  return (
-    <>
-      <GweiText value={props.value * 1e9} /> (
-      {formatters.ETH.format(props.value)})
-    </>
-  );
+  return <>{formatters.ETH.format(props.value)}</>;
 };
 
 /**
@@ -96,27 +91,7 @@ const ETHText: React.FC<SpecificCodeProps> = (props) => {
  */
 const ESPText: React.FC<SpecificCodeProps> = (props) => {
   const formatters = React.useContext(CurrentNumberFormatters);
-  return (
-    <>
-      <GweiText value={props.value * 1e9} /> (
-      {formatters.ESP.format(props.value)})
-    </>
-  );
-};
-
-/**
- * GweiText is a component that will render a value in Gwei. It is used when
- * currencies have a large amount of precision to display currency in terms
- * that do not require as much precision.
- */
-const GweiText: React.FC<SpecificCodeProps> = (props) => {
-  const formatters = React.useContext(CurrentNumberFormatters);
-  const parts = formatters.gwei.formatToParts(props.value);
-  const transformed = parts.map((part) =>
-    part.type === 'currency' ? { ...part, value: 'Gwei' } : part,
-  );
-
-  return transformed.map((value) => value.value).join('');
+  return <>{formatters.ESP.format(props.value)}</>;
 };
 
 export default MoneyText;

@@ -91,7 +91,7 @@ export const HistogramGuideLines: React.FC = () => {
 };
 
 export interface HistogramYAxisLabelsProps {
-  labelsRef: undefined | React.RefObject<SVGGElement>;
+  labelsRef: undefined | React.RefObject<SVGSVGElement | null>;
 }
 
 /**

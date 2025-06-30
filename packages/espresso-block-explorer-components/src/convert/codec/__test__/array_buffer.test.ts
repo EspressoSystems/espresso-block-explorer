@@ -12,7 +12,7 @@ import {
 function appendGarbage(
   input: (boolean | number | null | undefined | string | bigint | object)[],
 ): void {
-  input.push(1, null, undefined, 'f', 1n, {});
+  input.push(1, null, undefined, 'z', 1n, {});
 }
 
 function testCodecEncodeDecode(codec: TypeCheckingCodec<ArrayBuffer, string>) {

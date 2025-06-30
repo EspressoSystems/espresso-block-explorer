@@ -14,6 +14,7 @@ export default defineConfig({
       fileName: (format, entryName) => `${entryName}.${format}.js`, // Generates the output file name based on the format.
       formats: ['es', 'cjs'], // Specifies the output formats (CommonJS and ES modules).
     },
+    cssCodeSplit: false,
     rollupOptions: {
       external: [...Object.keys(peerDependencies)], // Defines external dependencies for Rollup bundling.
     },
@@ -27,6 +28,7 @@ export default defineConfig({
       { find: '@/components', replacement: '/src/components/' },
       { find: '@/contexts', replacement: '/src/components/contexts' },
       { find: '@/convert', replacement: '/src/convert' },
+      { find: '@/crypto', replacement: '/src/crypto' },
       { find: '@/data_source', replacement: '/src/data_source' },
       { find: '@/data_structures', replacement: '/src/data_structures' },
       { find: '@/errors', replacement: '/src/errors' },
@@ -65,7 +67,12 @@ export default defineConfig({
         '**/storybook-static/**',
         '**/index.ts',
         '**/*.d.ts',
-        '**/vitest.global-setup.ts',
+        'vitest.global-setup.ts',
+        'vite.config.mts',
+        'eslint.config.mjs',
+        'node_modules/**',
+        'dist/**',
+        'src/models/config/storybook/**/*',
       ],
     },
   },

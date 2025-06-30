@@ -14,7 +14,7 @@ import {
   firstIterator,
   mapIterator,
 } from '@/functional/functional';
-import { expect, userEvent, waitFor, within } from '@storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 /**
  * getHistogram is a helper function that will return the histogram svg element

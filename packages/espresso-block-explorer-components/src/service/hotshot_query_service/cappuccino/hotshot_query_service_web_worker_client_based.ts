@@ -1,3 +1,8 @@
+import {
+  booleanCodec,
+  nullableBigintCodec,
+  stringCodec,
+} from '@/convert/codec';
 import { Codec } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 import {
@@ -10,11 +15,11 @@ import WebWorkerErrorResponse from '@/errors/WebWorkerErrorResponse';
 import {
   RequestID,
   WebWorkerRequest,
+  webWorkerRequestCodec,
   WebWorkerResponse,
+  webWorkerResponseCodec,
   WebWorkerResponseError,
   WebWorkerResponseSuccess,
-  webWorkerRequestCodec,
-  webWorkerResponseCodec,
 } from '../web_worker_types';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from './availability/availability_api';
 import {
@@ -84,6 +89,7 @@ import {
 } from './explorer/get_transaction_summaries_response';
 import { CappuccinoHotShotQueryService } from './hot_shot_query_service_api';
 import ProxyWorker from './hotshot_query_service_web_worker_api.js?worker';
+import { CappuccinoHotShotQueryServiceRewardStateAPI } from './reward_state/reward_start_api';
 import { CappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
 
 class AsyncRequestHelper {
@@ -94,7 +100,6 @@ class AsyncRequestHelper {
 
   constructor(worker: Worker) {
     this.worker = worker;
-    worker.onmessageerror;
     worker.addEventListener('message', this.handleMessage.bind(this));
     worker.addEventListener('messageerror', this.handleMessageError.bind(this));
     worker.addEventListener('error', this.handleError.bind(this));
@@ -353,6 +358,32 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceExplorerAPI
   }
 }
 
+class WebWorkerClientBasedCappuccinoHotShotQueryServiceRewardStateAPI
+  implements CappuccinoHotShotQueryServiceRewardStateAPI
+{
+  private helper: AsyncRequestHelper;
+  constructor(helper: AsyncRequestHelper) {
+    this.helper = helper;
+  }
+
+  private async sendRequest<
+    T,
+    Method extends
+      keyof CappuccinoHotShotQueryServiceRewardStateAPI = keyof CappuccinoHotShotQueryServiceRewardStateAPI,
+    Param = unknown,
+  >(codec: Codec<T, unknown>, method: Method, ...param: Param[]): Promise<T> {
+    return this.helper.submitRequest<T>(codec, 'reward-state', method, param);
+  }
+
+  async getLatestRewardBalance(address: string): Promise<null | bigint> {
+    return await this.sendRequest(
+      nullableBigintCodec,
+      'getLatestRewardBalance',
+      stringCodec.encode(address),
+    );
+  }
+}
+
 let singletonWorker: null | Worker = null;
 function createWorker(): Worker {
   if (!singletonWorker) {
@@ -368,10 +399,13 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryService
   public readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI;
   public readonly status: CappuccinoHotShotQueryServiceStatusAPI;
   public readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;
+  public readonly rewardState: CappuccinoHotShotQueryServiceRewardStateAPI;
+  private helper: AsyncRequestHelper;
 
   constructor() {
     const worker = createWorker();
     const helper = new AsyncRequestHelper(worker);
+    this.helper = helper;
     this.availability =
       new WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI(
         helper,
@@ -380,5 +414,25 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryService
       new WebWorkerClientBasedCappuccinoHotShotQueryServiceStatusAPI(helper);
     this.explorer =
       new WebWorkerClientBasedCappuccinoHotShotQueryServiceExplorerAPI(helper);
+    this.rewardState =
+      new WebWorkerClientBasedCappuccinoHotShotQueryServiceRewardStateAPI(
+        helper,
+      );
+  }
+
+  private async sendRequest<T, Param = unknown>(
+    codec: Codec<T, unknown>,
+    method: 'set-url',
+    ...param: Param[]
+  ): Promise<T> {
+    return this.helper.submitRequest<T>(codec, 'proxy', method, param);
+  }
+
+  async setURL(url: string): Promise<boolean> {
+    return await this.sendRequest(
+      booleanCodec,
+      'set-url',
+      stringCodec.encode(url),
+    );
   }
 }

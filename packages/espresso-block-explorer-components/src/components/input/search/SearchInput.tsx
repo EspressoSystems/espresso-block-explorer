@@ -1,6 +1,7 @@
 import { PathResolver } from '@/components/contexts/PathResolver';
 import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { PresentationIconButton } from '@/components/hid/buttons/icon_button/IconButton';
+import { Label } from '@/components/layout/label/label';
 import { DataContext } from '@/contexts/DataProvider';
 import { ErrorContext } from '@/contexts/ErrorProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
@@ -45,7 +46,6 @@ import './search.css';
  */
 
 const UISmallDiv = WithUiSmall('div');
-const SearchResultLabel = WithUiSmall('label');
 
 /**
  * stopEvent stops the event from propagating and prevents the default action
@@ -262,6 +262,7 @@ class SearchStateController {
         }
       } catch (err) {
         // We failed to look up this result
+        console.error('encountered error while searching for query', err);
       }
 
       // Nothing to navigate to, let's skip
@@ -640,9 +641,9 @@ const SearchResultsNoResults: React.FC = () => {
 
   return (
     <section aria-label="no-results">
-      <SearchResultLabel className="result-section-title">
+      <Label className="type--ui--small result-section-title">
         <Text text="No results found" />
-      </SearchResultLabel>
+      </Label>
     </section>
   );
 };
@@ -666,9 +667,9 @@ const SearchBlockResults: React.FC = () => {
 
   return (
     <section aria-label="block-results">
-      <SearchResultLabel className="result-section-title">
+      <Label className="type--ui--small result-section-title">
         <Text text="Blocks" />
-      </SearchResultLabel>
+      </Label>
       {blocks.map((block, idx) => {
         return (
           <a
@@ -757,9 +758,9 @@ const SearchTransactionResults: React.FC = () => {
   // Let's make this look good
   return (
     <section aria-label="transaction-results">
-      <SearchResultLabel className="result-section-title">
+      <Label className="type--ui--small result-section-title">
         <Text text="Transactions" />
-      </SearchResultLabel>
+      </Label>
       {transactions.map((txn, idx) => {
         const index = idx + transactionIndexOffset;
         return (

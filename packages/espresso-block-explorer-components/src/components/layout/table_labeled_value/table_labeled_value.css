@@ -1,6 +1,24 @@
+:root {
+  --table-labeled-value--border-color: var(--color--slate-100);
+}
+
+[data-theme='light'] {
+  --table-labeled-value--border-color: var(--color--slate-100);
+}
+
+[data-theme='dark'] {
+  --table-labeled-value--border-color: var(--color--slate-700);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --table-labeled-value--border-color: var(--color--slate-700);
+  }
+}
+
 .tabled-labeled-value {
   display: grid;
-  border-bottom: 1px solid var(--color--slate-100);
+  border-bottom: 1px solid var(--table-labeled-value--border-color);
 }
 
 .tabled-labeled-value:nth-last-child(1) {

@@ -1,4 +1,3 @@
-import { assertInstanceOf } from '@/assert/assert';
 import InvalidTypeError from '@/errors/InvalidTypeError';
 import * as base64 from '../base64/base64';
 import { encodeNumberIterableToHexits, parseHexString } from '../hex/hex';
@@ -16,10 +15,10 @@ export class HexArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
   }
 }
 
-export class HexArrayBufferEncoder implements Converter<ArrayBuffer, string> {
-  convert(input: ArrayBuffer): string {
-    assertInstanceOf(input, ArrayBuffer);
-
+export class HexArrayBufferEncoder
+  implements Converter<ArrayBuffer | ArrayBufferLike, string>
+{
+  convert(input: ArrayBuffer | ArrayBufferLike): string {
     // try to avoid this array allocation if possible.
     return ['0x', ...encodeNumberIterableToHexits(new Uint8Array(input))].join(
       '',

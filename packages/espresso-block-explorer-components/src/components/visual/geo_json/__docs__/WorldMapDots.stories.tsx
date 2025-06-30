@@ -5,7 +5,7 @@ import {
   nodeList,
 } from '@/data_source/fake_data_source/generateFakeData';
 import { mapIterable } from '@/functional/functional';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { ProjectionProvider } from '../ProjectionProvider';
 import WorldMapAutoSizer from '../WorldMapAutoSizer';

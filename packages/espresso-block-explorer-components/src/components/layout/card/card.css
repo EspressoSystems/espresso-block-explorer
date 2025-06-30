@@ -4,6 +4,26 @@
   --card--border-color: var(--color--slate-200);
 }
 
+[data-theme='light'] {
+  --card--background-color: var(--color--white);
+  --card--on-background-color: var(--color--slate-700);
+  --card--border-color: var(--color--slate-200);
+}
+
+[data-theme='dark'] {
+  --card--background-color: var(--color--slate-950);
+  --card--on-background-color: var(--color--slate-300);
+  --card--border-color: var(--color--slate-700);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --card--background-color: #222;
+    --card--on-background-color: #ccc;
+    --card--border-color: var(--color--slate-700);
+  }
+}
+
 div.card {
   border: 1px solid var(--card--border-color);
   background-color: var(--card--background-color);

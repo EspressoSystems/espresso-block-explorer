@@ -4,13 +4,14 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import * as stories from '../__docs__/NodesPage.stories';
 
-const { Nodes } = composeStories(stories);
+const composedStories = composeStories(stories);
+const Default = composedStories.Default as React.FC;
 
 window.HTMLElement.prototype.scrollIntoView = function () {};
 
 describe('NodesPage', async () => {
   it('should render the story', async () => {
-    render(<Nodes data-testid="1" />);
+    render(<Default data-testid="1" />);
 
     // Wait for the main page to be present.
     await waitFor(() => {

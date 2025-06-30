@@ -1,0 +1,62 @@
+:root {
+  --environment-banner--devnet--color: var(--color--coffee);
+  --environment-banner--testnet--color: var(--color--blueberry);
+  --environment-banner--color: var(--environment-banner--testnet--color);
+
+  --environment-banner--padding-vertical: 8px;
+  --environment-banner--padding-horizontal: 16px;
+  --environment-banner--margin-bottom: 16px;
+}
+
+[data-theme='light'] {
+  --environment-banner--devnet--color: var(--color--coffee);
+  --environment-banner--testnet--color: var(--color--blueberry);
+}
+
+[data-theme='dark'] {
+  --environment-banner--devnet--color: var(--color--cookie);
+  --environment-banner--testnet--color: var(--color--azure);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --environment-banner--devnet--color: var(--color--cookie);
+    --environment-banner--testnet--color: var(--color--azure);
+  }
+}
+
+.environment-banner {
+  padding-block: var(--environment-banner--padding-vertical);
+  margin-block-end: var(--environment-banner--margin-bottom);
+  border: none;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  --text--color: var(--environment-banner--color);
+  color: var(--environment-banner--color);
+  border-bottom-color: var(--environment-banner--color);
+}
+
+.environment--devnet {
+  --environment-banner--color: var(--environment-banner--devnet--color);
+}
+
+.environment--testnet {
+  --environment-banner--color: var(--environment-banner--testnet--color);
+}
+
+.environment-banner {
+  padding-inline: 16px;
+}
+
+@media screen and (min-width: 1024px) {
+  .environment-banner {
+    padding-inline: 24px;
+  }
+}
+
+.environment-banner > .chip {
+  padding: 4px 8px;
+  border: 1px solid var(--environment-banner--color);
+  border-radius: 8px;
+  display: inline-block;
+}

@@ -22,7 +22,7 @@ export class NodeValidatorServiceResponse extends WebWorkerProxyResponse {
     this.response = response;
   }
 
-  toJson() {
+  toJSON() {
     return nodeValidatorServiceResponseCodec.encode(this);
   }
 }

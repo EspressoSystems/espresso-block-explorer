@@ -4,11 +4,28 @@
   --world-map--node-color: var(--color--slate-950);
 }
 
+[data-theme='light'] {
+  --world-map--continent-color: var(--color--slate-300);
+  --world-map--node-color: var(--color--slate-950);
+}
+
+[data-theme='dark'] {
+  --world-map--continent-color: var(--color--slate-500);
+  --world-map--node-color: var(--color--white);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --world-map--continent-color: var(--color--slate-500);
+    --world-map--node-color: var(--color--white);
+  }
+}
+
 svg.world-map-dots circle.continent {
   fill: var(--world-map--continent-color);
 }
 
-svg.world-map-dots circle.node {
+svg.world-map-population-dots circle.node {
   fill: var(--world-map--node-color);
 }
 

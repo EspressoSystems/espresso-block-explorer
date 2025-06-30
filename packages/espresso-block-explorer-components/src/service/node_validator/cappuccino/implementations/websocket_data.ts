@@ -1,17 +1,14 @@
 import { Channel, createChannelToSink } from '@/async/channel';
 import { createSinkWithConverter } from '@/async/sink/converted_sink';
 import { Sink } from '@/async/sink/sink';
-import {
-  Completer,
-  createCompleter,
-} from '@/data_structures/async/completer/Completer';
+import { sleep } from '@/async/sleep';
+import { createCompleter } from '@/data_structures/async/completer/Completer';
 import WebSocketError from '@/errors/WebSocketError';
 import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
 import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
 import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
 import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
 import { WebSocketStatusConnectionConnecting } from '@/models/web_worker/web_socket/status/connecting';
-import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
 import WebSocketStatus from '@/models/web_worker/web_socket/status/web_socket_status';
 import { WebSocketRequest } from '@/models/web_worker/web_socket/web_socket_request';
 import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
@@ -24,9 +21,30 @@ import CappuccinoNodeValidatorRequest from '../requests/node_validator_request';
 import { cappuccinoNodeValidatorRequestCodec } from '../requests/node_validator_request_codec';
 import { NodeValidatorServiceRequest } from '../requests/node_validator_service_request';
 import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
-import { cappuccinoNodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
 import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
+import { WebSocketCloseHandler } from '../websocket/websocket_close_handler';
+import { WebSocketErrorHandler } from '../websocket/websocket_error_handler';
+import { WebSocketInterface } from '../websocket/websocket_interface';
+import { WebSocketMessageHandler } from '../websocket/websocket_message_handler';
+import { WebSocketOpenHandler } from '../websocket/websocket_open_handler';
+import {
+  createProxyWebSocket,
+  ProxyWebSocket,
+} from '../websocket/websocket_proxy';
+
+// RAPID_RECONNECT_THRESHOLD is the threshold in milliseconds that specifies
+// the threshold within which we will consider a connection request as having
+// been "rapid".
+const RAPID_RECONNECT_THRESHOLD = 1000;
+
+// RAPID_RECONNECT_PENALTY is the penalty in milliseconds that we will apply
+// to the connection request if we have been connecting too rapidly.
+const RAPID_RECONNECT_PENALTY = 250;
+
+// RAPID_RECONNECT_PENALTY_MAX is the maximum penalty in milliseconds that we
+// will apply to the connection request if we have been connecting too rapidly.
+const RAPID_RECONNECT_PENALTY_MAX = 5000;
 
 // URL expected to be replay:<url>
 // Examples:
@@ -39,6 +57,7 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
   readonly responseStream: Channel<WebWorkerProxyResponse>;
   readonly requestStream: Channel<WebWorkerProxyRequest>;
   readonly serviceBaseURL: URL;
+  readonly webSocketCreator: (url: URL) => WebSocketInterface;
 
   readonly lifecycleResponseSink: Sink<WebSocketStatus>;
   readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
@@ -47,10 +66,13 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     requestStream: Channel<WebWorkerProxyRequest>,
     responseStream: Channel<WebWorkerProxyResponse>,
     serviceBaseURL: URL,
+    webSocketCreator: (url: URL) => WebSocketInterface = (url: URL) =>
+      new WebSocket(url),
   ) {
     this.requestStream = requestStream;
     this.responseStream = responseStream;
     this.serviceBaseURL = serviceBaseURL;
+    this.webSocketCreator = webSocketCreator;
 
     this.lifecycleResponseSink = createSinkWithConverter(
       createChannelToSink(responseStream),
@@ -136,7 +158,49 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     }
   }
 
-  private webSocket: null | WebSocket = null;
+  private lastConnectTime: null | Date = null;
+  private rapidConnectCount: number = 0;
+
+  /**
+   * rapidREconnectProtection is a function that will delay the connection
+   * attempts if the last connection request was made too rapidly.
+   */
+  private async rapidReconnectProtection() {
+    if (this.lastConnectTime === null) {
+      this.lastConnectTime = new Date();
+      return;
+    }
+
+    const now = new Date();
+    const timeSinceLastConnect = now.getTime() - this.lastConnectTime.getTime();
+    if (timeSinceLastConnect < RAPID_RECONNECT_THRESHOLD) {
+      this.rapidConnectCount++;
+    } else {
+      // reset the rapid connect count
+      this.rapidConnectCount = 0;
+    }
+
+    if (this.rapidConnectCount <= 0) {
+      return;
+    }
+
+    // Compute the
+    const penalty = 2 ** (this.rapidConnectCount - 1);
+    const delay = Math.min(
+      RAPID_RECONNECT_PENALTY * penalty,
+      RAPID_RECONNECT_PENALTY_MAX,
+    );
+    console.info(
+      'Delaying connection attempt due to rapid connects:',
+      this.rapidConnectCount,
+      penalty,
+      delay,
+    );
+    await sleep(delay);
+    this.lastConnectTime = new Date();
+  }
+
+  private webSocket: null | ProxyWebSocket = null;
   private async handleConnect() {
     if (this.webSocket !== null) {
       // We're already connected.
@@ -145,10 +209,16 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     }
 
     const url = new URL('node-validator/details', this.serviceBaseURL);
-
     const webSocketCompleter = createCompleter<WebSocket>();
 
     try {
+      const connecting = new WebSocketStatusConnectionConnecting();
+      await this.lifecycleResponseSink.send(connecting);
+
+      // Have we been connecting too rapidly?
+      // We should delay our connection attempts if we have been.
+      await this.rapidReconnectProtection();
+
       const messageHandler = new WebSocketMessageHandler(
         this.nodeValidatorResponseSink,
       );
@@ -159,34 +229,20 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
       const closeHandler = new WebSocketCloseHandler(
         webSocketCompleter,
         this.lifecycleResponseSink,
+        () => (this.webSocket = null),
       );
       const errorHandler = new WebSocketErrorHandler(
         webSocketCompleter,
         this.errorResponseSink,
       );
-      const webSocket = new WebSocket(url);
-
-      webSocket.onerror;
-      webSocket.addEventListener('open', openHandler);
-      webSocket.addEventListener('message', messageHandler);
-      webSocket.addEventListener('close', closeHandler);
-      webSocket.addEventListener('error', errorHandler);
-
-      webSocket.addEventListener('close', () => {
-        // Let's clean up our handlers.
-
-        webSocket.removeEventListener('open', openHandler);
-        webSocket.removeEventListener('message', messageHandler);
-        webSocket.removeEventListener('close', closeHandler);
-        webSocket.removeEventListener('error', errorHandler);
-
-        // Let's remove our reference to the web socket.
-        this.webSocket = null;
-      });
-
-      this.webSocket = webSocket;
-      const connecting = new WebSocketStatusConnectionConnecting();
-      await this.lifecycleResponseSink.send(connecting);
+      this.webSocket = createProxyWebSocket(
+        url,
+        messageHandler,
+        openHandler,
+        closeHandler,
+        errorHandler,
+        this.webSocketCreator,
+      );
     } catch (error) {
       const err = new WebSocketError(error);
       this.errorResponseSink.send(err);
@@ -206,123 +262,6 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI
     }
 
     // We want to disconnect from the webSocket
-    webSocket.close(1000, 'done');
-
-    return new Promise<void>((resolve) => {
-      webSocket.addEventListener('close', () => {
-        resolve();
-      });
-    });
-  }
-}
-
-class WebSocketMessageHandler implements EventListenerObject {
-  private readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
-
-  constructor(
-    nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>,
-  ) {
-    this.nodeValidatorResponseSink = nodeValidatorResponseSink;
-  }
-
-  private decodeMessage(event: MessageEvent) {
-    return cappuccinoNodeValidatorResponseCodec.decode(
-      JSON.parse(event.data as string),
-    );
-  }
-
-  private async relayMessage(message: CappuccinoNodeValidatorResponse) {
-    try {
-      await this.nodeValidatorResponseSink.send(message);
-    } catch (error) {
-      console.error(
-        'attempt to publish message to response stream failed',
-        error,
-      );
-    }
-  }
-
-  async handleEvent(event: MessageEvent) {
-    // This is assumed to be a Text type
-
-    try {
-      const message = this.decodeMessage(event);
-      this.relayMessage(message);
-    } catch (error) {
-      console.error('Failed to decode server message from web socket', error);
-      return;
-    }
-  }
-}
-
-class WebSocketOpenHandler implements EventListenerObject {
-  private readonly completer: Completer<WebSocket>;
-  private readonly lifecycleResponseSink: Sink<WebSocketStatus>;
-  constructor(
-    completer: Completer<WebSocket>,
-    lifecycleResponseSink: Sink<WebSocketStatus>,
-  ) {
-    this.completer = completer;
-    this.lifecycleResponseSink = lifecycleResponseSink;
-  }
-
-  handleEvent(event: Event) {
-    this.completer.complete(event.target as WebSocket);
-    this.lifecycleResponseSink.send(new WebSocketStatusConnectionOpened());
-  }
-}
-
-class WebSocketCloseHandler implements EventListenerObject {
-  private readonly completer: Completer<WebSocket>;
-  private readonly lifecycleResponseSink: Sink<WebSocketStatus>;
-
-  constructor(
-    completer: Completer<WebSocket>,
-    lifecycleResponseSink: Sink<WebSocketStatus>,
-  ) {
-    this.completer = completer;
-    this.lifecycleResponseSink = lifecycleResponseSink;
-  }
-
-  async handleEvent() {
-    await this.lifecycleResponseSink.send(
-      new WebSocketStatusConnectionClosed(),
-    );
-
-    if (!this.completer.isCompleted) {
-      this.completer.completeError(
-        new WebSocketError(null, 'web socket error: unknown error'),
-      );
-    }
-  }
-}
-
-class WebSocketErrorHandler implements EventListenerObject {
-  private readonly completer: Completer<WebSocket>;
-  private readonly errorResponseSink: Sink<unknown>;
-
-  constructor(
-    completer: Completer<WebSocket>,
-    errorResponseSink: Sink<unknown>,
-  ) {
-    this.completer = completer;
-    this.errorResponseSink = errorResponseSink;
-  }
-
-  private errorFromEvent(event: Event) {
-    if ('error' in event) {
-      return new WebSocketError(event.error);
-    }
-
-    return new WebSocketError(null, 'web socket error: unknown error');
-  }
-
-  handleEvent(event: Event) {
-    const err = this.errorFromEvent(event);
-    this.errorResponseSink.send(err);
-
-    if (!this.completer.isCompleted) {
-      this.completer.completeError(err);
-    }
+    await webSocket.close();
   }
 }

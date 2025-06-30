@@ -11,7 +11,7 @@ const ExternalLink: React.FC<React.SVGProps<SVGElement>> = (props) =>
     SVGIconBase,
     {
       ...props,
-      // eslint-disable-next-line react/prop-types
+
       className: addClassToClassName(props.className, 'stroked'),
       viewBox: '-4 -4 24 24',
       // viewBox: '0 0 16 16',

@@ -1,18 +1,21 @@
+:root {
+  --summary-tabled-labeled-value--label-color: var(--color--slate-500);
+}
+
 .summary-tabled-labeled-value {
   display: grid;
 }
 
-.summary-tabled-labeled-value > label {
+.summary-tabled-labeled-value > .label {
   grid-area: label;
   text-align: start;
-  color: var(--color--slate-500);
+  color: var(--summary-tabled-labeled-value--label-color);
 }
 
 .summary-tabled-labeled-value > div.value {
   box-sizing: border-box;
   grid-area: value;
   text-align: end;
-  color: var(--color--slate-950);
 }
 
 .summary-tabled-labeled-value:not(:nth-child(1)) {

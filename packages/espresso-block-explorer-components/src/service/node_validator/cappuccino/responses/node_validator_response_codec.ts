@@ -25,6 +25,16 @@ import {
   kCappuccinoLatestNodeIdentityType,
 } from './latest_node_identity';
 import {
+  CappuccinoLatestStakeTable,
+  cappuccinoLatestStakeTableCodec,
+  kCappuccinoLatestStakeTableType,
+} from './latest_stake_table';
+import {
+  CappuccinoLatestValidator,
+  cappuccinoLatestValidatorCodec,
+  kCappuccinoLatestValidatorType,
+} from './latest_validator';
+import {
   CappuccinoLatestVoters,
   cappuccinoLatestVotersCodec,
   kCappuccinoLatestVotersType,
@@ -35,6 +45,16 @@ import {
   kCappuccinoNodeIdentitySnapshotType,
 } from './node_identity_snapshot';
 import CappuccinoNodeValidatorResponse from './node_validator_response';
+import {
+  CappuccinoStakeTableSnapshot,
+  cappuccinoStakeTableSnapshotCodec,
+  kCappuccinoStakeTableSnapshotType,
+} from './stake_table_snapshot';
+import {
+  CappuccinoValidatorsSnapshot,
+  cappuccinoValidatorsSnapshotCodec,
+  kCappuccinoValidatorsSnapshotType,
+} from './validators_snapshot';
 import {
   CappuccinoVotersSnapshot,
   cappuccinoVotersSnapshotCodec,
@@ -60,11 +80,23 @@ class CappuccinoNodeValidatorResponseDecoder
     if (isRecordWithKeys(input, kCappuccinoLatestVotersType)) {
       return cappuccinoLatestVotersCodec.decode(input);
     }
+    if (isRecordWithKeys(input, kCappuccinoLatestValidatorType)) {
+      return cappuccinoLatestValidatorCodec.decode(input);
+    }
+    if (isRecordWithKeys(input, kCappuccinoLatestStakeTableType)) {
+      return cappuccinoLatestStakeTableCodec.decode(input);
+    }
     if (isRecordWithKeys(input, kCappuccinoNodeIdentitySnapshotType)) {
       return cappuccinoNodeIdentitySnapshotCodec.decode(input);
     }
     if (isRecordWithKeys(input, kCappuccinoVotersSnapshotType)) {
       return cappuccinoVotersSnapshotCodec.decode(input);
+    }
+    if (isRecordWithKeys(input, kCappuccinoValidatorsSnapshotType)) {
+      return cappuccinoValidatorsSnapshotCodec.decode(input);
+    }
+    if (isRecordWithKeys(input, kCappuccinoStakeTableSnapshotType)) {
+      return cappuccinoStakeTableSnapshotCodec.decode(input);
     }
 
     throw new UnimplementedError();
@@ -90,11 +122,23 @@ class CappuccinoNodeValidatorResponseEncoder
     if (input instanceof CappuccinoLatestVoters) {
       return cappuccinoLatestVotersCodec.encode(input);
     }
+    if (input instanceof CappuccinoLatestValidator) {
+      return cappuccinoLatestValidatorCodec.encode(input);
+    }
+    if (input instanceof CappuccinoLatestStakeTable) {
+      return cappuccinoLatestStakeTableCodec.encode(input);
+    }
     if (input instanceof CappuccinoNodeIdentitySnapshot) {
       return cappuccinoNodeIdentitySnapshotCodec.encode(input);
     }
     if (input instanceof CappuccinoVotersSnapshot) {
       return cappuccinoVotersSnapshotCodec.encode(input);
+    }
+    if (input instanceof CappuccinoValidatorsSnapshot) {
+      return cappuccinoValidatorsSnapshotCodec.encode(input);
+    }
+    if (input instanceof CappuccinoStakeTableSnapshot) {
+      return cappuccinoStakeTableSnapshotCodec.encode(input);
     }
 
     throw new UnimplementedError();

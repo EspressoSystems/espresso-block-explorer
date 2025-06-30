@@ -305,7 +305,7 @@ export default class ReplayDataCappuccinoNodeValidatorAPI
 
         await this.nodeValidatorResponseSink.send(response);
       } catch (error) {
-        console.error(`Failed to decode message: ${message.data}`);
+        console.error(`Failed to decode message: ${message.data}`, error);
         continue;
       }
     }

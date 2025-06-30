@@ -12,26 +12,32 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "next": "14.2.15",
-    "react": "^18",
-    "react-dom": "^18"
+    "@rainbow-me/rainbowkit": "^2.2.5",
+    "@tanstack/react-query": "^5.80.2",
+    "next": "15.3.4",
+    "react": "^19",
+    "react-dom": "^19",
+    "viem": "^2.30.6",
+    "wagmi": "^2.15.4"
   },
   "devDependencies": {
-    "@testing-library/react": "^14.2.1",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "@typescript-eslint/eslint-plugin": "^7.7.0",
-    "@typescript-eslint/parser": "^7.7.0",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.29.0",
+    "@testing-library/react": "^16",
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8",
+    "@typescript-eslint/parser": "^8",
     "@vitejs/plugin-react": "^4.2.1",
-    "@vitest/coverage-istanbul": "^1.5.1",
-    "@vitest/web-worker": "^1.5.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.4",
+    "@vitest/coverage-istanbul": "^3",
+    "@vitest/web-worker": "^3",
+    "eslint": "^9",
+    "eslint-config-next": "^15",
     "espresso-block-explorer-components": "file:../espresso-block-explorer-components",
-    "jsdom": "^24.0.0",
-    "next-router-mock": "^0.9.13",
+    "jsdom": "^26",
+    "next-router-mock": "^1",
     "typescript": "^5",
-    "vitest": "^1.6.1"
+    "vitest": "^3"
   }
 }

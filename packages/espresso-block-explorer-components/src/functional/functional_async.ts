@@ -426,5 +426,4 @@ export async function* unimplementedAsyncIterable<T>(): AsyncGenerator<T> {
  * emptyAsyncIterable is an async iterable that is empty, so it yields
  * nothing.
  */
-// eslint-disable-next-line require-yield
 export async function* emptyAsyncIterable<T>(): AsyncGenerator<T> {}

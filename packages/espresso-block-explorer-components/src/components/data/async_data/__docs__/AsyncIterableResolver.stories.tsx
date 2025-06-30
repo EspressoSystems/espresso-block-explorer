@@ -1,7 +1,7 @@
 import { sleep } from '@/async/sleep';
 import CircularProgressIndicator from '@/loading/CircularProgressIndicator';
 import Text from '@/text/Text';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import AsyncIterableResolverComp from '../AsyncIterableResolver';
 import { AsyncState } from '../AsyncSnapshot';

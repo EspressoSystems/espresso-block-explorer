@@ -2,9 +2,9 @@ import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
+import type { PathResolver } from '../PathResolver';
 import {
   OverridePathResolver,
-  PathResolver,
   PathResolverContext,
 } from '../PathResolverProvider';
 
@@ -29,12 +29,29 @@ describe('Path Resolver Provider Context', () => {
         expect(localPathResolver.explorer()).equals('/');
         expect(localPathResolver.blocks()).equals('/blocks');
         expect(localPathResolver.block(0)).equals('/block/0');
+        expect(localPathResolver.blocks(10)).equals('/blocks?height=10');
         expect(localPathResolver.transactions()).equals('/transactions');
+        expect(localPathResolver.transactions(10)).equals(
+          '/transactions?height=10&offset=0',
+        );
+        expect(localPathResolver.transactions(10, 10)).equals(
+          '/transactions?height=10&offset=10',
+        );
+        expect(localPathResolver.transactionsForBlock(10)).equals(
+          '/transactions?block=10',
+        );
         expect(localPathResolver.transaction(10, 2)).equals(
           '/transaction/10-2',
         );
         expect(localPathResolver.rollUps()).equals('/rollups');
         expect(localPathResolver.rollUp(1234)).equals('/rollup/1234');
+        expect(localPathResolver.rollUp(1234, 10)).equals(
+          '/rollup/1234?height=10&offset=0',
+        );
+        expect(localPathResolver.rollUp(1234, 10, 10)).equals(
+          '/rollup/1234?height=10&offset=10',
+        );
+        expect(localPathResolver.nodes()).equals('/nodes');
       }
     });
   });
@@ -68,6 +85,9 @@ describe('Path Resolver Provider Context', () => {
             },
             rollUp(namespace: number): string {
               return `/r/${namespace}`;
+            },
+            nodes(): string {
+              return '/n';
             },
           }}
         >

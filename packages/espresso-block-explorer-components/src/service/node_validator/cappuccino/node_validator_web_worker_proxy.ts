@@ -1,5 +1,8 @@
-import { createBufferedChannel } from '@/async/channel';
+import { Channel, createBufferedChannel } from '@/async/channel';
+import { Completer, createCompleter } from '@/data_structures/async';
 import UnimplementedError from '@/errors/UnimplementedError';
+import { WebSocketCommandSetURL } from '@/models/web_worker/web_socket/request/set_url';
+import { WebSocketRequest } from '@/models/web_worker/web_socket/web_socket_request';
 import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
 import {
   registerWebWorkerProxyRequestCodec,
@@ -91,7 +94,7 @@ async function determineServiceImplementationFromServiceURL(
   return null;
 }
 
-async function determineServiceImplementation(): Promise<WebWorkerNodeValidatorAPI> {
+async function determineServiceImplementationFromConfig(): Promise<WebWorkerNodeValidatorAPI> {
   try {
     const response = await fetch('/config.json');
     const config: Config = await response.json();
@@ -126,7 +129,7 @@ async function determineServiceImplementation(): Promise<WebWorkerNodeValidatorA
 
 async function determineService() {
   return new WebWorkerProxyNodeValidatorService(
-    await determineServiceImplementation(),
+    await determineServiceImplementationFromConfig(),
   );
 }
 
@@ -145,34 +148,159 @@ class WebWorkerProxyNodeValidatorService implements WebWorkerNodeValidatorAPI {
   }
 }
 
+class Stop {}
+
 async function handleResponses(
   service: Promise<WebWorkerNodeValidatorAPI>,
+  stop: Promise<Stop>,
   postMessage: PostMessageFunction,
 ) {
   const resolvedService = await service;
-  for await (const response of resolvedService.stream) {
+  const it = resolvedService.stream[Symbol.asyncIterator]();
+  while (true) {
+    const result = await Promise.race([stop, it.next()]);
+    if (result instanceof Stop) {
+      // We're being told to stop sending responses
+      return;
+    }
+
+    if (result.done) {
+      // Our stream has ended, we can stop processing
+      return;
+    }
+
+    const response = result.value;
     postMessage(webWorkerProxyResponseCodec.encode(response));
   }
 }
 
 export class WebWorkerProxy {
   private service: Promise<WebWorkerNodeValidatorAPI>;
+  private stopPublishingResponses: Completer<Stop>;
+  private postMessage: PostMessageFunction;
+  private readonly requestChannel: Channel<WebWorkerProxyRequest>;
 
   constructor(postMessage: PostMessageFunction) {
     const service = determineService();
     this.service = service;
-    handleResponses(service, postMessage);
+    const completer = createCompleter<Stop>();
+    this.stopPublishingResponses = completer;
+    this.requestChannel = createBufferedChannel<WebWorkerProxyRequest>(1024);
+    this.postMessage = postMessage;
+    this.processRequests();
+    handleResponses(service, completer.promise, this.postMessage);
+  }
+
+  async setURL(url: string): Promise<boolean> {
+    // This method is used to set the URL for the service, if applicable.
+    // It will return true if the URL was set successfully, false otherwise.
+    try {
+      const parsedURL = new URL(url);
+      switch (parsedURL.protocol) {
+        case 'replay:':
+        /* falls through */
+        case 'ws:':
+        /* falls through */
+        case 'wss:':
+          // Valid protocols for node validator URLs
+          break;
+        default:
+          console.warn('Invalid protocol for node validator URL:', url);
+          return false;
+      }
+
+      // Is our URL the same?
+      const currentService = await this.service;
+      // Out with the old
+      this.stopPublishingResponses.complete(new Stop());
+
+      if (currentService instanceof FakeDataCappuccinoNodeValidatorAPI) {
+        currentService.responseStream.close();
+      } else if (
+        currentService instanceof ReplayDataCappuccinoNodeValidatorAPI
+      ) {
+        // If the current service is a replay service, we need to stop it
+        // We don't know if it is currently processing or not.
+        currentService.responseStream.close();
+      } else if (
+        currentService instanceof WebSocketDataCappuccinoNodeValidatorAPI
+      ) {
+        // If the current service is a WebSocket service, we need to close it
+        // We don't know if it is currently connected or not.
+        currentService.responseStream.close();
+      }
+      // currentService.send(new WebSocketRequest(new WebSocketCommandClose()));
+
+      if (currentService instanceof FakeDataCappuccinoNodeValidatorAPI) {
+        currentService.requestStream.close();
+      } else if (
+        currentService instanceof ReplayDataCappuccinoNodeValidatorAPI
+      ) {
+        // If the current service is a replay service, we need to stop it
+        // We don't know if it is currently processing or not.
+        currentService.requestStream.close();
+      } else if (
+        currentService instanceof WebSocketDataCappuccinoNodeValidatorAPI
+      ) {
+        // If the current service is a WebSocket service, we need to close it
+        // We don't know if it is currently connected or not.
+        currentService.requestStream.close();
+      }
+
+      const nextService =
+        await determineServiceImplementationFromServiceURL(url);
+      if (nextService === null) {
+        console.warn(
+          'Unable to determine service implementation from URL:',
+          url,
+        );
+        return false;
+      }
+
+      const resolvedService = new WebWorkerProxyNodeValidatorService(
+        nextService,
+      );
+
+      // In with the new
+      const completer = createCompleter<Stop>();
+      this.service = Promise.resolve(resolvedService);
+      this.stopPublishingResponses = completer;
+      // We need to setup the next response handler for the new service
+      handleResponses(
+        Promise.resolve(resolvedService),
+        completer.promise,
+        this.postMessage,
+      );
+      return true;
+    } catch (error) {
+      console.warn('error setting URL for node validator', url, error);
+      return false;
+    }
+  }
+
+  async processRequests() {
+    for await (const request of this.requestChannel) {
+      try {
+        const service = await this.service;
+        if (request instanceof WebSocketRequest) {
+          if (request.command instanceof WebSocketCommandSetURL) {
+            // If the request is a WebSocketCommandSetURL, we will set the URL for
+            // the service and return.
+            await this.setURL(request.command.url);
+            continue;
+          }
+        }
+
+        service.send(request);
+      } catch (error) {
+        console.warn('error processing message from event', error);
+      }
+    }
   }
 
   async handleEvent(event: MessageEvent) {
     // This is our entry point, and where we will receive / process messages
     const request = webWorkerProxyRequestCodec.decode(event.data);
-
-    try {
-      const service = await this.service;
-      service.send(request);
-    } catch (error) {
-      console.warn('error processing message from event', error);
-    }
+    await this.requestChannel.publish(request);
   }
 }

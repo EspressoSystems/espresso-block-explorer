@@ -4,6 +4,7 @@ import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   CurrentPagePathContext,
+  determineBasedOnPathName,
   OverridePagePath,
   PageType,
   ProvideDerivedPagePath,
@@ -17,6 +18,22 @@ const ConsumePagePathProvider: React.FC = () => {
 
 beforeEach(() => {
   localPathResolver = null;
+});
+
+describe('determineBasedOnPathName', () => {
+  test('should pass specific path prefix cases', () => {
+    expect(determineBasedOnPathName('/block/123')).toEqual(PageType.blocks);
+    expect(determineBasedOnPathName('/transaction/123')).toEqual(
+      PageType.transactions,
+    );
+    expect(determineBasedOnPathName('/transactions/123')).toEqual(
+      PageType.transactions,
+    );
+    expect(determineBasedOnPathName('/rollup/123')).toEqual(PageType.rollups);
+    expect(determineBasedOnPathName('/rollups/123')).toEqual(PageType.rollups);
+    expect(determineBasedOnPathName('/')).toEqual(PageType.explorer);
+    expect(determineBasedOnPathName('')).toEqual(PageType.unknown);
+  });
 });
 
 describe('Page Path Provider Context', () => {

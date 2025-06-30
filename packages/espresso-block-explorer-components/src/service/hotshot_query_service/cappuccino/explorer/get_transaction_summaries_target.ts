@@ -44,8 +44,7 @@ export abstract class CappuccinoExplorerGetTransactionSummariesTarget {
 }
 
 class CappuccinoExplorerGetTransactionSummariesTargetDecoder
-  implements
-    Converter<unknown, CappuccinoExplorerGetTransactionSummariesTarget>
+  implements Converter<unknown, CappuccinoExplorerGetTransactionSummariesTarget>
 {
   convert(input: unknown): CappuccinoExplorerGetTransactionSummariesTarget {
     assertRecordWithKeys(input, 'limit');
@@ -75,8 +74,7 @@ class CappuccinoExplorerGetTransactionSummariesTargetDecoder
 }
 
 class CappuccinoExplorerGetTransactionSummariesTargetEncoder
-  implements
-    Converter<CappuccinoExplorerGetTransactionSummariesTarget, unknown>
+  implements Converter<CappuccinoExplorerGetTransactionSummariesTarget, unknown>
 {
   convert(input: CappuccinoExplorerGetTransactionSummariesTarget) {
     assertInstanceOf(input, CappuccinoExplorerGetTransactionSummariesTarget);

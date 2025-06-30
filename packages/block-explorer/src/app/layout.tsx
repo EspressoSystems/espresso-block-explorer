@@ -1,15 +1,9 @@
-'use client';
-
-import {
-  InternalLinkAnchorComponentContext,
-  ProvideDerivedDateTimeFormatters,
-  ProvideDerivedNumberFormatters,
-  ProvideNavigatorLanguage,
-  ProvideTickEverySecond,
-} from 'espresso-block-explorer-components';
-import 'espresso-block-explorer-components/dist/style.css';
-import Link from 'next/link';
+import 'espresso-block-explorer-components/dist/espresso-block-explorer-components.css';
 import React from 'react';
+
+import LayoutClientComponent from '@/client_components/layout';
+import { DeriveEnvironmentFromEnv } from '@/helpers/environment';
+import { readFromEnv } from '@/helpers/read_from_env';
 import './globals.css';
 
 /**
@@ -19,24 +13,19 @@ import './globals.css';
  * As such, we include a bunch of the provided Contexts at this level in
  * order to ensure that they are available consistently on every page.
  */
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const env = readFromEnv();
   return (
-    <InternalLinkAnchorComponentContext.Provider value={Link as any}>
-      <ProvideNavigatorLanguage>
-        <ProvideDerivedNumberFormatters>
-          <ProvideDerivedDateTimeFormatters>
-            <ProvideTickEverySecond>
-              <html lang="en">
-                <body>{children}</body>
-              </html>
-            </ProvideTickEverySecond>
-          </ProvideDerivedDateTimeFormatters>
-        </ProvideDerivedNumberFormatters>
-      </ProvideNavigatorLanguage>
-    </InternalLinkAnchorComponentContext.Provider>
+    <DeriveEnvironmentFromEnv env={env}>
+      <LayoutClientComponent>
+        <html lang="en">
+          <body>{children}</body>
+        </html>
+      </LayoutClientComponent>
+    </DeriveEnvironmentFromEnv>
   );
 }

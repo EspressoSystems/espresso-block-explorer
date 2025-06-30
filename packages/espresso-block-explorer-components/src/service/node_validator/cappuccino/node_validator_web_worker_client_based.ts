@@ -34,6 +34,7 @@ const _: unknown = null;
 
 // We're performing this useless check to ensure that WebSocketError is imported
 // for it's side-effect.
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 _ instanceof WebSocketError;
 
 let singletonWorker: null | Worker = null;

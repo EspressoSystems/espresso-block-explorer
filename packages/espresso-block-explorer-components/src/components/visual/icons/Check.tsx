@@ -10,7 +10,7 @@ const Check: React.FC<React.SVGProps<SVGElement>> = (props) =>
     SVGIconBase,
     {
       ...props,
-      // eslint-disable-next-line react/prop-types
+
       className: addClassToClassName(props.className, 'stroked'),
     },
     <path

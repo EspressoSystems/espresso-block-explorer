@@ -22,6 +22,23 @@
     'nodes';
 }
 
+.node-validator-grid.with-wallet {
+  grid-template-areas:
+    'lb'
+    'lbp'
+    'gbt'
+    'gbs'
+    'gt'
+    'cdn'
+    'nm'
+    'pccou'
+    'pcnet'
+    'pctype'
+    'pcos'
+    'stake'
+    'nodes';
+}
+
 .latest-block {
   grid-area: lb;
 }
@@ -53,6 +70,10 @@
 
 .cdn {
   grid-area: cdn;
+}
+
+.wallet-stake {
+  grid-area: stake;
 }
 
 .nodes {
@@ -100,6 +121,10 @@ div.card.throughput-histogram {
   align-items: flex-end;
 }
 
+table.data-table td:nth-last-child(1) {
+  padding: 0;
+}
+
 /* Small */
 @media screen and (min-width: 640px) {
   nav.nav--main > ul {
@@ -129,6 +154,17 @@ div.card.throughput-histogram {
       'cdn cdn cdn cdn cdn cdn cdn cdn cdn cdn cdn cdn'
       'nm nm nm nm nm nm nm nm nm nm nm nm'
       'pccou pccou pccou pcnet pcnet pcnet pctype pctype pctype pcos pcos pcos'
+      'nodes nodes nodes nodes nodes nodes nodes nodes nodes nodes nodes nodes';
+  }
+
+  .node-validator-grid.with-wallet {
+    grid-template-areas:
+      'lb lb lb lb lb lb lbp lbp lbp lbp lbp lbp'
+      'gbt gbt gbt gbt gbs gbs gbs gbs gt gt gt gt'
+      'cdn cdn cdn cdn cdn cdn cdn cdn cdn cdn cdn cdn'
+      'nm nm nm nm nm nm nm nm nm nm nm nm'
+      'pccou pccou pccou pcnet pcnet pcnet pctype pctype pctype pcos pcos pcos'
+      'stake stake stake stake stake stake stake stake stake stake stake stake'
       'nodes nodes nodes nodes nodes nodes nodes nodes nodes nodes nodes nodes';
   }
 

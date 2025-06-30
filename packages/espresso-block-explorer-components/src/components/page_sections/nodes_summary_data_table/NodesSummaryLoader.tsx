@@ -27,6 +27,8 @@ export enum NodeSummaryColumn {
   stake = 'stake',
   uptime = 'uptime',
   voteParticipation = 'voteParticipation',
+  commission = 'commission',
+  actions = 'actions',
 }
 
 export interface NodeVoteParticipationStats {

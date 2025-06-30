@@ -6,7 +6,7 @@
   gap: 4px;
 }
 
-.summary-value-labeled > label {
+.summary-value-labeled > .label {
   grid-area: label;
   color: var(--color--slate-500);
   --text--color: var(--color--slate-500);
@@ -15,6 +15,6 @@
 .summary-value-labeled > div.value {
   box-sizing: border-box;
   grid-area: value;
-  color: var(--color--slate-950);
-  --text--color: var(--color--slate-950);
+  /* color: var(--color--slate-950); */
+  /* --text--color: var(--color--slate-950); */
 }

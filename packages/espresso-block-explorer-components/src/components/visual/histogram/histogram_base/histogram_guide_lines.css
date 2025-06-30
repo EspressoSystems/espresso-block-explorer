@@ -4,6 +4,20 @@
   --histogram-y-guide-lines--fill-color: var(--color--slate-200);
 }
 
+[data-theme='light'] {
+  --histogram-y-guide-lines--fill-color: var(--color--slate-200);
+}
+
+[data-theme='dark'] {
+  --histogram-y-guide-lines--fill-color: var(--color--slate-700);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --histogram-y-guide-lines--fill-color: var(--color--slate-700);
+  }
+}
+
 .histogram-y-guide-lines {
   stroke: var(--histogram-y-guide-lines--fill-color);
 }

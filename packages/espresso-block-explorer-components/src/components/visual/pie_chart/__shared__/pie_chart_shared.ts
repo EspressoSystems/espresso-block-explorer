@@ -15,7 +15,7 @@ import {
   mapIterator,
   takeIterator,
 } from '@/functional/functional';
-import { expect, waitFor, within } from '@storybook/test';
+import { expect, waitFor, within } from 'storybook/test';
 
 async function expectToolTipVisibility(tooltip: Element, visible: boolean) {
   const temp = tooltip;

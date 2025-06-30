@@ -1,0 +1,22 @@
+:root {
+  --label--text--color: var(--color--slate-950);
+}
+
+[data-theme='light'] {
+  --label--text--color: var(--color--slate-950);
+}
+
+[data-theme='dark'] {
+  --label--text--color: var(--color--slate-100);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --label--text--color: var(--color--slate-100);
+  }
+}
+
+.label {
+  --text--color: var(--label--text--color);
+  color: var(--label--text--color);
+}

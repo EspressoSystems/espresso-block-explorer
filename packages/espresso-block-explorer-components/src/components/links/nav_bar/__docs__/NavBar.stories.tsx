@@ -1,5 +1,5 @@
 import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import NavBarComp from '../NavBar';
 

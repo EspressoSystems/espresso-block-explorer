@@ -1,10 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import { Divider } from '@/components/layout/divider/divider';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import ArrowLeft from '../ArrowLeft';
 import ArrowRight from '../ArrowRight';
 import Check from '../Check';
 import CheckCircle from '../CheckCircle';
 import ChevronDown from '../ChevronDown';
+import ChevronRight from '../ChevronRight';
 import ChevronUp from '../ChevronUp';
 import Copy from '../Copy';
 import DiscordIcon from '../DiscordIcon';
@@ -22,13 +24,14 @@ const Example: React.FC = () => (
   <div style={{ display: 'flex', flexDirection: 'column' }}>
     <EspressoLogo />
     <EspressoLogoAndTitle />
-    <hr />
+    <Divider />
     <ArrowLeft />
     <ArrowRight />
     <Check />
     <CheckCircle />
     <ChevronDown />
     <ChevronUp />
+    <ChevronRight />
     <Copy />
     <DiscordIcon />
     <ExternalLink />

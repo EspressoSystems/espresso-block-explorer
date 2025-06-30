@@ -1,4 +1,5 @@
-import { Text } from '@/text';
+import { Divider } from '@/components/layout/divider/divider';
+import Text from '@/text/Text';
 import {
   WithParagraphBase,
   WithParagraphSmall,
@@ -14,7 +15,7 @@ import {
   WithUiText500,
   WithUiText600,
 } from '@/typography';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 
 const ParagraphBase = WithParagraphBase('div');
@@ -36,7 +37,7 @@ const Example: React.FC = () => (
     <div style={{ display: 'flex', gap: '8px' }}>
       <div>
         <Text text="Paragraph" />
-        <hr />
+        <Divider />
         <ParagraphText100>
           <Text text="Text 100" />
         </ParagraphText100>
@@ -58,7 +59,7 @@ const Example: React.FC = () => (
       </div>
       <div>
         <Text text="UI" />
-        <hr />
+        <Divider />
         <UiText100>
           <Text text="Text 100" />
         </UiText100>

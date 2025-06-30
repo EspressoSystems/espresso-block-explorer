@@ -57,6 +57,12 @@ export const DataTableRowContext: React.Context<object> = React.createContext(
 export const DataTableIndexContext: React.Context<number> =
   React.createContext(-1);
 
+export enum Alignment {
+  start = 'start',
+  center = 'center',
+  end = 'end',
+}
+
 /**
  * ColumnData represents the minimum data needed to render a cell, and header
  * column.
@@ -65,6 +71,7 @@ type ColumnData<ColumnType> = {
   label: string;
   columnType: ColumnType;
   buildCell: React.ComponentType;
+  alignment?: Alignment;
 };
 
 /**
@@ -83,13 +90,9 @@ export interface DataTableProps<ColumnType> {
   columns: ColumnData<ColumnType>[];
 }
 
-export interface SortDirectionComponent {}
-
 const SortDirectionComponent: React.FC = () => (
   <ChevronUp className="icon--sort" />
 );
-
-export interface DataTableHeadProps {}
 
 /**
  * DataTableHead represents a th element under the thead -> tr element of
@@ -103,11 +106,13 @@ const DataTableHead: React.FC = () => {
   const column = React.useContext(ColumnDataContext);
   const state = React.useContext(DataTableStateContext);
   const isSortingColumn = state.sortColumn === column.columnType;
+  const alignment = column.alignment ?? Alignment.start;
 
   return (
     <th
       data-sort-column-active={isSortingColumn}
       data-sort-column-dir={state.sortDir}
+      data-alignment={alignment}
       onClick={() => {
         changeSortColumn(column.columnType);
       }}
@@ -132,8 +137,9 @@ const DataTableRow: React.FC = () => {
     <tr>
       {columns.map((column, idx) => {
         const Comp = column.buildCell;
+        const alignment = column.alignment ?? Alignment.start;
         return (
-          <td key={idx}>
+          <td key={idx} data-alignment={alignment}>
             <Comp />
           </td>
         );

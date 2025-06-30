@@ -1,5 +1,5 @@
 import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import RollUpSimpleComp from '../RollUpSimple';
 

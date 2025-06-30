@@ -1,5 +1,5 @@
 import Text from '@/text/Text';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import Heading1 from '../Heading1';
 import Heading2 from '../Heading2';

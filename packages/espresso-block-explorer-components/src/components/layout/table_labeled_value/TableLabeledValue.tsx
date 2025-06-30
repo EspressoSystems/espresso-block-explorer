@@ -1,9 +1,9 @@
+import { Label } from '@/components/layout/label/label';
 import { addClassToClassName } from '@/higher_order';
-import { WithUiSmall, WithUiText600 } from '@/typography/typography';
+import { WithUiSmall } from '@/typography/typography';
 import React from 'react';
 import './table_labeled_value.css';
 
-const LabelText600 = WithUiText600('label');
 const DivTextSmall = WithUiSmall('div');
 
 interface LabelProps {
@@ -12,11 +12,11 @@ interface LabelProps {
 }
 
 /**
- * Label represents the Label portion of the TableLabeledValue component.
+ * TableLabel represents the Label portion of the TableLabeledValue component.
  * It ensures that text rendered within the label has the correct typography.
  */
-const Label: React.FC<LabelProps> = (props) => (
-  <LabelText600>{props.children}</LabelText600>
+const TableLabel: React.FC<LabelProps> = (props) => (
+  <Label className="type--ui--text-600">{props.children}</Label>
 );
 
 interface ValueProps {
@@ -55,9 +55,9 @@ const TableLabeledValue: React.FC<TableLabeledValueProps> = ({
     {...props}
     className={addClassToClassName(className, 'tabled-labeled-value')}
   >
-    <Label className="label" key={0}>
+    <TableLabel className="label" key={0}>
       {children[0]}
-    </Label>
+    </TableLabel>
     <Value className="value" key={1}>
       {children[1]}
     </Value>

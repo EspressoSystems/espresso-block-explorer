@@ -14,7 +14,6 @@ export interface CircularProgressIndicatorProps {
 const CircularProgressIndicator: React.FC<CircularProgressIndicatorProps> = (
   props,
 ) => {
-  // eslint-disable-next-line react/prop-types
   const { className, ...rest } = props;
   return (
     <svg

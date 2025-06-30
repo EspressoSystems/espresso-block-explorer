@@ -1,3 +1,4 @@
+import { Label } from '@/components/layout/label/label';
 import { DataContext } from '@/contexts/DataProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
@@ -12,7 +13,6 @@ import FullHexText from '@/text/FullHexText';
 import NumberText from '@/text/NumberText';
 import RelativeTimeText from '@/text/RelativeTimeText';
 import Text from '@/text/Text';
-import { WithUiSmall } from '@/typography/typography';
 import ArrowLeft from '@/visual/icons/ArrowLeft';
 import ArrowRight from '@/visual/icons/ArrowRight';
 import React from 'react';
@@ -68,8 +68,6 @@ const ForwardABlock: React.FC = () => {
   );
 };
 
-const LabelUiSmall = WithUiSmall('label');
-
 /**
  * BlockNavigation is a component that displays the current BlockID
  * and provides the corresponding Previous and Next block navigation
@@ -80,9 +78,9 @@ export const BlockNavigation: React.FC = () => {
 
   return (
     <nav className="nav--block">
-      <LabelUiSmall>
+      <Label>
         # <NumberText number={blockID} />
-      </LabelUiSmall>
+      </Label>
       <BackABlock />
       <ForwardABlock />
     </nav>

@@ -9,7 +9,7 @@
  * that can share the common functionality to make the component work in both
  * the Storybook and vitest environments.
  */
-import { expect, userEvent, waitFor, within } from '@storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 export type PartialLocationHref = Pick<Location, 'href'>;
 

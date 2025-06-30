@@ -3,7 +3,12 @@ import '@rainbow-me/rainbowkit/styles.css';
 import React from 'react';
 import {
   RainbowKitAccount,
+  RainbowKitAccountAddressContext,
   RainbowKitAccountContext,
+  RainbowKitAccountDisplayBalanceContext,
+  RainbowKitAccountDisplayNameContext,
+  RainbowKitAccountENSAvatarContext,
+  RainbowKitAccountENSNameContext,
   RainbowKitAuthenticationStatusContext,
   RainbowKitChainContext,
   RainbowKitModalContext,
@@ -59,7 +64,7 @@ export const RainbowKitContextInjector: React.FC<
                 connectModalOpen,
               }}
             >
-              <RainbowKitAccountContext.Provider
+              <ProvideRainbowKitAccount
                 value={(account as RainbowKitAccount) ?? null}
               >
                 <RainbowKitChainContext.Provider value={chain ?? null}>
@@ -69,11 +74,48 @@ export const RainbowKitContextInjector: React.FC<
                     {children}
                   </RainbowKitAuthenticationStatusContext.Provider>
                 </RainbowKitChainContext.Provider>
-              </RainbowKitAccountContext.Provider>
+              </ProvideRainbowKitAccount>
             </RainbowKitModalContext.Provider>
           </RainbowKitMountedContext.Provider>
         );
       }}
     </ConnectButton.Custom>
+  );
+};
+
+export interface ProvideRainbowKitAccountProps {
+  value: RainbowKitAccount | null;
+  children: React.ReactNode | React.ReactNode[];
+}
+
+/**
+ * ProvideRainbowKitAccount is a React component that provides the RainbowKit
+ * account information to its children via the RainbowKitAccountContext.
+ */
+export const ProvideRainbowKitAccount: React.FC<
+  ProvideRainbowKitAccountProps
+> = ({ value, children }) => {
+  return (
+    <RainbowKitAccountContext.Provider value={value}>
+      <RainbowKitAccountAddressContext.Provider value={value?.address ?? null}>
+        <RainbowKitAccountDisplayBalanceContext.Provider
+          value={value?.displayBalance ?? null}
+        >
+          <RainbowKitAccountDisplayNameContext.Provider
+            value={value?.displayName ?? null}
+          >
+            <RainbowKitAccountENSAvatarContext.Provider
+              value={value?.ensAvatar ?? null}
+            >
+              <RainbowKitAccountENSNameContext.Provider
+                value={value?.ensName ?? null}
+              >
+                {children}
+              </RainbowKitAccountENSNameContext.Provider>
+            </RainbowKitAccountENSAvatarContext.Provider>
+          </RainbowKitAccountDisplayNameContext.Provider>
+        </RainbowKitAccountDisplayBalanceContext.Provider>
+      </RainbowKitAccountAddressContext.Provider>
+    </RainbowKitAccountContext.Provider>
   );
 };

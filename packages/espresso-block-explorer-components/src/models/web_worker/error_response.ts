@@ -25,7 +25,7 @@ export class ErrorResponse extends WebWorkerProxyResponse {
     this.error = error;
   }
 
-  toJson() {
+  toJSON() {
     return errorResponseCodec.encode(this);
   }
 }
