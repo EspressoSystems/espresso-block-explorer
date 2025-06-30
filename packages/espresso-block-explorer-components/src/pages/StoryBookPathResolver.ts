@@ -19,6 +19,18 @@ export class StoryBookPathResolver implements PathResolver {
     args?: Iterable<[string, unknown]>,
   ): URLSearchParams {
     const params = new URLSearchParams();
+    // Get the Current Path Params
+    const parent = window.parent;
+    if (parent) {
+      const baseURL = new URL(parent.location.href);
+
+      for (const [key, value] of baseURL.searchParams) {
+        if (key !== 'id') {
+          params.set(key, value);
+        }
+      }
+    }
+
     params.set('path', `/story/pages-${page}--${this.suffix}`);
     if (args) {
       const mappedArgs = Array.from(
