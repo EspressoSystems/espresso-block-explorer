@@ -1,18 +1,7 @@
-import { Now } from '@/components/contexts/NowProvider';
 import { Label } from '@/components/layout/label/label';
-import FullHexText from '@/components/text/FullHexText';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
-import {
-  hexArrayBufferCodec,
-  stdBase64ArrayBufferCodec,
-} from '@/convert/codec/array_buffer';
-import { Converter } from '@/convert/codec/convert';
 import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
 import SkeletonContent from '@/loading/SkeletonContent';
-import { kInfiniteGardenNamespace } from '@/models/block_explorer/rollup_entry/data';
-import InscriptionAndSignature, {
-  inscriptionAndSignatureBincodeCodec,
-} from '@/models/inscription/inscription_and_signature';
 import ByteSizeText from '@/text/ByteSizeText';
 import CopyTaggedBase64 from '@/text/CopyTaggedBase64';
 import DateTimeText from '@/text/DateTimeText';
@@ -20,15 +9,16 @@ import FullTaggedBase64Text from '@/text/FullTaggedBase64Text';
 import NumberText from '@/text/NumberText';
 import Text from '@/text/Text';
 import React from 'react';
-import LabeledButton from '../../hid/buttons/labeled_button/LabeledButton';
 import { InternalLink } from '../../links/link/Link';
 import { BlockNumberContext } from '../block_detail_content/BlockDetailContentLoader';
-import HexDump from '../hex_dump/HexDump';
 import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
 import {
   TransactionDetailContext,
   TransactionOffsetContext,
 } from './TransactionDetailLoader';
+import { HexDumpAndCopyButtons } from './copy_as';
+import { InfiniteGardenDisplay } from './infinite_garden_display';
+import { NitroBatchDisplay } from './nitro_batch_display';
 import './transaction_detail_content.css';
 
 /**
@@ -150,129 +140,6 @@ export const TransactionDataContentsPlaceholder: React.FC = () => {
   );
 };
 
-const InfiniteGardenDisplay: React.FC = () => {
-  const details = React.useContext(TransactionDetailContext);
-  const data = details.tree;
-
-  if (data.namespace !== kInfiniteGardenNamespace) {
-    return <></>;
-  }
-
-  let inscriptionAndSignature: null | InscriptionAndSignature = null;
-  try {
-    inscriptionAndSignature = inscriptionAndSignatureBincodeCodec.decode(
-      data.data,
-    );
-  } catch (err) {
-    // All errors would be issues with Decoding
-    console.error(
-      'encountered error attempting to decode inscription and signature',
-      err,
-    );
-  }
-
-  if (inscriptionAndSignature === null) {
-    return (
-      <TableLabeledValue className="card--padding">
-        <Text text="Inscription" />
-        <Text text="Invalid Inscription Data" />
-      </TableLabeledValue>
-    );
-  }
-
-  return (
-    <TableLabeledValue className="card--padding inscription--section">
-      <Text text="Inscription" />
-      <>
-        <TableLabeledValue>
-          <Text text="Address" />
-          <FullHexText
-            value={inscriptionAndSignature.inscription.address.address}
-          />
-        </TableLabeledValue>
-        <TableLabeledValue>
-          <Text text="Message" />
-          <Text text={inscriptionAndSignature.inscription.message} />
-        </TableLabeledValue>
-        <TableLabeledValue>
-          <Text text="Time" />
-          <DateTimeText date={inscriptionAndSignature.inscription.time} />
-        </TableLabeledValue>
-      </>
-    </TableLabeledValue>
-  );
-};
-
-interface CopyAsProps {
-  data: ArrayBuffer;
-  encoder: Converter<ArrayBuffer, string>;
-  children?: React.ReactNode | React.ReactNode[];
-  copiedChildren?: React.ReactNode | React.ReactNode[];
-}
-
-const SHOW_THRESHOLD_MS = 1000;
-
-const CopyAs: React.FC<CopyAsProps> = ({
-  data,
-  encoder,
-  children,
-  copiedChildren,
-}) => {
-  const now = React.useContext(Now);
-  const [lastClicked, setLastClicked] = React.useState<Date>(new Date(0));
-
-  if (now.valueOf() - lastClicked.valueOf() < SHOW_THRESHOLD_MS) {
-    return <LabeledButton>{copiedChildren ?? children}</LabeledButton>;
-  }
-
-  return (
-    <LabeledButton
-      onClick={(event) => {
-        event.stopPropagation();
-        event.preventDefault();
-
-        if (
-          typeof window === 'undefined' ||
-          !navigator ||
-          !navigator.clipboard
-        ) {
-          return;
-        }
-
-        setLastClicked(new Date());
-
-        navigator.clipboard.writeText(encoder.convert(data));
-      }}
-    >
-      {children}
-    </LabeledButton>
-  );
-};
-
-const CopyAsHex: React.FC<{ data: ArrayBuffer }> = ({ data }) => {
-  return (
-    <CopyAs
-      data={data}
-      encoder={hexArrayBufferCodec.encoder}
-      copiedChildren={<Text text="Copied" />}
-    >
-      <Text text="Copy as Hex" />
-    </CopyAs>
-  );
-};
-
-const CopyAsBase64: React.FC<{ data: ArrayBuffer }> = ({ data }) => {
-  return (
-    <CopyAs
-      data={data}
-      encoder={stdBase64ArrayBufferCodec.encoder}
-      copiedChildren={<Text text="Copied" />}
-    >
-      <Text text="Copy as Base64" />
-    </CopyAs>
-  );
-};
-
 /**
  * TransactionDataContents is a component that displays details for the
  * individual rollup data for a Transaction
@@ -296,14 +163,9 @@ export const TransactionDataContents: React.FC = () => {
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Transaction data" />
-        <>
-          <HexDump value={data.data} />
-          <br />
-          <CopyAsHex data={data.data} />
-          &nbsp;
-          <CopyAsBase64 data={data.data} />
-        </>
+        <HexDumpAndCopyButtons data={data.data} />
       </TableLabeledValue>
+      <NitroBatchDisplay />
       <InfiniteGardenDisplay />
     </>
   );
