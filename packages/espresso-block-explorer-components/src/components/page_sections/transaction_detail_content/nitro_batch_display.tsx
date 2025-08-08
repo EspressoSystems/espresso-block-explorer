@@ -12,6 +12,13 @@ import React from 'react';
 import { TransactionDetailContext } from './TransactionDetailLoader';
 import { HexDumpAndCopyButtons } from './copy_as';
 
+/**
+ * NitroL1IncomingMessageHeader represents the header of a Nitro L1
+ * Incoming Message.
+ *
+ * This layout is adapted from the Nitro's code base:
+ * https://github.com/EspressoSystems/nitro-espresso-integration/blob/828cc2a47358a8aac2a4931fe087f07037351164/arbos/arbostypes/incomingmessage.go#L38-L45
+ */
 interface NitroL1IncomingMessageHeader {
   readonly kind: number;
   readonly poster: Uint8Array;
@@ -21,6 +28,12 @@ interface NitroL1IncomingMessageHeader {
   readonly l1BaseFee: null | bigint;
 }
 
+/**
+ * decodeNitroL1IncomingMessageHeader attempts to decode a Nitro L1
+ * Incoming Message Header from the provided data.
+ *
+ * This data is RLP encoded.
+ */
 function decodeNitroL1IncomingMessageHeader(
   data: Uint8Array,
 ): null | NitroL1IncomingMessageHeader {
@@ -53,12 +66,24 @@ function decodeNitroL1IncomingMessageHeader(
   }
 }
 
+/**
+ * NitroL1IncomingMessage represents a Nitro L1 Incoming Message.
+ *
+ * This layout is adapted from the Nitro's code base:
+ * https://github.com/EspressoSystems/nitro-espresso-integration/blob/828cc2a47358a8aac2a4931fe087f07037351164/arbos/arbostypes/incomingmessage.go#L58-L64
+ */
 interface NitroL1IncomingMessage {
   readonly header: NitroL1IncomingMessageHeader;
   readonly l2Msg: Uint8Array;
   readonly batchGasCost: null | bigint;
 }
 
+/**
+ * decodeNitroL1IncomingMessage attempts to decode a Nitro L1
+ * Incoming Message from the provided data.
+ *
+ * This data is RLP encoded.
+ */
 function decodeNitroL1IncomingMessage(
   data: Uint8Array,
 ): null | NitroL1IncomingMessage {
@@ -85,6 +110,13 @@ function decodeNitroL1IncomingMessage(
   }
 }
 
+/**
+ * NitroMessageWithMetadata represents a Nitro Message with metadata
+ * that is stored as part of a batch submitted for Nitro integration projects.
+ *
+ * This layout is adapted from the Nitro's code base:
+ * https://github.com/EspressoSystems/nitro-espresso-integration/blob/828cc2a47358a8aac2a4931fe087f07037351164/arbos/arbostypes/messagewithmeta.go#L17-L20
+ */
 interface NitroMessageWithMetadata {
   readonly message: NitroL1IncomingMessage;
   readonly delayedMessagesRead: bigint;
@@ -284,20 +316,17 @@ export interface NitroMessageWithMetadataDisplayProps {
   data: null | NitroMessageWithMetadata;
 }
 
+/**
+ * NitroMessageWithMetadataDisplay is a component that displays the Nitro
+ * Message with Metadata information successfully parsed from data stored
+ * within a TransactionDetail.
+ */
 export const NitroMessageWithMetadataDisplay: React.FC<
   NitroMessageWithMetadataDisplayProps
 > = ({ data }) => {
   if (!data) {
     return <></>;
   }
-
-  // data.message.header
-  //   readonly kind: number;
-  // readonly poster: Uint8Array;
-  // readonly blockNumber: bigint;
-  // readonly timestamp: bigint;
-  // readonly requestID: null | Uint8Array;
-  // readonly l1BaseFee: null | bigint;
 
   return (
     <>
