@@ -117,15 +117,19 @@ const kyoto = new RollUpEntry(
   new URL('https://kyoto-explorer.altlayer.io/'),
 );
 
+export const kRariDevnetNamespace = 1_918_988_905;
+
 const rariDevNet = new RollUpEntry(
-  1918988905,
+  kRariDevnetNamespace,
   'RARI',
   new URL('https://rarichain.org/'),
   new URL('https://explorer.rarichain.org/'),
 );
 
+export const kRariNamespace = 1_380_012_617;
+
 const rari = new RollUpEntry(
-  1380012617,
+  kRariNamespace,
   'RARI',
   new URL('https://rarichain.org/'),
   new URL('https://mainnet.explorer.rarichain.org/'),
@@ -145,39 +149,46 @@ const logX = new RollUpEntry(
   new URL('https://vzjuxmhfn70kgnlds27h-explorer.alt.technology'),
 );
 
-/*
+export const kAppChainNamespace = 466;
+
 const appChain = new RollUpEntry(
-  466,
+  kAppChainNamespace,
   'AppChain',
   new URL('https://appchain.xyz/'),
   new URL('https://explorer.appchain.xyz/'),
 );
-*/
+
+export const kAppChainDecafNamespace = 4661;
 
 const appChainDecaf = new RollUpEntry(
-  4661,
+  kAppChainDecafNamespace,
   'AppChain',
   new URL('https://appchain.xyz/'),
   new URL('https://appchaintestnet.explorer.caldera.xyz/'),
 );
 
+export const kMoltenNamespace = 360;
 const molten = new RollUpEntry(
-  360,
+  kMoltenNamespace,
   'Molten',
   new URL('https://www.moltennetwork.com/'),
   new URL('https://molten.explorer.caldera.dev/'),
 );
 
+export const kMoltenDecafNamespace = 3609;
+
 const moltenDecaf = new RollUpEntry(
-  3609,
+  kMoltenDecafNamespace,
   'Molten',
   new URL('https://www.moltennetwork.com/'),
   new URL('https://molten.explorer.caldera.dev/'),
 );
+
+export const kApeChainDecafNamespace = 33139;
 
 /*
 const apeChainDecaf = new RollUpEntry(
-  33139,
+  kApeChainDecafNamespace,
   'APECHAIN',
   new URL('https://apechain.com/'),
   new URL('https://apescan.io/'),
@@ -202,6 +213,7 @@ export const curatedMainnetList = [
   rari,
   logX,
   molten,
+  appChain,
   // Add more mainnet rollups here
 ];
 
@@ -231,3 +243,21 @@ export const curatedRollupMap = new Map(
     ...curatedDecafList,
   ].map((entry) => [entry.namespace, entry]),
 );
+
+/**
+ * isNitroIntegrationNamespace checks if the given namespace is a Nitro
+ * integration namespace. This is used to determine if the Nitro Batch
+ * display should be shown.
+ */
+export function isNitroIntegrationNamespace(namespace: number): boolean {
+  return (
+    namespace === kMoltenNamespace ||
+    namespace === kMoltenDecafNamespace ||
+    namespace === kRariDevnetNamespace ||
+    namespace === kRariNamespace ||
+    namespace === kAppChainNamespace ||
+    namespace === kAppChainDecafNamespace ||
+    namespace === kApeChainDecafNamespace ||
+    false // keep a trailing or false to make additions make nicer diffs
+  );
+}
