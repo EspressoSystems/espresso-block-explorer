@@ -104,67 +104,82 @@ class RLPDeserializerImpl
     throw new UnimplementedError();
   }
 
+  /**
+   * performBoundsCheck checks if the value is within the specified bounds.
+   *
+   * @param {bigint | number} value The value to check.
+   * @param {bigint | number} min The minimum value (inclusive).
+   * @param {bigint | number} max The maximum value (inclusive).
+   * @throws {InvalidTypeError} If the value is out of bounds.
+   */
+  performBoundsCheck(value: bigint, min: bigint, max: bigint): void;
+  performBoundsCheck(value: number, min: number, max: number): void;
+  performBoundsCheck(
+    value: bigint | number,
+    min: bigint | number,
+    max: bigint | number,
+  ): void {
+    if (value < min || value > max) {
+      throw new InvalidTypeError(
+        typeof value,
+        'Uint8Array',
+        `number must be in range of ${min} to ${max}`,
+      );
+    }
+  }
+
   deserializeUint8(): number {
     const result = this.deserializeUnknown();
     if (typeof result === 'number') {
+      this.performBoundsCheck(result, 0, 0xff);
       return result;
     }
 
     const num = this.deserializePositiveNumber(result);
-    if (num < 0n || num > 0xffn) {
-      throw new InvalidTypeError(
-        typeof result,
-        'Uint8Array',
-        'number not in range of 0 to 255',
-      );
-    }
-
+    this.performBoundsCheck(num, 0n, 0xffn);
     return Number(num);
   }
 
   deserializeUint16(): number {
     const result = this.deserializeUnknown();
     if (typeof result === 'number') {
-      throw new InvalidTypeError(typeof result, 'Uint8Array');
+      this.performBoundsCheck(result, 0, 0xffff);
+      return result;
     }
 
     const num = this.deserializePositiveNumber(result);
-    if (num < 0n || num > 0xffffn) {
-      throw new InvalidTypeError(
-        typeof result,
-        'Uint8Array',
-        'number not in range of 0 to 65535',
-      );
-    }
-
+    this.performBoundsCheck(num, 0n, 0xffffn);
     return Number(num);
   }
 
   deserializeUint32(): number {
     const result = this.deserializeUnknown();
     if (typeof result === 'number') {
-      throw new InvalidTypeError(typeof result, 'Uint8Array');
+      this.performBoundsCheck(result, 0, 0xffffffff);
+      return result;
     }
 
     const num = this.deserializePositiveNumber(result);
-    if (num < 0n || num > 0xffffffffn) {
-      throw new InvalidTypeError(
-        typeof result,
-        'Uint8Array',
-        'number not in range of 0 to 4294967295',
-      );
-    }
-
+    this.performBoundsCheck(num, 0n, 0xffffffffn);
     return Number(num);
   }
 
   deserializeUint64(): bigint {
     const result = this.deserializeUnknown();
     if (typeof result === 'number') {
-      throw new InvalidTypeError(typeof result, 'Uint8Array');
+      // NOTE: This is a bit of a hack, as Uint64 should not be represented
+      // as a number, but we are doing this to maintain compatibility with
+      // existing code that expects a number.
+      //
+      // This bounds check doesn't cover the full range of Uint64, but instead
+      // covers the range representable by a double floating point number (f64)
+      this.performBoundsCheck(result, 0, 0xfffffffffffff);
+      return BigInt(result);
     }
 
-    return this.deserializePositiveNumber(result);
+    const num = this.deserializePositiveNumber(result);
+    this.performBoundsCheck(num, 0n, 0xffffffffffffffffn);
+    return num;
   }
 
   deserializeFloat32(): number {
