@@ -135,15 +135,19 @@ const rari = new RollUpEntry(
   new URL('https://mainnet.explorer.rarichain.org/'),
 );
 
+export const kLogXDecafNamespace = 9369;
+
 const logXDecaf = new RollUpEntry(
-  9369,
+  kLogXDecafNamespace,
   'LogX',
   new URL('https://logx.network/'),
   new URL('https://kartel-testnet-explorer.alt.technology/'),
 );
 
+export const kLogXNamespace = 936369;
+
 const logX = new RollUpEntry(
-  936369,
+  kLogXNamespace,
   'LogX',
   new URL('https://logx.network/'),
   new URL('https://vzjuxmhfn70kgnlds27h-explorer.alt.technology'),
@@ -258,6 +262,8 @@ export function isNitroIntegrationNamespace(namespace: number): boolean {
     namespace === kAppChainNamespace ||
     namespace === kAppChainDecafNamespace ||
     namespace === kApeChainDecafNamespace ||
+    namespace == kLogXNamespace ||
+    namespace == kLogXDecafNamespace ||
     false // keep a trailing or false to make additions make nicer diffs
   );
 }
