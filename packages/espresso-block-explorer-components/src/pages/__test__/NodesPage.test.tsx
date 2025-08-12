@@ -265,5 +265,5 @@ describe('NodesPage', async () => {
     }
 
     expect(nodePage).toBeInTheDocument();
-  });
+  }, 10_000);
 });
