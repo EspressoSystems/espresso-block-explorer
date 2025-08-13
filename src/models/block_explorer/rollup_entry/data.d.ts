@@ -1,6 +1,8 @@
 import { RollUpEntry } from './types';
 export declare const kRariDevnetNamespace = 1918988905;
 export declare const kRariNamespace = 1380012617;
+export declare const kLogXDecafNamespace = 9369;
+export declare const kLogXNamespace = 936369;
 export declare const kAppChainNamespace = 466;
 export declare const kAppChainDecafNamespace = 4661;
 export declare const kMoltenNamespace = 360;
