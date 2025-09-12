@@ -290,7 +290,7 @@ export const NitroBatchDisplay: React.FC = () => {
               </>
               <>
                 <TableLabeledValue>
-                  <Text text="Index" />
+                  <Text text="Rollup Block Number" />
                   <NumberText number={message.index} />
                 </TableLabeledValue>
                 <TableLabeledValue>
@@ -351,7 +351,7 @@ export const NitroMessageWithMetadataDisplay: React.FC<
       </TableLabeledValue>
 
       <TableLabeledValue>
-        <Text text="Block Number" />
+        <Text text="L1 Block Number" />
         <NumberText number={data.message.header.blockNumber} />
       </TableLabeledValue>
 
