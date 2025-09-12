@@ -60,7 +60,7 @@ export const TransactionDetailsContentPlaceholder: React.FC<
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Espresso Sequencer Hash" />
+        <Text text="Transaction hash" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
@@ -106,7 +106,7 @@ export const TransactionDetailsContent: React.FC<
         <ByteSizeText bytes={details.size} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Espresso Sequencer Hash" />
+        <Text text="Transaction hash" />
         <CopyTaggedBase64 value={details.hash}>
           <FullTaggedBase64Text value={details.hash} />
         </CopyTaggedBase64>
