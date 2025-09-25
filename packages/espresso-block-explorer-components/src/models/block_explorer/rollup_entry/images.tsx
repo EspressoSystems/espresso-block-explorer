@@ -125,6 +125,9 @@ export const EspressoAvatarLogo: React.FC<PreFedSrcAvatarLogoProps> = (
 /**
  * RariLogo24 represents the Rari Logo square at the size of 24x24
  * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * Rari's official branding guidelines are here:
+ * https://rarichain.org/brand-kit
  */
 export const RariLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
   <AvatarLogo {...props}>
@@ -166,10 +169,15 @@ export const RariLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
 /**
  * LogXLogo24 represents the LogX Logo square at the size of 24x24
  * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * LogX doesn't seem to have any direct branding guidelines, we can get
+ * their logo from their website here:
+ * https://www.logx.network/
  */
 export const LogXLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
   <AvatarLogo {...props}>
     <img
+      className="logx-logo"
       src="/logx_logo24x24@1x.png"
       alt="Rari Logo"
       srcSet="/logx_logo24x24@1x.png 1x, /logx_logo24x24@2x.png 2x, /logx_logo24x24@3x.png 3x"
@@ -184,6 +192,7 @@ export const LogXLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
 export const LogXLogo32: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
   <AvatarLogo {...props}>
     <img
+      className="logx-logo"
       src="/logx_logo32x32@1x.png"
       alt="LogX Logo"
       srcSet="/logx_logo32x32@1x.png 1x, /logx_logo32x32@2x.png 2x, /logx_logo32x32@3x.png 3x"
@@ -198,6 +207,7 @@ export const LogXLogo32: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
 export const LogXLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
   <AvatarLogo {...props}>
     <img
+      className="logx-logo"
       src="/logx_logo40x40@1x.png"
       alt="LogX Logo"
       srcSet="/logx_logo40x40@1x.png 1x, /logx_logo40x40@2x.png 2x, /logx_logo40x40@3x.png 3x"
@@ -208,6 +218,10 @@ export const LogXLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
 /**
  * AppChainLogo24 represents the AppChain Logo square at the size of 24x24
  * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * AppChain doesn't seem to have any direct branding guidelines, we can get
+ * their logo from their website here:
+ * https://appchain.xyz/
  */
 export const AppChainLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
   <AvatarLogo {...props}>
@@ -250,6 +264,9 @@ export const AppChainLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
 /**
  * ApeChainLogo24 represents the ApeChain Logo square at the size of 24x24
  * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * ApeChain branding guidelines are contained here:
+ * https://live.standards.site/apechain/logo
  */
 export const ApeChainLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
   <AvatarLogo {...props}>
@@ -292,6 +309,10 @@ export const ApeChainLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
 /**
  * MoltenLogo24 represents the Molten Logo square at the size of 24x24
  * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * Molten doesn't seem to have any direct branding guidelines, we can get
+ * their logo from a page linked from their website here:
+ * https://molten.hub.caldera.xyz/
  */
 export const MoltenLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
   <AvatarLogo {...props}>
@@ -327,6 +348,73 @@ export const MoltenLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
       src="/molten_logo40x40@1x.png"
       alt="Molten Logo"
       srcSet="/molten_logo40x40@1x.png 1x, /molten_logo40x40@2x.png 2x, /molten_logo40x40@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * T3rnLogo24 represents the T3rn Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * T3rn brand guidelines are here:
+ * https://brandfetch.com/t3rn.io
+ * https://www.notion.so/t3rn/Brand-Guidelines-1f50b189cddb801790bec6ce2855a389
+ */
+export const T3rnLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      className="only-light"
+      src="/t3rn_logo_light24x24@1x.png"
+      alt="T3rn Logo"
+      srcSet="/t3rn_logo_light24x24@1x.png 1x, /t3rn_logo_light24x24@2x.png 2x, /t3rn_logo_light24x24@3x.png 3x"
+    />
+    <img
+      className="only-dark"
+      src="/t3rn_logo_dark24x24@1x.png"
+      alt="T3rn Logo"
+      srcSet="/t3rn_logo_dark24x24@1x.png 1x, /t3rn_logo_dark24x24@2x.png 2x, /t3rn_logo_dark24x24@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * T3rnLogo32 represents the T3rn Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const T3rnLogo32: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      className="only-light"
+      src="/t3rn_logo_light32x32@1x.png"
+      alt="T3rn Logo"
+      srcSet="/t3rn_logo_light32x32@1x.png 1x, /t3rn_logo_light32x32@2x.png 2x, /t3rn_logo_light32x32@3x.png 3x"
+    />
+    <img
+      className="only-dark"
+      src="/t3rn_logo_dark32x32@1x.png"
+      alt="T3rn Logo"
+      srcSet="/t3rn_logo_dark32x32@1x.png 1x, /t3rn_logo_dark32x32@2x.png 2x, /t3rn_logo_dark32x32@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * T3rnLogo40 represents the T3rn Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const T3rnLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      className="only-light"
+      src="/t3rn_logo_light40x40@1x.png"
+      alt="T3rn Logo"
+      srcSet="/t3rn_logo_light40x40@1x.png 1x, /t3rn_logo_light40x40@2x.png 2x, /t3rn_logo_light40x40@3x.png 3x"
+    />
+    <img
+      className="only-dark"
+      src="/t3rn_logo_dark40x40@1x.png"
+      alt="T3rn Logo"
+      srcSet="/t3rn_logo_dark40x40@1x.png 1x, /t3rn_logo_dark40x40@2x.png 2x, /t3rn_logo_dark40x40@3x.png 3x"
     />
   </AvatarLogo>
 );
