@@ -9,13 +9,14 @@ import {
   RainbowKitModalContext,
 } from '@/components/rainbowkit';
 import { MoneyText, Text } from '@/components/text';
-import EspToken from '@/contracts/EspToken';
 import { foldRIterator, mapIterable } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { CappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import { CurrentValidatorsContext } from 'pages/CappuccinoNodeValidatorServiceAdapters';
 import React from 'react';
-import { useBalance, useConfig, useReadContract } from 'wagmi';
+import { parseAbi } from 'viem';
+import { readContract } from 'viem/actions';
+import { useConfig, WagmiContext } from 'wagmi';
 import { YourValidatorsSection } from '../your_validators/your_validators';
 import './staking_summary.css';
 
@@ -48,55 +49,6 @@ const InvalidChainSelected: React.FC = () => {
   );
 };
 
-interface ReadBalanceFromContractProps {
-  address: `0x${string}`;
-  espTokenAddress: `0x${string}`;
-}
-
-const ReadBalanceFromContract: React.FC<ReadBalanceFromContractProps> = ({
-  address,
-  espTokenAddress,
-}) => {
-  const result = useBalance({
-    address,
-    token: espTokenAddress,
-  });
-
-  const amount = result.data?.value ?? null;
-  if (amount === null) {
-    return <Text text="no balance found" />;
-  }
-
-  return <MoneyText money={MonetaryValue.ESP(amount)} />;
-};
-
-interface ReadAllowanceFromContractProps {
-  address: `0x${string}`;
-  espTokenAddress: `0x${string}`;
-  stakeTableAddress: `0x${string}`;
-}
-
-const ReadAllowanceFromContract: React.FC<ReadAllowanceFromContractProps> = ({
-  address,
-  espTokenAddress,
-  stakeTableAddress,
-}) => {
-  const abi = EspToken;
-  const result = useReadContract({
-    address: espTokenAddress,
-    abi,
-    functionName: 'allowance',
-    args: [address, stakeTableAddress],
-  });
-
-  const amount = result.data ?? null;
-  if (amount === null || typeof amount !== 'bigint') {
-    return <Text text="no balance found" />;
-  }
-
-  return <MoneyText money={MonetaryValue.ESP(amount)} />;
-};
-
 const CurrentDelegatedAmount: React.FC = () => {
   const address = React.useContext(RainbowKitAccountAddressContext);
   const validators = React.useContext(CurrentValidatorsContext);
@@ -122,34 +74,23 @@ const CurrentDelegatedAmount: React.FC = () => {
   return (
     <div>
       <Heading2>
-        <Text text="Delegated Amount" />
+        <Text text="Your Delegated Stake" />
       </Heading2>
       <MoneyText money={MonetaryValue.ESP(totalDelegatedAmount)} />
     </div>
   );
 };
 
-function isPrefixed<S extends string>(
-  address: string,
-  prefix: S,
-): address is `${S}${string}` {
-  return address.startsWith(prefix);
-}
+// function isPrefixed<S extends string>(
+//   address: string,
+//   prefix: S,
+// ): address is `${S}${string}` {
+//   return address.startsWith(prefix);
+// }
 
 const CurrentAvailableBalance: React.FC = () => {
-  const address = React.useContext(RainbowKitAccountAddressContext);
-  const espressoConfig = React.useContext(EspressoConfigContext);
-  const espTokenAddress = espressoConfig?.espTokenContractAddress;
-
-  if (
-    !address ||
-    !espressoConfig ||
-    !espTokenAddress ||
-    !isPrefixed(address, '0x') ||
-    !isPrefixed(espTokenAddress, '0x')
-  ) {
-    // We don't have an address or config, so we can't compute the available
-    // balance.
+  const balance = React.useContext(CurrentTokenBalanceContext);
+  if (balance === null) {
     return null;
   }
 
@@ -158,44 +99,237 @@ const CurrentAvailableBalance: React.FC = () => {
       <Heading2>
         <Text text="Available Balance" />
       </Heading2>
-      <ReadBalanceFromContract
-        address={address}
-        espTokenAddress={espTokenAddress}
-      />
+      <MoneyText money={MonetaryValue.ESP(balance)} />
     </div>
   );
 };
 
-const CurrentAllowance: React.FC = () => {
+export const CurrentStakeTableV1AllowanceContext = React.createContext<
+  null | bigint
+>(null);
+
+export const CurrentTokenBalanceContext = React.createContext<null | bigint>(
+  null,
+);
+
+export const LastWalletReadTimestampContext = React.createContext<Date>(
+  new Date(0),
+);
+export const RefreshWalletReadContext = React.createContext<() => void>(
+  () => {},
+);
+
+interface LastReadWalletTimestampProps {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+const LastReadWalletTimestamp: React.FC<LastReadWalletTimestampProps> = ({
+  children,
+}) => {
+  const [lastRead, setLastRead] = React.useState<Date>(new Date());
+
+  return (
+    <LastWalletReadTimestampContext.Provider value={lastRead}>
+      <RefreshWalletReadContext.Provider value={() => setLastRead(new Date())}>
+        {children}
+      </RefreshWalletReadContext.Provider>
+    </LastWalletReadTimestampContext.Provider>
+  );
+};
+
+interface ProvideCurrentWalletTokenProps {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+const ProvideCurrentWalletTokens: React.FC<ProvideCurrentWalletTokenProps> = ({
+  children,
+}) => {
+  const wagmiContext = React.useContext(WagmiContext);
+  const lastRead = React.useContext(LastWalletReadTimestampContext);
+  const address = React.useContext(RainbowKitAccountAddressContext);
+  const espressoConfig = React.useContext(EspressoConfigContext);
+  const espTokenAddress = espressoConfig?.espTokenContractAddress;
+
+  interface CurrentWalletTokensState {
+    lastRead: Date;
+    loading: boolean;
+    error: null | unknown;
+    balance: null | bigint;
+  }
+
+  const [state, setState] = React.useState<CurrentWalletTokensState>({
+    lastRead: new Date(0),
+    loading: false,
+    error: null,
+    balance: null,
+  });
+
+  if (!address || !espressoConfig || !espTokenAddress || !wagmiContext) {
+    return (
+      <CurrentTokenBalanceContext.Provider value={null}>
+        {children}
+      </CurrentTokenBalanceContext.Provider>
+    );
+  }
+
+  if (lastRead.valueOf() <= state.lastRead.valueOf() || state.loading) {
+    // We have already read the wallet at this timestamp, so we don't need
+    // to do it again.
+    return (
+      <CurrentTokenBalanceContext.Provider value={state.balance}>
+        {children}
+      </CurrentTokenBalanceContext.Provider>
+    );
+  }
+
+  // We need to retrieve the Wallet balance
+
+  const wagmiClient = wagmiContext.getClient();
+  const result = readContract(wagmiClient, {
+    functionName: 'balanceOf',
+    abi: parseAbi(['function balanceOf(address) view returns (uint256)']),
+    args: [address as `0x${string}`],
+    address: espTokenAddress,
+  });
+
+  // Set the state to loading
+  setState({
+    ...state,
+    loading: true,
+  });
+
+  result.then(
+    (result) => {
+      setState({
+        ...state,
+        lastRead: new Date(),
+        loading: false,
+        error: null,
+        balance: result,
+      });
+    },
+    (error: unknown) => {
+      setState({
+        ...state,
+        loading: false,
+        error,
+      });
+    },
+  );
+
+  return (
+    <CurrentTokenBalanceContext.Provider value={state.balance}>
+      {children}
+    </CurrentTokenBalanceContext.Provider>
+  );
+};
+
+const ProvideCurrentStakeTableV1Allowance: React.FC<
+  ProvideCurrentWalletTokenProps
+> = ({ children }) => {
+  const wagmiContext = React.useContext(WagmiContext);
+  const lastRead = React.useContext(LastWalletReadTimestampContext);
   const address = React.useContext(RainbowKitAccountAddressContext);
   const espressoConfig = React.useContext(EspressoConfigContext);
   const espTokenAddress = espressoConfig?.espTokenContractAddress;
   const stakeTableAddress = espressoConfig?.stakeTableContractAddress;
+
+  interface CurrentStakeTableAllowanceState {
+    lastRead: Date;
+    loading: boolean;
+    error: null | unknown;
+    allowance: null | bigint;
+  }
+
+  const [state, setState] = React.useState<CurrentStakeTableAllowanceState>({
+    lastRead: new Date(0),
+    loading: false,
+    error: null,
+    allowance: null,
+  });
 
   if (
     !address ||
     !espressoConfig ||
     !espTokenAddress ||
     !stakeTableAddress ||
-    !isPrefixed(address, '0x') ||
-    !isPrefixed(espTokenAddress, '0x') ||
-    !isPrefixed(stakeTableAddress, '0x')
+    !wagmiContext
   ) {
-    // We don't have an address or config, so we can't compute the allowance.
-    return null;
+    return (
+      <CurrentStakeTableV1AllowanceContext.Provider value={null}>
+        {children}
+      </CurrentStakeTableV1AllowanceContext.Provider>
+    );
   }
 
+  if (lastRead.valueOf() <= state.lastRead.valueOf() || state.loading) {
+    // We have already read the wallet at this timestamp, so we don't need
+    // to do it again.
+    return (
+      <CurrentStakeTableV1AllowanceContext.Provider value={state.allowance}>
+        {children}
+      </CurrentStakeTableV1AllowanceContext.Provider>
+    );
+  }
+
+  // Retrieve the Allowance granted to the current Stake Table contract.
+
+  const wagmiClient = wagmiContext.getClient();
+  // const r = writeContract(wagmiClient, {
+  //   address: espTokenAddress,
+  //   functionName: 'approve',
+  //   abi: parseAbi(['function approve(address,uint256) returns (bool)']),
+  //   args: [stakeTableAddress, 0n],
+  //   account: null,
+  // });
+
+  // r.then(
+  //   (result) => {
+  //     console.info('<<< HERE approve result', result);
+  //   },
+  //   (error) => {
+  //     console.error('<<< HERE approve error', error);
+  //   },
+  // );
+
+  const result = readContract(wagmiClient, {
+    address: espTokenAddress,
+    functionName: 'allowance',
+    abi: parseAbi([
+      'function allowance(address,address) view returns (uint256)',
+    ]),
+    args: [address as `0x${string}`, stakeTableAddress],
+  });
+
+  // Set the state to loading
+  setState({
+    ...state,
+    loading: true,
+  });
+
+  result.then(
+    (result) => {
+      setState({
+        ...state,
+        lastRead: new Date(),
+        loading: false,
+        error: null,
+        allowance: result,
+      });
+    },
+    (error: unknown) => {
+      setState({
+        ...state,
+        loading: false,
+        error,
+      });
+    },
+  );
+
   return (
-    <div>
-      <Heading2>
-        <Text text="Allowance" />
-      </Heading2>
-      <ReadAllowanceFromContract
-        address={address}
-        espTokenAddress={espTokenAddress}
-        stakeTableAddress={stakeTableAddress}
-      />
-    </div>
+    <CurrentStakeTableV1AllowanceContext.Provider value={state.allowance}>
+      {children}
+    </CurrentStakeTableV1AllowanceContext.Provider>
   );
 };
 
@@ -205,7 +339,15 @@ const ESPBalanceFromData: React.FC = () => {
     return <Text text="no balance found" />;
   }
 
-  return <MoneyText money={MonetaryValue.ESP(data)} />;
+  return (
+    <>
+      <MoneyText money={MonetaryValue.ESP(data)} />
+      <br />
+      <LabeledButton disabled title="Claiming rewards coming soon">
+        <Text text="Claim Rewards" />
+      </LabeledButton>
+    </>
+  );
 };
 
 const CurrentRewardsAvailable: React.FC = () => {
@@ -225,7 +367,7 @@ const CurrentRewardsAvailable: React.FC = () => {
   return (
     <div className="rewards">
       <Heading2>
-        <Text text="Rewards" />
+        <Text text="Unclaimed Rewards" />
       </Heading2>
       <PromiseResolver promise={promise}>
         <ESPBalanceFromData />
@@ -240,7 +382,6 @@ const StakingSummaryContent: React.FC = () => {
       <div className="staking-summary-content">
         <CurrentDelegatedAmount />
         <CurrentAvailableBalance />
-        <CurrentAllowance />
         <CurrentRewardsAvailable />
       </div>
       <YourValidatorsSection />
@@ -284,6 +425,7 @@ export const StakingSummarySection: React.FC<
   }
 
   const foundChain = wagmiConfig.chains.find((c) => chain.id === c.id) ?? null;
+  console.info('<<< HERE found chain', chain, foundChain);
 
   if (!foundChain) {
     // The chain is not supported by the current wagmi config.  So we need
@@ -293,4 +435,22 @@ export const StakingSummarySection: React.FC<
   }
 
   return <StakingSummaryContent />;
+};
+
+export interface EspressoAccountDetailsProps {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+export const EspressoAccountDetails: React.FC<EspressoAccountDetailsProps> = ({
+  children,
+}) => {
+  return (
+    <LastReadWalletTimestamp>
+      <ProvideCurrentWalletTokens>
+        <ProvideCurrentStakeTableV1Allowance>
+          {children}
+        </ProvideCurrentStakeTableV1Allowance>
+      </ProvideCurrentWalletTokens>
+    </LastReadWalletTimestamp>
+  );
 };

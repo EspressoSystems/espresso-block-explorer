@@ -19,7 +19,7 @@ import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { MoneyText, PercentageText, Text } from '@/components/text';
 import CopyWalletAddress from '@/components/text/CopyWalletAddress';
 import WalletAddressText from '@/components/text/WalletAddressText';
-import ChevronRight from '@/components/visual/icons/ChevronRight';
+import { ChevronDown, ChevronUp } from '@/components/visual';
 import {
   compareArrayBuffer,
   filterIterable,
@@ -124,14 +124,19 @@ const DelegateCell: React.FC = () => {
   }
 
   return (
-    <IconButton
-      title="Delegate"
-      onClick={() => {
-        modalControls.showModal(validator.account.toString());
-      }}
-    >
-      <ChevronRight />
-    </IconButton>
+    <>
+      <IconButton title="UnStake" onClick={() => {}}>
+        <ChevronDown />
+      </IconButton>
+      <IconButton
+        title="Stake"
+        onClick={() => {
+          modalControls.showModal(validator.account.toString());
+        }}
+      >
+        <ChevronUp />
+      </IconButton>
+    </>
   );
 };
 
@@ -249,19 +254,19 @@ const NodesSummaryDataTableLayout: React.FC<
           alignment: Alignment.end,
         },
         {
-          label: 'Delegated',
+          label: 'Your Delegated Stake',
           columnType: YourValidatorColumn.delegated,
           buildCell: props.components[2],
           alignment: Alignment.end,
         },
         {
-          label: 'Stake',
+          label: 'Total Stake',
           columnType: YourValidatorColumn.stake,
           buildCell: props.components[3],
           alignment: Alignment.end,
         },
         {
-          label: '',
+          label: 'Unstake / Stake',
           columnType: YourValidatorColumn.actions,
           buildCell: props.components[4],
           alignment: Alignment.end,
@@ -389,7 +394,9 @@ const YourValidatorsContent: React.FC = () => {
 
     return (
       <>
-        <Text text="Wanna grow your assets? Start delegating!" />
+        <p>
+          <Text text="Want to contribute to network security?" />
+        </p>
         <p>
           <Text text="You can delegate a portion of your ESP to a validator to earn rewards when they produce blocks." />
         </p>

@@ -3,13 +3,11 @@ import { DataContext } from '@/components/contexts/DataProvider';
 import { SortDirection } from '@/components/data/types';
 import { ErrorDisplay } from '@/components/error/ErrorDisplay';
 import IconButton from '@/components/hid/buttons/icon_button/IconButton';
-import { MoneyText, NumberText } from '@/components/text';
-import CopyTaggedBase64 from '@/components/text/CopyTaggedBase64';
+import { MoneyText } from '@/components/text';
 import CopyWalletAddress from '@/components/text/CopyWalletAddress';
 import PercentageText from '@/components/text/PercentageText';
-import TaggedBase64Text from '@/components/text/TaggedBase64Text';
 import WalletAddressText from '@/components/text/WalletAddressText';
-import ChevronRight from '@/components/visual/icons/ChevronRight';
+import { ChevronUp } from '@/components/visual';
 import {
   compareArrayBuffer,
   foldRIterator,
@@ -32,20 +30,14 @@ import DataTable, {
 } from '../../data/data_table/DataTable';
 import { EgressLink } from '../../links/link/Link';
 import { StakingModalControlsContext } from '../staking_modal/context';
-import {
-  NodeSummaryColumn,
-  NodeSummaryData,
-  NodeVoteParticipationStats,
-  VotersParticipationStatsContext,
-} from './NodesSummaryLoader';
+import { ValidatorData, ValidatorSummaryColumn } from './validator_list_loader';
 
 /**
- * NodeSummaryDataTuple is a tuple that contains the data for a single
+ * ValidatorSummaryDataTuple is a tuple that contains the data for a single
  * node summary row.
  */
-type NodeSummaryDataTuple = [
-  NodeSummaryData,
-  NodeVoteParticipationStats,
+type ValidatorSummaryDataTuple = [
+  ValidatorData,
   StakeTableEntryWrapper | null,
   Validator | null,
 ];
@@ -56,7 +48,9 @@ type NodeSummaryDataTuple = [
  * This is expected to be a column in a DataTable.
  */
 const NameCell: React.FC = () => {
-  const [row] = React.useContext(DataTableRowContext) as NodeSummaryDataTuple;
+  const [row] = React.useContext(
+    DataTableRowContext,
+  ) as ValidatorSummaryDataTuple;
 
   if (row.name === null || row.name === '') {
     return <Text text="-" />;
@@ -66,30 +60,15 @@ const NameCell: React.FC = () => {
 };
 
 /**
- * PubKey is a component that will render the public key of the node.
- *
- * This is expected to be a column in a DataTable.
- */
-const PubKey: React.FC = () => {
-  const [row] = React.useContext(DataTableRowContext) as NodeSummaryDataTuple;
-
-  return (
-    <CopyTaggedBase64 value={row.publicKey}>
-      <TaggedBase64Text value={row.publicKey} />
-    </CopyTaggedBase64>
-  );
-};
-
-/**
  * ValidatorAddress is a component that will render the validator's
  * address, if it exists.
  *
  * This is expected to be a column in a DataTable.
  */
 const ValidatorAddress: React.FC = () => {
-  const [, , , row] = React.useContext(
+  const [, , row] = React.useContext(
     DataTableRowContext,
-  ) as NodeSummaryDataTuple;
+  ) as ValidatorSummaryDataTuple;
   const address = row?.account.address ?? null;
 
   if (address === null) {
@@ -106,6 +85,24 @@ const ValidatorAddress: React.FC = () => {
 };
 
 /**
+ * Commission is a component that will render the commission of the node.
+ *
+ * This is expected to be a column in a DataTable.
+ */
+const Commission: React.FC = () => {
+  const [, , row] = React.useContext(
+    DataTableRowContext,
+  ) as ValidatorSummaryDataTuple;
+  const commission = row?.commission ?? null;
+
+  if (commission === null) {
+    return <Text text="-" />;
+  }
+
+  return <PercentageText percentage={commission.valueOf()} />;
+};
+
+/**
  * StakedCell is a component that will render the amount of stake
  * that the node has, as well as the percentage of the total stake.
  *
@@ -113,9 +110,9 @@ const ValidatorAddress: React.FC = () => {
  */
 const StakedCell: React.FC = () => {
   const totalStake = React.useContext(TotalStakeContext);
-  const [, , , row] = React.useContext(
+  const [, , row] = React.useContext(
     DataTableRowContext,
-  ) as NodeSummaryDataTuple;
+  ) as ValidatorSummaryDataTuple;
 
   const stake = row?.stake ?? null;
 
@@ -143,7 +140,9 @@ const StakedCell: React.FC = () => {
  * This is expected to be a column in a DataTable.
  */
 const CompanyName: React.FC = () => {
-  const [row] = React.useContext(DataTableRowContext) as NodeSummaryDataTuple;
+  const [row] = React.useContext(
+    DataTableRowContext,
+  ) as ValidatorSummaryDataTuple;
 
   if (
     row.companyDetails === null ||
@@ -163,7 +162,9 @@ const CompanyName: React.FC = () => {
  * This is expected to be a column in a DataTable.
  */
 const WebSiteCell: React.FC = () => {
-  const [row] = React.useContext(DataTableRowContext) as NodeSummaryDataTuple;
+  const [row] = React.useContext(
+    DataTableRowContext,
+  ) as ValidatorSummaryDataTuple;
 
   if (
     row.companyDetails === null ||
@@ -184,64 +185,14 @@ const WebSiteCell: React.FC = () => {
   );
 };
 
-// const LatLng: React.FC = () => {
-//   const [row] = React.useContext(DataTableRowContext) as NodeSummaryDataPair;
-
-//   if (row.location === null) {
-//     return <Text text="-" />;
-//   }
-
-//   if (row.location.coords === null) {
-//     return <Text text="-" />;
-//   }
-
-//   return (
-//     <Text
-//       text={`${row.location.coords[0]}, ${row.location.coords[1]} ${row.location.country}`}
-//     />
-//   );
-// };
-
-/**
- * VoterParticipation is a component that will render the voter
- * participation of the node.
- *
- * This is expected to be a column in a DataTable.
- */
-const VoterParticipation: React.FC = () => {
-  const [, voterStats] = React.useContext(
-    DataTableRowContext,
-  ) as NodeSummaryDataTuple;
-
-  if (voterStats === null) {
-    // This is entirely possible.
-    return <Text text="?" />;
-  }
-
-  if (voterStats.totalVotes === 0) {
-    return <NumberText number={voterStats.voteParticipation} />;
-  }
-
-  return (
-    <>
-      <NumberText number={voterStats.voteParticipation} /> (
-      <PercentageText
-        percentage={voterStats.voteParticipation / voterStats.totalVotes}
-      />
-      )
-    </>
-  );
-};
-
-/**
- * Delegate is a component that will render the delegate button for the node.
+/* Delegate is a component that will render the delegate button for the node.
  *
  * This is expected to be a column in a DataTable.
  */
 const Delegate: React.FC = () => {
-  const [, , , row] = React.useContext(
+  const [, , row] = React.useContext(
     DataTableRowContext,
-  ) as NodeSummaryDataTuple;
+  ) as ValidatorSummaryDataTuple;
   const modalControls = React.useContext(StakingModalControlsContext);
 
   if (row === null || row.account.address === null) {
@@ -249,21 +200,21 @@ const Delegate: React.FC = () => {
   }
 
   return (
-    <IconButton
-      title="Delegate"
-      onClick={() => {
-        modalControls.showModal(row.account.toString());
-      }}
-    >
-      <ChevronRight />
-    </IconButton>
+    <>
+      <IconButton
+        title="Stake"
+        onClick={() => {
+          modalControls.showModal(row.account.toString());
+        }}
+      >
+        <ChevronUp />
+      </IconButton>
+    </>
   );
 };
 
-interface NodesSummaryDataTableLayoutProps {
+interface ValidatorListDataTableLayoutProps {
   components: [
-    React.ComponentType,
-    React.ComponentType,
     React.ComponentType,
     React.ComponentType,
     React.ComponentType,
@@ -274,56 +225,46 @@ interface NodesSummaryDataTableLayoutProps {
 }
 
 /**
- * NodesSummaryDataTableLayout is a component that renders the layout
+ * ValidatorListDataTableLayout is a component that renders the layout
  * of the Node Summary Data Table.
  */
-const NodesSummaryDataTableLayout: React.FC<
-  NodesSummaryDataTableLayoutProps
+const ValidatorListDataTableLayout: React.FC<
+  ValidatorListDataTableLayoutProps
 > = (props) => {
   return (
     <DataTable
       columns={[
         {
-          label: 'Public Key',
-          columnType: NodeSummaryColumn.publicKey,
+          label: 'Address',
+          columnType: ValidatorSummaryColumn.address,
           buildCell: props.components[0],
         },
         {
-          label: 'Address',
-          columnType: NodeSummaryColumn.address,
+          label: 'Company',
+          columnType: ValidatorSummaryColumn.companyName,
           buildCell: props.components[1],
         },
         {
-          label: 'Name',
-          columnType: NodeSummaryColumn.name,
+          label: 'Website',
+          columnType: ValidatorSummaryColumn.companyWebSite,
           buildCell: props.components[2],
         },
         {
-          label: 'Company',
-          columnType: NodeSummaryColumn.companyName,
+          label: 'Commission',
+          columnType: ValidatorSummaryColumn.commission,
           buildCell: props.components[3],
+          alignment: Alignment.end,
         },
         {
-          label: 'Website',
-          columnType: NodeSummaryColumn.companyWebSite,
+          label: 'Total Stake',
+          columnType: ValidatorSummaryColumn.stake,
           buildCell: props.components[4],
+          alignment: Alignment.end,
         },
         {
           label: 'Stake',
-          columnType: NodeSummaryColumn.stake,
+          columnType: ValidatorSummaryColumn.actions,
           buildCell: props.components[5],
-          alignment: Alignment.end,
-        },
-        {
-          label: 'Vote Participation',
-          columnType: NodeSummaryColumn.voteParticipation,
-          buildCell: props.components[6],
-          alignment: Alignment.end,
-        },
-        {
-          label: '',
-          columnType: NodeSummaryColumn.actions,
-          buildCell: props.components[7],
           alignment: Alignment.center,
         },
       ]}
@@ -346,10 +287,8 @@ export const NodesSummaryDataTablePlaceholder: React.FC<
 
   return (
     <DataContext.Provider value={Array.from(iota(numElements))}>
-      <NodesSummaryDataTableLayout
+      <ValidatorListDataTableLayout
         components={[
-          SkeletonContent,
-          SkeletonContent,
           SkeletonContent,
           SkeletonContent,
           SkeletonContent,
@@ -369,15 +308,13 @@ export const NodesSummaryDataTablePlaceholder: React.FC<
 export const NodesSummaryDataTablePopulated: React.FC = () => {
   // We have an active wallet, versus we don't have an active wallet.
   return (
-    <NodesSummaryDataTableLayout
+    <ValidatorListDataTableLayout
       components={[
-        PubKey,
         ValidatorAddress,
-        NameCell,
         CompanyName,
         WebSiteCell,
+        Commission,
         StakedCell,
-        VoterParticipation,
         Delegate,
       ]}
     />
@@ -388,8 +325,8 @@ export const NodesSummaryDataTablePopulated: React.FC = () => {
  * sortPublicKey sorts the data by the node public key.
  */
 function sortPublicKey(
-  aPair: NodeSummaryDataTuple,
-  bPair: NodeSummaryDataTuple,
+  aPair: ValidatorSummaryDataTuple,
+  bPair: ValidatorSummaryDataTuple,
 ): number {
   const [a] = aPair;
   const [b] = bPair;
@@ -400,8 +337,8 @@ function sortPublicKey(
  * sortName sorts the data by the node name.
  */
 function sortName(
-  aPair: NodeSummaryDataTuple,
-  bPair: NodeSummaryDataTuple,
+  aPair: ValidatorSummaryDataTuple,
+  bPair: ValidatorSummaryDataTuple,
 ): number {
   const [a] = aPair;
   const [b] = bPair;
@@ -424,8 +361,8 @@ function sortName(
  * sortCompanyName sorts the data by the company name.
  */
 function sortCompanyName(
-  aPair: NodeSummaryDataTuple,
-  bPair: NodeSummaryDataTuple,
+  aPair: ValidatorSummaryDataTuple,
+  bPair: ValidatorSummaryDataTuple,
 ): number {
   const [a] = aPair;
   const [b] = bPair;
@@ -461,8 +398,8 @@ function sortCompanyName(
  * sortCompanyWebSite sorts the data by the company website.
  */
 function sortCompanyWebSite(
-  aPair: NodeSummaryDataTuple,
-  bPair: NodeSummaryDataTuple,
+  aPair: ValidatorSummaryDataTuple,
+  bPair: ValidatorSummaryDataTuple,
 ): number {
   const [a] = aPair;
   const [b] = bPair;
@@ -495,27 +432,14 @@ function sortCompanyWebSite(
 }
 
 /**
- * sortVoteParticipation sorts the data by the vote participation.
- */
-function sortVoteParticipation(
-  aPair: NodeSummaryDataTuple,
-  bPair: NodeSummaryDataTuple,
-): number {
-  const [, a] = aPair;
-  const [, b] = bPair;
-
-  return a.voteParticipation - b.voteParticipation;
-}
-
-/**
  * sortAddress sorts the data by the validator address.
  */
 function sortAddress(
-  aPair: NodeSummaryDataTuple,
-  bPair: NodeSummaryDataTuple,
+  aPair: ValidatorSummaryDataTuple,
+  bPair: ValidatorSummaryDataTuple,
 ): number {
-  const [, , , a] = aPair;
-  const [, , , b] = bPair;
+  const [, , a] = aPair;
+  const [, , b] = bPair;
 
   const addressA = a?.account.address;
   const addressB = b?.account.address;
@@ -538,11 +462,11 @@ function sortAddress(
  * sortStaked sorts the data by the staked amount.
  */
 function sortStaked(
-  aPair: NodeSummaryDataTuple,
-  bPair: NodeSummaryDataTuple,
+  aPair: ValidatorSummaryDataTuple,
+  bPair: ValidatorSummaryDataTuple,
 ): number {
-  const [, , a] = aPair;
-  const [, , b] = bPair;
+  const [, a] = aPair;
+  const [, b] = bPair;
 
   const stakeA = a?.stakeTableEntry.stakeAmount ?? 0n;
   const stakeB = b?.stakeTableEntry.stakeAmount ?? 0n;
@@ -554,11 +478,11 @@ function sortStaked(
  * Sorts the data by the validator commission.
  */
 function sortCommission(
-  aPair: NodeSummaryDataTuple,
-  bPair: NodeSummaryDataTuple,
+  aPair: ValidatorSummaryDataTuple,
+  bPair: ValidatorSummaryDataTuple,
 ): number {
-  const [, , , a] = aPair;
-  const [, , , b] = bPair;
+  const [, , a] = aPair;
+  const [, , b] = bPair;
 
   const commissionA = a?.commission.value ?? 0;
   const commissionB = b?.commission.value ?? 0;
@@ -567,57 +491,49 @@ function sortCommission(
 }
 
 /**
- * combineNodeIdentityAndVoterStats combines the node identity data with the
- * voter stats data, and turns them into a pair, in order to combine the
- * two pieces of data into one.
+ * combineNodeIdentityStakeTableAndValidators combines the node identity data
+ * with the Stake Table and Validator data to produce a list of tuples that
+ * can be used to render the Validator List Data Table.
  */
-function combineNodeIdentityAndVoterStats(
-  nodeIdentities: NodeSummaryData[],
-  voterData: NodeVoteParticipationStats[],
+function combineNodeIdentityStakeTableAndValidators(
+  nodeIdentities: ValidatorData[],
   stakeTable: Map<string, StakeTableEntryWrapper>,
   validators: Map<string, Validator>,
-): NodeSummaryDataTuple[] {
-  return nodeIdentities.map((nodeIdentity, index) => [
+): ValidatorSummaryDataTuple[] {
+  return nodeIdentities.map((nodeIdentity) => [
     nodeIdentity,
-    voterData[index] ?? {
-      totalVotes: 0,
-      voteParticipation: 0,
-    },
     stakeTable.get(nodeIdentity.publicKey.toString()) ?? null,
     validators.get(nodeIdentity.publicKey.toString()) ?? null,
   ]);
 }
 
 /**
- * nodeSummaryDataPairSortFunction returns a sort function that can be used to
- * sort the data pairs by the given column.
+ * validatorSummaryDataTupleSortFunction returns a sort function that can be
+ * used to sort the data pairs by the given column.
  */
-function nodeSummaryDataPairSortFunction(
-  column: NodeSummaryColumn,
-): (a: NodeSummaryDataTuple, b: NodeSummaryDataTuple) => number {
+function validatorSummaryDataTupleSortFunction(
+  column: ValidatorSummaryColumn,
+): (a: ValidatorSummaryDataTuple, b: ValidatorSummaryDataTuple) => number {
   switch (column) {
-    case NodeSummaryColumn.publicKey:
+    case ValidatorSummaryColumn.publicKey:
       return sortPublicKey;
 
-    case NodeSummaryColumn.name:
+    case ValidatorSummaryColumn.name:
       return sortName;
 
-    case NodeSummaryColumn.companyName:
+    case ValidatorSummaryColumn.companyName:
       return sortCompanyName;
 
-    case NodeSummaryColumn.companyWebSite:
+    case ValidatorSummaryColumn.companyWebSite:
       return sortCompanyWebSite;
 
-    case NodeSummaryColumn.voteParticipation:
-      return sortVoteParticipation;
-
-    case NodeSummaryColumn.stake:
+    case ValidatorSummaryColumn.stake:
       return sortStaked;
 
-    case NodeSummaryColumn.address:
+    case ValidatorSummaryColumn.address:
       return sortAddress;
 
-    case NodeSummaryColumn.commission:
+    case ValidatorSummaryColumn.commission:
       return sortCommission;
 
     default:
@@ -630,7 +546,10 @@ function nodeSummaryDataPairSortFunction(
  * will reverse the sort, if the provided sort direction is descending.
  */
 function applySortDirection(
-  sortFunction: (a: NodeSummaryDataTuple, b: NodeSummaryDataTuple) => number,
+  sortFunction: (
+    a: ValidatorSummaryDataTuple,
+    b: ValidatorSummaryDataTuple,
+  ) => number,
   sortDir: SortDirection,
 ) {
   switch (sortDir) {
@@ -638,7 +557,7 @@ function applySortDirection(
       return sortFunction;
 
     case SortDirection.desc:
-      return (a: NodeSummaryDataTuple, b: NodeSummaryDataTuple) =>
+      return (a: ValidatorSummaryDataTuple, b: ValidatorSummaryDataTuple) =>
         -sortFunction(a, b);
 
     default:
@@ -654,12 +573,12 @@ function applySortDirection(
  * and are ultimately determined by user interaction with the table headers.
  */
 function sortDataWithColumnAndDirection(
-  data: NodeSummaryDataTuple[],
-  sortColumn: NodeSummaryColumn,
+  data: ValidatorSummaryDataTuple[],
+  sortColumn: ValidatorSummaryColumn,
   sortDirection: SortDirection,
 ) {
   const sortFunction = applySortDirection(
-    nodeSummaryDataPairSortFunction(sortColumn),
+    validatorSummaryDataTupleSortFunction(sortColumn),
     sortDirection,
   );
 
@@ -669,22 +588,21 @@ function sortDataWithColumnAndDirection(
 const TotalStakeContext = React.createContext<bigint>(0n);
 
 /**
- * NodeSummaryDataTable handles the display of the Node Summary Data Table.
+ * ValidatorListDataTable handles the display of the Validator List.
  * Additionally, it handles the sorting of the data via the manipulation of the
  * headers of the table data.
  */
-export const NodesSummaryDataTable: React.FC = () => {
+export const ValidatorListDataTable: React.FC = () => {
   const [initialState, setState] = React.useState<
-    DataTableState<NodeSummaryColumn>
+    DataTableState<ValidatorSummaryColumn>
   >({
-    sortColumn: NodeSummaryColumn.voteParticipation,
-    sortDir: SortDirection.asc,
+    sortColumn: ValidatorSummaryColumn.stake,
+    sortDir: SortDirection.desc,
   });
 
   const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
-  const data = React.useContext(DataContext) as NodeSummaryData[];
-  const voterData = React.useContext(VotersParticipationStatsContext);
+  const data = React.useContext(DataContext) as ValidatorData[];
   const currentStakeTable = React.useContext(CurrentStakeTableContext);
   const currentValidators = React.useContext(CurrentValidatorsContext);
 
@@ -702,9 +620,8 @@ export const NodesSummaryDataTable: React.FC = () => {
     currentValidators.values(),
   );
 
-  const dataPairs = combineNodeIdentityAndVoterStats(
+  const dataPairs = combineNodeIdentityStakeTableAndValidators(
     data,
-    voterData,
     currentStakeTable,
     currentValidators,
   );

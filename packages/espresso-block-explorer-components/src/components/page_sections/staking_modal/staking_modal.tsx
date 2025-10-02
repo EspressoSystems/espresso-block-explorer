@@ -21,13 +21,11 @@ import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { walletAddressCodec } from '@/models/wallet_address/wallet_address';
 import { CurrentValidatorsContext } from 'pages';
 import React from 'react';
+import { Config, useConfig, useReadContract, useWriteContract } from 'wagmi';
 import {
-  Config,
-  useConfig,
-  useReadContract,
-  useReadContracts,
-  useWriteContract,
-} from 'wagmi';
+  CurrentStakeTableV1AllowanceContext,
+  CurrentTokenBalanceContext,
+} from '../staking_summary/staking_summary';
 import {
   StakingModalControlsContext,
   StakingModalState,
@@ -100,7 +98,7 @@ const DialogHeading: React.FC = () => {
   return (
     <header className="dialog-header">
       <Heading2>
-        <Text text="Delegate ESP" />
+        <Text text="Stake ESP" />
       </Heading2>
 
       <IconButton
@@ -133,12 +131,12 @@ const DelegationPreviewTitle: React.FC = () => {
     <>
       <Heading2>
         <span>
-          <Text text="Delegating to " />
+          <Text text="Staking to " />
           <WalletAddressText value={walletAddressCodec.decode(state.address)} />
         </span>
       </Heading2>
       <div className="delegation-preview-title">
-        <Text text="Delegation Preview" />
+        <Text text="Stake Preview" />
       </div>
     </>
   );
@@ -233,36 +231,39 @@ interface ReadAndProvideESPAllowanceAndBalanceProps {
 const ReadAndProvideESPAllowanceAndBalance: React.FC<
   ReadAndProvideESPAllowanceAndBalanceProps
 > = (props) => {
-  const abi = EspToken;
-  const result = useReadContracts({
-    contracts: [
-      {
-        address: props.espTokenContractAddress,
-        abi,
-        functionName: 'allowance',
-        args: [props.address, props.stakingTableContractAddress],
-      },
-      {
-        address: props.espTokenContractAddress,
-        abi,
-        functionName: 'balanceOf',
-        args: [props.address],
-      },
-    ] as const,
-  });
+  const balance = React.useContext(CurrentTokenBalanceContext) ?? 0n;
+  const allowance = React.useContext(CurrentStakeTableV1AllowanceContext) ?? 0n;
 
-  if (!result.data || result.data.length < 2) {
-    return props.children;
-  }
-  if (
-    result.data[0].status !== 'success' ||
-    result.data[1].status !== 'success'
-  ) {
-    return props.children;
-  }
+  // const abi = EspToken;
+  // const result = useReadContracts({
+  //   contracts: [
+  //     {
+  //       address: props.espTokenContractAddress,
+  //       abi,
+  //       functionName: 'allowance',
+  //       args: [props.address, props.stakingTableContractAddress],
+  //     },
+  //     {
+  //       address: props.espTokenContractAddress,
+  //       abi,
+  //       functionName: 'balanceOf',
+  //       args: [props.address],
+  //     },
+  //   ] as const,
+  // });
 
-  const allowance = result.data[0].result as bigint;
-  const balance = result.data[1].result as bigint;
+  // if (!result.data || result.data.length < 2) {
+  //   return props.children;
+  // }
+  // if (
+  //   result.data[0].status !== 'success' ||
+  //   result.data[1].status !== 'success'
+  // ) {
+  //   return props.children;
+  // }
+
+  // const allowance = result.data[0].result as bigint;
+  // const balance = result.data[1].result as bigint;
 
   return (
     <ESPTokenAllowanceAndBalance.Provider value={[allowance, balance]}>
@@ -401,7 +402,7 @@ const DelegationAmountToStake: React.FC = () => {
   return (
     <>
       <Divider />
-      <Text text="Amount to Delegate" />
+      <Text text="Amount to Stake" />
       <br />
       <InputContainer>
         <ESPInput
@@ -422,29 +423,76 @@ const DelegationAmountToStake: React.FC = () => {
   );
 };
 
-interface RaiseAllowanceButtonProps {
-  stakeTableContractAddress: `0x${string}`;
-  espTokenContractAddress: `0x${string}`;
-  address: `0x${string}`;
+export interface RaiseAllowanceButtonProps {
+  amount?: bigint;
 }
 
-const RaiseAllowanceButton: React.FC<RaiseAllowanceButtonProps> = (props) => {
+export const RaiseAllowanceButton: React.FC<RaiseAllowanceButtonProps> = (
+  props,
+) => {
   const abi = EspToken;
   const { writeContract } = useWriteContract();
+  const config = React.useContext(EspressoConfigContext);
+  const address = React.useContext(RainbowKitAccountAddressContext) as
+    | null
+    | `0x${string}`;
+
+  const amount =
+    props.amount ??
+    0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn;
+  const espTokenContractAddress = config?.espTokenContractAddress;
+
+  if (!address || !espTokenContractAddress) {
+    return null;
+  }
 
   return (
     <LabeledButton
       onClick={() => {
         writeContract({
           abi,
-          address: props.espTokenContractAddress,
+          address: espTokenContractAddress,
           functionName: 'approve',
-          args: [props.address, props.stakeTableContractAddress],
+          args: [address, amount],
         });
       }}
       className="raise-allowance"
     >
       <Text text="Raise Allowance" />
+    </LabeledButton>
+  );
+};
+
+export const ResetAllowanceButton: React.FC<RaiseAllowanceButtonProps> = (
+  props,
+) => {
+  const abi = EspToken;
+  const { writeContract } = useWriteContract();
+  const config = React.useContext(EspressoConfigContext);
+  const address = React.useContext(RainbowKitAccountAddressContext) as
+    | null
+    | `0x${string}`;
+
+  const amount = props.amount ?? 0x00n;
+  const espTokenContractAddress = config?.espTokenContractAddress;
+
+  if (!address || !espTokenContractAddress) {
+    return null;
+  }
+
+  return (
+    <LabeledButton
+      onClick={() => {
+        writeContract({
+          abi,
+          address: espTokenContractAddress,
+          functionName: 'approve',
+          args: [address, amount],
+        });
+      }}
+      className="raise-allowance"
+    >
+      <Text text="Reset Allowance" />
     </LabeledButton>
   );
 };
@@ -510,11 +558,11 @@ const DelegationInsufficientFundsWarning: React.FC = () => {
           <MoneyText money={MonetaryValue.ESP(amountToStake)} /> &gt;{' '}
           <MoneyText money={MonetaryValue.ESP(allowance)} />
           <br />
-          <RaiseAllowanceButton
-            address={address as `0x${string}`}
-            espTokenContractAddress={espTokenContractAddress}
-            stakeTableContractAddress={stakeTableContractAddress}
-          />
+          {/*
+            We Request Max uint256 value so the user won't have to bother with
+            raising the allowance again for future staking operations.
+           */}
+          <RaiseAllowanceButton />
         </div>
       </>
     );
@@ -604,7 +652,7 @@ const DelegationPreviewStakeButton: React.FC = () => {
       }}
       disabled={!enabled}
     >
-      <Text text="Delegate" />
+      <Text text="Stake" />
       {state.amount ? (
         <>
           {' '}

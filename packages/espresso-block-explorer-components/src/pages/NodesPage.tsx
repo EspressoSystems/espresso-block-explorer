@@ -29,13 +29,7 @@ import {
 } from '@/components/page_sections/nodes_summary_data_table/NodesSummaryLoader';
 import { OperatingSystemPieChart } from '@/components/page_sections/operating_system_pie_chart/OperatingSystemPieChart';
 import { OperatingSystemPieChartStreamConsumer } from '@/components/page_sections/operating_system_pie_chart/OperatingSystemPieChartLoader';
-import { StakingModal } from '@/components/page_sections/staking_modal/staking_modal';
-import { StakingSummarySection } from '@/components/page_sections/staking_summary/staking_summary';
-import OnlyWalletHeading from '@/components/page_sections/wallet/only_wallet_heading';
-import {
-  RainbowKitMountedGuard,
-  WalletConnectedGuard,
-} from '@/components/rainbowkit/components/guard';
+import { EspressoAccountDetails } from '@/components/page_sections/staking_summary/staking_summary';
 import Text from '@/components/text/Text';
 import { ProjectionProvider } from '@/components/visual/geo_json/ProjectionProvider';
 import WorldMapAutoSizer from '@/components/visual/geo_json/WorldMapAutoSizer';
@@ -102,30 +96,26 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
   <WebSocketResponseStreamConsumer>
     <ErrorStreamConsumer>
       <OverridePagePath page={PageType.nodes}>
-        <Header />
+        <EspressoAccountDetails>
+          <Header />
 
-        <RainbowKitMountedGuard>
-          <OnlyWalletHeading />
-        </RainbowKitMountedGuard>
-
-        {/*
+          {/*
       We're going to have a continually updating Data source.  So we want that
       data source to transform these continual updates into snapshot updates
     */}
 
-        {/*
+          {/*
         This component displays the current Lifecycle state of the page.  It
         reflects what's happening with the underlying Web Socket connection.
         */}
-        <WebSocketStatus className="edge-margin" />
+          <WebSocketStatus className="edge-margin" />
 
-        {/*
+          {/*
           This component displays any errors that have occurred while attempting
           to retrieve the data.
           */}
-        <ErrorDisplay className="edge-margin" />
+          <ErrorDisplay className="edge-margin" />
 
-        <StakingModal>
           <NodeValidatorLayout {...props}>
             {/* Latest Block */}
             <LatestBlockSummaryStreamConsumer>
@@ -205,12 +195,6 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
               </OperatingSystemPieChartStreamConsumer>
             </CardNoPadding>
 
-            <WalletConnectedGuard>
-              <div className="wallet-stake">
-                <StakingSummarySection />
-              </div>
-            </WalletConnectedGuard>
-
             {/* Recent Node Updates Data Table */}
             <Card className="nodes">
               <VotersParticipationStatsConsumer>
@@ -220,9 +204,9 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
               </VotersParticipationStatsConsumer>
             </Card>
           </NodeValidatorLayout>
-        </StakingModal>
 
-        <Footer />
+          <Footer />
+        </EspressoAccountDetails>
       </OverridePagePath>
     </ErrorStreamConsumer>
   </WebSocketResponseStreamConsumer>

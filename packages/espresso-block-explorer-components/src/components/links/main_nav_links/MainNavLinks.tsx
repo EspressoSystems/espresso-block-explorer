@@ -41,6 +41,11 @@ const MainNavLinks: React.FC = () => {
           <Text text="Nodes" />
         </NavLink>
       </li>
+      <li>
+        <NavLink pageType={PageType.delegation} href={resolver.delegation()}>
+          <Text text="Delegate" />
+        </NavLink>
+      </li>
     </ul>
   );
 };

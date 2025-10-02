@@ -1,6 +1,11 @@
+import { IconButton } from '@/components/hid';
 import CopyButton from '@/components/hid/buttons/copy_button/CopyButton';
-import { RainbowKitAccountContext } from '@/components/rainbowkit';
+import {
+  RainbowKitAccountContext,
+  RainbowKitModalContext,
+} from '@/components/rainbowkit';
 import { Text } from '@/components/text';
+import ChevronRight from '@/components/visual/icons/ChevronRight';
 import React from 'react';
 import './current_wallet_display.css';
 
@@ -54,6 +59,7 @@ export interface CurrentWalletDisplayProps {}
  */
 export const CurrentWalletDisplay: React.FC<CurrentWalletDisplayProps> = () => {
   const account = React.useContext(RainbowKitAccountContext);
+  const modals = React.useContext(RainbowKitModalContext);
 
   if (!account) {
     // No wallet connected
@@ -64,6 +70,12 @@ export const CurrentWalletDisplay: React.FC<CurrentWalletDisplayProps> = () => {
     <div className="current-wallet-display">
       <CurrentWalletENSAvatar />
       <CurrentWalletDisplayLabel />
+      <IconButton onClick={modals.openAccountModal}>
+        <ChevronRight />
+      </IconButton>
+      <IconButton onClick={modals.openChainModal}>
+        <ChevronRight />
+      </IconButton>
     </div>
   );
 };
