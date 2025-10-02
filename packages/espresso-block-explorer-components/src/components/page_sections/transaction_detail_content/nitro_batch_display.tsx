@@ -19,7 +19,7 @@ import { HexDumpAndCopyButtons } from './copy_as';
  * This layout is adapted from the Nitro's code base:
  * https://github.com/EspressoSystems/nitro-espresso-integration/blob/828cc2a47358a8aac2a4931fe087f07037351164/arbos/arbostypes/incomingmessage.go#L38-L45
  */
-interface NitroL1IncomingMessageHeader {
+export interface NitroL1IncomingMessageHeader {
   readonly kind: number;
   readonly poster: Uint8Array;
   readonly blockNumber: bigint;
@@ -34,7 +34,7 @@ interface NitroL1IncomingMessageHeader {
  *
  * This data is RLP encoded.
  */
-function decodeNitroL1IncomingMessageHeader(
+export function decodeNitroL1IncomingMessageHeader(
   data: Uint8Array,
 ): null | NitroL1IncomingMessageHeader {
   const deserializer = createRLPDeserializer(
@@ -72,7 +72,7 @@ function decodeNitroL1IncomingMessageHeader(
  * This layout is adapted from the Nitro's code base:
  * https://github.com/EspressoSystems/nitro-espresso-integration/blob/828cc2a47358a8aac2a4931fe087f07037351164/arbos/arbostypes/incomingmessage.go#L58-L64
  */
-interface NitroL1IncomingMessage {
+export interface NitroL1IncomingMessage {
   readonly header: NitroL1IncomingMessageHeader;
   readonly l2Msg: Uint8Array;
   readonly batchGasCost: null | bigint;
@@ -84,7 +84,7 @@ interface NitroL1IncomingMessage {
  *
  * This data is RLP encoded.
  */
-function decodeNitroL1IncomingMessage(
+export function decodeNitroL1IncomingMessage(
   data: Uint8Array,
 ): null | NitroL1IncomingMessage {
   const deserializer = createRLPDeserializer(
@@ -117,7 +117,7 @@ function decodeNitroL1IncomingMessage(
  * This layout is adapted from the Nitro's code base:
  * https://github.com/EspressoSystems/nitro-espresso-integration/blob/828cc2a47358a8aac2a4931fe087f07037351164/arbos/arbostypes/messagewithmeta.go#L17-L20
  */
-interface NitroMessageWithMetadata {
+export interface NitroMessageWithMetadata {
   readonly message: NitroL1IncomingMessage;
   readonly delayedMessagesRead: bigint;
 }
@@ -128,7 +128,7 @@ interface NitroMessageWithMetadata {
  *
  * This data is RLP encoded.
  */
-function decodeNitroMessageWithMetadata(
+export function decodeNitroMessageWithMetadata(
   data: Uint8Array,
 ): null | NitroMessageWithMetadata {
   const deserializer = createRLPDeserializer(
@@ -164,7 +164,7 @@ function decodeNitroMessageWithMetadata(
  * batch submitted for Nitro integration projects that are submitted to
  * Espresso.
  */
-interface NitroMessageV0 {
+export interface NitroMessageV0 {
   readonly index: bigint;
   readonly length: bigint;
   readonly contents: Uint8Array;
@@ -176,7 +176,7 @@ interface NitroMessageV0 {
  * NitroBatchV0 represents a Nitro Batch that is submitted to Espresso.
  * It contains a signature and a list of NitroMessages.
  */
-interface NitroBatchV0 {
+export interface NitroBatchV0 {
   readonly signature: Uint8Array;
   readonly messages: NitroMessageV0[];
 }
@@ -184,7 +184,7 @@ interface NitroBatchV0 {
 /**
  * extractNitroBatch extracts a Nitro Batch from the provided payload.
  */
-function extractNitroBatch(payload: Uint8Array): null | NitroBatchV0 {
+export function extractNitroBatch(payload: Uint8Array): null | NitroBatchV0 {
   const messages: NitroMessageV0[] = [];
 
   // Data encoding may change / be modified by different versioning in the
@@ -254,7 +254,7 @@ function extractNitroBatch(payload: Uint8Array): null | NitroBatchV0 {
  * information successfully parsed from data stored within a
  * TransactionDetail.
  */
-export const NitroBatchDisplay: React.FC = () => {
+export const NitroBatchDetectAndDisplay: React.FC = () => {
   const details = React.useContext(TransactionDetailContext);
   const data = details.tree;
 
@@ -269,46 +269,100 @@ export const NitroBatchDisplay: React.FC = () => {
   }
 
   return (
-    <>
+    <NitroBatchContext.Provider value={nitroBatch}>
       <TableLabeledValue className="card--padding nitro--section">
         <Text text="Nitro Batch" />
-        <>
-          <TableLabeledValue>
-            <Text text="Signature" />
-            <HexDumpAndCopyButtons data={nitroBatch.signature} />
-          </TableLabeledValue>
-          <TableLabeledValue>
-            <Text text="Number of Messages" />
-            <NumberText number={nitroBatch.messages.length} />
-          </TableLabeledValue>
-          {nitroBatch.messages.map((message, index) => (
-            <TableLabeledValue key={index}>
-              <>
-                <Text text="Message" />
-                <Text text="&nbsp;" />
-                <NumberText number={index} />
-              </>
-              <>
-                <TableLabeledValue>
-                  <Text text="Rollup Block Number" />
-                  <NumberText number={message.index} />
-                </TableLabeledValue>
-                <TableLabeledValue>
-                  <Text text="Length" />
-                  <NumberText number={message.length} />
-                </TableLabeledValue>
-                <br />
-                <HexDumpAndCopyButtons data={message.contents} />
-                <br />
-                <NitroMessageWithMetadataDisplay
-                  data={message.messageWithMetadata}
-                />
-              </>
-            </TableLabeledValue>
-          ))}
-        </>
+        <NitroBatchDisplay />
       </TableLabeledValue>
+    </NitroBatchContext.Provider>
+  );
+};
+
+/**
+ * NitroBatchContext is a React Context that contains the Nitro Batch
+ * information.
+ */
+export const NitroBatchContext = React.createContext<null | NitroBatchV0>(null);
+
+/**
+ * NitroBatchDisplay is a component that displays the Nitro Batch detail contained
+ * within the NitroBatchContext.
+ */
+export const NitroBatchDisplay: React.FC = () => {
+  const nitroBatch = React.useContext(NitroBatchContext);
+  if (!nitroBatch) {
+    return <></>;
+  }
+
+  return (
+    <>
+      <TableLabeledValue>
+        <Text text="Signature" />
+        <HexDumpAndCopyButtons data={nitroBatch.signature} />
+      </TableLabeledValue>
+      <TableLabeledValue>
+        <Text text="Number of Messages" />
+        <NumberText number={nitroBatch.messages.length} />
+      </TableLabeledValue>
+      {nitroBatch.messages.map((message, index) => (
+        <NitroMessageContext.Provider value={message} key={index}>
+          <NitroMessageIndexContext.Provider value={index}>
+            <NitroMessageDisplay key={index} />
+          </NitroMessageIndexContext.Provider>
+        </NitroMessageContext.Provider>
+      ))}
     </>
+  );
+};
+
+/**
+ * NitroMessageContext is a React Context that contains the Nitro Message
+ * information.
+ */
+export const NitroMessageContext = React.createContext<null | NitroMessageV0>(
+  null,
+);
+
+/**
+ * NitroMessageIndexContext is a React Context that contains the index offset of
+ * the Nitro Message within the batch.
+ */
+export const NitroMessageIndexContext = React.createContext<number>(0);
+
+/**
+ * NitroMessageDisplay is a component that displays the Nitro Message
+ * information successfully parsed from data.
+ */
+
+export const NitroMessageDisplay: React.FC = () => {
+  const index = React.useContext(NitroMessageIndexContext);
+  const message = React.useContext(NitroMessageContext);
+  if (!message) {
+    return null;
+  }
+
+  return (
+    <TableLabeledValue>
+      <>
+        <Text text="Message" />
+        <Text text="&nbsp;" />
+        <NumberText number={index} />
+      </>
+      <>
+        <TableLabeledValue>
+          <Text text="Rollup Block Number" />
+          <NumberText number={message.index} />
+        </TableLabeledValue>
+        <TableLabeledValue>
+          <Text text="Length" />
+          <NumberText number={message.length} />
+        </TableLabeledValue>
+        <br />
+        <HexDumpAndCopyButtons data={message.contents} />
+        <br />
+        <NitroMessageWithMetadataDisplay data={message.messageWithMetadata} />
+      </>
+    </TableLabeledValue>
   );
 };
 
