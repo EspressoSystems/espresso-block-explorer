@@ -420,6 +420,53 @@ export const T3rnLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
 );
 
 /**
+ * RufusLogo24 represents the Rufus Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * @note Rufus itself doesn't have any specific brand guide for their specific
+ * usage.  They are a project from DogelonMars.  DogelonMars has a brand guide
+ * located here: https://github.com/DogelonMars/dogelon-assets.  This is just
+ * a bunch of assets without much guidance.
+ */
+export const RufusLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/rufus_logo24x24@1x.png"
+      alt="Rufus Logo"
+      srcSet="/rufus_logo24x24@1x.png 1x, /rufus_logo24x24@2x.png 2x, /rufus_logo24x24@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * RufusLogo32 represents the Rufus Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const RufusLogo32: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/rufus_logo32x32@1x.png"
+      alt="Rufus Logo"
+      srcSet="/rufus_logo32x32@1x.png 1x, /rufus_logo32x32@2x.png 2x, /rufus_logo32x32@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
+ * RufusLogo40 represents the Rufus Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export const RufusLogo40: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
+  <AvatarLogo {...props}>
+    <img
+      src="/rufus_logo40x40@1x.png"
+      alt="Rufus Logo"
+      srcSet="/rufus_logo40x40@1x.png 1x, /rufus_logo40x40@2x.png 2x, /rufus_logo40x40@3x.png 3x"
+    />
+  </AvatarLogo>
+);
+
+/**
  * With24PxSquare is a higher order component that adds the class
  * avatar-24x24 to the given component.
  *

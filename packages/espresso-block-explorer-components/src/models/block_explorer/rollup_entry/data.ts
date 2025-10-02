@@ -224,6 +224,22 @@ const t3rn = new RollUpEntry(
   new URL('https://exporer.t3rn.io/'),
 );
 
+export const kRufusDecafNamespace = 21341;
+const rufusDecaf = new RollUpEntry(
+  kRufusDecafNamespace,
+  'Rufus',
+  new URL('https://l2beat.com/scaling/projects/rufus'),
+  new URL('https://rufus-sepolia-testnet.explorer.caldera.xyz/'),
+);
+
+export const kRufusNamespace = 2420;
+const rufus = new RollUpEntry(
+  kRufusDecafNamespace,
+  'Rufus',
+  new URL('https://l2beat.com/scaling/projects/rufus'),
+  new URL('https://rufus.calderaexplorer.xyz/'),
+);
+
 export const kInfiniteGardenNamespace = 1_397_311_310;
 
 /**
@@ -245,6 +261,7 @@ export const curatedMainnetList = [
   appChain,
   apeChain,
   t3rn,
+  rufus,
   // Add more mainnet rollups here
 ];
 
@@ -256,6 +273,7 @@ export const curatedDecafList = [
   moltenDecaf,
   apeChainDecaf,
   t3rnDecaf,
+  rufusDecaf,
   // Add more Decaf rollups here
 ];
 
@@ -296,6 +314,8 @@ export function isNitroIntegrationNamespace(namespace: number): boolean {
     namespace == kLogXDecafNamespace ||
     namespace == t3rnNamespace ||
     namespace == t3rnDecafNamespace ||
+    namespace == kRufusNamespace ||
+    namespace == kRufusDecafNamespace ||
     false // keep a trailing or false to make additions make nicer diffs
   );
 }
