@@ -4,6 +4,8 @@ import './inline.css';
 
 export interface HexTextProps {
   value: ArrayBuffer;
+  leadingChars?: number;
+  trailingChars?: number;
 }
 
 /**
@@ -12,14 +14,20 @@ export interface HexTextProps {
  */
 const HexText: React.FC<HexTextProps> = (props) => {
   const string = hexArrayBufferCodec.encode(props.value);
+  const leadingChars = props.leadingChars ?? 4;
+  const trailingChars = props.trailingChars ?? 4;
 
-  if (string.length <= 14) {
+  if (
+    string.length <= 14 ||
+    leadingChars + trailingChars + 2 >= string.length
+  ) {
     return string;
   }
 
   return (
     <span title={string}>
-      {string.substring(0, 4)}...{string.substring(string.length - 4)}
+      {string.substring(0, 2 + leadingChars)}...
+      {string.substring(string.length - trailingChars)}
     </span>
   );
 };
