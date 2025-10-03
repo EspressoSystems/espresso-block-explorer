@@ -1,4 +1,4 @@
-import { mapIterable, yieldAll } from '@/functional/functional';
+import { foldRIterator, mapIterable, yieldAll } from '@/functional/functional';
 import { addClassToClassName } from '@/higher_order';
 import Text from '@/text/Text';
 import React from 'react';
@@ -45,8 +45,8 @@ const bytesPerLine = 16;
  * individual line of the hexdump format.
  */
 function* generateHexDumpLineFormat(offset: number, it: Iterator<string>) {
-  yield hexEncodeOffset(offset);
-  yield '  ';
+  // yield hexEncodeOffset(offset);
+  // yield '  ';
   for (let l = 0; l < bytesPerLine; l++) {
     const next = it.next();
     if (next.done) {
@@ -72,9 +72,8 @@ function* generateHexDumpLinesFormat(it: Iterator<string>) {
     const line = Array.from(
       generateHexDumpLineFormat(offset, iterateWithStart(next.value, it)),
     ).join('');
+    yield [hexEncodeOffset(offset), line] as const;
     offset += bytesPerLine;
-
-    yield line;
   }
 }
 
@@ -82,11 +81,15 @@ function* generateHexDumpLinesFormat(it: Iterator<string>) {
  * buildHexDumpString will output the given ArrayBuffer as a hexdump formatted
  * string.
  */
-function buildHexDumpString(value: ArrayBufferLike): string {
+function buildHexDumpString(value: ArrayBufferLike): [string, string] {
   const data = new Uint8Array(value);
 
   const it = mapIterable(data, hexEncodeByte);
-  return Array.from(generateHexDumpLinesFormat(it)).join('\n');
+  return foldRIterator(
+    (acc, next) => [acc[0] + '\n' + next[0], acc[1] + '\n' + next[1]],
+    ['', ''],
+    generateHexDumpLinesFormat(it),
+  );
 }
 
 /**
@@ -94,16 +97,19 @@ function buildHexDumpString(value: ArrayBufferLike): string {
  * ArrayBuffer represented as hexadecimal.  It's format emulates
  * the hexdump binary for alignment, formatting and display.
  */
+
 const HexDump: React.FC<HexDumpProps> = ({ value, className, ...props }) => {
+  const [lineNumbers, lines] = buildHexDumpString(value);
   return (
     <>
-      <pre
-        {...props}
-        className={addClassToClassName(className, 'hex-dump')}
-        tabIndex={0}
-      >
-        <Text text={buildHexDumpString(value)} />
-      </pre>
+      <div {...props} className={addClassToClassName(className, 'hex-dump')}>
+        <pre className="hex-dump--line-numbers">
+          <Text text={lineNumbers.trim()} />
+        </pre>
+        <pre className="hex-dump--contents" tabIndex={0}>
+          <Text text={lines.trim()} />
+        </pre>
+      </div>
     </>
   );
 };
