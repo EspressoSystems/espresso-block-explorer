@@ -9,6 +9,7 @@ export * from './map';
 export * from './null';
 export * from './number';
 export * from './string';
+export * from './uint8_array';
 export * from './undefined';
 export * from './unknown';
 export * from './url';

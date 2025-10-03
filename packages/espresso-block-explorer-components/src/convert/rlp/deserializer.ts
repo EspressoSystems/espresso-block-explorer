@@ -53,8 +53,13 @@ class RLPDeserializerImpl
 
   deserializeBoolean(): boolean {
     const result = this.deserializeUnknown();
+    if (result instanceof Uint8Array) {
+      const number = this.deserializePositiveNumber(result);
+      return number !== 0n;
+    }
+
     if (typeof result !== 'number') {
-      throw new Error('Expected a number for boolean deserialization');
+      throw new InvalidTypeError(typeof result, 'number');
     }
 
     return result !== 0;
@@ -200,8 +205,17 @@ class RLPDeserializerImpl
 
   deserializeStringUTF8(): string {
     const result = this.deserializeUnknown();
-    if (!(result instanceof Uint8Array)) {
-      throw new Error('Expected a Uint8Array for UTF-8 string deserialization');
+    if (!(result instanceof Uint8Array) && typeof result !== 'number') {
+      throw new InvalidTypeError(
+        typeof result,
+        'Uint8Array',
+        'expected a Uint8Array for UTF-8 string deserialization',
+      );
+    }
+
+    if (typeof result === 'number') {
+      const bytes = this.bufferedDataView.getBytes(Number(length));
+      return new TextDecoder('utf-8').decode(bytes);
     }
 
     return new TextDecoder('utf-8').decode(result);
@@ -209,8 +223,17 @@ class RLPDeserializerImpl
 
   deserializeBytes(): Uint8Array {
     const result = this.deserializeUnknown();
-    if (!(result instanceof Uint8Array)) {
-      throw new Error('Expected a Uint8Array for bytes deserialization');
+    if (!(result instanceof Uint8Array) && typeof result !== 'number') {
+      throw new InvalidTypeError(
+        typeof result,
+        'Uint8Array',
+        'expected a Uint8Array for bytes deserialization',
+      );
+    }
+
+    if (typeof result === 'number') {
+      // We read the length byte first?
+      return this.bufferedDataView.getBytes(Number(length));
     }
 
     return new Uint8Array(result);
@@ -221,11 +244,25 @@ class RLPDeserializerImpl
   }
 
   deserializeInt128(): bigint {
-    return this.bufferedDataView.getInt128();
+    throw new UnimplementedError();
+    // return this.bufferedDataView.getInt128();
   }
 
   deserializeUint128(): bigint {
-    return this.bufferedDataView.getUint128();
+    const result = this.deserializeUnknown();
+    if (typeof result === 'number') {
+      return BigInt(result);
+    }
+
+    if (result instanceof Uint8Array) {
+      return this.deserializePositiveNumber(result);
+    }
+
+    if (typeof result !== 'bigint') {
+      throw new InvalidTypeError(typeof result, 'bigint');
+    }
+
+    return result;
   }
 
   deserializePositiveNumber(incoming: Uint8Array): bigint {

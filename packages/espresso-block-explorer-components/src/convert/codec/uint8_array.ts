@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from './convert';
-
 export class Uint8ArrayToArrayBufferConverter
   implements Converter<Uint8Array, ArrayBuffer>
 {
