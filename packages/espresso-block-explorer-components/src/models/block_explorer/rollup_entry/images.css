@@ -40,3 +40,44 @@ picture.avatar.avatar-circle > svg {
   border: 1px solid var(--color--slate-300);
   border-radius: 100%;
 }
+
+img.logx-logo {
+  background-color: #08f2c6;
+  border-radius: 50%;
+}
+
+img.only-dark {
+  display: none;
+}
+
+[data-theme='light'] img.only-dark {
+  display: none !important;
+}
+
+[data-theme='light'] img.only-light {
+  display: unset !important;
+}
+
+[data-theme='dark'] img.only-dark {
+  display: unset !important;
+}
+
+[data-theme='dark'] img.only-light {
+  display: none !important;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  img.only-light {
+    display: none;
+  }
+
+  img.only-dark {
+    display: unset;
+  }
+}
+
+@media screen and (prefers-color-scheme: light) {
+  img.only-dark {
+    display: none;
+  }
+}

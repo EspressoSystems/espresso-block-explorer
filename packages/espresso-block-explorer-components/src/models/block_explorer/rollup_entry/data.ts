@@ -188,16 +188,41 @@ const moltenDecaf = new RollUpEntry(
   new URL('https://molten.explorer.caldera.dev/'),
 );
 
-export const kApeChainDecafNamespace = 33139;
+export const kApeChainNamespace = 33139;
 
-/*
-const apeChainDecaf = new RollUpEntry(
-  kApeChainDecafNamespace,
+const apeChain = new RollUpEntry(
+  kApeChainNamespace,
   'APECHAIN',
   new URL('https://apechain.com/'),
   new URL('https://apescan.io/'),
 );
-*/
+
+export const kApeChainDecafNamespace = 3313939;
+
+const apeChainDecaf = new RollUpEntry(
+  kApeChainDecafNamespace,
+  'APECHAIN',
+  new URL('https://apechain.com/'),
+  new URL('https://apechain-testnet.explorer.caldera.xyz/'),
+);
+
+export const t3rnDecafNamespace = 13107;
+
+const t3rnDecaf = new RollUpEntry(
+  t3rnDecafNamespace,
+  't3rn',
+  new URL('https://t3rn.io/'),
+  new URL('https://brn-testnet.explorer.caldera.xyz/'),
+);
+
+export const t3rnNamespace = 0x333;
+
+const t3rn = new RollUpEntry(
+  t3rnNamespace,
+  't3rn',
+  new URL('https://t3rn.io/'),
+  new URL('https://exporer.t3rn.io/'),
+);
 
 export const kInfiniteGardenNamespace = 1_397_311_310;
 
@@ -218,6 +243,8 @@ export const curatedMainnetList = [
   logX,
   molten,
   appChain,
+  apeChain,
+  t3rn,
   // Add more mainnet rollups here
 ];
 
@@ -227,6 +254,8 @@ export const curatedDecafList = [
   logXDecaf,
   appChainDecaf,
   moltenDecaf,
+  apeChainDecaf,
+  t3rnDecaf,
   // Add more Decaf rollups here
 ];
 
@@ -261,9 +290,12 @@ export function isNitroIntegrationNamespace(namespace: number): boolean {
     namespace === kRariNamespace ||
     namespace === kAppChainNamespace ||
     namespace === kAppChainDecafNamespace ||
+    namespace === kApeChainNamespace ||
     namespace === kApeChainDecafNamespace ||
     namespace == kLogXNamespace ||
     namespace == kLogXDecafNamespace ||
+    namespace == t3rnNamespace ||
+    namespace == t3rnDecafNamespace ||
     false // keep a trailing or false to make additions make nicer diffs
   );
 }
