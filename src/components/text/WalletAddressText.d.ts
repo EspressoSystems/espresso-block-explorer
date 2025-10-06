@@ -2,6 +2,8 @@ import { default as WalletAddress } from '../../../../../../../../../../src/mode
 import { default as React } from 'react';
 export interface WalletAddressTextProps {
     value: WalletAddress;
+    leadingChars?: number;
+    trailingChars?: number;
 }
 /**
  * WalletAddressText is a simple Text component that renders the given

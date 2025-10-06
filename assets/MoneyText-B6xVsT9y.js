@@ -1,0 +1,6 @@
+import{j as r,R as a}from"./iframe-qvfUXTkm.js";import{C as s}from"./NumberFormattersProvider-DscmQNwX.js";/* empty css               */const c=t=>{const e=t.money,n=Number(e.value)/Number(e.currency.significantDigitsMultiplier);switch(e.currency.alpha3Code){case"ETH":return r.jsx(l,{value:n});case"ESP":return r.jsx(y,{value:n});default:return r.jsx(i,{money:e})}},i=t=>{const e=a.useContext(s),n=t.money,o=e[n.currency.alpha3Code];if(o===null)return r.jsx(m,{money:t.money});const u=Number(n.value)/Number(n.currency.significantDigitsMultiplier);return o.format(u)},m=t=>{const e=a.useContext(s),n=t.money,o=Number(n.value)/Number(n.currency.significantDigitsMultiplier);return e.default.format(o)},l=t=>{const e=a.useContext(s);return r.jsx(r.Fragment,{children:e.ETH.format(t.value)})},y=t=>{const e=a.useContext(s);return r.jsx(r.Fragment,{children:e.ESP.format(t.value)})};try{c.displayName="MoneyText",c.__docgenInfo={description:`MoneyText is a component that will render a MonetaryValue in a localized
+manner for the given currency type.  It supports non-standard ISO 4217
+currency codes such as ETH and ESP.
+
+It achieves this by having specific implementations for the necessary
+currency types.`,displayName:"MoneyText",props:{money:{defaultValue:null,description:"",name:"money",required:!0,type:{name:"MonetaryValue"}}}}}catch{}export{c as M};

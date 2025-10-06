@@ -1,6 +1,8 @@
 import { default as React } from 'react';
 export interface HexTextProps {
     value: ArrayBuffer;
+    leadingChars?: number;
+    trailingChars?: number;
 }
 /**
  * HexText is a simple Text component that renders the given ArrayBuffer as
