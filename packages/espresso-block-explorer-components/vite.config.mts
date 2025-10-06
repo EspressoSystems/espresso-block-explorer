@@ -18,7 +18,10 @@ export default defineConfig({
     rollupOptions: {
       external: [...Object.keys(peerDependencies)], // Defines external dependencies for Rollup bundling.
     },
-    sourcemap: true, // Generates source maps for debugging.
+    // Disabling source maps due to memory issues in CI/CD pipelines.
+    // See:
+    // https://github.com/storybookjs/builder-vite/issues/409#issuecomment-1295495352
+    sourcemap: false, // Generates source maps for debugging.
     emptyOutDir: true, // Clears the output directory before building.
   },
   resolve: {
