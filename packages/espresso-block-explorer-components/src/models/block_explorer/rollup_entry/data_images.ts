@@ -9,6 +9,8 @@ import {
   kMoltenNamespace,
   kRariDevnetNamespace,
   kRariNamespace,
+  kRufusDecafNamespace,
+  kRufusNamespace,
   t3rnDecafNamespace,
   t3rnNamespace,
 } from './data';
@@ -34,6 +36,9 @@ import {
   RariLogo24,
   RariLogo32,
   RariLogo40,
+  RufusLogo24,
+  RufusLogo32,
+  RufusLogo40,
   SpireAvatarLogo,
   T3rnLogo24,
   T3rnLogo32,
@@ -264,6 +269,20 @@ const t3rnDecaf = new RollUpImages(
   With40PxSquare(T3rnLogo40),
 );
 
+const rufus = new RollUpImages(
+  kRufusNamespace,
+  With24PxSquare(RufusLogo24),
+  With32PxSquare(RufusLogo32),
+  With40PxSquare(RufusLogo40),
+);
+
+const rufusDecaf = new RollUpImages(
+  kRufusDecafNamespace,
+  With24PxSquare(RufusLogo24),
+  With32PxSquare(RufusLogo32),
+  With40PxSquare(RufusLogo40),
+);
+
 export const rollUpImagesMap = new Map(
   [
     vienna,
@@ -289,5 +308,7 @@ export const rollUpImagesMap = new Map(
     apeChainDecaf,
     t3rn,
     t3rnDecaf,
+    rufus,
+    rufusDecaf,
   ].map((entry) => [entry.namespace, entry]),
 );
