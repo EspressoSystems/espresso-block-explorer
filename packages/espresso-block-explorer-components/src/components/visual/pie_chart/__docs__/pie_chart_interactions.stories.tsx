@@ -4,8 +4,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { PieChartFromData } from '../PieChart';
 import {
-  exitHoverAll,
-  hoverOverIthSlice,
+  interactionExitHoverAll,
+  interactionHoverOverIthSlice,
 } from '../__shared__/pie_chart_shared';
 
 interface ExampleProps {}
@@ -38,27 +38,27 @@ export const HoverOverSlices: Story = {
   },
   async play({ canvasElement, step }) {
     await step('Hover over the first slice', async () => {
-      await hoverOverIthSlice(canvasElement, 0);
+      await interactionHoverOverIthSlice(canvasElement, 0);
     });
 
     await step('Hover over the second slice', async () => {
-      await hoverOverIthSlice(canvasElement, 1);
+      await interactionHoverOverIthSlice(canvasElement, 1);
     });
 
     await step('Hover over the third slice', async () => {
-      await hoverOverIthSlice(canvasElement, 2);
+      await interactionHoverOverIthSlice(canvasElement, 2);
     });
 
     await step('Hover over the fourth slice', async () => {
-      await hoverOverIthSlice(canvasElement, 3);
+      await interactionHoverOverIthSlice(canvasElement, 3);
     });
 
     await step('Hover over the fifth slice', async () => {
-      await hoverOverIthSlice(canvasElement, 4);
+      await interactionHoverOverIthSlice(canvasElement, 4);
     });
 
     await step('Hover over the sixth slice', async () => {
-      await hoverOverIthSlice(canvasElement, 5);
+      await interactionHoverOverIthSlice(canvasElement, 5);
     });
 
     // await step('Hover over the seventh slice', async () => {
@@ -78,7 +78,7 @@ export const HoverOverSlices: Story = {
     // });
 
     await step('Unhover all', async () => {
-      await exitHoverAll(canvasElement);
+      await interactionExitHoverAll(canvasElement);
     });
   },
 };

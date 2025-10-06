@@ -4,7 +4,7 @@ import { createBufferedChannel } from '../BufferedChannel';
 
 describe('BufferedChannel', () => {
   describe('Blocking Buffer', () => {
-    it('should return the elements in order', () => {
+    it('should return the elements in order', async () => {
       const channel = createBufferedChannel<number>(2);
 
       Promise.resolve().then(async () => {
@@ -14,7 +14,7 @@ describe('BufferedChannel', () => {
       });
 
       for (let i = 0; i < 100; i++) {
-        expect(channel.poll()).resolves.toEqual(i);
+        await expect(channel.poll()).resolves.toEqual(i);
       }
       // channel.close();
     });

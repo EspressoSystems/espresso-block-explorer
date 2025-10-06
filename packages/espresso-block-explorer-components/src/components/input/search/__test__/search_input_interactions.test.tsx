@@ -1,5 +1,5 @@
 import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { CappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import { describe, it } from 'vitest';
 import { SearchInput } from '../SearchInput';
@@ -25,36 +25,42 @@ import {
 describe('Search Input Interactions', () => {
   it('should select the search bar', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await getSearchBar(searchInput.container);
   });
 
   it('should select the search bar', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await interactionSelectSearchBar(searchInput.container);
   });
 
   it('should search for blocks', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await interactionSelectSearchBar(searchInput.container);
     await interactionKeyInBlocksForSearch(searchInput.container);
@@ -65,12 +71,14 @@ describe('Search Input Interactions', () => {
 
   it('should search for transactions', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await interactionSelectSearchBar(searchInput.container);
     await interactionKeyInTransactionsForSearch(searchInput.container);
@@ -83,12 +91,14 @@ describe('Search Input Interactions', () => {
 
   it('should be interactive with down arrow key', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await interactionSelectSearchBar(searchInput.container);
     await interactionKeyInBlocksForSearch(searchInput.container);
@@ -104,12 +114,14 @@ describe('Search Input Interactions', () => {
 
   it('should be interactive with up arrow key', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await interactionSelectSearchBar(searchInput.container);
     await interactionKeyInBlocksForSearch(searchInput.container);
@@ -125,12 +137,14 @@ describe('Search Input Interactions', () => {
 
   it('should not do anything when the down arrow is entered with no results', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await interactionSelectSearchBar(searchInput.container);
     await interactionEnteringKeyDownAgainShouldReturnToSearchTerm(
@@ -140,12 +154,14 @@ describe('Search Input Interactions', () => {
 
   it('should not do anything when the up arrow is entered with no results', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await interactionSelectSearchBar(searchInput.container);
     await interactionEnteringKeyUpAgainShouldReturnToSearchTerm(
@@ -155,12 +171,14 @@ describe('Search Input Interactions', () => {
 
   it('should unfocus the search bar, and hide the search results', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await interactionSelectSearchBar(searchInput.container);
     await interactionKeyInBlocksForSearch(searchInput.container);
@@ -171,12 +189,14 @@ describe('Search Input Interactions', () => {
 
   it('should delete and clear the results from the search', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await interactionSelectSearchBar(searchInput.container);
     await interactionKeyInBlocksForSearch(searchInput.container);
@@ -185,12 +205,14 @@ describe('Search Input Interactions', () => {
 
   it('should not navigate when hitting enter on empty search', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await interactionSelectSearchBar(searchInput.container);
     await interactionHitEnterOnSearchShouldNotNavigate(
@@ -201,12 +223,14 @@ describe('Search Input Interactions', () => {
 
   it('should attempt to navigate to the given number as a block height', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await interactionSelectSearchBar(searchInput.container);
     await interactiveKeyInSearchString(searchInput.container, '1234');
@@ -218,12 +242,14 @@ describe('Search Input Interactions', () => {
 
   it('should not attempt to navigate to the given number as a block height, if it is not an integer', async () => {
     const location = new MockLocation();
-    const searchInput = render(
-      <CappuccinoHotShotQueryServiceAPIContext.Provider
-        value={new FakeDataCappuccinoHotShotQueryService()}
-      >
-        <SearchInput initialState={{ location }} />
-      </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+    const searchInput = await act(() =>
+      render(
+        <CappuccinoHotShotQueryServiceAPIContext.Provider
+          value={new FakeDataCappuccinoHotShotQueryService()}
+        >
+          <SearchInput initialState={{ location }} />
+        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+      ),
     );
     await interactionSelectSearchBar(searchInput.container);
     await interactiveKeyInSearchString(searchInput.container, '12.34');

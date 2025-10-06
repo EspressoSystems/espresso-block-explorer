@@ -29,7 +29,7 @@ export default defineConfig([
         'plugin:@typescript-eslint/eslint-recommended',
         'prettier',
         'plugin:prettier/recommended',
-        'plugin:react-hooks/recommended',
+        'plugin:react-hooks/recommended-legacy',
         'plugin:storybook/recommended',
       ),
     ),
