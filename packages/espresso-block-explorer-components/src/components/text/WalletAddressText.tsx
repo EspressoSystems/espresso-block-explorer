@@ -3,6 +3,8 @@ import React from 'react';
 
 export interface WalletAddressTextProps {
   value: WalletAddress;
+  leadingChars?: number;
+  trailingChars?: number;
 }
 /**
  * WalletAddressText is a simple Text component that renders the given
@@ -10,8 +12,10 @@ export interface WalletAddressTextProps {
  */
 const WalletAddressText: React.FC<WalletAddressTextProps> = (props) => {
   const string = props.value.toString();
+  const leadingChars = props.leadingChars ?? 4;
+  const trailingChars = props.trailingChars ?? 4;
 
-  if (string.length <= 8) {
+  if (string.length <= 8 || leadingChars + trailingChars + 2 >= string.length) {
     return string;
   }
 
@@ -21,9 +25,9 @@ const WalletAddressText: React.FC<WalletAddressTextProps> = (props) => {
   return (
     <span className="inline">
       <span title={string}>
-        {string.substring(0, 4)}
+        {string.substring(0, 2 + leadingChars)}
         ...
-        {string.substring(string.length - 4, string.length)}
+        {string.substring(string.length - trailingChars, string.length)}
       </span>
     </span>
   );

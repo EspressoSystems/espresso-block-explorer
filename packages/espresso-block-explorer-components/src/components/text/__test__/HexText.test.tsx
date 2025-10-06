@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 import { describe, expect, it } from 'vitest';
 import HexText from '../HexText';
 
@@ -22,7 +21,7 @@ describe('Hex Text Component', () => {
     {
       const div = screen.getByTestId('1');
       expect(div).toBeInTheDocument();
-      expect(div).toHaveTextContent('0x01...3210');
+      expect(div).toHaveTextContent('0x0123...3210');
     }
 
     rerender(
