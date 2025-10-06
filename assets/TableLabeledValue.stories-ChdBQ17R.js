@@ -1,0 +1,6 @@
+import{j as a}from"./iframe-DygLW6I0.js";import{T as t}from"./Text-BU7JBOLk.js";import{T as p}from"./TableLabeledValue-BWd8MjtH.js";import"./label-BvScgLcI.js";import"./higher_order-BcLzZ7W3.js";import"./typography-CE54FjU0.js";const b=({label:l,value:m,...n})=>a.jsxs(p,{...n,children:[a.jsx(t,{text:l}),a.jsx(t,{text:m})]}),T={title:"Components/Layout/Tabled Labeled Value",component:b},e={args:{label:"Label",value:"100"}};var r,o,s;e.parameters={...e.parameters,docs:{...(r=e.parameters)==null?void 0:r.docs,source:{originalSource:`{
+  args: {
+    label: 'Label',
+    value: '100'
+  }
+}`,...(s=(o=e.parameters)==null?void 0:o.docs)==null?void 0:s.source}}};const j=["TableLabeledValue"];export{e as TableLabeledValue,j as __namedExportsOrder,T as default};

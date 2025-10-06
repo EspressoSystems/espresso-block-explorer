@@ -50,6 +50,9 @@ export declare const EspressoAvatarLogo: React.FC<PreFedSrcAvatarLogoProps>;
 /**
  * RariLogo24 represents the Rari Logo square at the size of 24x24
  * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * Rari's official branding guidelines are here:
+ * https://rarichain.org/brand-kit
  */
 export declare const RariLogo24: React.FC<PreFedSrcAvatarLogoProps>;
 /**
@@ -65,6 +68,10 @@ export declare const RariLogo40: React.FC<PreFedSrcAvatarLogoProps>;
 /**
  * LogXLogo24 represents the LogX Logo square at the size of 24x24
  * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * LogX doesn't seem to have any direct branding guidelines, we can get
+ * their logo from their website here:
+ * https://www.logx.network/
  */
 export declare const LogXLogo24: React.FC<PreFedSrcAvatarLogoProps>;
 /**
@@ -80,6 +87,10 @@ export declare const LogXLogo40: React.FC<PreFedSrcAvatarLogoProps>;
 /**
  * AppChainLogo24 represents the AppChain Logo square at the size of 24x24
  * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * AppChain doesn't seem to have any direct branding guidelines, we can get
+ * their logo from their website here:
+ * https://appchain.xyz/
  */
 export declare const AppChainLogo24: React.FC<PreFedSrcAvatarLogoProps>;
 /**
@@ -95,6 +106,9 @@ export declare const AppChainLogo40: React.FC<PreFedSrcAvatarLogoProps>;
 /**
  * ApeChainLogo24 represents the ApeChain Logo square at the size of 24x24
  * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * ApeChain branding guidelines are contained here:
+ * https://live.standards.site/apechain/logo
  */
 export declare const ApeChainLogo24: React.FC<PreFedSrcAvatarLogoProps>;
 /**
@@ -110,6 +124,10 @@ export declare const ApeChainLogo40: React.FC<PreFedSrcAvatarLogoProps>;
 /**
  * MoltenLogo24 represents the Molten Logo square at the size of 24x24
  * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * Molten doesn't seem to have any direct branding guidelines, we can get
+ * their logo from a page linked from their website here:
+ * https://molten.hub.caldera.xyz/
  */
 export declare const MoltenLogo24: React.FC<PreFedSrcAvatarLogoProps>;
 /**
@@ -122,6 +140,45 @@ export declare const MoltenLogo32: React.FC<PreFedSrcAvatarLogoProps>;
  * with device pixel ratio support for 1x, 2x, and 3x displays.
  */
 export declare const MoltenLogo40: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * T3rnLogo24 represents the T3rn Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * T3rn brand guidelines are here:
+ * https://brandfetch.com/t3rn.io
+ * https://www.notion.so/t3rn/Brand-Guidelines-1f50b189cddb801790bec6ce2855a389
+ */
+export declare const T3rnLogo24: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * T3rnLogo32 represents the T3rn Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const T3rnLogo32: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * T3rnLogo40 represents the T3rn Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const T3rnLogo40: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * RufusLogo24 represents the Rufus Logo square at the size of 24x24
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ *
+ * @note Rufus itself doesn't have any specific brand guide for their specific
+ * usage.  They are a project from DogelonMars.  DogelonMars has a brand guide
+ * located here: https://github.com/DogelonMars/dogelon-assets.  This is just
+ * a bunch of assets without much guidance.
+ */
+export declare const RufusLogo24: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * RufusLogo32 represents the Rufus Logo square at the size of 32x32
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const RufusLogo32: React.FC<PreFedSrcAvatarLogoProps>;
+/**
+ * RufusLogo40 represents the Rufus Logo square at the size of 40x40
+ * with device pixel ratio support for 1x, 2x, and 3x displays.
+ */
+export declare const RufusLogo40: React.FC<PreFedSrcAvatarLogoProps>;
 /**
  * With24PxSquare is a higher order component that adds the class
  * avatar-24x24 to the given component.
