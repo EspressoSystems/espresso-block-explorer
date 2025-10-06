@@ -1,7 +1,7 @@
 import { default as React } from 'react';
 export interface HexDumpProps {
     className?: string;
-    value: ArrayBuffer;
+    value: ArrayBufferLike;
 }
 /**
  * HexDump is a component that will display the data content of an
