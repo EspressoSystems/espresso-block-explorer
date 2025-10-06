@@ -14,7 +14,7 @@ import './transaction_detail_content.css';
  * CopyAsProps represents the properties for the CopyAs component.
  */
 interface CopyAsProps {
-  data: ArrayBuffer;
+  data: ArrayBufferLike;
   encoder: Converter<ArrayBuffer, string>;
   children?: React.ReactNode | React.ReactNode[];
   copiedChildren?: React.ReactNode | React.ReactNode[];
@@ -64,7 +64,7 @@ const CopyAs: React.FC<CopyAsProps> = ({
 
         setLastClicked(new Date());
 
-        navigator.clipboard.writeText(encoder.convert(data));
+        navigator.clipboard.writeText(encoder.convert(data as ArrayBuffer));
       }}
     >
       {children}
@@ -76,7 +76,7 @@ const CopyAs: React.FC<CopyAsProps> = ({
  * CopyAsHex is a convenience component that provides a button to copy
  * data as a Hex string.
  */
-export const CopyAsHex: React.FC<{ data: ArrayBuffer }> = ({ data }) => {
+export const CopyAsHex: React.FC<{ data: ArrayBufferLike }> = ({ data }) => {
   return (
     <CopyAs
       data={data}
@@ -92,7 +92,7 @@ export const CopyAsHex: React.FC<{ data: ArrayBuffer }> = ({ data }) => {
  * CopyAsBase64 is a convenience component that provides a button to copy
  * data as a Base64 string.
  */
-export const CopyAsBase64: React.FC<{ data: ArrayBuffer }> = ({ data }) => {
+export const CopyAsBase64: React.FC<{ data: ArrayBufferLike }> = ({ data }) => {
   return (
     <CopyAs
       data={data}
@@ -108,7 +108,7 @@ export const CopyAsBase64: React.FC<{ data: ArrayBuffer }> = ({ data }) => {
  * HexDumpAndCopyButtons is a convenience component that provides aHexDump
  * and CopyAsHex and CopyAsBase64 buttons for the provided data.
  */
-export const HexDumpAndCopyButtons: React.FC<{ data: ArrayBuffer }> = ({
+export const HexDumpAndCopyButtons: React.FC<{ data: ArrayBufferLike }> = ({
   data,
 }) => {
   return (

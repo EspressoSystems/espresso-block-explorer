@@ -6,7 +6,7 @@ import './hex_dump.css';
 
 export interface HexDumpProps {
   className?: string;
-  value: ArrayBuffer;
+  value: ArrayBufferLike;
 }
 
 /**
@@ -82,7 +82,7 @@ function* generateHexDumpLinesFormat(it: Iterator<string>) {
  * buildHexDumpString will output the given ArrayBuffer as a hexdump formatted
  * string.
  */
-function buildHexDumpString(value: ArrayBuffer): string {
+function buildHexDumpString(value: ArrayBufferLike): string {
   const data = new Uint8Array(value);
 
   const it = mapIterable(data, hexEncodeByte);
