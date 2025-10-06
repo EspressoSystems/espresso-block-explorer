@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, it } from 'vitest';
 import { AsyncSnapshot, AsyncState } from '../AsyncSnapshot';
@@ -16,10 +16,12 @@ describe('Promise Resolver Component', () => {
       return <div data-async-state={snapshot.asyncState} {...props} />;
     };
 
-    const { rerender } = render(
-      <PromiseResolver promise={Promise.resolve(1)}>
-        <Comp data-testid="1" />
-      </PromiseResolver>,
+    const { rerender } = await act(async () =>
+      render(
+        <PromiseResolver promise={Promise.resolve(1)}>
+          <Comp data-testid="1" />
+        </PromiseResolver>,
+      ),
     );
 
     await waitFor(() => {

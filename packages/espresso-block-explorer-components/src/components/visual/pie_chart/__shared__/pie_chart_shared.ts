@@ -15,6 +15,7 @@ import {
   mapIterator,
   takeIterator,
 } from '@/functional/functional';
+import { act } from '@testing-library/react';
 import { expect, waitFor, within } from 'storybook/test';
 
 async function expectToolTipVisibility(tooltip: Element, visible: boolean) {
@@ -95,11 +96,16 @@ async function exitHoverAllElementsFromCanvas(canvasElement: Element) {
   }
 }
 
-async function hoverElementFromCanvas(canvasElement: Element, ele: Element) {
-  await exitHoverAllElementsFromCanvas(canvasElement);
-  // Fake the hover event
-  ele.setAttribute('data-hover', '');
-  // return userEvent.hover(ele);
+async function interactionHoverElementFromCanvas(
+  canvasElement: Element,
+  ele: Element,
+) {
+  return act(async () => {
+    await exitHoverAllElementsFromCanvas(canvasElement);
+    // Fake the hover event
+    ele.setAttribute('data-hover', '');
+    // return userEvent.hover(ele);
+  });
 }
 
 const getSliceHitBoxes = (chart: SVGSVGElement) => {
@@ -126,62 +132,66 @@ const getToolTips = (chart: SVGSVGElement) => {
   );
 };
 
-export const hoverOverIthSlice = async (
+export const interactionHoverOverIthSlice = async (
   canvasElement: HTMLElement,
   item: number,
 ) => {
-  const chart = await getPieChart(canvasElement);
-  await waitFor(
-    async () => {
-      const chart = await getPieChart(canvasElement);
-      await expect(chart).toBeInTheDocument();
-    },
-    { timeout: 2000 },
-  );
+  return act(async () => {
+    const chart = await getPieChart(canvasElement);
+    await waitFor(
+      async () => {
+        const chart = await getPieChart(canvasElement);
+        await expect(chart).toBeInTheDocument();
+      },
+      { timeout: 2000 },
+    );
 
-  const hitboxes = getSliceHitBoxes(chart);
-  const tooltips = getToolTips(chart);
-  const firstHitbox = firstIterator(dropIterator(hitboxes, item));
-  const firstToolTip = firstIterator(dropIterator(tooltips, item));
+    const hitboxes = getSliceHitBoxes(chart);
+    const tooltips = getToolTips(chart);
+    const firstHitbox = firstIterator(dropIterator(hitboxes, item));
+    const firstToolTip = firstIterator(dropIterator(tooltips, item));
 
-  await hoverElementFromCanvas(canvasElement, firstHitbox);
-  await waitFor(
-    async () => {
-      // await expect(firstToolTip).toBeVisible();
-      await expectToolTipVisibility(firstToolTip, true);
-    },
-    { timeout: 2000 },
-  );
+    await interactionHoverElementFromCanvas(canvasElement, firstHitbox);
+    await waitFor(
+      async () => {
+        // await expect(firstToolTip).toBeVisible();
+        await expectToolTipVisibility(firstToolTip, true);
+      },
+      { timeout: 2000 },
+    );
 
-  // No Other tooltip should be visible
-  const it = getToolTips(chart)[Symbol.iterator]();
-  for (const tooltip of takeIterator(it, item)) {
-    await expect(tooltip).not.toEqual(firstToolTip);
-    await expectToolTipVisibility(tooltip, false);
-    // expect(tooltip).not.toBeVisible();
-  }
+    // No Other tooltip should be visible
+    const it = getToolTips(chart)[Symbol.iterator]();
+    for (const tooltip of takeIterator(it, item)) {
+      await expect(tooltip).not.toEqual(firstToolTip);
+      await expectToolTipVisibility(tooltip, false);
+      // expect(tooltip).not.toBeVisible();
+    }
 
-  // This tooltip should be our tool tip, and it should be visible
-  expect(it.next().value).toEqual(firstToolTip);
-  await expectToolTipVisibility(firstToolTip, true);
-  // expect(firstToolTip).toBeVisible();
+    // This tooltip should be our tool tip, and it should be visible
+    expect(it.next().value).toEqual(firstToolTip);
+    await expectToolTipVisibility(firstToolTip, true);
+    // expect(firstToolTip).toBeVisible();
 
-  // No Other tooltip should be visible
-  for (const tooltip of it) {
-    await expect(tooltip).not.toEqual(firstToolTip);
-    // expect(tooltip).not.toBeVisible();
-    await expectToolTipVisibility(tooltip, false);
-  }
+    // No Other tooltip should be visible
+    for (const tooltip of it) {
+      await expect(tooltip).not.toEqual(firstToolTip);
+      // expect(tooltip).not.toBeVisible();
+      await expectToolTipVisibility(tooltip, false);
+    }
+  });
 };
 
-export const exitHoverAll = async (canvasElement: HTMLElement) => {
-  await exitHoverAllElementsFromCanvas(canvasElement);
-  const chart = await getPieChart(canvasElement);
+export const interactionExitHoverAll = async (canvasElement: HTMLElement) => {
+  return act(async () => {
+    await exitHoverAllElementsFromCanvas(canvasElement);
+    const chart = await getPieChart(canvasElement);
 
-  const tooltips = getToolTips(chart);
-  for (const tooltip of tooltips) {
-    // expect(tooltip).not.toBeVisible();
+    const tooltips = getToolTips(chart);
+    for (const tooltip of tooltips) {
+      // expect(tooltip).not.toBeVisible();
 
-    await expectToolTipVisibility(tooltip, false);
-  }
+      await expectToolTipVisibility(tooltip, false);
+    }
+  });
 };

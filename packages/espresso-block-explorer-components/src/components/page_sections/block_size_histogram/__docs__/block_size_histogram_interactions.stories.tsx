@@ -5,8 +5,8 @@ import React from 'react';
 import { BlockSizeHistogram } from '../BlockSizeHistogram';
 import { BlockSizeHistogramData } from '../BlockSizeHistogramDataLoader';
 import {
-  hoverOverIthBar,
-  unhoverAll,
+  interactionHoverOverIthBar,
+  interactionUnhoverAll,
 } from '../__shared__/block_histogram_shared';
 
 interface ExampleProps {
@@ -37,47 +37,47 @@ export const MouseOverBar: Story = {
 
   play: async ({ canvasElement, step }) => {
     await step('Hover over first bar', async () => {
-      await hoverOverIthBar(canvasElement, 0);
+      await interactionHoverOverIthBar(canvasElement, 0);
     });
 
     await step('Hover over second bar', async () => {
-      await hoverOverIthBar(canvasElement, 1);
+      await interactionHoverOverIthBar(canvasElement, 1);
     });
 
     await step('Hover over third bar', async () => {
-      await hoverOverIthBar(canvasElement, 2);
+      await interactionHoverOverIthBar(canvasElement, 2);
     });
 
     await step('Hover over fourth bar', async () => {
-      await hoverOverIthBar(canvasElement, 3);
+      await interactionHoverOverIthBar(canvasElement, 3);
     });
 
     await step('Hover over fifth bar', async () => {
-      await hoverOverIthBar(canvasElement, 4);
+      await interactionHoverOverIthBar(canvasElement, 4);
     });
 
     await step('Hover over sixth bar', async () => {
-      await hoverOverIthBar(canvasElement, 5);
+      await interactionHoverOverIthBar(canvasElement, 5);
     });
 
     await step('Hover over seventh bar', async () => {
-      await hoverOverIthBar(canvasElement, 6);
+      await interactionHoverOverIthBar(canvasElement, 6);
     });
 
     await step('Hover over eighth bar', async () => {
-      await hoverOverIthBar(canvasElement, 7);
+      await interactionHoverOverIthBar(canvasElement, 7);
     });
 
     await step('Hover over ninth bar', async () => {
-      await hoverOverIthBar(canvasElement, 8);
+      await interactionHoverOverIthBar(canvasElement, 8);
     });
 
     await step('Hover over tenth bar', async () => {
-      await hoverOverIthBar(canvasElement, 9);
+      await interactionHoverOverIthBar(canvasElement, 9);
     });
 
     await step('Mouse off', async () => {
-      await unhoverAll(canvasElement);
+      await interactionUnhoverAll(canvasElement);
     });
   },
 };

@@ -9,6 +9,7 @@
  * that can share the common functionality to make the component work in both
  * the Storybook and vitest environments.
  */
+import { act } from '@testing-library/react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 export type PartialLocationHref = Pick<Location, 'href'>;
@@ -50,11 +51,11 @@ export const interactionSelectSearchBar = async (
   canvasElement: HTMLElement,
 ) => {
   const searchBar = await getSearchBar(canvasElement);
-  const user = userEvent.setup();
+  const user = await act(() => userEvent.setup());
 
   // Select the search bar
 
-  await user.click(searchBar);
+  await act(async () => user.click(searchBar));
 
   // Check to make sure that the search bar is focused
   await expect(searchBar).toHaveFocus();
@@ -72,7 +73,7 @@ export const interactiveKeyInSearchString = async (
 ) => {
   await interactionSelectSearchBar(canvasElement);
   // Alright, let's enter some text
-  await userEvent.keyboard(searchTerm);
+  await act(async () => userEvent.keyboard(searchTerm));
 };
 
 /**
@@ -250,7 +251,7 @@ export const interactionNavigateDownThroughAllSearchResults = async (
 
   // Let's go through all of the elements.
   for (let i = 0; i < numSearchResults; i++) {
-    await userEvent.keyboard('{ArrowDown}');
+    await act(async () => userEvent.keyboard('{ArrowDown}'));
     // We should now have the ith element selected.
     // The first child should have the 'data-selected="true"' attribute.
     const dataRow = searchResultElements[i].children[0];
@@ -271,7 +272,7 @@ export const interactionHitEnterOnSearchShouldNotNavigate = async (
 ) => {
   await interactionSelectSearchBar(canvasElement);
   // Pressing Down again should have nothing selected (reset back to original search input entry).
-  await userEvent.keyboard('{Enter}');
+  await act(async () => userEvent.keyboard('{Enter}'));
 
   // We were told to navigate to a search result.
   expect(location.href).toEqual('');
@@ -288,7 +289,7 @@ export const interactionHitEnterOnSearchShouldNavigate = async (
 ) => {
   await interactionSelectSearchBar(canvasElement);
   // Pressing Down again should have nothing selected (reset back to original search input entry).
-  await userEvent.keyboard('{Enter}');
+  await act(async () => userEvent.keyboard('{Enter}'));
 
   // We were told to navigate to a search result.
   expect(location.href).not.toEqual('');
@@ -305,7 +306,7 @@ export const interactionEnteringKeyDownAgainShouldReturnToSearchTerm = async (
   const searchResultsParentContainer =
     await getSearchResultsParentContainer(canvasElement);
   // Pressing Down again should have nothing selected (reset back to original search input entry).
-  await userEvent.keyboard('{ArrowDown}');
+  await act(async () => userEvent.keyboard('{ArrowDown}'));
   expect(
     searchResultsParentContainer.querySelector('[data-selected="true"]'),
   ).not.toBeInTheDocument();
@@ -323,7 +324,7 @@ export const interactionNavigateUpThroughAllSearchResults = async (
     await getBlockSearchResultElements(canvasElement);
   const numSearchResults = searchResultElements.length;
   for (let i = 0; i < numSearchResults; i++) {
-    await userEvent.keyboard('{ArrowUp}');
+    await act(async () => userEvent.keyboard('{ArrowUp}'));
     // We should now have the ith element selected.
     // The first child should have the 'data-selected="true"' attribute.
     const dataRow = searchResultElements[numSearchResults - 1 - i].children[0];
@@ -344,7 +345,7 @@ export const interactionEnteringKeyUpAgainShouldReturnToSearchTerm = async (
   const searchResultsParentContainer =
     await getSearchResultsParentContainer(canvasElement);
   // Pressing Down again should have nothing selected (reset back to original search input entry).
-  await userEvent.keyboard('{ArrowUp}');
+  await act(async () => userEvent.keyboard('{ArrowUp}'));
   expect(
     searchResultsParentContainer.querySelector('[data-selected="true"]'),
   ).not.toBeInTheDocument();
@@ -364,7 +365,7 @@ export const interactionEnteringEscapeShouldUnfocusSearchInput = async (
   expect(searchResultsParentContainer).toBeVisible();
 
   // Pressing Down again should have nothing selected (reset back to original search input entry).
-  await userEvent.keyboard('{Escape}');
+  await act(async () => userEvent.keyboard('{Escape}'));
   await waitFor(async () => {
     expect(searchBar).not.toHaveFocus();
   });
@@ -385,7 +386,7 @@ export const interactiveSelectAllDelete = async (
     await getSearchResultsParentContainer(canvasElement);
   expect(searchResultsParentContainer).toBeInTheDocument();
   expect(searchResultsParentContainer).toBeVisible();
-  await userEvent.keyboard('{Backspace>7/}');
+  await act(async () => userEvent.keyboard('{Backspace>7/}'));
 
   // This should automatically clear everything
   await waitFor(async () => {

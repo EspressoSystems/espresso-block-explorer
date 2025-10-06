@@ -1,6 +1,6 @@
 import { sleep } from '@/async/sleep';
 import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Now, ProvideTickEverySecond } from '../NowProvider';
@@ -27,15 +27,17 @@ describe('Now Provider', () => {
   describe('Override Path Resolver', () => {
     it('should change every second', async () => {
       expect(localNow).toEqual(null);
-      render(
-        <ProvideTickEverySecond>
-          <ConsumeNowComponent />
-        </ProvideTickEverySecond>,
+      await act(async () =>
+        render(
+          <ProvideTickEverySecond>
+            <ConsumeNowComponent />
+          </ProvideTickEverySecond>,
+        ),
       );
       const date1 = localNow;
       expect(localNow).not.toBeNull();
 
-      await sleep(2000);
+      await act(async () => sleep(2000));
       const date2 = localNow;
       expect(localNow).not.toBeNull();
 

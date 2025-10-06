@@ -14,6 +14,7 @@ import {
   firstIterator,
   mapIterator,
 } from '@/functional/functional';
+import { act } from '@testing-library/react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 /**
@@ -28,17 +29,24 @@ export const getHistogram = async (canvasElement: HTMLElement) => {
   return histogram as Element as SVGSVGElement;
 };
 
-function unhoverAllElementsFromCanvas(canvasElement: Element) {
-  canvasElement.querySelectorAll('[data-hover="true"]').forEach((el) => {
-    el.removeAttribute('data-hover');
+function interactionUnhoverAllElementsFromCanvas(canvasElement: Element) {
+  return act(async () => {
+    canvasElement.querySelectorAll('[data-hover="true"]').forEach((el) => {
+      el.removeAttribute('data-hover');
+    });
   });
 }
 
-async function hoverElementFromCanvas(canvasElement: Element, ele: Element) {
-  unhoverAllElementsFromCanvas(canvasElement);
-  // Fake the hover event
-  ele.setAttribute('data-hover', 'true');
-  return userEvent.hover(ele);
+async function interactionHoverElementFromCanvas(
+  canvasElement: Element,
+  ele: Element,
+) {
+  return act(async () => {
+    await interactionUnhoverAllElementsFromCanvas(canvasElement);
+    // Fake the hover event
+    ele.setAttribute('data-hover', 'true');
+    return userEvent.hover(ele);
+  });
 }
 
 const getBarHitboxes = (histogram: SVGSVGElement) => {
@@ -63,32 +71,36 @@ const getToolTips = (histogram: SVGSVGElement) => {
   );
 };
 
-export const hoverOverIthBar = async (
+export const interactionHoverOverIthBar = async (
   canvasElement: HTMLElement,
   i: number,
 ) => {
-  const histogram = await getHistogram(canvasElement);
-  await waitFor(
-    async () => {
-      const histogram = await getHistogram(canvasElement);
-      expect(histogram).toBeInTheDocument();
-    },
-    { timeout: 1000 },
-  );
+  return act(async () => {
+    const histogram = await getHistogram(canvasElement);
+    await waitFor(
+      async () => {
+        const histogram = await getHistogram(canvasElement);
+        expect(histogram).toBeInTheDocument();
+      },
+      { timeout: 1000 },
+    );
 
-  const hitboxes = getBarHitboxes(histogram);
-  const tooltips = getToolTips(histogram);
-  const firstHitbox = firstIterator(dropIterator(hitboxes, i));
-  const firstToolTip = firstIterator(dropIterator(tooltips, i));
+    const hitboxes = getBarHitboxes(histogram);
+    const tooltips = getToolTips(histogram);
+    const firstHitbox = firstIterator(dropIterator(hitboxes, i));
+    const firstToolTip = firstIterator(dropIterator(tooltips, i));
 
-  await hoverElementFromCanvas(canvasElement, firstHitbox);
-  await waitFor(async () => {
+    await interactionHoverElementFromCanvas(canvasElement, firstHitbox);
+    await waitFor(async () => {
+      expect(firstToolTip).toBeVisible();
+    });
+
     expect(firstToolTip).toBeVisible();
   });
-
-  expect(firstToolTip).toBeVisible();
 };
 
-export const unhoverAll = async (canavasElement: HTMLElement) => {
-  return unhoverAllElementsFromCanvas(canavasElement);
+export const interactionUnhoverAll = async (canavasElement: HTMLElement) => {
+  return act(async () =>
+    interactionUnhoverAllElementsFromCanvas(canavasElement),
+  );
 };

@@ -110,7 +110,7 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
         const responsePromise = client.availability.getBlockFromHeight(20);
 
         const firstRequest = firstAsyncIterable(requestChannel);
-        expect(firstRequest).resolves.toBeTruthy();
+        await expect(firstRequest).resolves.toBeTruthy();
 
         const [input, init] = await firstRequest;
 
@@ -123,7 +123,7 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
 
         expect(init).toBeFalsy();
 
-        expect(responsePromise).resolves.to.deep.equal(returnedValue);
+        await expect(responsePromise).resolves.to.deep.equal(returnedValue);
       });
     });
 
@@ -142,7 +142,7 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
       const responsePromise = client.availability.getBlockFromHeight(20);
 
       const firstRequest = firstAsyncIterable(requestChannel);
-      expect(firstRequest).resolves.toBeTruthy();
+      await expect(firstRequest).resolves.toBeTruthy();
 
       const [input, init] = await firstRequest;
 
@@ -155,7 +155,9 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
 
       expect(init).toBeFalsy();
 
-      expect(responsePromise).rejects.to.deep.equal(returnedValue.availability);
+      await expect(responsePromise).rejects.to.deep.equal(
+        returnedValue.availability,
+      );
     });
   });
 });
