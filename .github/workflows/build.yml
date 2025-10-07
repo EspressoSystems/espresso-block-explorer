@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-24.04-8core
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node
         uses: actions/setup-node@v5
@@ -31,6 +31,8 @@ jobs:
           npm run build --workspace=packages/espresso-block-explorer-components
           npm ci --workspaces
           cp packages/espresso-block-explorer-components/dist/*.js packages/block-explorer/public/.
+          mkdir -p packages/block-explorer/public/assets
+          cp packages/espresso-block-explorer-components/dist/assets/*.js packages/block-explorer/public/assets/.
           npm run lint --workspaces
           npm run test --workspaces
           npm run coverage --workspaces
