@@ -84,8 +84,10 @@ export function decodeDepositTransaction(
 
   return new OptimismDepositTx(
     uint8ArrayToArrayBufferCodec.encode(sourceHash),
-    WalletAddress.fromUint8Array(from),
-    to.length > 0 ? WalletAddress.fromUint8Array(to) : null,
+    new WalletAddress(uint8ArrayToArrayBufferCodec.encode(from)),
+    to.length > 0
+      ? new WalletAddress(uint8ArrayToArrayBufferCodec.encode(to))
+      : null,
     mn(mint),
     mn(value),
     mn(gas),
