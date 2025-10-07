@@ -29,7 +29,8 @@ jobs:
         run: |
           npm ci --workspaces
           npm run build --workspace=packages/espresso-block-explorer-components
-          npm ci --workspaces 
+          npm ci --workspaces
+          cp packages/espresso-block-explorer-components/dist/*.js packages/block-explorer/public/.
           npm run lint --workspaces
           npm run test --workspaces
           npm run coverage --workspaces
