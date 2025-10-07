@@ -1,0 +1,20 @@
+import{j as t}from"./iframe-LIS-dxCY.js";import{p as s,s as d}from"./array_buffer-bVPwHeb6.js";import"./url-BuIfv8Us.js";import"./string-elRJFjrg.js";import"./UnimplementedError-CRtBpVRh.js";import"./MissingElementError-B2OGDzdH.js";import"./base64-CGLM76xc.js";import{T as a}from"./Text-BU7JBOLk.js";import{H as m}from"./deserializer-C5eOO5EI.js";import{e as f,N as b,a as x}from"./nitro_batch_display-rk-qxgsv.js";import"./preload-helper-PPVm8Dsz.js";import"./functional-CBrBKmKr.js";import"./NowProvider-DbFqtnj3.js";import"./LabeledButton-7F9jNXV1.js";import"./higher_order-B4shpt_6.js";import"./Button-BV8Kbcay.js";import"./HexDump-CXk08MGE.js";import"./TransactionDetailLoader-DfOuQg_8.js";import"./LoadingProvider-DxjZ0NgD.js";import"./TaggedBase64-DjV36QCx.js";import"./PromiseResolver-BCtWEfd5.js";import"./ProvideAsyncStates-BLtq39Bx.js";import"./CopyButton-2IgDnWno.js";import"./CheckCircle-BmZXH1vf.js";import"./SVGIconBase-CKCoJOKo.js";import"./Copy-WNDUSSUZ.js";/* empty css               */import"./ByteSizeText-Djz6TQ0l.js";import"./NumberFormattersProvider-BQS9gj7A.js";import"./LocaleProvider-CpxekBBi.js";import"./TransactionsPerSecondText-B_kYzWnw.js";import"./DateTimeFormattersProvider-DKHY4Sy6.js";import"./CopyHex-DK_eto34.js";import"./DateTimeText-CsO5pwj1.js";import"./FullHexText-BBYWB1AK.js";import"./HexText-Db0RzdvN.js";import"./MoneyText-CBwOL7jS.js";import"./NumberText-Cbk9Np_R.js";import"./RelativeTimeText-2QNeHZQD.js";import"./TaggedBase64Text-DywcAZqY.js";import"./TimeText-Cb0OiPYT.js";import"./TableLabeledValue-Df6CVEw7.js";import"./label-CJY8brHO.js";import"./typography-Ir_KRgMv.js";import"./data-DH9p-Qw3.js";const g=p=>{const{hexString:i,base64String:n}=p;let r=null;if(i){let e;try{e=s(i)}catch(c){return t.jsx(a,{text:`Error parsing hex string: ${c.message}`})}r=new Uint8Array(e)}else if(n){let e;try{e=d.decode(n)}catch(c){return t.jsx(a,{text:`Error parsing base64 string: ${c.message}`})}r=new Uint8Array(e)}if(r){const e=f(r);return e?t.jsxs(t.Fragment,{children:[t.jsx(m,{data:r.buffer}),t.jsx("br",{}),t.jsx(b.Provider,{value:e,children:t.jsx(x,{})})]}):t.jsx(a,{text:"Error: Unable to decode Nitro Batch from input"})}return t.jsx(a,{text:"No input provided"})},n0={title:"Components/Page Sections/Rollups/Nitro Batch Display",component:g},o={args:{hexString:"0x0000000000000041063b6c5d2fb1529f87a84a77315a8b0b7cd22b0c9892c90efed142787121945c3a4d391d52f577b0db72c4187b4f7138395fde98db621c55425ceba967ce598500000000000003d4fa000000000000009cf89af895e10394a4b000000000000000000073657175656e636572838e539b8468de90c7c080b87104f86e6d8407270e00831e8480948edb00816de3a251448253464a3f1ca25c546bc1888ac7230489e800008082a6dea01f2ccc4f0eaf88a2dcc25b62e659a5fe6593ae319904b721f52959c04a47d137a00b9b7becf1823a71725cf9545a1e276568e1e621f00ce2e361cf76a337227bf9820257",base64String:""},argTypes:{hexString:{control:{type:"text"},description:"Hex-encoded Nitro Batch data"},base64String:{control:{type:"text"},description:"Base64-encoded Nitro Batch data"}}};o.parameters={...o.parameters,docs:{...o.parameters?.docs,source:{originalSource:`{
+  args: {
+    hexString: '0x0000000000000041063b6c5d2fb1529f87a84a77315a8b0b7cd22b0c9892c90efed142787121945c3a4d391d52f577b0db72c4187b4f7138395fde98db621c55425ceba967ce598500000000000003d4fa000000000000009cf89af895e10394a4b000000000000000000073657175656e636572838e539b8468de90c7c080b87104f86e6d8407270e00831e8480948edb00816de3a251448253464a3f1ca25c546bc1888ac7230489e800008082a6dea01f2ccc4f0eaf88a2dcc25b62e659a5fe6593ae319904b721f52959c04a47d137a00b9b7becf1823a71725cf9545a1e276568e1e621f00ce2e361cf76a337227bf9820257',
+    base64String: ''
+  },
+  argTypes: {
+    hexString: {
+      control: {
+        type: 'text'
+      },
+      description: 'Hex-encoded Nitro Batch data'
+    },
+    base64String: {
+      control: {
+        type: 'text'
+      },
+      description: 'Base64-encoded Nitro Batch data'
+    }
+  }
+}`,...o.parameters?.docs?.source}}};const p0=["NitroBatchDisplay"];export{o as NitroBatchDisplay,p0 as __namedExportsOrder,n0 as default};
