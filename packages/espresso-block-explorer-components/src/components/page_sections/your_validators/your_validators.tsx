@@ -19,7 +19,6 @@ import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { MoneyText, PercentageText, Text } from '@/components/text';
 import CopyWalletAddress from '@/components/text/CopyWalletAddress';
 import WalletAddressText from '@/components/text/WalletAddressText';
-import { ChevronDown, ChevronUp } from '@/components/visual';
 import {
   compareArrayBuffer,
   filterIterable,
@@ -29,6 +28,8 @@ import {
 import { convertIterableToAsyncIterable } from '@/functional/functional_async';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { Validator } from '@/models/espresso/stake_table/validator';
+import Money from '@/visual/icons/Money';
+import Payments from '@/visual/icons/Payments';
 import { CurrentValidatorsContext } from 'pages';
 import React from 'react';
 import { StakingModalControlsContext } from '../staking_modal/context';
@@ -126,7 +127,7 @@ const DelegateCell: React.FC = () => {
   return (
     <>
       <IconButton title="UnStake" onClick={() => {}}>
-        <ChevronDown />
+        <Money />
       </IconButton>
       <IconButton
         title="Stake"
@@ -134,7 +135,7 @@ const DelegateCell: React.FC = () => {
           modalControls.showModal(validator.account.toString());
         }}
       >
-        <ChevronUp />
+        <Payments />
       </IconButton>
     </>
   );

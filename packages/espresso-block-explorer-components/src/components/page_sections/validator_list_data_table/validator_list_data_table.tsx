@@ -7,7 +7,7 @@ import { MoneyText } from '@/components/text';
 import CopyWalletAddress from '@/components/text/CopyWalletAddress';
 import PercentageText from '@/components/text/PercentageText';
 import WalletAddressText from '@/components/text/WalletAddressText';
-import { ChevronUp } from '@/components/visual';
+import Payments from '@/components/visual/icons/Payments';
 import {
   compareArrayBuffer,
   foldRIterator,
@@ -207,7 +207,7 @@ const Delegate: React.FC = () => {
           modalControls.showModal(row.account.toString());
         }}
       >
-        <ChevronUp />
+        <Payments />
       </IconButton>
     </>
   );
@@ -215,6 +215,7 @@ const Delegate: React.FC = () => {
 
 interface ValidatorListDataTableLayoutProps {
   components: [
+    React.ComponentType,
     React.ComponentType,
     React.ComponentType,
     React.ComponentType,
@@ -235,36 +236,41 @@ const ValidatorListDataTableLayout: React.FC<
     <DataTable
       columns={[
         {
+          label: 'Name',
+          columnType: ValidatorSummaryColumn.name,
+          buildCell: props.components[0],
+        },
+        {
           label: 'Address',
           columnType: ValidatorSummaryColumn.address,
-          buildCell: props.components[0],
+          buildCell: props.components[1],
         },
         {
           label: 'Company',
           columnType: ValidatorSummaryColumn.companyName,
-          buildCell: props.components[1],
+          buildCell: props.components[2],
         },
         {
           label: 'Website',
           columnType: ValidatorSummaryColumn.companyWebSite,
-          buildCell: props.components[2],
+          buildCell: props.components[3],
         },
         {
           label: 'Commission',
           columnType: ValidatorSummaryColumn.commission,
-          buildCell: props.components[3],
+          buildCell: props.components[4],
           alignment: Alignment.end,
         },
         {
           label: 'Total Stake',
           columnType: ValidatorSummaryColumn.stake,
-          buildCell: props.components[4],
+          buildCell: props.components[5],
           alignment: Alignment.end,
         },
         {
           label: 'Stake',
           columnType: ValidatorSummaryColumn.actions,
-          buildCell: props.components[5],
+          buildCell: props.components[6],
           alignment: Alignment.center,
         },
       ]}
@@ -295,6 +301,7 @@ export const NodesSummaryDataTablePlaceholder: React.FC<
           SkeletonContent,
           SkeletonContent,
           SkeletonContent,
+          SkeletonContent,
         ]}
       />
     </DataContext.Provider>
@@ -310,6 +317,7 @@ export const NodesSummaryDataTablePopulated: React.FC = () => {
   return (
     <ValidatorListDataTableLayout
       components={[
+        NameCell,
         ValidatorAddress,
         CompanyName,
         WebSiteCell,

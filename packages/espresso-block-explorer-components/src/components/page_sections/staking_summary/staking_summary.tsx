@@ -275,22 +275,6 @@ const ProvideCurrentStakeTableV1Allowance: React.FC<
   // Retrieve the Allowance granted to the current Stake Table contract.
 
   const wagmiClient = wagmiContext.getClient();
-  // const r = writeContract(wagmiClient, {
-  //   address: espTokenAddress,
-  //   functionName: 'approve',
-  //   abi: parseAbi(['function approve(address,uint256) returns (bool)']),
-  //   args: [stakeTableAddress, 0n],
-  //   account: null,
-  // });
-
-  // r.then(
-  //   (result) => {
-  //     console.info('<<< HERE approve result', result);
-  //   },
-  //   (error) => {
-  //     console.error('<<< HERE approve error', error);
-  //   },
-  // );
 
   const result = readContract(wagmiClient, {
     address: espTokenAddress,
@@ -425,7 +409,6 @@ export const StakingSummarySection: React.FC<
   }
 
   const foundChain = wagmiConfig.chains.find((c) => chain.id === c.id) ?? null;
-  console.info('<<< HERE found chain', chain, foundChain);
 
   if (!foundChain) {
     // The chain is not supported by the current wagmi config.  So we need
