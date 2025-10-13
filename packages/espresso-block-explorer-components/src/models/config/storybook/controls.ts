@@ -7,6 +7,7 @@ export const environmentControlArgType = {
     Environment.mainnet,
     Environment.decaf,
     Environment.fakeData,
+    Environment.localDevNet,
   ],
   control: { type: 'select' },
   description:
@@ -49,13 +50,13 @@ export const environmentArgTypesWithContracts = {
 
 export interface EnvironmentArgs {
   environment: Environment;
-  hotshotQueryServiceURL?: string | null;
-  nodeValidatorWebSocketURL?: string | null;
+  hotshotQueryServiceURL?: string;
+  nodeValidatorWebSocketURL?: string;
 }
 
 export interface EnvironmentWithContractsArgs extends EnvironmentArgs {
-  stakeTableContractAddress?: `0x${string}` | null;
-  espTokenContractAddress?: `0x${string}` | null;
+  stakeTableContractAddress?: `0x${string}`;
+  espTokenContractAddress?: `0x${string}`;
 }
 
 export const environmentArgsMilk: EnvironmentArgs = {
@@ -66,8 +67,8 @@ export const environmentArgsMilk: EnvironmentArgs = {
 
 export const environmentArgsMilkWithContracts: EnvironmentWithContractsArgs = {
   ...environmentArgsMilk,
-  stakeTableContractAddress: '0x196dbcbb54b8ec4958c959d8949ebfe87ac2aaaf',
-  espTokenContractAddress: '0xf7cd8fa9b94db2aa972023b379c7f72c65e4de9d',
+  stakeTableContractAddress: '0xed1db453c3156ff3155a97ad217b3087d5dc5f6e',
+  espTokenContractAddress: '0xe1aa25618fa0c7a1cfdab5d6b456af611873b629',
 };
 
 export const environmentArgsWater: EnvironmentArgs = {
@@ -78,8 +79,8 @@ export const environmentArgsWater: EnvironmentArgs = {
 
 export const environmentArgsWaterWithContracts: EnvironmentWithContractsArgs = {
   ...environmentArgsWater,
-  stakeTableContractAddress: '0x82c6d3ed4cd33d8ec1e51d0b5cc1d822eaa0c3dc',
-  espTokenContractAddress: '0x12975173b87f7595ee45dffb2ab812ece596bf84',
+  stakeTableContractAddress: '0xed1db453c3156ff3155a97ad217b3087d5dc5f6e',
+  espTokenContractAddress: '0xe1aa25618fa0c7a1cfdab5d6b456af611873b629',
 };
 
 export const environmentArgsDecaf: EnvironmentArgs = {
@@ -103,19 +104,32 @@ export const environmentArgsMainnet: EnvironmentArgs = {
 export const environmentArgsMainnetWithContracts: EnvironmentWithContractsArgs =
   {
     ...environmentArgsMainnet,
-    stakeTableContractAddress: null,
-    espTokenContractAddress: null,
+    stakeTableContractAddress: undefined,
+    espTokenContractAddress: undefined,
   };
 
 export const environmentArgsFakeData: EnvironmentArgs = {
-  environment: Environment.mainnet,
-  hotshotQueryServiceURL: '',
-  nodeValidatorWebSocketURL: '',
+  environment: Environment.fakeData,
+  hotshotQueryServiceURL: undefined,
+  nodeValidatorWebSocketURL: undefined,
 };
 
 export const environmentArgsFakeDataWithContracts: EnvironmentWithContractsArgs =
   {
     ...environmentArgsFakeData,
-    stakeTableContractAddress: null,
-    espTokenContractAddress: null,
+    stakeTableContractAddress: undefined,
+    espTokenContractAddress: undefined,
+  };
+
+export const environmentArgsLocalDevNet: EnvironmentArgs = {
+  environment: Environment.localDevNet,
+  hotshotQueryServiceURL: 'http://localhost:24000/v0/',
+  nodeValidatorWebSocketURL: 'ws://localhost:9000/v0/',
+};
+
+export const environmentArgsLocalDevNetWithContracts: EnvironmentWithContractsArgs =
+  {
+    ...environmentArgsLocalDevNet,
+    stakeTableContractAddress: '0x12975173b87f7595ee45dffb2ab812ece596bf84',
+    espTokenContractAddress: '0x0c8e79f3534b00d9a3d4a856b665bf4ebc22f2ba',
   };

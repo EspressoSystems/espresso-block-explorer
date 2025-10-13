@@ -15,4 +15,5 @@ export enum Environment {
   milk = 'milk',
   water = 'water',
   fakeData = 'fakeData',
+  localDevNet = 'localDevNet',
 }

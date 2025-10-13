@@ -4,6 +4,7 @@ import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecafWithContracts,
   environmentArgsFakeDataWithContracts,
+  environmentArgsLocalDevNetWithContracts,
   environmentArgsMainnetWithContracts,
   environmentArgsMilkWithContracts,
   environmentArgsWaterWithContracts,
@@ -98,4 +99,15 @@ export const Mainnet: Story = {
 
 export const FakeData: Story = {
   args: environmentArgsFakeDataWithContracts,
+};
+
+export const LocalDevNet: Story = {
+  args: environmentArgsLocalDevNetWithContracts,
+};
+
+export const LocalTestingMilk: Story = {
+  args: {
+    ...environmentArgsMilkWithContracts,
+    nodeValidatorWebSocketURL: 'ws://localhost:9000/v0/',
+  },
 };

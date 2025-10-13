@@ -5,6 +5,7 @@ import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
   environmentArgsFakeData,
+  environmentArgsLocalDevNet,
   environmentArgsMainnet,
   environmentArgsMilk,
   environmentArgsWater,
@@ -85,4 +86,6 @@ export const FakeData: Story = {
   args: environmentArgsFakeData,
 };
 
+export const LocalDevNet: Story = {
+  args: environmentArgsLocalDevNet,
 };

@@ -58,6 +58,26 @@ export const milk: WagmiConfig = createConfig({
   },
 });
 
+export const localDevNet: WagmiConfig = createConfig({
+  chains: [
+    defineChain({
+      id: 31337,
+      name: 'GETH (Local DevNet)',
+      nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+      rpcUrls: {
+        default: {
+          http: ['http://localhost:8545'],
+          webSocket: ['ws://localhost:8546'],
+        },
+      },
+      testnet: true,
+    }),
+  ],
+  client({ chain }) {
+    return createClient({ chain, transport: http() });
+  },
+});
+
 /**
  * getWagmiConfigForEnvironment returns the appropriate WagmiConfig based on
  * the provided environment.
@@ -77,7 +97,10 @@ export function getWagmiConfigForEnvironment(
     case Environment.milk:
       return milk;
     case Environment.fakeData:
-      return mainnet; // Use mainnet as a fallback for fake data
+      return localDevNet; // Use local devnet as a fallback for fake data
+    case Environment.localDevNet:
+      return localDevNet;
+
     default:
       throw new Error(`Unsupported environment: ${environment}`);
   }

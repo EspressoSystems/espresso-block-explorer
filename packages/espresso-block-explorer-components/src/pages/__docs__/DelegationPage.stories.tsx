@@ -1,9 +1,16 @@
 import { ProvideTickEverySecond } from '@/components/contexts/NowProvider';
+import {
+  RainbowKitAccountAddressContext,
+  RainbowKitAccountContext,
+  RainbowKitChainContext,
+  RainbowKitMountedContext,
+} from '@/components/rainbowkit';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecafWithContracts,
   environmentArgsFakeDataWithContracts,
+  environmentArgsLocalDevNetWithContracts,
   environmentArgsMainnetWithContracts,
   environmentArgsMilkWithContracts,
   environmentArgsWaterWithContracts,
@@ -18,6 +25,19 @@ import React from 'react';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
 import DelegationPage from '../DelegationPage';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
+
+const FAKE_ACCOUNT_ADDRESS = '0x000000000000000000000000000000000000dead';
+const FAKE_ACCOUNT = {
+  address: FAKE_ACCOUNT_ADDRESS,
+  displayName: '0x0000...dead',
+  hasPendingTransactions: false,
+};
+
+const FAKE_CHAIN = {
+  hasIcon: false,
+  id: 31337,
+  name: 'Local Geth DevNet',
+};
 
 interface ExampleProps {
   environment: Environment;
@@ -34,30 +54,65 @@ const Example: React.FC<ExampleProps> = ({
   hotshotQueryServiceURL,
   nodeValidatorWebSocketURL,
   ...rest
-}) => (
-  <>
-    <StoryBookSpecifyEnvironmentAndContracts
-      environment={environment}
-      stakeTableContractAddress={stakeTableContractAddress}
-      espTokenContractAddress={espTokenContractAddress}
-      hotshotQueryServiceURL={hotshotQueryServiceURL}
-      nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
-    >
-      <EnvironmentBanner />
-      <ProvideTickEverySecond>
-        <ProvideCappuccinoNodeValidatorServiceAPIContext>
-          <ProvideCappuccinoHotShotQueryServiceAPIContext>
-            <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-              <ProvideCappuccinoNodeValidatorStreams>
-                <DelegationPage {...rest} />
-              </ProvideCappuccinoNodeValidatorStreams>
-            </OverridePathResolver>
-          </ProvideCappuccinoHotShotQueryServiceAPIContext>
-        </ProvideCappuccinoNodeValidatorServiceAPIContext>
-      </ProvideTickEverySecond>
-    </StoryBookSpecifyEnvironmentAndContracts>
-  </>
-);
+}) => {
+  if (environment === Environment.fakeData) {
+    <>
+      <StoryBookSpecifyEnvironmentAndContracts
+        environment={environment}
+        stakeTableContractAddress={stakeTableContractAddress}
+        espTokenContractAddress={espTokenContractAddress}
+      >
+        <EnvironmentBanner />
+        <ProvideTickEverySecond>
+          <ProvideCappuccinoNodeValidatorServiceAPIContext>
+            <ProvideCappuccinoHotShotQueryServiceAPIContext>
+              <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
+                <ProvideCappuccinoNodeValidatorStreams>
+                  <RainbowKitAccountContext.Provider value={FAKE_ACCOUNT}>
+                    <RainbowKitMountedContext.Provider value={true}>
+                      <RainbowKitAccountAddressContext.Provider
+                        value={FAKE_ACCOUNT_ADDRESS}
+                      >
+                        <RainbowKitChainContext.Provider value={FAKE_CHAIN}>
+                          <DelegationPage {...rest} />
+                        </RainbowKitChainContext.Provider>
+                      </RainbowKitAccountAddressContext.Provider>
+                    </RainbowKitMountedContext.Provider>
+                  </RainbowKitAccountContext.Provider>
+                </ProvideCappuccinoNodeValidatorStreams>
+              </OverridePathResolver>
+            </ProvideCappuccinoHotShotQueryServiceAPIContext>
+          </ProvideCappuccinoNodeValidatorServiceAPIContext>
+        </ProvideTickEverySecond>
+      </StoryBookSpecifyEnvironmentAndContracts>
+    </>;
+  }
+
+  return (
+    <>
+      <StoryBookSpecifyEnvironmentAndContracts
+        environment={environment}
+        stakeTableContractAddress={stakeTableContractAddress}
+        espTokenContractAddress={espTokenContractAddress}
+        hotshotQueryServiceURL={hotshotQueryServiceURL}
+        nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
+      >
+        <EnvironmentBanner />
+        <ProvideTickEverySecond>
+          <ProvideCappuccinoNodeValidatorServiceAPIContext>
+            <ProvideCappuccinoHotShotQueryServiceAPIContext>
+              <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
+                <ProvideCappuccinoNodeValidatorStreams>
+                  <DelegationPage {...rest} />
+                </ProvideCappuccinoNodeValidatorStreams>
+              </OverridePathResolver>
+            </ProvideCappuccinoHotShotQueryServiceAPIContext>
+          </ProvideCappuccinoNodeValidatorServiceAPIContext>
+        </ProvideTickEverySecond>
+      </StoryBookSpecifyEnvironmentAndContracts>
+    </>
+  );
+};
 
 const meta: Meta = {
   title: 'Pages/Delegation',
@@ -100,4 +155,6 @@ export const FakeData: Story = {
   args: environmentArgsFakeDataWithContracts,
 };
 
+export const LocalDevNet: Story = {
+  args: environmentArgsLocalDevNetWithContracts,
 };

@@ -5,6 +5,7 @@ import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
   environmentArgsFakeData,
+  environmentArgsLocalDevNet,
   environmentArgsMainnet,
   environmentArgsMilk,
   environmentArgsWater,
@@ -129,5 +130,9 @@ export const FakeData: Story = {
   },
 };
 
+export const LocalDevNet: Story = {
+  args: {
+    ...environmentArgsLocalDevNet,
+    ...defaultRollUpPageArgs,
   },
 };
