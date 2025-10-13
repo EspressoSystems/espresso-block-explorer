@@ -12,9 +12,9 @@ import {
   environmentArgTypes,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
-import { Meta, StoryObj } from 'storybook';
 import BlockPage from '../BlockPage';
 import { ProvideCappuccinoBlockDetailDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
@@ -59,6 +59,13 @@ const meta: Meta = {
   parameters: {
     layout: 'fullscreen',
   },
+  argTypes: {
+    ...environmentArgTypes,
+    block: {
+      control: 'number',
+      description: 'The block number to show details for',
+    },
+  },
 };
 
 export default meta;
@@ -72,20 +79,9 @@ const defaultBlockPageArgs: BlockPageArgs = {
   block: 0,
 };
 
-const blockPageArgTypes = {
-  block: {
-    control: 'number',
-    description: 'The block number to show details for',
-  },
-};
-
 export const Default: Story = {
   args: {
     ...defaultBlockPageArgs,
-  },
-  argTypes: {
-    ...environmentArgTypes,
-    ...blockPageArgTypes,
   },
 };
 
@@ -94,21 +90,12 @@ export const Milk: Story = {
     ...environmentArgsMilk,
     ...defaultBlockPageArgs,
   },
-  argTypes: {
-    ...environmentArgTypes,
-    ...blockPageArgTypes,
-  },
 };
 
 export const Water: Story = {
   args: {
     ...environmentArgsWater,
     ...defaultBlockPageArgs,
-  },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...blockPageArgTypes,
   },
 };
 
@@ -117,22 +104,12 @@ export const Decaf: Story = {
     ...environmentArgsDecaf,
     ...defaultBlockPageArgs,
   },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...blockPageArgTypes,
-  },
 };
 
 export const Mainnet: Story = {
   args: {
     ...environmentArgsMainnet,
     ...defaultBlockPageArgs,
-  },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...blockPageArgTypes,
   },
 };
 
@@ -141,9 +118,7 @@ export const FakeData: Story = {
     ...environmentArgsFakeData,
     ...defaultBlockPageArgs,
   },
+};
 
-  argTypes: {
-    ...environmentArgTypes,
-    ...blockPageArgTypes,
   },
 };

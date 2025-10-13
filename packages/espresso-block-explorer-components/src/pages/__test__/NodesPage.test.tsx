@@ -1,17 +1,16 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import * as stories from '../__docs__/NodesPage.stories';
 
-const composedStories = composeStories(stories);
-const Default = composedStories.Default as React.FC;
+const { FakeData } = composeStories(stories);
 
 window.HTMLElement.prototype.scrollIntoView = function () {};
 
 describe('NodesPage', async () => {
   it('should render the story', async () => {
-    render(<Default data-testid="1" />);
+    render(<FakeData data-testid="1" />);
 
     // Wait for the main page to be present.
     await waitFor(() => {

@@ -10,9 +10,9 @@ import {
   environmentArgTypes,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
-import { Meta, StoryObj } from 'storybook';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
 import { ProvideCappuccinoRollUpsSummaryDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
 import RollUpsPage from '../RollUpsPage';
@@ -54,6 +54,9 @@ const meta: Meta = {
   parameters: {
     layout: 'fullscreen',
   },
+  argTypes: {
+    ...environmentArgTypes,
+  },
 };
 
 export default meta;
@@ -63,15 +66,9 @@ interface RollUpsPageArgs {}
 
 const defaultRollUpsPageArgs: RollUpsPageArgs = {};
 
-const rollupsPageArgTypes = {};
-
 export const Default: Story = {
   args: {
     ...defaultRollUpsPageArgs,
-  },
-  argTypes: {
-    ...environmentArgTypes,
-    ...rollupsPageArgTypes,
   },
 };
 
@@ -80,21 +77,12 @@ export const Milk: Story = {
     ...environmentArgsMilk,
     ...defaultRollUpsPageArgs,
   },
-  argTypes: {
-    ...environmentArgTypes,
-    ...rollupsPageArgTypes,
-  },
 };
 
 export const Water: Story = {
   args: {
     ...environmentArgsWater,
     ...defaultRollUpsPageArgs,
-  },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...rollupsPageArgTypes,
   },
 };
 
@@ -103,22 +91,12 @@ export const Decaf: Story = {
     ...environmentArgsDecaf,
     ...defaultRollUpsPageArgs,
   },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...rollupsPageArgTypes,
-  },
 };
 
 export const Mainnet: Story = {
   args: {
     ...environmentArgsMainnet,
     ...defaultRollUpsPageArgs,
-  },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...rollupsPageArgTypes,
   },
 };
 
@@ -127,9 +105,7 @@ export const FakeData: Story = {
     ...environmentArgsFakeData,
     ...defaultRollUpsPageArgs,
   },
+};
 
-  argTypes: {
-    ...environmentArgTypes,
-    ...rollupsPageArgTypes,
   },
 };

@@ -29,6 +29,12 @@ export class PseudoRandomNumberGenerator {
     return start + Math.floor(randomUnder1 * rangeSize);
   }
 
+  nextRangeBigInt(start: bigint, end: bigint): bigint {
+    const rangeSize = end - start;
+    const randomUnder1 = (BigInt(this.nextInt()) * 1000000n) / BigInt(kM);
+    return start + (randomUnder1 * rangeSize) / 1000000n;
+  }
+
   fillBytes(n: number): ArrayBuffer {
     const ab = new ArrayBuffer(n);
     const dv = new DataView(ab);

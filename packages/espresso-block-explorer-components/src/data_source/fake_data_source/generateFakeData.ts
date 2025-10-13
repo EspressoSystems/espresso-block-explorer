@@ -239,6 +239,9 @@ export async function* generateTransactionsForBlock(
 
 export type GeneratedNodeIdentityInformation = {
   pubkey: TaggedBase64;
+  stateVerKey: TaggedBase64;
+  stake: bigint;
+  commission: number;
   address: ArrayBuffer;
   name: string;
 
@@ -312,6 +315,9 @@ function generateNodeIdentityInformationData(
 
   return {
     pubkey: new TaggedBase64('PUBKEY', prng.fillBytes(32)),
+    stateVerKey: new TaggedBase64('STATE_VER_KEY', prng.fillBytes(32)),
+    stake: prng.nextRangeBigInt(0n, 1000n) * 1000000000000000000n,
+    commission: prng.nextRange(0, 5000),
     name: `${companyName} Node ${country} ${prng.nextRange(0, 100)}`,
     address: prng.fillBytes(32),
     company: {

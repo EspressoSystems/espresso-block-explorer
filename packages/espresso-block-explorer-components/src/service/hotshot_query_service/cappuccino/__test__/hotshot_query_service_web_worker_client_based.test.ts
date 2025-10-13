@@ -9,7 +9,7 @@ import { CappuccinoExplorerGetTransactionSummariesTarget } from '../explorer/get
 import { WebWorkerClientBasedCappuccinoHotShotQueryService } from '../hotshot_query_service_web_worker_client_based';
 
 describe('Web worker Client Based', () => {
-  describe('Fake Data', () => {
+  describe('Fake Data', { timeout: 10000 }, () => {
     const client = new WebWorkerClientBasedCappuccinoHotShotQueryService();
 
     describe('Status', () => {

@@ -10,11 +10,11 @@ import {
   environmentArgTypesWithContracts,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybook/storybook';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import { ProvideCappuccinoNodeValidatorStreams } from 'pages/CappuccinoNodeValidatorServiceAdapters';
 import { ProvideCappuccinoNodeValidatorServiceAPIContext } from 'pages/CappuccinoNodeValidatorServiceAPIContext';
 import React from 'react';
-import { Meta, StoryObj } from 'storybook';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
 import DelegationPage from '../DelegationPage';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
@@ -67,41 +67,37 @@ const meta: Meta = {
   },
   args: {
     environment: Environment.fakeData,
-    stakeTableContractAddress: '',
-    espTokenContractAddress: '',
-    hotshotQueryServiceURL: '',
-    nodeValidatorWebSocketURL: '',
+    stakeTableContractAddress: undefined,
+    espTokenContractAddress: undefined,
+    hotshotQueryServiceURL: undefined,
+    nodeValidatorWebSocketURL: undefined,
   },
+  argTypes: environmentArgTypesWithContracts,
 };
 
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const Default: Story = {
-  argTypes: environmentArgTypesWithContracts,
-};
+export const Default: Story = {};
 
 export const Milk: Story = {
   args: environmentArgsMilkWithContracts,
-  argTypes: environmentArgTypesWithContracts,
 };
 
 export const Water: Story = {
   args: environmentArgsWaterWithContracts,
-  argTypes: environmentArgTypesWithContracts,
 };
 
 export const Decaf: Story = {
   args: environmentArgsDecafWithContracts,
-  argTypes: environmentArgTypesWithContracts,
 };
 
 export const Mainnet: Story = {
   args: environmentArgsMainnetWithContracts,
-  argTypes: environmentArgTypesWithContracts,
 };
 
 export const FakeData: Story = {
   args: environmentArgsFakeDataWithContracts,
-  argTypes: environmentArgTypesWithContracts,
+};
+
 };

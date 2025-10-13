@@ -10,11 +10,11 @@ import {
   environmentArgTypesWithContracts,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybook/storybook';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import { ProvideCappuccinoNodeValidatorStreams } from 'pages/CappuccinoNodeValidatorServiceAdapters';
 import { ProvideCappuccinoNodeValidatorServiceAPIContext } from 'pages/CappuccinoNodeValidatorServiceAPIContext';
 import React from 'react';
-import { Meta, StoryObj } from 'storybook';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
 import NodesPage from '../NodesPage';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
@@ -72,48 +72,30 @@ const meta: Meta = {
     hotshotQueryServiceURL: '',
     nodeValidatorWebSocketURL: '',
   },
+  argTypes: environmentArgTypesWithContracts,
 };
 
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const Default: Story = {
-  argTypes: environmentArgTypesWithContracts,
-};
+export const Default: Story = {};
 
 export const Milk: Story = {
   args: environmentArgsMilkWithContracts,
-  argTypes: environmentArgTypesWithContracts,
 };
 
 export const Water: Story = {
   args: environmentArgsWaterWithContracts,
-  argTypes: environmentArgTypesWithContracts,
 };
 
 export const Decaf: Story = {
   args: environmentArgsDecafWithContracts,
-  argTypes: environmentArgTypesWithContracts,
 };
 
 export const Mainnet: Story = {
   args: environmentArgsMainnetWithContracts,
-  argTypes: environmentArgTypesWithContracts,
 };
 
 export const FakeData: Story = {
   args: environmentArgsFakeDataWithContracts,
-  argTypes: environmentArgTypesWithContracts,
-};
-
-export const LocalTestingMilk: Story = {
-  args: {
-    environment: 'milk',
-    stakeTableContractAddress: '0x196dbcbb54b8ec4958c959d8949ebfe87ac2aaaf',
-    espTokenContractAddress: '0xf7cd8fa9b94db2aa972023b379c7f72c65e4de9d',
-    hotshotQueryServiceURL: 'https://query-0.milk.devnet.espresso.network/v0/',
-    nodeValidatorWebSocketURL: 'ws://localhost:9000/v0/',
-  },
-
-  argTypes: environmentArgTypesWithContracts,
 };

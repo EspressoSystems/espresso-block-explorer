@@ -1,6 +1,6 @@
 import Text from '@/text/Text';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { Meta, StoryObj } from 'storybook';
 import ButtonComp from '../button/Button';
 
 interface ExampleProps {
