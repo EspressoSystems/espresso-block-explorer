@@ -40,7 +40,12 @@ const OptimismBatchDecoderTool: React.FC<ExampleProps> = (props) => {
   }
 
   if (rawData) {
-    const optimismBatch = extractOptimismBatch(rawData);
+    let optimismBatch: null | ReturnType<typeof extractOptimismBatch> = null;
+    try {
+      optimismBatch = extractOptimismBatch(rawData);
+    } catch (e) {
+      return <Text text={`Error decoding Optimism Batch: ${e!.toString()}`} />;
+    }
 
     if (!optimismBatch) {
       return <Text text="Error: Unable to decode Nitro Batch from input" />;
