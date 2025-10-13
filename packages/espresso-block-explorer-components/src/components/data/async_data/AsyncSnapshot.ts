@@ -70,8 +70,8 @@ export abstract class AsyncSnapshot<T> {
    * In this case it's most likely that any errors would prevent further
    * updates.
    */
-  public static withError(asyncState: AsyncState, error: unknown) {
-    return new AsyncSnapshotError(asyncState, error);
+  public static withError<T>(asyncState: AsyncState, error: unknown) {
+    return new AsyncSnapshotError<T>(asyncState, error);
   }
 }
 
