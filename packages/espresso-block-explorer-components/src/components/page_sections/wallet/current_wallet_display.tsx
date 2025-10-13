@@ -5,7 +5,8 @@ import {
   RainbowKitModalContext,
 } from '@/components/rainbowkit';
 import { Text } from '@/components/text';
-import ChevronRight from '@/components/visual/icons/ChevronRight';
+import Chain from '@/components/visual/icons/Chain';
+import LogOut from '@/components/visual/icons/LogOut';
 import React from 'react';
 import './current_wallet_display.css';
 
@@ -71,10 +72,10 @@ export const CurrentWalletDisplay: React.FC<CurrentWalletDisplayProps> = () => {
       <CurrentWalletENSAvatar />
       <CurrentWalletDisplayLabel />
       <IconButton onClick={modals.openAccountModal}>
-        <ChevronRight />
+        <LogOut />
       </IconButton>
       <IconButton onClick={modals.openChainModal}>
-        <ChevronRight />
+        <Chain />
       </IconButton>
     </div>
   );
