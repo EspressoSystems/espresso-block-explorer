@@ -1,7 +1,7 @@
 export { default as ArrowLeft } from './ArrowLeft';
 export { default as ArrowRight } from './ArrowRight';
 export { default as Check } from './Check';
-export { default as CheckCircle } from './CheckCircle';
+export { default as CheckCircleFilled } from './CheckCircleFilled';
 export { default as ChevronDown } from './ChevronDown';
 export { default as ChevronUp } from './ChevronUp';
 export { default as DiscordIcon } from './DiscordIcon';

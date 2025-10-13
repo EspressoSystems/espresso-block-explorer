@@ -1,10 +1,9 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 import { describe, expect, it } from 'vitest';
 import ArrowLeft from '../ArrowLeft';
 import ArrowRight from '../ArrowRight';
-import CheckCircle from '../CheckCircle';
+import CheckCircleFilled from '../CheckCircleFilled';
 import ChevronDown from '../ChevronDown';
 import ChevronUp from '../ChevronUp';
 import DiscordIcon from '../DiscordIcon';
@@ -40,7 +39,7 @@ describe('Icons Test', () => {
   });
   describe('CheckCircle', () => {
     it('should be in the document', () => {
-      render(<CheckCircle data-testid="1" />);
+      render(<CheckCircleFilled data-testid="1" />);
       const element = screen.getByTestId('1');
       expect(element).toBeInTheDocument();
     });

@@ -1,6 +1,6 @@
 import { Now } from '@/contexts/NowProvider';
 import { addClassToClassName } from '@/higher_order';
-import CheckCircle from '@/visual/icons/CheckCircle';
+import CheckCircleFilled from '@/visual/icons/CheckCircleFilled';
 import Copy from '@/visual/icons/Copy';
 import React from 'react';
 import './copy_button.css';
@@ -41,7 +41,7 @@ const CopyButton: React.FC<ButtonProps> = (props) => {
         className={addClassToClassName(props.className, 'btn--copy copied')}
         title="Copy Contents"
       >
-        <CheckCircle />
+        <CheckCircleFilled />
       </button>
     );
   }
