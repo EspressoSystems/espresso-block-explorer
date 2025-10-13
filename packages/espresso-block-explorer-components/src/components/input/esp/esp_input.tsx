@@ -79,13 +79,21 @@ function parseESPValue(
   return MonetaryValue.ESP(preDecimal + postDecimal);
 }
 
+function determineValue(money: MonetaryValue): number | bigint {
+  if (money.value % money.currency.significantDigitsMultiplier === 0n) {
+    return money.value / money.currency.significantDigitsMultiplier;
+  }
+
+  return (
+    Number(money.value) / Number(money.currency.significantDigitsMultiplier)
+  );
+}
+
 export const ESPInput: React.FC<ESPInputProps> = (props) => {
   const formatter = React.useContext(CurrentNumberFormatters).ESP;
   const { value: rawInitialValue, onChange, ...rest } = props;
   const initialValue = rawInitialValue ?? MonetaryValue.ESP(0n);
-  const value =
-    Number(initialValue.value) /
-    Number(initialValue.currency.significantDigitsMultiplier);
+  const value = determineValue(initialValue);
   const initial = new TextEditingValue(formatter.format(value));
 
   // Let's track the editing value of the input.
