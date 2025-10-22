@@ -2,13 +2,14 @@ import { ProvideTickEverySecond } from '@/components/contexts/NowProvider';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import { Environment } from '@/models/config/environment/environment';
 import {
-  environmentArgsDecafWithContracts,
-  environmentArgsFakeDataWithContracts,
-  environmentArgsLocalDevNetWithContracts,
-  environmentArgsMainnetWithContracts,
+  environmentArgsDecaf,
+  environmentArgsFakeData,
+  environmentArgsLocalDevNet,
+  environmentArgsMainnet,
+  environmentArgsMilk,
   environmentArgsMilkWithContracts,
-  environmentArgsWaterWithContracts,
-  environmentArgTypesWithContracts,
+  environmentArgsWater,
+  environmentArgTypes,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
@@ -22,16 +23,12 @@ import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
 interface ExampleProps {
   environment: Environment;
-  stakeTableContractAddress?: string;
-  espTokenContractAddress?: string;
   hotshotQueryServiceURL?: string;
   nodeValidatorWebSocketURL?: string;
 }
 
 const Example: React.FC<ExampleProps> = ({
   environment,
-  stakeTableContractAddress,
-  espTokenContractAddress,
   hotshotQueryServiceURL,
   nodeValidatorWebSocketURL,
   ...rest
@@ -39,8 +36,6 @@ const Example: React.FC<ExampleProps> = ({
   <>
     <StoryBookSpecifyEnvironmentAndContracts
       environment={environment}
-      stakeTableContractAddress={stakeTableContractAddress}
-      espTokenContractAddress={espTokenContractAddress}
       hotshotQueryServiceURL={hotshotQueryServiceURL}
       nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
     >
@@ -68,12 +63,10 @@ const meta: Meta = {
   },
   args: {
     environment: Environment.fakeData,
-    stakeTableContractAddress: '',
-    espTokenContractAddress: '',
     hotshotQueryServiceURL: '',
     nodeValidatorWebSocketURL: '',
   },
-  argTypes: environmentArgTypesWithContracts,
+  argTypes: environmentArgTypes,
 };
 
 export default meta;
@@ -82,27 +75,27 @@ type Story = StoryObj<typeof Example>;
 export const Default: Story = {};
 
 export const Milk: Story = {
-  args: environmentArgsMilkWithContracts,
+  args: environmentArgsMilk,
 };
 
 export const Water: Story = {
-  args: environmentArgsWaterWithContracts,
+  args: environmentArgsWater,
 };
 
 export const Decaf: Story = {
-  args: environmentArgsDecafWithContracts,
+  args: environmentArgsDecaf,
 };
 
 export const Mainnet: Story = {
-  args: environmentArgsMainnetWithContracts,
+  args: environmentArgsMainnet,
 };
 
 export const FakeData: Story = {
-  args: environmentArgsFakeDataWithContracts,
+  args: environmentArgsFakeData,
 };
 
 export const LocalDevNet: Story = {
-  args: environmentArgsLocalDevNetWithContracts,
+  args: environmentArgsLocalDevNet,
 };
 
 export const LocalTestingMilk: Story = {
