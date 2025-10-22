@@ -253,6 +253,15 @@ const infiniteGarden = new RollUpEntry(
   new URL('https://explorer.main.net.espressosys.com/'),
 );
 
+const kTimeBoostDecafNamespace = 10_101;
+
+const timeBoostDecaf = new RollUpEntry(
+  kTimeBoostDecafNamespace,
+  'Timeboost Decaf',
+  new URL('https://espressosys.com/'),
+  new URL('https://explorer.decaf.testnet.espresso.network/'),
+);
+
 export const curatedMainnetList = [
   infiniteGarden,
   rari,
@@ -274,6 +283,7 @@ export const curatedDecafList = [
   apeChainDecaf,
   t3rnDecaf,
   rufusDecaf,
+  timeBoostDecaf,
   // Add more Decaf rollups here
 ];
 
