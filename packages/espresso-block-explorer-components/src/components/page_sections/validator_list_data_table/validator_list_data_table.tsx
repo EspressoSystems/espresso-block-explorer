@@ -7,7 +7,7 @@ import { MoneyText } from '@/components/text';
 import CopyWalletAddress from '@/components/text/CopyWalletAddress';
 import PercentageText from '@/components/text/PercentageText';
 import WalletAddressText from '@/components/text/WalletAddressText';
-import Payments from '@/components/visual/icons/Payments';
+import ArrowDownward from '@/components/visual/icons/ArrowDownward';
 import {
   compareArrayBuffer,
   foldRIterator,
@@ -207,7 +207,7 @@ const Delegate: React.FC = () => {
           modalControls.showModal(row.account.toString());
         }}
       >
-        <Payments />
+        <ArrowDownward />
       </IconButton>
     </>
   );
