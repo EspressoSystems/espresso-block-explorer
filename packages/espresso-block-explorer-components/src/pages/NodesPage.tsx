@@ -29,7 +29,6 @@ import {
 } from '@/components/page_sections/nodes_summary_data_table/NodesSummaryLoader';
 import { OperatingSystemPieChart } from '@/components/page_sections/operating_system_pie_chart/OperatingSystemPieChart';
 import { OperatingSystemPieChartStreamConsumer } from '@/components/page_sections/operating_system_pie_chart/OperatingSystemPieChartLoader';
-import { EspressoAccountDetails } from '@/components/page_sections/staking_summary/staking_summary';
 import Text from '@/components/text/Text';
 import { ProjectionProvider } from '@/components/visual/geo_json/ProjectionProvider';
 import WorldMapAutoSizer from '@/components/visual/geo_json/WorldMapAutoSizer';
@@ -96,117 +95,115 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
   <WebSocketResponseStreamConsumer>
     <ErrorStreamConsumer>
       <OverridePagePath page={PageType.nodes}>
-        <EspressoAccountDetails>
-          <Header />
+        <Header />
 
-          {/*
+        {/*
       We're going to have a continually updating Data source.  So we want that
       data source to transform these continual updates into snapshot updates
     */}
 
-          {/*
+        {/*
         This component displays the current Lifecycle state of the page.  It
         reflects what's happening with the underlying Web Socket connection.
         */}
-          <WebSocketStatus className="edge-margin" />
+        <WebSocketStatus className="edge-margin" />
 
-          {/*
+        {/*
           This component displays any errors that have occurred while attempting
           to retrieve the data.
           */}
-          <ErrorDisplay className="edge-margin" />
+        <ErrorDisplay className="edge-margin" />
 
-          <NodeValidatorLayout {...props}>
-            {/* Latest Block */}
-            <LatestBlockSummaryStreamConsumer>
-              <LatestBlockSummaryAsyncHandler className="latest-block" />
-            </LatestBlockSummaryStreamConsumer>
+        <NodeValidatorLayout {...props}>
+          {/* Latest Block */}
+          <LatestBlockSummaryStreamConsumer>
+            <LatestBlockSummaryAsyncHandler className="latest-block" />
+          </LatestBlockSummaryStreamConsumer>
 
-            {/* Latest Block Producers */}
-            <LatestBlockProducersStreamConsumer>
-              <LatestBlockProducersAsyncHandler className="latest-block-producers" />
-            </LatestBlockProducersStreamConsumer>
+          {/* Latest Block Producers */}
+          <LatestBlockProducersStreamConsumer>
+            <LatestBlockProducersAsyncHandler className="latest-block-producers" />
+          </LatestBlockProducersStreamConsumer>
 
-            {/* Block Time Histogram */}
-            <BlockTimeHistogramStreamConsumer>
-              <BlockTimeHistogram />
-            </BlockTimeHistogramStreamConsumer>
+          {/* Block Time Histogram */}
+          <BlockTimeHistogramStreamConsumer>
+            <BlockTimeHistogram />
+          </BlockTimeHistogramStreamConsumer>
 
-            {/* Block Size Histogram */}
-            <BlockSizeHistogramStreamConsumer>
-              <BlockSizeHistogram />
-            </BlockSizeHistogramStreamConsumer>
+          {/* Block Size Histogram */}
+          <BlockSizeHistogramStreamConsumer>
+            <BlockSizeHistogram />
+          </BlockSizeHistogramStreamConsumer>
 
-            {/* Throughput Histogram */}
-            <BlockThroughputHistogramStreamConsumer>
-              <BlockThroughputHistogram />
-            </BlockThroughputHistogramStreamConsumer>
+          {/* Throughput Histogram */}
+          <BlockThroughputHistogramStreamConsumer>
+            <BlockThroughputHistogram />
+          </BlockThroughputHistogramStreamConsumer>
 
-            {/* CDN Status */}
-            <CardNoPadding className="cdn">
-              <CDNStatus className="card-padding" />
-            </CardNoPadding>
+          {/* CDN Status */}
+          <CardNoPadding className="cdn">
+            <CDNStatus className="card-padding" />
+          </CardNoPadding>
 
-            {/* Network Map */}
-            <CardNoPadding className="network-map">
-              <HistogramSectionTitle className="card--padding heading--margin">
-                <Text text="Network Map" />
-                <div></div>
-              </HistogramSectionTitle>
-              <NodeInformationToDotPopulation>
-                <WorldMapAutoSizer>
-                  <ProjectionProvider>
-                    <WorldMapDotsFullResolution />
-                    <DotPopulationStreamConsumer>
-                      <WorldMapDotsPopulationFullResolution />
-                    </DotPopulationStreamConsumer>
-                  </ProjectionProvider>
-                </WorldMapAutoSizer>
-              </NodeInformationToDotPopulation>
-            </CardNoPadding>
+          {/* Network Map */}
+          <CardNoPadding className="network-map">
+            <HistogramSectionTitle className="card--padding heading--margin">
+              <Text text="Network Map" />
+              <div></div>
+            </HistogramSectionTitle>
+            <NodeInformationToDotPopulation>
+              <WorldMapAutoSizer>
+                <ProjectionProvider>
+                  <WorldMapDotsFullResolution />
+                  <DotPopulationStreamConsumer>
+                    <WorldMapDotsPopulationFullResolution />
+                  </DotPopulationStreamConsumer>
+                </ProjectionProvider>
+              </WorldMapAutoSizer>
+            </NodeInformationToDotPopulation>
+          </CardNoPadding>
 
-            {/* Nodes Histogram (Not needed currently) */}
+          {/* Nodes Histogram (Not needed currently) */}
 
-            {/* Node Countries Pie Chart */}
-            <CardNoPadding className="countries">
-              <CountriesPieChartStreamConsumer>
-                <CountriesPieChart />
-              </CountriesPieChartStreamConsumer>
-            </CardNoPadding>
+          {/* Node Countries Pie Chart */}
+          <CardNoPadding className="countries">
+            <CountriesPieChartStreamConsumer>
+              <CountriesPieChart />
+            </CountriesPieChartStreamConsumer>
+          </CardNoPadding>
 
-            {/* Network Types Pie Chart */}
-            <CardNoPadding className="network-types">
-              <NetworkTypesPieChartStreamConsumer>
-                <NetworkTypesPieChart />
-              </NetworkTypesPieChartStreamConsumer>
-            </CardNoPadding>
+          {/* Network Types Pie Chart */}
+          <CardNoPadding className="network-types">
+            <NetworkTypesPieChartStreamConsumer>
+              <NetworkTypesPieChart />
+            </NetworkTypesPieChartStreamConsumer>
+          </CardNoPadding>
 
-            {/* Node Types Pie Chart */}
-            <CardNoPadding className="node-types">
-              <NodeTypesPieChartStreamConsumer>
-                <NodeTypesPieChart />
-              </NodeTypesPieChartStreamConsumer>
-            </CardNoPadding>
+          {/* Node Types Pie Chart */}
+          <CardNoPadding className="node-types">
+            <NodeTypesPieChartStreamConsumer>
+              <NodeTypesPieChart />
+            </NodeTypesPieChartStreamConsumer>
+          </CardNoPadding>
 
-            {/* Operating Systems Pie Chart */}
-            <CardNoPadding className="operating-systems">
-              <OperatingSystemPieChartStreamConsumer>
-                <OperatingSystemPieChart />
-              </OperatingSystemPieChartStreamConsumer>
-            </CardNoPadding>
+          {/* Operating Systems Pie Chart */}
+          <CardNoPadding className="operating-systems">
+            <OperatingSystemPieChartStreamConsumer>
+              <OperatingSystemPieChart />
+            </OperatingSystemPieChartStreamConsumer>
+          </CardNoPadding>
 
-            {/* Recent Node Updates Data Table */}
-            <Card className="nodes">
-              <VotersParticipationStatsConsumer>
-                <NodeSummaryStreamConsumer>
-                  <NodesSummaryDataTable />
-                </NodeSummaryStreamConsumer>
-              </VotersParticipationStatsConsumer>
-            </Card>
-          </NodeValidatorLayout>
+          {/* Recent Node Updates Data Table */}
+          <Card className="nodes">
+            <VotersParticipationStatsConsumer>
+              <NodeSummaryStreamConsumer>
+                <NodesSummaryDataTable />
+              </NodeSummaryStreamConsumer>
+            </VotersParticipationStatsConsumer>
+          </Card>
+        </NodeValidatorLayout>
 
-          <Footer />
-        </EspressoAccountDetails>
+        <Footer />
       </OverridePagePath>
     </ErrorStreamConsumer>
   </WebSocketResponseStreamConsumer>
