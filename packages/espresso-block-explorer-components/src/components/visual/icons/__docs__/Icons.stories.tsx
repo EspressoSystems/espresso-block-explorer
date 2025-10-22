@@ -1,8 +1,10 @@
 import { Divider } from '@/components/layout/divider/divider';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
+import ArrowDownward from '../ArrowDownward';
 import ArrowLeft from '../ArrowLeft';
 import ArrowRight from '../ArrowRight';
+import ArrowUpward from '../ArrowUpward';
 import Chain from '../Chain';
 import Check from '../Check';
 import CheckCircleFilled from '../CheckCircleFilled';
@@ -32,6 +34,8 @@ const Example: React.FC = () => (
     <Divider />
     <ArrowLeft />
     <ArrowRight />
+    <ArrowUpward />
+    <ArrowDownward />
     <Chain />
     <Check />
     <CheckCircleFilled />
