@@ -9,9 +9,10 @@ export declare enum PageType {
     transactions = "transactions",
     rollups = "rollups",
     nodes = "nodes",
+    delegation = "delegation",
     unknown = "unknown"
 }
-export declare function determineBasedOnPathName(pathName?: string): PageType.explorer | PageType.blocks | PageType.transactions | PageType.rollups | PageType.unknown;
+export declare function determineBasedOnPathName(pathName?: string): PageType;
 /**
  * CurrentPagePathContext represents the current Page Path of the page that
  * we are currently on.

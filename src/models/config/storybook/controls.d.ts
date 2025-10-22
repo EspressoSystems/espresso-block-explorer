@@ -1,6 +1,6 @@
 import { Environment } from '../environment/environment';
 export declare const environmentControlArgType: {
-    readonly options: readonly [Environment.water, Environment.milk, Environment.mainnet, Environment.decaf, Environment.fakeData];
+    readonly options: readonly [Environment.water, Environment.milk, Environment.mainnet, Environment.decaf, Environment.fakeData, Environment.localDevNet];
     readonly control: {
         readonly type: "select";
     };
@@ -32,7 +32,7 @@ export declare const nodeValidatorWebSocketURLControlArgType: {
 };
 export declare const environmentArgTypes: {
     readonly environment: {
-        readonly options: readonly [Environment.water, Environment.milk, Environment.mainnet, Environment.decaf, Environment.fakeData];
+        readonly options: readonly [Environment.water, Environment.milk, Environment.mainnet, Environment.decaf, Environment.fakeData, Environment.localDevNet];
         readonly control: {
             readonly type: "select";
         };
@@ -65,7 +65,7 @@ export declare const environmentArgTypesWithContracts: {
         readonly description: "ESP Token Contract Address";
     };
     readonly environment: {
-        readonly options: readonly [Environment.water, Environment.milk, Environment.mainnet, Environment.decaf, Environment.fakeData];
+        readonly options: readonly [Environment.water, Environment.milk, Environment.mainnet, Environment.decaf, Environment.fakeData, Environment.localDevNet];
         readonly control: {
             readonly type: "select";
         };
@@ -86,12 +86,12 @@ export declare const environmentArgTypesWithContracts: {
 };
 export interface EnvironmentArgs {
     environment: Environment;
-    hotshotQueryServiceURL?: string | null;
-    nodeValidatorWebSocketURL?: string | null;
+    hotshotQueryServiceURL?: string;
+    nodeValidatorWebSocketURL?: string;
 }
 export interface EnvironmentWithContractsArgs extends EnvironmentArgs {
-    stakeTableContractAddress?: `0x${string}` | null;
-    espTokenContractAddress?: `0x${string}` | null;
+    stakeTableContractAddress?: `0x${string}`;
+    espTokenContractAddress?: `0x${string}`;
 }
 export declare const environmentArgsMilk: EnvironmentArgs;
 export declare const environmentArgsMilkWithContracts: EnvironmentWithContractsArgs;
@@ -103,3 +103,5 @@ export declare const environmentArgsMainnet: EnvironmentArgs;
 export declare const environmentArgsMainnetWithContracts: EnvironmentWithContractsArgs;
 export declare const environmentArgsFakeData: EnvironmentArgs;
 export declare const environmentArgsFakeDataWithContracts: EnvironmentWithContractsArgs;
+export declare const environmentArgsLocalDevNet: EnvironmentArgs;
+export declare const environmentArgsLocalDevNetWithContracts: EnvironmentWithContractsArgs;

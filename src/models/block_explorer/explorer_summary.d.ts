@@ -6,6 +6,7 @@ export interface GenesisOverviewEntry {
     readonly rollups: number;
     readonly transactions: number;
     readonly blocks: number;
+    readonly sequencerNodes?: number;
 }
 export interface HistogramEntry {
     readonly blockTime: (number | null)[];

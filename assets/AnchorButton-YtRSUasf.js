@@ -1,0 +1,2 @@
+import{j as o}from"./iframe-Dz1tcGmB.js";import{a as t}from"./higher_order-BpBhqnZj.js";const e=a=>o.jsx("a",{...a,className:t(a.className,"btn"),href:a.disabled?void 0:a.href,children:a.children});try{e.displayName="AnchorButton",e.__docgenInfo={description:`AnchorButton is a simple wrapper around an Anchor tag with the purpose of
+making the anchor visually look like a button.`,displayName:"AnchorButton",props:{disabled:{defaultValue:null,description:"",name:"disabled",required:!1,type:{name:"boolean"}}}}}catch{}export{e as A};

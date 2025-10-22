@@ -51,6 +51,9 @@ export type GeneratedTransaction = {
 export declare function generateTransactionsForBlock(prng: PseudoRandomNumberGenerator, height: number, start: number, end: number, numTransactions: number): AsyncGenerator<GeneratedTransaction>;
 export type GeneratedNodeIdentityInformation = {
     pubkey: TaggedBase64;
+    stateVerKey: TaggedBase64;
+    stake: bigint;
+    commission: number;
     address: ArrayBuffer;
     name: string;
     company: {

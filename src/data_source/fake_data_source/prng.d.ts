@@ -4,5 +4,6 @@ export declare class PseudoRandomNumberGenerator {
     nextInt(): number;
     nextFloat(): number;
     nextRange(start: number, end: number): number;
+    nextRangeBigInt(start: bigint, end: bigint): bigint;
     fillBytes(n: number): ArrayBuffer;
 }

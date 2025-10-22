@@ -1,0 +1,1 @@
+.staking-summary-content{display:flex;padding:l6px;justify-content:stretch;flex-direction:column;gap:8px}.staking-summary-content>div{padding:16px;flex:1 1 0}.rewards{border-left:1px solid var(--divider--color)}@media screen and (min-width: 1024px){.staking-summary-content{flex-direction:row}}

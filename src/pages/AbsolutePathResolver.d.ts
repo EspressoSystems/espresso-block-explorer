@@ -17,4 +17,5 @@ export declare class AbsolutePathResolver implements PathResolver {
     rollUps(): string;
     rollUp(namespace: number, startAtBlock?: number, offset?: number): string;
     nodes(): string;
+    delegation(): string;
 }

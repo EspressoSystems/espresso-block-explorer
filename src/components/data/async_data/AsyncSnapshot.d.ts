@@ -45,7 +45,7 @@ export declare abstract class AsyncSnapshot<T> {
      * In this case it's most likely that any errors would prevent further
      * updates.
      */
-    static withError(asyncState: AsyncState, error: unknown): AsyncSnapshotError<unknown>;
+    static withError<T>(asyncState: AsyncState, error: unknown): AsyncSnapshotError<T>;
 }
 /**
  * AsyncSnapshotNothing represents a non-state of an AsyncSnapshot.  It is

@@ -43,4 +43,6 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
     private handleRequestHistogramSnapshot;
     private handleRequestNodeIdentitySnapshot;
     private handleRequestVotersSnapshot;
+    private handleRequestValidatorsSnapshot;
+    private handleRequestStakeTableSnapshot;
 }

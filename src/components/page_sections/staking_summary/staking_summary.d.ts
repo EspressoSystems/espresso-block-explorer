@@ -1,4 +1,8 @@
 import { default as React } from 'react';
+export declare const CurrentStakeTableV1AllowanceContext: React.Context<bigint | null>;
+export declare const CurrentTokenBalanceContext: React.Context<bigint | null>;
+export declare const LastWalletReadTimestampContext: React.Context<Date>;
+export declare const RefreshWalletReadContext: React.Context<() => void>;
 export interface StakingSummarySectionProps {
 }
 /**
@@ -20,3 +24,7 @@ export interface StakingSummarySectionProps {
  * - Current Rewards available to claim
  */
 export declare const StakingSummarySection: React.FC<StakingSummarySectionProps>;
+export interface EspressoAccountDetailsProps {
+    children: React.ReactNode | React.ReactNode[];
+}
+export declare const EspressoAccountDetails: React.FC<EspressoAccountDetailsProps>;

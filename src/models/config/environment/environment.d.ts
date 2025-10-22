@@ -14,5 +14,6 @@ export declare enum Environment {
     decaf = "decaf",
     milk = "milk",
     water = "water",
-    fakeData = "fakeData"
+    fakeData = "fakeData",
+    localDevNet = "localDevNet"
 }
