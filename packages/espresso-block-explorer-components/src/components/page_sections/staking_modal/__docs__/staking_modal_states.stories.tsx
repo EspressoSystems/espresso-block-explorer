@@ -83,8 +83,8 @@ export const Closed: Story = {
     initialState: {
       showModal: false,
       stakingPhase: null,
-      address: null,
-      amount: null,
+      address: FAKE_VALIDATOR_ADDRESS,
+      amount: MonetaryValue.ETH(1000000000000000000n),
     },
   },
 };

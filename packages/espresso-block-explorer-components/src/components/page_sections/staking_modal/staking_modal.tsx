@@ -545,6 +545,7 @@ export const IncreaseAllowanceButton: React.FC<IncreaseAllowanceButtonProps> = (
         refreshBalance,
       )}
       className="increase-allowance"
+      title="Approve"
     >
       <Text text="Increase Allowance" />
     </LabeledButton>
@@ -594,6 +595,7 @@ export const ResetAllowanceButton: React.FC<IncreaseAllowanceButtonProps> = (
         refreshBalance,
       )}
       className="raise-allowance"
+      title="Approve"
     >
       <Text text="Reset Allowance" />
     </LabeledButton>
@@ -643,11 +645,6 @@ const DelegationInsufficientFundsWarning: React.FC = () => {
           <ul>
             <li className="fail">
               <Text text="Insufficient Balance" /> <ErrorIconFilled />
-              <br />
-              <MoneyText money={MonetaryValue.ESP(amountToStake)} /> &gt;{' '}
-              <MoneyText money={MonetaryValue.ESP(balance)} />
-              <br />
-              <Text text="More ESP needed" />
             </li>
           </ul>
         </div>
@@ -666,11 +663,6 @@ const DelegationInsufficientFundsWarning: React.FC = () => {
             </li>
             <li className="fail">
               <Text text="Insufficient Allowance" /> <ErrorIconFilled />
-              <br />
-              <MoneyText money={MonetaryValue.ESP(amountToStake)} /> &gt;{' '}
-              <MoneyText money={MonetaryValue.ESP(allowance)} />
-              <br />
-              <Text text="An allowance increase is required." />
             </li>
           </ul>
           <br />
@@ -798,6 +790,7 @@ const DelegationPreviewStakeButton: React.FC = () => {
         refreshBalance,
       )}
       disabled={!enabled}
+      title="Stake"
     >
       <Text text="Stake" />
       {stakingModalState.amount ? (
@@ -897,6 +890,7 @@ const DialogContent: React.FC = () => {
  * when the state indicates to do so.
  */
 const StakingModalLifecycle: React.FC<StakingModalLifecycleProps> = (props) => {
+  const { dialogRef, ...rest } = props;
   const state = React.useContext(StakingModalStateContext);
 
   // state.showModal
@@ -905,7 +899,8 @@ const StakingModalLifecycle: React.FC<StakingModalLifecycleProps> = (props) => {
   // indicates to do so.
   return (
     <dialog
-      ref={props.dialogRef}
+      {...rest}
+      ref={dialogRef}
       className="staking-modal"
       open={state.showModal}
     >
@@ -935,8 +930,15 @@ export interface StakingModalProps {
  * staking modal.
  */
 export const StakingModal: React.FC<StakingModalProps> = (props) => {
-  const { state, dialogRef, showModal, closeModal, setAmount, setValidator } =
-    useStakingModalState(props.initialModalState);
+  const {
+    state,
+    dialogRef,
+    showModal,
+    closeModal,
+    setAmount,
+    setValidator,
+    ...rest
+  } = useStakingModalState(props.initialModalState);
 
   return (
     <StakingModalStateContext.Provider value={state}>
@@ -945,7 +947,7 @@ export const StakingModal: React.FC<StakingModalProps> = (props) => {
       >
         <>
           {props.children}
-          <StakingModalLifecycle dialogRef={dialogRef} />
+          <StakingModalLifecycle {...rest} dialogRef={dialogRef} />
         </>
       </StakingModalControlsContext.Provider>
     </StakingModalStateContext.Provider>

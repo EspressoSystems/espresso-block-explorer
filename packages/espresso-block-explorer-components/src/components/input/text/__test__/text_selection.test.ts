@@ -11,9 +11,9 @@ describe('TextSelection', () => {
       expect(empty.start).toBe(-1);
       expect(empty.end).toBe(-1);
 
-      expect(() => empty.textAfter('hello')).toThrow();
-      expect(() => empty.textBefore('hello')).toThrow();
-      expect(() => empty.textWithin('hello')).toThrow();
+      expect(() => empty.textAfter('hello')).not.toThrow();
+      expect(() => empty.textBefore('hello')).not.toThrow();
+      expect(() => empty.textWithin('hello')).not.toThrow();
     });
   });
 
@@ -44,6 +44,37 @@ describe('TextSelection', () => {
       expect(normal.textAfter('hello')).toBe('o');
       expect(normal.textBefore('hello')).toBe('h');
       expect(normal.textWithin('hello')).toBe('ell');
+    });
+  });
+
+  describe('fromPosition', () => {
+    const sel1 = TextSelection.fromPosition(3);
+    it('should create a selection with the correct start and end', () => {
+      expect(sel1.start).toBe(3);
+      expect(sel1.end).toBe(3);
+      expect(sel1.isCollapsed).toBe(true);
+    });
+  });
+
+  describe('extendTo', () => {
+    it('should change the end to match the given ending', () => {
+      const sel1 = new TextSelection(2, 5);
+      const extended = sel1.extendTo(3);
+      expect(extended.start).equals(2);
+      expect(extended.end).equals(3);
+    });
+
+    it("shouldn't change the position if it is already at the given ending", () => {
+      const sel1 = new TextSelection(2, 5);
+      const extended = sel1.extendTo(5);
+      expect(extended).equals(sel1);
+    });
+
+    it('should change the position correctly when extending the end', () => {
+      const sel1 = new TextSelection(2, 5);
+      const extended = sel1.extendTo(7);
+      expect(extended.start).toBe(2);
+      expect(extended.end).toBe(7);
     });
   });
 
@@ -78,13 +109,18 @@ describe('TextSelection', () => {
     it('should update the extent if the boolean flag is set', () => {
       const sel1 = new TextSelection(2, 5);
       const expanded = sel1.expandTo(1, true);
-      expect(expanded.start).toBe(2);
-      expect(expanded.end).toBe(1);
+      expect(expanded.start).toBe(1);
+      expect(expanded.end).toBe(5);
 
       const sel2 = new TextSelection(2, 5);
       const expanded2 = sel2.expandTo(4, true);
       expect(expanded2.start).toBe(2);
-      expect(expanded2.end).toBe(4);
+      expect(expanded2.end).toBe(5);
+
+      const sel3 = new TextSelection(2, 5);
+      const expanded3 = sel3.expandTo(8, true);
+      expect(expanded3.start).toBe(2);
+      expect(expanded3.end).toBe(8);
     });
   });
 });

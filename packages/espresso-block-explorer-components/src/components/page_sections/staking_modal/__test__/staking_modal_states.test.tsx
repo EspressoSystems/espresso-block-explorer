@@ -1,7 +1,7 @@
 import { composeStories } from '@storybook/react-vite';
 import { render } from '@testing-library/react';
 import { describe, it } from 'vitest';
-import * as stories from '../__docs__/use_staking_modal_states.stories';
+import * as stories from '../__docs__/staking_modal_states.stories';
 
 const {
   Closed,
@@ -39,3 +39,5 @@ describe('Staking Modal States', () => {
     });
   });
 });
+
+// describe('Staking Modal Interactivity', () => {});

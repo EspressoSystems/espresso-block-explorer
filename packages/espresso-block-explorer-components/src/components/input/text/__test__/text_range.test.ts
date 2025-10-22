@@ -11,9 +11,9 @@ describe('TextRange', () => {
       expect(empty.start).toBe(-1);
       expect(empty.end).toBe(-1);
 
-      expect(() => empty.textAfter('hello')).toThrow();
-      expect(() => empty.textBefore('hello')).toThrow();
-      expect(() => empty.textWithin('hello')).toThrow();
+      expect(() => empty.textAfter('hello')).not.toThrow();
+      expect(() => empty.textBefore('hello')).not.toThrow();
+      expect(() => empty.textWithin('hello')).not.toThrow();
     });
   });
 

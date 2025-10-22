@@ -167,6 +167,29 @@ export function createWriteContractAsyncHandler(
         return;
       }
 
+      // const writeTransactionError = err as WriteContractErrorType;
+      // debugger;
+
+      // // We just want to flag the recoverable errors here.
+      // switch (writeTransactionError.name) {
+      //   case 'ContractFunctionExecutionError':
+      //     // This is a revert from the contract.  The user can fix this.
+      //     // Circuit Breaker?
+      //     writeTransactionError.name;
+      //     break;
+
+      //   case 'Error':
+      //     // Basic Error
+      //     break;
+
+      //   case 'WagmiCoreError':
+      //     // An Error within Wagmi
+      //     break;
+
+      //   case 'ConnectorAccountNotFoundError':
+      //     writeTransactionError.name;
+      // }
+
       if (typeof err !== 'object' || err === null) {
         // Well... that's just odd.
         localState = WriteContractAsyncState.withNothing();
