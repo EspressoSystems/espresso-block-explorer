@@ -1,8 +1,10 @@
+import { EnvironmentContext } from '@/components/config/environment';
 import UnimplementedError from '@/errors/UnimplementedError';
 import {
   ExplorerSummaryAsyncRetriever,
   ExplorerSummaryEntry,
 } from '@/models/block_explorer/explorer_summary';
+import { Environment } from '@/models/config/environment/environment';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import React from 'react';
 import {
@@ -77,9 +79,30 @@ class SingleRetriever<V> {
   }
 }
 
+/**
+ * We don't have a way of retrieving the number of Validator Nodes currently
+ * deployed in our network, so we will just use the environment to provide
+ * known defaults until we are able to retrieve this data.
+ */
+function sequencerNodeCountFromEnvironment(environment: Environment): number {
+  switch (environment) {
+    case Environment.mainnet:
+    /* Falls Through */
+    case Environment.decaf:
+      return 100;
+
+    case Environment.fakeData:
+      return 1234;
+
+    default:
+      return 4;
+  }
+}
+
 export const ExplorerSummaryLoader: React.FC<ExplorerSummaryLoaderProps> = (
   props,
 ) => {
+  const environment = React.useContext(EnvironmentContext);
   const retriever = React.useContext(ExplorerSummaryLoaderContext);
   const summaryPromise = retriever.retrieve();
 
@@ -120,7 +143,9 @@ export const ExplorerSummaryLoader: React.FC<ExplorerSummaryLoaderProps> = (
                   ({ genesisOverview }) =>
                     ({
                       ...genesisOverview,
-                      sequencerNodes: 0,
+                      sequencerNodes:
+                        genesisOverview.sequencerNodes ??
+                        sequencerNodeCountFromEnvironment(environment),
                     }) satisfies ExplorerOverview,
                 ),
               )

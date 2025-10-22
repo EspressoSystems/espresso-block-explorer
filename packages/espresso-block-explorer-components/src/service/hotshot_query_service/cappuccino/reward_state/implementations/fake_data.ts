@@ -4,6 +4,6 @@ export class FakeDataCappuccinoHotShotQueryServiceRewardStateAPI
   implements CappuccinoHotShotQueryServiceRewardStateAPI
 {
   async getLatestRewardBalance(): Promise<null | bigint> {
-    return null;
+    return 12345678900000000n;
   }
 }

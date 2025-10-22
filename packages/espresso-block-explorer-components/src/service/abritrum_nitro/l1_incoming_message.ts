@@ -5,6 +5,26 @@ import { createRLPDeserializer } from '@/convert/rlp';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 
 /**
+ * L1MessageType represents the type of an L1 message.
+ *
+ * This enum is adapted from the Nitro's code base:
+ * https://github.com/OffchainLabs/nitro/blob/52a6bd81a304053f003ec0b3995e9fedca2f8eee/arbos/arbostypes/incomingmessage.go#L23-L34
+ */
+export enum L1MessageType {
+  l2Message = 3,
+  endOfBlock = 6,
+  l2FundedByL1 = 7,
+  rollupEvent = 8,
+  submitRetryable = 9,
+  // probably won't use this in practice
+  batchForGasEstimation = 10,
+  initialize = 11,
+  ethDeposit = 12,
+  batchPostingReport = 13,
+  invalid = 0xff,
+}
+
+/**
  * NitroL1IncomingMessageHeader represents the header of a Nitro L1
  * Incoming Message.
  *

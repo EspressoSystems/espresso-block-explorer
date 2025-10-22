@@ -23,8 +23,7 @@ const TaggedBase64Text: React.FC<TaggedBase64TextProps> = (props) => {
   return (
     <span className="inline">
       <span title={string}>
-        {string.substring(0, 8)}
-        ...
+        {string.substring(0, 8)}…
         {string.substring(string.length - 8, string.length)}
       </span>
     </span>

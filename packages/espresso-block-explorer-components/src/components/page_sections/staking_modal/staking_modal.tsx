@@ -10,39 +10,56 @@ import {
   RainbowKitChain,
   RainbowKitChainContext,
 } from '@/components/rainbowkit';
-import { MoneyText, PercentageText } from '@/components/text';
+import CopyWalletAddress from '@/components/text/CopyWalletAddress';
+import MoneyText from '@/components/text/MoneyText';
+import PercentageText from '@/components/text/PercentageText';
 import Text from '@/components/text/Text';
 import WalletAddressText from '@/components/text/WalletAddressText';
+import { CheckCircleFilled } from '@/components/visual';
 import Close from '@/components/visual/icons/Close';
+import ErrorIconFilled from '@/components/visual/icons/ErrorIconFilled';
 import EspToken from '@/contracts/EspToken';
 import StakeTable from '@/contracts/StakeTable';
+import UnimplementedError from '@/errors/UnimplementedError';
 import { firstWhereIterable } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { walletAddressCodec } from '@/models/wallet_address/wallet_address';
 import { CurrentValidatorsContext } from 'pages';
 import React from 'react';
+import { Config, useConfig, useReadContract, useWriteContract } from 'wagmi';
 import {
-  Config,
-  useConfig,
-  useReadContract,
-  useReadContracts,
-  useWriteContract,
-} from 'wagmi';
+  CurrentStakeTableV1AllowanceContext,
+  CurrentTokenBalanceContext,
+  RefreshWalletReadContext,
+} from '../staking_summary/staking_summary';
 import {
   StakingModalControlsContext,
   StakingModalState,
   StakingModalStateContext,
 } from './context';
 import './staking_modal.css';
+import {
+  createWriteContractAsyncHandler,
+  WriteContractAsync,
+  WriteContractAsyncComponentIdleContext,
+  WriteContractAsyncSetStateContext,
+  WriteContractAsyncStateContext,
+} from './write_contract';
 
-function useStakingModalState() {
-  const dialogRef = React.useRef<HTMLDialogElement>(null);
-  const [state, setState] = React.useState<StakingModalState>({
+/**
+ * useStakingModalState is a custom hook that provides the state and controls
+ * for the staking modal.
+ */
+function useStakingModalState(
+  initialState: StakingModalState = {
     showModal: false,
     stakingPhase: null,
     address: null,
     amount: null,
-  });
+  },
+) {
+  const dialogRef = React.useRef<HTMLDialogElement>(null);
+  const [state, setState] = React.useState<StakingModalState>(initialState);
 
   const showModal = (selectAddress?: `0x${string}`) => {
     setState({
@@ -94,13 +111,17 @@ interface StakingModalLifecycleProps {
   // The dialogRef is used to control the dialog lifecycle
 }
 
-const DialogHeading: React.FC = () => {
+/**
+ * StakingModalHeading is the heading of the staking modal dialog.  It includes
+ * the title and the close button.
+ */
+const StakingModalHeading: React.FC = () => {
   const controls = React.useContext(StakingModalControlsContext);
 
   return (
     <header className="dialog-header">
       <Heading2>
-        <Text text="Delegate ESP" />
+        <Text text="Stake ESP" />
       </Heading2>
 
       <IconButton
@@ -113,12 +134,10 @@ const DialogHeading: React.FC = () => {
   );
 };
 
-const EditArea: React.FC = () => {
-  // Depending on the phase, we'll either be selecting a validator, or
-  // specifying an amount to stake.
-  return null;
-};
-
+/**
+ * DelegationPreviewTitle is the title of the delegation preview section.
+ * It includes the validator address and the title "Stake Preview".
+ */
 const DelegationPreviewTitle: React.FC = () => {
   const state = React.useContext(StakingModalStateContext);
   if (!state.address) {
@@ -133,12 +152,16 @@ const DelegationPreviewTitle: React.FC = () => {
     <>
       <Heading2>
         <span>
-          <Text text="Delegating to " />
-          <WalletAddressText value={walletAddressCodec.decode(state.address)} />
+          <Text text="Staking to " />
+          <CopyWalletAddress value={walletAddressCodec.decode(state.address)}>
+            <WalletAddressText
+              value={walletAddressCodec.decode(state.address)}
+            />
+          </CopyWalletAddress>
         </span>
       </Heading2>
       <div className="delegation-preview-title">
-        <Text text="Delegation Preview" />
+        <Text text="Stake Preview" />
       </div>
     </>
   );
@@ -148,6 +171,10 @@ interface InformationRowProps {
   children: [React.ReactNode, React.ReactNode];
 }
 
+/**
+ * InformationRow is a simple layout component that displays a label and a
+ * value in a table row.
+ */
 const InformationRow: React.FC<InformationRowProps> = ({
   children: [label, value],
 }) => {
@@ -159,6 +186,10 @@ const InformationRow: React.FC<InformationRowProps> = ({
   );
 };
 
+/**
+ * ValidatorContractInformation is a context that provides the validator
+ * information read from the StakeTable contract.
+ */
 const ValidatorContractInformation = React.createContext<
   [bigint, number] | null
 >(null);
@@ -173,6 +204,11 @@ interface ReadAndProvideStakeTableContractInformationProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * ReadAndProvideStakeTableContractInformation is a component that reads the
+ * validator information from the StakeTable contract and provides it to its
+ * children via the ValidatorContractInformation context.
+ */
 const ReadAndProvideStakeTableContractInformation: React.FC<
   ReadAndProvideStakeTableContractInformationProps
 > = (props) => {
@@ -197,6 +233,11 @@ const ReadAndProvideStakeTableContractInformation: React.FC<
   );
 };
 
+/**
+ * ProvideValidatorContractInformation is a component that provides the
+ * validator information to its children via the ValidatorContractInformation
+ * context.
+ */
 const ProvideValidatorContractInformation: React.FC<ProvideContextProps> = (
   props,
 ) => {
@@ -219,6 +260,12 @@ const ProvideValidatorContractInformation: React.FC<ProvideContextProps> = (
   );
 };
 
+/**
+ * ESPTokenAllowanceAndBalance is a context that provides the ESP token
+ * allowance and balance for the current user.
+ *
+ * This is a convenience that combines two prior context values into one.
+ */
 const ESPTokenAllowanceAndBalance = React.createContext<
   [bigint, bigint] | null
 >(null);
@@ -230,39 +277,16 @@ interface ReadAndProvideESPAllowanceAndBalanceProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * ReadAndProvideESPAllowanceAndBalance is a component that reads the ESP token
+ * allowance and balance for the current user and provides it to its children
+ * via the ESPTokenAllowanceAndBalance context.
+ */
 const ReadAndProvideESPAllowanceAndBalance: React.FC<
   ReadAndProvideESPAllowanceAndBalanceProps
 > = (props) => {
-  const abi = EspToken;
-  const result = useReadContracts({
-    contracts: [
-      {
-        address: props.espTokenContractAddress,
-        abi,
-        functionName: 'allowance',
-        args: [props.address, props.stakingTableContractAddress],
-      },
-      {
-        address: props.espTokenContractAddress,
-        abi,
-        functionName: 'balanceOf',
-        args: [props.address],
-      },
-    ] as const,
-  });
-
-  if (!result.data || result.data.length < 2) {
-    return props.children;
-  }
-  if (
-    result.data[0].status !== 'success' ||
-    result.data[1].status !== 'success'
-  ) {
-    return props.children;
-  }
-
-  const allowance = result.data[0].result as bigint;
-  const balance = result.data[1].result as bigint;
+  const balance = React.useContext(CurrentTokenBalanceContext) ?? 0n;
+  const allowance = React.useContext(CurrentStakeTableV1AllowanceContext) ?? 0n;
 
   return (
     <ESPTokenAllowanceAndBalance.Provider value={[allowance, balance]}>
@@ -271,6 +295,11 @@ const ReadAndProvideESPAllowanceAndBalance: React.FC<
   );
 };
 
+/**
+ * ProvideAccountESPAllowanceAndBalance is a component that provides the ESP
+ * token allowance and balance for the current user to its children via the
+ * ESPTokenAllowanceAndBalance context.
+ */
 const ProvideAccountESPAllowanceAndBalance: React.FC<ProvideContextProps> = (
   props,
 ) => {
@@ -296,6 +325,10 @@ const ProvideAccountESPAllowanceAndBalance: React.FC<ProvideContextProps> = (
   );
 };
 
+/**
+ * ValidatorStatus is a component that displays the status of the validator
+ * based on the status code provided by the StakeTable contract.
+ */
 const ValidatorStatus: React.FC = () => {
   const data = React.useContext(ValidatorContractInformation);
 
@@ -314,6 +347,11 @@ const ValidatorStatus: React.FC = () => {
   }
 };
 
+/**
+ * ContractInformation is a component that displays the validator
+ * information read from the StakeTable contract, provided that the
+ * data is available.
+ */
 const ContractInformation: React.FC = () => {
   const data = React.useContext(ValidatorContractInformation);
 
@@ -336,6 +374,11 @@ const ContractInformation: React.FC = () => {
   );
 };
 
+/**
+ * DelegationPreviewValidatorInformation is a component that displays the
+ * validator information in the delegation preview section of the staking
+ * modal.
+ */
 const DelegationPreviewValidatorInformation: React.FC = () => {
   const state = React.useContext(StakingModalStateContext);
   const validators = React.useContext(CurrentValidatorsContext);
@@ -363,9 +406,11 @@ const DelegationPreviewValidatorInformation: React.FC = () => {
         <tbody>
           <InformationRow>
             <Text text="Address" />
-            <WalletAddressText
-              value={walletAddressCodec.decode(state.address)}
-            />
+            <CopyWalletAddress value={walletAddressCodec.decode(state.address)}>
+              <WalletAddressText
+                value={walletAddressCodec.decode(state.address)}
+              />
+            </CopyWalletAddress>
           </InformationRow>
           <InformationRow>
             <Text text="Commission" />
@@ -382,6 +427,10 @@ const DelegationPreviewValidatorInformation: React.FC = () => {
   );
 };
 
+/**
+ * DelegationAmountToStake is a component that allows the user to specify
+ * the amount of ESP to stake to the selected validator.
+ */
 const DelegationAmountToStake: React.FC = () => {
   const state = React.useContext(StakingModalStateContext);
   const controls = React.useContext(StakingModalControlsContext);
@@ -401,7 +450,7 @@ const DelegationAmountToStake: React.FC = () => {
   return (
     <>
       <Divider />
-      <Text text="Amount to Delegate" />
+      <Text text="Amount to Stake" />
       <br />
       <InputContainer>
         <ESPInput
@@ -422,29 +471,133 @@ const DelegationAmountToStake: React.FC = () => {
   );
 };
 
-interface RaiseAllowanceButtonProps {
-  stakeTableContractAddress: `0x${string}`;
-  espTokenContractAddress: `0x${string}`;
-  address: `0x${string}`;
+/**
+ * IncreaseAllowanceBundle is a component that provides the means for the user
+ * to increase the allowance of their ESP token to the StakeTable contract.
+ */
+const IncreaseAllowanceBundle: React.FC = () => {
+  return (
+    <WriteContractAsyncComponentIdleContext.Provider
+      value={IncreaseAllowanceButton}
+    >
+      <WriteContractAsync />
+    </WriteContractAsyncComponentIdleContext.Provider>
+  );
+};
+
+export interface IncreaseAllowanceButtonProps {
+  amount?: bigint;
 }
 
-const RaiseAllowanceButton: React.FC<RaiseAllowanceButtonProps> = (props) => {
+/**
+ * UINT256_MAX is the maximum value of a uint256 in Solidity.  This is used
+ * to request the maximum allowance for the ESP token to the StakeTable
+ * contract.
+ */
+const UINT256_MAX =
+  0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn;
+
+/**
+ * IncreaseAllowanceButton is a button that will prompt the user to increase
+ * the allowance of their wallet to the StakeTable contract on behalf of their
+ * ESP Token.
+ */
+export const IncreaseAllowanceButton: React.FC<IncreaseAllowanceButtonProps> = (
+  props,
+) => {
+  const refreshBalance = React.useContext(RefreshWalletReadContext);
+  const state = React.useContext(WriteContractAsyncStateContext);
+  const setState = React.useContext(WriteContractAsyncSetStateContext);
+  const wagmiConfig = useConfig();
+
   const abi = EspToken;
-  const { writeContract } = useWriteContract();
+  const { writeContractAsync } = useWriteContract();
+  const config = React.useContext(EspressoConfigContext);
+  const address = React.useContext(RainbowKitAccountAddressContext) as
+    | null
+    | `0x${string}`;
+
+  // We request Max uint256 value so the user won't have to bother with
+  // raising the allowance again for future staking operations.
+  // Wallets may also allow the user to modify the amount of allowance
+  // being requested.
+  const { amount = UINT256_MAX } = props;
+  const espTokenContractAddress = config?.espTokenContractAddress;
+  const stakeTableContractAddress = config?.stakeTableContractAddress;
+
+  if (!address || !espTokenContractAddress || !stakeTableContractAddress) {
+    return null;
+  }
 
   return (
     <LabeledButton
-      onClick={() => {
-        writeContract({
-          abi,
-          address: props.espTokenContractAddress,
-          functionName: 'approve',
-          args: [props.address, props.stakeTableContractAddress],
-        });
-      }}
-      className="raise-allowance"
+      onClick={createWriteContractAsyncHandler(
+        wagmiConfig,
+        state,
+        setState,
+        async () =>
+          writeContractAsync({
+            abi,
+            address: espTokenContractAddress,
+            functionName: 'approve',
+            args: [stakeTableContractAddress, amount],
+          }),
+        refreshBalance,
+      )}
+      className="increase-allowance"
+      title="Approve"
     >
-      <Text text="Raise Allowance" />
+      <Text text="Increase Allowance" />
+    </LabeledButton>
+  );
+};
+
+/**
+ * ResetAllowanceButton is a button that will prompt the user to reset /
+ * withdraw the allowance of their wallet to the StakeTable contract on
+ * behalf of their ESP Token.
+ */
+export const ResetAllowanceButton: React.FC<IncreaseAllowanceButtonProps> = (
+  props,
+) => {
+  const refreshBalance = React.useContext(RefreshWalletReadContext);
+  const wagmiConfig = useConfig();
+  const state = React.useContext(WriteContractAsyncStateContext);
+  const setState = React.useContext(WriteContractAsyncSetStateContext);
+  const abi = EspToken;
+  const { writeContractAsync } = useWriteContract();
+  const config = React.useContext(EspressoConfigContext);
+  const address = React.useContext(RainbowKitAccountAddressContext) as
+    | null
+    | `0x${string}`;
+
+  const amount = props.amount ?? 0x00n;
+  const espTokenContractAddress = config?.espTokenContractAddress;
+  const stakeTableContractAddress = config?.stakeTableContractAddress;
+
+  if (!address || !espTokenContractAddress) {
+    return null;
+  }
+
+  return (
+    <LabeledButton
+      onClick={createWriteContractAsyncHandler(
+        wagmiConfig,
+        state,
+        setState,
+        async () =>
+          writeContractAsync({
+            abi,
+            address: espTokenContractAddress,
+            functionName: 'approve',
+            args: [stakeTableContractAddress, amount],
+          }),
+        refreshBalance,
+      )}
+      className="raise-allowance"
+      title="Approve"
+    >
+      <Text text="Reset Allowance" />
     </LabeledButton>
   );
 };
@@ -489,12 +642,11 @@ const DelegationInsufficientFundsWarning: React.FC = () => {
       <>
         <Divider />
         <div className="warning">
-          <Text text="Insufficient Balance" />
-          <br />
-          <MoneyText money={MonetaryValue.ESP(amountToStake)} /> &gt;{' '}
-          <MoneyText money={MonetaryValue.ESP(balance)} />
-          <br />
-          <Text text="More ESP needed" />
+          <ul>
+            <li className="fail">
+              <Text text="Insufficient Balance" /> <ErrorIconFilled />
+            </li>
+          </ul>
         </div>
       </>
     );
@@ -505,24 +657,40 @@ const DelegationInsufficientFundsWarning: React.FC = () => {
       <>
         <Divider />
         <div className="warning">
-          <Text text="Insufficient Allowance" />
+          <ul>
+            <li className="pass">
+              <Text text="Sufficient Balance" /> <CheckCircleFilled />
+            </li>
+            <li className="fail">
+              <Text text="Insufficient Allowance" /> <ErrorIconFilled />
+            </li>
+          </ul>
           <br />
-          <MoneyText money={MonetaryValue.ESP(amountToStake)} /> &gt;{' '}
-          <MoneyText money={MonetaryValue.ESP(allowance)} />
-          <br />
-          <RaiseAllowanceButton
-            address={address as `0x${string}`}
-            espTokenContractAddress={espTokenContractAddress}
-            stakeTableContractAddress={stakeTableContractAddress}
-          />
         </div>
       </>
     );
   }
+  return (
+    <ul>
+      <li className="pass">
+        <Text text="Sufficient Balance" />
+        &nbsp;
+        <CheckCircleFilled />
+      </li>
+      <li className="pass">
+        <Text text="Sufficient Allowance" /> <CheckCircleFilled />
+      </li>
+    </ul>
+  );
 
   return null;
 };
 
+/**
+ * shouldEnableStakeButton determines if the stake button should be enabled
+ * based on the current state of the modal, the user's address, chain info,
+ * and allowance and balance information.
+ */
 function shouldEnableStakeButton(
   address: null | string,
   chainInfo: null | RainbowKitChain,
@@ -564,14 +732,23 @@ function shouldEnableStakeButton(
   return amountToStake <= balance && amountToStake <= allowance;
 }
 
+/**
+ * DelegationPreviewStakeButton is the button that will be used to stake
+ * the amount specified to the validator selected. It will be disabled
+ * until the user has selected a validator and an amount, and has enough
+ * balance and allowance to perform the staking operation.
+ */
 const DelegationPreviewStakeButton: React.FC = () => {
-  const { writeContract } = useWriteContract();
+  const state = React.useContext(WriteContractAsyncStateContext);
+  const setState = React.useContext(WriteContractAsyncSetStateContext);
+  const refreshBalance = React.useContext(RefreshWalletReadContext);
+  const wagmiConfig = useConfig();
+  const { writeContractAsync } = useWriteContract();
   const address = React.useContext(RainbowKitAccountAddressContext);
   const espressoInfo = React.useContext(EspressoConfigContext);
-  const state = React.useContext(StakingModalStateContext);
+  const stakingModalState = React.useContext(StakingModalStateContext);
   const allowanceAndBalance = React.useContext(ESPTokenAllowanceAndBalance);
   const chainInfo = React.useContext(RainbowKitChainContext);
-  const wagmiConfig = useConfig();
   const stakeTableContractAddress =
     espressoInfo?.stakeTableContractAddress ?? null;
   const abi = StakeTable;
@@ -581,40 +758,89 @@ const DelegationPreviewStakeButton: React.FC = () => {
     chainInfo,
     allowanceAndBalance,
     wagmiConfig,
-    state,
+    stakingModalState,
   );
 
   // This is the button that will be used to stake the amount specified.
   // It will be disabled until the user has selected a validator and an amount.
   return (
     <LabeledButton
-      onClick={() => {
-        if (!state.address || !stakeTableContractAddress || !state.amount) {
-          // If we don't have an address, stake table contract address, or amount,
-          // we can't stake.
-          return;
-        }
+      onClick={createWriteContractAsyncHandler(
+        wagmiConfig,
+        state,
+        setState,
+        async () => {
+          if (
+            !stakingModalState.address ||
+            !stakeTableContractAddress ||
+            !stakingModalState.amount
+          ) {
+            // If we don't have an address, stake table contract address, or amount,
+            // we can't stake.
+            throw new UnimplementedError();
+          }
 
-        writeContract({
-          abi,
-          address: stakeTableContractAddress,
-          functionName: 'delegate',
-          args: [state.address, state.amount.value],
-        });
-      }}
+          return writeContractAsync({
+            abi,
+            address: stakeTableContractAddress,
+            functionName: 'delegate',
+            args: [stakingModalState.address, stakingModalState.amount.value],
+          });
+        },
+        refreshBalance,
+      )}
       disabled={!enabled}
+      title="Stake"
     >
-      <Text text="Delegate" />
-      {state.amount ? (
+      <Text text="Stake" />
+      {stakingModalState.amount ? (
         <>
-          {' '}
-          <MoneyText money={state.amount ?? MonetaryValue.ESP(0n)} />
+          &nbsp;
+          <MoneyText
+            money={stakingModalState.amount ?? MonetaryValue.ESP(0n)}
+          />
         </>
       ) : null}
     </LabeledButton>
   );
 };
 
+/**
+ * DetermineActionButton is a component that attempts to determine what action
+ * the user needs to take next.
+ */
+const DetermineActionButton: React.FC = () => {
+  const state = React.useContext(StakingModalStateContext);
+  const allowanceAndBalance = React.useContext(ESPTokenAllowanceAndBalance);
+  const amountToStake = state.amount?.value ?? 0n;
+
+  if (!amountToStake || !allowanceAndBalance) {
+    return null;
+  }
+
+  const [allowance, balance] = allowanceAndBalance;
+
+  if (amountToStake > balance) {
+    // The user doesn't have enough balance to stake the amount they
+    // have specified.
+    return <Text text="More ESP needed" />;
+  }
+
+  if (amountToStake > allowance) {
+    return <IncreaseAllowanceBundle />;
+  }
+
+  console.info('<<<< HERE', amountToStake, allowance, balance);
+
+  return <DelegationPreviewStakeButton />;
+};
+
+/**
+ * DelegationPreview is a component that provides a summary of the staking
+ * operation the user is about to perform.  It also provides the means for the
+ * user to edit the amount he/she is wanting to stake, and the means to
+ * perform the staking operation.
+ */
 const DelegationPreview: React.FC = () => {
   // This is the staking overview.  It is meant to provide a summary of what
   // the user is requesting to do.  This is meant to be a read-only display
@@ -627,11 +853,16 @@ const DelegationPreview: React.FC = () => {
       <DelegationAmountToStake />
       <DelegationInsufficientFundsWarning />
       <div className="flex-spacer" />
-      <DelegationPreviewStakeButton />
+      {/* <DelegationPreviewStakeButton /> */}
+      <DetermineActionButton />
     </div>
   );
 };
 
+/**
+ * DialogContent is the main content area of the staking modal.  It provides
+ * the layout and structure for the various sections of the staking modal.
+ */
 const DialogContent: React.FC = () => {
   // How do we make this Mobile friendly?
   return (
@@ -640,27 +871,41 @@ const DialogContent: React.FC = () => {
         <div className="dialog-content">
           {/* We Have a set of sections */}
 
-          {/* The Steps Section */}
-          {/* <StakingSteps /> */}
-
-          {/* The Current Actionable Area */}
-          <EditArea />
-
           {/* The Summary being Built */}
-          <DelegationPreview />
+          <WriteContractAsyncComponentIdleContext.Provider
+            value={DelegationPreview}
+          >
+            <WriteContractAsync />
+          </WriteContractAsyncComponentIdleContext.Provider>
+          {/* <DelegationPreview /> */}
         </div>
       </ProvideValidatorContractInformation>
     </ProvideAccountESPAllowanceAndBalance>
   );
 };
 
+/**
+ * StakingModalLifecycle is a component that manages the lifecycle of the
+ * staking modal.  It is responsible for rendering the modal and its content
+ * when the state indicates to do so.
+ */
 const StakingModalLifecycle: React.FC<StakingModalLifecycleProps> = (props) => {
+  const { dialogRef, ...rest } = props;
+  const state = React.useContext(StakingModalStateContext);
+
+  // state.showModal
+
   // We want to have a barrier, and the modal should be shown when the state
   // indicates to do so.
   return (
-    <dialog ref={props.dialogRef} className="staking-modal">
+    <dialog
+      {...rest}
+      ref={dialogRef}
+      className="staking-modal"
+      open={state.showModal}
+    >
       {/* Heading */}
-      <DialogHeading />
+      <StakingModalHeading />
 
       {/* Content Layout */}
       <DialogContent />
@@ -670,12 +915,30 @@ const StakingModalLifecycle: React.FC<StakingModalLifecycleProps> = (props) => {
 
 export interface StakingModalProps {
   children: React.ReactNode | React.ReactNode[];
+  initialModalState?: StakingModalState;
   className?: string;
 }
 
+/**
+ * StakingModal is the main component that provides the staking modal
+ * functionality.  This component itself adds the modal to the DOM, but is
+ * also utilized to wrap the content of whatever children component are passed
+ * to it.
+ *
+ * In this way, it allows all children components to have access to the
+ * relevant context information needed to interact with, and display the
+ * staking modal.
+ */
 export const StakingModal: React.FC<StakingModalProps> = (props) => {
-  const { state, dialogRef, showModal, closeModal, setAmount, setValidator } =
-    useStakingModalState();
+  const {
+    state,
+    dialogRef,
+    showModal,
+    closeModal,
+    setAmount,
+    setValidator,
+    ...rest
+  } = useStakingModalState(props.initialModalState);
 
   return (
     <StakingModalStateContext.Provider value={state}>
@@ -684,7 +947,7 @@ export const StakingModal: React.FC<StakingModalProps> = (props) => {
       >
         <>
           {props.children}
-          <StakingModalLifecycle dialogRef={dialogRef} />
+          <StakingModalLifecycle {...rest} dialogRef={dialogRef} />
         </>
       </StakingModalControlsContext.Provider>
     </StakingModalStateContext.Provider>

@@ -5,15 +5,16 @@ import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
   environmentArgsFakeData,
+  environmentArgsLocalDevNet,
   environmentArgsMainnet,
   environmentArgsMilk,
   environmentArgsWater,
   environmentArgTypes,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
-import { Meta, StoryObj } from 'storybook';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
 import { ProvideCappuccinoRollUpDetailDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
 import RollUpPage from '../RollUpPage';
@@ -59,6 +60,18 @@ const meta: Meta = {
   parameters: {
     layout: 'fullscreen',
   },
+  argTypes: {
+    ...environmentArgTypes,
+    namespace: {
+      control: 'number',
+    },
+    startAtBlock: {
+      control: 'number',
+    },
+    offset: {
+      control: 'number',
+    },
+  },
 };
 
 export default meta;
@@ -76,25 +89,9 @@ const defaultRollUpPageArgs: RollUpPageArgs = {
   offset: undefined,
 };
 
-const rollupPageArgTypes = {
-  namespace: {
-    control: 'number',
-  },
-  startAtBlock: {
-    control: 'number',
-  },
-  offset: {
-    control: 'number',
-  },
-};
-
 export const Default: Story = {
   args: {
     ...defaultRollUpPageArgs,
-  },
-  argTypes: {
-    ...environmentArgTypes,
-    ...rollupPageArgTypes,
   },
 };
 
@@ -103,21 +100,12 @@ export const Milk: Story = {
     ...environmentArgsMilk,
     ...defaultRollUpPageArgs,
   },
-  argTypes: {
-    ...environmentArgTypes,
-    ...rollupPageArgTypes,
-  },
 };
 
 export const Water: Story = {
   args: {
     ...environmentArgsWater,
     ...defaultRollUpPageArgs,
-  },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...rollupPageArgTypes,
   },
 };
 
@@ -126,22 +114,12 @@ export const Decaf: Story = {
     ...environmentArgsDecaf,
     ...defaultRollUpPageArgs,
   },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...rollupPageArgTypes,
-  },
 };
 
 export const Mainnet: Story = {
   args: {
     ...environmentArgsMainnet,
     ...defaultRollUpPageArgs,
-  },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...rollupPageArgTypes,
   },
 };
 
@@ -150,9 +128,11 @@ export const FakeData: Story = {
     ...environmentArgsFakeData,
     ...defaultRollUpPageArgs,
   },
+};
 
-  argTypes: {
-    ...environmentArgTypes,
-    ...rollupPageArgTypes,
+export const LocalDevNet: Story = {
+  args: {
+    ...environmentArgsLocalDevNet,
+    ...defaultRollUpPageArgs,
   },
 };

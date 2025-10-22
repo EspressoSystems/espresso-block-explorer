@@ -4,15 +4,16 @@ import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
   environmentArgsFakeData,
+  environmentArgsLocalDevNet,
   environmentArgsMainnet,
   environmentArgsMilk,
   environmentArgsWater,
   environmentArgTypes,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
-import { Meta, StoryObj } from 'storybook';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
 import BlocksPage from '../BlocksPage';
 import { ProvideCappuccinoBlocksSummaryDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
@@ -55,6 +56,14 @@ const meta: Meta = {
   parameters: {
     layout: 'fullscreen',
   },
+  argTypes: {
+    ...environmentArgTypes,
+    startAtBlock: {
+      control: 'number',
+      description:
+        'The block number to start displaying blocks from, if not specified, will start at the latest block',
+    },
+  },
 };
 
 export default meta;
@@ -68,21 +77,9 @@ const defaultBlocksPageArgs: BlocksPageArgs = {
   startAtBlock: undefined,
 };
 
-const blockPageArgTypes = {
-  startAtBlock: {
-    control: 'number',
-    description:
-      'The block number to start displaying blocks from, if not specified, will start at the latest block',
-  },
-};
-
 export const Default: Story = {
   args: {
     ...defaultBlocksPageArgs,
-  },
-  argTypes: {
-    ...environmentArgTypes,
-    ...blockPageArgTypes,
   },
 };
 
@@ -91,21 +88,12 @@ export const Milk: Story = {
     ...environmentArgsMilk,
     ...defaultBlocksPageArgs,
   },
-  argTypes: {
-    ...environmentArgTypes,
-    ...blockPageArgTypes,
-  },
 };
 
 export const Water: Story = {
   args: {
     ...environmentArgsWater,
     ...defaultBlocksPageArgs,
-  },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...blockPageArgTypes,
   },
 };
 
@@ -114,22 +102,12 @@ export const Decaf: Story = {
     ...environmentArgsDecaf,
     ...defaultBlocksPageArgs,
   },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...blockPageArgTypes,
-  },
 };
 
 export const Mainnet: Story = {
   args: {
     ...environmentArgsMainnet,
     ...defaultBlocksPageArgs,
-  },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...blockPageArgTypes,
   },
 };
 
@@ -138,9 +116,11 @@ export const FakeData: Story = {
     ...environmentArgsFakeData,
     ...defaultBlocksPageArgs,
   },
+};
 
-  argTypes: {
-    ...environmentArgTypes,
-    ...blockPageArgTypes,
+export const LocalDevNet: Story = {
+  args: {
+    ...environmentArgsLocalDevNet,
+    ...defaultBlocksPageArgs,
   },
 };

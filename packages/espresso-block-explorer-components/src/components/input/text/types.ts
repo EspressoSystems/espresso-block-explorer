@@ -117,7 +117,7 @@ export class TextSelection extends TextRange {
 
     const normalized = this.baseOffset < this.extentOffset;
     if (position <= this.start) {
-      // Here the position is somewhere before the selection.
+      // Here the position is somewhere before the selection: ..|..[...]....
       if (extentAtIndex) {
         return this.copyWith({
           baseOffset: this.end,
@@ -131,7 +131,7 @@ export class TextSelection extends TextRange {
       });
     }
 
-    // Here the position is somewhere after the selection.
+    // Here the position is somewhere after the selection: ....[...]..|..
     if (extentAtIndex) {
       return this.copyWith({
         baseOffset: this.start,

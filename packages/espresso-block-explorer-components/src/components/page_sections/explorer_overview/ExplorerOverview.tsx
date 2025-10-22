@@ -47,7 +47,7 @@ export const ExplorerOverviewDetails: React.FC = () => {
         <NumberText number={overview.blocks} />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
-        <Text text="Sequencer nodes" />
+        <Text text="Validator nodes" />
         <NumberText number={overview.sequencerNodes} />
       </SummaryTableLabeledValue>
     </div>
@@ -70,7 +70,7 @@ export const ExplorerOverviewDetailsPlaceholder: React.FC = () => {
         <SkeletonContent />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
-        <Text text="Sequencer nodes" />
+        <Text text="Validator nodes" />
         <SkeletonContent />
       </SummaryTableLabeledValue>
     </div>

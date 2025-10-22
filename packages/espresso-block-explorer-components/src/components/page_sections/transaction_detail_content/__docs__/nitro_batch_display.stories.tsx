@@ -46,7 +46,12 @@ const NitroBatchDecoderTool: React.FC<ExampleProps> = (props) => {
   }
 
   if (rawData) {
-    const nitroBatch = extractNitroBatch(rawData);
+    let nitroBatch: null | ReturnType<typeof extractNitroBatch> = null;
+    try {
+      nitroBatch = extractNitroBatch(rawData);
+    } catch (e) {
+      return <Text text={`Error decoding Nitro Batch: ${e!.toString()}`} />;
+    }
 
     if (!nitroBatch) {
       return <Text text="Error: Unable to decode Nitro Batch from input" />;

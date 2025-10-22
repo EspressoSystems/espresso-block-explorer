@@ -34,7 +34,7 @@ export class FetchBasedCappuccinoHotShotQueryService
     this.rewardState =
       new FetchBasedCappuccinoHotShotQueryServiceRewardStateAPI(
         fetcher,
-        new URL('reward-state/', baseURL),
+        new URL('reward-state-v2/', baseURL),
       );
   }
 

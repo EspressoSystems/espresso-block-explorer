@@ -21,7 +21,7 @@ describe('Hex Text Component', () => {
     {
       const div = screen.getByTestId('1');
       expect(div).toBeInTheDocument();
-      expect(div).toHaveTextContent('0x0123...3210');
+      expect(div).toHaveTextContent('0x0123…3210');
     }
 
     rerender(

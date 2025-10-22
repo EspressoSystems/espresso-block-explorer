@@ -2,35 +2,33 @@ import { ProvideTickEverySecond } from '@/components/contexts/NowProvider';
 import { OverridePathResolver } from '@/contexts/PathResolverProvider';
 import { Environment } from '@/models/config/environment/environment';
 import {
-  environmentArgsDecafWithContracts,
-  environmentArgsFakeDataWithContracts,
-  environmentArgsMainnetWithContracts,
+  environmentArgsDecaf,
+  environmentArgsFakeData,
+  environmentArgsLocalDevNet,
+  environmentArgsMainnet,
+  environmentArgsMilk,
   environmentArgsMilkWithContracts,
-  environmentArgsWaterWithContracts,
-  environmentArgTypesWithContracts,
+  environmentArgsWater,
+  environmentArgTypes,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybook/storybook';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import { ProvideCappuccinoNodeValidatorStreams } from 'pages/CappuccinoNodeValidatorServiceAdapters';
 import { ProvideCappuccinoNodeValidatorServiceAPIContext } from 'pages/CappuccinoNodeValidatorServiceAPIContext';
 import React from 'react';
-import { Meta, StoryObj } from 'storybook';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
 import NodesPage from '../NodesPage';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
 interface ExampleProps {
   environment: Environment;
-  stakeTableContractAddress?: string;
-  espTokenContractAddress?: string;
   hotshotQueryServiceURL?: string;
   nodeValidatorWebSocketURL?: string;
 }
 
 const Example: React.FC<ExampleProps> = ({
   environment,
-  stakeTableContractAddress,
-  espTokenContractAddress,
   hotshotQueryServiceURL,
   nodeValidatorWebSocketURL,
   ...rest
@@ -38,8 +36,6 @@ const Example: React.FC<ExampleProps> = ({
   <>
     <StoryBookSpecifyEnvironmentAndContracts
       environment={environment}
-      stakeTableContractAddress={stakeTableContractAddress}
-      espTokenContractAddress={espTokenContractAddress}
       hotshotQueryServiceURL={hotshotQueryServiceURL}
       nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
     >
@@ -67,53 +63,44 @@ const meta: Meta = {
   },
   args: {
     environment: Environment.fakeData,
-    stakeTableContractAddress: '',
-    espTokenContractAddress: '',
     hotshotQueryServiceURL: '',
     nodeValidatorWebSocketURL: '',
   },
+  argTypes: environmentArgTypes,
 };
 
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const Default: Story = {
-  argTypes: environmentArgTypesWithContracts,
-};
+export const Default: Story = {};
 
 export const Milk: Story = {
-  args: environmentArgsMilkWithContracts,
-  argTypes: environmentArgTypesWithContracts,
+  args: environmentArgsMilk,
 };
 
 export const Water: Story = {
-  args: environmentArgsWaterWithContracts,
-  argTypes: environmentArgTypesWithContracts,
+  args: environmentArgsWater,
 };
 
 export const Decaf: Story = {
-  args: environmentArgsDecafWithContracts,
-  argTypes: environmentArgTypesWithContracts,
+  args: environmentArgsDecaf,
 };
 
 export const Mainnet: Story = {
-  args: environmentArgsMainnetWithContracts,
-  argTypes: environmentArgTypesWithContracts,
+  args: environmentArgsMainnet,
 };
 
 export const FakeData: Story = {
-  args: environmentArgsFakeDataWithContracts,
-  argTypes: environmentArgTypesWithContracts,
+  args: environmentArgsFakeData,
+};
+
+export const LocalDevNet: Story = {
+  args: environmentArgsLocalDevNet,
 };
 
 export const LocalTestingMilk: Story = {
   args: {
-    environment: 'milk',
-    stakeTableContractAddress: '0x196dbcbb54b8ec4958c959d8949ebfe87ac2aaaf',
-    espTokenContractAddress: '0xf7cd8fa9b94db2aa972023b379c7f72c65e4de9d',
-    hotshotQueryServiceURL: 'https://query-0.milk.devnet.espresso.network/v0/',
+    ...environmentArgsMilkWithContracts,
     nodeValidatorWebSocketURL: 'ws://localhost:9000/v0/',
   },
-
-  argTypes: environmentArgTypesWithContracts,
 };

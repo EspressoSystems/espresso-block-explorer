@@ -75,3 +75,15 @@ dialog.staking-modal {
 dialog.staking-modal::backdrop {
   background-color: #000000b2;
 }
+
+.delegation-preview ul > li > svg.icon {
+  vertical-align: bottom;
+}
+
+.staking-modal li.pass {
+  --icon--fill-color: var(--color--green-600);
+}
+
+.staking-modal li.fail {
+  --icon--fill-color: var(--color--red-600);
+}

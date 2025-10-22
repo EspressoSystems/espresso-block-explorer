@@ -7,6 +7,16 @@ export interface MoneyTextProps {
   money: MonetaryValue;
 }
 
+function determineValue(money: MonetaryValue): number | bigint {
+  if (money.value % money.currency.significantDigitsMultiplier === 0n) {
+    return money.value / money.currency.significantDigitsMultiplier;
+  }
+
+  return (
+    Number(money.value) / Number(money.currency.significantDigitsMultiplier)
+  );
+}
+
 /**
  * MoneyText is a component that will render a MonetaryValue in a localized
  * manner for the given currency type.  It supports non-standard ISO 4217
@@ -17,8 +27,7 @@ export interface MoneyTextProps {
  */
 const MoneyText: React.FC<MoneyTextProps> = (props) => {
   const money = props.money;
-  const value =
-    Number(money.value) / Number(money.currency.significantDigitsMultiplier);
+  const value = determineValue(money);
 
   switch (money.currency.alpha3Code) {
     case 'ETH':

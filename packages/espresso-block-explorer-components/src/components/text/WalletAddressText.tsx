@@ -25,8 +25,7 @@ const WalletAddressText: React.FC<WalletAddressTextProps> = (props) => {
   return (
     <span className="inline">
       <span title={string}>
-        {string.substring(0, 2 + leadingChars)}
-        ...
+        {string.substring(0, 2 + leadingChars)}…
         {string.substring(string.length - trailingChars, string.length)}
       </span>
     </span>

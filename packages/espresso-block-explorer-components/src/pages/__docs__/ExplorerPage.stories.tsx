@@ -5,15 +5,16 @@ import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
   environmentArgsFakeData,
+  environmentArgsLocalDevNet,
   environmentArgsMainnet,
   environmentArgsMilk,
   environmentArgsWater,
   environmentArgTypes,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
-import { Meta, StoryObj } from 'storybook';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
 import { ProvideCappuccinoExplorerSummary } from '../CappuccinoHotShotQueryServiceAdapters';
 import ExplorerPage from '../ExplorerPage';
@@ -57,36 +58,34 @@ const meta: Meta = {
   parameters: {
     layout: 'fullscreen',
   },
+  argTypes: environmentArgTypes,
 };
 
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const Default: Story = {
-  argTypes: environmentArgTypes,
-};
+export const Default: Story = {};
 
 export const Milk: Story = {
   args: environmentArgsMilk,
-  argTypes: environmentArgTypes,
 };
 
 export const Water: Story = {
   args: environmentArgsWater,
-  argTypes: environmentArgTypes,
 };
 
 export const Decaf: Story = {
   args: environmentArgsDecaf,
-  argTypes: environmentArgTypes,
 };
 
 export const Mainnet: Story = {
   args: environmentArgsMainnet,
-  argTypes: environmentArgTypes,
 };
 
 export const FakeData: Story = {
   args: environmentArgsFakeData,
-  argTypes: environmentArgTypes,
+};
+
+export const LocalDevNet: Story = {
+  args: environmentArgsLocalDevNet,
 };

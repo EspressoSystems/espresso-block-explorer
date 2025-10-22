@@ -26,7 +26,7 @@ const HexText: React.FC<HexTextProps> = (props) => {
 
   return (
     <span title={string}>
-      {string.substring(0, 2 + leadingChars)}...
+      {string.substring(0, 2 + leadingChars)}…
       {string.substring(string.length - trailingChars)}
     </span>
   );

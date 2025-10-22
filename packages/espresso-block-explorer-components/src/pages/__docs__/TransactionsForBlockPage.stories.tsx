@@ -4,15 +4,16 @@ import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
   environmentArgsFakeData,
+  environmentArgsLocalDevNet,
   environmentArgsMainnet,
   environmentArgsMilk,
   environmentArgsWater,
   environmentArgTypes,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
-import { Meta, StoryObj } from 'storybook';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
 import {
   ProvideCappuccinoBlockDetailDataSource,
@@ -67,6 +68,18 @@ const meta: Meta = {
   parameters: {
     layout: 'fullscreen',
   },
+
+  argTypes: {
+    ...environmentArgTypes,
+    startAtBlock: {
+      control: 'number',
+      description: 'The block number to offset into for transactions',
+    },
+    offset: {
+      control: 'number',
+      description: 'The transaction offset within the block to display',
+    },
+  },
 };
 
 export default meta;
@@ -82,24 +95,9 @@ const defaultTransactionsForBlockPageArgs: TransactionsForBlockPageArgs = {
   offset: undefined,
 };
 
-const transactionsForBlockPageArgTypes = {
-  startAtBlock: {
-    control: 'number',
-    description: 'The block number to offset into for transactions',
-  },
-  offset: {
-    control: 'number',
-    description: 'The transaction offset within the block to display',
-  },
-};
-
 export const Default: Story = {
   args: {
     ...defaultTransactionsForBlockPageArgs,
-  },
-  argTypes: {
-    ...environmentArgTypes,
-    ...transactionsForBlockPageArgTypes,
   },
 };
 
@@ -108,21 +106,12 @@ export const Milk: Story = {
     ...environmentArgsMilk,
     ...defaultTransactionsForBlockPageArgs,
   },
-  argTypes: {
-    ...environmentArgTypes,
-    ...transactionsForBlockPageArgTypes,
-  },
 };
 
 export const Water: Story = {
   args: {
     ...environmentArgsWater,
     ...defaultTransactionsForBlockPageArgs,
-  },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...transactionsForBlockPageArgTypes,
   },
 };
 
@@ -131,22 +120,12 @@ export const Decaf: Story = {
     ...environmentArgsDecaf,
     ...defaultTransactionsForBlockPageArgs,
   },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...transactionsForBlockPageArgTypes,
-  },
 };
 
 export const Mainnet: Story = {
   args: {
     ...environmentArgsMainnet,
     ...defaultTransactionsForBlockPageArgs,
-  },
-
-  argTypes: {
-    ...environmentArgTypes,
-    ...transactionsForBlockPageArgTypes,
   },
 };
 
@@ -155,9 +134,11 @@ export const FakeData: Story = {
     ...environmentArgsFakeData,
     ...defaultTransactionsForBlockPageArgs,
   },
+};
 
-  argTypes: {
-    ...environmentArgTypes,
-    ...transactionsForBlockPageArgTypes,
+export const LocalDevNet: Story = {
+  args: {
+    ...environmentArgsLocalDevNet,
+    ...defaultTransactionsForBlockPageArgs,
   },
 };

@@ -12,7 +12,14 @@ import {
   streamNewBlocks,
 } from '@/data_source/fake_data_source/generateFakeData';
 import { createCircularBuffer } from '@/data_structures/circular_buffer';
+import {
+  CommissionPercent,
+  StakeTableEntry,
+  StakeTableEntryWrapper,
+  Validator,
+} from '@/models/espresso';
 import { Degrees, LatLng, Latitude, Longitude } from '@/models/geo';
+import WalletAddress from '@/models/wallet_address/wallet_address';
 import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
 import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
 import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
@@ -37,6 +44,8 @@ import CappuccinoNodeValidatorRequest, {
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
+  RequestStakeTableSnapshot,
+  RequestValidatorsSnapshot,
   RequestVotersSnapshot,
   SubscribeLatestBlock,
   SubscribeNodeIdentity,
@@ -46,10 +55,12 @@ import { NodeValidatorServiceRequest } from '../requests/node_validator_service_
 import { CappuccinoBlocksSnapshot } from '../responses/blocks_snapshot';
 import { CappuccinoHistogramSnapshot } from '../responses/histogram_snapshot';
 import { CappuccinoLatestBlock } from '../responses/latest_block';
+import { CappuccinoLatestStakeTable } from '../responses/latest_stake_table';
 import { CappuccinoLatestVoters } from '../responses/latest_voters';
 import { CappuccinoNodeIdentitySnapshot } from '../responses/node_identity_snapshot';
 import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
 import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
+import { CappuccinoValidatorsSnapshot } from '../responses/validators_snapshot';
 import { CappuccinoVotersSnapshot } from '../responses/voters_snapshot';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 
@@ -321,6 +332,16 @@ export default class FakeDataCappuccinoNodeValidatorAPI
       await this.handleRequestVotersSnapshot();
       return;
     }
+
+    if (request instanceof RequestValidatorsSnapshot) {
+      await this.handleRequestValidatorsSnapshot();
+      return;
+    }
+
+    if (request instanceof RequestStakeTableSnapshot) {
+      await this.handleRequestStakeTableSnapshot();
+      return;
+    }
   }
 
   private isConnected: boolean = false;
@@ -421,6 +442,42 @@ export default class FakeDataCappuccinoNodeValidatorAPI
     await this.nodeValidatorResponseSink.send(
       new CappuccinoVotersSnapshot(
         Array.from(this.latestVoters.immutableIterable()),
+      ),
+    );
+  }
+
+  private async handleRequestValidatorsSnapshot() {
+    await this.assertIsConnected();
+
+    await this.nodeValidatorResponseSink.send(
+      new CappuccinoValidatorsSnapshot(
+        nodeList.map((entry) => {
+          const walletAddress = new WalletAddress(entry.address);
+          return new Validator(
+            walletAddress,
+            entry.pubkey,
+            entry.stateVerKey,
+            entry.stake,
+            new CommissionPercent(entry.commission),
+            new Map([[walletAddress.toString(), entry.stake]]),
+          );
+        }),
+      ),
+    );
+  }
+
+  private async handleRequestStakeTableSnapshot() {
+    await this.assertIsConnected();
+
+    await this.nodeValidatorResponseSink.send(
+      new CappuccinoLatestStakeTable(
+        nodeList.map(
+          (entry) =>
+            new StakeTableEntryWrapper(
+              new StakeTableEntry(entry.pubkey, entry.stake),
+              entry.stateVerKey,
+            ),
+        ),
       ),
     );
   }

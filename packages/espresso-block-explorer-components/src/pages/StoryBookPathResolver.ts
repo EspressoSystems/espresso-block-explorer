@@ -108,4 +108,7 @@ export class StoryBookPathResolver implements PathResolver {
   nodes(): string {
     return this.stringForParams(this.paramsForPage('nodes'));
   }
+  delegation(): string {
+    return this.stringForParams(this.paramsForPage('delegation'));
+  }
 }

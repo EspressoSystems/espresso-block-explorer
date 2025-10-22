@@ -9,6 +9,7 @@ import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
 import { isNitroIntegrationNamespace } from '@/models/block_explorer/rollup_entry/data';
 import {
   decodeNitroL1IncomingMessage,
+  L1MessageType,
   NitroL1IncomingMessage,
 } from '@/service/abritrum_nitro/l1_incoming_message';
 import NumberText from '@/text/NumberText';
@@ -297,6 +298,51 @@ export const NitroMessageDisplay: React.FC = () => {
   );
 };
 
+interface KindDisplayProps {
+  kind: number;
+}
+
+/**
+ * KindDisplay is a component that displays the kind of Nitro L1 Incoming
+ * Message.
+ */
+const KindDisplay: React.FC<KindDisplayProps> = ({ kind }) => {
+  switch (kind) {
+    case L1MessageType.batchForGasEstimation:
+      return <Text text="Batch for Gas Estimation" />;
+
+    case L1MessageType.batchPostingReport:
+      return <Text text="Batch Posting Report" />;
+
+    case L1MessageType.endOfBlock:
+      return <Text text="End of Block" />;
+
+    case L1MessageType.ethDeposit:
+      return <Text text="ETH Deposit" />;
+
+    case L1MessageType.initialize:
+      return <Text text="Initialize" />;
+
+    case L1MessageType.l2FundedByL1:
+      return <Text text="L2 Funded by L1" />;
+
+    case L1MessageType.l2Message:
+      return <Text text="L2 Message" />;
+
+    case L1MessageType.rollupEvent:
+      return <Text text="Rollup Event" />;
+
+    case L1MessageType.invalid:
+      return <Text text="Invalid" />;
+
+    case L1MessageType.submitRetryable:
+      return <Text text="Submit Retryable" />;
+
+    default:
+      return <Text text={`Unknown Kind (${kind})`} />;
+  }
+};
+
 export interface NitroMessageWithMetadataDisplayProps {
   data: null | NitroMessageWithMetadata;
 }
@@ -325,7 +371,10 @@ export const NitroMessageWithMetadataDisplay: React.FC<
       {/* Header Details */}
       <TableLabeledValue>
         <Text text="Kind" />
-        <NumberText number={data.message.header.kind} />
+
+        <span title={String(data.message.header.kind)}>
+          <KindDisplay kind={data.message.header.kind} />
+        </span>
       </TableLabeledValue>
 
       <TableLabeledValue>
