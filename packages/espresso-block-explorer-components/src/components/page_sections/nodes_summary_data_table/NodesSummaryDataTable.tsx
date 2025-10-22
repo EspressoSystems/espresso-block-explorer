@@ -2,14 +2,12 @@ import { ErrorContext, LoadingContext } from '@/components/contexts';
 import { DataContext } from '@/components/contexts/DataProvider';
 import { SortDirection } from '@/components/data/types';
 import { ErrorDisplay } from '@/components/error/ErrorDisplay';
-import IconButton from '@/components/hid/buttons/icon_button/IconButton';
 import { MoneyText, NumberText } from '@/components/text';
 import CopyTaggedBase64 from '@/components/text/CopyTaggedBase64';
 import CopyWalletAddress from '@/components/text/CopyWalletAddress';
 import PercentageText from '@/components/text/PercentageText';
 import TaggedBase64Text from '@/components/text/TaggedBase64Text';
 import WalletAddressText from '@/components/text/WalletAddressText';
-import ChevronRight from '@/components/visual/icons/ChevronRight';
 import {
   compareArrayBuffer,
   foldRIterator,
@@ -31,7 +29,6 @@ import DataTable, {
   DataTableStateContext,
 } from '../../data/data_table/DataTable';
 import { EgressLink } from '../../links/link/Link';
-import { StakingModalControlsContext } from '../staking_modal/context';
 import {
   NodeSummaryColumn,
   NodeSummaryData,
@@ -233,36 +230,8 @@ const VoterParticipation: React.FC = () => {
   );
 };
 
-/**
- * Delegate is a component that will render the delegate button for the node.
- *
- * This is expected to be a column in a DataTable.
- */
-const Delegate: React.FC = () => {
-  const [, , , row] = React.useContext(
-    DataTableRowContext,
-  ) as NodeSummaryDataTuple;
-  const modalControls = React.useContext(StakingModalControlsContext);
-
-  if (row === null || row.account.address === null) {
-    return <Text text="-" />;
-  }
-
-  return (
-    <IconButton
-      title="Delegate"
-      onClick={() => {
-        modalControls.showModal(row.account.toString());
-      }}
-    >
-      <ChevronRight />
-    </IconButton>
-  );
-};
-
 interface NodesSummaryDataTableLayoutProps {
   components: [
-    React.ComponentType,
     React.ComponentType,
     React.ComponentType,
     React.ComponentType,
@@ -320,12 +289,6 @@ const NodesSummaryDataTableLayout: React.FC<
           buildCell: props.components[6],
           alignment: Alignment.end,
         },
-        {
-          label: '',
-          columnType: NodeSummaryColumn.actions,
-          buildCell: props.components[7],
-          alignment: Alignment.center,
-        },
       ]}
     />
   );
@@ -355,7 +318,6 @@ export const NodesSummaryDataTablePlaceholder: React.FC<
           SkeletonContent,
           SkeletonContent,
           SkeletonContent,
-          SkeletonContent,
         ]}
       />
     </DataContext.Provider>
@@ -378,7 +340,6 @@ export const NodesSummaryDataTablePopulated: React.FC = () => {
         WebSiteCell,
         StakedCell,
         VoterParticipation,
-        Delegate,
       ]}
     />
   );
