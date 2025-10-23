@@ -1,3 +1,5 @@
+import { ErrorJoiner } from '@/components/contexts/ErrorProvider';
+import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
 import { BlockDetailAsyncRetrieverContext } from '@/components/page_sections/block_detail_content/BlockDetailContentLoader';
 import { BlockSummaryAsyncRetrieverContext } from '@/components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
 import { ExplorerSummaryLoaderContext } from '@/components/page_sections/explorer_summary/ExplorerSummaryLoader';
@@ -6,12 +8,17 @@ import { RollUpDetailAsyncRetrieverContext } from '@/components/page_sections/ro
 import { RollUpSummaryAsyncRetrieverContext } from '@/components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
 import { TransactionDetailAsyncRetrieverContext } from '@/components/page_sections/transaction_detail_content/TransactionDetailLoader';
 import { TransactionSummaryAsyncRetrieverContext } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
+import {
+  mapAsyncIterable,
+  timerAsyncIterable,
+} from '@/functional/functional_async';
 import { BlockSummaryEntry } from '@/models/block_explorer/block_summary';
 import { ExplorerSummaryEntry } from '@/models/block_explorer/explorer_summary';
 import { TransactionSummaryEntry } from '@/models/block_explorer/transaction_summary';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import { CappuccinoExplorerGetBlockDetailRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_block_detail_request';
 import { CappuccinoExplorerGetBlockSummariesRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_block_summaries_request';
+import { CappuccinoExplorerGetExplorerSummaryResponse } from '@/service/hotshot_query_service/cappuccino/explorer/get_explorer_summary_response';
 import { CappuccinoExplorerGetTransactionDetailRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_detail_request';
 import { CappuccinoExplorerGetTransactionSummariesFilter } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_filter';
 import { CappuccinoExplorerGetTransactionSummariesRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_request';
@@ -439,6 +446,90 @@ export const ProvideCappuccinoLatestBlockDetails: React.FC<
   );
 };
 
+export function transformExplorerSummaryResponse(
+  summaryResponse: CappuccinoExplorerGetExplorerSummaryResponse,
+): ExplorerSummaryEntry {
+  const { explorerSummary } = summaryResponse;
+
+  const {
+    latestBlock,
+    latestTransactions,
+    latestBlocks,
+    genesisOverview,
+    histograms,
+  } = explorerSummary;
+
+  return {
+    latestBlock: {
+      hash: latestBlock.hash,
+      height: latestBlock.height,
+      time: latestBlock.time,
+      transactions: latestBlock.numTransactions,
+      proposer: latestBlock.proposerID,
+      recipient: latestBlock.feeRecipient,
+      size: latestBlock.size,
+      rewards: latestBlock.blockReward,
+    },
+    genesisOverview: {
+      rollups: genesisOverview.rollups,
+      transactions: genesisOverview.transactions,
+      blocks: genesisOverview.blocks,
+    },
+    latestBlocks: latestBlocks.map(
+      (block): BlockSummaryEntry => ({
+        height: block.height,
+        time: block.time,
+        transactions: block.numTransactions,
+        size: block.size,
+        proposer: block.proposerID,
+      }),
+    ),
+    latestTransactions: latestTransactions.map(
+      (transaction): TransactionSummaryEntry => ({
+        hash: transaction.hash,
+        block: transaction.height,
+        time: transaction.time,
+        offset: transaction.offset,
+        namespaces: transaction.rollups,
+      }),
+    ),
+    histograms: {
+      blockTime: histograms.blockTime,
+      blockSize: histograms.blockSize,
+      blockTransactions: histograms.blockTransactions,
+      blockThroughput: [],
+      blocks: histograms.blockHeights,
+    },
+  } satisfies ExplorerSummaryEntry;
+}
+
+export interface ProvideCappuccinoExplorerSummaryAsyncStreamProps {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+export const ProvideCappuccinoExplorerSummaryAsyncStream: React.FC<
+  ProvideCappuccinoExplorerSummaryAsyncStreamProps
+> = ({ children }) => {
+  const hotShotQueryService = React.useContext(
+    CappuccinoHotShotQueryServiceAPIContext,
+  );
+
+  // Create a timer to refresh every two seconds.
+  const timer = timerAsyncIterable(2000, true);
+  const explorerSummaryStream = mapAsyncIterable(timer, async () => {
+    const summaryResponse =
+      await hotShotQueryService.explorer.getExplorerOverview();
+
+    return transformExplorerSummaryResponse(summaryResponse);
+  });
+
+  return (
+    <AsyncIterableResolver asyncIterable={explorerSummaryStream}>
+      <ErrorJoiner>{children}</ErrorJoiner>
+    </AsyncIterableResolver>
+  );
+};
+
 interface ProvideCappuccinoExplorerSummaryProps {}
 
 export const ProvideCappuccinoExplorerSummary: React.FC<
@@ -455,59 +546,7 @@ export const ProvideCappuccinoExplorerSummary: React.FC<
         async retrieve() {
           const summaryResponse =
             await hotShotQueryService.explorer.getExplorerOverview();
-
-          const { explorerSummary } = summaryResponse;
-
-          const {
-            latestBlock,
-            latestTransactions,
-            latestBlocks,
-            genesisOverview,
-            histograms,
-          } = explorerSummary;
-
-          return {
-            latestBlock: {
-              hash: latestBlock.hash,
-              height: latestBlock.height,
-              time: latestBlock.time,
-              transactions: latestBlock.numTransactions,
-              proposer: latestBlock.proposerID,
-              recipient: latestBlock.feeRecipient,
-              size: latestBlock.size,
-              rewards: latestBlock.blockReward,
-            },
-            genesisOverview: {
-              rollups: genesisOverview.rollups,
-              transactions: genesisOverview.transactions,
-              blocks: genesisOverview.blocks,
-            },
-            latestBlocks: latestBlocks.map(
-              (block): BlockSummaryEntry => ({
-                height: block.height,
-                time: block.time,
-                transactions: block.numTransactions,
-                size: block.size,
-                proposer: block.proposerID,
-              }),
-            ),
-            latestTransactions: latestTransactions.map(
-              (transaction): TransactionSummaryEntry => ({
-                hash: transaction.hash,
-                block: transaction.height,
-                time: transaction.time,
-                offset: transaction.offset,
-                namespaces: transaction.rollups,
-              }),
-            ),
-            histograms: {
-              blockTime: histograms.blockTime,
-              blockSize: histograms.blockSize,
-              blockTransactions: histograms.blockTransactions,
-              blockThroughput: [],
-              blocks: histograms.blockHeights,
-            },
-          } satisfies ExplorerSummaryEntry;
+          return transformExplorerSummaryResponse(summaryResponse);
         },
       }}
     />

@@ -3,7 +3,7 @@ import { Now } from '@/contexts/NowProvider';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import RelativeTimeText from '../RelativeTimeText';
+import RelativeTimeSinceDateText from '../RelativeTimeSinceDateText';
 
 describe('Relative Time Text Component', () => {
   it('should format format', () => {
@@ -12,7 +12,7 @@ describe('Relative Time Text Component', () => {
       <Now.Provider value={new Date('2024-01-01T17:11:00Z')}>
         <CurrentLocale.Provider value="en-US">
           <div data-testid="1">
-            <RelativeTimeText date={new Date(date)} />
+            <RelativeTimeSinceDateText date={new Date(date)} />
           </div>
         </CurrentLocale.Provider>
       </Now.Provider>,
@@ -28,7 +28,7 @@ describe('Relative Time Text Component', () => {
       <Now.Provider value={new Date('2024-01-01T18:00:00Z')}>
         <CurrentLocale.Provider value="en-US">
           <div data-testid="1">
-            <RelativeTimeText date={new Date(date)} />
+            <RelativeTimeSinceDateText date={new Date(date)} />
           </div>
         </CurrentLocale.Provider>
       </Now.Provider>,
@@ -44,7 +44,7 @@ describe('Relative Time Text Component', () => {
       <Now.Provider value={new Date('2024-01-02T00:00:00Z')}>
         <CurrentLocale.Provider value="en-US">
           <div data-testid="1">
-            <RelativeTimeText date={new Date(date)} />
+            <RelativeTimeSinceDateText date={new Date(date)} />
           </div>
         </CurrentLocale.Provider>
       </Now.Provider>,
@@ -60,7 +60,7 @@ describe('Relative Time Text Component', () => {
       <Now.Provider value={new Date('2024-02-01T00:00:00Z')}>
         <CurrentLocale.Provider value="en-US">
           <div data-testid="1">
-            <RelativeTimeText date={new Date(date)} />
+            <RelativeTimeSinceDateText date={new Date(date)} />
           </div>
         </CurrentLocale.Provider>
       </Now.Provider>,

@@ -1,4 +1,6 @@
 import { ErrorContext } from '@/components/contexts';
+import DurationInSecondsText from '@/components/text/DurationInSecondsText';
+import RelativeTimeSinceDateText from '@/components/text/RelativeTimeSinceDateText';
 import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
@@ -7,13 +9,14 @@ import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/Summa
 import SummaryValueLabeled from '@/layout/summary_value_labeled/SummaryValueLabeled';
 import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
 import SkeletonContent from '@/loading/SkeletonContent';
+import { ExplorerSummaryEntry } from '@/models/block_explorer/explorer_summary';
 import ByteSizeText from '@/text/ByteSizeText';
 import HexText from '@/text/HexText';
 import NumberText from '@/text/NumberText';
-import RelativeTimeText from '@/text/RelativeTimeText';
 import Text from '@/text/Text';
 import React from 'react';
 import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
+import { ExplorerSummaryProvider } from '../explorer_summary';
 import {
   LatestBlock,
   LatestBlockSummaryProvider,
@@ -49,14 +52,40 @@ export const LatestBlockSummaryHeadingPlaceholder: React.FC = () => {
   );
 };
 
+function determineTimeTakenBetweenBlocks(
+  data: null | ExplorerSummaryEntry,
+): null | number {
+  if (data === null) {
+    return null;
+  }
+
+  if (data.latestBlocks.length < 2) {
+    return null;
+  }
+
+  return (
+    data.latestBlocks[0].time.valueOf() - data.latestBlocks[1].time.valueOf()
+  );
+}
+
 export const LatestBlockSummaryDetails: React.FC = () => {
+  const explorerSummary = React.useContext(ExplorerSummaryProvider);
   const block = React.useContext(LatestBlockSummaryProvider);
+  const timeToCreateBlock = determineTimeTakenBetweenBlocks(explorerSummary);
 
   return (
     <div className="card--padding">
+      {timeToCreateBlock === null ? (
+        <></>
+      ) : (
+        <SummaryTableLabeledValue>
+          <Text text="Time" />
+          <DurationInSecondsText durationInMilliseconds={timeToCreateBlock} />
+        </SummaryTableLabeledValue>
+      )}
       <SummaryTableLabeledValue>
-        <Text text="Time" />
-        <RelativeTimeText date={block.time} />
+        <Text text="Age" />
+        <RelativeTimeSinceDateText date={block.time} />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
         <Text text="Size" />

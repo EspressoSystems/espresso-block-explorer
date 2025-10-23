@@ -4,16 +4,14 @@ import LabeledAnchorButton from '@/components/hid/buttons/labeled_anchor_button/
 import { addClassToClassName } from '@/components/higher_order';
 import { SearchInput } from '@/components/input/search/SearchInput';
 import { BlockSizeHistogram } from '@/components/page_sections/block_size_histogram/BlockSizeHistogram';
-import { BlockSizeHistogramLoader } from '@/components/page_sections/block_size_histogram/BlockSizeHistogramDataLoader';
-import { BlockSummaryDataLoader } from '@/components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
+import { BlockSummaryDataFromStreamLoader } from '@/components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
 import {
   BlockSummaryDataTable,
   BlockSummaryDataTablePlaceholder,
 } from '@/components/page_sections/block_summary_data_table/BlockSummaryDataTable';
 import { BlockThroughputHistogram } from '@/components/page_sections/block_throughput_histogram/BlockThroughputHistogram';
-import { BlockThroughputHistogramLoader } from '@/components/page_sections/block_throughput_histogram/BlockThroughputHistogramDataLoader';
 import { BlockTimeHistogram } from '@/components/page_sections/block_time_histogram/BlockTimeHistogram';
-import { BlockTimeHistogramLoader } from '@/components/page_sections/block_time_histogram/BlockTimeHistogramDataLoader';
+import { HistogramDataLoader } from '@/components/page_sections/block_time_histogram/BlockTimeHistogramDataLoader';
 import { ExplorerOverviewAsyncHandler } from '@/components/page_sections/explorer_overview/ExplorerOverview';
 import { ExplorerOverviewLoader } from '@/components/page_sections/explorer_overview/ExplorerOverviewLoader';
 import Footer from '@/components/page_sections/footer/Footer';
@@ -21,7 +19,7 @@ import Header from '@/components/page_sections/header/Header';
 import { LatestBlockSummaryAsyncHandler } from '@/components/page_sections/latest_block_summary/LatestBlockSummary';
 import { LatestBlockSummaryDataLoader } from '@/components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
 import PageTitle from '@/components/page_sections/page_title/PageTitle';
-import { TransactionSummaryDataLoader } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
+import { TransactionSummaryDataFromStreamLoader } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
 import {
   TransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
@@ -127,17 +125,13 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           <ExplorerOverviewAsyncHandler className="overview" />
         </ExplorerOverviewLoader>
 
-        <BlockTimeHistogramLoader>
+        <HistogramDataLoader>
           <BlockTimeHistogram />
-        </BlockTimeHistogramLoader>
 
-        <BlockSizeHistogramLoader>
           <BlockSizeHistogram />
-        </BlockSizeHistogramLoader>
 
-        <BlockThroughputHistogramLoader>
           <BlockThroughputHistogram />
-        </BlockThroughputHistogramLoader>
+        </HistogramDataLoader>
 
         <Card className="latest-blocks-summary">
           <SummaryTableLabeledValue>
@@ -150,9 +144,9 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           </SummaryTableLabeledValue>
 
           <div className="card--padding">
-            <BlockSummaryDataLoader>
+            <BlockSummaryDataFromStreamLoader>
               <GuardedBlocksSummaryDataTable />
-            </BlockSummaryDataLoader>
+            </BlockSummaryDataFromStreamLoader>
           </div>
         </Card>
 
@@ -167,9 +161,9 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           </SummaryTableLabeledValue>
 
           <div className="card--padding">
-            <TransactionSummaryDataLoader>
+            <TransactionSummaryDataFromStreamLoader>
               <GuardedTransactionsSummaryDataTable />
-            </TransactionSummaryDataLoader>
+            </TransactionSummaryDataFromStreamLoader>
           </div>
         </Card>
       </div>

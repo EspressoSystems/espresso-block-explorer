@@ -16,7 +16,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
 import React from 'react';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
-import { ProvideCappuccinoExplorerSummary } from '../CappuccinoHotShotQueryServiceAdapters';
+import { ProvideCappuccinoExplorerSummaryAsyncStream } from '../CappuccinoHotShotQueryServiceAdapters';
 import ExplorerPage from '../ExplorerPage';
 import { StoryBookPathResolver } from '../StoryBookPathResolver';
 
@@ -41,11 +41,11 @@ const Example: React.FC<ExampleProps> = ({
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
         <ProvideCappuccinoHotShotQueryServiceAPIContext>
-          <ProvideCappuccinoExplorerSummary>
+          <ProvideCappuccinoExplorerSummaryAsyncStream>
             <ExplorerSummaryLoader>
               <ExplorerPage {...rest} />
             </ExplorerSummaryLoader>
-          </ProvideCappuccinoExplorerSummary>
+          </ProvideCappuccinoExplorerSummaryAsyncStream>
         </ProvideCappuccinoHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>

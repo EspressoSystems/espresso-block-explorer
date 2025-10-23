@@ -1,3 +1,4 @@
+import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { DataContext } from '@/contexts/DataProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import UnimplementedError from '@/errors/UnimplementedError';
@@ -5,10 +6,10 @@ import { addClassToClassName } from '@/higher_order';
 import {
   BlockSummaryAsyncRetriever,
   BlockSummaryColumn,
+  BlockSummaryEntry,
 } from '@/models/block_explorer/block_summary';
 import Text from '@/text/Text';
 import React from 'react';
-import PromiseResolver from '../../data/async_data/PromiseResolver';
 import {
   DataTableSetStateContext,
   DataTableState,
@@ -16,6 +17,7 @@ import {
 } from '../../data/data_table/DataTable';
 import { SortDirection } from '../../data/types';
 import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
+import { ExplorerSummaryProvider } from '../explorer_summary/ExplorerSummaryLoader';
 
 export interface BlockSummary {
   block: number;
@@ -28,6 +30,16 @@ export interface BlockSummary {
 export interface BlockSummaryDataTableState
   extends DataTableState<BlockSummaryColumn> {
   startAtBlock?: number;
+}
+
+function convertBlockDataToBlockSummary(data: BlockSummaryEntry): BlockSummary {
+  return {
+    block: data.height,
+    proposer: data.proposer,
+    transactions: data.transactions,
+    size: data.size,
+    time: data.time,
+  };
 }
 
 /**
@@ -44,16 +56,7 @@ function createDataRetrieverFromRetriever(
       startAtBlock: resolvedState.startAtBlock,
     });
 
-    return data.map(
-      (data) =>
-        ({
-          block: data.height,
-          proposer: data.proposer,
-          transactions: data.transactions,
-          size: data.size,
-          time: data.time,
-        }) satisfies BlockSummary,
-    );
+    return data.map(convertBlockDataToBlockSummary);
   };
 }
 
@@ -92,6 +95,26 @@ const LoadBlockSummaryDataTableData: React.FC<
         <>{props.children}</>
       </DataTableSetStateContext.Provider>
     </PromiseResolver>
+  );
+};
+
+const LoadBlockSummaryDataTableDataFromStream: React.FC<
+  LoadBlocksSummaryDataTableData
+> = (props) => {
+  const data = React.useContext(ExplorerSummaryProvider);
+
+  if (!data) {
+    return (
+      <DataContext.Provider value={null}>{props.children}</DataContext.Provider>
+    );
+  }
+
+  return (
+    <DataContext.Provider
+      value={data.latestBlocks.map(convertBlockDataToBlockSummary)}
+    >
+      {props.children}
+    </DataContext.Provider>
   );
 };
 
@@ -136,6 +159,41 @@ export const BlockSummaryDataLoader: React.FC<BlockSummaryDataLoaderProps> = ({
         }
       >
         {React.createElement(LoadBlockSummaryDataTableData, props)}
+      </DataTableSetStateContext.Provider>
+    </DataTableStateContext.Provider>
+  );
+};
+
+export const BlockSummaryDataFromStreamLoader: React.FC<
+  BlockSummaryDataLoaderProps
+> = ({ startAtBlock, ...props }) => {
+  // Create the Data Table State
+  const [initialState, setState] = React.useState<BlockSummaryDataTableState>({
+    sortColumn: BlockSummaryColumn.height,
+    sortDir: SortDirection.desc,
+    startAtBlock: startAtBlock,
+  });
+
+  if (
+    startAtBlock !== undefined &&
+    initialState.startAtBlock !== startAtBlock
+  ) {
+    setState({
+      ...initialState,
+      startAtBlock: startAtBlock,
+    });
+  }
+
+  return (
+    <DataTableStateContext.Provider value={initialState}>
+      <DataTableSetStateContext.Provider
+        value={
+          setState as React.Dispatch<
+            React.SetStateAction<DataTableState<unknown>>
+          >
+        }
+      >
+        {React.createElement(LoadBlockSummaryDataTableDataFromStream, props)}
       </DataTableSetStateContext.Provider>
     </DataTableStateContext.Provider>
   );

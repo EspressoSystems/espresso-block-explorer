@@ -2,6 +2,7 @@ import { PathResolver } from '@/components/contexts/PathResolver';
 import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { PresentationIconButton } from '@/components/hid/buttons/icon_button/IconButton';
 import { Label } from '@/components/layout/label/label';
+import RelativeTimeSinceDateText from '@/components/text/RelativeTimeSinceDateText';
 import { DataContext } from '@/contexts/DataProvider';
 import { ErrorContext } from '@/contexts/ErrorProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
@@ -15,7 +16,6 @@ import { CappuccinoExplorerSearchResults } from '@/service/hotshot_query_service
 import { CappuccinoExplorerTransactionSummary } from '@/service/hotshot_query_service/cappuccino/explorer/transaction_summary';
 import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
 import NumberText from '@/text/NumberText';
-import RelativeTimeText from '@/text/RelativeTimeText';
 import Text from '@/text/Text';
 import { WithUiSmall } from '@/typography/typography';
 import SearchGlass from '@/visual/icons/SearchGlass';
@@ -876,7 +876,7 @@ const SearchTransactionRow: React.FC = () => {
         <NumberText number={txn.height} />
       </UISmallDiv>
       <UISmallDiv>
-        <RelativeTimeText date={txn.time} />
+        <RelativeTimeSinceDateText date={txn.time} />
       </UISmallDiv>
     </>
   );

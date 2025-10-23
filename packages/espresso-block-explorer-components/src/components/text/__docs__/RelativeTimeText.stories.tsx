@@ -3,7 +3,7 @@ import { OverrideLocale } from '@/contexts/LocaleProvider';
 import { ProvideTickEverySecond } from '@/contexts/NowProvider';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import RelativeTimeText from '../RelativeTimeText';
+import RelativeTimeSinceDateText from '../RelativeTimeSinceDateText';
 
 interface ExampleProps {
   locale: string;
@@ -13,7 +13,7 @@ const Example: React.FC<ExampleProps> = ({ locale, date }) => (
   <ProvideTickEverySecond>
     <OverrideLocale locale={locale}>
       <ProvideDerivedDateTimeFormatters>
-        <RelativeTimeText date={new Date(date)} />
+        <RelativeTimeSinceDateText date={new Date(date)} />
       </ProvideDerivedDateTimeFormatters>
     </OverrideLocale>
   </ProvideTickEverySecond>

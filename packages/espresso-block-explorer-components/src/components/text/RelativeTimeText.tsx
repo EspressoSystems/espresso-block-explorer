@@ -1,14 +1,12 @@
 import { CurrentDateTimeFormatters } from '@/contexts/DateTimeFormattersProvider';
-import { Now } from '@/contexts/NowProvider';
 import React, { useContext } from 'react';
 
 export interface RelativeTimeTextProps {
-  date: Date;
+  durationInMilliseconds: number;
 }
 
-function determineParts(now: Date, target: Date) {
-  const totalMilliseconds = Math.abs(now.valueOf() - target.valueOf());
-  const negate = now.valueOf() < target.valueOf() ? 1 : -1;
+function determineParts(totalMilliseconds: number) {
+  const negate = totalMilliseconds < 0 ? 1 : -1;
   const totalSeconds = Math.floor(totalMilliseconds / 1000);
   const totalMinutes = Math.floor(totalSeconds / 60);
   const totalHours = Math.floor(totalMinutes / 60);
@@ -20,8 +18,8 @@ function determineParts(now: Date, target: Date) {
 }
 
 /**
- * RelativeTimeText attempts to render the given date into the disparate
- * components for localization.
+ * RelativeTimeText attempts to render the given duration into the
+ * disparate components for localization.
  *
  * @todo
  * However, it combines them using traditional English Combining rules that
@@ -29,10 +27,10 @@ function determineParts(now: Date, target: Date) {
  */
 const RelativeTimeText: React.FC<RelativeTimeTextProps> = (props) => {
   const formatters = useContext(CurrentDateTimeFormatters);
-  const now = useContext(Now);
-  const date = props.date;
 
-  const [days, hours, minutes, seconds] = determineParts(now, date);
+  const [days, hours, minutes, seconds] = determineParts(
+    props.durationInMilliseconds,
+  );
 
   if (days !== 0) {
     return formatters.relative.format(days, 'days');

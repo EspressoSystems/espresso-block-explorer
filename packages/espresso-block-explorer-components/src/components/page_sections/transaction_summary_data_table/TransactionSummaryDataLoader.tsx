@@ -1,3 +1,4 @@
+import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { DataContext } from '@/contexts/DataProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import UnimplementedError from '@/errors/UnimplementedError';
@@ -5,17 +6,18 @@ import { addClassToClassName } from '@/higher_order';
 import {
   TransactionSummaryAsyncRetriever,
   TransactionSummaryColumn,
+  TransactionSummaryEntry,
 } from '@/models/block_explorer/transaction_summary';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import Text from '@/text/Text';
 import React from 'react';
-import PromiseResolver from '../../data/async_data/PromiseResolver';
 import {
   DataTableState,
   DataTableStateContext,
 } from '../../data/data_table/DataTable';
 import { SortDirection } from '../../data/types';
 import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
+import { ExplorerSummaryProvider } from '../explorer_summary/ExplorerSummaryLoader';
 
 export interface TransactionSummary {
   hash: TaggedBase64;
@@ -42,6 +44,18 @@ export interface TransactionSummaryDataTableState
   offset?: number;
 }
 
+function convertTransactionDataToTransactionSummary(
+  data: TransactionSummaryEntry,
+): TransactionSummary {
+  return {
+    hash: data.hash,
+    block: data.block,
+    offset: data.offset,
+    rollups: data.namespaces,
+    time: data.time,
+  };
+}
+
 /**
  * createDataRetrieverFromRetriever converts a TransactionSummaryAsyncRetriever
  * into an AsyncRetriever of the correct data format.
@@ -57,16 +71,7 @@ function createDataRetrieverFromRetriever(
         offset: resolvedState.offset,
       });
 
-      return data.map(
-        (data) =>
-          ({
-            hash: data.hash,
-            block: data.block,
-            offset: data.offset,
-            rollups: data.namespaces,
-            time: data.time,
-          }) satisfies TransactionSummary,
-      );
+      return data.map(convertTransactionDataToTransactionSummary);
     },
   };
 }
@@ -93,6 +98,28 @@ const LoadTransactionSummaryDataTableData: React.FC<
     <PromiseResolver promise={nextRetriever.retrieve(dataTableState)}>
       <>{props.children}</>
     </PromiseResolver>
+  );
+};
+
+const LoadTransactionSummaryDataTableDataFromStream: React.FC<
+  LoadTransactionSummaryDataTableDataProps
+> = (props) => {
+  const data = React.useContext(ExplorerSummaryProvider);
+
+  if (!data) {
+    return (
+      <DataContext.Provider value={null}>{props.children}</DataContext.Provider>
+    );
+  }
+
+  return (
+    <DataContext.Provider
+      value={data.latestTransactions.map(
+        convertTransactionDataToTransactionSummary,
+      )}
+    >
+      {props.children}
+    </DataContext.Provider>
   );
 };
 
@@ -125,6 +152,25 @@ export const TransactionSummaryDataLoader: React.FC<
   );
 };
 
+export const TransactionSummaryDataFromStreamLoader: React.FC<
+  TransactionsSummaryDataLoaderProps
+> = (props) => {
+  const { startAtBlock, offset, ...rest } = props;
+  // Create the Data Table State
+  const [initialState] = React.useState<TransactionSummaryDataTableState>({
+    sortColumn: TransactionSummaryColumn.block,
+    sortDir: SortDirection.desc,
+    height: startAtBlock,
+    offset: offset,
+  });
+
+  return (
+    <DataTableStateContext.Provider value={initialState}>
+      {React.createElement(LoadTransactionSummaryDataTableDataFromStream, rest)}
+    </DataTableStateContext.Provider>
+  );
+};
+
 export interface TransactionsNavigationProps {
   className?: string;
 }
@@ -139,7 +185,7 @@ export const TransactionsNavigation: React.FC<TransactionsNavigationProps> = (
   const next: React.ReactNode[] = [];
   // Do we know if we're at the top of the page?
 
-  if (data[data.length - 1].block > 0) {
+  if (data && data[data.length - 1].block > 0) {
     const lastTransaction = data[data.length - 1];
 
     previous.push(
