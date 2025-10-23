@@ -151,7 +151,13 @@ export const BlockTimeHistogram: React.FC = () => {
                           value={emptyBlockStatistics.nullableMean}
                         />
                       </div>
-                      <ValueText />
+                      <div>
+                        <Label>
+                          <Text text="Aggregate" />
+                        </Label>
+                        &nbsp;
+                        <ValueText />
+                      </div>
                     </div>
                   </PrefixMoreInfoElement>
                   <Text text="Average" />
