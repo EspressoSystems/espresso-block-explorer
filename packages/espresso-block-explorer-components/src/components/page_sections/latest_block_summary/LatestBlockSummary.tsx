@@ -1,6 +1,5 @@
 import { ErrorContext } from '@/components/contexts';
 import DurationInSecondsText from '@/components/text/DurationInSecondsText';
-import RelativeTimeSinceDateText from '@/components/text/RelativeTimeSinceDateText';
 import { DataContext } from '@/contexts/DataProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
@@ -83,10 +82,6 @@ export const LatestBlockSummaryDetails: React.FC = () => {
           <DurationInSecondsText durationInMilliseconds={timeToCreateBlock} />
         </SummaryTableLabeledValue>
       )}
-      <SummaryTableLabeledValue>
-        <Text text="Age" />
-        <RelativeTimeSinceDateText date={block.time} />
-      </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
         <Text text="Size" />
         <ByteSizeText bytes={block.size} />
