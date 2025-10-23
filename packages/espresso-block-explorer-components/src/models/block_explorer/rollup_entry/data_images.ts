@@ -3,6 +3,8 @@ import {
   kApeChainNamespace,
   kAppChainDecafNamespace,
   kAppChainNamespace,
+  kHuddle01DecafNamespace,
+  kHuddle01Namespace,
   kLogXDecafNamespace,
   kLogXNamespace,
   kMoltenDecafNamespace,
@@ -25,6 +27,9 @@ import {
   ArbitrumAvatarLogo,
   CalderaAvatarLogo,
   EigenLayerAvatarLogo,
+  Huddle01Logo24,
+  Huddle01Logo32,
+  Huddle01Logo40,
   LogXLogo24,
   LogXLogo32,
   LogXLogo40,
@@ -283,6 +288,20 @@ const rufusDecaf = new RollUpImages(
   With40PxSquare(RufusLogo40),
 );
 
+const huddle01 = new RollUpImages(
+  kHuddle01Namespace,
+  With24PxSquare(Huddle01Logo24),
+  With32PxSquare(Huddle01Logo32),
+  With40PxSquare(Huddle01Logo40),
+);
+
+const huddle01Decaf = new RollUpImages(
+  kHuddle01DecafNamespace,
+  With24PxSquare(Huddle01Logo24),
+  With32PxSquare(Huddle01Logo32),
+  With40PxSquare(Huddle01Logo40),
+);
+
 export const rollUpImagesMap = new Map(
   [
     vienna,
@@ -310,5 +329,7 @@ export const rollUpImagesMap = new Map(
     t3rnDecaf,
     rufus,
     rufusDecaf,
+    huddle01,
+    huddle01Decaf,
   ].map((entry) => [entry.namespace, entry]),
 );
