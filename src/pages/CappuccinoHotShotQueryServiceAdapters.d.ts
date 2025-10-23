@@ -1,3 +1,5 @@
+import { ExplorerSummaryEntry } from '../../../../../../../../../src/models/block_explorer/explorer_summary';
+import { CappuccinoExplorerGetExplorerSummaryResponse } from '../../../../../../../../../src/service/hotshot_query_service/cappuccino/explorer/get_explorer_summary_response';
 import { default as React } from 'react';
 export interface ProvideCappuccinoBlockDetailDataSourceProps {
     children: React.ReactNode | React.ReactNode[];
@@ -57,6 +59,11 @@ export declare const ProvideCappuccinoRollUpsSummaryDataSource: React.FC<Provide
 interface ProvideCappuccinoLatestBlockDetailsProps {
 }
 export declare const ProvideCappuccinoLatestBlockDetails: React.FC<ProvideCappuccinoLatestBlockDetailsProps>;
+export declare function transformExplorerSummaryResponse(summaryResponse: CappuccinoExplorerGetExplorerSummaryResponse): ExplorerSummaryEntry;
+export interface ProvideCappuccinoExplorerSummaryAsyncStreamProps {
+    children: React.ReactNode | React.ReactNode[];
+}
+export declare const ProvideCappuccinoExplorerSummaryAsyncStream: React.FC<ProvideCappuccinoExplorerSummaryAsyncStreamProps>;
 interface ProvideCappuccinoExplorerSummaryProps {
 }
 export declare const ProvideCappuccinoExplorerSummary: React.FC<ProvideCappuccinoExplorerSummaryProps>;

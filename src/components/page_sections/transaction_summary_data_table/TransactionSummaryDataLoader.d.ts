@@ -28,6 +28,7 @@ export interface TransactionsSummaryDataLoaderProps {
  * and kicks begins the process of retrieving the data.
  */
 export declare const TransactionSummaryDataLoader: React.FC<TransactionsSummaryDataLoaderProps>;
+export declare const TransactionSummaryDataFromStreamLoader: React.FC<TransactionsSummaryDataLoaderProps>;
 export interface TransactionsNavigationProps {
     className?: string;
 }

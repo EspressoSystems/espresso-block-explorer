@@ -23,6 +23,13 @@ export interface BlockTimeHistogramAsyncRetriever extends AsyncRetriever<void, H
  * be used to retrieve the time histogram data.
  */
 export declare const BlockTimeHistogramAsyncRetrieverContext: React.Context<BlockTimeHistogramAsyncRetriever>;
+export interface HistogramLoaderProps {
+    children?: React.ReactNode | React.ReactNode[];
+}
+/**
+ *
+ */
+export declare const HistogramDataLoader: React.FC<HistogramLoaderProps>;
 export interface BlockTimeHistogramLoaderProps {
     children?: React.ReactNode | React.ReactNode[];
 }

@@ -26,6 +26,7 @@ export interface BlockSummaryDataLoaderProps {
  * @returns
  */
 export declare const BlockSummaryDataLoader: React.FC<BlockSummaryDataLoaderProps>;
+export declare const BlockSummaryDataFromStreamLoader: React.FC<BlockSummaryDataLoaderProps>;
 export interface BlocksNavigationProps {
     className?: string;
 }
