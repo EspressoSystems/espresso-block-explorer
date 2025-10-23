@@ -146,7 +146,6 @@ export const TransactionDataContentsPlaceholder: React.FC = () => {
  */
 export const TransactionDataContents: React.FC = () => {
   const details = React.useContext(TransactionDetailContext);
-  const pathResolver = React.useContext(PathResolverContext);
 
   const data = details.tree;
   return (
@@ -156,9 +155,7 @@ export const TransactionDataContents: React.FC = () => {
         <>
           <RollUpSimple namespace={data.namespace} />
           <br />
-          <InternalLink href={pathResolver.rollUp(data.namespace)}>
-            <NumberText number={data.namespace} />
-          </InternalLink>
+          <NumberText number={data.namespace} />
         </>
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">

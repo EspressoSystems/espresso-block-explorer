@@ -37,7 +37,6 @@ const TransactionCell: React.FC = () => {
  * RollUpCell is a cell that displays the rollup for a given transaction.
  */
 const RollUpCell: React.FC = () => {
-  const pathResolver = React.useContext(PathResolverContext);
   const row = React.useContext(DataTableRowContext) as TransactionSummary;
 
   const rollups = row.rollups;
@@ -47,11 +46,7 @@ const RollUpCell: React.FC = () => {
 
   if (rollups.length === 1) {
     const rollup = rollups[0];
-    return (
-      <InternalLink href={pathResolver.rollUp(rollup)}>
-        <RollUpSimple namespace={rollup} />
-      </InternalLink>
-    );
+    return <RollUpSimple namespace={rollup} />;
   }
 
   return;

@@ -20,14 +20,9 @@ import { RollUpSummary } from './RollUpsSummaryLoader';
  * Rollup, as well as a to the page of that Rollup as well.
  */
 const RollupCell: React.FC = () => {
-  const pathResolver = React.useContext(PathResolverContext);
   const row = React.useContext(DataTableRowContext) as RollUpSummary;
 
-  return (
-    <InternalLink href={pathResolver.rollUp(row.namespace)}>
-      <RollUpSimple namespace={row.namespace} />
-    </InternalLink>
-  );
+  return <RollUpSimple namespace={row.namespace} />;
 };
 
 /**
