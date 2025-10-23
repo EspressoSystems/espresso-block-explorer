@@ -31,11 +31,11 @@ const MainNavLinks: React.FC = () => {
           <Text text="Blocks" />
         </NavLink>
       </li>
-      <li>
+      {/* <li>
         <NavLink pageType={PageType.rollups} href={resolver.rollUps()}>
           <Text text="Rollups" />
         </NavLink>
-      </li>
+      </li> */}
       <li>
         <NavLink pageType={PageType.nodes} href={resolver.nodes()}>
           <Text text="Nodes" />
