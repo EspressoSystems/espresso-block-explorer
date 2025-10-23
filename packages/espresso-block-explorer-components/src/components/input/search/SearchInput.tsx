@@ -7,6 +7,7 @@ import { ErrorContext } from '@/contexts/ErrorProvider';
 import { LoadingContext } from '@/contexts/LoadingProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import { CardNoPadding } from '@/layout/card/Card';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import { CappuccinoExplorerBlockSummary } from '@/service/hotshot_query_service/cappuccino/explorer/block_summary';
 import { CappuccinoExplorerGetSearchResultRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_search_result_request';
 import { CappuccinoExplorerGetSearchResultResponse } from '@/service/hotshot_query_service/cappuccino/explorer/get_search_result_response';
@@ -102,6 +103,73 @@ function resolveDefaultLocation(): PartialLocationHref {
   }
 
   return targetWindow.location;
+}
+
+/**
+ * parseTaggedBase64OrReturnNull is a helper function that will either
+ * successfully return a TaggedBase64 parsed from the query, or null
+ * if it could not be parsed.
+ *
+ * This function is meant to not propagate errors when parsing TaggedBase64
+ * from user input.
+ */
+function parseTaggedBase64OrReturnNull(query: string): null | TaggedBase64 {
+  try {
+    return TaggedBase64.fromString(query.trim());
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (err) {
+    // We ignore this error, as it just means we failed to parse
+    // a TaggedBase64 from the query.
+  }
+  return null;
+}
+
+/**
+ * parseNumberOrReturnNull attempts to parse a positive integer number from
+ * the passed query parameter, or if it is unable to successfully, it will
+ * return null.
+ *
+ * This function is meant to not propagate errors when parsing numbers
+ * from user input.
+ *
+ * NOTE: This function attempts to be helpful to locales and number formats
+ * by supporting well known thousands grouping separators.
+ */
+function parsePositiveIntegerOrReturnNull(query: string): null | number {
+  // We want to be able to support block number searches directly from the
+  // query itself.
+  //
+  // In these cases, we do not expect the search term to match a transaction
+  // hash, or a block hash, instead it should be a simple integer value.
+  //
+  // Additionally, we'd like to support some basic numeric for convenience.
+  // We expect this to really just support the numeric separator characters
+  // like commas, underscores, and spaces.  If we wanted to do this correctly,
+  // we'd support locale based number format parsing, but we don't easily
+  // have the ability to do that here, so we'll settle for simple character
+  // removal instead.
+
+  const cleanedQuery = query.trim().replace(/[., _]/g, '');
+  if (/\D/.test(cleanedQuery)) {
+    // We have more than just digits, so we should not parse this as a block
+    // number.
+    return null;
+  }
+
+  try {
+    const parsed = parseInt(cleanedQuery, 10);
+
+    // Only return the number if it is a valid positive integer.
+    if (!Number.isNaN(parsed) && Number.isInteger(parsed) && parsed >= 0) {
+      return parsed;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (err) {
+    // If we encounter an error, it just means that we couldn't parse the
+    // number.
+  }
+
+  return null;
 }
 
 /**
@@ -223,27 +291,22 @@ class SearchStateController {
   ) {
     // Alright, we want to navigate to the selected element.
     if (this.offset === null) {
-      // Early Detection... Perhaps...
-      if (this.query === '') {
-        return;
-      }
-
-      if (/^\d+$/.test(this.query)) {
-        // We expect this to possibly be a block?
-        const height = Number(this.query);
-        if (Number.isNaN(height) || !Number.isInteger(height)) {
-          return;
-        }
-
+      const blockNumber = parsePositiveIntegerOrReturnNull(this.query);
+      if (blockNumber !== null) {
         // Go to a Block
-        this.navigateTo(pathResolver.block(height));
-        return;
+        this.navigateTo(pathResolver.block(blockNumber));
       }
 
       // This **might** be a full hash, without a selected search result.
       try {
+        const taggedBase64 = parseTaggedBase64OrReturnNull(this.query);
+        if (taggedBase64 === null) {
+          // If we don't have a valid tagged base64, we can't continue.
+          return;
+        }
+
         const result = await service.explorer.getSearchResult(
-          new CappuccinoExplorerGetSearchResultRequest(this.query),
+          new CappuccinoExplorerGetSearchResultRequest(taggedBase64.toString()),
         );
 
         if (result.searchResults.blocks.length > 0) {
@@ -351,7 +414,7 @@ export const SearchInput: React.FC<SearchInputProps> = (props) => {
                     return;
                   }
 
-                  if (event.code === 'Enter') {
+                  if (event.code === 'Enter' || event.code === 'NumpadEnter') {
                     // Search gets submitted automatically, so we don't need to do anything
                     // here.
                     // Though, we will stop the event just to prevent any funny business.
@@ -489,12 +552,17 @@ const SearchLoader: React.FC = () => {
     return <></>;
   }
 
+  const taggedBase64 = parseTaggedBase64OrReturnNull(controller.query);
+  if (taggedBase64 === null) {
+    return <></>;
+  }
+
   return (
     <PromiseResolver
       promise={Promise.all([
         Promise.resolve(query),
         service.explorer.getSearchResult(
-          new CappuccinoExplorerGetSearchResultRequest(query),
+          new CappuccinoExplorerGetSearchResultRequest(taggedBase64.toString()),
         ),
       ])}
     >
