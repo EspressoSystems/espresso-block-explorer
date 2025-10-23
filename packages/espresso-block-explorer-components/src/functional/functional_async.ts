@@ -427,3 +427,27 @@ export async function* unimplementedAsyncIterable<T>(): AsyncGenerator<T> {
  * nothing.
  */
 export async function* emptyAsyncIterable<T>(): AsyncGenerator<T> {}
+
+/**
+ * timerAsyncIterable is an async iterable that yields at the given
+ * interval in milliseconds.
+ */
+export async function* timerAsyncIterable(
+  intervalMs: number,
+  emitImmediate: boolean = false,
+): AsyncGenerator<Date> {
+  if (emitImmediate) {
+    yield new Date();
+  }
+
+  while (true) {
+    const now = await new Promise((resolve: (value: Date) => void) => {
+      const handle = setTimeout(() => {
+        resolve(new Date());
+        clearTimeout(handle);
+      }, intervalMs);
+    });
+
+    yield now;
+  }
+}

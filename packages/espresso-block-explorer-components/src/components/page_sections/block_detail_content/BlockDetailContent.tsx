@@ -1,4 +1,5 @@
 import { Label } from '@/components/layout/label/label';
+import RelativeTimeSinceDateText from '@/components/text/RelativeTimeSinceDateText';
 import { DataContext } from '@/contexts/DataProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
@@ -11,7 +12,6 @@ import CopyHex from '@/text/CopyHex';
 import DateTimeText from '@/text/DateTimeText';
 import FullHexText from '@/text/FullHexText';
 import NumberText from '@/text/NumberText';
-import RelativeTimeText from '@/text/RelativeTimeText';
 import Text from '@/text/Text';
 import ArrowLeft from '@/visual/icons/ArrowLeft';
 import ArrowRight from '@/visual/icons/ArrowRight';
@@ -161,7 +161,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
       <TableLabeledValue className="card--padding">
         <Text text="Timestamp" />
         <>
-          <RelativeTimeText date={details.time} /> (
+          <RelativeTimeSinceDateText date={details.time} /> (
           <DateTimeText date={details.time} />)
         </>
       </TableLabeledValue>

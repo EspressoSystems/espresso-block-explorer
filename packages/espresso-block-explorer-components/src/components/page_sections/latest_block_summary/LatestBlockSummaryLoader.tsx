@@ -1,10 +1,11 @@
 import { AsyncRetriever } from '@/async/AsyncRetriever';
+import { DataContext } from '@/components/contexts';
 import { ErrorCarry, ErrorJoiner } from '@/components/contexts/ErrorProvider';
 import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';
 import React from 'react';
-import PromiseResolver from '../../data/async_data/PromiseResolver';
+import { ExplorerSummaryProvider } from '../explorer_summary';
 
 /**
  * The LatestBlock type is the data type that is expected to be
@@ -58,12 +59,18 @@ interface LatestBlockSummaryDataLoaderProps {
 export const LatestBlockSummaryDataLoader: React.FC<
   LatestBlockSummaryDataLoaderProps
 > = (props) => {
-  const retriever = React.useContext(LatestBlockSummaryLoaderContext);
+  const data = React.useContext(ExplorerSummaryProvider);
+
+  if (!data) {
+    return (
+      <DataContext.Provider value={null}>{props.children}</DataContext.Provider>
+    );
+  }
 
   return (
-    <PromiseResolver promise={retriever.retrieve()}>
+    <DataContext.Provider value={data.latestBlock}>
       {props.children}
-    </PromiseResolver>
+    </DataContext.Provider>
   );
 };
 

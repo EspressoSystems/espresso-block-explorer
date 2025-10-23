@@ -1,7 +1,8 @@
 import { AsyncRetriever } from '@/async/AsyncRetriever';
+import { DataContext } from '@/components/contexts/DataProvider';
 import UnimplementedError from '@/errors/UnimplementedError';
 import React from 'react';
-import PromiseResolver from '../../data/async_data/PromiseResolver';
+import { ExplorerSummaryProvider } from '../explorer_summary/ExplorerSummaryLoader';
 
 export interface ExplorerOverview {
   rollups: number;
@@ -31,11 +32,17 @@ interface ExplorerOverviewLoaderProps {
 export const ExplorerOverviewLoader: React.FC<ExplorerOverviewLoaderProps> = (
   props,
 ) => {
-  const retriever = React.useContext(ExplorerOverviewLoaderContext);
+  const data = React.useContext(ExplorerSummaryProvider);
+
+  if (!data) {
+    return (
+      <DataContext.Provider value={null}>{props.children}</DataContext.Provider>
+    );
+  }
 
   return (
-    <PromiseResolver promise={retriever.retrieve()}>
+    <DataContext.Provider value={data.genesisOverview}>
       {props.children}
-    </PromiseResolver>
+    </DataContext.Provider>
   );
 };

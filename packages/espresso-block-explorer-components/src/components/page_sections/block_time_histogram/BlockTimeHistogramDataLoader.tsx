@@ -1,11 +1,11 @@
 import { AsyncRetriever } from '@/async/AsyncRetriever';
-import { ErrorCarry, ErrorJoiner } from '@/components/contexts';
+import { DataContext, ErrorCarry, ErrorJoiner } from '@/components/contexts';
 import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';
 import { HistogramEntry } from '@/models/block_explorer/explorer_summary';
 import React from 'react';
-import PromiseResolver from '../../data/async_data/PromiseResolver';
+import { ExplorerSummaryProvider } from '../explorer_summary/ExplorerSummaryLoader';
 
 /**
  * The BlockTimeHistogramData type is the data type that is expected to be
@@ -37,6 +37,31 @@ export const BlockTimeHistogramAsyncRetrieverContext =
     },
   });
 
+export interface HistogramLoaderProps {
+  children?: React.ReactNode | React.ReactNode[];
+}
+
+/**
+ *
+ */
+export const HistogramDataLoader: React.FC<HistogramLoaderProps> = ({
+  ...props
+}) => {
+  const data = React.useContext(ExplorerSummaryProvider);
+
+  if (!data) {
+    return (
+      <DataContext.Provider value={null}>{props.children}</DataContext.Provider>
+    );
+  }
+
+  return (
+    <DataContext.Provider value={data.histograms}>
+      {props.children}
+    </DataContext.Provider>
+  );
+};
+
 export interface BlockTimeHistogramLoaderProps {
   children?: React.ReactNode | React.ReactNode[];
 }
@@ -51,13 +76,18 @@ export interface BlockTimeHistogramLoaderProps {
 export const BlockTimeHistogramLoader: React.FC<
   BlockTimeHistogramLoaderProps
 > = ({ ...props }) => {
-  // Need to retrieve the actual data source
-  const retriever = React.useContext(BlockTimeHistogramAsyncRetrieverContext);
+  const data = React.useContext(ExplorerSummaryProvider);
+
+  if (!data) {
+    return (
+      <DataContext.Provider value={null}>{props.children}</DataContext.Provider>
+    );
+  }
 
   return (
-    <PromiseResolver promise={retriever.retrieve()}>
-      <>{props.children}</>
-    </PromiseResolver>
+    <DataContext.Provider value={data.histograms}>
+      {props.children}
+    </DataContext.Provider>
   );
 };
 

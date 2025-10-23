@@ -5,17 +5,18 @@ import { addClassToClassName } from '@/higher_order';
 import {
   TransactionSummaryAsyncRetriever,
   TransactionSummaryColumn,
+  TransactionSummaryEntry,
 } from '@/models/block_explorer/transaction_summary';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import Text from '@/text/Text';
 import React from 'react';
-import PromiseResolver from '../../data/async_data/PromiseResolver';
 import {
   DataTableState,
   DataTableStateContext,
 } from '../../data/data_table/DataTable';
 import { SortDirection } from '../../data/types';
 import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
+import { ExplorerSummaryProvider } from '../explorer_summary/ExplorerSummaryLoader';
 
 export interface TransactionSummary {
   hash: TaggedBase64;
@@ -42,32 +43,15 @@ export interface TransactionSummaryDataTableState
   offset?: number;
 }
 
-/**
- * createDataRetrieverFromRetriever converts a TransactionSummaryAsyncRetriever
- * into an AsyncRetriever of the correct data format.
- */
-function createDataRetrieverFromRetriever(
-  retriever: TransactionSummaryAsyncRetriever,
-) {
+function convertTransactionDataToTransactionSummary(
+  data: TransactionSummaryEntry,
+): TransactionSummary {
   return {
-    async retrieve(state: DataTableState<unknown>) {
-      const resolvedState = state as TransactionSummaryDataTableState;
-      const data = await retriever.retrieve({
-        startAtBlock: resolvedState.height,
-        offset: resolvedState.offset,
-      });
-
-      return data.map(
-        (data) =>
-          ({
-            hash: data.hash,
-            block: data.block,
-            offset: data.offset,
-            rollups: data.namespaces,
-            time: data.time,
-          }) satisfies TransactionSummary,
-      );
-    },
+    hash: data.hash,
+    block: data.block,
+    offset: data.offset,
+    rollups: data.namespaces,
+    time: data.time,
   };
 }
 
@@ -83,16 +67,22 @@ interface LoadTransactionSummaryDataTableDataProps {
 const LoadTransactionSummaryDataTableData: React.FC<
   LoadTransactionSummaryDataTableDataProps
 > = (props) => {
-  // Need to retrieve the actual data source
-  const retriever = React.useContext(TransactionSummaryAsyncRetrieverContext);
-  const dataTableState = React.useContext(DataTableStateContext);
+  const data = React.useContext(ExplorerSummaryProvider);
 
-  const nextRetriever = createDataRetrieverFromRetriever(retriever);
+  if (!data) {
+    return (
+      <DataContext.Provider value={null}>{props.children}</DataContext.Provider>
+    );
+  }
 
   return (
-    <PromiseResolver promise={nextRetriever.retrieve(dataTableState)}>
-      <>{props.children}</>
-    </PromiseResolver>
+    <DataContext.Provider
+      value={data.latestTransactions.map(
+        convertTransactionDataToTransactionSummary,
+      )}
+    >
+      {props.children}
+    </DataContext.Provider>
   );
 };
 

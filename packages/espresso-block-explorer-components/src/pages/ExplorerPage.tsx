@@ -4,16 +4,14 @@ import LabeledAnchorButton from '@/components/hid/buttons/labeled_anchor_button/
 import { addClassToClassName } from '@/components/higher_order';
 import { SearchInput } from '@/components/input/search/SearchInput';
 import { BlockSizeHistogram } from '@/components/page_sections/block_size_histogram/BlockSizeHistogram';
-import { BlockSizeHistogramLoader } from '@/components/page_sections/block_size_histogram/BlockSizeHistogramDataLoader';
 import { BlockSummaryDataLoader } from '@/components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
 import {
   BlockSummaryDataTable,
   BlockSummaryDataTablePlaceholder,
 } from '@/components/page_sections/block_summary_data_table/BlockSummaryDataTable';
 import { BlockThroughputHistogram } from '@/components/page_sections/block_throughput_histogram/BlockThroughputHistogram';
-import { BlockThroughputHistogramLoader } from '@/components/page_sections/block_throughput_histogram/BlockThroughputHistogramDataLoader';
 import { BlockTimeHistogram } from '@/components/page_sections/block_time_histogram/BlockTimeHistogram';
-import { BlockTimeHistogramLoader } from '@/components/page_sections/block_time_histogram/BlockTimeHistogramDataLoader';
+import { HistogramDataLoader } from '@/components/page_sections/block_time_histogram/BlockTimeHistogramDataLoader';
 import { ExplorerOverviewAsyncHandler } from '@/components/page_sections/explorer_overview/ExplorerOverview';
 import { ExplorerOverviewLoader } from '@/components/page_sections/explorer_overview/ExplorerOverviewLoader';
 import Footer from '@/components/page_sections/footer/Footer';
@@ -127,17 +125,13 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           <ExplorerOverviewAsyncHandler className="overview" />
         </ExplorerOverviewLoader>
 
-        <BlockTimeHistogramLoader>
+        <HistogramDataLoader>
           <BlockTimeHistogram />
-        </BlockTimeHistogramLoader>
 
-        <BlockSizeHistogramLoader>
           <BlockSizeHistogram />
-        </BlockSizeHistogramLoader>
 
-        <BlockThroughputHistogramLoader>
           <BlockThroughputHistogram />
-        </BlockThroughputHistogramLoader>
+        </HistogramDataLoader>
 
         <Card className="latest-blocks-summary">
           <SummaryTableLabeledValue>

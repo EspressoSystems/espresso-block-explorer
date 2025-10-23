@@ -5,10 +5,10 @@ import { addClassToClassName } from '@/higher_order';
 import {
   BlockSummaryAsyncRetriever,
   BlockSummaryColumn,
+  BlockSummaryEntry,
 } from '@/models/block_explorer/block_summary';
 import Text from '@/text/Text';
 import React from 'react';
-import PromiseResolver from '../../data/async_data/PromiseResolver';
 import {
   DataTableSetStateContext,
   DataTableState,
@@ -16,6 +16,7 @@ import {
 } from '../../data/data_table/DataTable';
 import { SortDirection } from '../../data/types';
 import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
+import { ExplorerSummaryProvider } from '../explorer_summary/ExplorerSummaryLoader';
 
 export interface BlockSummary {
   block: number;
@@ -30,30 +31,13 @@ export interface BlockSummaryDataTableState
   startAtBlock?: number;
 }
 
-/**
- * createDataRetrieverFromRetriever converts the given
- * BlockSummaryAsyncRetriever into a function that can satisfy the
- * BlockSummary type.
- */
-function createDataRetrieverFromRetriever(
-  retriever: BlockSummaryAsyncRetriever,
-) {
-  return async (state: DataTableState<unknown>) => {
-    const resolvedState = state as BlockSummaryDataTableState;
-    const data = await retriever.retrieve({
-      startAtBlock: resolvedState.startAtBlock,
-    });
-
-    return data.map(
-      (data) =>
-        ({
-          block: data.height,
-          proposer: data.proposer,
-          transactions: data.transactions,
-          size: data.size,
-          time: data.time,
-        }) satisfies BlockSummary,
-    );
+function convertBlockDataToBlockSummary(data: BlockSummaryEntry): BlockSummary {
+  return {
+    block: data.height,
+    proposer: data.proposer,
+    transactions: data.transactions,
+    size: data.size,
+    time: data.time,
   };
 }
 
@@ -80,18 +64,20 @@ interface LoadBlocksSummaryDataTableData {
 const LoadBlockSummaryDataTableData: React.FC<
   LoadBlocksSummaryDataTableData
 > = (props) => {
-  // Need to retrieve the actual data source
-  const retriever = React.useContext(BlockSummaryAsyncRetrieverContext);
-  const dataTableState = React.useContext(DataTableStateContext);
+  const data = React.useContext(ExplorerSummaryProvider);
 
-  const nextRetriever = createDataRetrieverFromRetriever(retriever);
+  if (!data) {
+    return (
+      <DataContext.Provider value={null}>{props.children}</DataContext.Provider>
+    );
+  }
 
   return (
-    <PromiseResolver promise={nextRetriever(dataTableState)}>
-      <DataTableSetStateContext.Provider value={() => {}}>
-        <>{props.children}</>
-      </DataTableSetStateContext.Provider>
-    </PromiseResolver>
+    <DataContext.Provider
+      value={data.latestBlocks.map(convertBlockDataToBlockSummary)}
+    >
+      {props.children}
+    </DataContext.Provider>
   );
 };
 
