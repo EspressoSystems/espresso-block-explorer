@@ -1,0 +1,2 @@
+import{b as n}from"./higher_order-BDc1dO9t.js";import{j as r}from"./iframe-DBL03KB_.js";function o(e){return n(e,"loading-shimmer")}try{o.displayName="WithLoadingShimmer",o.__docgenInfo={description:`WithLoadingShimmer is a higher order component that adds the loading-shimmer
+class to the given component.`,displayName:"WithLoadingShimmer",props:{}}}catch{}const t=e=>r.jsx("div",{className:"skeleton-content",...e});try{t.displayName="SkeletonContent",t.__docgenInfo={description:"",displayName:"SkeletonContent",props:{}}}catch{}export{t as S,o as W};
