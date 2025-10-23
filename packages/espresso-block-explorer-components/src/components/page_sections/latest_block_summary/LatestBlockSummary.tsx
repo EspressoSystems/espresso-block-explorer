@@ -78,8 +78,11 @@ export const LatestBlockSummaryDetails: React.FC = () => {
         <></>
       ) : (
         <SummaryTableLabeledValue>
-          <Text text="Time" />
-          <DurationInSecondsText durationInMilliseconds={timeToCreateBlock} />
+          <Text text="Block time" />
+          <>
+            ~
+            <DurationInSecondsText durationInMilliseconds={timeToCreateBlock} />
+          </>
         </SummaryTableLabeledValue>
       )}
       <SummaryTableLabeledValue>
