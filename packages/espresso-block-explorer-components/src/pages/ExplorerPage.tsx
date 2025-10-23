@@ -21,11 +21,6 @@ import Header from '@/components/page_sections/header/Header';
 import { LatestBlockSummaryAsyncHandler } from '@/components/page_sections/latest_block_summary/LatestBlockSummary';
 import { LatestBlockSummaryDataLoader } from '@/components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
 import PageTitle from '@/components/page_sections/page_title/PageTitle';
-import {
-  RollUpsSummaryDataTable,
-  RollUpsSummaryDataTablePlaceholder,
-} from '@/components/page_sections/rollups_summary_data_table/RollUpsSummaryDataTable';
-import { RollUpsSummaryLoader } from '@/components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
 import { TransactionSummaryDataLoader } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
 import {
   TransactionsSummaryDataTable,
@@ -92,29 +87,6 @@ const GuardedTransactionsSummaryDataTable: React.FC<
   }
 
   return <TransactionsSummaryDataTable />;
-};
-
-interface GuardedRollUpsSummaryDataTableProps {}
-
-const GuardedRollUpsSummaryDataTable: React.FC<
-  GuardedRollUpsSummaryDataTableProps
-> = (props) => {
-  const error = React.useContext(ErrorContext);
-  const loading = React.useContext(LoadingContext);
-
-  if (error) {
-    return <ErrorDisplay />;
-  }
-
-  if (loading) {
-    return (
-      <EdgeShimmerDiv {...props}>
-        <RollUpsSummaryDataTablePlaceholder numElements={10} />
-      </EdgeShimmerDiv>
-    );
-  }
-
-  return <RollUpsSummaryDataTable />;
 };
 
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
@@ -198,23 +170,6 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
             <TransactionSummaryDataLoader>
               <GuardedTransactionsSummaryDataTable />
             </TransactionSummaryDataLoader>
-          </div>
-        </Card>
-
-        <Card className="latest-rollups-summary">
-          <SummaryTableLabeledValue>
-            <Text300H2>
-              <Text text="Most active rollups" />
-            </Text300H2>
-            <LabeledAnchorButton href={pathResolver.rollUps()}>
-              <Text text="View all" />
-            </LabeledAnchorButton>
-          </SummaryTableLabeledValue>
-
-          <div className="card--padding">
-            <RollUpsSummaryLoader>
-              <GuardedRollUpsSummaryDataTable />
-            </RollUpsSummaryLoader>
           </div>
         </Card>
       </div>
