@@ -252,7 +252,7 @@ describe('Search Input Interactions', () => {
       ),
     );
     await interactionSelectSearchBar(searchInput.container);
-    await interactiveKeyInSearchString(searchInput.container, '12.34');
+    await interactiveKeyInSearchString(searchInput.container, '12/34');
     await interactionHitEnterOnSearchShouldNotNavigate(
       location,
       searchInput.container,
