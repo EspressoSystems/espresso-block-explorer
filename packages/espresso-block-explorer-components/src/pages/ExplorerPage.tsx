@@ -4,7 +4,7 @@ import LabeledAnchorButton from '@/components/hid/buttons/labeled_anchor_button/
 import { addClassToClassName } from '@/components/higher_order';
 import { SearchInput } from '@/components/input/search/SearchInput';
 import { BlockSizeHistogram } from '@/components/page_sections/block_size_histogram/BlockSizeHistogram';
-import { BlockSummaryDataLoader } from '@/components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
+import { BlockSummaryDataFromStreamLoader } from '@/components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
 import {
   BlockSummaryDataTable,
   BlockSummaryDataTablePlaceholder,
@@ -19,7 +19,7 @@ import Header from '@/components/page_sections/header/Header';
 import { LatestBlockSummaryAsyncHandler } from '@/components/page_sections/latest_block_summary/LatestBlockSummary';
 import { LatestBlockSummaryDataLoader } from '@/components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
 import PageTitle from '@/components/page_sections/page_title/PageTitle';
-import { TransactionSummaryDataLoader } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
+import { TransactionSummaryDataFromStreamLoader } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
 import {
   TransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
@@ -144,9 +144,9 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           </SummaryTableLabeledValue>
 
           <div className="card--padding">
-            <BlockSummaryDataLoader>
+            <BlockSummaryDataFromStreamLoader>
               <GuardedBlocksSummaryDataTable />
-            </BlockSummaryDataLoader>
+            </BlockSummaryDataFromStreamLoader>
           </div>
         </Card>
 
@@ -161,9 +161,9 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           </SummaryTableLabeledValue>
 
           <div className="card--padding">
-            <TransactionSummaryDataLoader>
+            <TransactionSummaryDataFromStreamLoader>
               <GuardedTransactionsSummaryDataTable />
-            </TransactionSummaryDataLoader>
+            </TransactionSummaryDataFromStreamLoader>
           </div>
         </Card>
       </div>

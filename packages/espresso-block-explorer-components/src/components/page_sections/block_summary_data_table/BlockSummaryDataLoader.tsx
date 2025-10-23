@@ -1,3 +1,4 @@
+import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { DataContext } from '@/contexts/DataProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import UnimplementedError from '@/errors/UnimplementedError';
@@ -42,6 +43,24 @@ function convertBlockDataToBlockSummary(data: BlockSummaryEntry): BlockSummary {
 }
 
 /**
+ * createDataRetrieverFromRetriever converts the given
+ * BlockSummaryAsyncRetriever into a function that can satisfy the
+ * BlockSummary type.
+ */
+function createDataRetrieverFromRetriever(
+  retriever: BlockSummaryAsyncRetriever,
+) {
+  return async (state: DataTableState<unknown>) => {
+    const resolvedState = state as BlockSummaryDataTableState;
+    const data = await retriever.retrieve({
+      startAtBlock: resolvedState.startAtBlock,
+    });
+
+    return data.map(convertBlockDataToBlockSummary);
+  };
+}
+
+/**
  * RetrieverContext represents the retriever to be utilized for retrieving
  * the BlockSummary data.
  */
@@ -62,6 +81,24 @@ interface LoadBlocksSummaryDataTableData {
  * the state retrieved from DataTableStateContext.
  */
 const LoadBlockSummaryDataTableData: React.FC<
+  LoadBlocksSummaryDataTableData
+> = (props) => {
+  // Need to retrieve the actual data source
+  const retriever = React.useContext(BlockSummaryAsyncRetrieverContext);
+  const dataTableState = React.useContext(DataTableStateContext);
+
+  const nextRetriever = createDataRetrieverFromRetriever(retriever);
+
+  return (
+    <PromiseResolver promise={nextRetriever(dataTableState)}>
+      <DataTableSetStateContext.Provider value={() => {}}>
+        <>{props.children}</>
+      </DataTableSetStateContext.Provider>
+    </PromiseResolver>
+  );
+};
+
+const LoadBlockSummaryDataTableDataFromStream: React.FC<
   LoadBlocksSummaryDataTableData
 > = (props) => {
   const data = React.useContext(ExplorerSummaryProvider);
@@ -122,6 +159,41 @@ export const BlockSummaryDataLoader: React.FC<BlockSummaryDataLoaderProps> = ({
         }
       >
         {React.createElement(LoadBlockSummaryDataTableData, props)}
+      </DataTableSetStateContext.Provider>
+    </DataTableStateContext.Provider>
+  );
+};
+
+export const BlockSummaryDataFromStreamLoader: React.FC<
+  BlockSummaryDataLoaderProps
+> = ({ startAtBlock, ...props }) => {
+  // Create the Data Table State
+  const [initialState, setState] = React.useState<BlockSummaryDataTableState>({
+    sortColumn: BlockSummaryColumn.height,
+    sortDir: SortDirection.desc,
+    startAtBlock: startAtBlock,
+  });
+
+  if (
+    startAtBlock !== undefined &&
+    initialState.startAtBlock !== startAtBlock
+  ) {
+    setState({
+      ...initialState,
+      startAtBlock: startAtBlock,
+    });
+  }
+
+  return (
+    <DataTableStateContext.Provider value={initialState}>
+      <DataTableSetStateContext.Provider
+        value={
+          setState as React.Dispatch<
+            React.SetStateAction<DataTableState<unknown>>
+          >
+        }
+      >
+        {React.createElement(LoadBlockSummaryDataTableDataFromStream, props)}
       </DataTableSetStateContext.Provider>
     </DataTableStateContext.Provider>
   );

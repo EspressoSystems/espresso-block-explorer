@@ -1,3 +1,4 @@
+import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { DataContext } from '@/contexts/DataProvider';
 import { PathResolverContext } from '@/contexts/PathResolverProvider';
 import UnimplementedError from '@/errors/UnimplementedError';
@@ -55,6 +56,26 @@ function convertTransactionDataToTransactionSummary(
   };
 }
 
+/**
+ * createDataRetrieverFromRetriever converts a TransactionSummaryAsyncRetriever
+ * into an AsyncRetriever of the correct data format.
+ */
+function createDataRetrieverFromRetriever(
+  retriever: TransactionSummaryAsyncRetriever,
+) {
+  return {
+    async retrieve(state: DataTableState<unknown>) {
+      const resolvedState = state as TransactionSummaryDataTableState;
+      const data = await retriever.retrieve({
+        startAtBlock: resolvedState.height,
+        offset: resolvedState.offset,
+      });
+
+      return data.map(convertTransactionDataToTransactionSummary);
+    },
+  };
+}
+
 interface LoadTransactionSummaryDataTableDataProps {
   children: React.ReactNode | React.ReactNode[];
 }
@@ -65,6 +86,22 @@ interface LoadTransactionSummaryDataTableDataProps {
  * by the DataTableStateContext.
  */
 const LoadTransactionSummaryDataTableData: React.FC<
+  LoadTransactionSummaryDataTableDataProps
+> = (props) => {
+  // Need to retrieve the actual data source
+  const retriever = React.useContext(TransactionSummaryAsyncRetrieverContext);
+  const dataTableState = React.useContext(DataTableStateContext);
+
+  const nextRetriever = createDataRetrieverFromRetriever(retriever);
+
+  return (
+    <PromiseResolver promise={nextRetriever.retrieve(dataTableState)}>
+      <>{props.children}</>
+    </PromiseResolver>
+  );
+};
+
+const LoadTransactionSummaryDataTableDataFromStream: React.FC<
   LoadTransactionSummaryDataTableDataProps
 > = (props) => {
   const data = React.useContext(ExplorerSummaryProvider);
@@ -115,6 +152,25 @@ export const TransactionSummaryDataLoader: React.FC<
   );
 };
 
+export const TransactionSummaryDataFromStreamLoader: React.FC<
+  TransactionsSummaryDataLoaderProps
+> = (props) => {
+  const { startAtBlock, offset, ...rest } = props;
+  // Create the Data Table State
+  const [initialState] = React.useState<TransactionSummaryDataTableState>({
+    sortColumn: TransactionSummaryColumn.block,
+    sortDir: SortDirection.desc,
+    height: startAtBlock,
+    offset: offset,
+  });
+
+  return (
+    <DataTableStateContext.Provider value={initialState}>
+      {React.createElement(LoadTransactionSummaryDataTableDataFromStream, rest)}
+    </DataTableStateContext.Provider>
+  );
+};
+
 export interface TransactionsNavigationProps {
   className?: string;
 }
@@ -129,7 +185,7 @@ export const TransactionsNavigation: React.FC<TransactionsNavigationProps> = (
   const next: React.ReactNode[] = [];
   // Do we know if we're at the top of the page?
 
-  if (data[data.length - 1].block > 0) {
+  if (data && data[data.length - 1].block > 0) {
     const lastTransaction = data[data.length - 1];
 
     previous.push(
