@@ -3,18 +3,18 @@
 import {
   ExplorerPage,
   ExplorerSummaryLoader,
-  ProvideCappuccinoExplorerSummary,
+  ProvideCappuccinoExplorerSummaryAsyncStream,
   ProvideCappuccinoHotShotQueryServiceAPIContext,
 } from 'espresso-block-explorer-components';
 
 export default function ExplorerClientComponent() {
   return (
     <ProvideCappuccinoHotShotQueryServiceAPIContext>
-      <ProvideCappuccinoExplorerSummary>
+      <ProvideCappuccinoExplorerSummaryAsyncStream>
         <ExplorerSummaryLoader>
           <ExplorerPage />
         </ExplorerSummaryLoader>
-      </ProvideCappuccinoExplorerSummary>
+      </ProvideCappuccinoExplorerSummaryAsyncStream>
     </ProvideCappuccinoHotShotQueryServiceAPIContext>
   );
 }
