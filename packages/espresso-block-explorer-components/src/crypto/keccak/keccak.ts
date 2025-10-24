@@ -1,3 +1,4 @@
+import { uint8ArrayToArrayBufferCodec } from '@/convert/codec/uint8_array';
 import { KeccakState } from './keccak_state';
 
 export class Keccak {
@@ -41,7 +42,7 @@ export class Keccak {
 
     this._resetState();
 
-    return digest.buffer;
+    return uint8ArrayToArrayBufferCodec.encode(digest);
   }
 
   // remove result from memory

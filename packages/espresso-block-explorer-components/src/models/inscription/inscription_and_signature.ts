@@ -11,6 +11,7 @@ import {
   Converter,
   hexArrayBufferCodec,
   TypeCheckingCodec,
+  uint8ArrayToArrayBufferCodec,
 } from '@/convert/codec';
 import { createBufferedDataView } from '@/convert/data_view/buffered_data_view';
 import { Endianess } from '@/convert/data_view/endianess';
@@ -121,7 +122,7 @@ class InscriptionAndSignatureBincodeEncoder
 
     serializeBincodeInscriptionAndSignature(serializer, input);
 
-    return serializer.toBytes().buffer;
+    return uint8ArrayToArrayBufferCodec.encode(serializer.toBytes());
   }
 }
 

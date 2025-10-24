@@ -1,3 +1,4 @@
+import { uint8ArrayToArrayBufferCodec } from '../codec/uint8_array';
 import { Endianess } from './endianess';
 
 /**
@@ -109,7 +110,9 @@ class BufferedDataViewImpl extends BufferedDataViewBase {
   }
 
   get arrayBuffer(): ArrayBuffer {
-    return this.dataView.buffer;
+    return uint8ArrayToArrayBufferCodec.encode(
+      new Uint8Array(this.dataView.buffer),
+    );
   }
 
   constructor(

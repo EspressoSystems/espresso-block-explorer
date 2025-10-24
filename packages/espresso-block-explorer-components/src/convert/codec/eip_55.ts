@@ -10,6 +10,7 @@ import {
 } from '@/functional/functional';
 import { encodeNumberIterableToHexits } from '../hex/hex';
 import { Converter } from './convert';
+import { uint8ArrayToArrayBufferCodec } from './uint8_array';
 
 const CHAR_CODE_ZERO = '0'.charCodeAt(0);
 const CHAR_CODE_NINE = '9'.charCodeAt(0);
@@ -33,7 +34,11 @@ export class EIP55Encoder implements Converter<ArrayBuffer, string> {
     const rawHexString = [...rawHexStringParts];
     const hasher = createKeccakHash('keccak256');
     const encoder = new TextEncoder();
-    hasher.update(encoder.encode(rawHexString.join('')));
+    hasher.update(
+      uint8ArrayToArrayBufferCodec.encode(
+        encoder.encode(rawHexString.join('')),
+      ),
+    );
     const hashedAddress = new Uint8Array(hasher.digest());
 
     const checksumChars = mapIterable(

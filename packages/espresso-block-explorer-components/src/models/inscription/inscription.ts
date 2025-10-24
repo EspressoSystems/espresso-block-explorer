@@ -9,6 +9,7 @@ import {
   ArrayEncoder,
   numberCodec,
   stringCodec,
+  uint8ArrayToArrayBufferCodec,
 } from '@/convert/codec';
 import {
   Converter,
@@ -99,7 +100,9 @@ export function deserializeBincodeInscription(
 
   // Each Number is encoded as a Uint64
   const addressData = input.deserializeBytes();
-  const address = new WalletAddress(addressData.buffer);
+  const address = new WalletAddress(
+    uint8ArrayToArrayBufferCodec.encode(addressData),
+  );
 
   const message = input.deserializeStringUTF8();
 

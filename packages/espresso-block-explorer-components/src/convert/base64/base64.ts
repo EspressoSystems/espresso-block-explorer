@@ -1,9 +1,10 @@
 import { CorruptBase64InputError } from '@/errors/CorruptBase64InputError';
 import { IncorrectBase64PaddingError } from '@/errors/IncorrectBase64PaddingError';
 import { InvalidBase64AlphabetLengthError } from '@/errors/InvalidBase64LengthError';
+import { uint8ArrayToArrayBufferCodec } from '../codec/uint8_array';
 
 const textEncoder = new TextEncoder();
-export function convertStringToArrayBuffer(s: string): Uint8Array {
+export function convertStringToUint8Array(s: string): Uint8Array {
   return textEncoder.encode(s);
 }
 
@@ -13,7 +14,7 @@ export function convertArrayBufferToString(ab: ArrayBuffer): string {
 }
 
 export function* charCodesFromString(s: string) {
-  const data = convertStringToArrayBuffer(s);
+  const data = convertStringToUint8Array(s);
   yield* data;
 }
 
@@ -282,7 +283,9 @@ export class Encoding {
   }
 
   public decodeString(s: string) {
-    return this.decode(convertStringToArrayBuffer(s).buffer);
+    return this.decode(
+      uint8ArrayToArrayBufferCodec.encode(convertStringToUint8Array(s)),
+    );
   }
 
   public encodeToString(src: ArrayBuffer) {
