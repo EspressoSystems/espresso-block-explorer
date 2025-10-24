@@ -240,6 +240,16 @@ const rufus = new RollUpEntry(
   new URL('https://rufus.calderaexplorer.xyz/'),
 );
 
+export const kHuddle01Namespace = 12323;
+
+export const kHuddle01DecafNamespace = 2524852;
+const huddle01Decaf = new RollUpEntry(
+  kHuddle01DecafNamespace,
+  'Huddle01',
+  new URL('https://huddle01.com/'),
+  new URL('https://hudlscan.com/txs'),
+);
+
 export const kInfiniteGardenNamespace = 1_397_311_310;
 
 /**
@@ -283,6 +293,7 @@ export const curatedDecafList = [
   apeChainDecaf,
   t3rnDecaf,
   rufusDecaf,
+  huddle01Decaf,
   timeBoostDecaf,
   // Add more Decaf rollups here
 ];
@@ -320,12 +331,14 @@ export function isNitroIntegrationNamespace(namespace: number): boolean {
     namespace === kAppChainDecafNamespace ||
     namespace === kApeChainNamespace ||
     namespace === kApeChainDecafNamespace ||
-    namespace == kLogXNamespace ||
-    namespace == kLogXDecafNamespace ||
-    namespace == t3rnNamespace ||
-    namespace == t3rnDecafNamespace ||
-    namespace == kRufusNamespace ||
-    namespace == kRufusDecafNamespace ||
+    namespace === kLogXNamespace ||
+    namespace === kLogXDecafNamespace ||
+    namespace === t3rnNamespace ||
+    namespace === t3rnDecafNamespace ||
+    namespace === kRufusNamespace ||
+    namespace === kRufusDecafNamespace ||
+    namespace === kHuddle01Namespace ||
+    namespace === kHuddle01DecafNamespace ||
     false // keep a trailing or false to make additions make nicer diffs
   );
 }
