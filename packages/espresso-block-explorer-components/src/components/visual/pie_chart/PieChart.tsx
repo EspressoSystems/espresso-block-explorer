@@ -315,7 +315,7 @@ const PieChartToolTipContent: React.FC = () => {
   }
 
   return (
-    <UiText600 x={Number(0)} y={text600FontSize} textAnchor="center">
+    <UiText600 x={Number(0)} y={text600FontSize} textAnchor="start">
       <Text text={entry.label} />
       <Text text={' '} />
       <NumberText number={entry.value} />

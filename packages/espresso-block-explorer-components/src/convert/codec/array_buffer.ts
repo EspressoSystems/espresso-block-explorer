@@ -15,10 +15,8 @@ export class HexArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
   }
 }
 
-export class HexArrayBufferEncoder
-  implements Converter<ArrayBuffer | ArrayBufferLike, string>
-{
-  convert(input: ArrayBuffer | ArrayBufferLike): string {
+export class HexArrayBufferEncoder implements Converter<ArrayBuffer, string> {
+  convert(input: ArrayBuffer): string {
     // try to avoid this array allocation if possible.
     return ['0x', ...encodeNumberIterableToHexits(new Uint8Array(input))].join(
       '',
@@ -131,4 +129,8 @@ export const urlBase64ArrayBufferCodec = new Base64ArrayBufferCodec(
 );
 export const stdBase64ArrayBufferCodec = new Base64ArrayBufferCodec(
   base64.stdEncoding,
+);
+export const nullableStdBase64ArrayBufferCodec = new NullCodec(
+  new NullDecoder(stdBase64ArrayBufferCodec),
+  new NullEncoder(stdBase64ArrayBufferCodec),
 );

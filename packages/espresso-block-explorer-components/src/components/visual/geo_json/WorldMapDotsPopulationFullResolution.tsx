@@ -179,7 +179,7 @@ const WorldMapDotToolTipContent: React.FC = () => {
               key={index}
               x={Number(0)}
               y={text600FontSize * (index + 1)}
-              textAnchor="center"
+              textAnchor="start"
             >
               <Text text={`unnamed node ${index + 1}`} />
             </UiText600>
@@ -191,7 +191,7 @@ const WorldMapDotToolTipContent: React.FC = () => {
             key={index}
             x={Number(0)}
             y={text600FontSize * (index + 1)}
-            textAnchor="center"
+            textAnchor="start"
           >
             <Text text={node.name} />
           </UiText600>

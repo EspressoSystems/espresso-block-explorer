@@ -53,7 +53,7 @@ export async function convertCappuccinoBlockToBlockSummary(
     block.hash,
     block.size,
     block.payload.transaction_nmt.length,
-    [new Uint8Array([0, 0, 0, 0])],
+    [new Uint8Array([0, 0, 0, 0]).buffer],
   );
 }
 
