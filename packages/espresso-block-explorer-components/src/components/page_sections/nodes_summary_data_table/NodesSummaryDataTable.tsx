@@ -181,24 +181,6 @@ const WebSiteCell: React.FC = () => {
   );
 };
 
-// const LatLng: React.FC = () => {
-//   const [row] = React.useContext(DataTableRowContext) as NodeSummaryDataPair;
-
-//   if (row.location === null) {
-//     return <Text text="-" />;
-//   }
-
-//   if (row.location.coords === null) {
-//     return <Text text="-" />;
-//   }
-
-//   return (
-//     <Text
-//       text={`${row.location.coords[0]}, ${row.location.coords[1]} ${row.location.country}`}
-//     />
-//   );
-// };
-
 /**
  * VoterParticipation is a component that will render the voter
  * participation of the node.
@@ -230,10 +212,20 @@ const VoterParticipation: React.FC = () => {
   );
 };
 
-interface NodesSummaryDataTableLayoutProps {
+interface NodesSummaryWithStakeDataTableLayoutProps {
   components: [
     React.ComponentType,
     React.ComponentType,
+    React.ComponentType,
+    React.ComponentType,
+    React.ComponentType,
+    React.ComponentType,
+    React.ComponentType,
+  ];
+}
+
+interface NodesSummaryDataTableLayoutProps {
+  components: [
     React.ComponentType,
     React.ComponentType,
     React.ComponentType,
@@ -246,8 +238,8 @@ interface NodesSummaryDataTableLayoutProps {
  * NodesSummaryDataTableLayout is a component that renders the layout
  * of the Node Summary Data Table.
  */
-const NodesSummaryDataTableLayout: React.FC<
-  NodesSummaryDataTableLayoutProps
+const NodesSummaryWithStakeDataTableLayout: React.FC<
+  NodesSummaryWithStakeDataTableLayoutProps
 > = (props) => {
   return (
     <DataTable
@@ -294,7 +286,44 @@ const NodesSummaryDataTableLayout: React.FC<
   );
 };
 
-interface NodesSummaryDataTablePlaceholderProps {
+const NodesSummaryDataTableLayout: React.FC<
+  NodesSummaryDataTableLayoutProps
+> = (props) => {
+  return (
+    <DataTable
+      columns={[
+        {
+          label: 'Public Key',
+          columnType: NodeSummaryColumn.publicKey,
+          buildCell: props.components[0],
+        },
+        {
+          label: 'Name',
+          columnType: NodeSummaryColumn.name,
+          buildCell: props.components[1],
+        },
+        {
+          label: 'Company',
+          columnType: NodeSummaryColumn.companyName,
+          buildCell: props.components[2],
+        },
+        {
+          label: 'Website',
+          columnType: NodeSummaryColumn.companyWebSite,
+          buildCell: props.components[3],
+        },
+        {
+          label: 'Vote Participation',
+          columnType: NodeSummaryColumn.voteParticipation,
+          buildCell: props.components[4],
+          alignment: Alignment.end,
+        },
+      ]}
+    />
+  );
+};
+
+interface NodesSummaryWithStakeDataTablePlaceholderProps {
   numElements?: number;
 }
 
@@ -302,8 +331,30 @@ interface NodesSummaryDataTablePlaceholderProps {
  * NodesSummaryDataTablePlaceholder is a component that renders a placeholder
  * version of the Node Summary Data Table.
  */
+export const NodesSummaryWithStakeDataTablePlaceholder: React.FC<
+  NodesSummaryWithStakeDataTablePlaceholderProps
+> = (props) => {
+  const { numElements = 20 } = props;
+
+  return (
+    <DataContext.Provider value={Array.from(iota(numElements))}>
+      <NodesSummaryWithStakeDataTableLayout
+        components={[
+          SkeletonContent,
+          SkeletonContent,
+          SkeletonContent,
+          SkeletonContent,
+          SkeletonContent,
+          SkeletonContent,
+          SkeletonContent,
+        ]}
+      />
+    </DataContext.Provider>
+  );
+};
+
 export const NodesSummaryDataTablePlaceholder: React.FC<
-  NodesSummaryDataTablePlaceholderProps
+  NodesSummaryWithStakeDataTablePlaceholderProps
 > = (props) => {
   const { numElements = 20 } = props;
 
@@ -311,8 +362,6 @@ export const NodesSummaryDataTablePlaceholder: React.FC<
     <DataContext.Provider value={Array.from(iota(numElements))}>
       <NodesSummaryDataTableLayout
         components={[
-          SkeletonContent,
-          SkeletonContent,
           SkeletonContent,
           SkeletonContent,
           SkeletonContent,
@@ -328,10 +377,10 @@ export const NodesSummaryDataTablePlaceholder: React.FC<
  * NodesSummaryDataTablePopulated is a component that renders the populated
  * version of the Node Summary Data Table.
  */
-export const NodesSummaryDataTablePopulated: React.FC = () => {
+export const NodesSummaryWithStakeDataTablePopulated: React.FC = () => {
   // We have an active wallet, versus we don't have an active wallet.
   return (
-    <NodesSummaryDataTableLayout
+    <NodesSummaryWithStakeDataTableLayout
       components={[
         PubKey,
         ValidatorAddress,
@@ -339,6 +388,21 @@ export const NodesSummaryDataTablePopulated: React.FC = () => {
         CompanyName,
         WebSiteCell,
         StakedCell,
+        VoterParticipation,
+      ]}
+    />
+  );
+};
+
+export const NodesSummaryDataTablePopulated: React.FC = () => {
+  // We have an active wallet, versus we don't have an active wallet.
+  return (
+    <NodesSummaryDataTableLayout
+      components={[
+        PubKey,
+        NameCell,
+        CompanyName,
+        WebSiteCell,
         VoterParticipation,
       ]}
     />
@@ -391,31 +455,22 @@ function sortCompanyName(
   const [a] = aPair;
   const [b] = bPair;
 
-  if (a.companyDetails === null && b.companyDetails === null) {
+  const companyNameA = a.companyDetails?.name ?? null;
+  const companyNameB = b.companyDetails?.name ?? null;
+
+  if (companyNameA === null && companyNameB === null) {
     return 0;
   }
 
-  if (a.companyDetails === null) {
+  if (companyNameA === null) {
     return 1;
   }
 
-  if (b.companyDetails === null) {
+  if (companyNameB === null) {
     return -1;
   }
 
-  if (a.companyDetails.name === null && b.companyDetails.name === null) {
-    return 0;
-  }
-
-  if (a.companyDetails.name === null) {
-    return 1;
-  }
-
-  if (b.companyDetails.name === null) {
-    return -1;
-  }
-
-  return a.companyDetails.name.localeCompare(b.companyDetails.name);
+  return companyNameA.localeCompare(companyNameB);
 }
 
 /**
@@ -428,31 +483,22 @@ function sortCompanyWebSite(
   const [a] = aPair;
   const [b] = bPair;
 
-  if (a.companyDetails === null && b.companyDetails === null) {
+  const companyWebsiteA = a.companyDetails?.website ?? null;
+  const companyWebsiteB = b.companyDetails?.website ?? null;
+
+  if (companyWebsiteA === null && companyWebsiteB === null) {
     return 0;
   }
 
-  if (a.companyDetails === null) {
+  if (companyWebsiteA === null) {
     return 1;
   }
 
-  if (b.companyDetails === null) {
+  if (companyWebsiteB === null) {
     return -1;
   }
 
-  if (a.companyDetails.website === null && b.companyDetails.website === null) {
-    return 0;
-  }
-
-  if (a.companyDetails.website === null) {
-    return 1;
-  }
-
-  if (b.companyDetails.website === null) {
-    return -1;
-  }
-
-  return a.companyDetails.website.localeCompare(b.companyDetails.website);
+  return companyWebsiteA.localeCompare(companyWebsiteB);
 }
 
 /**
@@ -654,7 +700,7 @@ export const NodesSummaryDataTable: React.FC = () => {
   }
 
   if ((!data || (data instanceof Array && data.length <= 0)) && loading) {
-    return <NodesSummaryDataTablePlaceholder />;
+    return <NodesSummaryWithStakeDataTablePlaceholder />;
   }
 
   const totalStake = foldRIterator(
@@ -678,6 +724,26 @@ export const NodesSummaryDataTable: React.FC = () => {
     sortDir,
   );
 
+  if (totalStake === 0n) {
+    return (
+      <TotalStakeContext.Provider value={totalStake}>
+        <DataTableStateContext.Provider value={initialState}>
+          <DataTableSetStateContext.Provider
+            value={
+              setState as React.Dispatch<
+                React.SetStateAction<DataTableState<unknown>>
+              >
+            }
+          >
+            <DataContext.Provider value={sortedData}>
+              <NodesSummaryDataTablePopulated />
+            </DataContext.Provider>
+          </DataTableSetStateContext.Provider>
+        </DataTableStateContext.Provider>
+      </TotalStakeContext.Provider>
+    );
+  }
+
   return (
     <TotalStakeContext.Provider value={totalStake}>
       <DataTableStateContext.Provider value={initialState}>
@@ -689,7 +755,7 @@ export const NodesSummaryDataTable: React.FC = () => {
           }
         >
           <DataContext.Provider value={sortedData}>
-            <NodesSummaryDataTablePopulated />
+            <NodesSummaryWithStakeDataTablePopulated />
           </DataContext.Provider>
         </DataTableSetStateContext.Provider>
       </DataTableStateContext.Provider>
