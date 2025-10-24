@@ -10,7 +10,6 @@ import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
 import SkeletonContent from '@/loading/SkeletonContent';
 import { ExplorerSummaryEntry } from '@/models/block_explorer/explorer_summary';
 import ByteSizeText from '@/text/ByteSizeText';
-import HexText from '@/text/HexText';
 import NumberText from '@/text/NumberText';
 import Text from '@/text/Text';
 import React from 'react';
@@ -93,14 +92,6 @@ export const LatestBlockSummaryDetails: React.FC = () => {
         <Text text="Transactions" />
         <NumberText number={block.transactions} />
       </SummaryTableLabeledValue>
-      <SummaryTableLabeledValue>
-        <Text text="Builder" />
-        {block.proposer.map((proposer, index) => (
-          <div key={index}>
-            <HexText value={proposer} />
-          </div>
-        ))}
-      </SummaryTableLabeledValue>
     </div>
   );
 };
@@ -109,7 +100,7 @@ export const LatestBlockSummaryDetailsPlaceholder: React.FC = () => {
   return (
     <div className="card--padding">
       <SummaryTableLabeledValue>
-        <Text text="Time" />
+        <Text text="Block time" />
         <SkeletonContent />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
@@ -118,10 +109,6 @@ export const LatestBlockSummaryDetailsPlaceholder: React.FC = () => {
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
         <Text text="Transactions" />
-        <SkeletonContent />
-      </SummaryTableLabeledValue>
-      <SummaryTableLabeledValue>
-        <Text text="Builder" />
         <SkeletonContent />
       </SummaryTableLabeledValue>
     </div>

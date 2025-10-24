@@ -1,5 +1,6 @@
 import { createBufferedDataView, Endianess } from '@/convert/data_view';
 import { describe, expect, test } from 'vitest';
+import { createRLPDeserializer } from '../deserializer';
 import { createRLPSerializer, RLPSerializer } from '../serializer';
 
 describe('rlp', () => {
@@ -239,6 +240,78 @@ describe('rlp', () => {
         createBufferedDataView(new ArrayBuffer(8), Endianess.big),
       );
       expect(() => serializer.serializeUnknown(input)).toThrow();
+    });
+  });
+
+  describe('decoding examples', () => {
+    describe('number', () => {
+      const input = new Uint8Array([0x7f]); // 127 in RLP
+
+      test('should be able to decode a uint8 value', () => {
+        const deserializer = createRLPDeserializer(
+          createBufferedDataView(input.buffer, Endianess.big),
+        );
+        const value = deserializer.deserializeUint8();
+        expect(value).to.equal(127);
+      });
+
+      test('should be able to decode a uint16 value', () => {
+        const deserializer = createRLPDeserializer(
+          createBufferedDataView(input.buffer, Endianess.big),
+        );
+        const value = deserializer.deserializeUint16();
+        expect(value).to.equal(127);
+      });
+
+      test('should be able to decode a uint32 value', () => {
+        const deserializer = createRLPDeserializer(
+          createBufferedDataView(input.buffer, Endianess.big),
+        );
+        const value = deserializer.deserializeUint32();
+        expect(value).to.equal(127);
+      });
+
+      test('should be able to decode a uint64 value', () => {
+        const deserializer = createRLPDeserializer(
+          createBufferedDataView(input.buffer, Endianess.big),
+        );
+        const value = deserializer.deserializeUint64();
+        expect(value).to.equal(127n);
+      });
+
+      test('should be able to decode a int8 value', () => {
+        const deserializer = createRLPDeserializer(
+          createBufferedDataView(input.buffer, Endianess.big),
+        );
+        const value = deserializer.deserializeInt8();
+        expect(value).to.equal(127);
+      });
+
+      test('should be able to decode a int16 value', () => {
+        const input = new Uint8Array([0x82, 0x00, 0x7f]); // 127 in RLP
+        const deserializer = createRLPDeserializer(
+          createBufferedDataView(input.buffer, Endianess.big),
+        );
+        expect(() => deserializer.deserializeInt16()).to.throw();
+      });
+
+      test('should be able to decode a int32 value', () => {
+        const input = new Uint8Array([0x84, 0x00, 0x00, 0x00, 0x7f]); // 127 in RLP
+        const deserializer = createRLPDeserializer(
+          createBufferedDataView(input.buffer, Endianess.big),
+        );
+        expect(() => deserializer.deserializeInt32()).to.throw();
+      });
+
+      test('should be able to decode a int64 value', () => {
+        const input = new Uint8Array([
+          0x88, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7f,
+        ]); // 127 in RLP
+        const deserializer = createRLPDeserializer(
+          createBufferedDataView(input.buffer, Endianess.big),
+        );
+        expect(() => deserializer.deserializeInt64()).to.throw();
+      });
     });
   });
 });
