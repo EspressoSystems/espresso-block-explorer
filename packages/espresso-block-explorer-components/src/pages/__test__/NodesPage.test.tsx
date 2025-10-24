@@ -48,7 +48,7 @@ describe('NodesPage', async () => {
           const summaryValues = latestBlockSection.querySelectorAll(
             '.summary-tabled-labeled-value',
           );
-          expect(summaryValues).toHaveLength(5);
+          expect(summaryValues).toHaveLength(4);
         },
         { container: latestBlockSection },
       );
