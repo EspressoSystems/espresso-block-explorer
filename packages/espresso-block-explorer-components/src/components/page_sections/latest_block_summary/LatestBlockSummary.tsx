@@ -100,7 +100,7 @@ export const LatestBlockSummaryDetailsPlaceholder: React.FC = () => {
   return (
     <div className="card--padding">
       <SummaryTableLabeledValue>
-        <Text text="Block Time" />
+        <Text text="Block time" />
         <SkeletonContent />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
