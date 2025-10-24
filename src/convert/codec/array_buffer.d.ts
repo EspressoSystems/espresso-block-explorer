@@ -5,16 +5,16 @@ import * as base64 from '../base64/base64';
 export declare class HexArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
     convert(input: unknown): ArrayBuffer;
 }
-export declare class HexArrayBufferEncoder implements Converter<ArrayBuffer | ArrayBufferLike, string> {
-    convert(input: ArrayBuffer | ArrayBufferLike): string;
+export declare class HexArrayBufferEncoder implements Converter<ArrayBuffer, string> {
+    convert(input: ArrayBuffer): string;
 }
 export declare class HexArrayBufferCodec extends TypeCheckingCodec<ArrayBuffer, string> {
     encoder: HexArrayBufferEncoder;
     decoder: HexArrayBufferDecoder;
 }
 export declare const hexArrayBufferCodec: HexArrayBufferCodec;
-export declare const nullableHexArrayBufferCodec: NullCodec<ArrayBuffer | SharedArrayBuffer, string>;
-export declare const hexArrayBufferArrayCodec: ArrayCodec<ArrayBufferLike, string>;
+export declare const nullableHexArrayBufferCodec: NullCodec<ArrayBuffer, string>;
+export declare const hexArrayBufferArrayCodec: ArrayCodec<ArrayBuffer, string>;
 declare class BackwardsCompatibleHexArrayBufferDecoder implements Converter<unknown, ArrayBuffer[]> {
     convert(input: unknown): ArrayBuffer[];
 }
@@ -45,4 +45,5 @@ export declare const rawURLBase64ArrayBufferCodec: Base64ArrayBufferCodec;
 export declare const rawStdBase64ArrayBufferCodec: Base64ArrayBufferCodec;
 export declare const urlBase64ArrayBufferCodec: Base64ArrayBufferCodec;
 export declare const stdBase64ArrayBufferCodec: Base64ArrayBufferCodec;
+export declare const nullableStdBase64ArrayBufferCodec: NullCodec<ArrayBuffer, string>;
 export {};

@@ -13,6 +13,8 @@ export declare const t3rnDecafNamespace = 13107;
 export declare const t3rnNamespace = 819;
 export declare const kRufusDecafNamespace = 21341;
 export declare const kRufusNamespace = 2420;
+export declare const kHuddle01Namespace = 12323;
+export declare const kHuddle01DecafNamespace = 2524852;
 export declare const kInfiniteGardenNamespace = 1397311310;
 export declare const curatedMainnetList: RollUpEntry[];
 export declare const curatedDecafList: RollUpEntry[];

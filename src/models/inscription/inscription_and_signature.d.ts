@@ -45,7 +45,7 @@ export declare function deserializeHexEncodedString(input: BincodeDeserializer):
 export declare function deserializeBincodeInscriptionAndSignature(input: BincodeDeserializer): InscriptionAndSignature;
 export declare function serializeBincodeInscriptionAndSignature(serializer: BincodeSerializer, input: InscriptionAndSignature): void;
 declare class InscriptionAndSignatureBincodeEncoder implements Converter<InscriptionAndSignature, ArrayBuffer> {
-    convert(input: InscriptionAndSignature): ArrayBufferLike;
+    convert(input: InscriptionAndSignature): ArrayBuffer;
 }
 declare class InscriptionAndSignatureBincodeDecoder implements Converter<unknown, InscriptionAndSignature> {
     convert(input: unknown): InscriptionAndSignature;
