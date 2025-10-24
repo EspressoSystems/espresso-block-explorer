@@ -79,7 +79,7 @@ label.result-section-title {
   opacity: 40%;
 
   transition: background-color var(--input--transition--timing) ease-in-out;
-  will-change: background-color, point-events;
+  will-change: background-color, point-events, opacity;
 }
 
 .input-container.search .search-results {
