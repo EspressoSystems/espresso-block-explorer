@@ -12,7 +12,6 @@ export interface PathResolver {
   rollUps(): string;
   rollUp(namespace: number, startAtBlock?: number, offset?: number): string;
   nodes(): string;
-  delegation(): string;
 }
 
 /**
@@ -66,9 +65,5 @@ export class DefaultPathResolver implements PathResolver {
 
   nodes() {
     return '/nodes';
-  }
-
-  delegation() {
-    return '/delegation';
   }
 }

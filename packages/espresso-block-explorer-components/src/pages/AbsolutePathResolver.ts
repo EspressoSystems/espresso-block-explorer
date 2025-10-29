@@ -65,8 +65,4 @@ export class AbsolutePathResolver implements PathResolver {
   nodes(): string {
     return new URL(`.${this.default.nodes()}`, this.baseURL).toString();
   }
-
-  delegation(): string {
-    return new URL(`.${this.default.delegation()}`, this.baseURL).toString();
-  }
 }
