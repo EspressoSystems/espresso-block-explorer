@@ -1,0 +1,3 @@
+import{j as e}from"./iframe-JNS3S7eL.js";import{a}from"./higher_order-BlyC2PwC.js";import{B as i}from"./Button-BnjbzsT9.js";const n=({className:t,...o})=>e.jsx(i,{...o,className:a(t,"icon type--ui--button")}),s=({className:t,...o})=>e.jsx("div",{...o,className:a(t,"icon type--ui--button btn"),role:"presentation"});try{n.displayName="IconButton",n.__docgenInfo={description:`IconButton represents a Button with a simple icon within it.  It is styled
+for a simple 24px x 24px icon to be contained within it, and as such it has
+styles that account for this.`,displayName:"IconButton",props:{}}}catch{}try{s.displayName="PresentationIconButton",s.__docgenInfo={description:"",displayName:"PresentationIconButton",props:{}}}catch{}export{n as I,s as P};

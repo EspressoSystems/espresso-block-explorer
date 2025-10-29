@@ -12,7 +12,6 @@ export interface PathResolver {
     rollUps(): string;
     rollUp(namespace: number, startAtBlock?: number, offset?: number): string;
     nodes(): string;
-    delegation(): string;
 }
 /**
  * DefaultPathResolver is the default implementation of the PathResolver
@@ -28,5 +27,4 @@ export declare class DefaultPathResolver implements PathResolver {
     rollUps(): string;
     rollUp(namespace: number, startAtBlock?: number, offset?: number): string;
     nodes(): string;
-    delegation(): string;
 }

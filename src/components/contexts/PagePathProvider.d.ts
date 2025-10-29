@@ -9,7 +9,6 @@ export declare enum PageType {
     transactions = "transactions",
     rollups = "rollups",
     nodes = "nodes",
-    delegation = "delegation",
     unknown = "unknown"
 }
 export declare function determineBasedOnPathName(pathName?: string): PageType;

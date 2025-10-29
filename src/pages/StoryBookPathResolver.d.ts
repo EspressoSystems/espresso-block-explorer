@@ -13,5 +13,4 @@ export declare class StoryBookPathResolver implements PathResolver {
     rollUps(): string;
     rollUp(namespace: number, startAtBlock?: number, offset?: number): string;
     nodes(): string;
-    delegation(): string;
 }
