@@ -16,6 +16,7 @@ export interface StoryBookSpecifyEnvironmentProps {
   environment?: Environment;
   hotshotQueryServiceURL?: string;
   nodeValidatorWebSocketURL?: string;
+  l1ValidatorServiceURL?: string;
   children: React.ReactNode | React.ReactNode[];
 }
 const queryClient = new QueryClient();
@@ -39,11 +40,15 @@ export const StoryBookSpecifyEnvironment: React.FC<
   environment = Environment.fakeData,
   hotshotQueryServiceURL,
   nodeValidatorWebSocketURL,
+  l1ValidatorServiceURL,
   children,
 }) => {
   const config: ExplorerConfig = {
     hotshotQueryServiceURL: resolveURL(hotshotQueryServiceURL ?? null),
     nodeValidatorServiceURL: resolveURL(nodeValidatorWebSocketURL ?? null),
+    l1ValidatorServiceURL: resolveContractAddress(
+      l1ValidatorServiceURL ?? null,
+    ),
   };
 
   return (

@@ -1,6 +1,7 @@
 import { createClient, defineChain } from 'viem';
 import { createConfig, http } from 'wagmi';
 import * as chains from 'wagmi/chains';
+import { mock } from 'wagmi/connectors';
 import { Environment } from '../environment/environment';
 import { WagmiConfig } from '../environment/wagmi';
 
@@ -78,6 +79,27 @@ export const localDevNet: WagmiConfig = createConfig({
   },
 });
 
+export const fakeData: WagmiConfig = createConfig({
+  chains: [
+    defineChain({
+      ...chains.sepolia,
+      connectors: [
+        mock({
+          accounts: [
+            '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+            '0x70997970c51812dc3a010c7d01b50e0d17dc79c8',
+            '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
+          ],
+        }),
+      ],
+      testnet: true,
+    }),
+  ],
+  client({ chain }) {
+    return createClient({ chain, transport: http() });
+  },
+});
+
 /**
  * getWagmiConfigForEnvironment returns the appropriate WagmiConfig based on
  * the provided environment.
@@ -97,7 +119,7 @@ export function getWagmiConfigForEnvironment(
     case Environment.milk:
       return milk;
     case Environment.fakeData:
-      return localDevNet; // Use local devnet as a fallback for fake data
+      return fakeData; // Use local devnet as a fallback for fake data
     case Environment.localDevNet:
       return localDevNet;
 
