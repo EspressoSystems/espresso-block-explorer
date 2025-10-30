@@ -87,14 +87,17 @@ export function ReadContractToAsyncSnapshot<
     );
   }
 
-  if (typeof result.data !== 'bigint') {
+  if (typeof result.data === 'undefined' || result.data === null) {
     return (
       <AsyncSnapshotContext.Provider
         value={AsyncSnapshot.withError(
           state,
           AsyncSnapshot.withError(
             state,
-            new InvalidTypeError(typeof result.data, 'bigint'),
+            new InvalidTypeError(
+              typeof result.data,
+              'string | bigint | number | boolean',
+            ),
           ),
         )}
       >
@@ -105,7 +108,7 @@ export function ReadContractToAsyncSnapshot<
 
   return (
     <AsyncSnapshotContext.Provider
-      value={AsyncSnapshot.withData(state, BigInt(result.data))}
+      value={AsyncSnapshot.withData(state, result.data)}
     >
       <ProvideAsyncStates>{children}</ProvideAsyncStates>
     </AsyncSnapshotContext.Provider>
