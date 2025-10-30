@@ -1,8 +1,4 @@
-import {
-  assertRecordWithKeys,
-  Converter,
-  TypeCheckingCodec,
-} from '@/convert/codec/convert';
+import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import {
   CurrentEpochValidatorSetEntry,
   currentEpochValidatorSetEntryArrayJSONCodec,
@@ -35,10 +31,8 @@ export class NewEpoch extends ActiveValidatorSetDiff {
  */
 class CurrentEpochJSONDecoder implements Converter<unknown, NewEpoch> {
   convert(input: unknown): NewEpoch {
-    assertRecordWithKeys(input, 'entries');
-
     return new NewEpoch(
-      currentEpochValidatorSetEntryArrayJSONCodec.decode(input.entries),
+      currentEpochValidatorSetEntryArrayJSONCodec.decode(input),
     );
   }
 }
@@ -48,11 +42,7 @@ class CurrentEpochJSONDecoder implements Converter<unknown, NewEpoch> {
  */
 class CurrentEpochJSONEncoder implements Converter<NewEpoch, unknown> {
   convert(input: NewEpoch): unknown {
-    return {
-      epoch_and_block: currentEpochValidatorSetEntryArrayJSONCodec.encode(
-        input.entries,
-      ),
-    };
+    return currentEpochValidatorSetEntryArrayJSONCodec.encode(input.entries);
   }
 }
 

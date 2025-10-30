@@ -30,7 +30,7 @@ export class FetchBasedValidatorsActiveAPI implements ValidatorsActiveAPI {
   }
 
   async updatesSince(block: bigint): Promise<ActiveValidatorSetUpdate> {
-    const url = new URL(`./updates/${block}`, this.baseURL);
+    const url = new URL(`active/updates/${block}`, this.baseURL);
     return this.fetcher(url).then(
       validateAndExpandResponse(activeValidatorSetUpdateJSONCodec.decoder),
     );

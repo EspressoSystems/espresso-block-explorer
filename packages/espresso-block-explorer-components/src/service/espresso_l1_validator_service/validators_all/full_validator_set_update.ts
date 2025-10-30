@@ -54,7 +54,8 @@ class FullValidatorSetUpdateJSONEncoder
 {
   convert(input: FullValidatorSetUpdate): unknown {
     return {
-      validators: fullValidatorSetDiffArrayJSONCodec.encode(input.diff),
+      l1_block: l1BlockInfoJSONCodec.encode(input.l1Block),
+      diff: fullValidatorSetDiffArrayJSONCodec.encode(input.diff),
     };
   }
 }

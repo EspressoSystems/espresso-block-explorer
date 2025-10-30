@@ -32,7 +32,7 @@ export class FetchBasedValidatorsAllAPI implements ValidatorsAllAPI {
 
   async updatesSince(hash: ArrayBuffer): Promise<FullValidatorSetUpdate> {
     const url = new URL(
-      `./updates/${hexArrayBufferCodec.decode(hash)}`,
+      `all/updates/${hexArrayBufferCodec.encode(hash)}`,
       this.baseURL,
     );
     return this.fetcher(url).then(
