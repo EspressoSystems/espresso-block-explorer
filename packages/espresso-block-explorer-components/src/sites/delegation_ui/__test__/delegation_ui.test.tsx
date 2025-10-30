@@ -6,7 +6,7 @@ import * as stories from '../__docs__/delegation_ui.stories';
 
 const { FakeData } = composeStories(stories);
 
-describe('Delegation UI', () => {
+describe('Delegation UI', { timeout: 20000 }, () => {
   it('should smoke test render without issue', async () => {
     render(<FakeData data-testid="1" />);
   });

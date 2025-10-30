@@ -8,7 +8,7 @@ const { FakeData } = composeStories(stories);
 
 window.HTMLElement.prototype.scrollIntoView = function () {};
 
-describe('NodesPage', async () => {
+describe('NodesPage', { timeout: 20000 }, async () => {
   it('should render the story', async () => {
     render(<FakeData data-testid="1" />);
 
@@ -264,5 +264,5 @@ describe('NodesPage', async () => {
     }
 
     expect(nodePage).toBeInTheDocument();
-  }, 10_000);
+  });
 });

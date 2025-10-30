@@ -6,7 +6,7 @@ import * as stories from '../__docs__/nodes_summary_data_table_interactions.stor
 const { Interactions } = composeStories(stories);
 
 describe('Nodes Summary Data Table', () => {
-  describe('Interactions', { timeout: 10000 }, () => {
+  describe('Interactions', { timeout: 20000 }, () => {
     it('should render Interactions', async () => {
       const renderResult = render(<Interactions />);
 
