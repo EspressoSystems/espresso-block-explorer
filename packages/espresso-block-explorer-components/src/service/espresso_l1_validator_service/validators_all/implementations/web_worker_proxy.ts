@@ -1,0 +1,57 @@
+import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { WebWorkerRequest } from '../../web_worker_types';
+import {
+  FullValidatorSetSnapshot,
+  fullValidatorSetSnapshotJSONCodec,
+} from '../full_validator_set_snapshot';
+import {
+  FullValidatorSetUpdate,
+  fullValidatorSetUpdateJSONCodec,
+} from '../full_validator_set_update';
+import { ValidatorsAllAPI } from '../validators_all_api';
+
+/**
+ * ValidatorsActiveAllRequest represents a Web Worker request for the
+ * ValidatorsAllAPI.
+ */
+export type ValidatorsActiveAllRequest<
+  Method extends keyof ValidatorsAllAPI = keyof ValidatorsAllAPI,
+> = WebWorkerRequest<
+  'validatorsAll',
+  Method,
+  Parameters<ValidatorsAllAPI[Method]>
+>;
+
+/**
+ * WebWorkerProxyValidatorsAllAPI is a proxy for the ValidatorsAllAPI
+ * that forwards requests to the underlying service implementation, it
+ * handles the encoding and decoding of requests and responses.
+ */
+export class WebWorkerProxyValidatorsAllAPI {
+  private service: ValidatorsAllAPI;
+  constructor(service: ValidatorsAllAPI) {
+    this.service = service;
+  }
+
+  async snapshot(): Promise<FullValidatorSetSnapshot> {
+    return this.service.snapshot();
+  }
+
+  async updatesSince(hash: ArrayBuffer): Promise<FullValidatorSetUpdate> {
+    return this.service.updatesSince(hash);
+  }
+
+  async handleRequest(request: ValidatorsActiveAllRequest): Promise<unknown> {
+    switch (request.method) {
+      case 'snapshot':
+        return fullValidatorSetSnapshotJSONCodec.encode(await this.snapshot());
+
+      case 'updatesSince':
+        return fullValidatorSetUpdateJSONCodec.encode(
+          await this.updatesSince(
+            stdBase64ArrayBufferCodec.decode(request.param[0]),
+          ),
+        );
+    }
+  }
+}
