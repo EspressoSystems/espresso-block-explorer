@@ -1,16 +1,18 @@
 import { Channel, createChannelToSink } from '@/async/channel';
 import { createSinkWithConverter } from '@/async/sink';
 import { Sink } from '@/async/sink/sink';
-import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import {
-  GeneratedBlock,
+  createGenesisEspressoBlock,
+  generateAllEspressoBlocks,
+  GeneratedEspressoBlock,
+  streamNewEspressoBlocks,
+} from '@/data_source/fake_data_source/espresso/blocks';
+import {
   GeneratedNodeIdentityInformation,
-  createGenesisBlock,
-  generateAllBlocks,
-  getStartingSeed,
   nodeList,
-  streamNewBlocks,
-} from '@/data_source/fake_data_source/generateFakeData';
+} from '@/data_source/fake_data_source/espresso/nodes';
+import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng';
+import { getStartingSeed } from '@/data_source/fake_data_source/seed';
 import { createCircularBuffer } from '@/data_structures/circular_buffer';
 import {
   CommissionPercent,
@@ -18,7 +20,7 @@ import {
   StakeTableEntryWrapper,
   Validator,
 } from '@/models/espresso';
-import { Degrees, LatLng, Latitude, Longitude } from '@/models/geo';
+import { Degrees, Latitude, LatLng, Longitude } from '@/models/geo';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
 import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
@@ -65,7 +67,7 @@ import { CappuccinoVotersSnapshot } from '../responses/voters_snapshot';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 
 function createBlockDetailFromGeneratedBlock(
-  block: GeneratedBlock,
+  block: GeneratedEspressoBlock,
 ): CappuccinoExplorerBlockDetail {
   return new CappuccinoExplorerBlockDetail(
     block.hash,
@@ -139,7 +141,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
     getStartingSeed(),
   );
   private latestBlock: CappuccinoExplorerBlockDetail =
-    createBlockDetailFromGeneratedBlock(createGenesisBlock());
+    createBlockDetailFromGeneratedBlock(createGenesisEspressoBlock());
   private latestBlocks =
     createCircularBuffer<CappuccinoExplorerBlockDetail>(50);
   private latestVoters = createCircularBuffer<CappuccinoAPIBitVec>(50);
@@ -213,7 +215,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
     // Compute the current histogram for the network
     // Store the latest block
 
-    for await (const block of generateAllBlocks(this.prng)) {
+    for await (const block of generateAllEspressoBlocks(this.prng)) {
       this.updateBlockDetails(createBlockDetailFromGeneratedBlock(block));
     }
 
@@ -251,7 +253,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
 
   async streamBlocks() {
     const startingBlock = this.latestBlock;
-    for await (const block of streamNewBlocks(
+    for await (const block of streamNewEspressoBlocks(
       this.prng,
       startingBlock.time.valueOf(),
       startingBlock.height,
