@@ -1,0 +1,98 @@
+table.all-validators-table,
+div.all-validators-grid {
+  border-radius: 8px;
+  border-width: 1px;
+  font-size: 14px;
+  width: 100%;
+  margin: 32px 0;
+
+  border: 1px solid var(--color--undesign--orange-1--alpha-24);
+  background:
+    linear-gradient(
+      270deg,
+      var(--color--brown--1--alpha-60) 0%,
+      var(--color--brown--0--alpha-60) 50%,
+      var(--color--brown--1--alpha-60) 100%
+    ),
+    linear-gradient(0deg, var(--color--brown--0), var(--color--brown--0));
+}
+
+table.all-validators-table th:nth-child(1),
+div.all-validators-grid div:nth-child(1) {
+  border-radius: 8px 0 0 0;
+}
+
+table.all-validators-table th:nth-last-child(1),
+div.all-validators-grid div:nth-child(7) {
+  border-radius: 0 8px 0 0;
+}
+
+table.all-validators-table tr:nth-last-child(1) td:nth-child(1),
+div.all-validators-grid div:nth-last-child(7) {
+  border-radius: 0 0 0 8px;
+}
+
+table.all-validators-table tr:nth-last-child(1) td:nth-last-child(1),
+div.all-validators-grid div:nth-last-child(1) {
+  border-radius: 0 0 8px 0;
+}
+
+table.all-validators-table {
+  border-spacing: 0;
+}
+
+table.all-validators-table th svg.icon {
+  vertical-align: middle;
+  width: 12px;
+  height: 12px;
+}
+
+table.all-validators-table th {
+  height: 32px;
+  line-height: 16px;
+  padding: 0 16px;
+  cursor: pointer;
+}
+
+table.all-validators-table thead tr {
+  background: #b672371f;
+}
+
+table.all-validators-table thead tr th,
+table.all-validators-table tbody tr:not(:nth-last-child(1)) td {
+  border-bottom: 1px solid #b672373d;
+}
+
+table.all-validators-table thead {
+  color: var(--color--brown--text);
+  --icon--fill-color: var(--color--brown--text);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+table.all-validators-table tbody {
+  color: var(--color--brown--4);
+}
+table.all-validators-table tbody tr td {
+  background: #ffffff05;
+}
+
+table.all-validators-table tbody tr:not(:nth-last-child(1)) td {
+  border-bottom: 1px solid #b672373d;
+}
+
+table.all-validators-table th,
+table.all-validators-table td {
+  /* padding: 12px 16px; */
+  text-align: start;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+table.all-validators-table td {
+  height: 40px;
+  padding: 0 16px;
+}
+
+table.all-validators-table td .percentage-text {
+  opacity: 50%;
+}

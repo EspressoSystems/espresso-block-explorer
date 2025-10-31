@@ -1,0 +1,5 @@
+.consensus-chip.inactive {
+  color: var(--color--undesign--black--alpha-32);
+  background: var(--color--undesign--black--alpha-16);
+  border: 1px solid var(--color--undesign--black--alpha-24);
+}

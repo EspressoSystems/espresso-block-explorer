@@ -1,0 +1,36 @@
+.bcard.card-value {
+  display: grid;
+  grid-template-areas: 'title title' 'value extra';
+  justify-content: space-between;
+  align-content: space-between;
+  align-items: flex-end;
+}
+
+.bcard.card-value h2 {
+  grid-area: title;
+}
+
+.bcard.card-value h2 .accent {
+  color: var(--color--brown--4);
+}
+
+.bcard.card-value .value {
+  grid-area: value;
+  color: var(--color--brown--4);
+  font-family: PP Neue Montreal;
+  font-size: 40px;
+  line-height: 32px;
+  font-weight: 500;
+  font-style: Medium;
+  letter-spacing: -2%;
+}
+
+.bcard.card-value .extra {
+  grid-area: extra;
+  color: var(--color--brown--4);
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

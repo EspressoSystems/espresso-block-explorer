@@ -41,6 +41,18 @@ function createDefaultDateTimeFormatters(locale: string) {
       timeZoneName: 'short',
     }),
 
+    hours: new Intl.NumberFormat(locale, {
+      style: 'unit',
+      unit: 'hour',
+      unitDisplay: 'narrow',
+      maximumFractionDigits: 2,
+    }),
+    minutes: new Intl.NumberFormat(locale, {
+      style: 'unit',
+      unit: 'minute',
+      unitDisplay: 'narrow',
+      maximumFractionDigits: 2,
+    }),
     seconds: new Intl.NumberFormat(locale, {
       style: 'unit',
       unit: 'second',

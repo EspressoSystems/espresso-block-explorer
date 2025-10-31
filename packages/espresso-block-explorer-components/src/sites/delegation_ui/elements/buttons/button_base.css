@@ -1,0 +1,154 @@
+:root {
+  /*
+    Buttons have reactivity states that we will need to transition between as
+    their states transition.
+
+    Notably:
+      hovered  -- the button is being hovered over with a mouse.
+      focused  --
+      pressed  -- the button is actively being depressed / touched.
+      dragged  --
+      selected --
+      scrolledUnder --
+      disabled -- the button is disabled and not allowed to be interactive.
+      error    -- An error state for the button.
+  */
+
+  /* When no other state is being considered, this is the default state */
+  --button-base--default--background-color: var(--color--brown--4);
+  --button-base--default--foreground-color: var(#fff);
+  --button-base--default--border-width: 0;
+  --button-base--default--border-radius: 8px;
+  --button-base--default--border-color: transparent;
+  --button-base--default--border-style: none;
+  --button-base--default--outline-width: 0;
+  --button-base--default--outline-color: var(--color--transparent);
+  --button-base--default--outline-style: solid;
+  --button-base--default--gap: 24px;
+  --button-base--default--padding: 12px;
+  --button-base--default--height: 48px;
+  --button-base--default--line-height: 48px;
+  --button-base--default--opacity: 100%;
+
+  --button-base--hovered--background-color: var(--color--brown--5);
+
+  --button-base--pressed--border-color: var(--color--slate-700);
+  --button-base--pressed--background-color: var(--color--slate-200);
+
+  --button-base--disabled--opacity: 40%;
+
+  --button-base--focused--outline-width: 4px;
+  --button-base--focused--outline-color: var(--color--sky-700);
+
+  --button-base--transition--duration: 240ms;
+  --button-base--icon-button--padding: 10px;
+
+  --button-base--label-button--padding: 12px;
+
+  --button-flat--default--background-color: var(--color-transparent);
+  --button-flat--default--foreground-color: inherit;
+  --button-flat--hovered--foreground-color: inherit;
+}
+
+a.bbtn {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+button.bbtn,
+a.bbtn {
+  appearance: none;
+}
+
+.bbtn {
+  --text--color: var(--button-base--default--foreground-color);
+  --icon--fill-color: var(--button-base--default--foreground-color);
+
+  box-sizing: border-box;
+  background-color: var(--button-base--default--background-color);
+  color: var(--button-base--default--foreground-color);
+  border-width: var(--button-base--default--border-width);
+  border-radius: var(--button-base--default--border-radius);
+  border-color: var(--button-base--default--border-color);
+  border-style: var(--button-base--default--border-style);
+  height: var(--button-base--default--height);
+  line-height: var(--button-base--default--line-height);
+  opacity: var(--button-base--default--opacity);
+
+  outline-color: var(--button-base--default--outline-color);
+  outline-width: var(--button-base--default--outline-width);
+  outline-style: var(--button-base--default--outline-style);
+
+  cursor: pointer;
+
+  will-change:
+    background-color, color, border-width, border-radius, border-color,
+    border-style, opacity;
+  transition:
+    background-color ease-in-out var(--button-base--transition--duration),
+    color ease-in-out var(--button-base--transition--duration),
+    border-width ease-in-out var(--button-base--transition--duration),
+    border-color ease-in-out var(--button-base--transition--duration),
+    border-width ease-in-out var(--button-base--transition--duration),
+    outline-color ease-in-out var(--button-base--transition--duration),
+    outline-width ease-in-out var(--button-base--transition--duration),
+    opacity ease-in-out var(--button-base--transition--duration);
+}
+
+.bbtn.icon {
+  padding: var(--button-base--icon-button--padding);
+}
+
+.bbtn.label {
+  padding: var(--button-base--label-button--padding);
+}
+
+.bbtn,
+.bbtn svg,
+.bbtn--flat svg {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bbtn {
+  gap: var(--button-base--default--gap);
+}
+
+.bbtn:hover {
+  background-color: var(--button-base--hovered--background-color);
+}
+
+.bbtn:active {
+  border-color: var(--button-base--pressed--border-color);
+  /* background-color: var(--button-base--pressed--background-color); */
+}
+
+.bbtn:focus-visible {
+  outline-width: var(--button-base--focused--outline-width);
+  outline-color: var(--button-base--focused--outline-color);
+}
+
+.bbtn[disabled] {
+  opacity: var(--button-base--disabled--opacity);
+}
+
+.bbtn--flat {
+  display: inline-flex;
+  padding: var(--button-base--icon-button--padding);
+}
+
+.bbtn--flat {
+  --text--color: var(--button-flat--default--foreground-color);
+  --icon--fill-color: var(--button-flat--default--foreground-color);
+
+  background-color: var(--button-flat--default--background-color);
+  color: var(--button-flat--default--foreground-color);
+}
+
+.bbtn--flat:hover {
+  --text--color: var(--button-flat--hovered--foreground-color);
+  --icon--fill-color: var(--button-flat--hovered--foreground-color);
+
+  color: var(--button-flat--hovered--foreground-color);
+}

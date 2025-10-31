@@ -1,0 +1,46 @@
+:root {
+  /**
+    * Colors from the Espresso Style Guide
+    * https://www.figma.com/design/Cha4GEw7iPMfPLxYOf6L8E/Espresso-%E2%80%93-Design-Retainer-w--WE3.co?node-id=4461-16800&p=f&t=nXZFUzgutKdLLznj-0
+    */
+  --color--brown--0: #ffffff;
+  --color--brown--1: #fcebde;
+  --color--brown--2: #de9e67;
+  --color--brown--3: #b67237;
+  --color--brown--4: #451f17;
+  --color--brown--5: #270903;
+  --color--brown--6: #130401;
+  --color--brown--0--alpha-32: #ffffff51;
+  --color--brown--0--alpha-60: #ffffff99;
+  --color--brown--1--alpha-32: #fcebde51;
+  --color--brown--1--alpha-60: #fcebde99;
+  --color--brown--3--alpha-12: #b672371f;
+
+  --color--blue--0: #d0e8f4;
+  --color--blue--1: #1eb6f8;
+  --color--blue--2: #0c81b4;
+
+  --color--green--0: #f0e89d;
+  --color--green--1: #b9ad3e;
+  --color--green--2: #605812;
+
+  --color--orange--0: #ff792e;
+
+  --color--card--fill: #fff7ef;
+  --color--stroke: #f8e5d4;
+  --color--brown--text: #b67237;
+
+  /**
+   * These colors are not listed in the Style Guide but are used in the
+   * delegation UI components.
+   */
+  --color--undesign--black--alpha-16: #00000029;
+  --color--undesign--black--alpha-24: #0000003d;
+  --color--undesign--black--alpha-32: #00000052;
+  --color--undesign--green-1: #34d399;
+  --color--undesign--green-1--alpha-16: #34d39928;
+  --color--undesign--green-1--alpha-80: #34d399cc;
+  --color--undesign--red-1--alpha-40: #451f1766;
+  --color--undesign--orange-1--alpha-12: #b672371f;
+  --color--undesign--orange-1--alpha-24: #b672373d;
+}

@@ -1,0 +1,16 @@
+:root {
+  --delegation-header--text--color: var(--color--brown--5);
+}
+
+header.delegation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+  box-sizing: content-box;
+  margin-inline: 32px;
+  margin-block: 40px;
+
+  color: var(--delegation-header--text--color);
+  --icon--fill-color: var(--delegation-header--text--color);
+}

@@ -46,9 +46,7 @@ export const StoryBookSpecifyEnvironment: React.FC<
   const config: ExplorerConfig = {
     hotshotQueryServiceURL: resolveURL(hotshotQueryServiceURL ?? null),
     nodeValidatorServiceURL: resolveURL(nodeValidatorWebSocketURL ?? null),
-    l1ValidatorServiceURL: resolveContractAddress(
-      l1ValidatorServiceURL ?? null,
-    ),
+    l1ValidatorServiceURL: resolveURL(l1ValidatorServiceURL ?? null),
   };
 
   return (
@@ -90,6 +88,7 @@ export const StoryBookSpecifyEnvironmentAndContracts: React.FC<
   nodeValidatorWebSocketURL,
   espTokenContractAddress,
   stakeTableContractAddress,
+  l1ValidatorServiceURL,
   children,
 }) => {
   const wagmiConfig = getWagmiConfigForEnvironment(environment);
@@ -103,6 +102,7 @@ export const StoryBookSpecifyEnvironmentAndContracts: React.FC<
       environment={environment}
       hotshotQueryServiceURL={hotshotQueryServiceURL}
       nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
+      l1ValidatorServiceURL={l1ValidatorServiceURL}
     >
       <EspressoConfigContext.Provider value={espressoConfig}>
         <WagmiProvider config={wagmiConfig}>
