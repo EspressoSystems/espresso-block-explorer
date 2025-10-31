@@ -1,1 +1,0 @@
-import{j as o}from"./iframe-JNS3S7eL.js";const t=e=>o.jsx("div",{className:"skeleton-content",...e});try{t.displayName="SkeletonContent",t.__docgenInfo={description:"",displayName:"SkeletonContent",props:{}}}catch{}export{t as S};

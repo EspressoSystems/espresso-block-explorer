@@ -8,6 +8,8 @@ declare function createDefaultDateTimeFormatters(locale: string): {
     friendly: Intl.DateTimeFormat;
     utcFullDateTime: Intl.DateTimeFormat;
     time: Intl.DateTimeFormat;
+    hours: Intl.NumberFormat;
+    minutes: Intl.NumberFormat;
     seconds: Intl.NumberFormat;
     relative: Intl.RelativeTimeFormat;
     numDays: Intl.NumberFormat;
@@ -24,6 +26,8 @@ declare const CurrentDateTimeFormatters: React.Context<{
     friendly: Intl.DateTimeFormat;
     utcFullDateTime: Intl.DateTimeFormat;
     time: Intl.DateTimeFormat;
+    hours: Intl.NumberFormat;
+    minutes: Intl.NumberFormat;
     seconds: Intl.NumberFormat;
     relative: Intl.RelativeTimeFormat;
     numDays: Intl.NumberFormat;
