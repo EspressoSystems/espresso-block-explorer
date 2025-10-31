@@ -1,4 +1,5 @@
 import React from 'react';
+import './colors.css';
 import './delegation_ui.css';
 
 interface DelegationPageProps {
@@ -10,6 +11,10 @@ interface DelegationPageProps {
  * self contained page.
  */
 const DelegationUI: React.FC<DelegationPageProps> = () => {
+  return (
+    <main className="delegation-ui">
+    </main>
+  );
 };
 
 export default DelegationUI;
