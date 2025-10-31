@@ -14,6 +14,7 @@ import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybo
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '../../../pages/CappuccinoHotShotQueryServiceAPIContext';
+import { ProvideL1ValidatorServiceAPIContext } from '../contexts/l1_validator_api_context';
 import DelegationUI from '../delegation_ui';
 
 interface ExampleProps {
@@ -44,7 +45,9 @@ const Example: React.FC<ExampleProps> = ({
         <EnvironmentBanner />
         <ProvideTickEverySecond>
           <ProvideCappuccinoHotShotQueryServiceAPIContext>
-            <DelegationUI {...rest} />
+            <ProvideL1ValidatorServiceAPIContext>
+              <DelegationUI {...rest} />
+            </ProvideL1ValidatorServiceAPIContext>
           </ProvideCappuccinoHotShotQueryServiceAPIContext>
         </ProvideTickEverySecond>
       </StoryBookSpecifyEnvironmentAndContracts>

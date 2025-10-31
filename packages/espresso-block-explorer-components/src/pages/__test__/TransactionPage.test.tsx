@@ -1,5 +1,5 @@
 import { hexArrayBufferCodec } from '@/convert/codec';
-import { generateAllBlocks } from '@/data_source/fake_data_source/generateFakeData';
+import { generateAllEspressoBlocks } from '@/data_source/fake_data_source/espresso/blocks';
 import {
   expandAsyncIterator,
   firstAsyncIterator,
@@ -15,7 +15,10 @@ const { FakeData } = composeStories(stories);
 describe('TransactionPage', async () => {
   it('should render the story', async () => {
     const transaction1 = await firstAsyncIterator(
-      expandAsyncIterator(generateAllBlocks(), (block) => block.transactions),
+      expandAsyncIterator(
+        generateAllEspressoBlocks(),
+        (block) => block.transactions,
+      ),
     );
 
     const hash = hexArrayBufferCodec.encode(transaction1.hash.data); // verify that the hash is valid

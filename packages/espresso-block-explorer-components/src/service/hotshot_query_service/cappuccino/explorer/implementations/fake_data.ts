@@ -1,8 +1,8 @@
 import {
-  GeneratedBlock,
-  GeneratedTransaction,
-  generateAllBlocks,
-} from '@/data_source/fake_data_source/generateFakeData';
+  generateAllEspressoBlocks,
+  GeneratedEspressoBlock,
+  GeneratedEspressoTransaction,
+} from '@/data_source/fake_data_source/espresso/blocks';
 import { createCircularBuffer } from '@/data_structures/circular_buffer/CircularBuffer';
 import NotFoundError from '@/errors/NotFoundError';
 import UnimplementedError from '@/errors/UnimplementedError';
@@ -63,7 +63,7 @@ import { CappuccinoExplorerTransactionDetailDetails } from '../transaction_detai
 import { CappuccinoExplorerTransactionSummary } from '../transaction_summary';
 
 function createBlockDetailFromGeneratedBlock(
-  block: GeneratedBlock,
+  block: GeneratedEspressoBlock,
 ): CappuccinoExplorerBlockDetail {
   return new CappuccinoExplorerBlockDetail(
     block.hash,
@@ -78,7 +78,7 @@ function createBlockDetailFromGeneratedBlock(
 }
 
 function createBlockSummaryFromGeneratedBlock(
-  block: GeneratedBlock,
+  block: GeneratedEspressoBlock,
 ): CappuccinoExplorerBlockSummary {
   return new CappuccinoExplorerBlockSummary(
     block.hash,
@@ -91,8 +91,8 @@ function createBlockSummaryFromGeneratedBlock(
 }
 
 function createTransactionDetailFromGeneratedBlockAndTransaction(
-  block: GeneratedBlock,
-  txn: GeneratedTransaction,
+  block: GeneratedEspressoBlock,
+  txn: GeneratedEspressoTransaction,
 ): CappuccinoExplorerTransactionDetail {
   return new CappuccinoExplorerTransactionDetail(
     new CappuccinoExplorerTransactionDetailDetails(
@@ -116,8 +116,8 @@ function createTransactionDetailFromGeneratedBlockAndTransaction(
 }
 
 function createTransactionSummaryFromGeneratedBlockAndTransaction(
-  block: GeneratedBlock,
-  txn: GeneratedTransaction,
+  block: GeneratedEspressoBlock,
+  txn: GeneratedEspressoTransaction,
 ): CappuccinoExplorerTransactionSummary {
   return new CappuccinoExplorerTransactionSummary(
     txn.hash,
@@ -137,8 +137,10 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI
   ): Promise<CappuccinoExplorerGetBlockDetailResponse> {
     const target = request.target;
     const block = await (target === latestConstant
-      ? lastAsyncIterable(generateAllBlocks())
-      : firstAsyncIterator(dropAsyncIterable(generateAllBlocks(), target)));
+      ? lastAsyncIterable(generateAllEspressoBlocks())
+      : firstAsyncIterator(
+          dropAsyncIterable(generateAllEspressoBlocks(), target),
+        ));
 
     return new CappuccinoExplorerGetBlockDetailResponse(
       createBlockDetailFromGeneratedBlock(block),
@@ -148,7 +150,7 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI
     request: CappuccinoExplorerGetBlockSummariesRequest,
   ): Promise<CappuccinoExplorerGetBlockSummariesResponse> {
     const step1 = takeWhileAsyncIterator(
-      generateAllBlocks(),
+      generateAllEspressoBlocks(),
       (block) =>
         request.from === latestConstant || block.height <= request.from,
     );
@@ -164,7 +166,7 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI
   async getTransactionDetail(
     request: CappuccinoExplorerGetTransactionDetailRequest,
   ): Promise<CappuccinoExplorerGetTransactionDetailResponse> {
-    const generatedBlocks = generateAllBlocks();
+    const generatedBlocks = generateAllEspressoBlocks();
 
     if (
       request instanceof
@@ -244,7 +246,7 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI
   async getTransactionSummaries(
     request: CappuccinoExplorerGetTransactionSummariesRequest,
   ): Promise<CappuccinoExplorerGetTransactionSummariesResponse> {
-    const generatedBlocks = generateAllBlocks();
+    const generatedBlocks = generateAllEspressoBlocks();
 
     const { target, filter } = request;
 
@@ -312,7 +314,7 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI
     }
 
     if (target instanceof CappuccinoExplorerGetTransactionSummariesTargetHash) {
-      const blocks = generateAllBlocks();
+      const blocks = generateAllEspressoBlocks();
 
       const generatedTransactions = expandAsyncIterable(blocks, (block) =>
         mapAsyncIterable(
@@ -382,7 +384,7 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI
     let numBlocks = 0;
     let numTransactions = 0;
     const rollupMap = new Map<number, number>();
-    for await (const block of generateAllBlocks()) {
+    for await (const block of generateAllEspressoBlocks()) {
       // We'll go through the blocks one at a time.
 
       // Add the block to the circular buffer.
@@ -432,13 +434,13 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI
   async getSearchResult(
     request: CappuccinoExplorerGetSearchResultRequest,
   ): Promise<CappuccinoExplorerGetSearchResultResponse> {
-    const rawBlockBuffer = createCircularBuffer<GeneratedBlock>(101);
+    const rawBlockBuffer = createCircularBuffer<GeneratedEspressoBlock>(101);
     const blockBuffer =
       createCircularBuffer<CappuccinoExplorerBlockSummary>(10);
     const txnBuffer =
       createCircularBuffer<CappuccinoExplorerTransactionSummary>(10);
 
-    for await (const block of generateAllBlocks()) {
+    for await (const block of generateAllEspressoBlocks()) {
       rawBlockBuffer.put(block);
     }
 

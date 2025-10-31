@@ -1,4 +1,4 @@
-import { generateAllBlocks } from '@/data_source/fake_data_source/generateFakeData';
+import { generateAllEspressoBlocks } from '@/data_source/fake_data_source/espresso/blocks';
 import {
   collectAsyncIterator,
   dropAsyncIterable,
@@ -37,7 +37,9 @@ import { CappuccinoAPITransactionResponse } from '../transaction_response';
 // type Generated<T> = T extends Generator<infer A> ? A : never;
 type AsyncGenerated<T> = T extends AsyncGenerator<infer A> ? A : never;
 
-type GeneratedBlock = AsyncGenerated<ReturnType<typeof generateAllBlocks>>;
+type GeneratedBlock = AsyncGenerated<
+  ReturnType<typeof generateAllEspressoBlocks>
+>;
 
 function headerFromBlock(block: GeneratedBlock): CappuccinoAPIHeader {
   return new CappuccinoAPIHeader(
@@ -182,7 +184,7 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI
     offset: number,
   ): Promise<CappuccinoAPITransactionResponse> {
     const generatedBlock = await firstAsyncIterator(
-      dropAsyncIterator(generateAllBlocks(), height),
+      dropAsyncIterator(generateAllEspressoBlocks(), height),
     );
     const it = convertBlockToCappuccinoAPITransactionResponse(generatedBlock);
     const txn = await firstAsyncIterable(dropAsyncIterable(it, offset));
@@ -193,7 +195,7 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI
     from: number,
     until: number,
   ): Promise<CappuccinoDerivedBlockSummary[]> {
-    const step1 = dropAsyncIterator(generateAllBlocks(), from);
+    const step1 = dropAsyncIterator(generateAllEspressoBlocks(), from);
     const step2 = takeAsyncIterator(step1, until - from);
     const step3 = mapAsyncIterator(step2, async (block) =>
       convertBlockToBlockSummary(block),
@@ -203,7 +205,7 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI
   }
 
   async getBlockFromHeight(height: number): Promise<CappuccinoAPIBlock> {
-    const step1 = dropAsyncIterator(generateAllBlocks(), height);
+    const step1 = dropAsyncIterator(generateAllEspressoBlocks(), height);
     const step2 = await firstAsyncIterator(step1);
 
     return convertBlockToCappuccinoBlock(step2);
@@ -211,7 +213,7 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI
 
   private async *streamTransactionSummaries(height: number) {
     const step1 = takeWhileAsyncIterator(
-      generateAllBlocks(),
+      generateAllEspressoBlocks(),
       (block) => block.height <= height,
     );
     const step2 = reverseAsyncIterator(step1);

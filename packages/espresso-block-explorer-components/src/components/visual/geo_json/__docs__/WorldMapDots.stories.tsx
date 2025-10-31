@@ -3,7 +3,7 @@ import { NodeSummaryData } from '@/components/page_sections/nodes_summary_data_t
 import {
   GeneratedNodeIdentityInformation,
   nodeList,
-} from '@/data_source/fake_data_source/generateFakeData';
+} from '@/data_source/fake_data_source/espresso/nodes';
 import { mapIterable } from '@/functional/functional';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';

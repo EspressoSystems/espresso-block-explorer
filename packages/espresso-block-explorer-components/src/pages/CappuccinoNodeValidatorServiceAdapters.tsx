@@ -955,11 +955,9 @@ const GenericStreamConsumer: React.FC<GenericStreamConsumerProps<unknown>> = (
   );
 };
 
-interface ChildrenProps {
-  children: React.ReactNode | React.ReactNode[];
-}
-
-const DeriveCurrentStakeTableFromData: React.FC<ChildrenProps> = (props) => {
+const DeriveCurrentStakeTableFromData: React.FC<React.PropsWithChildren> = (
+  props,
+) => {
   const data = React.useContext(DataContext) as null | Map<
     string,
     StakeTableEntryWrapper
@@ -972,7 +970,9 @@ const DeriveCurrentStakeTableFromData: React.FC<ChildrenProps> = (props) => {
   );
 };
 
-const DeriveCurrentValidatorsFromData: React.FC<ChildrenProps> = (props) => {
+const DeriveCurrentValidatorsFromData: React.FC<React.PropsWithChildren> = (
+  props,
+) => {
   const data = React.useContext(DataContext) as null | Map<string, Validator>;
 
   return (

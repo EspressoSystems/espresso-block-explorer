@@ -117,8 +117,8 @@ export const environmentArgsFakeData: EnvironmentArgs = {
 export const environmentArgsFakeDataWithContracts: EnvironmentWithContractsArgs =
   {
     ...environmentArgsFakeData,
-    stakeTableContractAddress: undefined,
-    espTokenContractAddress: undefined,
+    stakeTableContractAddress: '0x40304fbe94d5e7d1492dd90c53a2d63e8506a037',
+    espTokenContractAddress: '0xb3e655a030e2e34a18b72757b40be086a8f43f3b',
   };
 
 export const environmentArgsLocalDevNet: EnvironmentArgs = {

@@ -9,28 +9,12 @@
 //
 
 import { sleep } from '@/async/sleep';
-import { filterIterable, lastIterable } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
-import { networkTypes } from './network_types';
-import { nodeTypes } from './node_types';
-import { operatingSystems } from './operating_systems';
-import { operatorCompanyData } from './operator_names';
-import { PseudoRandomNumberGenerator } from './prng';
-import { ratiosAndRegions, totalRegionRatiosSum } from './world_lat_lng_data';
-
-const now = new Date();
-const startMilliSeconds = new Date(
-  now.getFullYear(),
-  now.getMonth(),
-  now.getDate(),
-).valueOf();
-const seed = startMilliSeconds;
-
-export function getStartingSeed(): number {
-  return seed;
-}
+import { PseudoRandomNumberGenerator } from '../prng';
+import { getNow, getStartingSeed } from '../seed';
+import { nodeList } from './nodes';
 
 /**
  * This will generate absolutely nothing.  This is helpful for when we need to
@@ -43,7 +27,7 @@ async function* asyncGenerateNothing<T>(): AsyncGenerator<T> {}
  * createGenesisBlock will create the genesis block for the blockchain.  This
  * block will have no transactions, and will have a hash of all zeros.
  */
-export function createGenesisBlock(): GeneratedBlock {
+export function createGenesisEspressoBlock(): GeneratedEspressoBlock {
   const allZeros = new Uint8Array(new Array(20).map(() => 0)).buffer;
 
   // Create the genesis block
@@ -67,7 +51,7 @@ export function createGenesisBlock(): GeneratedBlock {
  */
 async function* generateAllCurrentBlocks(
   prng: PseudoRandomNumberGenerator,
-): AsyncGenerator<GeneratedBlock> {
+): AsyncGenerator<GeneratedEspressoBlock> {
   // The way we want to generate this is by first determining how many seconds
   // it took to generate the block.  The concept graph is indicating that we
   // can expect to take 1 - 10 seconds to generate a block.  We will want to
@@ -76,10 +60,11 @@ async function* generateAllCurrentBlocks(
   // guaranteed to be in the past.
 
   let height = 1;
-  let time = seed;
-  while (time < now.valueOf()) {
+  let time = getStartingSeed();
+  const now = getNow();
+  while (time < now) {
     const genTimeS = Math.floor(prng.nextFloat() * 14 * 1000);
-    yield generateIndividualBlock(
+    yield generateIndividualEspressoBlock(
       new PseudoRandomNumberGenerator(height + genTimeS),
       height,
       time,
@@ -95,10 +80,12 @@ async function* generateAllCurrentBlocks(
  * This will generate the genesis block, and then all of the blocks up to the
  * current time.
  */
-export async function* generateAllBlocks(
-  prng: PseudoRandomNumberGenerator = new PseudoRandomNumberGenerator(seed),
-): AsyncGenerator<GeneratedBlock> {
-  yield createGenesisBlock();
+export async function* generateAllEspressoBlocks(
+  prng: PseudoRandomNumberGenerator = new PseudoRandomNumberGenerator(
+    getStartingSeed(),
+  ),
+): AsyncGenerator<GeneratedEspressoBlock> {
+  yield createGenesisEspressoBlock();
   yield* generateAllCurrentBlocks(prng);
 }
 
@@ -106,11 +93,11 @@ export async function* generateAllBlocks(
  * streamNewBlocks will generate new blocks as they are generated.  This will
  * keep generating blocks until the end of time.
  */
-export async function* streamNewBlocks(
+export async function* streamNewEspressoBlocks(
   prng: PseudoRandomNumberGenerator,
   incomingTime: number,
   incomingHeight: number,
-): AsyncGenerator<GeneratedBlock> {
+): AsyncGenerator<GeneratedEspressoBlock> {
   let time = incomingTime;
   let height = incomingHeight;
   while (true) {
@@ -118,7 +105,7 @@ export async function* streamNewBlocks(
     const toWaitMs = time + genTimeS - Date.now();
     await sleep(toWaitMs);
 
-    yield generateIndividualBlock(
+    yield generateIndividualEspressoBlock(
       new PseudoRandomNumberGenerator(height + genTimeS),
       height,
       time,
@@ -129,12 +116,12 @@ export async function* streamNewBlocks(
   }
 }
 
-export type GeneratedBlock = {
+export type GeneratedEspressoBlock = {
   hash: TaggedBase64;
   height: number;
   time: Date;
   genTime: number;
-  transactions: AsyncIterable<GeneratedTransaction>;
+  transactions: AsyncIterable<GeneratedEspressoTransaction>;
   numTransactions: number;
   proposer: ArrayBuffer[];
   size: number;
@@ -147,12 +134,12 @@ export type GeneratedBlock = {
  * size.  The block will have a random proposer, and will have a random
  * generation time.
  */
-export function generateIndividualBlock(
+export function generateIndividualEspressoBlock(
   prng: PseudoRandomNumberGenerator,
   height: number,
   start: number,
   end: number,
-): GeneratedBlock {
+): GeneratedEspressoBlock {
   // A block needs transactions, a height, a generation time, a proposer, and
   // a size.  The size may be determined by the transactions... I'm not entirely
   // certain.
@@ -169,7 +156,7 @@ export function generateIndividualBlock(
     genTime: end - start,
     time: new Date(end),
     numTransactions,
-    transactions: generateTransactionsForBlock(
+    transactions: generateTransactionsForEspressoBlock(
       new PseudoRandomNumberGenerator(height + start),
       height,
       start,
@@ -194,7 +181,7 @@ function getRollUpNamespace(prng: PseudoRandomNumberGenerator) {
   return rollupNamespaces[prng.nextRange(0, rollupNamespaces.length)];
 }
 
-export type GeneratedTransaction = {
+export type GeneratedEspressoTransaction = {
   block: number;
   index: number;
   size: number;
@@ -207,13 +194,13 @@ export type GeneratedTransaction = {
   };
 };
 
-export async function* generateTransactionsForBlock(
+export async function* generateTransactionsForEspressoBlock(
   prng: PseudoRandomNumberGenerator,
   height: number,
   start: number,
   end: number,
   numTransactions: number,
-): AsyncGenerator<GeneratedTransaction> {
+): AsyncGenerator<GeneratedEspressoTransaction> {
   const inc = (end - start) / numTransactions;
 
   // A Transaction needs, the block, and index, a size, a hash, a time, a sender, and data
@@ -236,113 +223,3 @@ export async function* generateTransactionsForBlock(
     };
   }
 }
-
-export type GeneratedNodeIdentityInformation = {
-  pubkey: TaggedBase64;
-  stateVerKey: TaggedBase64;
-  stake: bigint;
-  commission: number;
-  address: ArrayBuffer;
-  name: string;
-
-  company: {
-    name: string;
-    website: string;
-  };
-
-  location: {
-    coords: [number, number];
-    country: string;
-  };
-
-  operatingSystem: string;
-  networkType: string;
-  nodeType: string;
-
-  // Classification
-  // Which binary and version are they using?
-  // Which type of network are they using?
-  // Which Operating System are they using?
-};
-
-function pickWorldLocation(prng: PseudoRandomNumberGenerator) {
-  const roll = prng.nextRange(0, totalRegionRatiosSum);
-
-  const filteredRatiosAndRegions = filterIterable(
-    ratiosAndRegions,
-    ([neededRoll]) => neededRoll <= roll,
-  );
-
-  const [, region] = lastIterable(filteredRatiosAndRegions);
-
-  const locationDetailsIndex = prng.nextRange(0, region.length);
-  const locationDetails = region[locationDetailsIndex];
-  return locationDetails;
-}
-
-function pickCompanyDetails(prng: PseudoRandomNumberGenerator) {
-  const roll = prng.nextRange(0, operatorCompanyData.length);
-  const companyDetails = operatorCompanyData[roll];
-  return companyDetails;
-}
-
-function pickOperatingSystem(prng: PseudoRandomNumberGenerator) {
-  const roll = prng.nextRange(0, operatingSystems.length);
-  const operatingSystem = operatingSystems[roll];
-  return operatingSystem;
-}
-
-function pickNodeType(prng: PseudoRandomNumberGenerator) {
-  const roll = prng.nextRange(0, nodeTypes.length);
-  const nodeType = nodeTypes[roll];
-  return nodeType;
-}
-
-function pickNetworkType(prng: PseudoRandomNumberGenerator) {
-  const roll = prng.nextRange(0, networkTypes.length);
-  const networkType = networkTypes[roll];
-  return networkType;
-}
-
-function generateNodeIdentityInformationData(
-  prng: PseudoRandomNumberGenerator,
-): GeneratedNodeIdentityInformation {
-  const [companyName, companyWebsite] = pickCompanyDetails(prng);
-  const [, lat, lng, country] = pickWorldLocation(prng);
-  const operatingSystem = pickOperatingSystem(prng);
-  const nodeType = pickNodeType(prng);
-  const networkType = pickNetworkType(prng);
-
-  return {
-    pubkey: new TaggedBase64('PUBKEY', prng.fillBytes(32)),
-    stateVerKey: new TaggedBase64('STATE_VER_KEY', prng.fillBytes(32)),
-    stake: prng.nextRangeBigInt(0n, 1000n) * 1000000000000000000n,
-    commission: prng.nextRange(0, 5000),
-    name: `${companyName} Node ${country} ${prng.nextRange(0, 100)}`,
-    address: prng.fillBytes(32),
-    company: {
-      name: companyName,
-      website: companyWebsite,
-    },
-    location: {
-      coords: [lat, lng],
-      country: country,
-    },
-    operatingSystem,
-    networkType,
-    nodeType,
-  };
-}
-
-export function* generateAllNodeIdentityInformationData(): Generator<GeneratedNodeIdentityInformation> {
-  const prng = new PseudoRandomNumberGenerator(seed);
-
-  // How many nodes do we want?
-  const numNodes = prng.nextRange(50, 150);
-
-  for (let i = 0; i < numNodes; i++) {
-    yield generateNodeIdentityInformationData(prng);
-  }
-}
-
-export const nodeList = Array.from(generateAllNodeIdentityInformationData());
