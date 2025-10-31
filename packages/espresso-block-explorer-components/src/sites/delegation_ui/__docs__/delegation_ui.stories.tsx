@@ -23,6 +23,7 @@ interface ExampleProps {
   espTokenContractAddress?: string;
   hotshotQueryServiceURL?: string;
   nodeValidatorWebSocketURL?: string;
+  l1ValidatorServiceURL?: string;
 }
 
 const Example: React.FC<ExampleProps> = ({
@@ -31,6 +32,7 @@ const Example: React.FC<ExampleProps> = ({
   espTokenContractAddress,
   hotshotQueryServiceURL,
   nodeValidatorWebSocketURL,
+  l1ValidatorServiceURL,
   ...rest
 }) => {
   return (
@@ -41,6 +43,7 @@ const Example: React.FC<ExampleProps> = ({
         espTokenContractAddress={espTokenContractAddress}
         hotshotQueryServiceURL={hotshotQueryServiceURL}
         nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
+        l1ValidatorServiceURL={l1ValidatorServiceURL}
       >
         <EnvironmentBanner />
         <ProvideTickEverySecond>
@@ -67,8 +70,12 @@ const meta: Meta = {
     espTokenContractAddress: undefined,
     hotshotQueryServiceURL: undefined,
     nodeValidatorWebSocketURL: undefined,
+    l1ValidatorServiceURL: undefined,
   },
-  argTypes: environmentArgTypesWithContracts,
+  argTypes: {
+    ...environmentArgTypesWithContracts,
+    l1ValidatorServiceURL: { control: 'text' },
+  },
 
   globals: {
     background: 'light',
