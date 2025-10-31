@@ -1,5 +1,6 @@
 import React from 'react';
 import './colors.css';
+import { DelegationHeader } from './delegation_header';
 import './delegation_ui.css';
 
 interface DelegationPageProps {
@@ -13,6 +14,7 @@ interface DelegationPageProps {
 const DelegationUI: React.FC<DelegationPageProps> = () => {
   return (
     <main className="delegation-ui">
+      <DelegationHeader />
     </main>
   );
 };
