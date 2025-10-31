@@ -1,0 +1,26 @@
+.consensus-chip {
+  gap: 8px;
+  border-radius: 4px;
+  border-width: 1px;
+  padding: 6px;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 16px;
+  height: 20px;
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.consensus-chip.active {
+  color: var(--color--undesign--green-1);
+  background:
+    linear-gradient(
+      0deg,
+      var(--color--undesign--green-1--alpha-16),
+      var(--color--undesign--green-1--alpha-16)
+    ),
+    linear-gradient(0deg, var(--color--brown--0), var(--color--brown--0));
+  border: 1px solid var(--color--undesign--green-1--alpha-80);
+}
