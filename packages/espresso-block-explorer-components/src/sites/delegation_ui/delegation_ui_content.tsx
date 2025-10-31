@@ -4,6 +4,7 @@ import './colors.css';
 import { AllValidatorsContext } from './contexts/all_validators_context';
 import './delegation_ui_content.css';
 import { NetworkStats } from './network_stats';
+import { ValidatorTableSortStateProvider } from './validator_nodes_table/common/validator_table_sort_state';
 
 /**
  * DelegationUIContent is the main content area for the Delegation UI page.
@@ -28,6 +29,11 @@ export const DelegationUIContent: React.FC = () => {
   return (
     <section className="delegation-ui-content edge-margin">
       <NetworkStats />
+
+      <ValidatorTableSortStateProvider>
+      </ValidatorTableSortStateProvider>
+      <br />
+      <br />
     </section>
   );
 };
