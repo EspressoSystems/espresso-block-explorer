@@ -5,6 +5,7 @@ import { AllValidatorsContext } from './contexts/all_validators_context';
 import './delegation_ui_content.css';
 import { NetworkStats } from './network_stats';
 import { ValidatorTableSortStateProvider } from './validator_nodes_table/common/validator_table_sort_state';
+import { DelegationTable } from './validator_nodes_table/table/delegation_table';
 
 /**
  * DelegationUIContent is the main content area for the Delegation UI page.
@@ -31,6 +32,7 @@ export const DelegationUIContent: React.FC = () => {
       <NetworkStats />
 
       <ValidatorTableSortStateProvider>
+        <DelegationTable />
       </ValidatorTableSortStateProvider>
       <br />
       <br />
