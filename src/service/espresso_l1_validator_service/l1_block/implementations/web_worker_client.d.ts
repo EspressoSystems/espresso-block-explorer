@@ -1,6 +1,6 @@
+import { L1BlockID } from '../../common/l1_block_id';
 import { AsyncRequestHelper } from '../../web_worker_types';
 import { L1BlockAPI } from '../l1_block_api';
-import { L1BlockInfo } from '../l1_block_info';
 /**
  * WebWorkerClientBasedL1BlockAPI is an implementation of L1BlockAPI
  * that uses a Web Worker to communicate with the `l1/block` endpoints
@@ -14,5 +14,5 @@ export declare class WebWorkerClientBasedL1BlockAPI implements L1BlockAPI {
      * for the L1BlockAPI, and returns the decoded response.
      */
     private sendRequest;
-    getBlockForHeight(number: number): Promise<L1BlockInfo>;
+    getBlockForHeight(number: number): Promise<L1BlockID>;
 }

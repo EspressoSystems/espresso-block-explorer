@@ -1,6 +1,6 @@
 import { AsyncRequestHelper } from '../../web_worker_types';
-import { FullValidatorSetSnapshot } from '../full_validator_set_snapshot';
-import { FullValidatorSetUpdate } from '../full_validator_set_update';
+import { FullNodeSetSnapshot } from '../full_node_set_snapshot';
+import { FullNodeSetUpdate } from '../full_node_set_update';
 import { ValidatorsAllAPI } from '../validators_all_api';
 /**
  * WebWorkerClientBasedValidatorsAllAPI is an implementation of ValidatorsAllAPI
@@ -15,6 +15,6 @@ export declare class WebWorkerClientBasedValidatorsAllAPI implements ValidatorsA
      * for the ValidatorsAllAPI, and returns the decoded response.
      */
     private sendRequest;
-    snapshot(): Promise<FullValidatorSetSnapshot>;
-    updatesSince(hash: ArrayBuffer): Promise<FullValidatorSetUpdate>;
+    snapshot(): Promise<FullNodeSetSnapshot>;
+    updatesSince(hash: ArrayBuffer): Promise<FullNodeSetUpdate>;
 }

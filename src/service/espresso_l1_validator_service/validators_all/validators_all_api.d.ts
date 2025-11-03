@@ -1,5 +1,5 @@
-import { FullValidatorSetSnapshot } from './full_validator_set_snapshot';
-import { FullValidatorSetUpdate } from './full_validator_set_update';
+import { FullNodeSetSnapshot } from './full_node_set_snapshot';
+import { FullNodeSetUpdate } from './full_node_set_update';
 /**
  * ValidatorsAllAPI defines the interface for interacting with the
  * full validator set API.
@@ -15,10 +15,10 @@ export interface ValidatorsAllAPI {
      * NOTE: This endpoint may be cached and not up-to-date with the tip of
      * the L1 chain.
      */
-    snapshot(): Promise<FullValidatorSetSnapshot>;
+    snapshot(): Promise<FullNodeSetSnapshot>;
     /**
      * updatesSince retrieves all updates to the validator set since the
      * provided hash.
      */
-    updatesSince(hash: ArrayBuffer): Promise<FullValidatorSetUpdate>;
+    updatesSince(hash: ArrayBuffer): Promise<FullNodeSetUpdate>;
 }

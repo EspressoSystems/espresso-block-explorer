@@ -1,5 +1,5 @@
-import { ActiveValidatorSetSnapshot } from '../active_validator_set_snapshot';
-import { ActiveValidatorSetUpdate } from '../active_validator_set_update';
+import { ActiveNodeSetSnapshot } from '../active_node_set_snapshot';
+import { ActiveNodeSetUpdate } from '../active_node_set_update';
 import { ValidatorsActiveAPI } from '../validators_active_api';
 /**
  * UnimplementedActiveValidatorsAPI is a stub implementation of the
@@ -9,6 +9,6 @@ import { ValidatorsActiveAPI } from '../validators_active_api';
  * implementations to extend it without having to implement all methods.
  */
 export declare class UnimplementedActiveValidatorsAPI implements ValidatorsActiveAPI {
-    active(): Promise<ActiveValidatorSetSnapshot>;
-    updatesSince(): Promise<ActiveValidatorSetUpdate>;
+    active(): Promise<ActiveNodeSetSnapshot>;
+    updatesSince(): Promise<ActiveNodeSetUpdate>;
 }

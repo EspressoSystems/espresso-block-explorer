@@ -1,6 +1,6 @@
 import { WebWorkerRequest } from '../../web_worker_types';
-import { ActiveValidatorSetSnapshot } from '../active_validator_set_snapshot';
-import { ActiveValidatorSetUpdate } from '../active_validator_set_update';
+import { ActiveNodeSetSnapshot } from '../active_node_set_snapshot';
+import { ActiveNodeSetUpdate } from '../active_node_set_update';
 import { ValidatorsActiveAPI } from '../validators_active_api';
 /**
  * ValidatorsActiveAPIRequest represents a Web Worker request for the
@@ -15,7 +15,7 @@ export type ValidatorsActiveAPIRequest<Method extends keyof ValidatorsActiveAPI 
 export declare class WebWorkerProxyValidatorsActiveAPI {
     private service;
     constructor(service: ValidatorsActiveAPI);
-    active(): Promise<ActiveValidatorSetSnapshot>;
-    updatesSince(hash: bigint): Promise<ActiveValidatorSetUpdate>;
+    active(): Promise<ActiveNodeSetSnapshot>;
+    updatesSince(hash: bigint): Promise<ActiveNodeSetUpdate>;
     handleRequest(request: ValidatorsActiveAPIRequest): Promise<unknown>;
 }

@@ -1,6 +1,6 @@
+import { L1BlockInfo } from '../../common/l1_block_info';
 import { WebWorkerRequest } from '../../web_worker_types';
 import { L1BlockAPI } from '../l1_block_api';
-import { L1BlockInfo } from '../l1_block_info';
 /**
  * L1BlockAPIRequest represents a Web Worker request for the L1BlockAPI.
  */

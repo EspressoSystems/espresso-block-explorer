@@ -1,5 +1,5 @@
-import { ActiveValidatorSetSnapshot } from '../active_validator_set_snapshot';
-import { ActiveValidatorSetUpdate } from '../active_validator_set_update';
+import { ActiveNodeSetSnapshot } from '../active_node_set_snapshot';
+import { ActiveNodeSetUpdate } from '../active_node_set_update';
 import { ValidatorsActiveAPI } from '../validators_active_api';
 /**
  * FakeDataValidatorsActiveAPI is an implementation of ValidatorsActiveAPI
@@ -7,6 +7,6 @@ import { ValidatorsActiveAPI } from '../validators_active_api';
  * for the Validator Service API.
  */
 export declare class FakeDataValidatorsActiveAPI implements ValidatorsActiveAPI {
-    active(): Promise<ActiveValidatorSetSnapshot>;
-    updatesSince(): Promise<ActiveValidatorSetUpdate>;
+    active(): Promise<ActiveNodeSetSnapshot>;
+    updatesSince(): Promise<ActiveNodeSetUpdate>;
 }

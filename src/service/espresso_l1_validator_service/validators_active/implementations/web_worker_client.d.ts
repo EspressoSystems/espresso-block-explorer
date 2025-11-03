@@ -1,6 +1,6 @@
 import { AsyncRequestHelper } from '../../web_worker_types';
-import { ActiveValidatorSetSnapshot } from '../active_validator_set_snapshot';
-import { ActiveValidatorSetUpdate } from '../active_validator_set_update';
+import { ActiveNodeSetSnapshot } from '../active_node_set_snapshot';
+import { ActiveNodeSetUpdate } from '../active_node_set_update';
 import { ValidatorsActiveAPI } from '../validators_active_api';
 /**
  * WebWorkerClientBasedValidatorsActiveAPI is an implementation of
@@ -15,6 +15,6 @@ export declare class WebWorkerClientBasedValidatorsActiveAPI implements Validato
      * for the ValidatorsActiveAPI, and returns the decoded response.
      */
     private sendRequest;
-    active(): Promise<ActiveValidatorSetSnapshot>;
-    updatesSince(hash: bigint): Promise<ActiveValidatorSetUpdate>;
+    active(): Promise<ActiveNodeSetSnapshot>;
+    updatesSince(hash: bigint): Promise<ActiveNodeSetUpdate>;
 }

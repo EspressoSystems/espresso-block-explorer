@@ -1,5 +1,5 @@
-import { ActiveValidatorSetSnapshot } from '../active_validator_set_snapshot';
-import { ActiveValidatorSetUpdate } from '../active_validator_set_update';
+import { ActiveNodeSetSnapshot } from '../active_node_set_snapshot';
+import { ActiveNodeSetUpdate } from '../active_node_set_update';
 import { ValidatorsActiveAPI } from '../validators_active_api';
 /**
  * FetchBasedValidatorsActiveAPI is an implementation of ValidatorsActiveAPI
@@ -10,6 +10,6 @@ export declare class FetchBasedValidatorsActiveAPI implements ValidatorsActiveAP
     private readonly fetcher;
     private readonly baseURL;
     constructor(fetcher: typeof fetch, baseURL: URL);
-    active(): Promise<ActiveValidatorSetSnapshot>;
-    updatesSince(block: bigint): Promise<ActiveValidatorSetUpdate>;
+    active(): Promise<ActiveNodeSetSnapshot>;
+    updatesSince(block: bigint): Promise<ActiveNodeSetUpdate>;
 }
