@@ -1,6 +1,6 @@
 import { DataContext } from '@/components/contexts/DataProvider';
 import { PromiseResolver } from '@/components/data';
-import { FullValidatorSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_validator_set_snapshot';
+import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
 import React from 'react';
 import { L1ValidatorServiceContext } from './l1_validator_api_context';
 
@@ -9,7 +9,7 @@ import { L1ValidatorServiceContext } from './l1_validator_api_context';
  * for the current full validator set snapshot.
  */
 export const AllValidatorsContext =
-  React.createContext<null | FullValidatorSetSnapshot>(null);
+  React.createContext<null | FullNodeSetSnapshot>(null);
 
 /**
  * RetrieveAllValidators is a React Component that retrieves
@@ -38,7 +38,7 @@ export const RetrieveAllValidators: React.FC<React.PropsWithChildren> = ({
 const ResolveAllValidators: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const data = React.useContext(DataContext) as null | FullValidatorSetSnapshot;
+  const data = React.useContext(DataContext) as null | FullNodeSetSnapshot;
   return (
     <AllValidatorsContext.Provider value={data}>
       {children}

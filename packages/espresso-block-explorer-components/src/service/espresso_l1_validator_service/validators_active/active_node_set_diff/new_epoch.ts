@@ -1,9 +1,9 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import {
-  CurrentEpochValidatorSetEntry,
-  currentEpochValidatorSetEntryArrayJSONCodec,
-} from '../current_epoch_validator_set_entry';
-import { ActiveValidatorSetDiff } from './active_validator_set_diff';
+  ActiveNodeSetEntry,
+  activeNodeSetEntryArrayJSONCodec,
+} from '../../common/active_node_set_entry';
+import { ActiveNodeSetDiff } from './active_node_set_diff';
 
 /**
  * NewEpoch represents the beginning of a new epoch in the active validator set.
@@ -12,11 +12,13 @@ import { ActiveValidatorSetDiff } from './active_validator_set_diff';
  * This type definition is informed by the type specification as defined
  * in the Espresso L1 Validator Service API documentation.
  * https://www.notion.so/espressosys/Delegation-UI-Service-Specification-2942431b68e980968c28cc5099a4e8f2?source=copy_link#2962431b68e9804d9c99ea7b6a2c87ca
+ * Defined in rust here:
+ * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L71
  */
-export class NewEpoch extends ActiveValidatorSetDiff {
-  readonly entries: CurrentEpochValidatorSetEntry[];
+export class NewEpoch extends ActiveNodeSetDiff {
+  readonly entries: ActiveNodeSetEntry[];
 
-  constructor(entries: CurrentEpochValidatorSetEntry[]) {
+  constructor(entries: ActiveNodeSetEntry[]) {
     super();
     this.entries = entries;
   }
@@ -31,9 +33,7 @@ export class NewEpoch extends ActiveValidatorSetDiff {
  */
 class CurrentEpochJSONDecoder implements Converter<unknown, NewEpoch> {
   convert(input: unknown): NewEpoch {
-    return new NewEpoch(
-      currentEpochValidatorSetEntryArrayJSONCodec.decode(input),
-    );
+    return new NewEpoch(activeNodeSetEntryArrayJSONCodec.decode(input));
   }
 }
 
@@ -42,7 +42,7 @@ class CurrentEpochJSONDecoder implements Converter<unknown, NewEpoch> {
  */
 class CurrentEpochJSONEncoder implements Converter<NewEpoch, unknown> {
   convert(input: NewEpoch): unknown {
-    return currentEpochValidatorSetEntryArrayJSONCodec.encode(input.entries);
+    return activeNodeSetEntryArrayJSONCodec.encode(input.entries);
   }
 }
 

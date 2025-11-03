@@ -2,13 +2,13 @@ import { bigintCodec } from '@/convert/codec/bigint';
 import { Codec } from '@/convert/codec/convert';
 import { AsyncRequestHelper } from '../../web_worker_types';
 import {
-  ActiveValidatorSetSnapshot,
-  activeValidatorSetSnapshotJSONCodec,
-} from '../active_validator_set_snapshot';
+  ActiveNodeSetSnapshot,
+  activeNodeSetSnapshotJSONCodec,
+} from '../active_node_set_snapshot';
 import {
-  ActiveValidatorSetUpdate,
-  activeValidatorSetUpdateJSONCodec,
-} from '../active_validator_set_update';
+  ActiveNodeSetUpdate,
+  activeNodeSetUpdateJSONCodec,
+} from '../active_node_set_update';
 import { ValidatorsActiveAPI } from '../validators_active_api';
 
 /**
@@ -41,15 +41,12 @@ export class WebWorkerClientBasedValidatorsActiveAPI
     );
   }
 
-  async active(): Promise<ActiveValidatorSetSnapshot> {
-    return await this.sendRequest(
-      activeValidatorSetSnapshotJSONCodec,
-      'active',
-    );
+  async active(): Promise<ActiveNodeSetSnapshot> {
+    return await this.sendRequest(activeNodeSetSnapshotJSONCodec, 'active');
   }
-  async updatesSince(hash: bigint): Promise<ActiveValidatorSetUpdate> {
+  async updatesSince(hash: bigint): Promise<ActiveNodeSetUpdate> {
     return await this.sendRequest(
-      activeValidatorSetUpdateJSONCodec,
+      activeNodeSetUpdateJSONCodec,
       'updatesSince',
       bigintCodec.encode(hash),
     );

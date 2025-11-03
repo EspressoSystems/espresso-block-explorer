@@ -2,7 +2,7 @@ import React from 'react';
 import './colors.css';
 import { RetrieveActiveValidators } from './contexts/active_validators_context';
 import { RetrieveAllValidators } from './contexts/all_validators_context';
-import { DeriveConsensusSet } from './contexts/consensus_set_context';
+import { DeriveConsensusSet } from './contexts/consensus_map_context';
 import { DeriveRank } from './contexts/rank_map_context';
 import { DeriveTotalStake } from './contexts/total_stake_context';
 import { ProvideTotalSupply } from './contexts/total_supply_context';

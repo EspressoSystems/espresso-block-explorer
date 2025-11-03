@@ -1,6 +1,6 @@
 import { validateAndExpandResponse } from '@/async/fetch/response_validators';
+import { L1BlockID, l1BlockIDJSONCodec } from '../../common/l1_block_id';
 import { L1BlockAPI } from '../l1_block_api';
-import { L1BlockInfo, l1BlockInfoJSONCodec } from '../l1_block_info';
 
 /**
  * FetchBasedL1BlockAPI is an implementation of L1BlockAPI
@@ -16,10 +16,10 @@ export class FetchBasedL1BlockAPI implements L1BlockAPI {
     this.baseURL = baseURL;
   }
 
-  async getBlockForHeight(number: number): Promise<L1BlockInfo> {
+  async getBlockForHeight(number: number): Promise<L1BlockID> {
     const url = new URL(`${number}`, this.baseURL);
     return this.fetcher(url).then(
-      validateAndExpandResponse(l1BlockInfoJSONCodec.decoder),
+      validateAndExpandResponse(l1BlockIDJSONCodec.decoder),
     );
   }
 }

@@ -1,5 +1,5 @@
-import { ActiveValidatorSetSnapshot } from './active_validator_set_snapshot';
-import { ActiveValidatorSetUpdate } from './active_validator_set_update';
+import { ActiveNodeSetSnapshot } from './active_node_set_snapshot';
+import { ActiveNodeSetUpdate } from './active_node_set_update';
 
 /**
  * ValidatorsActiveAPI defines the interface for interacting with the
@@ -16,11 +16,11 @@ export interface ValidatorsActiveAPI {
    * NOTE: This endpoint may be cached and not up-to-date with the tip of
    * the L1 chain.
    */
-  active(): Promise<ActiveValidatorSetSnapshot>;
+  active(): Promise<ActiveNodeSetSnapshot>;
 
   /**
    * updatesSince retrieves all updates to the active validator set since the
    * provided block number.
    */
-  updatesSince(number: bigint): Promise<ActiveValidatorSetUpdate>;
+  updatesSince(number: bigint): Promise<ActiveNodeSetUpdate>;
 }

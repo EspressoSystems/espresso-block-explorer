@@ -1,14 +1,16 @@
 import {
   generateAllEspressoBlocks,
   nodeList,
+  PseudoRandomNumberGenerator,
 } from '@/data_source/fake_data_source';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { mapIterable } from '@/functional/functional';
 import { lastAsyncIterable } from '@/functional/functional_async';
-import { ActiveValidatorSetSnapshot } from '../active_validator_set_snapshot';
-import { ActiveValidatorSetUpdate } from '../active_validator_set_update';
-import { CurrentEpochValidatorSetEntry } from '../current_epoch_validator_set_entry';
-import { EpochAndBlock } from '../epoch_and_block';
+import { ActiveNodeSetEntry } from '../../common/active_node_set_entry';
+import { EpochAndBlock } from '../../common/epoch_and_block';
+import { Ratio } from '../../common/ratio';
+import { ActiveNodeSetSnapshot } from '../active_node_set_snapshot';
+import { ActiveNodeSetUpdate } from '../active_node_set_update';
 import { ValidatorsActiveAPI } from '../validators_active_api';
 
 /**
@@ -17,14 +19,16 @@ import { ValidatorsActiveAPI } from '../validators_active_api';
  * for the Validator Service API.
  */
 export class FakeDataValidatorsActiveAPI implements ValidatorsActiveAPI {
-  async active(): Promise<ActiveValidatorSetSnapshot> {
+  async active(): Promise<ActiveNodeSetSnapshot> {
     const block = await lastAsyncIterable(generateAllEspressoBlocks());
     const nodeListSorted = nodeList
       .slice()
       .sort((a, b) => Number(b.stake - a.stake))
       .slice(0, 100);
 
-    return new ActiveValidatorSetSnapshot(
+    const prng = new PseudoRandomNumberGenerator(block.genTime);
+
+    return new ActiveNodeSetSnapshot(
       new EpochAndBlock(
         BigInt(Math.floor(block.height / 100)),
         BigInt(block.height),
@@ -33,13 +37,18 @@ export class FakeDataValidatorsActiveAPI implements ValidatorsActiveAPI {
       Array.from(
         mapIterable(
           nodeListSorted,
-          (node) => new CurrentEpochValidatorSetEntry(node.address),
+          (node) =>
+            new ActiveNodeSetEntry(
+              node.address,
+              new Ratio(prng.nextFloat()),
+              new Ratio(prng.nextFloat()),
+            ),
         ),
       ),
     );
   }
 
-  async updatesSince(): Promise<ActiveValidatorSetUpdate> {
+  async updatesSince(): Promise<ActiveNodeSetUpdate> {
     throw new UnimplementedError();
   }
 }

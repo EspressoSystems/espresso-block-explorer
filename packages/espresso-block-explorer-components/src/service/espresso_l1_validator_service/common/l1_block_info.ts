@@ -14,15 +14,17 @@ import {
  *
  * This type is defined by the Espresso L1 Validator Service API.
  * https://www.notion.so/espressosys/Delegation-UI-Service-Specification-2942431b68e980968c28cc5099a4e8f2?source=copy_link#2952431b68e980c08eb2f6a6c62b9abe
+ * Defined in rust here:
+ * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L42-L51
  */
 export class L1BlockInfo {
   readonly number: bigint;
-  readonly blockHash: ArrayBuffer;
+  readonly hash: ArrayBuffer;
   readonly timestamp: Date;
 
   constructor(number: bigint, hash: ArrayBuffer, timestamp: Date) {
     this.number = number;
-    this.blockHash = hash;
+    this.hash = hash;
     this.timestamp = timestamp;
   }
 
@@ -53,7 +55,7 @@ class L1BlockInfoJSONEncoder implements Converter<L1BlockInfo, unknown> {
   convert(input: L1BlockInfo): unknown {
     return {
       number: bigintCodec.encode(input.number),
-      hash: stdBase64ArrayBufferCodec.encode(input.blockHash),
+      hash: stdBase64ArrayBufferCodec.encode(input.hash),
       timestamp: numberCodec.encode(input.timestamp.valueOf()),
     };
   }

@@ -1,6 +1,6 @@
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import { describe, expect, it } from 'vitest';
-import { L1BlockInfo, l1BlockInfoJSONCodec } from '../l1_block_info';
+import { L1BlockInfo, l1BlockInfoJSONCodec } from '../../common/l1_block_info';
 
 describe('L1BlockInfo', () => {
   describe('Codec', () => {

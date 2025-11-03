@@ -1,6 +1,6 @@
 import UnimplementedError from '@/errors/UnimplementedError';
-import { FullValidatorSetSnapshot } from '../full_validator_set_snapshot';
-import { FullValidatorSetUpdate } from '../full_validator_set_update';
+import { FullNodeSetSnapshot } from '../full_node_set_snapshot';
+import { FullNodeSetUpdate } from '../full_node_set_update';
 import { ValidatorsAllAPI } from '../validators_all_api';
 
 /**
@@ -11,11 +11,11 @@ import { ValidatorsAllAPI } from '../validators_all_api';
  * implementations to extend it without having to implement all methods.
  */
 export class UnimplementedValidatorAllAPI implements ValidatorsAllAPI {
-  async snapshot(): Promise<FullValidatorSetSnapshot> {
+  async snapshot(): Promise<FullNodeSetSnapshot> {
     throw new UnimplementedError();
   }
 
-  async updatesSince(): Promise<FullValidatorSetUpdate> {
+  async updatesSince(): Promise<FullNodeSetUpdate> {
     throw new UnimplementedError();
   }
 }

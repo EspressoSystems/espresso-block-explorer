@@ -1,6 +1,6 @@
 import UnimplementedError from '@/errors/UnimplementedError';
-import { ActiveValidatorSetSnapshot } from '../active_validator_set_snapshot';
-import { ActiveValidatorSetUpdate } from '../active_validator_set_update';
+import { ActiveNodeSetSnapshot } from '../active_node_set_snapshot';
+import { ActiveNodeSetUpdate } from '../active_node_set_update';
 import { ValidatorsActiveAPI } from '../validators_active_api';
 
 /**
@@ -11,11 +11,11 @@ import { ValidatorsActiveAPI } from '../validators_active_api';
  * implementations to extend it without having to implement all methods.
  */
 export class UnimplementedActiveValidatorsAPI implements ValidatorsActiveAPI {
-  async active(): Promise<ActiveValidatorSetSnapshot> {
+  async active(): Promise<ActiveNodeSetSnapshot> {
     throw new UnimplementedError();
   }
 
-  async updatesSince(): Promise<ActiveValidatorSetUpdate> {
+  async updatesSince(): Promise<ActiveNodeSetUpdate> {
     throw new UnimplementedError();
   }
 }
