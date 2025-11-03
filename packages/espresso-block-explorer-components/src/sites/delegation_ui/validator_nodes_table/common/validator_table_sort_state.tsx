@@ -1,11 +1,12 @@
 import { stdBase64ArrayBufferCodec } from '@/convert/codec';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { compareArrayBuffer } from '@/functional/functional';
-import { FullValidatorSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_validator_set_snapshot';
-import { ValidatorSetEntry } from '@/service/espresso_l1_validator_service/validators_all/validator_set_entry';
+import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
+import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
+import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
 import React from 'react';
 import { AllValidatorsContext } from 'sites/delegation_ui/contexts/all_validators_context';
-import { ConsensusSetContext } from 'sites/delegation_ui/contexts/consensus_set_context';
+import { ConsensusMapContext } from 'sites/delegation_ui/contexts/consensus_map_context';
 import { RankMapContext } from 'sites/delegation_ui/contexts/rank_map_context';
 
 /**
@@ -103,7 +104,7 @@ export const useValidatorTableSortState = () => {
 /**
  * ValidatorSortTuple is a tuple type used for sorting validators.
  */
-type ValidatorSortTuple = [ValidatorSetEntry, number, boolean];
+type ValidatorSortTuple = [NodeSetEntry, number, null | ActiveNodeSetEntry];
 
 /**
  * sortByRank sorts validators by their rank.
@@ -130,8 +131,8 @@ function sortByFee(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  * sortByMissedSlots sorts validators by their missed slots.
  */
 function sortByMissedSlots(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  const aMissed = a[0].leadershipParticipation ?? -1;
-  const bMissed = b[0].leadershipParticipation ?? -1;
+  const aMissed = a[2]?.leaderParticipation.ratio ?? -1;
+  const bMissed = b[2]?.leaderParticipation.ratio ?? -1;
   return aMissed - bMissed;
 }
 
@@ -139,8 +140,8 @@ function sortByMissedSlots(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  * sortByParticipationRate sorts validators by their participation rate.
  */
 function sortByParticipationRate(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  const aRate = a[0].voterParticipation ?? -1;
-  const bRate = b[0].voterParticipation ?? -1;
+  const aRate = a[2]?.voterParticipation.ratio ?? -1;
+  const bRate = b[2]?.voterParticipation.ratio ?? -1;
   return aRate - bRate;
 }
 
@@ -214,11 +215,11 @@ function getSortDirection(
  * rank map, and consensus set.
  */
 function sortWithState(
-  allValidators: null | FullValidatorSetSnapshot,
+  allValidators: null | FullNodeSetSnapshot,
   tableState: TableSortState<CellType>,
   rankMap: Map<string, number>,
-  consensusSet: Set<string>,
-): null | FullValidatorSetSnapshot {
+  consensusSet: Map<string, ActiveNodeSetEntry>,
+): null | FullNodeSetSnapshot {
   if (!allValidators) {
     return allValidators;
   }
@@ -227,7 +228,7 @@ function sortWithState(
   const sortDirectionFunction = getSortDirection(sortDirection);
   const sortFunction = sortDirectionFunction(getSortFunction(sortBy));
 
-  return new FullValidatorSetSnapshot(
+  return new FullNodeSetSnapshot(
     allValidators.l1Block,
     allValidators.nodes
       .map((node) => {
@@ -235,7 +236,7 @@ function sortWithState(
         return [
           node,
           rankMap.get(key) ?? Number.MAX_SAFE_INTEGER,
-          consensusSet.has(key),
+          consensusSet.get(key) ?? null,
         ] as ValidatorSortTuple;
       })
       .sort(sortFunction)
@@ -254,14 +255,14 @@ export const ValidatorTableSortStateProvider: React.FC<
   const { tableState, tableControls } = useValidatorTableSortState();
   const allValidators = React.useContext(AllValidatorsContext);
   const rankMap = React.useContext(RankMapContext);
-  const consensusSet = React.useContext(ConsensusSetContext);
+  const consensusMap = React.useContext(ConsensusMapContext);
 
   // We need to sort the Validators according to the Table State
   const sortedValues = sortWithState(
     allValidators,
     tableState,
     rankMap,
-    consensusSet,
+    consensusMap,
   );
 
   return (

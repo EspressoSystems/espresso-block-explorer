@@ -1,13 +1,16 @@
 import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { mapIterable } from '@/functional/functional';
+import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
 import React from 'react';
 import { ActiveValidatorsContext } from './active_validators_context';
 
 /**
- * ConsensusSetContext provides a React Context
+ * ConsensusMapContext provides a React Context
  * for the current set of active validator addresses in base64 format.
  */
-export const ConsensusSetContext = React.createContext<Set<string>>(new Set());
+export const ConsensusMapContext = React.createContext<
+  Map<string, ActiveNodeSetEntry>
+>(new Map());
 
 /**
  * DeriveConsensusSet is a React Component that
@@ -23,15 +26,16 @@ export const DeriveConsensusSet: React.FC<React.PropsWithChildren> = ({
     return <>{children}</>;
   }
 
-  const activeValidatorAddresses = new Set<string>(
-    mapIterable(activeValidators.nodes, (node) =>
+  const activeValidatorAddresses = new Map<string, ActiveNodeSetEntry>(
+    mapIterable(activeValidators.nodes, (node) => [
       stdBase64ArrayBufferCodec.encode(node.address),
-    ),
+      node,
+    ]),
   );
 
   return (
-    <ConsensusSetContext.Provider value={activeValidatorAddresses}>
+    <ConsensusMapContext.Provider value={activeValidatorAddresses}>
       {children}
-    </ConsensusSetContext.Provider>
+    </ConsensusMapContext.Provider>
   );
 };

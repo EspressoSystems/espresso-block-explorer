@@ -1,11 +1,11 @@
 import { nodeList } from '@/data_source/fake_data_source/espresso/nodes';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { mapIterable } from '@/functional/functional';
-import { CommissionPercent } from '@/models/espresso';
-import { L1BlockInfo } from '../../l1_block/l1_block_info';
-import { FullValidatorSetSnapshot } from '../full_validator_set_snapshot';
-import { FullValidatorSetUpdate } from '../full_validator_set_update';
-import { ValidatorSetEntry } from '../validator_set_entry';
+import { L1BlockInfo } from '../../common/l1_block_info';
+import { NodeSetEntry } from '../../common/node_set_entry';
+import { Ratio } from '../../common/ratio';
+import { FullNodeSetSnapshot } from '../full_node_set_snapshot';
+import { FullNodeSetUpdate } from '../full_node_set_update';
 import { ValidatorsAllAPI } from '../validators_all_api';
 
 /**
@@ -14,35 +14,23 @@ import { ValidatorsAllAPI } from '../validators_all_api';
  * for the Validator Service API.
  */
 export class FakeDataValidatorsAllAPI implements ValidatorsAllAPI {
-  async snapshot(): Promise<FullValidatorSetSnapshot> {
-    // Top 100 by stake
-    const nodeListSorted = nodeList
-      .slice()
-      .sort((a, b) => Number(b.stake - a.stake))
-      .slice(0, 100);
-
-    const addressMap = new Set(
-      mapIterable(nodeListSorted, (entry) => entry.address),
-    );
-
-    return new FullValidatorSetSnapshot(
+  async snapshot(): Promise<FullNodeSetSnapshot> {
+    return new FullNodeSetSnapshot(
       new L1BlockInfo(BigInt(1), new ArrayBuffer(32), new Date()),
       Array.from(
         mapIterable(nodeList, (entry) => {
-          return new ValidatorSetEntry(
+          return new NodeSetEntry(
             entry.address,
             entry.stateVerKey,
             entry.stake,
-            new CommissionPercent(entry.commission),
-            addressMap.has(entry.address) ? Math.random() : null,
-            addressMap.has(entry.address) ? Math.random() : null,
+            new Ratio(entry.commission / 10_000),
           );
         }),
       ),
     );
   }
 
-  async updatesSince(): Promise<FullValidatorSetUpdate> {
+  async updatesSince(): Promise<FullNodeSetUpdate> {
     throw new UnimplementedError();
   }
 }

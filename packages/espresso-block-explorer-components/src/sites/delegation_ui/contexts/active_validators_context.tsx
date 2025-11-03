@@ -1,6 +1,6 @@
 import { DataContext } from '@/components/contexts/DataProvider';
 import { PromiseResolver } from '@/components/data';
-import { ActiveValidatorSetSnapshot } from '@/service/espresso_l1_validator_service/validators_active/active_validator_set_snapshot';
+import { ActiveNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_active/active_node_set_snapshot';
 import React from 'react';
 import { L1ValidatorServiceContext } from './l1_validator_api_context';
 
@@ -9,7 +9,7 @@ import { L1ValidatorServiceContext } from './l1_validator_api_context';
  * for the current active validator set snapshot.
  */
 export const ActiveValidatorsContext =
-  React.createContext<null | ActiveValidatorSetSnapshot>(null);
+  React.createContext<null | ActiveNodeSetSnapshot>(null);
 
 /**
  * RetrieveActiveValidators is a React Component that retrieves
@@ -38,9 +38,7 @@ export const RetrieveActiveValidators: React.FC<React.PropsWithChildren> = ({
 const ResolveActiveValidators: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const data = React.useContext(
-    DataContext,
-  ) as null | ActiveValidatorSetSnapshot;
+  const data = React.useContext(DataContext) as null | ActiveNodeSetSnapshot;
   return (
     <ActiveValidatorsContext.Provider value={data}>
       {children}

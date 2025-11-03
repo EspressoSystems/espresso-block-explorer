@@ -1,6 +1,6 @@
 import { stdBase64ArrayBufferCodec } from '@/convert/codec';
 import { mapIterable, zipWithIterable } from '@/functional/functional';
-import { ValidatorSetEntry } from '@/service/espresso_l1_validator_service/validators_all/validator_set_entry';
+import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import React from 'react';
 import { AllValidatorsContext } from './all_validators_context';
 
@@ -16,7 +16,7 @@ export const RankMapContext = React.createContext<Map<string, number>>(
  * score computes a score for a validator set entry, this is used to derive
  * the rank of the validators
  */
-function score(node: ValidatorSetEntry): number {
+function score(node: NodeSetEntry): number {
   return (
     Number(node.stake) *
     (1 - node.commission.valueOf()) *

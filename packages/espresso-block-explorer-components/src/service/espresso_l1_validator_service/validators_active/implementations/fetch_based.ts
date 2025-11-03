@@ -1,12 +1,12 @@
 import { validateAndExpandResponse } from '@/async/fetch/response_validators';
 import {
-  ActiveValidatorSetSnapshot,
-  activeValidatorSetSnapshotJSONCodec,
-} from '../active_validator_set_snapshot';
+  ActiveNodeSetSnapshot,
+  activeNodeSetSnapshotJSONCodec,
+} from '../active_node_set_snapshot';
 import {
-  ActiveValidatorSetUpdate,
-  activeValidatorSetUpdateJSONCodec,
-} from '../active_validator_set_update';
+  ActiveNodeSetUpdate,
+  activeNodeSetUpdateJSONCodec,
+} from '../active_node_set_update';
 import { ValidatorsActiveAPI } from '../validators_active_api';
 
 /**
@@ -23,16 +23,16 @@ export class FetchBasedValidatorsActiveAPI implements ValidatorsActiveAPI {
     this.baseURL = baseURL;
   }
 
-  async active(): Promise<ActiveValidatorSetSnapshot> {
+  async active(): Promise<ActiveNodeSetSnapshot> {
     return this.fetcher(this.baseURL).then(
-      validateAndExpandResponse(activeValidatorSetSnapshotJSONCodec.decoder),
+      validateAndExpandResponse(activeNodeSetSnapshotJSONCodec.decoder),
     );
   }
 
-  async updatesSince(block: bigint): Promise<ActiveValidatorSetUpdate> {
+  async updatesSince(block: bigint): Promise<ActiveNodeSetUpdate> {
     const url = new URL(`active/updates/${block}`, this.baseURL);
     return this.fetcher(url).then(
-      validateAndExpandResponse(activeValidatorSetUpdateJSONCodec.decoder),
+      validateAndExpandResponse(activeNodeSetUpdateJSONCodec.decoder),
     );
   }
 }

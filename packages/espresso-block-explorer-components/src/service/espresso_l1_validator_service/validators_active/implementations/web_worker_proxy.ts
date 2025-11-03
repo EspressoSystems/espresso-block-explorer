@@ -1,13 +1,13 @@
 import { bigintCodec } from '@/convert/codec/bigint';
 import { WebWorkerRequest } from '../../web_worker_types';
 import {
-  ActiveValidatorSetSnapshot,
-  activeValidatorSetSnapshotJSONCodec,
-} from '../active_validator_set_snapshot';
+  ActiveNodeSetSnapshot,
+  activeNodeSetSnapshotJSONCodec,
+} from '../active_node_set_snapshot';
 import {
-  ActiveValidatorSetUpdate,
-  activeValidatorSetUpdateJSONCodec,
-} from '../active_validator_set_update';
+  ActiveNodeSetUpdate,
+  activeNodeSetUpdateJSONCodec,
+} from '../active_node_set_update';
 import { ValidatorsActiveAPI } from '../validators_active_api';
 
 /**
@@ -33,21 +33,21 @@ export class WebWorkerProxyValidatorsActiveAPI {
     this.service = service;
   }
 
-  async active(): Promise<ActiveValidatorSetSnapshot> {
+  async active(): Promise<ActiveNodeSetSnapshot> {
     return this.service.active();
   }
 
-  async updatesSince(hash: bigint): Promise<ActiveValidatorSetUpdate> {
+  async updatesSince(hash: bigint): Promise<ActiveNodeSetUpdate> {
     return this.service.updatesSince(hash);
   }
 
   async handleRequest(request: ValidatorsActiveAPIRequest) {
     switch (request.method) {
       case 'active':
-        return activeValidatorSetSnapshotJSONCodec.encode(await this.active());
+        return activeNodeSetSnapshotJSONCodec.encode(await this.active());
 
       case 'updatesSince':
-        return activeValidatorSetUpdateJSONCodec.encode(
+        return activeNodeSetUpdateJSONCodec.encode(
           await this.updatesSince(bigintCodec.decode(request.param[0])),
         );
     }

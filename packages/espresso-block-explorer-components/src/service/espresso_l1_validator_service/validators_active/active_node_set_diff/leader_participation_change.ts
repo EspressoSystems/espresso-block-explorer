@@ -1,13 +1,9 @@
-import {
-  assertRecordWithKeys,
-  Converter,
-  TypeCheckingCodec,
-} from '@/convert/codec/convert';
+import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import {
   ParticipationChange,
-  participationChangeJSONCodec,
-} from '../participation_change';
-import { ActiveValidatorSetDiff } from './active_validator_set_diff';
+  participationChangeArrayJSONCodec,
+} from '../../common/participation_change';
+import { ActiveNodeSetDiff } from './active_node_set_diff';
 
 /**
  * LeaderParticipationChange represents a change in leader participation
@@ -16,13 +12,15 @@ import { ActiveValidatorSetDiff } from './active_validator_set_diff';
  * This type definition is informed by the type specification as defined
  * in the Espresso L1 Validator Service API documentation.
  * https://www.notion.so/espressosys/Delegation-UI-Service-Specification-2942431b68e980968c28cc5099a4e8f2?source=copy_link#2962431b68e9804d9c99ea7b6a2c87ca
+ * Defined in rust here:
+ * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L65
  */
-export class LeaderParticipationChange extends ActiveValidatorSetDiff {
-  readonly participationChange: ParticipationChange;
+export class LeaderParticipationChange extends ActiveNodeSetDiff {
+  readonly participationChanges: ParticipationChange[];
 
-  constructor(participationChange: ParticipationChange) {
+  constructor(participationChanges: ParticipationChange[]) {
     super();
-    this.participationChange = participationChange;
+    this.participationChanges = participationChanges;
   }
 
   toJSON() {
@@ -38,10 +36,8 @@ class LeaderParticipationChangeJSONDecoder
   implements Converter<unknown, LeaderParticipationChange>
 {
   convert(input: unknown): LeaderParticipationChange {
-    assertRecordWithKeys(input, 'participation_change');
-
     return new LeaderParticipationChange(
-      participationChangeJSONCodec.decode(input.participation_change),
+      participationChangeArrayJSONCodec.decode(input),
     );
   }
 }
@@ -54,11 +50,7 @@ class LeaderParticipationChangeJSONEncoder
   implements Converter<LeaderParticipationChange, unknown>
 {
   convert(input: LeaderParticipationChange): unknown {
-    return {
-      participation_change: participationChangeJSONCodec.encode(
-        input.participationChange,
-      ),
-    };
+    return participationChangeArrayJSONCodec.encode(input.participationChanges);
   }
 }
 

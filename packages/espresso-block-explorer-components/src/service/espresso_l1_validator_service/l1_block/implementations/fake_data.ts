@@ -1,6 +1,6 @@
 import UnimplementedError from '@/errors/UnimplementedError';
+import { L1BlockID } from '../../common/l1_block_id';
 import { L1BlockAPI } from '../l1_block_api';
-import { L1BlockInfo } from '../l1_block_info';
 
 /**
  * FakeDataL1BlockAPI is an implementation of L1BlockAPI
@@ -8,7 +8,7 @@ import { L1BlockInfo } from '../l1_block_info';
  * for the Validator Service API.
  */
 export class FakeDataL1BlockAPI implements L1BlockAPI {
-  async getBlockForHeight(): Promise<L1BlockInfo> {
+  async getBlockForHeight(): Promise<L1BlockID> {
     throw new UnimplementedError();
   }
 }

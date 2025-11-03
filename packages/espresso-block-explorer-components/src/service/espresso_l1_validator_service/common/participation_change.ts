@@ -1,10 +1,11 @@
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec';
 import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
-import { numberCodec } from '@/convert/codec/number';
+import { Ratio, ratioCodec } from './ratio';
 
 /**
  * ParticipationChange represents a change in validator participation
@@ -14,14 +15,16 @@ import { numberCodec } from '@/convert/codec/number';
  * The ParticipationChange type is defined by the Espresso L1 Validator Service
  * API.
  * https://www.notion.so/espressosys/Delegation-UI-Service-Specification-2942431b68e980968c28cc5099a4e8f2?source=copy_link#2942431b68e9803791a7f90f4d247228
+ * Defined in rust here:
+ * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L107-L113
  */
 export class ParticipationChange {
   readonly address: ArrayBuffer;
-  readonly percentage: number;
+  readonly ratio: Ratio;
 
-  constructor(address: ArrayBuffer, percentage: number) {
+  constructor(address: ArrayBuffer, ratio: Ratio) {
     this.address = address;
-    this.percentage = percentage;
+    this.ratio = ratio;
   }
 
   toJSON() {
@@ -41,7 +44,7 @@ class ParticipationChangeJSONDecoder
 
     return new ParticipationChange(
       stdBase64ArrayBufferCodec.decode(input.address),
-      numberCodec.decode(input.percentage),
+      ratioCodec.decode(input.percentage),
     );
   }
 }
@@ -56,7 +59,7 @@ class ParticipationChangeJSONEncoder
   convert(input: ParticipationChange): unknown {
     return {
       address: stdBase64ArrayBufferCodec.encode(input.address),
-      percentage: numberCodec.encode(input.percentage),
+      percentage: ratioCodec.encode(input.ratio),
     };
   }
 }
@@ -78,3 +81,12 @@ class ParticipationChangeJSONCodec extends TypeCheckingCodec<
  * ParticipationChange objects to and from JSON.
  */
 export const participationChangeJSONCodec = new ParticipationChangeJSONCodec();
+
+/**
+ * participationChangeArrayJSONCodec is a codec that encodes and decodes
+ * ParticipationChange arrays to and from JSON.
+ */
+export const participationChangeArrayJSONCodec = new ArrayCodec(
+  new ArrayDecoder(participationChangeJSONCodec),
+  new ArrayEncoder(participationChangeJSONCodec),
+);

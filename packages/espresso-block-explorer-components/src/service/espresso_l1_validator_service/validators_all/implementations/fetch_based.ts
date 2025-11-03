@@ -1,13 +1,13 @@
 import { validateAndExpandResponse } from '@/async/fetch/response_validators';
 import { hexArrayBufferCodec } from '@/convert/codec';
 import {
-  FullValidatorSetSnapshot,
-  fullValidatorSetSnapshotJSONCodec,
-} from '../full_validator_set_snapshot';
+  FullNodeSetSnapshot,
+  fullNodeSetSnapshotJSONCodec,
+} from '../full_node_set_snapshot';
 import {
-  FullValidatorSetUpdate,
-  fullValidatorSetUpdateJSONCodec,
-} from '../full_validator_set_update';
+  FullNodeSetUpdate,
+  fullNodeSetUpdateJSONCodec,
+} from '../full_node_set_update';
 import { ValidatorsAllAPI } from '../validators_all_api';
 
 /**
@@ -24,19 +24,19 @@ export class FetchBasedValidatorsAllAPI implements ValidatorsAllAPI {
     this.baseURL = baseURL;
   }
 
-  async snapshot(): Promise<FullValidatorSetSnapshot> {
+  async snapshot(): Promise<FullNodeSetSnapshot> {
     return this.fetcher(this.baseURL).then(
-      validateAndExpandResponse(fullValidatorSetSnapshotJSONCodec.decoder),
+      validateAndExpandResponse(fullNodeSetSnapshotJSONCodec.decoder),
     );
   }
 
-  async updatesSince(hash: ArrayBuffer): Promise<FullValidatorSetUpdate> {
+  async updatesSince(hash: ArrayBuffer): Promise<FullNodeSetUpdate> {
     const url = new URL(
       `all/updates/${hexArrayBufferCodec.encode(hash)}`,
       this.baseURL,
     );
     return this.fetcher(url).then(
-      validateAndExpandResponse(fullValidatorSetUpdateJSONCodec.decoder),
+      validateAndExpandResponse(fullNodeSetUpdateJSONCodec.decoder),
     );
   }
 }

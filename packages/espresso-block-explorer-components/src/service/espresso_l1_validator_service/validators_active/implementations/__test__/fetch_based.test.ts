@@ -3,21 +3,22 @@ import {
   validateRequestMethodAndURL,
 } from '@/async/fetch/mock';
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
+import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
+import { Ratio } from '@/service/espresso_l1_validator_service/common/ratio';
 import { describe, expect, it } from 'vitest';
-import { LeaderParticipationChange } from '../../active_validator_set_diff/leader_participation_change';
-import { NewEpoch } from '../../active_validator_set_diff/new_epoch';
-import { VoterParticipationChange } from '../../active_validator_set_diff/voter_participation_change';
+import { EpochAndBlock } from '../../../common/epoch_and_block';
+import { ParticipationChange } from '../../../common/participation_change';
+import { LeaderParticipationChange } from '../../active_node_set_diff/leader_participation_change';
+import { NewEpoch } from '../../active_node_set_diff/new_epoch';
+import { VoterParticipationChange } from '../../active_node_set_diff/voter_participation_change';
 import {
-  ActiveValidatorSetSnapshot,
-  activeValidatorSetSnapshotJSONCodec,
-} from '../../active_validator_set_snapshot';
+  ActiveNodeSetSnapshot,
+  activeNodeSetSnapshotJSONCodec,
+} from '../../active_node_set_snapshot';
 import {
-  ActiveValidatorSetUpdate,
-  activeValidatorSetUpdateJSONCodec,
-} from '../../active_validator_set_update';
-import { CurrentEpochValidatorSetEntry } from '../../current_epoch_validator_set_entry';
-import { EpochAndBlock } from '../../epoch_and_block';
-import { ParticipationChange } from '../../participation_change';
+  ActiveNodeSetUpdate,
+  activeNodeSetUpdateJSONCodec,
+} from '../../active_node_set_update';
 import { ValidatorsActiveAPI } from '../../validators_active_api';
 import { FetchBasedValidatorsActiveAPI } from '../fetch_based';
 
@@ -30,13 +31,29 @@ describe('FetchBasedValidatorsActiveAPI', () => {
 
       const block = prng.nextRangeBigInt(0n, 1000n);
       const epoch = block / 3000n;
-      const response = new ActiveValidatorSetSnapshot(
+      const response = new ActiveNodeSetSnapshot(
         new EpochAndBlock(epoch, block, new Date()),
         [
-          new CurrentEpochValidatorSetEntry(prng.fillBytes(32)),
-          new CurrentEpochValidatorSetEntry(prng.fillBytes(32)),
-          new CurrentEpochValidatorSetEntry(prng.fillBytes(32)),
-          new CurrentEpochValidatorSetEntry(prng.fillBytes(32)),
+          new ActiveNodeSetEntry(
+            prng.fillBytes(32),
+            new Ratio(prng.nextFloat()),
+            new Ratio(prng.nextFloat()),
+          ),
+          new ActiveNodeSetEntry(
+            prng.fillBytes(32),
+            new Ratio(prng.nextFloat()),
+            new Ratio(prng.nextFloat()),
+          ),
+          new ActiveNodeSetEntry(
+            prng.fillBytes(32),
+            new Ratio(1.0),
+            new Ratio(0.5),
+          ),
+          new ActiveNodeSetEntry(
+            prng.fillBytes(32),
+            new Ratio(0.75),
+            new Ratio(0.25),
+          ),
         ],
       );
 
@@ -49,9 +66,7 @@ describe('FetchBasedValidatorsActiveAPI', () => {
 
         return mockFetch200JSONResponse(
           Buffer.from(
-            JSON.stringify(
-              activeValidatorSetSnapshotJSONCodec.encode(response),
-            ),
+            JSON.stringify(activeNodeSetSnapshotJSONCodec.encode(response)),
           ),
         );
       };
@@ -67,20 +82,42 @@ describe('FetchBasedValidatorsActiveAPI', () => {
       const prng = new PseudoRandomNumberGenerator(Date.now());
       const block = prng.nextRangeBigInt(0n, 1000n);
       const epoch = block / 3000n;
-      const response = new ActiveValidatorSetUpdate(
+      const response = new ActiveNodeSetUpdate(
         new EpochAndBlock(epoch, block, new Date()),
         [
-          new LeaderParticipationChange(
-            new ParticipationChange(prng.fillBytes(32), prng.nextFloat()),
-          ),
-          new VoterParticipationChange(
-            new ParticipationChange(prng.fillBytes(32), prng.nextFloat()),
-          ),
+          new LeaderParticipationChange([
+            new ParticipationChange(
+              prng.fillBytes(32),
+              new Ratio(prng.nextFloat()),
+            ),
+          ]),
+          new VoterParticipationChange([
+            new ParticipationChange(
+              prng.fillBytes(32),
+              new Ratio(prng.nextFloat()),
+            ),
+          ]),
           new NewEpoch([
-            new CurrentEpochValidatorSetEntry(prng.fillBytes(32)),
-            new CurrentEpochValidatorSetEntry(prng.fillBytes(32)),
-            new CurrentEpochValidatorSetEntry(prng.fillBytes(32)),
-            new CurrentEpochValidatorSetEntry(prng.fillBytes(32)),
+            new ActiveNodeSetEntry(
+              prng.fillBytes(32),
+              new Ratio(0.9),
+              new Ratio(0.8),
+            ),
+            new ActiveNodeSetEntry(
+              prng.fillBytes(32),
+              new Ratio(0.7),
+              new Ratio(0.6),
+            ),
+            new ActiveNodeSetEntry(
+              prng.fillBytes(32),
+              new Ratio(0.5),
+              new Ratio(0.4),
+            ),
+            new ActiveNodeSetEntry(
+              prng.fillBytes(32),
+              new Ratio(0.3),
+              new Ratio(0.2),
+            ),
           ]),
         ],
       );
@@ -93,7 +130,7 @@ describe('FetchBasedValidatorsActiveAPI', () => {
 
         return mockFetch200JSONResponse(
           Buffer.from(
-            JSON.stringify(activeValidatorSetUpdateJSONCodec.encode(response)),
+            JSON.stringify(activeNodeSetUpdateJSONCodec.encode(response)),
           ),
         );
       };

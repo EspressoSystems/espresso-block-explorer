@@ -3,22 +3,22 @@ import {
   validateRequestMethodAndURL,
 } from '@/async/fetch/mock';
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
-import { CommissionPercent } from '@/models/espresso/stake_table/commission_percent';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
-import { L1BlockInfo } from '@/service/espresso_l1_validator_service/l1_block/l1_block_info';
+import { L1BlockInfo } from '@/service/espresso_l1_validator_service/common/l1_block_info';
+import { Ratio } from '@/service/espresso_l1_validator_service/common/ratio';
 import { describe, expect, it } from 'vitest';
-import { FullValidatorSetDiffValidatorExit } from '../../full_validator_set_diff/validator_exit';
-import { FullValidatorSetUpdateValidatorUpdate } from '../../full_validator_set_diff/validator_update';
+import { NodeExit } from '../../../common/node_exit';
+import { NodeSetEntry } from '../../../common/node_set_entry';
+import { FullNodeSetDiffNodeExit } from '../../full_node_set_diff/node_exit';
+import { FullNodeSetUpdateNodeUpdate } from '../../full_node_set_diff/node_update';
 import {
-  FullValidatorSetSnapshot,
-  fullValidatorSetSnapshotJSONCodec,
-} from '../../full_validator_set_snapshot';
+  FullNodeSetSnapshot,
+  fullNodeSetSnapshotJSONCodec,
+} from '../../full_node_set_snapshot';
 import {
-  FullValidatorSetUpdate,
-  fullValidatorSetUpdateJSONCodec,
-} from '../../full_validator_set_update';
-import { ValidatorExitEntry } from '../../validator_exit_entry';
-import { ValidatorSetEntry } from '../../validator_set_entry';
+  FullNodeSetUpdate,
+  fullNodeSetUpdateJSONCodec,
+} from '../../full_node_set_update';
 import { ValidatorsAllAPI } from '../../validators_all_api';
 import { FetchBasedValidatorsAllAPI } from '../fetch_based';
 
@@ -30,25 +30,21 @@ describe('FetchBasedValidatorsAllAPI', () => {
       const prng = new PseudoRandomNumberGenerator(Date.now());
 
       const block = prng.nextRangeBigInt(0n, 1000n);
-      const response = new FullValidatorSetSnapshot(
+      const response = new FullNodeSetSnapshot(
         new L1BlockInfo(block, prng.fillBytes(32), new Date()),
         [
-          new ValidatorSetEntry(
+          new NodeSetEntry(
             prng.fillBytes(32),
             new TaggedBase64('BLS_PUB_KEY', prng.fillBytes(48)),
             prng.nextRangeBigInt(1n, 1_000_000n),
-            new CommissionPercent(prng.nextRange(0, 10000)),
-            null,
-            null,
+            new Ratio(prng.nextFloat()),
           ),
 
-          new ValidatorSetEntry(
+          new NodeSetEntry(
             prng.fillBytes(32),
             new TaggedBase64('BLS_PUB_KEY', prng.fillBytes(48)),
             prng.nextRangeBigInt(1n, 1_000_000n),
-            new CommissionPercent(prng.nextRange(0, 10000)),
-            prng.nextFloat(),
-            prng.nextFloat(),
+            new Ratio(prng.nextFloat()),
           ),
         ],
       );
@@ -62,7 +58,7 @@ describe('FetchBasedValidatorsAllAPI', () => {
 
         return mockFetch200JSONResponse(
           Buffer.from(
-            JSON.stringify(fullValidatorSetSnapshotJSONCodec.encode(response)),
+            JSON.stringify(fullNodeSetSnapshotJSONCodec.encode(response)),
           ),
         );
       };
@@ -77,22 +73,20 @@ describe('FetchBasedValidatorsAllAPI', () => {
     {
       const prng = new PseudoRandomNumberGenerator(Date.now());
       const block = prng.nextRangeBigInt(0n, 1000n);
-      const response = new FullValidatorSetUpdate(
+      const response = new FullNodeSetUpdate(
         new L1BlockInfo(block, prng.fillBytes(32), new Date()),
         [
-          new FullValidatorSetUpdateValidatorUpdate(
-            new ValidatorSetEntry(
+          new FullNodeSetUpdateNodeUpdate(
+            new NodeSetEntry(
               prng.fillBytes(32),
               new TaggedBase64('BLS_PUB_KEY', prng.fillBytes(48)),
               prng.nextRangeBigInt(1n, 1_000_000n),
-              new CommissionPercent(prng.nextRange(0, 10000)),
-              null,
-              null,
+              new Ratio(prng.nextFloat()),
             ),
           ),
 
-          new FullValidatorSetDiffValidatorExit(
-            new ValidatorExitEntry(prng.fillBytes(32), new Date()),
+          new FullNodeSetDiffNodeExit(
+            new NodeExit(prng.fillBytes(32), new Date()),
           ),
         ],
       );
@@ -105,7 +99,7 @@ describe('FetchBasedValidatorsAllAPI', () => {
 
         return mockFetch200JSONResponse(
           Buffer.from(
-            JSON.stringify(fullValidatorSetUpdateJSONCodec.encode(response)),
+            JSON.stringify(fullNodeSetUpdateJSONCodec.encode(response)),
           ),
         );
       };

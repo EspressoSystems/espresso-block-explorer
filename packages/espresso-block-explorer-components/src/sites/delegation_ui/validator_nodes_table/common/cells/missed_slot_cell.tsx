@@ -1,6 +1,8 @@
 import PercentageText from '@/components/text/PercentageText';
 import Text from '@/components/text/Text';
+import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
 import React from 'react';
+import { ConsensusMapContext } from 'sites/delegation_ui/contexts/consensus_map_context';
 import { ValidatorNodeContext } from 'sites/delegation_ui/contexts/validator_node_context';
 
 /**
@@ -8,9 +10,19 @@ import { ValidatorNodeContext } from 'sites/delegation_ui/contexts/validator_nod
  */
 export const MissedSlotsCell: React.FC = () => {
   const validator = React.useContext(ValidatorNodeContext);
-  if (validator.leadershipParticipation === null) {
+  const consensusMap = React.useContext(ConsensusMapContext);
+
+  const activeValidator = consensusMap.get(
+    stdBase64ArrayBufferCodec.encode(validator.address),
+  );
+
+  if (!activeValidator) {
     return <Text text="-" />;
   }
 
-  return <PercentageText percentage={1 - validator.leadershipParticipation} />;
+  return (
+    <PercentageText
+      percentage={1 - activeValidator.leaderParticipation.ratio}
+    />
+  );
 };

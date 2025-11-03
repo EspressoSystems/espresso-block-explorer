@@ -11,6 +11,8 @@ import {
  *
  * The EpochAndBlock type is defined by the Espresso L1 Validator Service API.
  * https://www.notion.so/espressosys/Delegation-UI-Service-Specification-2942431b68e980968c28cc5099a4e8f2?source=copy_link#2942431b68e98026a30aca437cc81769
+ * This is defined in rust here:
+ * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L81-L90
  */
 export class EpochAndBlock {
   readonly epoch: bigint;

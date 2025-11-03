@@ -1,0 +1,95 @@
+import { bigintCodec, numberCodec } from '@/convert/codec';
+import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import {
+  assertRecordWithKeys,
+  Converter,
+  TypeCheckingCodec,
+} from '@/convert/codec/convert';
+
+/**
+ * PendingWithdrawal represents a pending withdrawal.
+ *
+ * The PendingWithdrawal type is defined by the rust code here:
+ * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L133-L147
+ */
+export class PendingWithdrawal {
+  readonly delegator: ArrayBuffer;
+  readonly node: ArrayBuffer;
+  readonly amount: bigint;
+  readonly availableTime: Date;
+
+  constructor(
+    delegator: ArrayBuffer,
+    node: ArrayBuffer,
+    amount: bigint,
+    availableTime: Date,
+  ) {
+    this.delegator = delegator;
+    this.node = node;
+    this.amount = amount;
+    this.availableTime = availableTime;
+    Object.freeze(this);
+  }
+
+  toJSON() {
+    return pendingWithdrawalJSONCodec.encode(this);
+  }
+}
+
+/**
+ * PendingWithdrawalEncoder encodes PendingWithdrawal objects to a JSON object.
+ */
+class PendingWithdrawalEncoder
+  implements Converter<PendingWithdrawal, unknown>
+{
+  convert(input: PendingWithdrawal): unknown {
+    return {
+      delegator: stdBase64ArrayBufferCodec.encode(input.delegator),
+      node: stdBase64ArrayBufferCodec.encode(input.node),
+      amount: bigintCodec.encode(input.amount),
+      available_time: numberCodec.encode(input.availableTime.valueOf()),
+    };
+  }
+}
+
+/**
+ * PendingWithdrawalDecoder decodes PendingWithdrawal objects from a JSON object.
+ */
+class PendingWithdrawalDecoder
+  implements Converter<unknown, PendingWithdrawal>
+{
+  convert(input: unknown): PendingWithdrawal {
+    assertRecordWithKeys(
+      input,
+      'delegator',
+      'node',
+      'amount',
+      'available_time',
+    );
+
+    return new PendingWithdrawal(
+      stdBase64ArrayBufferCodec.decode(input.delegator),
+      stdBase64ArrayBufferCodec.decode(input.node),
+      bigintCodec.decode(input.amount),
+      new Date(numberCodec.decode(input.available_time)),
+    );
+  }
+}
+
+/**
+ * PendingWithdrawalJSONCodec is a codec that encodes and decodes
+ * PendingWithdrawal objects to and from JSON.
+ */
+export class PendingWithdrawalJSONCodec extends TypeCheckingCodec<
+  PendingWithdrawal,
+  unknown
+> {
+  readonly encoder = new PendingWithdrawalEncoder();
+  readonly decoder = new PendingWithdrawalDecoder();
+}
+
+/**
+ * PendingWithdrawalJSONCodec is a codec that encodes and decodes
+ * PendingWithdrawal objects to and from JSON.
+ */
+export const pendingWithdrawalJSONCodec = new PendingWithdrawalJSONCodec();

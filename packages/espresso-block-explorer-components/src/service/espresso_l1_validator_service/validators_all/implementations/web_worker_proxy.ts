@@ -1,13 +1,13 @@
 import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { WebWorkerRequest } from '../../web_worker_types';
 import {
-  FullValidatorSetSnapshot,
-  fullValidatorSetSnapshotJSONCodec,
-} from '../full_validator_set_snapshot';
+  FullNodeSetSnapshot,
+  fullNodeSetSnapshotJSONCodec,
+} from '../full_node_set_snapshot';
 import {
-  FullValidatorSetUpdate,
-  fullValidatorSetUpdateJSONCodec,
-} from '../full_validator_set_update';
+  FullNodeSetUpdate,
+  fullNodeSetUpdateJSONCodec,
+} from '../full_node_set_update';
 import { ValidatorsAllAPI } from '../validators_all_api';
 
 /**
@@ -33,21 +33,21 @@ export class WebWorkerProxyValidatorsAllAPI {
     this.service = service;
   }
 
-  async snapshot(): Promise<FullValidatorSetSnapshot> {
+  async snapshot(): Promise<FullNodeSetSnapshot> {
     return this.service.snapshot();
   }
 
-  async updatesSince(hash: ArrayBuffer): Promise<FullValidatorSetUpdate> {
+  async updatesSince(hash: ArrayBuffer): Promise<FullNodeSetUpdate> {
     return this.service.updatesSince(hash);
   }
 
   async handleRequest(request: ValidatorsActiveAllRequest): Promise<unknown> {
     switch (request.method) {
       case 'snapshot':
-        return fullValidatorSetSnapshotJSONCodec.encode(await this.snapshot());
+        return fullNodeSetSnapshotJSONCodec.encode(await this.snapshot());
 
       case 'updatesSince':
-        return fullValidatorSetUpdateJSONCodec.encode(
+        return fullNodeSetUpdateJSONCodec.encode(
           await this.updatesSince(
             stdBase64ArrayBufferCodec.decode(request.param[0]),
           ),

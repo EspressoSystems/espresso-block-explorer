@@ -8,7 +8,7 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec';
 import InvalidTypeError from '@/errors/InvalidTypeError';
-import { ActiveValidatorSetDiff } from './active_validator_set_diff';
+import { ActiveNodeSetDiff } from './active_node_set_diff';
 import {
   LeaderParticipationChange,
   leaderParticipationChangeJSONCodec,
@@ -22,13 +22,13 @@ import {
 } from './voter_participation_change';
 
 /**
- * ActiveValidatorSetDiffJSONDecoder decodes ActiveValidatorSetDiff objects
+ * ActiveNodeSetDiffJSONDecoder decodes ActiveNodeSetDiff objects
  * from a JSON object.
  */
-class ActiveValidatorSetDiffJSONDecoder
-  implements Converter<unknown, ActiveValidatorSetDiff>
+class ActiveNodeSetDiffJSONDecoder
+  implements Converter<unknown, ActiveNodeSetDiff>
 {
-  convert(input: unknown): ActiveValidatorSetDiff {
+  convert(input: unknown): ActiveNodeSetDiff {
     assertRecordWithKeys(input);
 
     if (isRecordWithKeys(input, CurrentEpochKey)) {
@@ -63,13 +63,13 @@ class ActiveValidatorSetDiffJSONDecoder
 }
 
 /**
- * ActiveValidatorSetDiffJSONEncoder encodes ActiveValidatorSetDiff objects
+ * ActiveNodeSetDiffJSONEncoder encodes ActiveNodeSetDiff objects
  * to a JSON object.
  */
-class ActiveValidatorSetDiffJSONEncoder
-  implements Converter<ActiveValidatorSetDiff, unknown>
+class ActiveNodeSetDiffJSONEncoder
+  implements Converter<ActiveNodeSetDiff, unknown>
 {
-  convert(input: ActiveValidatorSetDiff): unknown {
+  convert(input: ActiveNodeSetDiff): unknown {
     if (input instanceof NewEpoch) {
       return { [CurrentEpochKey]: currentEpochJSONCodec.encode(input) };
     }
@@ -96,29 +96,28 @@ class ActiveValidatorSetDiffJSONEncoder
 }
 
 /**
- * ActiveValidatorSetDiffJSONCodec is a codec that encodes and decodes
- * ActiveValidatorSetDiff objects to and from JSON.
+ * ActiveNodeSetDiffJSONCodec is a codec that encodes and decodes
+ * ActiveNodeSetDiff objects to and from JSON.
  */
-export class ActiveValidatorSetDiffJSONCodec extends TypeCheckingCodec<
-  ActiveValidatorSetDiff,
+export class ActiveNodeSetDiffJSONCodec extends TypeCheckingCodec<
+  ActiveNodeSetDiff,
   unknown
 > {
-  readonly encoder = new ActiveValidatorSetDiffJSONEncoder();
-  readonly decoder = new ActiveValidatorSetDiffJSONDecoder();
+  readonly encoder = new ActiveNodeSetDiffJSONEncoder();
+  readonly decoder = new ActiveNodeSetDiffJSONDecoder();
 }
 
 /**
- * activeValidatorsSetDiffJSONCodec is a codec that encodes and decodes
- * ActiveValidatorSetDiff objects to and from JSON.
+ * activeNodeSetDiffJSONCodec is a codec that encodes and decodes
+ * ActiveNodeSetDiff objects to and from JSON.
  */
-export const activeValidatorsSetDiffJSONCodec =
-  new ActiveValidatorSetDiffJSONCodec();
+export const activeNodeSetDiffJSONCodec = new ActiveNodeSetDiffJSONCodec();
 
 /**
- * activeValidatorsSetDiffArrayJSONCodec is a codec that encodes and decodes
- * arrays of ActiveValidatorSetDiff objects to and from JSON.
+ * activeNodeSetDiffJSONCodec is a codec that encodes and decodes
+ * arrays of ActiveNodeSetDiff objects to and from JSON.
  */
-export const activeValidatorsSetDiffArrayJSONCodec = new ArrayCodec(
-  new ArrayDecoder(activeValidatorsSetDiffJSONCodec),
-  new ArrayEncoder(activeValidatorsSetDiffJSONCodec),
+export const activeNodeSetDiffArrayJSONCodec = new ArrayCodec(
+  new ArrayDecoder(activeNodeSetDiffJSONCodec),
+  new ArrayEncoder(activeNodeSetDiffJSONCodec),
 );
