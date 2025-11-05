@@ -16,18 +16,21 @@
 
   /* When no other state is being considered, this is the default state */
   --button-base--default--background-color: var(--color--brown--4);
-  --button-base--default--foreground-color: var(#fff);
+  --button-base--default--foreground-color: var(--color--brown--0);
   --button-base--default--border-width: 0;
-  --button-base--default--border-radius: 8px;
+  --button-base--default--border-radius: 6px;
   --button-base--default--border-color: transparent;
   --button-base--default--border-style: none;
   --button-base--default--outline-width: 0;
   --button-base--default--outline-color: var(--color--transparent);
   --button-base--default--outline-style: solid;
-  --button-base--default--gap: 24px;
-  --button-base--default--padding: 12px;
-  --button-base--default--height: 48px;
-  --button-base--default--line-height: 48px;
+  --button-base--default--gap: 8px;
+  --button-base--default--padding-inline: 12px;
+  --button-base--default--padding-block: 10px;
+  --button-base--default--height: 34px;
+  --button-base--default--font-size: 12px;
+  --button-base--default--font-family: IBM Plex Mono, monospace;
+  --button-base--default--line-height: 16px;
   --button-base--default--opacity: 100%;
 
   --button-base--hovered--background-color: var(--color--brown--5);
@@ -74,6 +77,11 @@ a.bbtn {
   height: var(--button-base--default--height);
   line-height: var(--button-base--default--line-height);
   opacity: var(--button-base--default--opacity);
+  padding-block: var(--button-base--default--padding-block);
+  padding-inline: var(--button-base--default--padding-inline);
+  font-family: var(--button-base--default--font-family);
+  font-size: var(--button-base--default--font-size);
+  text-transform: uppercase;
 
   outline-color: var(--button-base--default--outline-color);
   outline-width: var(--button-base--default--outline-width);
