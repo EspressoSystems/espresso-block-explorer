@@ -401,7 +401,7 @@ export function reverseIterable<T>(iterable: Iterable<T>): Generator<T> {
 
 /**
  * foldRIterator is a foldR function that can be applied to an
- * AsyncIterator.
+ * Iterator.
  */
 export function foldRIterator<T, U>(
   combiner: (acc: U, element: T) => U,
@@ -415,6 +415,18 @@ export function foldRIterator<T, U>(
   }
 
   return result;
+}
+
+/**
+ * foldRIterable is a foldR function that can be applied to an
+ * Iterable.
+ */
+export function foldRIterable<T, U>(
+  combiner: (acc: U, element: T) => U,
+  seed: U,
+  list: Iterable<T>,
+): U {
+  return foldRIterator(combiner, seed, list[Symbol.iterator]());
 }
 
 /**
