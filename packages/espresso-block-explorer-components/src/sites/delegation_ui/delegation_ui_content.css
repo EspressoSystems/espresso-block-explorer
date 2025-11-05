@@ -1,6 +1,7 @@
 .delegation-ui-content {
   position: relative;
-  width: 948px;
+  min-width: 948px;
+  width: fit-content;
   margin: 0 auto;
 }
 
@@ -44,4 +45,13 @@
   color: var(--color--undesign--red-1--alpha-40);
   font-size: 10px;
   text-transform: uppercase;
+}
+
+.delegation-ui-table-controls {
+  margin-block-start: 32px;
+  margin-block-end: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
 }
