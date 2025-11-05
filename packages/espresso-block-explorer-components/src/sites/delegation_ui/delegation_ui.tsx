@@ -23,19 +23,19 @@ const DelegationUI: React.FC<DelegationPageProps> = () => {
     <main className="delegation-ui">
       <DelegationHeader />
 
-      <RetrieveAllValidators>
-        <RetrieveActiveValidators>
-          <DeriveTotalStake>
-            <DeriveConsensusSet>
-              <DeriveRank>
-                <ProvideTotalSupply>
+      <ProvideTotalSupply>
+        <RetrieveAllValidators>
+          <RetrieveActiveValidators>
+            <DeriveTotalStake>
+              <DeriveConsensusSet>
+                <DeriveRank>
                   <DelegationUIContent />
-                </ProvideTotalSupply>
-              </DeriveRank>
-            </DeriveConsensusSet>
-          </DeriveTotalStake>
-        </RetrieveActiveValidators>
-      </RetrieveAllValidators>
+                </DeriveRank>
+              </DeriveConsensusSet>
+            </DeriveTotalStake>
+          </RetrieveActiveValidators>
+        </RetrieveAllValidators>
+      </ProvideTotalSupply>
     </main>
   );
 };

@@ -988,4 +988,4 @@ export default [
     name: 'ZeroAmount',
     inputs: [],
   },
-];
+] as const;
