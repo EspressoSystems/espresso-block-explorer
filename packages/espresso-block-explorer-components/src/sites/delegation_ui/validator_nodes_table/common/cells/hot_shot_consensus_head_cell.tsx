@@ -8,7 +8,7 @@ import VerticalScroll from '@/components/visual/icons/feather/vertical-scroll';
 export const HotShotConsensusHeadCell: React.FC = () => {
   return (
     <>
-      <Text text="Hotshot Consensus?" />
+      <Text text="Consensus" />
       &nbsp;
       <VerticalScroll />
     </>

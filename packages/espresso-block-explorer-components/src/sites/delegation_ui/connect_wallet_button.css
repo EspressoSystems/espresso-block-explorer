@@ -10,3 +10,7 @@
   color: #fff;
   padding: 10px 12px 10px 10px;
 }
+
+.wallet-address-preview {
+  color: var(--color--brown--3);
+}

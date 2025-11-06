@@ -34,6 +34,7 @@
   --button-base--default--opacity: 100%;
 
   --button-base--hovered--background-color: var(--color--brown--5);
+  --button-base--hovered--foreground-color: var(--color--brown--0);
 
   --button-base--pressed--border-color: var(--color--slate-700);
   --button-base--pressed--background-color: var(--color--slate-200);
@@ -47,10 +48,6 @@
   --button-base--icon-button--padding: 10px;
 
   --button-base--label-button--padding: 12px;
-
-  --button-flat--default--background-color: var(--color-transparent);
-  --button-flat--default--foreground-color: inherit;
-  --button-flat--hovered--foreground-color: inherit;
 }
 
 a.bbtn {
@@ -125,6 +122,8 @@ a.bbtn {
 
 .bbtn:hover {
   background-color: var(--button-base--hovered--background-color);
+  color: var(--button-base--hovered--foreground-color);
+  --icon--color: var(--button-base--hovered--foreground-color);
 }
 
 .bbtn:active {
@@ -139,24 +138,4 @@ a.bbtn {
 
 .bbtn[disabled] {
   opacity: var(--button-base--disabled--opacity);
-}
-
-.bbtn--flat {
-  display: inline-flex;
-  padding: var(--button-base--icon-button--padding);
-}
-
-.bbtn--flat {
-  --text--color: var(--button-flat--default--foreground-color);
-  --icon--fill-color: var(--button-flat--default--foreground-color);
-
-  background-color: var(--button-flat--default--background-color);
-  color: var(--button-flat--default--foreground-color);
-}
-
-.bbtn--flat:hover {
-  --text--color: var(--button-flat--hovered--foreground-color);
-  --icon--fill-color: var(--button-flat--hovered--foreground-color);
-
-  color: var(--button-flat--hovered--foreground-color);
 }

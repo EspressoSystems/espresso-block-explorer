@@ -8,7 +8,7 @@ import VerticalScroll from '@/components/visual/icons/feather/vertical-scroll';
 export const ParticipationRateHeadCell: React.FC = () => {
   return (
     <>
-      <Text text="Participation Rate" />
+      <Text text="Participation" />
       &nbsp;
       <VerticalScroll />
     </>

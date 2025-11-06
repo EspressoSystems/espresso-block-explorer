@@ -264,7 +264,7 @@ function useMockESPContractState() {
     symbol: 'ESP',
     decimals: 18,
     totalSupply: 1_234_567_8900n * 10n ** 18n,
-    balances: new Map([[MockAddress, 1_000_000_0000n]]),
+    balances: new Map([[MockAddress, 100_000_000_000_000_000_000n]]),
     allowances: new Map(),
     actions: [],
     actionMap: new Map(),

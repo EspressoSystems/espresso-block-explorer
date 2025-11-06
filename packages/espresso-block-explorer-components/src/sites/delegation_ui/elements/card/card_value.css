@@ -1,13 +1,21 @@
 .bcard.card-value {
   display: grid;
-  grid-template-areas: 'title title' 'value extra';
+  grid-template-areas: 'title action' 'value extra';
   justify-content: space-between;
   align-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .bcard.card-value h2 {
   grid-area: title;
+  color: var(--color--brown--3);
+  font-weight: 500;
+  letter-spacing: 0%;
+}
+
+.bcard.card-value .action {
+  grid-area: action;
 }
 
 .bcard.card-value h2 .accent {
@@ -17,9 +25,10 @@
 .bcard.card-value .value {
   grid-area: value;
   color: var(--color--brown--4);
-  font-family: PP Neue Montreal;
-  font-size: 40px;
+  font-family: PPNeueMontreal;
+  font-size: 24px;
   line-height: 32px;
+  letter-spacing: -2%;
   font-weight: 500;
   font-style: Medium;
   letter-spacing: -2%;

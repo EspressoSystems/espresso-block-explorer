@@ -1,4 +1,6 @@
 import React from 'react';
+import { ActionsHeadCell } from '../common/cells/actions_head_cell';
+import { ClaimInHeadCell } from '../common/cells/claim_in_head_cell';
 import { FeeHeadCell } from '../common/cells/fee_head_cell';
 import { HotShotConsensusHeadCell } from '../common/cells/hot_shot_consensus_head_cell';
 import { MissedSlotsHeadCell } from '../common/cells/missed_slots_head_cell';
@@ -21,26 +23,38 @@ export const DelegationTableHeader: React.FC = () => {
   return (
     <thead>
       <tr>
-        <th onClick={() => sortBy(CellType.rank)}>
+        <th className="sortable" onClick={() => sortBy(CellType.rank)}>
           <RankHeadCell />
         </th>
-        <th onClick={() => sortBy(CellType.validator)}>
+        <th className="sortable" onClick={() => sortBy(CellType.validator)}>
           <ValidatorHeadCell />
         </th>
-        <th onClick={() => sortBy(CellType.totalStake)}>
+        <th className="sortable" onClick={() => sortBy(CellType.totalStake)}>
           <TotalStakeHeadCell />
         </th>
-        <th onClick={() => sortBy(CellType.fee)}>
+        <th className="sortable" onClick={() => sortBy(CellType.fee)}>
           <FeeHeadCell />
         </th>
-        <th onClick={() => sortBy(CellType.missedSlots)}>
+        <th className="sortable" onClick={() => sortBy(CellType.missedSlots)}>
           <MissedSlotsHeadCell />
         </th>
-        <th onClick={() => sortBy(CellType.participationRate)}>
+        <th
+          className="sortable"
+          onClick={() => sortBy(CellType.participationRate)}
+        >
           <ParticipationRateHeadCell />
         </th>
-        <th onClick={() => sortBy(CellType.hotShotConsensus)}>
+        <th
+          className="sortable"
+          onClick={() => sortBy(CellType.hotShotConsensus)}
+        >
           <HotShotConsensusHeadCell />
+        </th>
+        <th>
+          <ClaimInHeadCell />
+        </th>
+        <th>
+          <ActionsHeadCell />
         </th>
       </tr>
     </thead>

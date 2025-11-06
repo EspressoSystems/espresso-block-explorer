@@ -1,6 +1,45 @@
 .network-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  display: flex;
+  /* grid-template-columns: repeat(3, 1fr); */
+  gap: 32px;
   margin: 8px 0;
+}
+
+.network-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--color--brown--4);
+  border-bottom: 1px solid var(--color--brown--4--alpha-32);
+  white-space: nowrap;
+  height: 56px;
+  box-sizing: border-box;
+}
+
+.network-stat-value {
+  display: flex;
+  flex: 1 1;
+  gap: 16px;
+  font-size: 24px;
+  line-height: 24px;
+  font-family: NeueMachina-Bold, sans-serif;
+  justify-content: space-between;
+  align-items: center;
+  letter-spacing: -2%;
+}
+
+.network-stats h1 {
+  font-family: PPNeueMontreal, sans-serif;
+  font-size: 32px;
+  line-height: 40px;
+  text-transform: none;
+}
+
+.network-stats h2 {
+  color: var(--color--brown--4);
+  opacity: 72%;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0%;
+  margin: 0;
 }
