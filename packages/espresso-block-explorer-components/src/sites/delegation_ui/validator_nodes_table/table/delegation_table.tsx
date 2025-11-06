@@ -12,7 +12,7 @@ import { NodeValidatorTableRow } from './node_validator_table_row';
 export const DelegationTable: React.FC = () => {
   const allValidators = React.useContext(AllValidatorsContext);
 
-  if (allValidators === null) {
+  if (!allValidators) {
     return <></>;
   }
 
