@@ -8,7 +8,7 @@ import React from 'react';
 export const FeeHeadCell: React.FC = () => {
   return (
     <>
-      <Text text="Fee" />
+      <Text text="Commission Rate" />
       &nbsp;
       <VerticalScroll />
     </>

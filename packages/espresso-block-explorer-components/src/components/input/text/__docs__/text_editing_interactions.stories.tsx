@@ -57,7 +57,7 @@ export const SelectTextInput: Story = {
     const inputElement = await getTextInput(canvasElement);
 
     await step('Select Text', async () => {
-      await selectTextInInput(inputElement, 1, 10);
+      await selectTextInInput(canvasElement, 1, 10);
     });
 
     await step('Replace selected text with new text', async () => {

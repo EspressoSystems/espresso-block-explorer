@@ -5,12 +5,16 @@ import {
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
 import { Ratio } from '@/service/espresso_l1_validator_service/common/ratio';
+import {
+  CappuccinoAPIBitVec,
+  CappuccinoAPIBitVecHead,
+  CappuccinoAPIBitVecOrder,
+} from '@/service/hotshot_query_service';
 import { describe, expect, it } from 'vitest';
 import { EpochAndBlock } from '../../../common/epoch_and_block';
 import { ParticipationChange } from '../../../common/participation_change';
-import { LeaderParticipationChange } from '../../active_node_set_diff/leader_participation_change';
+import { ActiveNodeSetDiffNewBlock } from '../../active_node_set_diff/new_block';
 import { NewEpoch } from '../../active_node_set_diff/new_epoch';
-import { VoterParticipationChange } from '../../active_node_set_diff/voter_participation_change';
 import {
   ActiveNodeSetSnapshot,
   activeNodeSetSnapshotJSONCodec,
@@ -85,18 +89,20 @@ describe('FetchBasedValidatorsActiveAPI', () => {
       const response = new ActiveNodeSetUpdate(
         new EpochAndBlock(epoch, block, new Date()),
         [
-          new LeaderParticipationChange([
-            new ParticipationChange(
-              prng.fillBytes(32),
-              new Ratio(prng.nextFloat()),
+          new ActiveNodeSetDiffNewBlock(
+            [
+              new ParticipationChange(
+                prng.fillBytes(32),
+                new Ratio(prng.nextFloat()),
+              ),
+            ],
+            new CappuccinoAPIBitVec(
+              CappuccinoAPIBitVecOrder.lsb0,
+              new CappuccinoAPIBitVecHead(8, 0),
+              16,
+              Array.from(new Uint8Array(prng.fillBytes(2))),
             ),
-          ]),
-          new VoterParticipationChange([
-            new ParticipationChange(
-              prng.fillBytes(32),
-              new Ratio(prng.nextFloat()),
-            ),
-          ]),
+          ),
           new NewEpoch([
             new ActiveNodeSetEntry(
               prng.fillBytes(32),

@@ -108,10 +108,25 @@ async function determineServiceImplementationFromConfig(): Promise<WebWorkerNode
       }
     }
   } catch (error) {
-    console.warn(
-      'error determining service implementation, from configuration file',
-      error,
-    );
+    // We are unable to determine the service configuration from the config
+    // file. But the specific reason may indicate some more details.
+
+    // But the ultimate cause would indicate that it would only really fail
+    // due to not having a live service to connect to.
+
+    let isLocalTestEnvironmentError = false;
+    if (error instanceof TypeError) {
+      if (/failed to parse url/i.test(error.toString())) {
+        isLocalTestEnvironmentError = true;
+      }
+    }
+
+    if (!isLocalTestEnvironmentError) {
+      console.warn(
+        'error determining service implementation, from configuration file',
+        error,
+      );
+    }
   }
 
   const requestChannel = createBufferedChannel<WebWorkerProxyRequest>(1024);

@@ -10,16 +10,11 @@ import {
 import InvalidTypeError from '@/errors/InvalidTypeError';
 import { ActiveNodeSetDiff } from './active_node_set_diff';
 import {
-  LeaderParticipationChange,
-  leaderParticipationChangeJSONCodec,
-  LeaderParticipationChangeKey,
-} from './leader_participation_change';
+  ActiveNodeSetDiffNewBlock,
+  activeNodeSetDiffNewBlockJSONCodec,
+  NewBlockKey,
+} from './new_block';
 import { currentEpochJSONCodec, CurrentEpochKey, NewEpoch } from './new_epoch';
-import {
-  VoterParticipationChange,
-  voterParticipationChangeJSONCodec,
-  VoterParticipationChangeKey,
-} from './voter_participation_change';
 
 /**
  * ActiveNodeSetDiffJSONDecoder decodes ActiveNodeSetDiff objects
@@ -35,16 +30,8 @@ class ActiveNodeSetDiffJSONDecoder
       return currentEpochJSONCodec.decode(input[CurrentEpochKey]);
     }
 
-    if (isRecordWithKeys(input, LeaderParticipationChangeKey)) {
-      return leaderParticipationChangeJSONCodec.decode(
-        input[LeaderParticipationChangeKey],
-      );
-    }
-
-    if (isRecordWithKeys(input, VoterParticipationChangeKey)) {
-      return voterParticipationChangeJSONCodec.decode(
-        input[VoterParticipationChangeKey],
-      );
+    if (isRecordWithKeys(input, NewBlockKey)) {
+      return activeNodeSetDiffNewBlockJSONCodec.decode(input[NewBlockKey]);
     }
 
     const keys = Object.keys(input);
@@ -55,10 +42,7 @@ class ActiveNodeSetDiffJSONDecoder
 
     const [key] = keys;
 
-    throw new InvalidTypeError(
-      key,
-      `${CurrentEpochKey} | ${LeaderParticipationChangeKey} | ${VoterParticipationChangeKey}`,
-    );
+    throw new InvalidTypeError(key, `${CurrentEpochKey} | ${NewBlockKey}`);
   }
 }
 
@@ -74,17 +58,9 @@ class ActiveNodeSetDiffJSONEncoder
       return { [CurrentEpochKey]: currentEpochJSONCodec.encode(input) };
     }
 
-    if (input instanceof LeaderParticipationChange) {
+    if (input instanceof ActiveNodeSetDiffNewBlock) {
       return {
-        [LeaderParticipationChangeKey]:
-          leaderParticipationChangeJSONCodec.encode(input),
-      };
-    }
-
-    if (input instanceof VoterParticipationChange) {
-      return {
-        [VoterParticipationChangeKey]:
-          voterParticipationChangeJSONCodec.encode(input),
+        [NewBlockKey]: activeNodeSetDiffNewBlockJSONCodec.encode(input),
       };
     }
 
