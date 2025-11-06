@@ -5,12 +5,12 @@ import { StakeTableContract } from './stake_table_interface';
 
 export class StakeTableRemote implements StakeTableContract {
   // Implementation of ESPTokenContract methods would go here
-  protected readonly contractAddress: `0x${string}`;
-  protected readonly chainID: number;
-  protected readonly config: Config;
-
-  constructor(config: Config, chainID: number, contractAddress: `0x${string}`) {
-    this.contractAddress = contractAddress;
+  constructor(
+    private readonly config: Config,
+    private readonly chainID: number,
+    public readonly address: `0x${string}`,
+  ) {
+    this.address = address;
     this.chainID = chainID;
     this.config = config;
   }
@@ -20,7 +20,7 @@ export class StakeTableRemote implements StakeTableContract {
   async lightClient() {
     return readContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'lightClient',
     });
@@ -29,7 +29,7 @@ export class StakeTableRemote implements StakeTableContract {
   async token() {
     return readContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'token',
     });
@@ -38,7 +38,7 @@ export class StakeTableRemote implements StakeTableContract {
   async validator(account: `0x${string}`) {
     const result = await readContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'validators',
       args: [account],
@@ -50,7 +50,7 @@ export class StakeTableRemote implements StakeTableContract {
   async blsKey(blsKeyHash: `0x${string}`) {
     return readContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'blsKeys',
       args: [blsKeyHash],
@@ -60,7 +60,7 @@ export class StakeTableRemote implements StakeTableContract {
   async validatorExit(validator: `0x${string}`) {
     return readContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'validatorExits',
       args: [validator],
@@ -70,7 +70,7 @@ export class StakeTableRemote implements StakeTableContract {
   async delegation(validator: `0x${string}`, delegator: `0x${string}`) {
     return readContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'delegations',
       args: [validator, delegator],
@@ -80,7 +80,7 @@ export class StakeTableRemote implements StakeTableContract {
   async undelegation(validator: `0x${string}`, delegator: `0x${string}`) {
     return readContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'undelegations',
       args: [validator, delegator],
@@ -90,7 +90,7 @@ export class StakeTableRemote implements StakeTableContract {
   async exitEscrowPeriod() {
     return readContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'exitEscrowPeriod',
     });
@@ -99,7 +99,7 @@ export class StakeTableRemote implements StakeTableContract {
   async getVersion() {
     return readContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'getVersion',
     });
@@ -110,7 +110,7 @@ export class StakeTableRemote implements StakeTableContract {
   async deregisterValidator() {
     return writeContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'deregisterValidator',
     });
@@ -119,7 +119,7 @@ export class StakeTableRemote implements StakeTableContract {
   async delegate(validator: `0x${string}`, amount: bigint) {
     return writeContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'delegate',
       args: [validator, amount],
@@ -129,7 +129,7 @@ export class StakeTableRemote implements StakeTableContract {
   async undelegate(validator: `0x${string}`, amount: bigint) {
     return writeContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'undelegate',
       args: [validator, amount],
@@ -139,7 +139,7 @@ export class StakeTableRemote implements StakeTableContract {
   async claimWithdrawal(validator: `0x${string}`) {
     return writeContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'claimWithdrawal',
       args: [validator],
@@ -149,7 +149,7 @@ export class StakeTableRemote implements StakeTableContract {
   async claimValidatorExit(validator: `0x${string}`) {
     return writeContract(this.config, {
       abi: StakeTableAbi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'claimValidatorExit',
       args: [validator],

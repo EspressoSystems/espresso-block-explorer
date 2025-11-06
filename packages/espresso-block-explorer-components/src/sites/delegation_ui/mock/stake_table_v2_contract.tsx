@@ -1,9 +1,10 @@
-import { assertNotNull } from '@/assert/assert';
+import { assert, assertNotNull } from '@/assert/assert';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { ESPTokenContract } from '@/contracts/esp_token/esp_token_interface';
 import {
   Undelegation,
   Validator,
+  ValidatorStatus,
 } from '@/contracts/stake_table/stake_table_interface';
 import {
   CommissionTracking,
@@ -21,6 +22,7 @@ import React from 'react';
 import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
 import { StakeTableContractContext } from '../contexts/stake_table_contract_context';
 import { StakeTableV2ContractContext } from '../contexts/stake_table_v2_contract_context';
+import { MockESPTokenContractImpl } from './esp_token_contract';
 
 /**
  * StakeTableState defines the structure of the mock
@@ -44,6 +46,7 @@ export interface StakeTableState {
 
   actions: StakeTableStateActions[];
   actionMap: Map<`0x${string}`, StakeTableStateActions>;
+  lastUpdate: Date;
 }
 
 /**
@@ -52,6 +55,7 @@ export interface StakeTableState {
  * MockStakeTableV2Contract.
  */
 abstract class StakeTableStateActions {
+  public readonly ts: Date = new Date();
   abstract hash(): `0x${string}`;
   abstract applyToState(state: StakeTableState): StakeTableState;
 }
@@ -68,6 +72,7 @@ function applyActionToState(
     ...action.applyToState(state),
     actions: [...state.actions, action],
     actionMap: new Map(state.actionMap).set(action.hash(), action),
+    lastUpdate: action.ts,
   }));
 }
 
@@ -76,7 +81,6 @@ function applyActionToState(
  * It records the validator, delegator, and amount delegated.
  */
 class Delegate extends StakeTableStateActions {
-  public readonly ts: Date = new Date();
   constructor(
     public readonly validator: `0x${string}`,
     public readonly delegator: `0x${string}`,
@@ -92,6 +96,7 @@ class Delegate extends StakeTableStateActions {
     const hasher = createKeccakHash('keccak256');
     const textEncoder = new TextEncoder();
     hasher.update(textEncoder.encode('Delegate').buffer);
+    hasher.update(textEncoder.encode(this.ts.toISOString()).buffer);
     hasher.update(textEncoder.encode(this.validator).buffer);
     hasher.update(textEncoder.encode(this.delegator).buffer);
     hasher.update(
@@ -104,12 +109,19 @@ class Delegate extends StakeTableStateActions {
     const newDelegations = new Map(state.delegations);
     const delegatorMap =
       newDelegations.get(this.validator) ?? new Map<`0x${string}`, bigint>();
+    const newValidators = new Map(state.validators);
+    const validatorInfo = newValidators.get(this.validator) ?? [0n, 0];
     const currentAmount = delegatorMap.get(this.delegator) ?? 0n;
     delegatorMap.set(this.delegator, currentAmount + this.amount);
     newDelegations.set(this.validator, delegatorMap);
+    newValidators.set(this.validator, [
+      validatorInfo[0] + this.amount,
+      validatorInfo[1],
+    ]);
 
     return {
       ...state,
+      validators: newValidators,
       delegations: newDelegations,
     };
   }
@@ -120,7 +132,6 @@ class Delegate extends StakeTableStateActions {
  * It records the validator, delegator, and amount undelegated.
  */
 class Undelegate extends StakeTableStateActions {
-  public readonly ts: Date = new Date();
   constructor(
     public readonly validator: `0x${string}`,
     public readonly delegator: `0x${string}`,
@@ -136,6 +147,7 @@ class Undelegate extends StakeTableStateActions {
     const hasher = createKeccakHash('keccak256');
     const textEncoder = new TextEncoder();
     hasher.update(textEncoder.encode('Undelegate').buffer);
+    hasher.update(textEncoder.encode(this.ts.toISOString()).buffer);
     hasher.update(textEncoder.encode(this.validator).buffer);
     hasher.update(textEncoder.encode(this.delegator).buffer);
     hasher.update(
@@ -149,8 +161,14 @@ class Undelegate extends StakeTableStateActions {
     const delegatorMap =
       newDelegations.get(this.validator) ?? new Map<`0x${string}`, bigint>();
     const currentAmount = delegatorMap.get(this.delegator) ?? 0n;
+    const newValidators = new Map(state.validators);
     delegatorMap.set(this.delegator, currentAmount - this.amount);
     newDelegations.set(this.validator, delegatorMap);
+    const validatorInfo = newValidators.get(this.validator) ?? [0n, 0];
+    newValidators.set(this.validator, [
+      validatorInfo[0] - this.amount,
+      validatorInfo[1],
+    ]);
 
     const newUndelegations = new Map(state.undelegations);
     const undelegatorMap =
@@ -164,6 +182,7 @@ class Undelegate extends StakeTableStateActions {
 
     return {
       ...state,
+      validators: newValidators,
       delegations: newDelegations,
       undelegations: newUndelegations,
     };
@@ -175,7 +194,6 @@ class Undelegate extends StakeTableStateActions {
  * within the StakeTableState.
  */
 class ClaimWithdrawal extends StakeTableStateActions {
-  public readonly ts: Date = new Date();
   constructor(
     public readonly validator: `0x${string}`,
     public readonly delegator: `0x${string}`,
@@ -191,6 +209,7 @@ class ClaimWithdrawal extends StakeTableStateActions {
     const hasher = createKeccakHash('keccak256');
     const textEncoder = new TextEncoder();
     hasher.update(textEncoder.encode('ClaimWithdrawal').buffer);
+    hasher.update(textEncoder.encode(this.ts.toISOString()).buffer);
     hasher.update(textEncoder.encode(this.validator).buffer);
     hasher.update(textEncoder.encode(this.delegator).buffer);
     hasher.update(
@@ -219,7 +238,6 @@ class ClaimWithdrawal extends StakeTableStateActions {
  * within the StakeTableState.
  */
 class ClaimValidatorExit extends StakeTableStateActions {
-  public readonly ts: Date = new Date();
   constructor(
     public readonly validator: `0x${string}`,
     public readonly delegator: `0x${string}`,
@@ -235,6 +253,7 @@ class ClaimValidatorExit extends StakeTableStateActions {
     const hasher = createKeccakHash('keccak256');
     const textEncoder = new TextEncoder();
     hasher.update(textEncoder.encode('ClaimValidatorExit').buffer);
+    hasher.update(textEncoder.encode(this.ts.toISOString()).buffer);
     hasher.update(textEncoder.encode(this.validator).buffer);
     hasher.update(textEncoder.encode(this.delegator).buffer);
     hasher.update(
@@ -246,10 +265,60 @@ class ClaimValidatorExit extends StakeTableStateActions {
   applyToState(state: StakeTableState): StakeTableState {
     const newValidatorExits = new Map(state.validatorExits);
     newValidatorExits.delete(this.validator);
+    const newDelegations = new Map(state.delegations);
+    const delegatorMap =
+      newDelegations.get(this.validator) ?? new Map<`0x${string}`, bigint>();
+    delegatorMap.delete(this.delegator);
+    newDelegations.set(this.validator, delegatorMap);
+
+    return {
+      ...state,
+      delegations: newDelegations,
+      validatorExits: newValidatorExits,
+    };
+  }
+}
+
+/**
+ * ValidatorExit represents a validator exit action
+ * within the MockStakeTableV2Contract.
+ */
+class ValidatorExit extends StakeTableStateActions {
+  constructor(
+    public readonly validator: `0x${string}`,
+    public readonly exitTime: bigint,
+  ) {
+    super();
+    this.validator = validator;
+    this.exitTime = exitTime;
+  }
+
+  hash(): `0x${string}` {
+    const hasher = createKeccakHash('keccak256');
+    const textEncoder = new TextEncoder();
+    hasher.update(textEncoder.encode('ValidatorExit').buffer);
+    hasher.update(textEncoder.encode(this.ts.toISOString()).buffer);
+    hasher.update(textEncoder.encode(this.validator).buffer);
+    hasher.update(
+      textEncoder.encode(bigintCodec.encoder.convert(this.exitTime)).buffer,
+    );
+    return hexArrayBufferCodec.encode(hasher.digest()) as `0x${string}`;
+  }
+
+  applyToState(state: StakeTableState): StakeTableState {
+    const newValidatorExits = new Map(state.validatorExits);
+    newValidatorExits.set(this.validator, this.exitTime);
+    const newValidators = new Map(state.validators);
+    const validatorInfo = newValidators.get(this.validator) ?? [0n, 0];
+    newValidators.set(this.validator, [
+      validatorInfo[0],
+      ValidatorStatus.exited,
+    ]);
 
     return {
       ...state,
       validatorExits: newValidatorExits,
+      validators: newValidators,
     };
   }
 }
@@ -258,14 +327,35 @@ class ClaimValidatorExit extends StakeTableStateActions {
  * MockStakeTableV2ContractImpl is a mock implementation of the
  * StakeTableV2Contract interface for testing and development purposes.
  */
-class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
+export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
   constructor(
-    private state: StakeTableState,
-    private mutate: React.Dispatch<React.SetStateAction<StakeTableState>>,
-    private accountAddress: null | `0x${string}`,
+    private readonly state: StakeTableState,
+    private readonly mutate: React.Dispatch<
+      React.SetStateAction<StakeTableState>
+    >,
+    public readonly accountAddress: null | `0x${string}`,
   ) {
     this.state = state;
     this.mutate = mutate;
+    this.accountAddress = accountAddress;
+  }
+
+  replaceAccountAddress(
+    accountAddress: `0x${string}` | null,
+  ): MockStakeTableV2ContractImpl {
+    return new MockStakeTableV2ContractImpl(
+      this.state,
+      this.mutate,
+      accountAddress,
+    );
+  }
+
+  get lastUpdate(): Date {
+    return this.state.lastUpdate;
+  }
+
+  get address(): `0x${string}` {
+    return this.state.contractAddress;
   }
 
   async PAUSER_ROLE(): Promise<`0x${string}`> {
@@ -301,7 +391,7 @@ class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
   }
 
   async token(): Promise<`0x${string}`> {
-    return `0xESP_TOKEN_ADDRESS`;
+    return this.state.espToken.address;
   }
 
   async validator(account: `0x${string}`): Promise<Validator> {
@@ -342,8 +432,19 @@ class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
     throw new Error('Method not implemented.');
   }
 
-  deregisterValidator(): Promise<`0x${string}`> {
-    throw new Error('Method not implemented.');
+  async deregisterValidator(): Promise<`0x${string}`> {
+    if (!this.accountAddress) {
+      throw new Error(
+        'No account address available for deregistering validator.',
+      );
+    }
+
+    const action = new ValidatorExit(
+      this.accountAddress,
+      BigInt(Date.now()) + this.state.exitEscrowPeriod,
+    );
+    applyActionToState(this.mutate, action);
+    return action.hash();
   }
 
   async delegate(
@@ -358,22 +459,18 @@ class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
       throw new Error('No account address available for delegation.');
     }
 
+    const validatorInfo = await this.validator(validator);
+    if (validatorInfo[1] !== ValidatorStatus.active) {
+      throw new Error('Validator is not active');
+    }
+
     if ((await this.state.espToken.balanceOf(this.accountAddress)) < amount) {
       throw new Error('Insufficient balance');
     }
 
-    if (
-      (await this.state.espToken.allowance(
-        this.accountAddress,
-        this.accountAddress,
-      )) < amount
-    ) {
-      throw new Error('Insufficient allowance');
-    }
-
     await this.state.espToken.transferFrom(
       this.accountAddress,
-      this.state.contractAddress,
+      this.address,
       amount,
     );
 
@@ -394,9 +491,10 @@ class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
       throw new Error('Amount must be greater than zero');
     }
 
-    const currentDelegation =
-      this.state.delegations.get(validator)?.get(this.accountAddress) ?? 0n;
-
+    const currentDelegation = await this.delegation(
+      validator,
+      this.accountAddress,
+    );
     if (currentDelegation < amount) {
       throw new Error('Insufficient delegated amount');
     }
@@ -421,11 +519,12 @@ class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
       throw new Error('No account address available for claim withdrawal.');
     }
 
-    const undelegation = this.state.undelegations
-      .get(validator)
-      ?.get(this.accountAddress);
+    const undelegation = await this.undelegation(
+      validator,
+      this.accountAddress,
+    );
 
-    if (!undelegation) {
+    if (!undelegation[0]) {
       throw new Error(
         'No undelegation found for this delegator and validator.',
       );
@@ -436,11 +535,7 @@ class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
       throw new Error('Undelegation period has not yet elapsed.');
     }
 
-    await this.state.espToken.transferFrom(
-      this.state.contractAddress,
-      this.accountAddress,
-      amount,
-    );
+    await this.state.espToken.transfer(this.accountAddress, amount);
 
     const action = new ClaimWithdrawal(validator, this.accountAddress, amount);
     applyActionToState(this.mutate, action);
@@ -452,15 +547,12 @@ class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
     if (!this.accountAddress) {
       throw new Error('No account address available for claim validator exit.');
     }
-
-    const exit = this.state.validatorExits.get(validator) ?? 0n;
-
+    const exit = await this.validatorExit(validator);
     if (!exit) {
       throw new Error('Validator is not exiting.');
     }
 
-    const staked =
-      this.state.delegations.get(validator)?.get(this.accountAddress) ?? 0n;
+    const staked = await this.delegation(validator, this.accountAddress);
     if (staked <= 0n) {
       throw new Error('No stake found for this delegator and validator.');
     }
@@ -468,11 +560,8 @@ class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
     if (currentTime < exit) {
       throw new Error('Validator exit period has not yet elapsed.');
     }
-    await this.state.espToken.transferFrom(
-      this.state.contractAddress,
-      this.accountAddress,
-      staked,
-    );
+
+    await this.state.espToken.transfer(this.accountAddress, staked);
 
     const action = new ClaimValidatorExit(
       validator,
@@ -495,25 +584,50 @@ function useMockStakeTableContractState(
   espTokenContract: ESPTokenContract,
   initialStakes: Map<`0x${string}`, Map<`0x${string}`, bigint>> = new Map(),
 ) {
+  const contractAddress = '0x0000000000000000000000000000000000000002';
+
   const [state, mutate] = React.useState<StakeTableState>({
-    contractAddress: `0x${'11'.repeat(20)}`,
+    contractAddress,
     espToken: espTokenContract,
     validators: new Map(),
     blsKeys: new Set(),
     validatorExits: new Map(),
     delegations: initialStakes,
     undelegations: new Map(),
-    exitEscrowPeriod: 0n,
+    exitEscrowPeriod: 2000n,
 
     pauserRole: '0xPAUSER_ROLE',
-    minCommissionIncreaseInterval: 24n * 60n * 60n,
+    minCommissionIncreaseInterval: 2000n,
     maxCommissionIncrease: 1,
     commissionTracking: new Map(),
     schnorrKeys: new Set(),
 
     actions: [],
     actionMap: new Map(),
+    lastUpdate: new Date(),
   });
+
+  assert(
+    state.espToken instanceof MockESPTokenContractImpl &&
+      espTokenContract instanceof MockESPTokenContractImpl,
+    'expected espTokenContract to be an instance of MockESPTokenContractImpl',
+  );
+
+  if (
+    state.espToken.accountAddress !== state.contractAddress ||
+    espTokenContract.lastUpdate.valueOf() > state.espToken.lastUpdate.valueOf()
+  ) {
+    // If our internal ESPTokenContract does not match the
+    // current contract address, or if the provided ESPTokenContract
+    // is more up-to-date, replace it.
+
+    mutate((prevState) => ({
+      ...prevState,
+      espToken: espTokenContract.replaceAccountAddress(
+        prevState.contractAddress,
+      ),
+    }));
+  }
 
   return [state, mutate] as const;
 }

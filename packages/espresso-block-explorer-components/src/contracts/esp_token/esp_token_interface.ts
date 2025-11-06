@@ -8,6 +8,7 @@ import {
  * ESP token contract.
  */
 export interface ESPTokenContractReadOnly extends ERC20UpgradableReadOnly {
+  readonly address: `0x${string}`;
   getVersion(): Promise<readonly [number, number, number]>;
 }
 
