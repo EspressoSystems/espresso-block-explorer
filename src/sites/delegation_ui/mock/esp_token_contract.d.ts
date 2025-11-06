@@ -20,6 +20,7 @@ export interface MockESPTokenContractState {
     allowances: Map<`0x${string}`, Map<`0x${string}`, bigint>>;
     actions: ESPTokenContractStateAction[];
     actionMap: Map<`0x${string}`, ESPTokenContractStateAction>;
+    lastUpdate: Date;
 }
 /**
  * ESPTokenContractStateAction is an abstract base class
@@ -27,6 +28,7 @@ export interface MockESPTokenContractState {
  * MockESPTokenContract.
  */
 declare abstract class ESPTokenContractStateAction {
+    readonly ts: Date;
     /**
      * hash computes a unique hash for the action instance.
      */
@@ -47,10 +49,13 @@ declare abstract class ESPTokenContractStateAction {
  * real contract without needing to connect to a live blockchain.
  */
 export declare class MockESPTokenContractImpl implements ESPTokenContract {
-    private state;
-    private mutate;
-    private accountAddress;
+    private readonly state;
+    private readonly mutate;
+    readonly accountAddress: `0x${string}` | null;
     constructor(state: MockESPTokenContractState, mutate: React.Dispatch<React.SetStateAction<MockESPTokenContractState>>, accountAddress: `0x${string}` | null);
+    replaceAccountAddress(accountAddress: `0x${string}` | null): MockESPTokenContractImpl;
+    get lastUpdate(): Date;
+    get address(): `0x${string}`;
     getVersion(): Promise<readonly [number, number, number]>;
     name(): Promise<string>;
     symbol(): Promise<string>;

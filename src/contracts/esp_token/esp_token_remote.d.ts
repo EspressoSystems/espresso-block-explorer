@@ -1,10 +1,10 @@
 import { Config } from 'wagmi';
 import { ESPTokenContract } from './esp_token_interface';
 export declare class ESPTokenRemote implements ESPTokenContract {
-    private readonly contractAddress;
-    private readonly chainID;
     private readonly config;
-    constructor(config: Config, chainID: number, contractAddress: `0x${string}`);
+    private readonly chainID;
+    readonly address: `0x${string}`;
+    constructor(config: Config, chainID: number, address: `0x${string}`);
     getVersion(): Promise<readonly [number, number, number]>;
     name(): Promise<string>;
     symbol(): Promise<string>;

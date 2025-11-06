@@ -1,10 +1,10 @@
 import { Config } from 'wagmi';
 import { StakeTableContract } from './stake_table_interface';
 export declare class StakeTableRemote implements StakeTableContract {
-    protected readonly contractAddress: `0x${string}`;
-    protected readonly chainID: number;
-    protected readonly config: Config;
-    constructor(config: Config, chainID: number, contractAddress: `0x${string}`);
+    private readonly config;
+    private readonly chainID;
+    readonly address: `0x${string}`;
+    constructor(config: Config, chainID: number, address: `0x${string}`);
     lightClient(): Promise<`0x${string}`>;
     token(): Promise<`0x${string}`>;
     validator(account: `0x${string}`): Promise<readonly [bigint, number]>;
