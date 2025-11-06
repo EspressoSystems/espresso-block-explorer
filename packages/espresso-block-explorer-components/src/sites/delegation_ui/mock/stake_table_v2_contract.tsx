@@ -102,7 +102,7 @@ class Delegate extends StakeTableStateActions {
     hasher.update(
       textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
     );
-    return hexArrayBufferCodec.encode(hasher.digest()) as `0x${string}`;
+    return hexArrayBufferCodec.encode(hasher.digest());
   }
 
   applyToState(state: StakeTableState): StakeTableState {
@@ -153,7 +153,7 @@ class Undelegate extends StakeTableStateActions {
     hasher.update(
       textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
     );
-    return hexArrayBufferCodec.encode(hasher.digest()) as `0x${string}`;
+    return hexArrayBufferCodec.encode(hasher.digest());
   }
 
   applyToState(state: StakeTableState): StakeTableState {
@@ -215,7 +215,7 @@ class ClaimWithdrawal extends StakeTableStateActions {
     hasher.update(
       textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
     );
-    return hexArrayBufferCodec.encode(hasher.digest()) as `0x${string}`;
+    return hexArrayBufferCodec.encode(hasher.digest());
   }
 
   applyToState(state: StakeTableState): StakeTableState {
@@ -259,7 +259,7 @@ class ClaimValidatorExit extends StakeTableStateActions {
     hasher.update(
       textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
     );
-    return hexArrayBufferCodec.encode(hasher.digest()) as `0x${string}`;
+    return hexArrayBufferCodec.encode(hasher.digest());
   }
 
   applyToState(state: StakeTableState): StakeTableState {
@@ -302,7 +302,7 @@ class ValidatorExit extends StakeTableStateActions {
     hasher.update(
       textEncoder.encode(bigintCodec.encoder.convert(this.exitTime)).buffer,
     );
-    return hexArrayBufferCodec.encode(hasher.digest()) as `0x${string}`;
+    return hexArrayBufferCodec.encode(hasher.digest());
   }
 
   applyToState(state: StakeTableState): StakeTableState {
@@ -656,7 +656,7 @@ export const MockStakeTableV2Contract: React.FC<React.PropsWithChildren> = ({
   assertNotNull(espTokenContract);
   const initialStakes = new Map(
     mapIterable(nodeList, (node) => {
-      const address = hexArrayBufferCodec.encode(node.address) as `0x${string}`;
+      const address = hexArrayBufferCodec.encode(node.address);
       return [address, new Map([[address, node.stake]])];
     }),
   );

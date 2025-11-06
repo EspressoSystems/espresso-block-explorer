@@ -1,5 +1,5 @@
+import { bigintCodec } from '@/convert/codec';
 import { Codec } from '@/convert/codec/convert';
-import { numberCodec } from '@/convert/codec/number';
 import { L1BlockID, l1BlockIDJSONCodec } from '../../common/l1_block_id';
 import { AsyncRequestHelper } from '../../web_worker_types';
 import { L1BlockAPI } from '../l1_block_api';
@@ -27,11 +27,15 @@ export class WebWorkerClientBasedL1BlockAPI implements L1BlockAPI {
     return this.helper.submitRequest(codec, 'l1Block', method, args);
   }
 
-  async getBlockForHeight(number: number): Promise<L1BlockID> {
+  async getBlockForHeight(number: bigint): Promise<L1BlockID> {
     return await this.sendRequest(
       l1BlockIDJSONCodec,
       'getBlockForHeight',
-      numberCodec.encode(number),
+      bigintCodec.encode(number),
     );
+  }
+
+  async getLatestBlock(): Promise<L1BlockID> {
+    return await this.sendRequest(l1BlockIDJSONCodec, 'getLatestBlock');
   }
 }

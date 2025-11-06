@@ -1,4 +1,7 @@
-import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import {
+  hexArrayBufferCodec,
+  stdBase64ArrayBufferCodec,
+} from '@/convert/codec/array_buffer';
 import { Codec } from '@/convert/codec/convert';
 import { AsyncRequestHelper } from '../../web_worker_types';
 import {
@@ -34,8 +37,13 @@ export class WebWorkerClientBasedValidatorsAllAPI implements ValidatorsAllAPI {
     return this.helper.submitRequest<T>(codec, 'validatorsAll', method, param);
   }
 
-  async snapshot(): Promise<FullNodeSetSnapshot> {
-    return await this.sendRequest(fullNodeSetSnapshotJSONCodec, 'snapshot');
+  async snapshot(hash: ArrayBuffer): Promise<FullNodeSetSnapshot> {
+    const encoded = hexArrayBufferCodec.encode(hash);
+    return await this.sendRequest(
+      fullNodeSetSnapshotJSONCodec,
+      'snapshot',
+      encoded,
+    );
   }
 
   async updatesSince(hash: ArrayBuffer): Promise<FullNodeSetUpdate> {

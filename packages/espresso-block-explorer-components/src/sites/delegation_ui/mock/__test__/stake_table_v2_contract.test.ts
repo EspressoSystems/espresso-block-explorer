@@ -42,7 +42,7 @@ const INITIAL_STAKE_TABLE_CONTRACT_STATE: StakeTableState = {
       nodeList,
       (node) =>
         [
-          hexArrayBufferCodec.encode(node.address) as `0x${string}`,
+          hexArrayBufferCodec.encode(node.address),
           [node.stake, ValidatorStatus.active],
         ] as const,
     ),
@@ -54,13 +54,8 @@ const INITIAL_STAKE_TABLE_CONTRACT_STATE: StakeTableState = {
       nodeList,
       (node) =>
         [
-          hexArrayBufferCodec.encode(node.address) as `0x${string}`,
-          new Map([
-            [
-              hexArrayBufferCodec.encode(node.address) as `0x${string}`,
-              node.stake,
-            ],
-          ]),
+          hexArrayBufferCodec.encode(node.address),
+          new Map([[hexArrayBufferCodec.encode(node.address), node.stake]]),
         ] as const,
     ),
   ),

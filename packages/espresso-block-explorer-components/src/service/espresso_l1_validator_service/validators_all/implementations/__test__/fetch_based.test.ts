@@ -23,7 +23,7 @@ import { ValidatorsAllAPI } from '../../validators_all_api';
 import { FetchBasedValidatorsAllAPI } from '../fetch_based';
 
 describe('FetchBasedValidatorsAllAPI', () => {
-  const baseURL = new URL('https://example.com/v0/validators/all');
+  const baseURL = new URL('https://example.com/v0/nodes/all/');
 
   it('should throw return mocked value successfully', async () => {
     {
@@ -52,7 +52,7 @@ describe('FetchBasedValidatorsAllAPI', () => {
       const fetcher: typeof fetch = async (input) => {
         validateRequestMethodAndURL(
           'GET',
-          'https://example.com/v0/validators/all',
+          'https://example.com/v0/nodes/all/0xdeadc0de',
           input,
         );
 
@@ -67,7 +67,9 @@ describe('FetchBasedValidatorsAllAPI', () => {
         baseURL,
       );
 
-      await expect(service.snapshot()).resolves.to.deep.equal(response);
+      await expect(
+        service.snapshot(new Uint8Array([0xde, 0xad, 0xc0, 0xde]).buffer),
+      ).resolves.to.deep.equal(response);
     }
 
     {
@@ -93,7 +95,7 @@ describe('FetchBasedValidatorsAllAPI', () => {
       const fetcher: typeof fetch = async (input) => {
         validateRequestMethodAndURL(
           'GET',
-          'https://example.com/v0/validators/all/updates/0xdeadbeef',
+          'https://example.com/v0/nodes/all/updates/0xdeadbeef',
           input,
         );
 

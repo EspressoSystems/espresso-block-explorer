@@ -1,6 +1,6 @@
-import { numberCodec } from '@/convert/codec/number';
+import { bigintCodec } from '@/convert/codec';
 import UnimplementedError from '@/errors/UnimplementedError';
-import { L1BlockInfo, l1BlockInfoJSONCodec } from '../../common/l1_block_info';
+import { L1BlockID, l1BlockIDJSONCodec } from '../../common/l1_block_id';
 import { WebWorkerRequest } from '../../web_worker_types';
 import { L1BlockAPI } from '../l1_block_api';
 
@@ -22,16 +22,24 @@ export class WebWorkerProxyL1API {
     this.service = service;
   }
 
-  async getBlockForHeight(number: number): Promise<L1BlockInfo> {
+  async getBlockForHeight(number: bigint): Promise<L1BlockID> {
     return this.service.getBlockForHeight(number);
+  }
+
+  async getLatestBlock(): Promise<L1BlockID> {
+    return this.service.getLatestBlock();
   }
 
   async handleRequest(request: L1BlockAPIRequest) {
     switch (request.method) {
       case 'getBlockForHeight': {
-        return l1BlockInfoJSONCodec.encode(
-          await this.getBlockForHeight(numberCodec.decode(request.param[0])),
+        return l1BlockIDJSONCodec.encode(
+          await this.getBlockForHeight(bigintCodec.decode(request.param[0])),
         );
+      }
+
+      case 'getLatestBlock': {
+        return l1BlockIDJSONCodec.encode(await this.getLatestBlock());
       }
       default:
         throw new UnimplementedError();

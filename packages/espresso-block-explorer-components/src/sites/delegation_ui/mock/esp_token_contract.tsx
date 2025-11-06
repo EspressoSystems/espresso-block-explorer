@@ -94,7 +94,7 @@ class TransferBalance extends ESPTokenContractStateAction {
     hasher.update(
       textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
     );
-    return hexArrayBufferCodec.encode(hasher.digest()) as `0x${string}`;
+    return hexArrayBufferCodec.encode(hasher.digest());
   }
 
   applyToState(state: MockESPTokenContractState): MockESPTokenContractState {
@@ -139,7 +139,7 @@ class ApproveAllowance extends ESPTokenContractStateAction {
     hasher.update(
       textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
     );
-    return hexArrayBufferCodec.encode(hasher.digest()) as `0x${string}`;
+    return hexArrayBufferCodec.encode(hasher.digest());
   }
 
   applyToState(state: MockESPTokenContractState): MockESPTokenContractState {

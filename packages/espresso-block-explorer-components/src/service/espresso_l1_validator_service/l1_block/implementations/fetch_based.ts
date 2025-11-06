@@ -16,8 +16,15 @@ export class FetchBasedL1BlockAPI implements L1BlockAPI {
     this.baseURL = baseURL;
   }
 
-  async getBlockForHeight(number: number): Promise<L1BlockID> {
-    const url = new URL(`${number}`, this.baseURL);
+  async getBlockForHeight(number: bigint): Promise<L1BlockID> {
+    const url = new URL(`./${number}`, this.baseURL);
+    return this.fetcher(url).then(
+      validateAndExpandResponse(l1BlockIDJSONCodec.decoder),
+    );
+  }
+
+  async getLatestBlock(): Promise<L1BlockID> {
+    const url = new URL('latest', this.baseURL);
     return this.fetcher(url).then(
       validateAndExpandResponse(l1BlockIDJSONCodec.decoder),
     );
