@@ -1,0 +1,1 @@
+import{j as n}from"./iframe-BZt-oGI2.js";const a=o=>n.jsx("div",{className:"container-loading",...o});try{a.displayName="ContainerLoading",a.__docgenInfo={description:"",displayName:"ContainerLoading",props:{}}}catch{}export{a as C};

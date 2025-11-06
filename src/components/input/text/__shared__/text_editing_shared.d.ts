@@ -15,7 +15,7 @@ export declare const interactionKeyInInput: (canvasElement: HTMLElement, value: 
 /**
  *
  */
-export declare const selectTextInInput: (inputElement: HTMLInputElement, selectionStart: number, selectionEnd: number) => Promise<void>;
+export declare const selectTextInInput: (canvasElement: HTMLElement, selectionStart: number, selectionEnd: number) => Promise<void>;
 /**
  *
  */
