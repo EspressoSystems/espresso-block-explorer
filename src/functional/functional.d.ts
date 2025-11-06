@@ -153,9 +153,14 @@ export declare function reverseIterator<T>(iterator: Iterator<T>): Generator<T>;
 export declare function reverseIterable<T>(iterable: Iterable<T>): Generator<T>;
 /**
  * foldRIterator is a foldR function that can be applied to an
- * AsyncIterator.
+ * Iterator.
  */
 export declare function foldRIterator<T, U>(combiner: (acc: U, element: T) => U, seed: U, list: Iterator<T>): U;
+/**
+ * foldRIterable is a foldR function that can be applied to an
+ * Iterable.
+ */
+export declare function foldRIterable<T, U>(combiner: (acc: U, element: T) => U, seed: U, list: Iterable<T>): U;
 /**
  * zipWithIterator is a zipWith function that can be applied to an
  * AsyncIterator.
