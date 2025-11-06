@@ -11,6 +11,7 @@ export type Undelegation = readonly [bigint, bigint];
  * Stake Table Contract.
  */
 export interface StakeTableContractReadOnly {
+  readonly address: `0x${string}`;
   // Contract Addresses
 
   lightClient(): Promise<`0x${string}`>;

@@ -75,12 +75,9 @@ const assertExecutor = createAssertExecutor();
  * When used in a production environment (import.meta.env.PROD === true), this
  * function will be a no-op.
  */
-export function assert(booleanExpression: true, message?: string): void;
-export function assert(booleanExpression: false, message?: string): never;
-export function assert(booleanExpression: boolean, message?: string): void;
-export function assert(booleanExpression: true, message?: string): void;
-export function assert(booleanExpression: boolean, message?: string) {
-  assertExecutor.assert(booleanExpression, message);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function assert(expression: any, message?: string): asserts expression {
+  assertExecutor.assert(expression, message);
 }
 
 /**
@@ -115,6 +112,16 @@ export function assertNotNull<T>(value: null | T): asserts value is T {
  * assertInstanceOf ia function that ensures that the given value is in fact
  * an instanceof the given constructor function.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function assertInstanceOf<T, C extends abstract new (...args: any) => T>(
+  value: T,
+  constructor: C,
+): void;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function assertInstanceOf<T, C extends abstract new (...args: any) => T>(
+  value: unknown,
+  constructor: C,
+): never;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function assertInstanceOf<T, C extends abstract new (...args: any) => T>(
   value: unknown,

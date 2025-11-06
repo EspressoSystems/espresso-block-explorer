@@ -27,6 +27,7 @@ export interface MockESPTokenContractState {
 
   actions: ESPTokenContractStateAction[];
   actionMap: Map<`0x${string}`, ESPTokenContractStateAction>;
+  lastUpdate: Date;
 }
 
 /**
@@ -41,6 +42,7 @@ function applyActionToState(
     ...action.applyToState(state),
     actions: [...state.actions, action],
     actionMap: new Map(state.actionMap).set(action.hash(), action),
+    lastUpdate: action.ts,
   }));
 }
 
@@ -50,6 +52,8 @@ function applyActionToState(
  * MockESPTokenContract.
  */
 abstract class ESPTokenContractStateAction {
+  public readonly ts: Date = new Date();
+
   /**
    * hash computes a unique hash for the action instance.
    */
@@ -69,8 +73,6 @@ abstract class ESPTokenContractStateAction {
  * within the MockESPTokenContract.
  */
 class TransferBalance extends ESPTokenContractStateAction {
-  public readonly ts: Date = new Date();
-
   constructor(
     public readonly from: `0x${string}`,
     public readonly to: `0x${string}`,
@@ -116,8 +118,6 @@ class TransferBalance extends ESPTokenContractStateAction {
  * within the MockESPTokenContract.
  */
 class ApproveAllowance extends ESPTokenContractStateAction {
-  public readonly ts: Date = new Date();
-
   constructor(
     public readonly owner: `0x${string}`,
     public readonly spender: `0x${string}`,
@@ -167,15 +167,33 @@ class ApproveAllowance extends ESPTokenContractStateAction {
  */
 export class MockESPTokenContractImpl implements ESPTokenContract {
   constructor(
-    private state: MockESPTokenContractState,
-    private mutate: React.Dispatch<
+    private readonly state: MockESPTokenContractState,
+    private readonly mutate: React.Dispatch<
       React.SetStateAction<MockESPTokenContractState>
     >,
-    private accountAddress: `0x${string}` | null,
+    public readonly accountAddress: `0x${string}` | null,
   ) {
     this.state = state;
     this.mutate = mutate;
     this.accountAddress = accountAddress;
+  }
+
+  replaceAccountAddress(
+    accountAddress: `0x${string}` | null,
+  ): MockESPTokenContractImpl {
+    return new MockESPTokenContractImpl(
+      this.state,
+      this.mutate,
+      accountAddress,
+    );
+  }
+
+  get lastUpdate(): Date {
+    return this.state.lastUpdate;
+  }
+
+  get address(): `0x${string}` {
+    return this.state.contractAddress;
   }
 
   async getVersion(): Promise<readonly [number, number, number]> {
@@ -213,8 +231,24 @@ export class MockESPTokenContractImpl implements ESPTokenContract {
     if (!this.accountAddress) {
       throw new Error('No account address available for transfer.');
     }
+    const from = this.accountAddress;
 
-    return this.transferFrom(this.accountAddress, to, value);
+    if (value < 0n) {
+      throw new Error('Transfer value cannot be negative.');
+    }
+
+    // Does the owning account have enough balance?
+    // How do we know the owning account?
+
+    if (value > (await this.balanceOf(from))) {
+      throw new Error('Insufficient balance for transfer.');
+    }
+
+    // create the action
+    const action = new TransferBalance(from, to, value);
+
+    applyActionToState(this.mutate, action);
+    return action.hash();
   }
 
   async approve(spender: `0x${string}`, value: bigint): Promise<`0x${string}`> {
@@ -234,6 +268,12 @@ export class MockESPTokenContractImpl implements ESPTokenContract {
   ): Promise<`0x${string}`> {
     if (value < 0n) {
       throw new Error('Transfer value cannot be negative.');
+    }
+
+    const currentAllowance = await this.allowance(from, to);
+
+    if (currentAllowance < value) {
+      throw new Error('Insufficient allowance for transfer.');
     }
 
     // Does the owning account have enough balance?
@@ -256,9 +296,10 @@ export class MockESPTokenContractImpl implements ESPTokenContract {
  * and returns the state for the MockESPTokenContract.
  */
 function useMockESPContractState() {
+  const contractAddress = '0x0000000000000000000000000000000000000001';
   // Mocked ESPTokenContract State
   return React.useState<MockESPTokenContractState>({
-    contractAddress: `0x${'00'.repeat(20)}`,
+    contractAddress,
     version: [1, 0, 0],
     name: 'Espresso Token',
     symbol: 'ESP',
@@ -268,6 +309,7 @@ function useMockESPContractState() {
     allowances: new Map(),
     actions: [],
     actionMap: new Map(),
+    lastUpdate: new Date(),
   });
 }
 

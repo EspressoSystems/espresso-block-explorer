@@ -17,7 +17,7 @@ export class StakeTableV2Remote
   async PAUSER_ROLE() {
     return readContract(this.config, {
       abi: StakeTableV2Abi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'PAUSER_ROLE',
     });
@@ -26,7 +26,7 @@ export class StakeTableV2Remote
   async minCommissionIncreaseInterval() {
     return readContract(this.config, {
       abi: StakeTableV2Abi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'minCommissionIncreaseInterval',
     });
@@ -35,7 +35,7 @@ export class StakeTableV2Remote
   async maxCommissionIncrease() {
     return readContract(this.config, {
       abi: StakeTableV2Abi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'maxCommissionIncrease',
     });
@@ -44,7 +44,7 @@ export class StakeTableV2Remote
   async activeStake() {
     return readContract(this.config, {
       abi: StakeTableV2Abi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'activeStake',
     });
@@ -53,7 +53,7 @@ export class StakeTableV2Remote
   async commissionTracking(validator: `0x${string}`) {
     return readContract(this.config, {
       abi: StakeTableV2Abi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'commissionTracking',
       args: [validator],
@@ -70,7 +70,7 @@ export class StakeTableV2Remote
   ) {
     return writeContract(this.config, {
       abi: StakeTableV2Abi,
-      address: this.contractAddress,
+      address: this.address,
       chainId: this.chainID,
       functionName: 'updateConsensusKeysV2',
       args: [blsVk, schnorrVk, blsSig, schnorrSig],
