@@ -1,0 +1,16 @@
+import{j as o}from"./iframe-CoIItnDg.js";import{D as m}from"./LoadingProvider-D3gToPRF.js";import"./DateTimeFormattersProvider-NK-Emwp_.js";import"./LocaleProvider-DjGseKT_.js";import"./PagePathProvider-Cds9E7Bf.js";import"./NowProvider-CYvyuQeG.js";import"./NumberFormattersProvider-DRR430ge.js";import"./PathResolverProvider-DDmd5dVN.js";import{g as e,s as i}from"./data_table_shared-_SaJl4AC.js";import"./blocks-M9CpjV-n.js";import{P as s}from"./nodes-oXhyEVah.js";import{m as p,i as n}from"./functional-g5wG3Azh.js";import"./string-IJEBdhwx.js";import"./validator-CGcHKa4H.js";import{T as l}from"./TaggedBase64-S1MhFE0d.js";import{a as c}from"./TransactionSummaryDataTable-6pFbeiQ8.js";import"./preload-helper-PPVm8Dsz.js";import"./MissingElementError-CbV3pOXz.js";import"./UnimplementedError-CdIPpzwU.js";import"./react.esm-DKJ9aFgG.js";import"./index-D2bnl3IT.js";import"./index-BDUJMa5u.js";import"./client-DQRjVC2q.js";import"./sleep-CW-vxfof.js";import"./monetary_value-B0ntaWrJ.js";import"./assert-BI051aL8.js";import"./data-Cpeha0UW.js";import"./url-B2hYd5U-.js";import"./wallet_address-_-ZG_Jzi.js";import"./array_buffer-D67g0v0K.js";import"./base64-KHURY7_E.js";import"./SkeletonContent-B_bussuS.js";import"./transaction_summary-_-RUzodv.js";import"./CopyButton-CsrwStrT.js";import"./higher_order-CRWKtA4N.js";import"./CheckCircleFilled-C3pP6zIZ.js";import"./SVGIconBase-CsFpHk-L.js";import"./Copy-BWOcw-FF.js";/* empty css               */import"./DateTimeText-BHh4HfXD.js";import"./NumberText-CnoQTjHV.js";import"./TaggedBase64Text-CdWAXBu7.js";import"./Text-BU7JBOLk.js";import"./DataTable-D3Ys1d5h.js";import"./typography-D27EwMV7.js";import"./ChevronUp-83aa6e5i.js";import"./Link-DaDpAacQ.js";import"./RollUpSimple-DkcIvZvy.js";import"./Payments-B-fwyCp_.js";import"./TwitterIcon-BKIwKnV4.js";import"./ArrowRight-CC_tYSrh.js";import"./Close-CTtcwE2T.js";import"./MediumIcon-BKrVNlDP.js";import"./EspressoLogo-CMKQD5wF.js";import"./EspressoLogoAndTitle-C0McoEXP.js";import"./Menu-CqLApyom.js";import"./SearchGlass-Bn78Bceq.js";import"./XIcon-DVzhflbr.js";const u=t=>o.jsx(m.Provider,{value:t.transactionSummaries,children:o.jsx(c,{})}),gt={title:"components/Data/Transaction Summary Data Table/Interactions",component:u,args:{transactionSummaries:[]},argTypes:{transactionSummaries:{control:"object"}}},T=new s,d=Array.from(p(n(20),t=>({hash:new l("TxHash",T.fillBytes(32)),rollups:[1],block:t,offset:t,time:new Date(Date.now()+t*1e3)}))),a={args:{transactionSummaries:d},play:async({canvasElement:t,step:r})=>{await r("retrieve the data table element",async()=>{await e(t)}),await r("sort all columns",async()=>{await i(t)})}};a.parameters={...a.parameters,docs:{...a.parameters?.docs,source:{originalSource:`{
+  args: {
+    transactionSummaries
+  },
+  play: async ({
+    canvasElement,
+    step
+  }) => {
+    await step('retrieve the data table element', async () => {
+      await getDataTable(canvasElement);
+    });
+    await step('sort all columns', async () => {
+      await selectAllTableHeaderCellsTwice(canvasElement);
+    });
+  }
+}`,...a.parameters?.docs?.source}}};const Dt=["TransactionSummaryDataTable"];export{a as TransactionSummaryDataTable,Dt as __namedExportsOrder,gt as default};
