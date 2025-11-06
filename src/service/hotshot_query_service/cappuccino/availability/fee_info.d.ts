@@ -7,8 +7,8 @@ export declare class CappuccinoFeeInfo {
     readonly amount: ArrayBuffer;
     constructor(account: ArrayBuffer, amount: ArrayBuffer);
     toJSON(): {
-        account: string;
-        amount: string;
+        account: `0x${string}`;
+        amount: `0x${string}`;
     };
 }
 declare class CappuccinoFeeInfoDecoder implements Converter<unknown, CappuccinoFeeInfo> {
@@ -16,8 +16,8 @@ declare class CappuccinoFeeInfoDecoder implements Converter<unknown, CappuccinoF
 }
 declare class CappuccinoFeeInfoEncoder implements Converter<CappuccinoFeeInfo> {
     convert(input: CappuccinoFeeInfo): {
-        account: string;
-        amount: string;
+        account: `0x${string}`;
+        amount: `0x${string}`;
     };
 }
 declare class CappuccinoFeeInfoCodec extends TypeCheckingCodec<CappuccinoFeeInfo, ReturnType<InstanceType<new () => CappuccinoFeeInfoEncoder>['convert']>> {

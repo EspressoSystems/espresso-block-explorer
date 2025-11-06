@@ -10,6 +10,6 @@ export declare class FetchBasedValidatorsAllAPI implements ValidatorsAllAPI {
     private readonly fetcher;
     private readonly baseURL;
     constructor(fetcher: typeof fetch, baseURL: URL);
-    snapshot(): Promise<FullNodeSetSnapshot>;
+    snapshot(hash: ArrayBuffer): Promise<FullNodeSetSnapshot>;
     updatesSince(hash: ArrayBuffer): Promise<FullNodeSetUpdate>;
 }

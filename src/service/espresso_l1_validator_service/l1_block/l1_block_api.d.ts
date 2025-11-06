@@ -8,5 +8,9 @@ export interface L1BlockAPI {
      * getBlockForHeight retrieves the L1 block information for the given
      * block height.
      */
-    getBlockForHeight(number: number): Promise<L1BlockID>;
+    getBlockForHeight(number: bigint): Promise<L1BlockID>;
+    /**
+     * getLatestBlock retrieves the latest L1 block information.
+     */
+    getLatestBlock(): Promise<L1BlockID>;
 }

@@ -15,7 +15,7 @@ export type ValidatorsActiveAllRequest<Method extends keyof ValidatorsAllAPI = k
 export declare class WebWorkerProxyValidatorsAllAPI {
     private service;
     constructor(service: ValidatorsAllAPI);
-    snapshot(): Promise<FullNodeSetSnapshot>;
+    snapshot(hash: ArrayBuffer): Promise<FullNodeSetSnapshot>;
     updatesSince(hash: ArrayBuffer): Promise<FullNodeSetUpdate>;
     handleRequest(request: ValidatorsActiveAllRequest): Promise<unknown>;
 }

@@ -6,5 +6,6 @@ import { L1BlockAPI } from '../l1_block_api';
  * for the Validator Service API.
  */
 export declare class FakeDataL1BlockAPI implements L1BlockAPI {
-    getBlockForHeight(): Promise<L1BlockID>;
+    getBlockForHeight(height: bigint): Promise<L1BlockID>;
+    getLatestBlock(): Promise<L1BlockID>;
 }

@@ -20,7 +20,7 @@ export default class InscriptionAndSignature {
 declare class InscriptionAndSignatureEncoder implements Converter<InscriptionAndSignature> {
     convert(input: InscriptionAndSignature): {
         inscription: unknown;
-        signature: string;
+        signature: `0x${string}`;
     };
 }
 /**

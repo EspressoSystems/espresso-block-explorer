@@ -5,16 +5,16 @@ import * as base64 from '../base64/base64';
 export declare class HexArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
     convert(input: unknown): ArrayBuffer;
 }
-export declare class HexArrayBufferEncoder implements Converter<ArrayBuffer, string> {
-    convert(input: ArrayBuffer): string;
+export declare class HexArrayBufferEncoder implements Converter<ArrayBuffer, `0x${string}`> {
+    convert(input: ArrayBuffer): `0x${string}`;
 }
-export declare class HexArrayBufferCodec extends TypeCheckingCodec<ArrayBuffer, string> {
+export declare class HexArrayBufferCodec extends TypeCheckingCodec<ArrayBuffer, `0x${string}`> {
     encoder: HexArrayBufferEncoder;
     decoder: HexArrayBufferDecoder;
 }
 export declare const hexArrayBufferCodec: HexArrayBufferCodec;
-export declare const nullableHexArrayBufferCodec: NullCodec<ArrayBuffer, string>;
-export declare const hexArrayBufferArrayCodec: ArrayCodec<ArrayBuffer, string>;
+export declare const nullableHexArrayBufferCodec: NullCodec<ArrayBuffer, `0x${string}`>;
+export declare const hexArrayBufferArrayCodec: ArrayCodec<ArrayBuffer, `0x${string}`>;
 declare class BackwardsCompatibleHexArrayBufferDecoder implements Converter<unknown, ArrayBuffer[]> {
     convert(input: unknown): ArrayBuffer[];
 }

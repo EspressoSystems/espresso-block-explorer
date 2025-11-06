@@ -31,13 +31,13 @@ export declare class CappuccinoDerivedTransactionSummary {
             readonly block_merkle_root: string;
             readonly fee_merkle_root: string;
             readonly builder_signature: {
-                r: string;
-                s: string;
+                r: `0x${string}`;
+                s: `0x${string}`;
                 v: number;
             };
             readonly fee_info: {
-                account: string;
-                amount: string;
+                account: `0x${string}`;
+                amount: `0x${string}`;
             };
         };
         offset: number;
@@ -69,13 +69,13 @@ export declare class CappuccinoDerivedTransactionSummaryEncoder implements Conve
             readonly block_merkle_root: string;
             readonly fee_merkle_root: string;
             readonly builder_signature: {
-                r: string;
-                s: string;
+                r: `0x${string}`;
+                s: `0x${string}`;
                 v: number;
             };
             readonly fee_info: {
-                account: string;
-                amount: string;
+                account: `0x${string}`;
+                amount: `0x${string}`;
             };
         };
         offset: number;
@@ -108,13 +108,13 @@ export declare const listCappuccinoDerivedTransactionSummaryCodec: ArrayCodec<Ca
         readonly block_merkle_root: string;
         readonly fee_merkle_root: string;
         readonly builder_signature: {
-            r: string;
-            s: string;
+            r: `0x${string}`;
+            s: `0x${string}`;
             v: number;
         };
         readonly fee_info: {
-            account: string;
-            amount: string;
+            account: `0x${string}`;
+            amount: `0x${string}`;
         };
     };
     offset: number;

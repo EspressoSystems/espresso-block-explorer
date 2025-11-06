@@ -15,6 +15,6 @@ export declare class WebWorkerClientBasedValidatorsAllAPI implements ValidatorsA
      * for the ValidatorsAllAPI, and returns the decoded response.
      */
     private sendRequest;
-    snapshot(): Promise<FullNodeSetSnapshot>;
+    snapshot(hash: ArrayBuffer): Promise<FullNodeSetSnapshot>;
     updatesSince(hash: ArrayBuffer): Promise<FullNodeSetUpdate>;
 }

@@ -53,13 +53,13 @@ export declare class CappuccinoAPILeaf {
             readonly block_merkle_root: string;
             readonly fee_merkle_root: string;
             readonly builder_signature: {
-                r: string;
-                s: string;
+                r: `0x${string}`;
+                s: `0x${string}`;
                 v: number;
             };
             readonly fee_info: {
-                account: string;
-                amount: string;
+                account: `0x${string}`;
+                amount: `0x${string}`;
             };
         };
         block_payload: {
@@ -70,7 +70,7 @@ export declare class CappuccinoAPILeaf {
         };
         rejected: number[];
         timestamp: number;
-        proposer_id: string;
+        proposer_id: `0x${string}`;
     };
 }
 export declare class CappuccinoAPILeafDecoder implements Converter<unknown, CappuccinoAPILeaf> {
@@ -114,13 +114,13 @@ export declare class CappuccinoAPILeafEncoder implements Converter<CappuccinoAPI
             readonly block_merkle_root: string;
             readonly fee_merkle_root: string;
             readonly builder_signature: {
-                r: string;
-                s: string;
+                r: `0x${string}`;
+                s: `0x${string}`;
                 v: number;
             };
             readonly fee_info: {
-                account: string;
-                amount: string;
+                account: `0x${string}`;
+                amount: `0x${string}`;
             };
         };
         block_payload: {
@@ -131,7 +131,7 @@ export declare class CappuccinoAPILeafEncoder implements Converter<CappuccinoAPI
         };
         rejected: number[];
         timestamp: number;
-        proposer_id: string;
+        proposer_id: `0x${string}`;
     };
 }
 export declare class CappuccinoAPILeafCodec extends TypeCheckingCodec<CappuccinoAPILeaf, ReturnType<InstanceType<new () => CappuccinoAPILeafEncoder>['convert']>> {

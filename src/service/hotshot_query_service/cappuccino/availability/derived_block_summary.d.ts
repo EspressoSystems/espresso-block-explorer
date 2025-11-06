@@ -30,13 +30,13 @@ export declare class CappuccinoDerivedBlockSummary {
             readonly block_merkle_root: string;
             readonly fee_merkle_root: string;
             readonly builder_signature: {
-                r: string;
-                s: string;
+                r: `0x${string}`;
+                s: `0x${string}`;
                 v: number;
             };
             readonly fee_info: {
-                account: string;
-                amount: string;
+                account: `0x${string}`;
+                amount: `0x${string}`;
             };
         };
         hash: string;
@@ -66,13 +66,13 @@ export declare class CappuccinoDerivedBlockSummaryEncoder implements Converter<C
             readonly block_merkle_root: string;
             readonly fee_merkle_root: string;
             readonly builder_signature: {
-                r: string;
-                s: string;
+                r: `0x${string}`;
+                s: `0x${string}`;
                 v: number;
             };
             readonly fee_info: {
-                account: string;
-                amount: string;
+                account: `0x${string}`;
+                amount: `0x${string}`;
             };
         };
         hash: string;
@@ -103,13 +103,13 @@ export declare const listCappuccinoDerivedBlockSummaryCodec: ArrayCodec<Cappucci
         readonly block_merkle_root: string;
         readonly fee_merkle_root: string;
         readonly builder_signature: {
-            r: string;
-            s: string;
+            r: `0x${string}`;
+            s: `0x${string}`;
             v: number;
         };
         readonly fee_info: {
-            account: string;
-            amount: string;
+            account: `0x${string}`;
+            amount: `0x${string}`;
         };
     };
     hash: string;

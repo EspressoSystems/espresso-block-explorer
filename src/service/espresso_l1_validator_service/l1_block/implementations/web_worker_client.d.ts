@@ -14,5 +14,6 @@ export declare class WebWorkerClientBasedL1BlockAPI implements L1BlockAPI {
      * for the L1BlockAPI, and returns the decoded response.
      */
     private sendRequest;
-    getBlockForHeight(number: number): Promise<L1BlockID>;
+    getBlockForHeight(number: bigint): Promise<L1BlockID>;
+    getLatestBlock(): Promise<L1BlockID>;
 }

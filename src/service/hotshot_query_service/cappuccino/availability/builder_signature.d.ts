@@ -9,8 +9,8 @@ export declare class CappuccinoBuilderSignature {
     readonly v: number;
     constructor(r: ArrayBuffer, s: ArrayBuffer, v: number);
     toJSON(): {
-        r: string;
-        s: string;
+        r: `0x${string}`;
+        s: `0x${string}`;
         v: number;
     };
 }
@@ -19,8 +19,8 @@ declare class CappuccinoBuilderSignatureDecoder implements Converter<unknown, Ca
 }
 declare class CappuccinoBuilderSignatureEncoder implements Converter<CappuccinoBuilderSignature> {
     convert(input: CappuccinoBuilderSignature): {
-        r: string;
-        s: string;
+        r: `0x${string}`;
+        s: `0x${string}`;
         v: number;
     };
 }

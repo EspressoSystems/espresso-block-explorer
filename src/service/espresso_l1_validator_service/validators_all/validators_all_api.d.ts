@@ -15,7 +15,7 @@ export interface ValidatorsAllAPI {
      * NOTE: This endpoint may be cached and not up-to-date with the tip of
      * the L1 chain.
      */
-    snapshot(): Promise<FullNodeSetSnapshot>;
+    snapshot(hash: ArrayBuffer): Promise<FullNodeSetSnapshot>;
     /**
      * updatesSince retrieves all updates to the validator set since the
      * provided hash.

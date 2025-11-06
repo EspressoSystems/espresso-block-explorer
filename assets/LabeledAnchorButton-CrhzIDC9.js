@@ -1,0 +1,3 @@
+import{j as a}from"./iframe-DiVw3yHA.js";import{a as o}from"./higher_order-DYYvazKI.js";import{A as n}from"./AnchorButton-CmtOT3xg.js";const t=e=>a.jsx(n,{...e,className:o(e.className,"label type--ui--button")});try{t.displayName="LabeledAnchorButton",t.__docgenInfo={description:`LabeledAnchorButton is an AnchorButton but designed to hold text.  It
+mirrors the Design of the LabeledButton, while being an Anchor tag for
+links instead of an actual button.`,displayName:"LabeledAnchorButton",props:{disabled:{defaultValue:null,description:"",name:"disabled",required:!1,type:{name:"boolean"}}}}}catch{}export{t as L};

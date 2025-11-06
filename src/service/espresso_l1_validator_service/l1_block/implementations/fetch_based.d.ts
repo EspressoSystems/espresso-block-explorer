@@ -9,5 +9,6 @@ export declare class FetchBasedL1BlockAPI implements L1BlockAPI {
     private readonly fetcher;
     private readonly baseURL;
     constructor(fetcher: typeof fetch, baseURL: URL);
-    getBlockForHeight(number: number): Promise<L1BlockID>;
+    getBlockForHeight(number: bigint): Promise<L1BlockID>;
+    getLatestBlock(): Promise<L1BlockID>;
 }
