@@ -24,11 +24,11 @@ export class FetchBasedL1ValidatorService implements L1ValidatorService {
     );
     this.validatorsAll = new FetchBasedValidatorsAllAPI(
       fetcher,
-      new URL('validators/all', baseURL),
+      new URL('nodes/all', baseURL),
     );
     this.validatorsActive = new FetchBasedValidatorsActiveAPI(
       fetcher,
-      new URL('validators/active', baseURL),
+      new URL('nodes/active', baseURL),
     );
   }
 
