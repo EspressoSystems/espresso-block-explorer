@@ -1,10 +1,12 @@
+import { ActionsCell } from '../common/cells/actions_cell';
+import { ClaimInCell } from '../common/cells/claim_in_cell';
 import { FeeCell } from '../common/cells/fee_cell';
 import { HotShotConsensusCell } from '../common/cells/hot_shot_consensus_cell';
 import { MissedSlotsCell } from '../common/cells/missed_slot_cell';
 import { NodeNameCell } from '../common/cells/node_name_cell';
 import { ParticipationRateCell } from '../common/cells/participation_rate_cell';
 import { RankCell } from '../common/cells/rank_cell';
-import { StakeCell } from '../common/cells/stake_cell';
+import { TotalStakeCell } from '../common/cells/total_stake_cell';
 
 /**
  * NodeValidatorTableRow is a component that represents a single row
@@ -20,7 +22,7 @@ export const NodeValidatorTableRow: React.FC = () => {
         <NodeNameCell />
       </td>
       <td>
-        <StakeCell />
+        <TotalStakeCell />
       </td>
       <td>
         <FeeCell />
@@ -33,6 +35,12 @@ export const NodeValidatorTableRow: React.FC = () => {
       </td>
       <td>
         <HotShotConsensusCell />
+      </td>
+      <td>
+        <ClaimInCell />
+      </td>
+      <td>
+        <ActionsCell />
       </td>
     </tr>
   );

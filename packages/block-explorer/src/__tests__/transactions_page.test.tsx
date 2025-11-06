@@ -4,7 +4,7 @@ import Transactions from '../app/transactions/page';
 
 describe('Transactions', () => {
   it('should not throw', () => {
-    render(<Transactions />);
+    render(<Transactions searchParams={Promise.resolve({})} />);
   });
 
   it('should not throw when no params are provided', async () => {

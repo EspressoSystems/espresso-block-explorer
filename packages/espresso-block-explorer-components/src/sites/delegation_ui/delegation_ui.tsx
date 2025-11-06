@@ -3,6 +3,7 @@ import './colors.css';
 import { RetrieveActiveValidators } from './contexts/active_validators_context';
 import { RetrieveAllValidators } from './contexts/all_validators_context';
 import { DeriveConsensusSet } from './contexts/consensus_map_context';
+import { ProvideESPBalance } from './contexts/esp_balance_context';
 import { DeriveRank } from './contexts/rank_map_context';
 import { DeriveTotalStake } from './contexts/total_stake_context';
 import { ProvideTotalSupply } from './contexts/total_supply_context';
@@ -24,17 +25,19 @@ const DelegationUI: React.FC<DelegationPageProps> = () => {
       <DelegationHeader />
 
       <ProvideTotalSupply>
-        <RetrieveAllValidators>
-          <RetrieveActiveValidators>
-            <DeriveTotalStake>
-              <DeriveConsensusSet>
-                <DeriveRank>
-                  <DelegationUIContent />
-                </DeriveRank>
-              </DeriveConsensusSet>
-            </DeriveTotalStake>
-          </RetrieveActiveValidators>
-        </RetrieveAllValidators>
+        <ProvideESPBalance>
+          <RetrieveAllValidators>
+            <RetrieveActiveValidators>
+              <DeriveTotalStake>
+                <DeriveConsensusSet>
+                  <DeriveRank>
+                    <DelegationUIContent />
+                  </DeriveRank>
+                </DeriveConsensusSet>
+              </DeriveTotalStake>
+            </RetrieveActiveValidators>
+          </RetrieveAllValidators>
+        </ProvideESPBalance>
       </ProvideTotalSupply>
     </main>
   );

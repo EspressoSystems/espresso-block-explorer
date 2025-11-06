@@ -5,6 +5,7 @@ import './colors.css';
 import './delegation_ui_content.css';
 import ButtonLarge from './elements/buttons/button_large';
 import { SegmentedButton } from './elements/buttons/segmented_button';
+import { MyBalance } from './my_balance';
 import { NetworkStats } from './network_stats';
 import { ValidatorTableSortStateProvider } from './validator_nodes_table/common/validator_table_sort_state';
 import { DelegationTable } from './validator_nodes_table/table/delegation_table';
@@ -34,7 +35,7 @@ const EmptyTable: React.FC = () => {
       <DelegationTableHeader />
       <tbody>
         <tr>
-          <td className="no-data" colSpan={7}>
+          <td className="no-data" colSpan={8}>
             <Text text="Nothing brewing yet..." />
             <br />
             <br />
@@ -83,6 +84,8 @@ export const DelegationUIContent: React.FC = () => {
   return (
     <section className="delegation-ui-content edge-margin">
       <NetworkStats />
+
+      <MyBalance />
 
       <div className="delegation-ui-table-controls">
         <SegmentedButton

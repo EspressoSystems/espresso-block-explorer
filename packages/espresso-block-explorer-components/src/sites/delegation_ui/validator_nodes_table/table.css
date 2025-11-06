@@ -1,20 +1,50 @@
+:root {
+  --validator-node-table--border-color: var(--color--brown--3--alpha-24);
+  --validator-node-table--gradient-color-start: var(
+    --color--brown--1--alpha-60
+  );
+  --validator-node-table--gradient-color-middle: var(
+    --color--brown--0--alpha-60
+  );
+  --validator-node-table--gradient-color-end: var(--color--brown--1--alpha-60);
+  --validator-node-table--background--gradient-color-start: var(
+    --color--brown--0
+  );
+  --validator-node-table--background--gradient-color-end: var(
+    --color--brown--0
+  );
+  --validator-node-table--header--background-color: var(
+    --color--brown--3--alpha-12
+  );
+  --validator-node-table--header--foreground-color: var(--color--brown--text);
+  --validator-node-table--cell--background-color: var(
+    --color--brown--0--alpha-015
+  );
+  --validator-node-table--button--background-color: var(--color--brown--4);
+  --validator-node-table--button--foreground-color: var(--color--brown--0);
+  --validator-node-table--cell--foreground-color: var(--color--brown--4);
+}
+
 table.all-validators-table,
 div.all-validators-grid {
   border-radius: 8px;
   border-width: 1px;
-  font-size: 14px;
+  font-size: 12px;
   width: 100%;
-  margin: 32px 0;
 
-  border: 1px solid var(--color--undesign--orange-1--alpha-24);
+  border: 1px solid var(--validator-node-table--border-color);
   background:
     linear-gradient(
       270deg,
-      var(--color--brown--1--alpha-60) 0%,
-      var(--color--brown--0--alpha-60) 50%,
-      var(--color--brown--1--alpha-60) 100%
+      var(--validator-node-table--gradient-color-start) 0%,
+      var(--validator-node-table--gradient-color-middle) 50%,
+      var(--validator-node-table--gradient-color-end) 100%
     ),
-    linear-gradient(0deg, var(--color--brown--0), var(--color--brown--0));
+    linear-gradient(
+      0deg,
+      var(--validator-node-table--background--gradient-color-start),
+      var(--validator-node-table--background--gradient-color-end)
+    );
 }
 
 table.all-validators-table th:nth-child(1),
@@ -51,34 +81,37 @@ table.all-validators-table th {
   height: 32px;
   line-height: 16px;
   padding: 0 16px;
+}
+
+table.all-validators-table th.sortable {
   cursor: pointer;
 }
 
 table.all-validators-table thead tr {
-  background: #b672371f;
+  background: var(--validator-node-table--header--background-color);
 }
 
 table.all-validators-table thead tr th,
 table.all-validators-table tbody tr:not(:nth-last-child(1)) td {
-  border-bottom: 1px solid #b672373d;
+  border-bottom: 1px solid var(--validator-node-table--border-color);
 }
 
 table.all-validators-table thead {
-  color: var(--color--brown--text);
-  --icon--fill-color: var(--color--brown--text);
+  color: var(--validator-node-table--header--foreground-color);
+  --icon--fill-color: var(--validator-node-table--header--foreground-color);
   font-size: 11px;
   text-transform: uppercase;
 }
 
 table.all-validators-table tbody {
-  color: var(--color--brown--4);
+  color: var(--validator-node-table--cell--foreground-color);
 }
 table.all-validators-table tbody tr td {
-  background: #ffffff05;
+  background: var(--validator-node-table--cell--background-color);
 }
 
 table.all-validators-table tbody tr:not(:nth-last-child(1)) td {
-  border-bottom: 1px solid #b672373d;
+  border-bottom: 1px solid var(--validator-node-table--border-color);
 }
 
 table.all-validators-table th,
@@ -95,4 +128,53 @@ table.all-validators-table td {
 
 table.all-validators-table td .percentage-text {
   opacity: 50%;
+}
+
+table.all-validators-table td.no-data {
+  text-transform: uppercase;
+  text-align: center;
+  padding-block-start: 150px;
+  padding-block-end: 150px;
+}
+
+table.all-validators-table button.bbtn.action {
+  --button-base--default--background-color: var(--color--brown--2);
+  --button-base--default--foreground-color: var(--color--brown--0);
+  /* --button-base--default--outline-color: var(--color--transparent); */
+  --button-base--hovered--background-color: var(--color--brown--1);
+  --button-base--hovered--foreground-color: var(--color--brown--4);
+  --button-base--default--border-color: var(--color--brown--3);
+  --button-base--pressed--background-color: var(--color--slate-200);
+  --button-base--default--padding-inline: 10px;
+  --button-base--default--padding-block: 8px;
+  --button-base--default--height: 24px;
+  --button-base--default--font-family: IBM Plex Mono, monospace;
+  --button-base--default--border-width: 1px;
+  --button-base--default--border-style: solid;
+}
+
+table.all-validators-table.undelegation {
+  --validator-node-table--border-color: #0000003d;
+  --validator-node-table--gradient-color-start: transparent;
+  --validator-node-table--gradient-color-middle: transparent;
+  --validator-node-table--gradient-color-end: transparent;
+  --validator-node-table--background--gradient-color-start: transparent;
+  --validator-node-table--background--gradient-color-end: transparent;
+  --validator-node-table--header--background-color: #ffffff99;
+  --validator-node-table--cell--background-color: #ffffff;
+  --validator-node-table--cell--foreground-color: #000000e0;
+  --validator-node-table--header--foreground-color: #000000b8;
+  /* --validator-node-table--button--background-color: var(--color--brown--4);
+  --validator-node-table--button--foreground-color: var(--color--brown--0); */
+}
+
+table.all-validators-table.undelegation button.bbtn.action {
+  --button-base--default--background-color: #00000066;
+  --button-base--default--foreground-color: #ffffff;
+  --button-base--default--border-color: 00000066;
+  /* --button-base--default--outline-color: var(--color--transparent);
+  --button-base--hovered--background-color: var(--color--brown--1);
+  --button-base--hovered--foreground-color: var(--color--brown--4);
+  --button-base--default--border-color: var(--color--brown--3);
+  --button-base--pressed--background-color: var(--color--slate-200); */
 }

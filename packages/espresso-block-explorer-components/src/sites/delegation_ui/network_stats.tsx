@@ -1,7 +1,7 @@
 import Text from '@/components/text/Text';
-import { CurrentStakeCard } from './elements/card/current_stake_card';
-import { EstimatedAPRCard } from './elements/card/estimated_apr_card';
-import { TimeToNextEpochCard } from './elements/card/time_to_epoch_card';
+import { CurrentlyStaked } from './currently_staked';
+import { EpochEndsIn } from './epoch_ends_in';
+import { EstimatedAPR } from './estimated_apr';
 import './network_stats.css';
 
 /**
@@ -9,15 +9,15 @@ import './network_stats.css';
  */
 export const NetworkStats: React.FC = () => {
   return (
-    <>
+    <div className="network-stats">
       <h1>
-        <Text text="Network Stats" />
+        <Text text="ESP Delegation" />
       </h1>
       <div className="network-stats-grid">
-        <CurrentStakeCard />
-        <EstimatedAPRCard />
-        <TimeToNextEpochCard />
+        <CurrentlyStaked />
+        <EstimatedAPR />
+        <EpochEndsIn />
       </div>
-    </>
+    </div>
   );
 };

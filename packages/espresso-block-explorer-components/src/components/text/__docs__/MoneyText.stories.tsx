@@ -8,7 +8,7 @@ import MoneyText from '../MoneyText';
 
 interface ExampleProps {
   currency: string;
-  amount: number;
+  amount: string;
   locale: string;
 }
 const Example: React.FC<ExampleProps> = (props) => (
@@ -31,7 +31,7 @@ const Locales = {
   'fr-FR': 'fr-FR',
   'de-DE': 'de-DE',
   hi: 'hi',
-  'zh-CN': 'zh-CNx',
+  'zh-CN': 'zh-CN',
   'ar-EG': 'ar-EG',
 };
 
@@ -64,6 +64,9 @@ const meta: Meta<typeof Example> = {
         labels: ['USD', 'ETH', 'XBT', 'ESP', 'EUR', 'JPY', 'GBP'],
       },
     },
+    amount: {
+      control: 'text',
+    },
   },
 };
 
@@ -74,7 +77,7 @@ export const Money: Story = {
   args: {
     locale: 'en-US',
     currency: 'ETH',
-    amount: 1000000000000000000,
+    amount: '1000000000000000000',
   },
 };
 
@@ -82,7 +85,7 @@ export const USD: Story = {
   args: {
     locale: 'en-US',
     currency: 'USD',
-    amount: 100,
+    amount: '100',
   },
 };
 
@@ -90,7 +93,7 @@ export const ETH: Story = {
   args: {
     locale: 'en-US',
     currency: 'ETH',
-    amount: 1e18,
+    amount: '1000000000000000000',
   },
 };
 
@@ -98,7 +101,7 @@ export const XBT: Story = {
   args: {
     locale: 'en-US',
     currency: 'XBT',
-    amount: 1e8,
+    amount: '100000000',
   },
 };
 
@@ -106,7 +109,7 @@ export const BTC: Story = {
   args: {
     locale: 'en-US',
     currency: 'BTC',
-    amount: 1e8,
+    amount: '100000000',
   },
 };
 
@@ -114,7 +117,7 @@ export const ESP: Story = {
   args: {
     locale: 'en-US',
     currency: 'ESP',
-    amount: 1e18,
+    amount: '1000000000000000000',
   },
 };
 
@@ -122,7 +125,7 @@ export const EUR: Story = {
   args: {
     locale: 'en-US',
     currency: 'EUR',
-    amount: 100,
+    amount: '100',
   },
 };
 
@@ -130,7 +133,7 @@ export const JPY: Story = {
   args: {
     locale: 'en-US',
     currency: 'JPY',
-    amount: 1,
+    amount: '1',
   },
 };
 
@@ -138,6 +141,6 @@ export const GBP: Story = {
   args: {
     locale: 'en-US',
     currency: 'GBP',
-    amount: 100,
+    amount: '100',
   },
 };

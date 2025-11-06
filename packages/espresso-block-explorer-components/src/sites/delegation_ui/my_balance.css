@@ -1,0 +1,15 @@
+section.my-balance {
+  margin-top: 32px;
+}
+
+.my-balance-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 128px;
+  gap: 8px;
+}
+
+section.my-balance > h2 {
+  margin-block-start: 32px;
+  margin-block-end: 16px;
+}

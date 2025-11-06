@@ -72,26 +72,33 @@ export const interactionKeyInInput = async (
  *
  */
 export const selectTextInInput = async (
-  inputElement: HTMLInputElement,
+  canvasElement: HTMLElement,
   selectionStart: number,
   selectionEnd: number,
 ) => {
   await act(async () => {
+    const inputElement = await interactionFocusInput(canvasElement);
+
     await userEvent.pointer([
       // left click and hold at char selectionStart
       { target: inputElement, offset: selectionStart, keys: '[MouseLeft>]' },
       // drag the mouse to the right selectionEnd characters
-      { offset: selectionEnd },
+      { target: inputElement, offset: selectionEnd },
       // release the left mouse button
-      { keys: '[/MouseLeft]' },
+      { target: inputElement, keys: '[/MouseLeft]' },
     ]);
-  });
 
-  await waitFor(async () => {
-    const selection = document.getSelection()?.toString();
-    expect(selection).toBe(
-      inputElement.value.slice(selectionStart, selectionEnd),
-    );
+    await waitFor(async () => {
+      // const expectedSelectedText = inputElement.value.slice(
+      //   selectionStart,
+      //   selectionEnd,
+      // );
+      // const selection = document.getSelection()?.toString();
+
+      expect(inputElement.selectionStart).toBe(selectionStart);
+      expect(inputElement.selectionEnd).toBe(selectionEnd);
+      // expect(selection).toBe(expectedSelectedText);
+    });
   });
 };
 
