@@ -1,0 +1,38 @@
+// Fake Chain
+
+import { EnvironmentContext } from '@/components/config/environment';
+import { EspressoConfigContext } from '@/components/config/espresso';
+import { Environment } from '@/models/config/environment/environment';
+import React from 'react';
+import { MockESPTokenContract } from './esp_token_contract';
+import { MockRainbowKit } from './rainbow_kit';
+import { MockStakeTableV2Contract } from './stake_table_v2_contract';
+
+/**
+ * FakeDataMockOverrides is a React component that provides
+ * mock overrides for various contexts when the environment
+ * is set to FakeData and the relevant contracts are not
+ * already provided in the Espresso configuration.
+ */
+export const FakeDataMockOverrides: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const environment = React.useContext(EnvironmentContext);
+  const espressoConfig = React.useContext(EspressoConfigContext);
+
+  if (
+    environment !== Environment.fakeData ||
+    espressoConfig?.espTokenContractAddress ||
+    espressoConfig?.stakeTableContractAddress
+  ) {
+    return <>{children}</>;
+  }
+
+  return (
+    <MockRainbowKit>
+      <MockESPTokenContract>
+        <MockStakeTableV2Contract>{children}</MockStakeTableV2Contract>
+      </MockESPTokenContract>
+    </MockRainbowKit>
+  );
+};

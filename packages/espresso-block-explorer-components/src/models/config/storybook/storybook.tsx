@@ -6,6 +6,9 @@ import { walletAddressCodec } from '@/models/wallet_address/wallet_address';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
+import { ProvideESPTokenContract } from 'sites/delegation_ui/contexts/esp_token_contract_context';
+import { ProvideStakeTableV2Contract } from 'sites/delegation_ui/contexts/stake_table_v2_contract_context';
+import { FakeDataMockOverrides } from 'sites/delegation_ui/mock/fake_data';
 import { WagmiProvider } from 'wagmi';
 import { Environment } from '../environment/environment';
 import { ExplorerConfig } from '../environment/explorer';
@@ -108,7 +111,13 @@ export const StoryBookSpecifyEnvironmentAndContracts: React.FC<
         <WagmiProvider config={wagmiConfig}>
           <QueryClientProvider client={queryClient}>
             <RainbowKitProvider>
-              <RainbowKitContextInjector>{children}</RainbowKitContextInjector>
+              <RainbowKitContextInjector>
+                <ProvideESPTokenContract>
+                  <ProvideStakeTableV2Contract>
+                    <FakeDataMockOverrides>{children}</FakeDataMockOverrides>
+                  </ProvideStakeTableV2Contract>
+                </ProvideESPTokenContract>
+              </RainbowKitContextInjector>
             </RainbowKitProvider>
           </QueryClientProvider>
         </WagmiProvider>
