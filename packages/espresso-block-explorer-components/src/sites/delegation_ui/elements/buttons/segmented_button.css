@@ -1,0 +1,37 @@
+:root {
+}
+
+.btn-segmented {
+  display: inline-flex;
+  border: 1px solid var(--color-border-primary);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--color-background-secondary);
+  background:
+    linear-gradient(0deg, var(--color--brown--0), var(--color--brown--0)),
+    linear-gradient(
+      270deg,
+      var(--color--brown--0--alpha-60) 0%,
+      var(--color--brown--1--alpha-60) 100%
+    );
+  border: 1px solid var(--color--undesign--orange-1--alpha-24);
+  box-sizing: border-box;
+  padding: 2px;
+  border-radius: 6px;
+}
+
+.btn-segmented .bbtn {
+  --button-base--default--height: 28px;
+  --button-base--default--border-radius: 4px;
+}
+
+.btn-segmented .bbtn[data-selected='false'] {
+  --button-base--default--background-color: transparent;
+  --button-base--default--foreground-color: var(--color--brown--3);
+  --button-base--hovered--background-color: var(--color--brown--1);
+}
+
+.btn-segmented .bbtn[data-selected='true'] {
+  --button-base--default--background-color: var(--color--brown--4);
+  --button-base--default--foreground-color: var(--color--brown--0);
+}
