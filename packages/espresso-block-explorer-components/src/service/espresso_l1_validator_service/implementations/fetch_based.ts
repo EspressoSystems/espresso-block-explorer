@@ -24,7 +24,7 @@ export class FetchBasedL1ValidatorService implements L1ValidatorService {
     );
     this.validatorsAll = new FetchBasedValidatorsAllAPI(
       fetcher,
-      new URL('nodes/all', baseURL),
+      new URL('nodes/all/', baseURL),
     );
     this.validatorsActive = new FetchBasedValidatorsActiveAPI(
       fetcher,

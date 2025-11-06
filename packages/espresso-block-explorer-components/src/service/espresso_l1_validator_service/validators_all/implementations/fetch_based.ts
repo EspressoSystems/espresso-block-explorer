@@ -24,15 +24,17 @@ export class FetchBasedValidatorsAllAPI implements ValidatorsAllAPI {
     this.baseURL = baseURL;
   }
 
-  async snapshot(): Promise<FullNodeSetSnapshot> {
-    return this.fetcher(this.baseURL).then(
+  async snapshot(hash: ArrayBuffer): Promise<FullNodeSetSnapshot> {
+    const hashEncoded = hexArrayBufferCodec.encode(hash);
+    const url = new URL(`./${hashEncoded}`, this.baseURL);
+    return this.fetcher(url).then(
       validateAndExpandResponse(fullNodeSetSnapshotJSONCodec.decoder),
     );
   }
 
   async updatesSince(hash: ArrayBuffer): Promise<FullNodeSetUpdate> {
     const url = new URL(
-      `all/updates/${hexArrayBufferCodec.encode(hash)}`,
+      `updates/${hexArrayBufferCodec.encode(hash)}`,
       this.baseURL,
     );
     return this.fetcher(url).then(

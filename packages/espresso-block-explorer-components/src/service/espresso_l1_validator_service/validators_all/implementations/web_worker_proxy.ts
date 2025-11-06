@@ -1,4 +1,7 @@
-import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import {
+  hexArrayBufferCodec,
+  stdBase64ArrayBufferCodec,
+} from '@/convert/codec/array_buffer';
 import { WebWorkerRequest } from '../../web_worker_types';
 import {
   FullNodeSetSnapshot,
@@ -33,8 +36,8 @@ export class WebWorkerProxyValidatorsAllAPI {
     this.service = service;
   }
 
-  async snapshot(): Promise<FullNodeSetSnapshot> {
-    return this.service.snapshot();
+  async snapshot(hash: ArrayBuffer): Promise<FullNodeSetSnapshot> {
+    return this.service.snapshot(hash);
   }
 
   async updatesSince(hash: ArrayBuffer): Promise<FullNodeSetUpdate> {
@@ -43,8 +46,10 @@ export class WebWorkerProxyValidatorsAllAPI {
 
   async handleRequest(request: ValidatorsActiveAllRequest): Promise<unknown> {
     switch (request.method) {
-      case 'snapshot':
-        return fullNodeSetSnapshotJSONCodec.encode(await this.snapshot());
+      case 'snapshot': {
+        const hash = hexArrayBufferCodec.decode(request.param[0]);
+        return fullNodeSetSnapshotJSONCodec.encode(await this.snapshot(hash));
+      }
 
       case 'updatesSince':
         return fullNodeSetUpdateJSONCodec.encode(

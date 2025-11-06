@@ -15,18 +15,20 @@ export class HexArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
   }
 }
 
-export class HexArrayBufferEncoder implements Converter<ArrayBuffer, string> {
-  convert(input: ArrayBuffer): string {
+export class HexArrayBufferEncoder
+  implements Converter<ArrayBuffer, `0x${string}`>
+{
+  convert(input: ArrayBuffer): `0x${string}` {
     // try to avoid this array allocation if possible.
-    return ['0x', ...encodeNumberIterableToHexits(new Uint8Array(input))].join(
-      '',
-    );
+    return `0x${Array.from(
+      encodeNumberIterableToHexits(new Uint8Array(input)),
+    ).join('')}`;
   }
 }
 
 export class HexArrayBufferCodec extends TypeCheckingCodec<
   ArrayBuffer,
-  string
+  `0x${string}`
 > {
   encoder = new HexArrayBufferEncoder();
   decoder = new HexArrayBufferDecoder();
