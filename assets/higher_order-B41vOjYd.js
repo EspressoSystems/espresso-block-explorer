@@ -1,0 +1,1 @@
+import{R as o}from"./iframe-DemEOwrW.js";function d(a,e){const t=n=>o.createElement(a,{...n,className:r(n.className,e)});return t.displayName="WrappedClassAdded",t}function r(a,e){return a?`${a} ${e}`:e}export{r as a,d as b};

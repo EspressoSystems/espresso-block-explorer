@@ -1,5 +1,6 @@
 import { ESPTokenContract } from '../../../contracts/esp_token/esp_token_interface';
 import { default as React } from 'react';
+import { MockL1MethodsImpl } from './l1_methods';
 /**
  * MockESPTokenContractState defines the structure of the mock
  * ESPTokenContract state.
@@ -18,26 +19,7 @@ export interface MockESPTokenContractState {
     totalSupply: bigint;
     balances: Map<`0x${string}`, bigint>;
     allowances: Map<`0x${string}`, Map<`0x${string}`, bigint>>;
-    actions: ESPTokenContractStateAction[];
-    actionMap: Map<`0x${string}`, ESPTokenContractStateAction>;
     lastUpdate: Date;
-}
-/**
- * ESPTokenContractStateAction is an abstract base class
- * representing an action that modifies the state of the
- * MockESPTokenContract.
- */
-declare abstract class ESPTokenContractStateAction {
-    readonly ts: Date;
-    /**
-     * hash computes a unique hash for the action instance.
-     */
-    abstract hash(): `0x${string}`;
-    /**
-     * applyToState applies the action to the given contract state
-     * and returns the new state.
-     */
-    abstract applyToState(state: MockESPTokenContractState): MockESPTokenContractState;
 }
 /**
  * MockESPTokenContractImpl is a mock implementation of the ESPTokenContract
@@ -49,10 +31,10 @@ declare abstract class ESPTokenContractStateAction {
  * real contract without needing to connect to a live blockchain.
  */
 export declare class MockESPTokenContractImpl implements ESPTokenContract {
-    private readonly state;
-    private readonly mutate;
+    private readonly l1Methods;
     readonly accountAddress: `0x${string}` | null;
-    constructor(state: MockESPTokenContractState, mutate: React.Dispatch<React.SetStateAction<MockESPTokenContractState>>, accountAddress: `0x${string}` | null);
+    constructor(l1Methods: MockL1MethodsImpl, state: MockESPTokenContractState, accountAddress?: `0x${string}` | null);
+    get state(): MockESPTokenContractState;
     replaceAccountAddress(accountAddress: `0x${string}` | null): MockESPTokenContractImpl;
     get lastUpdate(): Date;
     get address(): `0x${string}`;
@@ -77,4 +59,3 @@ export declare class MockESPTokenContractImpl implements ESPTokenContract {
  * ESPTokenContract.
  */
 export declare const MockESPTokenContract: React.FC<React.PropsWithChildren>;
-export {};

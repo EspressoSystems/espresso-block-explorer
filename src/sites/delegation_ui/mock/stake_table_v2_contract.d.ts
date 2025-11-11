@@ -2,13 +2,13 @@ import { ESPTokenContract } from '../../../contracts/esp_token/esp_token_interfa
 import { Undelegation, Validator } from '../../../contracts/stake_table/stake_table_interface';
 import { CommissionTracking, StakeTableV2Contract } from '../../../contracts/stake_table_v2/stake_table_v2_interface';
 import { default as React } from 'react';
+import { MockL1MethodsImpl } from './l1_methods';
 /**
  * StakeTableState defines the structure of the mock
  * StakeTableV2Contract state.
  */
 export interface StakeTableState {
     contractAddress: `0x${string}`;
-    espToken: ESPTokenContract;
     validators: Map<`0x${string}`, Validator>;
     blsKeys: Set<`0x${string}`>;
     validatorExits: Map<`0x${string}`, bigint>;
@@ -20,29 +20,18 @@ export interface StakeTableState {
     maxCommissionIncrease: number;
     commissionTracking: Map<`0x${string}`, CommissionTracking>;
     schnorrKeys: Set<`0x${string}`>;
-    actions: StakeTableStateActions[];
-    actionMap: Map<`0x${string}`, StakeTableStateActions>;
     lastUpdate: Date;
-}
-/**
- * StakeTableStateActions is an abstract base class
- * representing an action that modifies the state of the
- * MockStakeTableV2Contract.
- */
-declare abstract class StakeTableStateActions {
-    readonly ts: Date;
-    abstract hash(): `0x${string}`;
-    abstract applyToState(state: StakeTableState): StakeTableState;
 }
 /**
  * MockStakeTableV2ContractImpl is a mock implementation of the
  * StakeTableV2Contract interface for testing and development purposes.
  */
 export declare class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
-    private readonly state;
-    private readonly mutate;
+    private readonly l1Methods;
+    private readonly espToken;
     readonly accountAddress: null | `0x${string}`;
-    constructor(state: StakeTableState, mutate: React.Dispatch<React.SetStateAction<StakeTableState>>, accountAddress: null | `0x${string}`);
+    constructor(l1Methods: MockL1MethodsImpl, espToken: ESPTokenContract, state: StakeTableState, accountAddress: null | `0x${string}`);
+    get state(): StakeTableState;
     replaceAccountAddress(accountAddress: `0x${string}` | null): MockStakeTableV2ContractImpl;
     get lastUpdate(): Date;
     get address(): `0x${string}`;
@@ -83,4 +72,3 @@ export declare class MockStakeTableV2ContractImpl implements StakeTableV2Contrac
  * derived from the `nodeList` fake data.
  */
 export declare const MockStakeTableV2Contract: React.FC<React.PropsWithChildren>;
-export {};

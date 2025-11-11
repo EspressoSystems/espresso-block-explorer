@@ -126,3 +126,8 @@ export declare function emptyAsyncIterable<T>(): AsyncGenerator<T>;
  * interval in milliseconds.
  */
 export declare function timerAsyncIterable(intervalMs: number, emitImmediate?: boolean): AsyncGenerator<Date>;
+/**
+ * neverAsyncIterable is an async iterable that never yields any values
+ * and never completes.
+ */
+export declare function neverAsyncIterable(): AsyncGenerator<never>;
