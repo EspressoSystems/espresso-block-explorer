@@ -5,6 +5,7 @@ import { EspressoConfigContext } from '@/components/config/espresso';
 import { Environment } from '@/models/config/environment/environment';
 import React from 'react';
 import { MockESPTokenContract } from './esp_token_contract';
+import { MockL1Methods } from './l1_methods';
 import { MockRainbowKit } from './rainbow_kit';
 import { MockStakeTableV2Contract } from './stake_table_v2_contract';
 
@@ -30,9 +31,11 @@ export const FakeDataMockOverrides: React.FC<React.PropsWithChildren> = ({
 
   return (
     <MockRainbowKit>
-      <MockESPTokenContract>
-        <MockStakeTableV2Contract>{children}</MockStakeTableV2Contract>
-      </MockESPTokenContract>
+      <MockL1Methods>
+        <MockESPTokenContract>
+          <MockStakeTableV2Contract>{children}</MockStakeTableV2Contract>
+        </MockESPTokenContract>
+      </MockL1Methods>
     </MockRainbowKit>
   );
 };

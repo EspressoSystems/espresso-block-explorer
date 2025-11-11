@@ -36,15 +36,13 @@ const ProvideESPTokenContractUtilizingWagmi: React.FC<
   const config = useConfig();
   const espressoConfig = React.useContext(EspressoConfigContext);
 
-  if (!espressoConfig || !espressoConfig.espTokenContractAddress) {
-    return <>{children}</>;
-  }
-
-  const espContract = new ESPTokenRemote(
-    config,
-    config.chains[0].id,
-    espressoConfig.espTokenContractAddress,
-  );
+  const espContract = !espressoConfig?.espTokenContractAddress
+    ? null
+    : new ESPTokenRemote(
+        config,
+        config.chains[0].id,
+        espressoConfig.espTokenContractAddress,
+      );
 
   return (
     <ESPTokenContractContext.Provider value={espContract}>

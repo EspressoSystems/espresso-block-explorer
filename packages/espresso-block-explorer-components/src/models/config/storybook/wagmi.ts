@@ -82,15 +82,10 @@ export const localDevNet: WagmiConfig = createConfig({
 export const fakeData: WagmiConfig = createConfig({
   chains: [
     defineChain({
-      id: 31337,
+      id: 31337 as const,
       name: 'GETH (Fake Data)',
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-      rpcUrls: {
-        default: {
-          http: ['http://localhost:8545'],
-          webSocket: ['ws://localhost:8546'],
-        },
-      },
+      rpcUrls: {},
       testnet: true,
       connectors: [
         mock({

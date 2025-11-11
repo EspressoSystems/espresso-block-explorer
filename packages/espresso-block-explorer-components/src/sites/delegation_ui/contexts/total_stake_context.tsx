@@ -3,6 +3,7 @@ import { PromiseResolver } from '@/components/data';
 import { foldRIterator } from '@/functional/functional';
 import React from 'react';
 import { AllValidatorsContext } from './all_validators_context';
+import { L1RefreshTimestampContext } from './l1_refresh_timestamp_context';
 import { StakeTableV2ContractContext } from './stake_table_v2_contract_context';
 
 /**
@@ -51,6 +52,7 @@ const DeriveTotalStakeFromAllValidators: React.FC<React.PropsWithChildren> = ({
 const DeriveTotalStakeFromStakeTableV2Contract: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
+  React.useContext(L1RefreshTimestampContext);
   const stakeTableV2 = React.useContext(StakeTableV2ContractContext);
 
   if (!stakeTableV2) {
@@ -76,12 +78,11 @@ const TranslateDataContextToTotalStake: React.FC<React.PropsWithChildren> = ({
   const data = React.useContext(DataContext);
   console.debug('TranslateDataContextToTotalStake data:', data);
 
-  if (data === null || data === undefined || typeof data !== 'bigint') {
-    return <>{children}</>;
-  }
+  const value =
+    data === null || data === undefined || typeof data !== 'bigint' ? 0n : data;
 
   return (
-    <TotalStakeContext.Provider value={data}>
+    <TotalStakeContext.Provider value={value}>
       {children}
     </TotalStakeContext.Provider>
   );

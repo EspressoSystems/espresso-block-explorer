@@ -1,0 +1,24 @@
+.staking-modal-progress-indicator-area {
+  position: relative;
+  margin-top: 16px;
+  width: 182px;
+  height: 20px;
+  background: var(--color--brown--3--alpha-32);
+  mask-image: url(#dots-mask);
+  overflow: hidden;
+}
+
+.staking-modal-progress-indicator-area::before,
+.staking-modal-progress-indicator-area::after {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  /* mask-image: url(#dots-mask); */
+  transition:
+    background-color 240ms ease-in-out,
+    width 240ms ease-in-out;
+  will-change: background-color, width;
+}

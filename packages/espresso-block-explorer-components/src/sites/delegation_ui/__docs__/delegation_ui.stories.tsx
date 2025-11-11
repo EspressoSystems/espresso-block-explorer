@@ -59,7 +59,7 @@ const Example: React.FC<ExampleProps> = ({
 };
 
 const meta: Meta = {
-  title: 'Sites/Delegation UI',
+  title: 'Sites/Delegation UI/Page',
   component: Example,
   parameters: {
     layout: 'fullscreen',

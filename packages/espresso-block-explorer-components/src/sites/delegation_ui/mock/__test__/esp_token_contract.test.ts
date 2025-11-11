@@ -1,98 +1,128 @@
-import React from 'react';
 import { describe, it } from 'vitest';
 import {
   MockESPTokenContractImpl,
   MockESPTokenContractState,
 } from '../esp_token_contract';
+import { MockL1MethodsImpl, MockL1State } from '../l1_methods';
 
 const ACCOUNT1: `0x${string}` = '0x1111111111111111111111111111111111111111';
 const ACCOUNT2: `0x${string}` = '0x2222222222222222222222222222222222222222';
 
-const INITIAL_TOKEN_CONTRACT_STATE: MockESPTokenContractState = {
-  contractAddress: '0x0000000000000000000000000000000000000000',
-  version: [1, 0, 0],
-  name: 'ESP Token',
-  symbol: 'ESP',
-  decimals: 18,
-  totalSupply: 1_000_000_000_000_000_000_000_000_000n,
-  balances: new Map([
-    [ACCOUNT1, 500_000_000_000_000_000_000_000_000n],
-    [ACCOUNT2, 300_000_000_000_000_000_000_000_000n],
-  ] as const),
-  allowances: new Map(),
-  actions: [],
-  actionMap: new Map(),
-  lastUpdate: new Date(),
-};
+function createInitialL1MethodsState(): MockL1State {
+  return {
+    balances: new Map(),
+    transactions: new Map(),
+    accountAddress: null,
+    pendingBlockHeight: 1n,
+    pendingTransactions: [],
+    transactionToBlockMap: new Map(),
+    blocks: [
+      {
+        hash: `0x0000000000000000000000000000000000000000`,
+        height: 0n,
+        timestamp: 0n,
+        transactions: [],
+      },
+    ],
+
+    contractStorage: new Map(),
+  };
+}
+
+function createInitialMockESPTokenContractState(): MockESPTokenContractState {
+  return {
+    contractAddress: '0x0000000000000000000000000000000000000000',
+    version: [1, 0, 0],
+    name: 'ESP Token',
+    symbol: 'ESP',
+    decimals: 18,
+    totalSupply: 1_000_000_000_000_000_000_000_000_000n,
+    balances: new Map([
+      [ACCOUNT1, 500_000_000_000_000_000_000_000_000n],
+      [ACCOUNT2, 300_000_000_000_000_000_000_000_000n],
+    ] as const),
+    allowances: new Map(),
+    lastUpdate: new Date(),
+  };
+}
 
 function setupInitialContractState(
-  address: null | `0x${string}` = null,
-  state: MockESPTokenContractState = INITIAL_TOKEN_CONTRACT_STATE,
+  state: MockESPTokenContractState = createInitialMockESPTokenContractState(),
 ) {
-  return [
-    state,
-    new MockESPTokenContractImpl(state, () => {}, address),
-  ] as const;
+  const l1Methods = new MockL1MethodsImpl(createInitialL1MethodsState());
+  return new MockESPTokenContractImpl(l1Methods, state, null);
 }
 
 describe('MockESPTokenContractImpl', () => {
   describe('read', () => {
     it('should return the correct contract address', async () => {
-      const [state, contract] = setupInitialContractState();
-      expect(contract.address).toBe(state.contractAddress);
+      const contract = setupInitialContractState();
+      expect(contract.address).toBe(
+        createInitialMockESPTokenContractState().contractAddress,
+      );
     });
 
     it('should return the correct name', async () => {
-      const [state, contract] = setupInitialContractState();
-      expect(await contract.name()).toBe(state.name);
+      const contract = setupInitialContractState();
+      expect(await contract.name()).toBe(
+        createInitialMockESPTokenContractState().name,
+      );
     });
 
     it('should return the correct symbol', async () => {
-      const [state, contract] = setupInitialContractState();
-      expect(await contract.symbol()).toBe(state.symbol);
+      const contract = setupInitialContractState();
+      expect(await contract.symbol()).toBe(
+        createInitialMockESPTokenContractState().symbol,
+      );
     });
 
     it('should return the correct decimals', async () => {
-      const [state, contract] = setupInitialContractState();
-      expect(await contract.decimals()).toBe(state.decimals);
+      const contract = setupInitialContractState();
+      expect(await contract.decimals()).toBe(
+        createInitialMockESPTokenContractState().decimals,
+      );
     });
 
     it('should return the correct total supply', async () => {
-      const [state, contract] = setupInitialContractState();
-      expect(await contract.totalSupply()).toBe(state.totalSupply);
+      const contract = setupInitialContractState();
+      expect(await contract.totalSupply()).toBe(
+        createInitialMockESPTokenContractState().totalSupply,
+      );
     });
 
     it('should return the correct balance for an address', async () => {
-      const [state, contract] = setupInitialContractState();
-      for (const [address, balance] of state.balances.entries()) {
+      const contract = setupInitialContractState();
+      for (const [
+        address,
+        balance,
+      ] of createInitialMockESPTokenContractState().balances.entries()) {
         expect(await contract.balanceOf(address)).toBe(balance);
       }
     });
 
     it('should return zero balance for an address with no balance', async () => {
-      const [, contract] = setupInitialContractState();
+      const contract = setupInitialContractState();
       const unknownAddress: `0x${string}` =
         '0x3333333333333333333333333333333333333333';
       expect(await contract.balanceOf(unknownAddress)).toBe(0n);
     });
 
     it('should return the correct allowance for an owner and spender', async () => {
-      const [state, contract] = setupInitialContractState(null, {
-        ...INITIAL_TOKEN_CONTRACT_STATE,
-        allowances: new Map(),
-      });
-
       // Set up an allowance in the state for testing
       const owner: `0x${string}` = ACCOUNT1;
       const spender: `0x${string}` = ACCOUNT2;
       const allowanceValue = 100_000_000_000_000_000_000n;
-      state.allowances.set(owner, new Map([[spender, allowanceValue]]));
+
+      const contract = setupInitialContractState({
+        ...createInitialMockESPTokenContractState(),
+        allowances: new Map([[owner, new Map([[spender, allowanceValue]])]]),
+      });
 
       expect(await contract.allowance(owner, spender)).toBe(allowanceValue);
     });
 
     it('should return zero allowance for an owner and spender with no allowance', async () => {
-      const [, contract] = setupInitialContractState();
+      const contract = setupInitialContractState();
       const owner: `0x${string}` = ACCOUNT1;
       const spender: `0x${string}` = ACCOUNT2;
       expect(await contract.allowance(owner, spender)).toBe(0n);
@@ -101,29 +131,15 @@ describe('MockESPTokenContractImpl', () => {
 
   describe('write', () => {
     describe('transfer', () => {
-      let state = { ...INITIAL_TOKEN_CONTRACT_STATE };
-      const mutate: React.Dispatch<
-        React.SetStateAction<MockESPTokenContractState>
-      > = (newStateOrFn) => {
-        if (typeof newStateOrFn === 'function') {
-          state = newStateOrFn(state);
-          return;
-        }
-        state = newStateOrFn;
-      };
-
       it('should throw an error if no active account address is set', async () => {
-        const contract = new MockESPTokenContractImpl(state, mutate, null);
+        const contract = setupInitialContractState();
         await expect(contract.transfer(ACCOUNT2, 1000n)).rejects.toThrowError();
       });
 
       it('should throw an error if the transfer value is negative', async () => {
         const ACTIVE_ACCOUNT: `0x${string}` = ACCOUNT1;
-        const contract = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          ACTIVE_ACCOUNT,
-        );
+        const contract =
+          setupInitialContractState().replaceAccountAddress(ACTIVE_ACCOUNT);
 
         await expect(
           contract.transfer(ACCOUNT2, -1000n),
@@ -132,11 +148,8 @@ describe('MockESPTokenContractImpl', () => {
 
       it('should throw an error if the sender has insufficient balance', async () => {
         const ACTIVE_ACCOUNT: `0x${string}` = ACCOUNT1;
-        const contract = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          ACTIVE_ACCOUNT,
-        );
+        const contract =
+          setupInitialContractState().replaceAccountAddress(ACTIVE_ACCOUNT);
 
         const senderBalance = await contract.balanceOf(ACTIVE_ACCOUNT);
         const transferAmount = senderBalance + 1n;
@@ -148,11 +161,8 @@ describe('MockESPTokenContractImpl', () => {
 
       it('should transfer tokens correctly', async () => {
         const ACTIVE_ACCOUNT: `0x${string}` = ACCOUNT1;
-        const contract = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          ACTIVE_ACCOUNT,
-        );
+        const contract =
+          setupInitialContractState().replaceAccountAddress(ACTIVE_ACCOUNT);
 
         const transferAmount = 200_000_000_000_000_000_000n;
         const initialSenderBalance = await contract.balanceOf(ACTIVE_ACCOUNT);
@@ -162,14 +172,9 @@ describe('MockESPTokenContractImpl', () => {
 
         // The State has been mutated, but the contract state inside the
         // contract is not mutated.
-        const newContract = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          ACTIVE_ACCOUNT,
-        );
 
-        const finalSenderBalance = await newContract.balanceOf(ACTIVE_ACCOUNT);
-        const finalRecipientBalance = await newContract.balanceOf(ACCOUNT2);
+        const finalSenderBalance = await contract.balanceOf(ACTIVE_ACCOUNT);
+        const finalRecipientBalance = await contract.balanceOf(ACCOUNT2);
 
         expect(finalSenderBalance).toBe(initialSenderBalance - transferAmount);
         expect(finalRecipientBalance).toBe(
@@ -179,23 +184,8 @@ describe('MockESPTokenContractImpl', () => {
     });
 
     describe('approve', () => {
-      let state = { ...INITIAL_TOKEN_CONTRACT_STATE };
-      const mutate: React.Dispatch<
-        React.SetStateAction<MockESPTokenContractState>
-      > = (newStateOrFn) => {
-        if (typeof newStateOrFn === 'function') {
-          state = newStateOrFn(state);
-          return;
-        }
-        state = newStateOrFn;
-      };
-
       it('should throw an error if no active account address is set', async () => {
-        const contractWithNoAccount = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          null,
-        );
+        const contractWithNoAccount = setupInitialContractState();
 
         await expect(
           contractWithNoAccount.approve(ACCOUNT2, 1000n),
@@ -204,74 +194,36 @@ describe('MockESPTokenContractImpl', () => {
 
       it('should set the allowance correctly', async () => {
         const ACTIVE_ACCOUNT: `0x${string}` = ACCOUNT1;
-        const contract = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          ACTIVE_ACCOUNT,
-        );
+        const contract =
+          setupInitialContractState().replaceAccountAddress(ACTIVE_ACCOUNT);
 
         const approveAmount = 150_000_000_000_000_000_000n;
 
         await contract.approve(ACCOUNT2, approveAmount);
 
-        // The State has been mutated, but the contract state inside the
-        // contract is not mutated.
-        const newContract = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          ACTIVE_ACCOUNT,
-        );
-
-        const allowance = await newContract.allowance(ACTIVE_ACCOUNT, ACCOUNT2);
+        const allowance = await contract.allowance(ACTIVE_ACCOUNT, ACCOUNT2);
         expect(allowance).toBe(approveAmount);
       });
 
       it('should overwrite an existing allowance', async () => {
         const ACTIVE_ACCOUNT: `0x${string}` = ACCOUNT1;
-        const contract0 = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          ACTIVE_ACCOUNT,
-        );
+        const contract =
+          setupInitialContractState().replaceAccountAddress(ACTIVE_ACCOUNT);
 
         const initialApproveAmount = 100_000_000_000_000_000_000n;
-        await contract0.approve(ACCOUNT2, initialApproveAmount);
-        const contract1 = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          ACTIVE_ACCOUNT,
-        );
+        await contract.approve(ACCOUNT2, initialApproveAmount);
 
         const newApproveAmount = 250_000_000_000_000_000_000n;
-        await contract1.approve(ACCOUNT2, newApproveAmount);
+        await contract.approve(ACCOUNT2, newApproveAmount);
 
-        // The State has been mutated, but the contract state inside the
-        // contract is not mutated.
-        const contract2 = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          ACTIVE_ACCOUNT,
-        );
-
-        const allowance = await contract2.allowance(ACTIVE_ACCOUNT, ACCOUNT2);
+        const allowance = await contract.allowance(ACTIVE_ACCOUNT, ACCOUNT2);
         expect(allowance).toBe(newApproveAmount);
       });
     });
 
     describe('transferFrom', () => {
-      let state = { ...INITIAL_TOKEN_CONTRACT_STATE };
-      const mutate: React.Dispatch<
-        React.SetStateAction<MockESPTokenContractState>
-      > = (newStateOrFn) => {
-        if (typeof newStateOrFn === 'function') {
-          state = newStateOrFn(state);
-          return;
-        }
-        state = newStateOrFn;
-      };
-
       it('should throw an error if the transfer value is negative', async () => {
-        const contract = new MockESPTokenContractImpl(state, mutate, null);
+        const contract = setupInitialContractState();
 
         await expect(
           contract.transferFrom(ACCOUNT1, ACCOUNT2, -1000n),
@@ -279,7 +231,7 @@ describe('MockESPTokenContractImpl', () => {
       });
 
       it('should throw an error if there is insufficient allowance', async () => {
-        const contract = new MockESPTokenContractImpl(state, mutate, null);
+        const contract = setupInitialContractState();
 
         await expect(
           contract.transferFrom(ACCOUNT1, ACCOUNT2, 1_000_000_000_000n),
@@ -287,44 +239,24 @@ describe('MockESPTokenContractImpl', () => {
       });
 
       it('should transfer tokens correctly', async () => {
-        const ACTIVE_ACCOUNT: `0x${string}` = ACCOUNT2;
-        const contractApprove = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          ACCOUNT1,
-        );
+        const ACTIVE_ACCOUNT: `0x${string}` = ACCOUNT1;
+        const contract =
+          setupInitialContractState().replaceAccountAddress(ACTIVE_ACCOUNT);
 
         const approveAmount = 200_000_000_000_000_000_000n;
-        await contractApprove.approve(ACTIVE_ACCOUNT, approveAmount);
-
-        const contractTransferFrom = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          ACTIVE_ACCOUNT,
-        );
+        await contract.approve(ACCOUNT2, approveAmount);
+        const contractAccount2 = contract.replaceAccountAddress(ACCOUNT2);
 
         const transferAmount = 150_000_000_000_000_000_000n;
-        const initialSenderBalance =
-          await contractTransferFrom.balanceOf(ACCOUNT1);
+        const initialSenderBalance = await contractAccount2.balanceOf(ACCOUNT1);
         const initialRecipientBalance =
-          await contractTransferFrom.balanceOf(ACCOUNT2);
+          await contractAccount2.balanceOf(ACCOUNT2);
 
-        await contractTransferFrom.transferFrom(
-          ACCOUNT1,
-          ACCOUNT2,
-          transferAmount,
-        );
+        await contractAccount2.transferFrom(ACCOUNT1, ACCOUNT2, transferAmount);
 
-        // The State has been mutated, but the contract state inside the
-        // contract is not mutated.
-        const newContract = new MockESPTokenContractImpl(
-          state,
-          mutate,
-          ACTIVE_ACCOUNT,
-        );
-
-        const finalSenderBalance = await newContract.balanceOf(ACCOUNT1);
-        const finalRecipientBalance = await newContract.balanceOf(ACCOUNT2);
+        const finalSenderBalance = await contractAccount2.balanceOf(ACCOUNT1);
+        const finalRecipientBalance =
+          await contractAccount2.balanceOf(ACCOUNT2);
         // const finalAllowance = await newContract.allowance(ACCOUNT1, ACCOUNT2);
 
         expect(finalSenderBalance).toBe(initialSenderBalance - transferAmount);

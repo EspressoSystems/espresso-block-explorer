@@ -1,10 +1,11 @@
 import Text from '@/components/text/Text';
+import { ConsensusChip } from './consensus_chip';
 import './inactive_consensus_chip.css';
 
 export const InactiveConsensusChip: React.FC = () => {
   return (
-    <span className="consensus-chip inactive">
+    <ConsensusChip className="consensus-chip inactive">
       <Text text="Inactive" />
-    </span>
+    </ConsensusChip>
   );
 };

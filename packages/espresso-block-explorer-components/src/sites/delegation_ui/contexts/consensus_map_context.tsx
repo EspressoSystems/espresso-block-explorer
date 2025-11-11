@@ -1,4 +1,4 @@
-import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { mapIterable } from '@/functional/functional';
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
 import React from 'react';
@@ -22,13 +22,9 @@ export const DeriveConsensusSet: React.FC<React.PropsWithChildren> = ({
 }) => {
   const activeValidators = React.useContext(ActiveValidatorsContext);
 
-  if (!activeValidators) {
-    return <>{children}</>;
-  }
-
   const activeValidatorAddresses = new Map<string, ActiveNodeSetEntry>(
-    mapIterable(activeValidators.nodes, (node) => [
-      stdBase64ArrayBufferCodec.encode(node.address),
+    mapIterable(activeValidators?.nodes ?? [], (node) => [
+      hexArrayBufferCodec.encode(node.address),
       node,
     ]),
   );

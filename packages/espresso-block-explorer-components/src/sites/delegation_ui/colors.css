@@ -13,11 +13,14 @@
   --color--brown--0--alpha-015: #ffffff05;
   --color--brown--0--alpha-32: #ffffff51;
   --color--brown--0--alpha-60: #ffffff99;
-  --color--brown--1--alpha-32: #fcebde51;
+  --color--brown--1--alpha-32: #fcebde52;
+  --color--brown--1--alpha-50: #fcebde80;
   --color--brown--1--alpha-60: #fcebde99;
   --color--brown--3--alpha-12: #b672371f;
   --color--brown--3--alpha-24: #b672373d;
-  --color--brown--4--alpha-32: #451f1751;
+  --color--brown--3--alpha-32: #b6723752;
+  --color--brown--4--alpha-04: #451f170a;
+  --color--brown--4--alpha-32: #451f1752;
   --color--brown--4--alpha-40: #451f1766;
 
   --color--blue--0: #d0e8f4;
@@ -33,6 +36,7 @@
   --color--card--fill: #fff7ef;
   --color--stroke: #f8e5d4;
   --color--brown--text: #b67237;
+  --color--brown--text--darker: #915b2c;
 
   /**
    * These colors are not listed in the Style Guide but are used in the

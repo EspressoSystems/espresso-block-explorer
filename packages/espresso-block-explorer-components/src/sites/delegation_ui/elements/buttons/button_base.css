@@ -39,7 +39,7 @@
   --button-base--pressed--border-color: var(--color--slate-700);
   --button-base--pressed--background-color: var(--color--slate-200);
 
-  --button-base--disabled--opacity: 40%;
+  --button-base--disabled--opacity: 50%;
 
   --button-base--focused--outline-width: 4px;
   --button-base--focused--outline-color: var(--color--sky-700);

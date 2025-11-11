@@ -139,7 +139,7 @@ a.btn {
 
 .btn,
 .btn svg,
-.btn--flat svg {
+.btn.btn--flat svg {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -172,12 +172,12 @@ a.btn {
   color: var(--button--disabled--foreground-color);
 }
 
-.btn--flat {
+.btn.btn--flat {
   display: inline-flex;
   padding: var(--button--icon-button--padding);
 }
 
-.btn--flat {
+.btn.btn--flat {
   --text--color: var(--button-flat--default--foreground-color);
   --icon--fill-color: var(--button-flat--default--foreground-color);
 
@@ -185,7 +185,7 @@ a.btn {
   color: var(--button-flat--default--foreground-color);
 }
 
-.btn--flat:hover {
+.btn.btn--flat:hover {
   --text--color: var(--button-flat--hovered--foreground-color);
   --icon--fill-color: var(--button-flat--hovered--foreground-color);
 

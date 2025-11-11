@@ -1,0 +1,101 @@
+.staking-modal-initial-summary-and-interaction {
+  background: var(--color--brown--0);
+  padding: 24px;
+  display: grid;
+  grid-template-areas: 'validator notice' 'interaction interaction';
+  grid-template-columns: 3fr 4fr;
+  gap: 40px;
+  column-gap: 8px;
+}
+
+.staking-modal-validator-display-area {
+  grid-area: validator;
+}
+
+.staking-modal-notice-area {
+  grid-area: notice;
+}
+.staking-modal-notice-area p {
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 10px;
+  line-height: 16px;
+  color: #451f1780;
+}
+
+.staking-modal-esp-input-area {
+  grid-area: interaction;
+  position: relative;
+}
+
+.staking-modal-esp-input-area label {
+  color: #b67237;
+  font-size: 10px;
+  line-height: 16px;
+  text-transform: uppercase;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  top: 16px;
+}
+
+.staking-modal-esp-focus-display {
+  width: 100%;
+  border: 1px solid #b672373d;
+  background: #fcebde80;
+  border-radius: 16px;
+  border-width: 1px;
+  padding: 24px;
+  padding-top: 48px;
+  font-size: 32px;
+  line-height: 40px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.staking-modal-esp-focus-display.insufficient {
+  color: #f43f5e;
+}
+
+/* .staking-modal-esp-input-area input {
+} */
+
+.staking-modal-esp-input-area input:focus,
+.staking-modal-esp-input-area input:focus-visible {
+  border-color: var(--color--brown--3);
+  outline: none;
+}
+
+.staking-modal-input-info-area {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  grid-template-areas: 'nothing warning balance';
+  margin-top: 16px;
+}
+
+.staking-modal-current-balance-area {
+  grid-area: balance;
+  font-size: 10px;
+  line-height: 16px;
+  color: #b67237;
+  display: flex;
+  gap: 8px;
+  text-transform: uppercase;
+  text-align: right;
+  justify-self: end;
+}
+
+.staking-modal-insufficient-balance-warning {
+  grid-area: warning;
+  font-size: 10px;
+  line-height: 16px;
+  color: #f43f5e;
+  display: flex;
+  text-transform: uppercase;
+  justify-self: center;
+}
+
+.staking-modal-current-balance-label {
+  opacity: 60%;
+}

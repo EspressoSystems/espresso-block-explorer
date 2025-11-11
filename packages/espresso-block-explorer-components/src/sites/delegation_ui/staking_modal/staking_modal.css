@@ -1,0 +1,14 @@
+dialog.staking-modal::backdrop {
+  background: var(--color--brown--4--alpha-04);
+  backdrop-filter: blur(16px);
+}
+
+dialog.staking-modal {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  border: 1px solid var(--color--brown--3--alpha-24);
+  border-radius: 12px;
+  border-width: 1px;
+  max-width: 585px;
+}
