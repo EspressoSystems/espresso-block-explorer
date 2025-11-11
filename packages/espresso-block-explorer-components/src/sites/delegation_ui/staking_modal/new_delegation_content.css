@@ -1,0 +1,17 @@
+.staking-modal-staking-actions-area {
+  display: grid;
+  background: var(--color--brown--0);
+  color: (--color--brown--text);
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+  gap: 24px;
+  padding: 24px;
+  padding-top: 48px;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+  text-transform: uppercase;
+  --button-base--default--height: 43px;
+}

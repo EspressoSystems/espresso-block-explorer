@@ -22,13 +22,10 @@ export const RetrieveAllValidators: React.FC<React.PropsWithChildren> = ({
 }) => {
   const l1DelegationAPI = React.useContext(L1ValidatorServiceContext);
   const l1BlockID = React.useContext(L1BlockIDContext);
-  if (!l1BlockID) {
-    return <>{children}</>;
-  }
 
-  const fullValidatorListPromise = l1DelegationAPI.validatorsAll.snapshot(
-    l1BlockID.hash,
-  );
+  const fullValidatorListPromise = !l1BlockID
+    ? new Promise(() => {})
+    : l1DelegationAPI.validatorsAll.snapshot(l1BlockID.hash);
 
   return (
     <PromiseResolver promise={fullValidatorListPromise}>

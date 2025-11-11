@@ -1,0 +1,13 @@
+.staking-modal-header .staking-modal-title {
+  grid-area: title;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--color--brown--4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -20,9 +20,11 @@ import {
 } from '@/functional/functional';
 import React from 'react';
 import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
+import { L1MethodsContext } from '../contexts/l1_methods_context';
 import { StakeTableContractContext } from '../contexts/stake_table_contract_context';
 import { StakeTableV2ContractContext } from '../contexts/stake_table_v2_contract_context';
 import { MockESPTokenContractImpl } from './esp_token_contract';
+import { MockL1MethodsImpl } from './l1_methods';
 
 /**
  * StakeTableState defines the structure of the mock
@@ -30,7 +32,6 @@ import { MockESPTokenContractImpl } from './esp_token_contract';
  */
 export interface StakeTableState {
   contractAddress: `0x${string}`;
-  espToken: ESPTokenContract;
   validators: Map<`0x${string}`, Validator>;
   blsKeys: Set<`0x${string}`>;
   validatorExits: Map<`0x${string}`, bigint>;
@@ -44,8 +45,6 @@ export interface StakeTableState {
   commissionTracking: Map<`0x${string}`, CommissionTracking>;
   schnorrKeys: Set<`0x${string}`>;
 
-  actions: StakeTableStateActions[];
-  actionMap: Map<`0x${string}`, StakeTableStateActions>;
   lastUpdate: Date;
 }
 
@@ -55,6 +54,11 @@ export interface StakeTableState {
  * MockStakeTableV2Contract.
  */
 abstract class StakeTableStateActions {
+  public readonly contractAddress: undefined | `0x${string}`;
+  public abstract readonly from: `0x${string}`;
+  public abstract readonly to: `0x${string}`;
+  public abstract readonly value: bigint;
+  public abstract readonly gas: bigint;
   public readonly ts: Date = new Date();
   abstract hash(): `0x${string}`;
   abstract applyToState(state: StakeTableState): StakeTableState;
@@ -65,15 +69,23 @@ abstract class StakeTableStateActions {
  * to the resulting applied state for tracking purposes.
  */
 function applyActionToState(
-  mutateState: React.Dispatch<React.SetStateAction<StakeTableState>>,
+  l1Methods: MockL1MethodsImpl,
   action: StakeTableStateActions,
 ): void {
-  mutateState((state) => ({
-    ...action.applyToState(state),
-    actions: [...state.actions, action],
-    actionMap: new Map(state.actionMap).set(action.hash(), action),
+  const currentState =
+    l1Methods.mockReadContractStorage<StakeTableState>(
+      StakeTableStorageSymbol,
+    ) ?? null;
+
+  assertNotNull(currentState);
+
+  const nextState = {
+    ...action.applyToState(currentState),
     lastUpdate: action.ts,
-  }));
+  };
+
+  l1Methods.mockWriteContractStorage(StakeTableStorageSymbol, nextState);
+  l1Methods.mockWriteTransaction(action);
 }
 
 /**
@@ -81,15 +93,24 @@ function applyActionToState(
  * It records the validator, delegator, and amount delegated.
  */
 class Delegate extends StakeTableStateActions {
+  public readonly gas: bigint = 100_000n;
+  get from(): `0x${string}` {
+    return this.delegator;
+  }
+  get to(): `0x${string}` {
+    return this.contractAddress;
+  }
+
   constructor(
+    public readonly contractAddress: `0x${string}`,
     public readonly validator: `0x${string}`,
     public readonly delegator: `0x${string}`,
-    public readonly amount: bigint,
+    public readonly value: bigint,
   ) {
     super();
     this.validator = validator;
     this.delegator = delegator;
-    this.amount = amount;
+    this.value = value;
   }
 
   hash(): `0x${string}` {
@@ -100,7 +121,7 @@ class Delegate extends StakeTableStateActions {
     hasher.update(textEncoder.encode(this.validator).buffer);
     hasher.update(textEncoder.encode(this.delegator).buffer);
     hasher.update(
-      textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
+      textEncoder.encode(bigintCodec.encoder.convert(this.value)).buffer,
     );
     return hexArrayBufferCodec.encode(hasher.digest());
   }
@@ -112,10 +133,10 @@ class Delegate extends StakeTableStateActions {
     const newValidators = new Map(state.validators);
     const validatorInfo = newValidators.get(this.validator) ?? [0n, 0];
     const currentAmount = delegatorMap.get(this.delegator) ?? 0n;
-    delegatorMap.set(this.delegator, currentAmount + this.amount);
+    delegatorMap.set(this.delegator, currentAmount + this.value);
     newDelegations.set(this.validator, delegatorMap);
     newValidators.set(this.validator, [
-      validatorInfo[0] + this.amount,
+      validatorInfo[0] + this.value,
       validatorInfo[1],
     ]);
 
@@ -132,15 +153,24 @@ class Delegate extends StakeTableStateActions {
  * It records the validator, delegator, and amount undelegated.
  */
 class Undelegate extends StakeTableStateActions {
+  public readonly gas: bigint = 100_000n;
+  get from(): `0x${string}` {
+    return this.delegator;
+  }
+  get to(): `0x${string}` {
+    return this.contractAddress;
+  }
+
   constructor(
+    public readonly contractAddress: `0x${string}`,
     public readonly validator: `0x${string}`,
     public readonly delegator: `0x${string}`,
-    public readonly amount: bigint,
+    public readonly value: bigint,
   ) {
     super();
     this.validator = validator;
     this.delegator = delegator;
-    this.amount = amount;
+    this.value = value;
   }
 
   hash(): `0x${string}` {
@@ -151,7 +181,7 @@ class Undelegate extends StakeTableStateActions {
     hasher.update(textEncoder.encode(this.validator).buffer);
     hasher.update(textEncoder.encode(this.delegator).buffer);
     hasher.update(
-      textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
+      textEncoder.encode(bigintCodec.encoder.convert(this.value)).buffer,
     );
     return hexArrayBufferCodec.encode(hasher.digest());
   }
@@ -162,11 +192,11 @@ class Undelegate extends StakeTableStateActions {
       newDelegations.get(this.validator) ?? new Map<`0x${string}`, bigint>();
     const currentAmount = delegatorMap.get(this.delegator) ?? 0n;
     const newValidators = new Map(state.validators);
-    delegatorMap.set(this.delegator, currentAmount - this.amount);
+    delegatorMap.set(this.delegator, currentAmount - this.value);
     newDelegations.set(this.validator, delegatorMap);
     const validatorInfo = newValidators.get(this.validator) ?? [0n, 0];
     newValidators.set(this.validator, [
-      validatorInfo[0] - this.amount,
+      validatorInfo[0] - this.value,
       validatorInfo[1],
     ]);
 
@@ -175,7 +205,7 @@ class Undelegate extends StakeTableStateActions {
       newUndelegations.get(this.validator) ??
       new Map<`0x${string}`, Undelegation>();
     undelegatorMap.set(this.delegator, [
-      this.amount,
+      this.value,
       BigInt(this.ts.valueOf()) + state.exitEscrowPeriod,
     ]);
     newUndelegations.set(this.validator, undelegatorMap);
@@ -194,15 +224,24 @@ class Undelegate extends StakeTableStateActions {
  * within the StakeTableState.
  */
 class ClaimWithdrawal extends StakeTableStateActions {
+  public readonly gas: bigint = 100_000n;
+  public get from(): `0x${string}` {
+    return this.delegator;
+  }
+  public get to(): `0x${string}` {
+    return this.contractAddress;
+  }
+
   constructor(
+    public readonly contractAddress: `0x${string}`,
     public readonly validator: `0x${string}`,
     public readonly delegator: `0x${string}`,
-    public readonly amount: bigint,
+    public readonly value: bigint,
   ) {
     super();
     this.validator = validator;
     this.delegator = delegator;
-    this.amount = amount;
+    this.value = value;
   }
 
   hash(): `0x${string}` {
@@ -213,7 +252,7 @@ class ClaimWithdrawal extends StakeTableStateActions {
     hasher.update(textEncoder.encode(this.validator).buffer);
     hasher.update(textEncoder.encode(this.delegator).buffer);
     hasher.update(
-      textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
+      textEncoder.encode(bigintCodec.encoder.convert(this.value)).buffer,
     );
     return hexArrayBufferCodec.encode(hasher.digest());
   }
@@ -238,15 +277,25 @@ class ClaimWithdrawal extends StakeTableStateActions {
  * within the StakeTableState.
  */
 class ClaimValidatorExit extends StakeTableStateActions {
+  public readonly gas: bigint = 100_000n;
+  public get from(): `0x${string}` {
+    return this.delegator;
+  }
+
+  public get to(): `0x${string}` {
+    return this.contractAddress;
+  }
+
   constructor(
+    public readonly contractAddress: `0x${string}`,
     public readonly validator: `0x${string}`,
     public readonly delegator: `0x${string}`,
-    public readonly amount: bigint,
+    public readonly value: bigint,
   ) {
     super();
     this.validator = validator;
     this.delegator = delegator;
-    this.amount = amount;
+    this.value = value;
   }
 
   hash(): `0x${string}` {
@@ -257,7 +306,7 @@ class ClaimValidatorExit extends StakeTableStateActions {
     hasher.update(textEncoder.encode(this.validator).buffer);
     hasher.update(textEncoder.encode(this.delegator).buffer);
     hasher.update(
-      textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
+      textEncoder.encode(bigintCodec.encoder.convert(this.value)).buffer,
     );
     return hexArrayBufferCodec.encode(hasher.digest());
   }
@@ -284,7 +333,17 @@ class ClaimValidatorExit extends StakeTableStateActions {
  * within the MockStakeTableV2Contract.
  */
 class ValidatorExit extends StakeTableStateActions {
+  public readonly gas: bigint = 100_000n;
+  public get from(): `0x${string}` {
+    return this.validator;
+  }
+  public get to(): `0x${string}` {
+    return this.contractAddress;
+  }
+  public readonly value: bigint = 0n;
+
   constructor(
+    public readonly contractAddress: `0x${string}`,
     public readonly validator: `0x${string}`,
     public readonly exitTime: bigint,
   ) {
@@ -323,29 +382,44 @@ class ValidatorExit extends StakeTableStateActions {
   }
 }
 
+const StakeTableStorageSymbol = Symbol('StakeTableStorage');
+
 /**
  * MockStakeTableV2ContractImpl is a mock implementation of the
  * StakeTableV2Contract interface for testing and development purposes.
  */
 export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
   constructor(
-    private readonly state: StakeTableState,
-    private readonly mutate: React.Dispatch<
-      React.SetStateAction<StakeTableState>
-    >,
+    private readonly l1Methods: MockL1MethodsImpl,
+    private readonly espToken: ESPTokenContract,
+    state: StakeTableState,
     public readonly accountAddress: null | `0x${string}`,
   ) {
-    this.state = state;
-    this.mutate = mutate;
+    if (espToken instanceof MockESPTokenContractImpl) {
+      this.espToken = espToken.replaceAccountAddress(state.contractAddress);
+    }
+    if (!this.l1Methods.mockReadContractStorage(StakeTableStorageSymbol)) {
+      this.l1Methods.mockWriteContractStorage(StakeTableStorageSymbol, state);
+    }
     this.accountAddress = accountAddress;
+  }
+
+  get state(): StakeTableState {
+    const state =
+      this.l1Methods.mockReadContractStorage<StakeTableState>(
+        StakeTableStorageSymbol,
+      ) ?? null;
+    assertNotNull(state);
+    return state;
   }
 
   replaceAccountAddress(
     accountAddress: `0x${string}` | null,
   ): MockStakeTableV2ContractImpl {
     return new MockStakeTableV2ContractImpl(
+      this.l1Methods,
+      this.espToken,
       this.state,
-      this.mutate,
       accountAddress,
     );
   }
@@ -391,7 +465,7 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
   }
 
   async token(): Promise<`0x${string}`> {
-    return this.state.espToken.address;
+    return this.espToken.address;
   }
 
   async validator(account: `0x${string}`): Promise<Validator> {
@@ -440,10 +514,11 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
     }
 
     const action = new ValidatorExit(
+      this.address,
       this.accountAddress,
       BigInt(Date.now()) + this.state.exitEscrowPeriod,
     );
-    applyActionToState(this.mutate, action);
+    applyActionToState(this.l1Methods, action);
     return action.hash();
   }
 
@@ -464,18 +539,19 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
       throw new Error('Validator is not active');
     }
 
-    if ((await this.state.espToken.balanceOf(this.accountAddress)) < amount) {
+    if ((await this.espToken.balanceOf(this.accountAddress)) < amount) {
       throw new Error('Insufficient balance');
     }
 
-    await this.state.espToken.transferFrom(
-      this.accountAddress,
+    await this.espToken.transferFrom(this.accountAddress, this.address, amount);
+
+    const action = new Delegate(
       this.address,
+      validator,
+      this.accountAddress,
       amount,
     );
-
-    const action = new Delegate(validator, this.accountAddress, amount);
-    applyActionToState(this.mutate, action);
+    applyActionToState(this.l1Methods, action);
     return action.hash();
   }
 
@@ -499,17 +575,24 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
       throw new Error('Insufficient delegated amount');
     }
 
-    if (this.state.validatorExits.has(validator)) {
+    const state = this.state;
+
+    if (state.validatorExits.has(validator)) {
       throw new Error('Validator is exiting, cannot undelegate');
     }
 
-    if (this.state.undelegations.get(validator)?.has(this.accountAddress)) {
+    if (state.undelegations.get(validator)?.has(this.accountAddress)) {
       throw new Error('Existing undelegation in progress');
     }
 
-    const action = new Undelegate(validator, this.accountAddress, amount);
+    const action = new Undelegate(
+      this.address,
+      validator,
+      this.accountAddress,
+      amount,
+    );
 
-    applyActionToState(this.mutate, action);
+    applyActionToState(this.l1Methods, action);
     return action.hash();
   }
 
@@ -535,10 +618,15 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
       throw new Error('Undelegation period has not yet elapsed.');
     }
 
-    await this.state.espToken.transfer(this.accountAddress, amount);
+    await this.espToken.transfer(this.accountAddress, amount);
 
-    const action = new ClaimWithdrawal(validator, this.accountAddress, amount);
-    applyActionToState(this.mutate, action);
+    const action = new ClaimWithdrawal(
+      this.address,
+      validator,
+      this.accountAddress,
+      amount,
+    );
+    applyActionToState(this.l1Methods, action);
     return action.hash();
   }
 
@@ -561,14 +649,15 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
       throw new Error('Validator exit period has not yet elapsed.');
     }
 
-    await this.state.espToken.transfer(this.accountAddress, staked);
+    await this.espToken.transfer(this.accountAddress, staked);
 
     const action = new ClaimValidatorExit(
+      this.address,
       validator,
       this.accountAddress,
       staked,
     );
-    applyActionToState(this.mutate, action);
+    applyActionToState(this.l1Methods, action);
     return action.hash();
   }
 }
@@ -583,13 +672,29 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
 function useMockStakeTableContractState(
   espTokenContract: ESPTokenContract,
   initialStakes: Map<`0x${string}`, Map<`0x${string}`, bigint>> = new Map(),
-) {
+): StakeTableState {
   const contractAddress = '0x0000000000000000000000000000000000000002';
 
-  const [state, mutate] = React.useState<StakeTableState>({
+  assert(
+    espTokenContract instanceof MockESPTokenContractImpl,
+    'expected espTokenContract to be an instance of MockESPTokenContractImpl',
+  );
+
+  const [state] = React.useState<StakeTableState>({
     contractAddress,
-    espToken: espTokenContract,
-    validators: new Map(),
+    validators: new Map(
+      mapIterable(initialStakes, ([validatorKey]) => [
+        validatorKey,
+        [
+          foldRIterable(
+            (acc, stake) => acc + stake,
+            0n,
+            (initialStakes.get(validatorKey) ?? new Map()).values(),
+          ),
+          ValidatorStatus.active,
+        ],
+      ]),
+    ),
     blsKeys: new Set(),
     validatorExits: new Map(),
     delegations: initialStakes,
@@ -602,34 +707,10 @@ function useMockStakeTableContractState(
     commissionTracking: new Map(),
     schnorrKeys: new Set(),
 
-    actions: [],
-    actionMap: new Map(),
     lastUpdate: new Date(),
-  });
+  } as const satisfies StakeTableState);
 
-  assert(
-    state.espToken instanceof MockESPTokenContractImpl &&
-      espTokenContract instanceof MockESPTokenContractImpl,
-    'expected espTokenContract to be an instance of MockESPTokenContractImpl',
-  );
-
-  if (
-    state.espToken.accountAddress !== state.contractAddress ||
-    espTokenContract.lastUpdate.valueOf() > state.espToken.lastUpdate.valueOf()
-  ) {
-    // If our internal ESPTokenContract does not match the
-    // current contract address, or if the provided ESPTokenContract
-    // is more up-to-date, replace it.
-
-    mutate((prevState) => ({
-      ...prevState,
-      espToken: espTokenContract.replaceAccountAddress(
-        prevState.contractAddress,
-      ),
-    }));
-  }
-
-  return [state, mutate] as const;
+  return state;
 }
 
 /**
@@ -650,10 +731,19 @@ function useMockStakeTableContractState(
 export const MockStakeTableV2Contract: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
+  const l1Methods = React.useContext(L1MethodsContext);
   const accountAddress = React.useContext(RainbowKitAccountAddressContext);
   const espTokenContract = React.useContext(ESPTokenContractContext);
 
+  assertNotNull(l1Methods);
   assertNotNull(espTokenContract);
+
+  if (!(l1Methods instanceof MockL1MethodsImpl)) {
+    throw new Error(
+      'Expected l1Methods to be an instance of MockL1MethodsImpl',
+    );
+  }
+
   const initialStakes = new Map(
     mapIterable(nodeList, (node) => {
       const address = hexArrayBufferCodec.encode(node.address);
@@ -661,14 +751,15 @@ export const MockStakeTableV2Contract: React.FC<React.PropsWithChildren> = ({
     }),
   );
 
-  const [contractState, mutateContractState] = useMockStakeTableContractState(
+  const contractState = useMockStakeTableContractState(
     espTokenContract,
     initialStakes,
   );
 
   const contract = new MockStakeTableV2ContractImpl(
+    l1Methods,
+    espTokenContract,
     contractState,
-    mutateContractState,
     accountAddress as null | `0x${string}`,
   );
 

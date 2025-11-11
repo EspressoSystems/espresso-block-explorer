@@ -8,6 +8,7 @@ import EspToken from '@/contracts/esp_token/esp_token_abi';
 import React from 'react';
 import { ReadContractToAsyncSnapshot } from '../read_contract_to_async_snapshot';
 import { ESPTokenContractContext } from './esp_token_contract_context';
+import { L1RefreshTimestampContext } from './l1_refresh_timestamp_context';
 
 export const ESPBalanceContext = React.createContext<bigint>(0n);
 export const ESPBalanceAsyncSnapshotContext = React.createContext<
@@ -22,11 +23,6 @@ export const ESPBalanceAsyncSnapshotContext = React.createContext<
 export const ProvideESPBalance: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const address = React.useContext(RainbowKitAccountAddressContext);
-  if (!address) {
-    return <>{children}</>;
-  }
-
   return (
     <ProvideTotalSupplyFromContractCall>
       {children}
@@ -42,19 +38,17 @@ export const ProvideESPBalance: React.FC<React.PropsWithChildren> = ({
 export const ProvideTotalSupplyFromContractCall: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
+  React.useContext(L1RefreshTimestampContext);
   const espTokenContract = React.useContext(ESPTokenContractContext);
   const address = React.useContext(RainbowKitAccountAddressContext);
-  assertNotNull(address);
 
-  if (!espTokenContract) {
-    // Implementation for fetching total supply from an API would go here.
-    return <>{children}</>;
-  }
+  const promise =
+    !address || !espTokenContract
+      ? new Promise(() => {})
+      : espTokenContract.balanceOf(address as `0x${string}`);
 
   return (
-    <PromiseResolver
-      promise={espTokenContract.balanceOf(address as `0x${string}`)}
-    >
+    <PromiseResolver promise={promise}>
       <ConvertDataToESPBalance>{children}</ConvertDataToESPBalance>
     </PromiseResolver>
   );

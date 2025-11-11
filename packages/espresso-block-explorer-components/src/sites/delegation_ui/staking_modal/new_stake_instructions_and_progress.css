@@ -1,0 +1,61 @@
+.bbtn.approved {
+  background: #b67237;
+}
+
+.staking-modal-instruction-and-progress {
+  position: relative;
+  color: var(--color--brown--text);
+  transition: color 240ms ease-in-out;
+  will-change: color;
+}
+
+.staking-modal-instructions-and-progress.error {
+  color: #f43f5e;
+}
+.staking-modal-instructions-and-progress.error
+  .staking-modal-progress-indicator-area::before {
+  background: #f43f5e !important;
+}
+
+.staking-modal-instructions-and-progress.succeeded {
+  color: #34d399;
+}
+.staking-modal-instructions-and-progress.succeeded
+  .staking-modal-progress-indicator-area::before {
+  background: #34d399 !important;
+}
+
+.staking-modal-instructions-and-progress.approved
+  .staking-modal-progress-indicator-area::before {
+  background: var(--color--brown--text);
+  width: 50%;
+}
+
+.staking-modal-instructions-and-progress.approved.delegated
+  .staking-modal-progress-indicator-area::before {
+  background: var(--color--brown--text);
+  width: 100%;
+}
+
+.staking-modal-instructions-and-progress.waiting:not(.approved)
+  .staking-modal-progress-indicator-area::before {
+  background: var(--color--brown--text);
+  animation: fullBarLoading 420ms linear infinite;
+}
+
+.staking-modal-instructions-and-progress.approved.waiting
+  .staking-modal-progress-indicator-area::after {
+  background: var(--color--brown--text);
+  animation: fullBarLoading 420ms linear infinite;
+}
+
+@keyframes fullBarLoading {
+  0% {
+    width: 25%;
+    transform: translate(-200%);
+  }
+  100% {
+    width: 50%;
+    transform: translateX(200%);
+  }
+}

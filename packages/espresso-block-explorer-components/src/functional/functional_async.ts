@@ -451,3 +451,12 @@ export async function* timerAsyncIterable(
     yield now;
   }
 }
+
+/**
+ * neverAsyncIterable is an async iterable that never yields any values
+ * and never completes.
+ */
+// eslint-disable-next-line require-yield
+export async function* neverAsyncIterable(): AsyncGenerator<never> {
+  await new Promise(() => {});
+}

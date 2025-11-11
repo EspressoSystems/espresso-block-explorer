@@ -1,0 +1,5 @@
+.staking-modal-header .close-modal-button {
+  grid-area: close;
+  --bbutton-flat--default--foreground-color: var(--color--brown--4);
+  --bbutton-flat--hovered--foreground-color: var(--color--brown--2);
+}

@@ -1,0 +1,27 @@
+.staking-modal-staking-overview-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  background: var(--color--brown--0);
+  color: var(--color--brown--text--darker);
+
+  font-family: PPNeueMontreal, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.staking-modal-label-value-split {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--color--brown--3--alpha-24);
+}
+
+.staking-modal-label-value-split:nth-child(-n + 2) {
+  border-top: 1px solid var(--color--brown--3--alpha-24);
+}
+
+.staking-modal-label-value-split:nth-child(odd) {
+  border-right: 1px solid var(--color--brown--3--alpha-24);
+}

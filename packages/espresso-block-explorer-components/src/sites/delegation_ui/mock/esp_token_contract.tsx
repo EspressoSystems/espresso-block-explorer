@@ -1,9 +1,12 @@
+import { assertNotNull } from '@/assert/assert';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { ESPTokenContract } from '@/contracts/esp_token/esp_token_interface';
 import { bigintCodec, hexArrayBufferCodec } from '@/convert/codec';
 import { createKeccakHash } from '@/crypto/keccak/family';
 import React from 'react';
 import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
+import { L1MethodsContext } from '../contexts/l1_methods_context';
+import { MockL1MethodsImpl } from './l1_methods';
 import { MockAddress } from './rainbow_kit';
 
 /**
@@ -25,8 +28,6 @@ export interface MockESPTokenContractState {
   balances: Map<`0x${string}`, bigint>;
   allowances: Map<`0x${string}`, Map<`0x${string}`, bigint>>;
 
-  actions: ESPTokenContractStateAction[];
-  actionMap: Map<`0x${string}`, ESPTokenContractStateAction>;
   lastUpdate: Date;
 }
 
@@ -35,15 +36,18 @@ export interface MockESPTokenContractState {
  * to the resulting applied state for tracking purposes.
  */
 function applyActionToState(
-  mutateState: React.Dispatch<React.SetStateAction<MockESPTokenContractState>>,
+  l1Methods: MockL1MethodsImpl,
   action: ESPTokenContractStateAction,
 ): void {
-  mutateState((state) => ({
-    ...action.applyToState(state),
-    actions: [...state.actions, action],
-    actionMap: new Map(state.actionMap).set(action.hash(), action),
+  const currentState: null | MockESPTokenContractState =
+    l1Methods.mockReadContractStorage(ESPTokenStorageSymbol) ?? null;
+  assertNotNull(currentState);
+
+  l1Methods.mockWriteContractStorage(ESPTokenStorageSymbol, {
+    ...action.applyToState(currentState),
     lastUpdate: action.ts,
-  }));
+  });
+  l1Methods.mockWriteTransaction(action);
 }
 
 /**
@@ -52,6 +56,11 @@ function applyActionToState(
  * MockESPTokenContract.
  */
 abstract class ESPTokenContractStateAction {
+  public readonly contractAddress: undefined | `0x${string}`;
+  public abstract readonly from: `0x${string}`;
+  public abstract readonly to: `0x${string}`;
+  public abstract readonly value: bigint;
+  public abstract readonly gas: bigint;
   public readonly ts: Date = new Date();
 
   /**
@@ -73,15 +82,18 @@ abstract class ESPTokenContractStateAction {
  * within the MockESPTokenContract.
  */
 class TransferBalance extends ESPTokenContractStateAction {
+  public readonly gas: bigint = 21000n;
+
   constructor(
+    public readonly contractAddress: `0x${string}`,
     public readonly from: `0x${string}`,
     public readonly to: `0x${string}`,
-    public readonly amount: bigint,
+    public readonly value: bigint,
   ) {
     super();
     this.from = from;
     this.to = to;
-    this.amount = amount;
+    this.value = value;
   }
 
   hash() {
@@ -92,7 +104,7 @@ class TransferBalance extends ESPTokenContractStateAction {
     hasher.update(textEncoder.encode(this.from).buffer);
     hasher.update(textEncoder.encode(this.to).buffer);
     hasher.update(
-      textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
+      textEncoder.encode(bigintCodec.encoder.convert(this.value)).buffer,
     );
     return hexArrayBufferCodec.encode(hasher.digest());
   }
@@ -103,8 +115,8 @@ class TransferBalance extends ESPTokenContractStateAction {
     const fromBalance = newBalances.get(this.from) ?? 0n;
     const toBalance = newBalances.get(this.to) ?? 0n;
 
-    newBalances.set(this.from, fromBalance - this.amount);
-    newBalances.set(this.to, toBalance + this.amount);
+    newBalances.set(this.from, fromBalance - this.value);
+    newBalances.set(this.to, toBalance + this.value);
 
     return {
       ...state,
@@ -118,15 +130,26 @@ class TransferBalance extends ESPTokenContractStateAction {
  * within the MockESPTokenContract.
  */
 class ApproveAllowance extends ESPTokenContractStateAction {
+  public readonly gas: bigint = 21000n;
+
+  get from(): `0x${string}` {
+    return this.owner;
+  }
+
+  get to(): `0x${string}` {
+    return this.spender;
+  }
+
   constructor(
+    public readonly contractAddress: `0x${string}`,
     public readonly owner: `0x${string}`,
     public readonly spender: `0x${string}`,
-    public readonly amount: bigint,
+    public readonly value: bigint,
   ) {
     super();
     this.owner = owner;
     this.spender = spender;
-    this.amount = amount;
+    this.value = value;
   }
 
   hash() {
@@ -137,7 +160,7 @@ class ApproveAllowance extends ESPTokenContractStateAction {
     hasher.update(textEncoder.encode(this.owner).buffer);
     hasher.update(textEncoder.encode(this.spender).buffer);
     hasher.update(
-      textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
+      textEncoder.encode(bigintCodec.encoder.convert(this.value)).buffer,
     );
     return hexArrayBufferCodec.encode(hasher.digest());
   }
@@ -146,7 +169,7 @@ class ApproveAllowance extends ESPTokenContractStateAction {
     const newAllowances = new Map(state.allowances);
     const ownerAllowances = new Map(newAllowances.get(this.owner) ?? new Map());
 
-    ownerAllowances.set(this.spender, this.amount);
+    ownerAllowances.set(this.spender, this.value);
     newAllowances.set(this.owner, ownerAllowances);
 
     return {
@@ -155,6 +178,8 @@ class ApproveAllowance extends ESPTokenContractStateAction {
     };
   }
 }
+
+const ESPTokenStorageSymbol = Symbol('MockTokenContract');
 
 /**
  * MockESPTokenContractImpl is a mock implementation of the ESPTokenContract
@@ -167,23 +192,34 @@ class ApproveAllowance extends ESPTokenContractStateAction {
  */
 export class MockESPTokenContractImpl implements ESPTokenContract {
   constructor(
-    private readonly state: MockESPTokenContractState,
-    private readonly mutate: React.Dispatch<
-      React.SetStateAction<MockESPTokenContractState>
-    >,
-    public readonly accountAddress: `0x${string}` | null,
+    private readonly l1Methods: MockL1MethodsImpl,
+    state: MockESPTokenContractState,
+    public readonly accountAddress: `0x${string}` | null = null,
   ) {
-    this.state = state;
-    this.mutate = mutate;
+    if (!this.l1Methods.mockReadContractStorage(ESPTokenStorageSymbol)) {
+      this.l1Methods.mockWriteContractStorage(ESPTokenStorageSymbol, {
+        ...state,
+      });
+    }
+
     this.accountAddress = accountAddress;
+  }
+
+  get state(): MockESPTokenContractState {
+    const state =
+      this.l1Methods.mockReadContractStorage<MockESPTokenContractState>(
+        ESPTokenStorageSymbol,
+      ) ?? null;
+    assertNotNull(state);
+    return state;
   }
 
   replaceAccountAddress(
     accountAddress: `0x${string}` | null,
   ): MockESPTokenContractImpl {
     return new MockESPTokenContractImpl(
-      this.state,
-      this.mutate,
+      this.l1Methods,
+      this.l1Methods.mockReadContractStorage(ESPTokenStorageSymbol)!,
       accountAddress,
     );
   }
@@ -245,9 +281,9 @@ export class MockESPTokenContractImpl implements ESPTokenContract {
     }
 
     // create the action
-    const action = new TransferBalance(from, to, value);
+    const action = new TransferBalance(this.address, from, to, value);
 
-    applyActionToState(this.mutate, action);
+    applyActionToState(this.l1Methods, action);
     return action.hash();
   }
 
@@ -256,8 +292,13 @@ export class MockESPTokenContractImpl implements ESPTokenContract {
       throw new Error('No account address available for approve.');
     }
 
-    const action = new ApproveAllowance(this.accountAddress, spender, value);
-    applyActionToState(this.mutate, action);
+    const action = new ApproveAllowance(
+      this.address,
+      this.accountAddress,
+      spender,
+      value,
+    );
+    applyActionToState(this.l1Methods, action);
     return action.hash();
   }
 
@@ -284,9 +325,9 @@ export class MockESPTokenContractImpl implements ESPTokenContract {
     }
 
     // create the action
-    const action = new TransferBalance(from, to, value);
+    const action = new TransferBalance(this.address, from, to, value);
 
-    applyActionToState(this.mutate, action);
+    applyActionToState(this.l1Methods, action);
     return action.hash();
   }
 }
@@ -298,19 +339,19 @@ export class MockESPTokenContractImpl implements ESPTokenContract {
 function useMockESPContractState() {
   const contractAddress = '0x0000000000000000000000000000000000000001';
   // Mocked ESPTokenContract State
-  return React.useState<MockESPTokenContractState>({
+  const [state] = React.useState<MockESPTokenContractState>({
     contractAddress,
     version: [1, 0, 0],
     name: 'Espresso Token',
     symbol: 'ESP',
     decimals: 18,
     totalSupply: 1_234_567_8900n * 10n ** 18n,
-    balances: new Map([[MockAddress, 100_000_000_000_000_000_000n]]),
+    balances: new Map([[MockAddress, 5_000_000_000_000_000_000_000n]]),
     allowances: new Map(),
-    actions: [],
-    actionMap: new Map(),
     lastUpdate: new Date(),
-  });
+  } as const satisfies MockESPTokenContractState);
+
+  return state;
 }
 
 /**
@@ -325,11 +366,17 @@ function useMockESPContractState() {
 export const MockESPTokenContract: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const [contractState, mutateContractState] = useMockESPContractState();
+  const l1Methods = React.useContext(L1MethodsContext);
+  const contractState = useMockESPContractState();
   const accountAddress = React.useContext(RainbowKitAccountAddressContext);
+
+  if (!(l1Methods instanceof MockL1MethodsImpl)) {
+    throw new Error('MockESPTokenContract requires MockL1MethodsImpl');
+  }
+
   const contract = new MockESPTokenContractImpl(
+    l1Methods,
     contractState,
-    mutateContractState,
     accountAddress as null | `0x${string}`,
   );
 

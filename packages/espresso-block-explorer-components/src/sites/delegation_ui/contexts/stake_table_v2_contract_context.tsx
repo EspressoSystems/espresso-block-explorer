@@ -33,15 +33,13 @@ const ProvideStakeTableContractUtilizingWagmi: React.FC<
   const config = useConfig();
   const espressoConfig = React.useContext(EspressoConfigContext);
 
-  if (!espressoConfig || !espressoConfig.stakeTableContractAddress) {
-    return <>{children}</>;
-  }
-
-  const stakeTable = new StakeTableV2Remote(
-    config,
-    config.chains[0].id,
-    espressoConfig.stakeTableContractAddress,
-  );
+  const stakeTable = !espressoConfig?.stakeTableContractAddress
+    ? null
+    : new StakeTableV2Remote(
+        config,
+        config.chains[0].id,
+        espressoConfig.stakeTableContractAddress,
+      );
 
   return (
     <StakeTableContractContext.Provider value={stakeTable}>
