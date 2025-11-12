@@ -123,6 +123,9 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     }
 
     const blockHeight = this.storage.transactionToBlockMap.get(txHash) ?? null;
+    if (!blockHeight) {
+      throw new Error('Block height not found');
+    }
     const block = this.storage.blocks[Number(blockHeight)];
     if (!block) {
       throw new Error('Block not found');
@@ -382,21 +385,25 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
 
   mockAdvanceBlock() {
     const timestamp = BigInt(Math.floor(Date.now() / 1000));
+    const height = this.storage.pendingBlockHeight;
     const hash = hashFromBlockParts(
-      this.storage.pendingBlockHeight,
+      height,
       timestamp,
       this.storage.pendingTransactions,
     );
 
+    const pendingTransactions = this.storage.pendingTransactions;
+    this.storage.pendingBlockHeight++;
+    this.storage.pendingTransactions = [];
+
     const newBlock: Block = {
       hash,
-      height: this.storage.pendingBlockHeight,
-      transactions: this.storage.pendingTransactions,
+      height,
       timestamp,
+      transactions: pendingTransactions,
     };
 
     this.storage.blocks.push(newBlock);
-    this.storage.pendingTransactions = [];
 
     for (const tx of newBlock.transactions) {
       this.storage.transactionToBlockMap.set(tx.hash, newBlock.height);
@@ -425,10 +432,17 @@ function useMockL1State(initialState: Partial<MockL1State> = {}) {
     balances: initialState.balances ?? new Map(),
     transactions: initialState.transactions ?? new Map(),
     accountAddress: initialState.accountAddress ?? null,
-    pendingBlockHeight: initialState.pendingBlockHeight ?? 0n,
+    pendingBlockHeight: initialState.pendingBlockHeight ?? 1n,
     pendingTransactions: initialState.pendingTransactions ?? [],
     transactionToBlockMap: initialState.transactionToBlockMap ?? new Map(),
-    blocks: initialState.blocks ?? [],
+    blocks: initialState.blocks ?? [
+      {
+        hash: `0x0`,
+        height: 0n,
+        transactions: [],
+        timestamp: 0n,
+      },
+    ],
     contractStorage: initialState.contractStorage ?? new Map(),
   });
   return state;

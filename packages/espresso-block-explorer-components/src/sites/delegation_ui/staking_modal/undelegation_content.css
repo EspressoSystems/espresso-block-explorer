@@ -1,0 +1,30 @@
+.staking-modal-unstaking-actions-area {
+  padding: 16px 24px;
+  background: var(--color--brown--0);
+}
+
+.staking-modal-unstaking-actions-area > div:nth-child(1) {
+  margin-top: 16px;
+  color: var(--brown--color--text);
+  text-transform: uppercase;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 10px;
+}
+
+.staking-modal-unstaking-actions-area.succeeded > div:nth-child(1) {
+  color: var(--color--undesign--green-1);
+}
+
+.staking-modal-unstaking-actions-area.error > div:nth-child(1) {
+  color: var(--color--undesign--red--1);
+}
+
+.staking-modal-unstaking-actions-area.error > .bbtn {
+  --button-base--default--background-color: var(--color--undesign--red--1);
+}
+
+.staking-modal-unstaking-actions-area .bbtn {
+  width: 100%;
+  --button-base--default--height: 44px;
+}

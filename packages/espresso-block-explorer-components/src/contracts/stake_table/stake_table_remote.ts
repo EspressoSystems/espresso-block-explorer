@@ -6,14 +6,10 @@ import { StakeTableContract } from './stake_table_interface';
 export class StakeTableRemote implements StakeTableContract {
   // Implementation of ESPTokenContract methods would go here
   constructor(
-    private readonly config: Config,
-    private readonly chainID: number,
+    protected readonly config: Config,
+    protected readonly chainID: number,
     public readonly address: `0x${string}`,
-  ) {
-    this.address = address;
-    this.chainID = chainID;
-    this.config = config;
-  }
+  ) {}
 
   // Readable Methods
 
