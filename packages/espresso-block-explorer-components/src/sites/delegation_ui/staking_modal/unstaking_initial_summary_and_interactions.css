@@ -1,0 +1,25 @@
+.staking-modal-unstaking-options-area {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  grid-area: extra;
+}
+
+.staking-modal-unstaking-options-area .bbtn {
+  --button-base--default--background-color: #fcebde;
+  --button-base--default--foreground-color: #451f17;
+  --button-base--default--border-width: 1px;
+  --button-base--default--border-style: solid;
+  --button-base--default--border-color: #b672373d;
+  --button-base--default--font-size: 16px;
+  --button-base--default--padding-inline: 16px;
+  --button-base--default--padding-block: 24px;
+  --button-base--default--border-radius: 8px;
+}
+
+.staking-modal-unstaking-options-area .bbtn[data-selected='true'] {
+  --button-base--default--background-color: #b67237;
+  --button-base--default--foreground-color: #ffffff;
+  --button-base--default--border-color: #b67237;
+}

@@ -9,11 +9,7 @@ export class ESPTokenRemote implements ESPTokenContract {
     private readonly config: Config,
     private readonly chainID: number,
     public readonly address: `0x${string}`,
-  ) {
-    this.address = address;
-    this.chainID = chainID;
-    this.config = config;
-  }
+  ) {}
 
   // Readable methods
 

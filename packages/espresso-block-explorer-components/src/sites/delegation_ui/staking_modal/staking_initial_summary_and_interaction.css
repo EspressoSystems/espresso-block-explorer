@@ -2,9 +2,9 @@
   background: var(--color--brown--0);
   padding: 24px;
   display: grid;
-  grid-template-areas: 'validator notice' 'interaction interaction';
+  grid-template-areas: 'validator notice' 'interaction interaction' 'extra extra';
   grid-template-columns: 3fr 4fr;
-  gap: 40px;
+  gap: 16px;
   column-gap: 8px;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .staking-modal-esp-input-area label {
-  color: #b67237;
+  color: var(--color--brown--3);
   font-size: 10px;
   line-height: 16px;
   text-transform: uppercase;
@@ -41,8 +41,8 @@
 
 .staking-modal-esp-focus-display {
   width: 100%;
-  border: 1px solid #b672373d;
-  background: #fcebde80;
+  border: 1px solid var(--color--brown--3--alpha-24);
+  background: var(--color--brown--1--alpha-50);
   border-radius: 16px;
   border-width: 1px;
   padding: 24px;
@@ -54,7 +54,7 @@
 }
 
 .staking-modal-esp-focus-display.insufficient {
-  color: #f43f5e;
+  color: var(--color--undesign--red--1);
 }
 
 /* .staking-modal-esp-input-area input {
@@ -78,7 +78,7 @@
   grid-area: balance;
   font-size: 10px;
   line-height: 16px;
-  color: #b67237;
+  color: var(--color--brown--3);
   display: flex;
   gap: 8px;
   text-transform: uppercase;
@@ -90,7 +90,7 @@
   grid-area: warning;
   font-size: 10px;
   line-height: 16px;
-  color: #f43f5e;
+  color: var(--color--undesign--red--1);
   display: flex;
   text-transform: uppercase;
   justify-self: center;

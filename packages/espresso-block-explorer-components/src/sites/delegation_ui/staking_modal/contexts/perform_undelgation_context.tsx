@@ -9,88 +9,88 @@ import React from 'react';
 import { Config } from 'wagmi';
 import { GetTransactionReceiptReturnType } from 'wagmi/actions';
 
-export const DelegateAsyncIterableContext =
-  React.createContext<null | AsyncIterable<PerformDelegateState>>(null);
-export const SetDelegationAsyncIterableContext = React.createContext<
+export const UndelegateAsyncIterableContext =
+  React.createContext<null | AsyncIterable<PerformUndelegateState>>(null);
+export const SetUndelegationAsyncIterableContext = React.createContext<
   React.Dispatch<
-    React.SetStateAction<null | AsyncIterable<PerformDelegateState>>
+    React.SetStateAction<null | AsyncIterable<PerformUndelegateState>>
   >
 >(() => {});
 
-export const DelegateAsyncSnapshotContext = React.createContext<
-  AsyncSnapshot<PerformDelegateState>
+export const UndelegateAsyncSnapshotContext = React.createContext<
+  AsyncSnapshot<PerformUndelegateState>
 >(AsyncSnapshot.nothing());
 
-export const ProvideDelegateAsyncIterableContext: React.FC<
+export const ProvideUndelegateAsyncIterableContext: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const [asyncIterable, setAsyncIterable] =
-    React.useState<null | AsyncIterable<PerformDelegateState>>(null);
+    React.useState<null | AsyncIterable<PerformUndelegateState>>(null);
 
   return (
-    <DelegateAsyncIterableContext.Provider value={asyncIterable}>
-      <SetDelegationAsyncIterableContext.Provider value={setAsyncIterable}>
-        <DrivePerformDelegationAsyncIterable>
+    <UndelegateAsyncIterableContext.Provider value={asyncIterable}>
+      <SetUndelegationAsyncIterableContext.Provider value={setAsyncIterable}>
+        <DrivePerformUndelegationAsyncIterable>
           {children}
-        </DrivePerformDelegationAsyncIterable>
-      </SetDelegationAsyncIterableContext.Provider>
-    </DelegateAsyncIterableContext.Provider>
+        </DrivePerformUndelegationAsyncIterable>
+      </SetUndelegationAsyncIterableContext.Provider>
+    </UndelegateAsyncIterableContext.Provider>
   );
 };
 
-const DrivePerformDelegationAsyncIterable: React.FC<
+const DrivePerformUndelegationAsyncIterable: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const asyncIterable =
-    React.useContext(DelegateAsyncIterableContext) ?? neverAsyncIterable();
+    React.useContext(UndelegateAsyncIterableContext) ?? neverAsyncIterable();
 
   return (
     <AsyncIterableResolver asyncIterable={asyncIterable}>
-      <ConvertDelegationAsyncSnapshot>
+      <ConvertUndelegationAsyncSnapshot>
         {children}
-      </ConvertDelegationAsyncSnapshot>
+      </ConvertUndelegationAsyncSnapshot>
     </AsyncIterableResolver>
   );
 };
 
-const ConvertDelegationAsyncSnapshot: React.FC<React.PropsWithChildren> = ({
+const ConvertUndelegationAsyncSnapshot: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const asyncSnapshot = React.useContext(
     AsyncSnapshotContext,
-  ) as AsyncSnapshot<PerformDelegateState>;
-  const asyncIterable = React.useContext(DelegateAsyncIterableContext);
+  ) as AsyncSnapshot<PerformUndelegateState>;
+  const asyncIterable = React.useContext(UndelegateAsyncIterableContext);
 
   return (
-    <DelegateAsyncSnapshotContext.Provider
+    <UndelegateAsyncSnapshotContext.Provider
       value={asyncIterable === null ? AsyncSnapshot.nothing() : asyncSnapshot}
     >
       {children}
-    </DelegateAsyncSnapshotContext.Provider>
+    </UndelegateAsyncSnapshotContext.Provider>
   );
 };
 
-export abstract class PerformDelegateState {}
+export abstract class PerformUndelegateState {}
 
-export class PerformDelegationWaiting extends PerformDelegateState {
+export class PerformUndelegationWaiting extends PerformUndelegateState {
   constructor() {
     super();
   }
 }
 
-export class PerformDelegationSucceeded extends PerformDelegateState {
+export class PerformUndelegationSucceeded extends PerformUndelegateState {
   constructor(public readonly transactionHash: `0x${string}`) {
     super();
   }
 }
 
-export class PerformDelegationReceiptWaiting extends PerformDelegateState {
+export class PerformUndelegationReceiptWaiting extends PerformUndelegateState {
   constructor(public readonly transactionHash: `0x${string}`) {
     super();
   }
 }
 
-export class PerformDelegationReceiptRetrieved extends PerformDelegateState {
+export class PerformUndelegationReceiptRetrieved extends PerformUndelegateState {
   constructor(
     public readonly transactionHash: `0x${string}`,
     public readonly receipt: GetTransactionReceiptReturnType<Config>,
@@ -99,25 +99,25 @@ export class PerformDelegationReceiptRetrieved extends PerformDelegateState {
   }
 }
 
-export async function* performDelegation(
+export async function* performUndelegation(
   l1Methods: L1Methods<Config, number>,
   stakeTableContract: StakeTableContract,
   validatorAddress: `0x${string}`,
   stakingAmount: bigint,
   setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>,
 ) {
-  // Indicate that we are waiting for the delegation to complete
-  yield new PerformDelegationWaiting();
+  // Indicate that we are waiting for the Undelegation to complete
+  yield new PerformUndelegationWaiting();
 
-  const transactionHash = await stakeTableContract.delegate(
+  const transactionHash = await stakeTableContract.undelegate(
     validatorAddress,
     stakingAmount,
   );
 
-  yield new PerformDelegationSucceeded(transactionHash);
+  yield new PerformUndelegationSucceeded(transactionHash);
 
   // We wait for the transaction receipt
-  yield new PerformDelegationReceiptWaiting(transactionHash);
+  yield new PerformUndelegationReceiptWaiting(transactionHash);
 
   // We'll try multiple times to retrieve the receipt
   try {
@@ -127,12 +127,12 @@ export async function* performDelegation(
           hash: transactionHash,
         });
 
-        yield new PerformDelegationReceiptRetrieved(transactionHash, receipt);
+        yield new PerformUndelegationReceiptRetrieved(transactionHash, receipt);
         return;
       } catch (err) {
         if (i === 23) {
           console.error(
-            '<<<< HERE performDelegation failed to retrieve receipt:',
+            '<<<< HERE performUndelegation failed to retrieve receipt:',
             err,
           );
           throw err;

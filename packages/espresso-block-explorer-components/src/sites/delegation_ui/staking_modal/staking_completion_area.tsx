@@ -7,13 +7,13 @@ import {
   SetValidatorSelectionContext,
 } from '../contexts/validator_selection_context';
 import ButtonLarge from '../elements/buttons/button_large';
-import './completion_area.css';
 import {
   DelegateAsyncSnapshotContext,
   PerformDelegationReceiptRetrieved,
 } from './contexts/perform_delegation_context';
+import './staking_completion_area.css';
 
-export const CompletionArea: React.FC = () => {
+export const StakingCompletionArea: React.FC = () => {
   const modalControls = React.useContext(ModalContext);
   const setSelection = React.useContext(SetValidatorSelectionContext);
   const asyncSnapshot = React.useContext(DelegateAsyncSnapshotContext);

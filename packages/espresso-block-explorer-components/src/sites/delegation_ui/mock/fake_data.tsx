@@ -7,6 +7,7 @@ import React from 'react';
 import { MockESPTokenContract } from './esp_token_contract';
 import { MockL1Methods } from './l1_methods';
 import { MockRainbowKit } from './rainbow_kit';
+import { MockRewardClaimContract } from './reward_claim_contract';
 import { MockStakeTableV2Contract } from './stake_table_v2_contract';
 
 /**
@@ -33,7 +34,9 @@ export const FakeDataMockOverrides: React.FC<React.PropsWithChildren> = ({
     <MockRainbowKit>
       <MockL1Methods>
         <MockESPTokenContract>
-          <MockStakeTableV2Contract>{children}</MockStakeTableV2Contract>
+          <MockStakeTableV2Contract>
+            <MockRewardClaimContract>{children}</MockRewardClaimContract>
+          </MockStakeTableV2Contract>
         </MockESPTokenContract>
       </MockL1Methods>
     </MockRainbowKit>

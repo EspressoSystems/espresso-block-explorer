@@ -1,5 +1,5 @@
 .bbtn.approved {
-  background: #b67237;
+  background: var(--color--brown--3);
 }
 
 .staking-modal-instruction-and-progress {
@@ -10,19 +10,19 @@
 }
 
 .staking-modal-instructions-and-progress.error {
-  color: #f43f5e;
+  color: var(--color--undesign--red--1);
 }
 .staking-modal-instructions-and-progress.error
   .staking-modal-progress-indicator-area::before {
-  background: #f43f5e !important;
+  background: var(--color--undesign--red--1) !important;
 }
 
 .staking-modal-instructions-and-progress.succeeded {
-  color: #34d399;
+  color: var(--color--undesign--green-1);
 }
 .staking-modal-instructions-and-progress.succeeded
   .staking-modal-progress-indicator-area::before {
-  background: #34d399 !important;
+  background: var(--color--undesign--green-1) !important;
 }
 
 .staking-modal-instructions-and-progress.approved
@@ -34,6 +34,12 @@
 .staking-modal-instructions-and-progress.approved.delegated
   .staking-modal-progress-indicator-area::before {
   background: var(--color--brown--text);
+}
+
+.staking-modal-instructions-and-progress.approved.delegated.succeeded
+  .staking-modal-progress-indicator-area::before,
+.staking-modal-instructions-and-progress.approved.delegated.error
+  .staking-modal-progress-indicator-area::before {
   width: 100%;
 }
 

@@ -1,0 +1,14 @@
+.staking-modal-manage-stake-actions-area {
+  background: var(--color--brown--0);
+  padding: 14px;
+  gap: 24px;
+  display: flex;
+}
+
+.staking-modal-manage-stake-actions-area .bbtn {
+  width: 100%;
+  --button-base--default--height: 44px;
+  --button-base--default--font-size: 16px;
+  --button-base--default--padding-block: 16px;
+  --button-base--default--border-radius: 8px;
+}

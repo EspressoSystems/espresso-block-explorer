@@ -25,10 +25,7 @@ export class L1MethodsRemote<
   constructor(
     private readonly config: Config,
     private readonly chainID: chainId,
-  ) {
-    this.chainID = chainID;
-    this.config = config;
-  }
+  ) {}
 
   // Readable methods
 

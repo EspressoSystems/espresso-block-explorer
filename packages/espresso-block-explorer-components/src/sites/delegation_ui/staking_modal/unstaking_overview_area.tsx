@@ -3,50 +3,49 @@ import PercentageText from '@/components/text/PercentageText';
 import Text from '@/components/text/Text';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
+import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
-import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
+import { StakingAmountContext } from './contexts/staking_amount_context';
 import { LabelValueSplit } from './label_value_split';
-import './staking_overview_area.css';
 
-export const StakingOverviewArea: React.FC = () => {
+export const UnstakingOverviewArea: React.FC = () => {
   return (
     <div className="staking-modal-staking-overview-area">
-      <CurrentEpochStake />
-      <CurrentStake />
+      <CurrentBalance />
+      <NewBalance />
       <TxFee />
       <CommissionRate />
     </div>
   );
 };
 
-const CurrentEpochStake: React.FC = () => {
+const CurrentBalance: React.FC = () => {
+  const balance = React.useContext(ESPBalanceContext);
+
   return (
     <LabelValueSplit>
       <span>
-        <Text text="Current Epoch Stake" />
+        <Text text="Current Balance" />
       </span>
       <span>
-        <Text text="-" />
+        <MoneyText money={MonetaryValue.ESP(balance)} />
       </span>
     </LabelValueSplit>
   );
 };
 
-const CurrentStake: React.FC = () => {
-  const stake = React.useContext(CurrentStakeToValidatorContext);
-
-  const component = !stake ? (
-    <Text text="-" />
-  ) : (
-    <MoneyText money={MonetaryValue.ESP(stake)} />
-  );
+const NewBalance: React.FC = () => {
+  const balance = React.useContext(ESPBalanceContext);
+  const stakingAmount = React.useContext(StakingAmountContext);
 
   return (
     <LabelValueSplit>
       <span>
-        <Text text="Current Stake" />
+        <Text text="New Balance" />
       </span>
-      <span>{component}</span>
+      <span>
+        <MoneyText money={MonetaryValue.ESP(balance + stakingAmount.value)} />
+      </span>
     </LabelValueSplit>
   );
 };

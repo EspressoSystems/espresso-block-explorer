@@ -5,7 +5,6 @@
   src: url('../fonts/PPNeueMontreal-Regular.otf') format('opentype');
 }
 
-body,
 main.delegation-ui {
   font-family: 'IBM Plex Mono', monospace;
   min-width: 100vw;

@@ -219,7 +219,7 @@ export class MockESPTokenContractImpl implements ESPTokenContract {
   ): MockESPTokenContractImpl {
     return new MockESPTokenContractImpl(
       this.l1Methods,
-      this.l1Methods.mockReadContractStorage(ESPTokenStorageSymbol)!,
+      this.state,
       accountAddress,
     );
   }

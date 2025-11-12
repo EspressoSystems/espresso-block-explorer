@@ -22,7 +22,7 @@ export const ApproveAsyncSnapshotContext = React.createContext<
   AsyncSnapshot<PerformApproveState>
 >(AsyncSnapshot.nothing());
 
-export const ProvideApprovePromiseContext: React.FC<
+export const ProvideApproveAsyncIterableContext: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const [asyncIterable, setAsyncIterable] =

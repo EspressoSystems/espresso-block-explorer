@@ -23,6 +23,20 @@ export class ValidatorConfirmed extends ValidatorSelectionEnum {
   }
 }
 
+export class ValidatorConfirmedStake extends ValidatorSelectionEnum {
+  constructor(public readonly validatorAddress: ArrayBuffer) {
+    super();
+    Object.freeze(this);
+  }
+}
+
+export class ValidatorConfirmedUndelegate extends ValidatorSelectionEnum {
+  constructor(public readonly validatorAddress: ArrayBuffer) {
+    super();
+    Object.freeze(this);
+  }
+}
+
 export const ValidatorSelectionContext =
   React.createContext<ValidatorSelectionEnum>(new NoValidatorSelected());
 

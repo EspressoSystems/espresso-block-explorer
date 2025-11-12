@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { ProvideESPTokenContract } from 'sites/delegation_ui/contexts/esp_token_contract_context';
 import { ProvideL1Methods } from 'sites/delegation_ui/contexts/l1_methods_context';
+import { ProvideRewardClaimContract } from 'sites/delegation_ui/contexts/reward_claim_contract_context';
 import { ProvideStakeTableV2Contract } from 'sites/delegation_ui/contexts/stake_table_v2_contract_context';
 import { FakeDataMockOverrides } from 'sites/delegation_ui/mock/fake_data';
 import { WagmiProvider } from 'wagmi';
@@ -116,7 +117,11 @@ export const StoryBookSpecifyEnvironmentAndContracts: React.FC<
                 <ProvideL1Methods>
                   <ProvideESPTokenContract>
                     <ProvideStakeTableV2Contract>
-                      <FakeDataMockOverrides>{children}</FakeDataMockOverrides>
+                      <ProvideRewardClaimContract>
+                        <FakeDataMockOverrides>
+                          {children}
+                        </FakeDataMockOverrides>
+                      </ProvideRewardClaimContract>
                     </ProvideStakeTableV2Contract>
                   </ProvideESPTokenContract>
                 </ProvideL1Methods>

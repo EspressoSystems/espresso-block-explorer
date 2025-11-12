@@ -8,7 +8,10 @@ import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_conte
 import { DialogModal } from '../contexts/modal_context';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
 import {
+  SetValidatorSelectionContext,
   ValidatorConfirmed,
+  ValidatorConfirmedStake,
+  ValidatorConfirmedUndelegate,
   ValidatorSelectionContext,
 } from '../contexts/validator_selection_context';
 import { ProvideCurrentAllowanceToStakeTable } from './contexts/current_allowance_context';
@@ -16,11 +19,14 @@ import {
   CurrentStakeToValidatorContext,
   ProvideCurrentStakeToValidator,
 } from './contexts/current_stake_to_validator_context';
-import { ProvideApprovePromiseContext } from './contexts/perform_approve_delegation_context';
-import { ProvideDelegatePromiseContext } from './contexts/perform_delegation_context';
+import { ProvideApproveAsyncIterableContext } from './contexts/perform_approve_delegation_context';
+import { ProvideDelegateAsyncIterableContext } from './contexts/perform_delegation_context';
+import { ProvideUndelegateAsyncIterableContext } from './contexts/perform_undelgation_context';
 import { ProvideStakingAmountContexts } from './contexts/staking_amount_context';
+import { ManageStakeContent } from './manage_stake_content';
 import { NewDelegationContent } from './new_delegation_content';
 import './staking_modal.css';
+import { UndelegationContent } from './undelegation_content';
 import { ValidatorSelectionNeededContent } from './validator_selection_needed_content';
 
 export const StakingModal: React.FC = () => {
@@ -35,7 +41,11 @@ const StakingModalContent: React.FC = () => {
   const allValidators = React.useContext(AllValidatorsContext);
   const selectedValidator = React.useContext(ValidatorSelectionContext);
 
-  if (selectedValidator instanceof ValidatorConfirmed) {
+  if (
+    selectedValidator instanceof ValidatorConfirmed ||
+    selectedValidator instanceof ValidatorConfirmedStake ||
+    selectedValidator instanceof ValidatorConfirmedUndelegate
+  ) {
     const foundValidator =
       allValidators?.nodes.find(
         (validator) =>
@@ -75,25 +85,42 @@ const ProvideCurrentStakingInformation: React.FC<React.PropsWithChildren> = ({
   return (
     <ProvideCurrentStakeToValidator>
       <ProvideCurrentAllowanceToStakeTable>
-        <ProvideApprovePromiseContext>
-          <ProvideDelegatePromiseContext>
-            {children}
-          </ProvideDelegatePromiseContext>
-        </ProvideApprovePromiseContext>
+        <ProvideApproveAsyncIterableContext>
+          <ProvideDelegateAsyncIterableContext>
+            <ProvideUndelegateAsyncIterableContext>
+              {children}
+            </ProvideUndelegateAsyncIterableContext>
+          </ProvideDelegateAsyncIterableContext>
+        </ProvideApproveAsyncIterableContext>
       </ProvideCurrentAllowanceToStakeTable>
     </ProvideCurrentStakeToValidator>
   );
 };
 
 const ValidatorConfirmedContent: React.FC = () => {
+  const selectedValidator = React.useContext(ValidatorSelectionContext);
+  const setSelectedValidator = React.useContext(SetValidatorSelectionContext);
+  const currentStakeToValidator = React.useContext(
+    CurrentStakeToValidatorContext,
+  );
+
+  if (selectedValidator instanceof ValidatorConfirmedStake) {
+    return <NewDelegationContent />;
+  }
+
+  if (selectedValidator instanceof ValidatorConfirmedUndelegate) {
+    return <UndelegationContent />;
+  }
+
+  if (!(selectedValidator instanceof ValidatorConfirmed)) {
+    assert(false);
+  }
+
   // We have a confirmed Validator.
   // We need to know the context in which we are evaluating this
   // validator.
   // Do we have an existing delegation?  If so, we are in manage mode.
   // If not, we are in new delegation mode.
-  const currentStakeToValidator = React.useContext(
-    CurrentStakeToValidatorContext,
-  );
 
   if (currentStakeToValidator === null) {
     // We haven't loaded our stake yet, we don't know which component to
@@ -104,13 +131,13 @@ const ValidatorConfirmedContent: React.FC = () => {
   if (currentStakeToValidator <= 0n) {
     // We don't have any current stake, so we are considered to be a
     // brand new Delegation.
-    return <NewDelegationContent />;
+    setSelectedValidator(
+      new ValidatorConfirmedStake(selectedValidator.validatorAddress),
+    );
+    return <></>;
   }
 
-  // We have existing Stake to this Validator, so we must now ask questions
-  // about what they wish to do.
-
-  // Do don't have that context yet, so we'll just assume a new Delegation
-
-  return <NewDelegationContent />;
+  // We have a current Stake, so we must ask the user how he/she would like
+  // to continue.
+  return <ManageStakeContent />;
 };
