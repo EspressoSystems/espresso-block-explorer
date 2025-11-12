@@ -1,8 +1,8 @@
 import { Config } from 'wagmi';
 import { StakeTableContract } from './stake_table_interface';
 export declare class StakeTableRemote implements StakeTableContract {
-    private readonly config;
-    private readonly chainID;
+    protected readonly config: Config;
+    protected readonly chainID: number;
     readonly address: `0x${string}`;
     constructor(config: Config, chainID: number, address: `0x${string}`);
     lightClient(): Promise<`0x${string}`>;

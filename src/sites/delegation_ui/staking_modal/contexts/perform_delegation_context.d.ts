@@ -7,7 +7,7 @@ import { GetTransactionReceiptReturnType } from 'wagmi/actions';
 export declare const DelegateAsyncIterableContext: React.Context<AsyncIterable<PerformDelegateState> | null>;
 export declare const SetDelegationAsyncIterableContext: React.Context<React.Dispatch<React.SetStateAction<AsyncIterable<PerformDelegateState> | null>>>;
 export declare const DelegateAsyncSnapshotContext: React.Context<AsyncSnapshot<PerformDelegateState>>;
-export declare const ProvideDelegatePromiseContext: React.FC<React.PropsWithChildren>;
+export declare const ProvideDelegateAsyncIterableContext: React.FC<React.PropsWithChildren>;
 export declare abstract class PerformDelegateState {
 }
 export declare class PerformDelegationWaiting extends PerformDelegateState {

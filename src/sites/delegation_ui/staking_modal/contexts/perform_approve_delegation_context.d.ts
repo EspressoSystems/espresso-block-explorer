@@ -8,7 +8,7 @@ import { GetTransactionReceiptReturnType } from 'wagmi/actions';
 export declare const ApproveAsyncIterableContext: React.Context<AsyncIterable<PerformApproveState> | null>;
 export declare const SetApproveAsyncIterableContext: React.Context<React.Dispatch<React.SetStateAction<AsyncIterable<PerformApproveState> | null>>>;
 export declare const ApproveAsyncSnapshotContext: React.Context<AsyncSnapshot<PerformApproveState>>;
-export declare const ProvideApprovePromiseContext: React.FC<React.PropsWithChildren>;
+export declare const ProvideApproveAsyncIterableContext: React.FC<React.PropsWithChildren>;
 export declare abstract class PerformApproveState {
 }
 export declare class PerformApproveWaiting extends PerformApproveState {
