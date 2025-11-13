@@ -1,9 +1,11 @@
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { nodeList } from '@/data_source/fake_data_source';
 import UnimplementedError from '@/errors/UnimplementedError';
 import {
   appendIterables,
   compareArrayBuffer,
+  dropIterable,
   filterIterable,
   firstWhereIterable,
   mapIterable,
@@ -29,6 +31,7 @@ import {
   MockL1MethodsImpl,
   UnderlyingTransaction,
 } from './l1_methods';
+import { MockAddress } from './rainbow_kit';
 import {
   ClaimWithdrawal,
   Delegate,
@@ -87,7 +90,40 @@ const zeroEpochAndBlock = new EpochAndBlock(0n, 0n, new Date(0));
 class MockStatefulWalletAPI implements WalletAPI, L1TransactionCallback {
   constructor(
     private state: MockStatefulWalletState = {
-      snapshots: new Map(),
+      snapshots: new Map([
+        [
+          MockAddress,
+          new WalletSnapshot(
+            Array.from(
+              mapIterable(
+                dropIterable(nodeList, nodeList.length - 2),
+                (node) =>
+                  new Delegation(
+                    hexArrayBufferCodec.decode(MockAddress),
+                    node.address,
+                    node.stake / 10n,
+                    zeroEpochAndBlock,
+                  ),
+              ),
+            ),
+            [],
+            Array.from(
+              mapIterable(
+                dropIterable(nodeList, nodeList.length - 2),
+                (node) =>
+                  new PendingWithdrawal(
+                    hexArrayBufferCodec.decode(MockAddress),
+                    node.address,
+                    node.stake / 10n,
+                    new Date(0),
+                  ),
+              ),
+            ),
+            0n,
+            zeroSnapshot.l1Block,
+          ),
+        ],
+      ]),
     },
   ) {}
 
@@ -285,7 +321,7 @@ function processActionOnPendingUndelegations(
   if (!(action instanceof Undelegate || action instanceof ClaimWithdrawal)) {
     return pendingUndelegations;
   }
-  const nodeString = action.to;
+  const nodeString = action.validator;
   const node = hexArrayBufferCodec.decode(nodeString);
 
   // Do we have an entry for this?

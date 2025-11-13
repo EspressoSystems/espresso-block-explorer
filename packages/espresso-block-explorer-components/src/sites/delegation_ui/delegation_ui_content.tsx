@@ -20,6 +20,8 @@ import ButtonLarge from './elements/buttons/button_large';
 import { SegmentedButton } from './elements/buttons/segmented_button';
 import { MyBalance } from './my_balance';
 import { NetworkStats } from './network_stats';
+import { PendingClaims } from './pending_claims';
+import { PendingExits } from './pending_exits';
 import { StakingModal } from './staking_modal/staking_modal';
 import { ValidatorTableSortStateProvider } from './validator_nodes_table/common/validator_table_sort_state';
 import { DelegationTable } from './validator_nodes_table/table/delegation_table';
@@ -101,6 +103,8 @@ export const DelegationUIContent: React.FC = () => {
           <NetworkStats />
 
           <MyBalance />
+          <PendingClaims />
+          <PendingExits />
           <TableControls />
 
           <ApplyFiltersToSnapshot>

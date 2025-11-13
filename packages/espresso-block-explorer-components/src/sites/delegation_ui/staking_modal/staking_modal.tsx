@@ -1,3 +1,4 @@
+import { assert } from '@/assert/assert';
 import { compareArrayBuffer } from '@/functional/functional';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
@@ -8,18 +9,24 @@ import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_conte
 import { DialogModal } from '../contexts/modal_context';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
 import {
+  ClaimRewards,
   SetValidatorSelectionContext,
   ValidatorConfirmed,
+  ValidatorConfirmedExitWithdraw,
   ValidatorConfirmedStake,
   ValidatorConfirmedUndelegate,
+  ValidatorConfirmedUndelegateWithdraw,
   ValidatorSelectionContext,
 } from '../contexts/validator_selection_context';
 import { ProvideCurrentAllowanceToStakeTable } from './contexts/current_allowance_context';
+import { ProvideCurrentPendingUndelegationToValidator } from './contexts/current_pending_undelegation_from_validator_context';
 import {
   CurrentStakeToValidatorContext,
   ProvideCurrentStakeToValidator,
 } from './contexts/current_stake_to_validator_context';
+import { ProvideClaimValidatorExitPromiseContext } from './contexts/perfom_claim_validator_exit_context';
 import { ProvideApproveAsyncIterableContext } from './contexts/perform_approve_delegation_context';
+import { ProvideClaimWithdrawalPromiseContext } from './contexts/perform_claim_withdrawal_context';
 import { ProvideDelegateAsyncIterableContext } from './contexts/perform_delegation_context';
 import { ProvideUndelegateAsyncIterableContext } from './contexts/perform_undelgation_context';
 import { ProvideStakingAmountContexts } from './contexts/staking_amount_context';
@@ -28,6 +35,8 @@ import { NewDelegationContent } from './new_delegation_content';
 import './staking_modal.css';
 import { UndelegationContent } from './undelegation_content';
 import { ValidatorSelectionNeededContent } from './validator_selection_needed_content';
+import { WithdrawClaimContent } from './withdraw_claim_content';
+import { WithdrawExitContent } from './withdraw_exit_content';
 
 export const StakingModal: React.FC = () => {
   return (
@@ -41,10 +50,16 @@ const StakingModalContent: React.FC = () => {
   const allValidators = React.useContext(AllValidatorsContext);
   const selectedValidator = React.useContext(ValidatorSelectionContext);
 
+  if (selectedValidator instanceof ClaimRewards) {
+    // TODO: Implement ClaimRewards UI here
+  }
+
   if (
     selectedValidator instanceof ValidatorConfirmed ||
     selectedValidator instanceof ValidatorConfirmedStake ||
-    selectedValidator instanceof ValidatorConfirmedUndelegate
+    selectedValidator instanceof ValidatorConfirmedUndelegate ||
+    selectedValidator instanceof ValidatorConfirmedExitWithdraw ||
+    selectedValidator instanceof ValidatorConfirmedUndelegateWithdraw
   ) {
     const foundValidator =
       allValidators?.nodes.find(
@@ -88,7 +103,11 @@ const ProvideCurrentStakingInformation: React.FC<React.PropsWithChildren> = ({
         <ProvideApproveAsyncIterableContext>
           <ProvideDelegateAsyncIterableContext>
             <ProvideUndelegateAsyncIterableContext>
-              {children}
+              <ProvideClaimWithdrawalPromiseContext>
+                <ProvideClaimValidatorExitPromiseContext>
+                  {children}
+                </ProvideClaimValidatorExitPromiseContext>
+              </ProvideClaimWithdrawalPromiseContext>
             </ProvideUndelegateAsyncIterableContext>
           </ProvideDelegateAsyncIterableContext>
         </ProvideApproveAsyncIterableContext>
@@ -103,6 +122,36 @@ const ValidatorConfirmedContent: React.FC = () => {
   const currentStakeToValidator = React.useContext(
     CurrentStakeToValidatorContext,
   );
+  React.useEffect(() => {
+    if (!(selectedValidator instanceof ValidatorConfirmed)) {
+      return;
+    }
+
+    if (
+      currentStakeToValidator === null ||
+      currentStakeToValidator === undefined ||
+      currentStakeToValidator > 0n
+    ) {
+      return;
+    }
+
+    setSelectedValidator(
+      new ValidatorConfirmedStake(selectedValidator.validatorAddress),
+    );
+    return () => {};
+  }, [selectedValidator, setSelectedValidator, currentStakeToValidator]);
+
+  if (selectedValidator instanceof ValidatorConfirmedExitWithdraw) {
+    return <WithdrawExitContent />;
+  }
+
+  if (selectedValidator instanceof ValidatorConfirmedUndelegateWithdraw) {
+    return (
+      <ProvideCurrentPendingUndelegationToValidator>
+        <WithdrawClaimContent />
+      </ProvideCurrentPendingUndelegationToValidator>
+    );
+  }
 
   if (selectedValidator instanceof ValidatorConfirmedStake) {
     return <NewDelegationContent />;
@@ -131,9 +180,7 @@ const ValidatorConfirmedContent: React.FC = () => {
   if (currentStakeToValidator <= 0n) {
     // We don't have any current stake, so we are considered to be a
     // brand new Delegation.
-    setSelectedValidator(
-      new ValidatorConfirmedStake(selectedValidator.validatorAddress),
-    );
+
     return <></>;
   }
 

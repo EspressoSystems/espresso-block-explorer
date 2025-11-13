@@ -1,6 +1,6 @@
 .delegation-ui-content {
   position: relative;
-  min-width: 1190px;
+  /* min-width: 1190px; */
   width: fit-content;
   margin: 0 auto;
 }

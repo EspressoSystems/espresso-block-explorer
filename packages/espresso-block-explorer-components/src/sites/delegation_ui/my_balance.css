@@ -1,5 +1,6 @@
 section.my-balance {
-  margin-top: 32px;
+  margin-block-start: 32px;
+  margin-block-end: 32px;
 }
 
 .my-balance-stats {
