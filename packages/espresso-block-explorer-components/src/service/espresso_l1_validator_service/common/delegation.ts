@@ -1,4 +1,4 @@
-import { bigintCodec } from '@/convert/codec';
+import { ArrayCodec, ArrayDecoder, bigintCodec } from '@/convert/codec';
 import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   assertRecordWithKeys,
@@ -14,21 +14,12 @@ import { EpochAndBlock, epochAndBlockNumberJSONCodec } from './epoch_and_block';
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L117-L129
  */
 export class Delegation {
-  readonly delegator: ArrayBuffer;
-  readonly node: ArrayBuffer;
-  readonly amount: bigint;
-  readonly effective: EpochAndBlock;
-
   constructor(
-    delegator: ArrayBuffer,
-    node: ArrayBuffer,
-    amount: bigint,
-    effective: EpochAndBlock,
+    public readonly delegator: ArrayBuffer,
+    public readonly node: ArrayBuffer,
+    public readonly amount: bigint,
+    public readonly effective: EpochAndBlock,
   ) {
-    this.delegator = delegator;
-    this.node = node;
-    this.amount = amount;
-    this.effective = effective;
     Object.freeze(this);
   }
 
@@ -84,3 +75,8 @@ export class DelegationJSONCodec extends TypeCheckingCodec<
  * Delegation objects to and from JSON.
  */
 export const delegationJSONCodec = new DelegationJSONCodec();
+
+export const delegationArrayJSONCodec = new ArrayCodec(
+  new ArrayDecoder(delegationJSONCodec),
+  new ArrayDecoder(delegationJSONCodec),
+);

@@ -3,6 +3,7 @@ import { DataContext } from '@/components/contexts/DataProvider';
 import { AsyncSnapshotContext, PromiseResolver } from '@/components/data';
 import { AsyncSnapshot } from '@/components/data/async_data/AsyncSnapshot';
 import EspToken from '@/contracts/esp_token/esp_token_abi';
+import { neverPromise } from '@/functional/functional_async';
 import React from 'react';
 import { ReadContractToAsyncSnapshot } from '../read_contract_to_async_snapshot';
 import { ESPTokenContractContext } from './esp_token_contract_context';
@@ -43,13 +44,12 @@ export const ProvideTotalSupplyFromContractCall: React.FC<
   React.useContext(L1RefreshTimestampContext);
   const espTokenContract = React.useContext(ESPTokenContractContext);
 
-  if (!espTokenContract) {
-    // Implementation for fetching total supply from an API would go here.
-    return <>{children}</>;
-  }
+  const promise = !espTokenContract
+    ? neverPromise
+    : espTokenContract.totalSupply();
 
   return (
-    <PromiseResolver promise={espTokenContract.totalSupply()}>
+    <PromiseResolver promise={promise}>
       <ConvertDataToTotalSupply>{children}</ConvertDataToTotalSupply>
     </PromiseResolver>
   );

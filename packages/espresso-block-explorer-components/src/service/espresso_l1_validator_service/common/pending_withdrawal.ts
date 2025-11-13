@@ -1,10 +1,12 @@
-import { bigintCodec, numberCodec } from '@/convert/codec';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { bigintCodec } from '@/convert/codec/bigint';
 import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
 
 /**
  * PendingWithdrawal represents a pending withdrawal.
@@ -13,21 +15,12 @@ import {
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L133-L147
  */
 export class PendingWithdrawal {
-  readonly delegator: ArrayBuffer;
-  readonly node: ArrayBuffer;
-  readonly amount: bigint;
-  readonly availableTime: Date;
-
   constructor(
-    delegator: ArrayBuffer,
-    node: ArrayBuffer,
-    amount: bigint,
-    availableTime: Date,
+    public readonly delegator: ArrayBuffer,
+    public readonly node: ArrayBuffer,
+    public readonly amount: bigint,
+    public readonly availableTime: Date,
   ) {
-    this.delegator = delegator;
-    this.node = node;
-    this.amount = amount;
-    this.availableTime = availableTime;
     Object.freeze(this);
   }
 
@@ -93,3 +86,8 @@ export class PendingWithdrawalJSONCodec extends TypeCheckingCodec<
  * PendingWithdrawal objects to and from JSON.
  */
 export const pendingWithdrawalJSONCodec = new PendingWithdrawalJSONCodec();
+
+export const pendingWithdrawalArrayJSONCodec = new ArrayCodec(
+  new ArrayDecoder(pendingWithdrawalJSONCodec),
+  new ArrayEncoder(pendingWithdrawalJSONCodec),
+);

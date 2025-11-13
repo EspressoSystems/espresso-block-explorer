@@ -19,11 +19,9 @@ import { FullNodeSetDiff } from './full_node_set_diff';
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L35
  */
 export class FullNodeSetUpdateNodeUpdate extends FullNodeSetDiff {
-  readonly validatorInformation: NodeSetEntry;
-
-  constructor(validatorInformation: NodeSetEntry) {
+  constructor(public readonly validatorInformation: NodeSetEntry) {
     super();
-    this.validatorInformation = validatorInformation;
+    Object.freeze(this);
   }
 
   toJSON() {

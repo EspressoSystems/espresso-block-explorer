@@ -6,6 +6,8 @@ import { UnimplementedActiveValidatorsAPI } from '../validators_active/implement
 import { ValidatorsActiveAPI } from '../validators_active/validators_active_api';
 import { UnimplementedValidatorAllAPI } from '../validators_all/implementations/unimplemented';
 import { ValidatorsAllAPI } from '../validators_all/validators_all_api';
+import { UnimplementedWalletAPI } from '../wallet/implementations/unimplemented';
+import { WalletAPI } from '../wallet/wallet_api';
 
 /**
  * UnimplementedL1ValidatorService is a stub implementation of the
@@ -19,6 +21,7 @@ export class UnimplementedL1ValidatorService implements L1ValidatorService {
   readonly validatorsAll: ValidatorsAllAPI = new UnimplementedValidatorAllAPI();
   readonly validatorsActive: ValidatorsActiveAPI =
     new UnimplementedActiveValidatorsAPI();
+  readonly wallet: WalletAPI = new UnimplementedWalletAPI();
 
   async setURL(): Promise<boolean> {
     throw new UnimplementedError();

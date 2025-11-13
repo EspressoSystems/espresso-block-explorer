@@ -13,4 +13,8 @@ export class UnimplementedL1BlockAPI implements L1BlockAPI {
   async getBlockForHeight(): Promise<L1BlockID> {
     throw new UnimplementedError();
   }
+
+  async getLatestBlock(): Promise<L1BlockID> {
+    throw new UnimplementedError();
+  }
 }

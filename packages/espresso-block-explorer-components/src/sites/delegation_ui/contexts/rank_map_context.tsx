@@ -1,5 +1,9 @@
 import { stdBase64ArrayBufferCodec } from '@/convert/codec';
-import { mapIterable, zipWithIterable } from '@/functional/functional';
+import {
+  emptyIterator,
+  mapIterable,
+  zipWithIterable,
+} from '@/functional/functional';
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import React from 'react';
@@ -39,24 +43,18 @@ export const DeriveRank: React.FC<React.PropsWithChildren> = ({ children }) => {
   const allValidators = React.useContext(AllValidatorsContext);
   const consensusSet = React.useContext(ConsensusMapContext);
 
-  if (!allValidators) {
-    return (
-      <RankMapContext.Provider value={new Map()}>
-        {children}
-      </RankMapContext.Provider>
-    );
-  }
-
   const validatorsAndScore = Array.from(
     zipWithIterable(
-      mapIterable(allValidators.nodes, (a) =>
+      mapIterable(allValidators?.nodes ?? emptyIterator<NodeSetEntry>(), (a) =>
         stdBase64ArrayBufferCodec.encode(a.address),
       ),
-      mapIterable(allValidators.nodes, (node) =>
-        score(
-          node,
-          consensusSet.get(stdBase64ArrayBufferCodec.encode(node.address)),
-        ),
+      mapIterable(
+        allValidators?.nodes ?? emptyIterator<NodeSetEntry>(),
+        (node) =>
+          score(
+            node,
+            consensusSet.get(stdBase64ArrayBufferCodec.encode(node.address)),
+          ),
       ),
       (a, b) => [a, b] as const,
     ),

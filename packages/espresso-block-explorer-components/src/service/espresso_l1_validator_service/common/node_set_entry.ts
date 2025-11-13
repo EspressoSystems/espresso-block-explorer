@@ -19,21 +19,13 @@ import { Ratio, ratioCodec } from './ratio';
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L26-L38
  */
 export class NodeSetEntry {
-  readonly address: ArrayBuffer;
-  readonly stakingKey: TaggedBase64;
-  readonly stake: bigint;
-  readonly commission: Ratio;
-
   constructor(
-    address: ArrayBuffer,
-    stakingKey: TaggedBase64,
-    stake: bigint,
-    commission: Ratio,
+    public readonly address: ArrayBuffer,
+    public readonly stakingKey: TaggedBase64,
+    public readonly stake: bigint,
+    public readonly commission: Ratio,
   ) {
-    this.address = address;
-    this.stakingKey = stakingKey;
-    this.stake = stake;
-    this.commission = commission;
+    Object.freeze(this);
   }
 
   toJSON() {

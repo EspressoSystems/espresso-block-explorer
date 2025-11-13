@@ -7,7 +7,7 @@ import { createKeccakHash } from '@/crypto/keccak/family';
 import React from 'react';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
 import { RewardClaimContractContext } from '../contexts/reward_claim_contract_context';
-import { MockL1MethodsImpl } from './l1_methods';
+import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
 
 /**
  * RewardClaimState defines the structure of the mock
@@ -38,7 +38,7 @@ function applyActionToState(
 
 const RewardClaimStorageSymbol = Symbol('RewardClaimStorage');
 
-abstract class RewardClaimStateAction {
+abstract class RewardClaimStateAction implements UnderlyingTransaction {
   public readonly contractAddress: undefined | `0x${string}`;
   public abstract readonly from: `0x${string}`;
   public abstract readonly to: `0x${string}`;

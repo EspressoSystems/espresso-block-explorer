@@ -10,6 +10,7 @@ import { DeriveRank } from './contexts/rank_map_context';
 import { DeriveTotalStake } from './contexts/total_stake_context';
 import { ProvideTotalSupply } from './contexts/total_supply_context';
 import { ProvideValidatorSelection } from './contexts/validator_selection_context';
+import { RetrieveWalletSnapshot } from './contexts/wallet_snapshot_context';
 import { DelegationHeader } from './delegation_header';
 import './delegation_ui.css';
 import { DelegationUIContent } from './delegation_ui_content';
@@ -42,15 +43,17 @@ const ProvideContexts: React.FC<React.PropsWithChildren> = ({ children }) => {
           <RetrieveLatestL1BlockID>
             <RetrieveAllValidators>
               <RetrieveActiveValidators>
-                <DeriveTotalStake>
-                  <DeriveConsensusSet>
-                    <DeriveRank>
-                      <ProvideValidatorSelection>
-                        {children}
-                      </ProvideValidatorSelection>
-                    </DeriveRank>
-                  </DeriveConsensusSet>
-                </DeriveTotalStake>
+                <RetrieveWalletSnapshot>
+                  <DeriveTotalStake>
+                    <DeriveConsensusSet>
+                      <DeriveRank>
+                        <ProvideValidatorSelection>
+                          {children}
+                        </ProvideValidatorSelection>
+                      </DeriveRank>
+                    </DeriveConsensusSet>
+                  </DeriveTotalStake>
+                </RetrieveWalletSnapshot>
               </RetrieveActiveValidators>
             </RetrieveAllValidators>
           </RetrieveLatestL1BlockID>

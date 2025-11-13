@@ -18,12 +18,11 @@ import {
  *       been removed, as it complicates things.
  */
 export class NodeExit {
-  readonly address: ArrayBuffer;
-  readonly exitTime: Date;
-
-  constructor(address: ArrayBuffer, exitTime: Date) {
-    this.address = address;
-    this.exitTime = exitTime;
+  constructor(
+    public readonly address: ArrayBuffer,
+    public readonly exitTime: Date,
+  ) {
+    Object.freeze(this);
   }
 
   toJSON() {

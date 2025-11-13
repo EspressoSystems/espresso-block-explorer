@@ -21,12 +21,11 @@ import { activeNodeSetDiffArrayJSONCodec } from './active_node_set_diff/active_n
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L53-L59
  */
 export class ActiveNodeSetUpdate {
-  readonly espressoBlock: EpochAndBlock;
-  readonly diff: ActiveNodeSetDiff[];
-
-  constructor(espressoBlock: EpochAndBlock, diff: ActiveNodeSetDiff[]) {
-    this.espressoBlock = espressoBlock;
-    this.diff = diff;
+  constructor(
+    public readonly espressoBlock: EpochAndBlock,
+    public readonly diff: ActiveNodeSetDiff[],
+  ) {
+    Object.freeze(this);
   }
 
   toJSON() {

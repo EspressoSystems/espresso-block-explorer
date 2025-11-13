@@ -111,6 +111,7 @@ export const MockRainbowKit: React.FC<React.PropsWithChildren> = ({
     chain,
     authenticationStatus,
   } = useMockRainbowKitState();
+
   return (
     <RainbowKitMountedContext.Provider value={true}>
       <RainbowKitModalContext.Provider

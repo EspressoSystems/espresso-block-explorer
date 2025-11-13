@@ -1,5 +1,6 @@
 import { DataContext } from '@/components/contexts/DataProvider';
 import { PromiseResolver } from '@/components/data';
+import { neverPromise } from '@/functional/functional_async';
 import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
 import React from 'react';
 import { L1BlockIDContext } from './l1_block_id_context';
@@ -24,7 +25,7 @@ export const RetrieveAllValidators: React.FC<React.PropsWithChildren> = ({
   const l1BlockID = React.useContext(L1BlockIDContext);
 
   const fullValidatorListPromise = !l1BlockID
-    ? new Promise(() => {})
+    ? neverPromise
     : l1DelegationAPI.validatorsAll.snapshot(l1BlockID.hash);
 
   return (

@@ -14,14 +14,12 @@ import {
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L55-L64
  */
 export class L1BlockID {
-  readonly number: bigint;
-  readonly hash: ArrayBuffer;
-  readonly parent: ArrayBuffer;
-
-  constructor(number: bigint, hash: ArrayBuffer, parent: ArrayBuffer) {
-    this.number = number;
-    this.hash = hash;
-    this.parent = parent;
+  constructor(
+    public readonly number: bigint,
+    public readonly hash: ArrayBuffer,
+    public readonly parent: ArrayBuffer,
+  ) {
+    Object.freeze(this);
   }
 
   toJSON() {

@@ -453,10 +453,15 @@ export async function* timerAsyncIterable(
 }
 
 /**
+ * neverPromise is a static promise that never resolves or rejects.
+ */
+export const neverPromise = new Promise(() => {});
+
+/**
  * neverAsyncIterable is an async iterable that never yields any values
  * and never completes.
  */
 // eslint-disable-next-line require-yield
 export async function* neverAsyncIterable(): AsyncGenerator<never> {
-  await new Promise(() => {});
+  await neverPromise;
 }

@@ -1,12 +1,11 @@
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { L1MethodsRemote } from '@/contracts/l1/l1_remote';
 import React from 'react';
-import { useConfig } from 'wagmi';
+import { Config, useConfig } from 'wagmi';
 
 export const L1MethodsContext = React.createContext<null | L1Methods<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  any,
-  unknown
+  Config,
+  number
 >>(null);
 
 export const ProvideL1Methods: React.FC<React.PropsWithChildren> = ({

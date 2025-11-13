@@ -15,14 +15,12 @@ import {
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L81-L90
  */
 export class EpochAndBlock {
-  readonly epoch: bigint;
-  readonly block: bigint;
-  readonly timestamp: Date;
-
-  constructor(epoch: bigint, block: bigint, timestamp: Date) {
-    this.epoch = epoch;
-    this.block = block;
-    this.timestamp = timestamp;
+  constructor(
+    public readonly epoch: bigint,
+    public readonly block: bigint,
+    public readonly timestamp: Date,
+  ) {
+    Object.freeze(this);
   }
 
   toJSON() {

@@ -1,6 +1,7 @@
 import { L1BlockAPI } from './l1_block/l1_block_api';
 import { ValidatorsActiveAPI } from './validators_active/validators_active_api';
 import { ValidatorsAllAPI } from './validators_all/validators_all_api';
+import { WalletAPI } from './wallet/wallet_api';
 
 /**
  * L1ValidatorService is the main interface for communicating with the
@@ -24,6 +25,11 @@ export interface L1ValidatorService {
    * validatorsActive provides access to the set of active validators.
    */
   readonly validatorsActive: ValidatorsActiveAPI;
+
+  /**
+   * wallet provides access to wallet-related information.
+   */
+  readonly wallet: WalletAPI;
 
   /**
    * setURL sets the base URL for the API client.

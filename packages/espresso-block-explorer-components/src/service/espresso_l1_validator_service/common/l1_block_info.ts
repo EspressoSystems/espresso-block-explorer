@@ -18,14 +18,12 @@ import {
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L42-L51
  */
 export class L1BlockInfo {
-  readonly number: bigint;
-  readonly hash: ArrayBuffer;
-  readonly timestamp: Date;
-
-  constructor(number: bigint, hash: ArrayBuffer, timestamp: Date) {
-    this.number = number;
-    this.hash = hash;
-    this.timestamp = timestamp;
+  constructor(
+    public readonly number: bigint,
+    public readonly hash: ArrayBuffer,
+    public readonly timestamp: Date,
+  ) {
+    Object.freeze(this);
   }
 
   toJSON() {
