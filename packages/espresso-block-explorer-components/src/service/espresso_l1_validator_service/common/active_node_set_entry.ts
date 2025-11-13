@@ -17,18 +17,12 @@ import { Ratio, ratioCodec } from './ratio';
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L94-L103
  */
 export class ActiveNodeSetEntry {
-  readonly address: ArrayBuffer;
-  readonly voterParticipation: Ratio;
-  readonly leaderParticipation: Ratio;
-
   constructor(
-    address: ArrayBuffer,
-    voterParticipation: Ratio,
-    leaderParticipation: Ratio,
+    public readonly address: ArrayBuffer,
+    public readonly voterParticipation: Ratio,
+    public readonly leaderParticipation: Ratio,
   ) {
-    this.address = address;
-    this.voterParticipation = voterParticipation;
-    this.leaderParticipation = leaderParticipation;
+    Object.freeze(this);
   }
 
   toJSON() {

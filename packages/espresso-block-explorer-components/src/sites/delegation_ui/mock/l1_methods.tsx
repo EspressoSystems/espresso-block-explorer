@@ -7,10 +7,12 @@ import React from 'react';
 import { BlockTag } from 'viem';
 import {
   GetBalanceParameters,
+  GetBalanceReturnType,
   GetBlockParameters,
   GetBlockReturnType,
   GetTransactionParameters,
   GetTransactionReceiptParameters,
+  GetTransactionReceiptReturnType,
   GetTransactionReturnType,
 } from 'wagmi/actions';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
@@ -18,7 +20,7 @@ import { L1MethodsContext } from '../contexts/l1_methods_context';
 type Config = typeof fakeData;
 type ChainID = Config['chains'][0]['id'];
 
-interface UnderlyingTransaction {
+export interface UnderlyingTransaction {
   contractAddress: undefined | `0x${string}`;
   from: `0x${string}`;
   to: `0x${string}`;
@@ -28,7 +30,7 @@ interface UnderlyingTransaction {
   hash(): `0x${string}`;
 }
 
-interface Transaction {
+export interface L1Transaction {
   hash: `0x${string}`;
   from: `0x${string}`;
   to: `0x${string}`;
@@ -44,13 +46,13 @@ interface Block {
   hash: `0x${string}`;
   height: bigint;
   timestamp: bigint;
-  transactions: Transaction[];
+  transactions: L1Transaction[];
 }
 
 function hashFromBlockParts(
   height: bigint,
   timestamp: bigint,
-  transactions: Transaction[],
+  transactions: L1Transaction[],
 ): `0x${string}` {
   const hasher = createKeccakHash('keccak256');
   const textEncoder = new TextEncoder();
@@ -63,16 +65,24 @@ function hashFromBlockParts(
   return hexArrayBufferCodec.encode(hasher.digest());
 }
 
+export interface L1TransactionCallback {
+  l1Transaction(action: UnderlyingTransaction): void;
+}
+
 export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
   constructor(
     private storage: MockL1State,
-    public readonly accountAddress: `0x${string}` | null = null,
+    public accountAddress: `0x${string}` | null = null,
   ) {}
 
   replaceAccountAddress(
     accountAddress: `0x${string}` | null,
   ): MockL1MethodsImpl {
     return new MockL1MethodsImpl(this.storage, accountAddress);
+  }
+
+  setAccountAddress(accountAddress: `0x${string}` | null) {
+    this.accountAddress = accountAddress;
   }
 
   async getBalance(parameters: GetBalanceParameters<Config>) {
@@ -84,14 +94,14 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
       formatted: String(balance),
       symbol: 'ESP',
       value: balance,
-    };
+    } as const satisfies GetBalanceReturnType;
   }
 
   async estimateGas() {
     return 1_000_000_000n;
   }
 
-  receiptFromTransactionAndBlock(tx: Transaction, block: Block) {
+  receiptFromTransactionAndBlock(tx: L1Transaction, block: Block) {
     const gas = block.transactions.reduce((acc, tx) => acc + tx.gas, 0n);
     return {
       chainId: 31337,
@@ -99,18 +109,17 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
       blockNumber: block.height,
       contractAddress: tx.contractAddress,
       cumulativeGasUsed: gas,
-      cumulativeGasPrice: gas,
       effectiveGasPrice: 1n,
       from: tx.transaction.from,
       gasUsed: gas,
       logs: [],
       logsBloom: `0x`,
-      status: 1,
+      status: 'success',
       to: tx.transaction.to,
       transactionHash: tx.hash,
       transactionIndex: block.transactions.findIndex((t) => t.hash === tx.hash),
-      type: 1,
-    };
+      type: 'legacy',
+    } as const satisfies GetTransactionReceiptReturnType<Config>;
   }
 
   async getTransactionReceipt(
@@ -134,18 +143,18 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
   }
 
   transactionFromTransactionAndBlock(
-    txn: Transaction,
+    txn: L1Transaction,
     block: Block,
   ): GetTransactionReturnType<Config, ChainID>;
   transactionFromTransactionAndBlock(
-    txn: Transaction,
+    txn: L1Transaction,
     block: null,
   ): Omit<
     GetTransactionReturnType<Config, ChainID>,
     'blockNumber' | 'blockHash' | 'transactionIndex'
   >;
   transactionFromTransactionAndBlock(
-    tx: Transaction,
+    tx: L1Transaction,
     block: null | Block,
   ): Omit<
     GetTransactionReturnType<Config, ChainID>,
@@ -319,7 +328,7 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
       transactionsRoot: `0x`,
       uncles: [],
       withdrawals: [],
-    };
+    } as const satisfies GetBlockReturnType<boolean, BlockTag, Config, ChainID>;
   }
 
   async getBlock<
@@ -358,6 +367,11 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
   }
 
   // Mock specific methods
+
+  private transactionCallBack: null | L1TransactionCallback = null;
+  setTransactionCallback(transactionCallBack: null | L1TransactionCallback) {
+    this.transactionCallBack = transactionCallBack;
+  }
 
   mockWriteContractStorage<T>(key: symbol, value: T) {
     this.storage.contractStorage.set(key, value);
@@ -407,16 +421,19 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
 
     for (const tx of newBlock.transactions) {
       this.storage.transactionToBlockMap.set(tx.hash, newBlock.height);
+      if (this.transactionCallBack) {
+        this.transactionCallBack.l1Transaction(tx.transaction);
+      }
     }
   }
 }
 
 export interface MockL1State {
   balances: Map<`0x${string}`, bigint>;
-  transactions: Map<`0x${string}`, Transaction>;
+  transactions: Map<`0x${string}`, L1Transaction>;
   accountAddress: `0x${string}` | null;
   pendingBlockHeight: bigint;
-  pendingTransactions: Transaction[];
+  pendingTransactions: L1Transaction[];
   transactionToBlockMap: Map<`0x${string}`, bigint>;
   blocks: Block[];
 
@@ -483,11 +500,13 @@ export const MockL1Methods: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const mockState = useMockL1State();
+  const [l1Methods] = React.useState(new MockL1MethodsImpl(mockState));
   const accountAddress = React.useContext(RainbowKitAccountAddressContext);
-  const l1Methods = new MockL1MethodsImpl(
-    mockState,
-    accountAddress as null | `0x${string}`,
-  );
+
+  React.useEffect(() => {
+    l1Methods.setAccountAddress(accountAddress as null | `0x${string}`);
+    return () => {};
+  }, [l1Methods, accountAddress]);
 
   return (
     <L1MethodsContext.Provider value={l1Methods}>

@@ -6,6 +6,8 @@ import { FetchBasedValidatorsActiveAPI } from '../validators_active/implementati
 import { ValidatorsActiveAPI } from '../validators_active/validators_active_api';
 import { FetchBasedValidatorsAllAPI } from '../validators_all/implementations/fetch_based';
 import { ValidatorsAllAPI } from '../validators_all/validators_all_api';
+import { FetchBasedWalletAPI } from '../wallet/implementations/fetch_based';
+import { WalletAPI } from '../wallet/wallet_api';
 
 /**
  * FetchBasedL1ValidatorService is an implementation of L1ValidatorService
@@ -16,6 +18,7 @@ export class FetchBasedL1ValidatorService implements L1ValidatorService {
   public readonly l1Block: L1BlockAPI;
   public readonly validatorsAll: ValidatorsAllAPI;
   public readonly validatorsActive: ValidatorsActiveAPI;
+  public readonly wallet: WalletAPI;
 
   constructor(fetcher: typeof fetch, baseURL: URL) {
     this.l1Block = new FetchBasedL1BlockAPI(
@@ -30,6 +33,7 @@ export class FetchBasedL1ValidatorService implements L1ValidatorService {
       fetcher,
       new URL('nodes/active', baseURL),
     );
+    this.wallet = new FetchBasedWalletAPI(fetcher, new URL(`wallet/`, baseURL));
   }
 
   public async setURL(): Promise<boolean> {

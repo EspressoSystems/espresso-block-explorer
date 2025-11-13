@@ -13,14 +13,11 @@ import {
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L151-L160
  */
 export class Withdrawal {
-  readonly delegator: ArrayBuffer;
-  readonly node: ArrayBuffer;
-  readonly amount: bigint;
-
-  constructor(delegator: ArrayBuffer, node: ArrayBuffer, amount: bigint) {
-    this.delegator = delegator;
-    this.node = node;
-    this.amount = amount;
+  constructor(
+    public readonly delegator: ArrayBuffer,
+    public readonly node: ArrayBuffer,
+    public readonly amount: bigint,
+  ) {
     Object.freeze(this);
   }
 

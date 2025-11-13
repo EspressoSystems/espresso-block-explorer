@@ -1,6 +1,7 @@
 import { DataContext } from '@/components/contexts/DataProvider';
 import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
+import { neverPromise } from '@/functional/functional_async';
 import React from 'react';
 import { ESPTokenContractContext } from 'sites/delegation_ui/contexts/esp_token_contract_context';
 import { L1RefreshTimestampContext } from 'sites/delegation_ui/contexts/l1_refresh_timestamp_context';
@@ -22,7 +23,7 @@ export const ProvideCurrentAllowanceToStakeTable: React.FC<
 
   const promise =
     !espContract || !stakeTableContract || !accountAddress
-      ? new Promise(() => {})
+      ? neverPromise
       : espContract.allowance(accountAddress, stakeTableContract.address);
 
   return (

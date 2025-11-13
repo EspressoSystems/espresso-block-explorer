@@ -1,6 +1,7 @@
 import { DataContext } from '@/components/contexts';
 import { PromiseResolver } from '@/components/data';
-import { foldRIterator } from '@/functional/functional';
+import { emptyIterator, foldRIterable } from '@/functional/functional';
+import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import React from 'react';
 import { AllValidatorsContext } from './all_validators_context';
 import { L1RefreshTimestampContext } from './l1_refresh_timestamp_context';
@@ -30,15 +31,10 @@ const DeriveTotalStakeFromAllValidators: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const allValidators = React.useContext(AllValidatorsContext);
-
-  if (!allValidators) {
-    return <>{children}</>;
-  }
-
-  const totalStake = foldRIterator(
+  const totalStake = foldRIterable(
     (totalStake: bigint, node) => totalStake + node.stake,
     0n,
-    allValidators.nodes[Symbol.iterator](),
+    allValidators?.nodes ?? emptyIterator<NodeSetEntry>(),
   );
 
   return (

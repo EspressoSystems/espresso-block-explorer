@@ -16,6 +16,7 @@ import React from 'react';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '../../../pages/CappuccinoHotShotQueryServiceAPIContext';
 import { ProvideL1ValidatorServiceAPIContext } from '../contexts/l1_validator_api_context';
 import DelegationUI from '../delegation_ui';
+import { L1ValidatorServiceMockInjection } from '../mock/validator_service_injection';
 
 interface ExampleProps {
   environment: Environment;
@@ -49,7 +50,9 @@ const Example: React.FC<ExampleProps> = ({
         <ProvideTickEverySecond>
           <ProvideCappuccinoHotShotQueryServiceAPIContext>
             <ProvideL1ValidatorServiceAPIContext>
-              <DelegationUI {...rest} />
+              <L1ValidatorServiceMockInjection>
+                <DelegationUI {...rest} />
+              </L1ValidatorServiceMockInjection>
             </ProvideL1ValidatorServiceAPIContext>
           </ProvideCappuccinoHotShotQueryServiceAPIContext>
         </ProvideTickEverySecond>
@@ -104,7 +107,10 @@ export const Water: Story = {
 };
 
 export const Decaf: Story = {
-  args: environmentArgsDecafWithContracts,
+  args: {
+    ...environmentArgsDecafWithContracts,
+    l1ValidatorServiceURL: 'https://staking.decaf.testnet.espresso.network/v0/',
+  },
 };
 
 export const Mainnet: Story = {

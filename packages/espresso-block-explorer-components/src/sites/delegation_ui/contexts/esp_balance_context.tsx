@@ -5,6 +5,7 @@ import { AsyncSnapshotContext, PromiseResolver } from '@/components/data';
 import { AsyncSnapshot } from '@/components/data/async_data/AsyncSnapshot';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import EspToken from '@/contracts/esp_token/esp_token_abi';
+import { neverPromise } from '@/functional/functional_async';
 import React from 'react';
 import { ReadContractToAsyncSnapshot } from '../read_contract_to_async_snapshot';
 import { ESPTokenContractContext } from './esp_token_contract_context';
@@ -44,7 +45,7 @@ export const ProvideTotalSupplyFromContractCall: React.FC<
 
   const promise =
     !address || !espTokenContract
-      ? new Promise(() => {})
+      ? neverPromise
       : espTokenContract.balanceOf(address as `0x${string}`);
 
   return (

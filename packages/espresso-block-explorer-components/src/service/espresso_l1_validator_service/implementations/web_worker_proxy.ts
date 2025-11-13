@@ -12,6 +12,10 @@ import {
   ValidatorsActiveAllRequest,
   WebWorkerProxyValidatorsAllAPI,
 } from '../validators_all/implementations/web_worker_proxy';
+import {
+  WalletAPIRequest,
+  WebWorkerProxyWalletAPI,
+} from '../wallet/implementations/web_worker_proxy';
 import { WebWorkerRequest } from '../web_worker_types';
 
 /**
@@ -28,6 +32,7 @@ export class WebWorkerL1ValidatorService {
   public readonly l1Block: WebWorkerProxyL1API;
   public readonly validatorsActive: WebWorkerProxyValidatorsActiveAPI;
   public readonly validatorsAll: WebWorkerProxyValidatorsAllAPI;
+  public readonly wallet: WebWorkerProxyWalletAPI;
 
   constructor(service: L1ValidatorService) {
     this.l1Block = new WebWorkerProxyL1API(service.l1Block);
@@ -37,13 +42,15 @@ export class WebWorkerL1ValidatorService {
     this.validatorsAll = new WebWorkerProxyValidatorsAllAPI(
       service.validatorsAll,
     );
+    this.wallet = new WebWorkerProxyWalletAPI(service.wallet);
   }
 
   async handleRequest(
     request:
       | L1BlockAPIRequest
       | ValidatorsActiveAPIRequest
-      | ValidatorsActiveAllRequest,
+      | ValidatorsActiveAllRequest
+      | WalletAPIRequest,
   ) {
     // This is our entry point, and where we will receive / process messages
     switch (request.api) {
@@ -55,6 +62,9 @@ export class WebWorkerL1ValidatorService {
 
       case 'validatorsAll':
         return this.validatorsAll.handleRequest(request);
+
+      case 'wallet':
+        return this.wallet.handleRequest(request);
 
       default:
         throw new UnimplementedError();

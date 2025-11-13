@@ -4,12 +4,17 @@ import {
 } from '@/components/rainbowkit';
 import Text from '@/components/text/Text';
 import Plus from '@/components/visual/icons/feather/plus';
+import { compareArrayBuffer } from '@/functional/functional';
+import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
+import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
 import React from 'react';
 import './colors.css';
+import { AllValidatorsContext } from './contexts/all_validators_context';
 import {
   ModalContext,
   ProvideDialogModalControls,
 } from './contexts/modal_context';
+import { WalletSnapshotContext } from './contexts/wallet_snapshot_context';
 import './delegation_ui_content.css';
 import ButtonLarge from './elements/buttons/button_large';
 import { SegmentedButton } from './elements/buttons/segmented_button';
@@ -66,14 +71,16 @@ const EmptyTable: React.FC = () => {
  * selected in the Delegation UI.
  */
 const ContentTable: React.FC = () => {
+  const allValidators = React.useContext(AllValidatorsContext);
   const section = React.useContext(CurrentSectionContext);
-  switch (section) {
-    case Sections.all:
-      return <DelegationTable />;
 
-    case Sections.myStakes:
+  if (section === Sections.myStakes) {
+    if ((allValidators?.nodes.length ?? 0) === 0) {
       return <EmptyTable />;
+    }
   }
+
+  return <DelegationTable />;
 };
 
 /**
@@ -96,14 +103,61 @@ export const DelegationUIContent: React.FC = () => {
           <MyBalance />
           <TableControls />
 
-          <ValidatorTableSortStateProvider>
-            <ContentTable />
-          </ValidatorTableSortStateProvider>
-          <br />
-          <br />
+          <ApplyFiltersToSnapshot>
+            <ValidatorTableSortStateProvider>
+              <ContentTable />
+            </ValidatorTableSortStateProvider>
+          </ApplyFiltersToSnapshot>
         </section>
       </ProvideDialogModalControls>
     </ProvideSectionSelection>
+  );
+};
+
+function applySectionFilter(
+  allValidators: null | FullNodeSetSnapshot,
+  walletSnapshot: null | WalletSnapshot,
+  section: Sections,
+): null | FullNodeSetSnapshot {
+  if (!allValidators) {
+    return null;
+  }
+
+  switch (section) {
+    case Sections.all:
+      return allValidators;
+
+    case Sections.myStakes:
+      if (!walletSnapshot) {
+        return null;
+      }
+
+      return new FullNodeSetSnapshot(
+        allValidators.l1Block,
+        allValidators.nodes.filter((node) => {
+          return Boolean(
+            walletSnapshot.nodes.find(
+              (n) => compareArrayBuffer(node.address, n.node) === 0,
+            ),
+          );
+        }),
+      );
+  }
+}
+
+const ApplyFiltersToSnapshot: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const allValidators = React.useContext(AllValidatorsContext);
+  const walletSnapshot = React.useContext(WalletSnapshotContext);
+  const section = React.useContext(CurrentSectionContext);
+
+  return (
+    <AllValidatorsContext.Provider
+      value={applySectionFilter(allValidators, walletSnapshot, section)}
+    >
+      {children}
+    </AllValidatorsContext.Provider>
   );
 };
 

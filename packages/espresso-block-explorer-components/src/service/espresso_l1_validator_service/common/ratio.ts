@@ -6,10 +6,7 @@ import { Converter, numberCodec, TypeCheckingCodec } from '@/convert/codec';
  * ratio values in the codebase.
  */
 export class Ratio {
-  public readonly ratio: number;
-
-  constructor(ratio: number) {
-    this.ratio = ratio;
+  constructor(public readonly ratio: number) {
     Object.freeze(this);
   }
 

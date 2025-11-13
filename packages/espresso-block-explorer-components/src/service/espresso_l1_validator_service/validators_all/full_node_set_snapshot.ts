@@ -20,12 +20,11 @@ import {
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L10-L16
  */
 export class FullNodeSetSnapshot {
-  readonly l1Block: L1BlockInfo;
-  readonly nodes: NodeSetEntry[];
-
-  constructor(l1Block: L1BlockInfo, nodes: NodeSetEntry[] = []) {
-    this.l1Block = l1Block;
-    this.nodes = nodes;
+  constructor(
+    public readonly l1Block: L1BlockInfo,
+    public readonly nodes: NodeSetEntry[] = [],
+  ) {
+    Object.freeze(this);
   }
 
   toJSON() {

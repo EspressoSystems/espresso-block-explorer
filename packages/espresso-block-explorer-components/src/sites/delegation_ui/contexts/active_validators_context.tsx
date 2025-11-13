@@ -20,7 +20,6 @@ export const RetrieveActiveValidators: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const l1DelegationAPI = React.useContext(L1ValidatorServiceContext);
-
   const activeValidatorListPromise = l1DelegationAPI.validatorsActive.active();
 
   return (

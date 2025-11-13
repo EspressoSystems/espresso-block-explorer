@@ -19,12 +19,11 @@ import { Ratio, ratioCodec } from './ratio';
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L107-L113
  */
 export class ParticipationChange {
-  readonly address: ArrayBuffer;
-  readonly ratio: Ratio;
-
-  constructor(address: ArrayBuffer, ratio: Ratio) {
-    this.address = address;
-    this.ratio = ratio;
+  constructor(
+    public readonly address: ArrayBuffer,
+    public readonly ratio: Ratio,
+  ) {
+    Object.freeze(this);
   }
 
   toJSON() {

@@ -1,4 +1,5 @@
 import NotFoundError from '@/errors/NotFoundError';
+import { neverPromise } from '@/functional/functional_async';
 import CircularProgressIndicator from '@/loading/CircularProgressIndicator';
 import Text from '@/text/Text';
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -61,7 +62,7 @@ export const Default: Story = {
 
 export const Loading: Story = {
   args: {
-    promise: new Promise(() => {}),
+    promise: neverPromise as Promise<string>,
   },
 };
 

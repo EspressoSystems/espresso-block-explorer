@@ -2,6 +2,7 @@ import { DataContext } from '@/components/contexts/DataProvider';
 import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { neverPromise } from '@/functional/functional_async';
 import React from 'react';
 import { ConfirmedValidatorContext } from 'sites/delegation_ui/contexts/confirmed_valdiator_context';
 import { L1RefreshTimestampContext } from 'sites/delegation_ui/contexts/l1_refresh_timestamp_context';
@@ -21,7 +22,7 @@ export const ProvideCurrentStakeToValidator: React.FC<
 
   const promise =
     !stakeTableContract || !accountAddress || !confirmedValidator
-      ? new Promise(() => {})
+      ? neverPromise
       : stakeTableContract.delegation(
           hexArrayBufferCodec.encode(confirmedValidator),
           accountAddress.toLowerCase() as `0x${string}`,

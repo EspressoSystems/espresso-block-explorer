@@ -32,13 +32,19 @@ export const FakeDataMockOverrides: React.FC<React.PropsWithChildren> = ({
 
   return (
     <MockRainbowKit>
-      <MockL1Methods>
-        <MockESPTokenContract>
-          <MockStakeTableV2Contract>
-            <MockRewardClaimContract>{children}</MockRewardClaimContract>
-          </MockStakeTableV2Contract>
-        </MockESPTokenContract>
-      </MockL1Methods>
+      <OtherMocks>{children}</OtherMocks>
     </MockRainbowKit>
+  );
+};
+
+const OtherMocks: React.FC<React.PropsWithChildren> = ({ children }) => {
+  return (
+    <MockL1Methods>
+      <MockESPTokenContract>
+        <MockStakeTableV2Contract>
+          <MockRewardClaimContract>{children}</MockRewardClaimContract>
+        </MockStakeTableV2Contract>
+      </MockESPTokenContract>
+    </MockL1Methods>
   );
 };

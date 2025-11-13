@@ -8,6 +8,8 @@ import { WebWorkerClientBasedValidatorsActiveAPI } from '../validators_active/im
 import { ValidatorsActiveAPI } from '../validators_active/validators_active_api';
 import { WebWorkerClientBasedValidatorsAllAPI } from '../validators_all/implementations/web_worker_client';
 import { ValidatorsAllAPI } from '../validators_all/validators_all_api';
+import { WebWorkerClientBasedWalletAPI } from '../wallet/implementations/web_worker_client';
+import { WalletAPI } from '../wallet/wallet_api';
 import { AsyncRequestHelper } from '../web_worker_types';
 
 /**
@@ -39,6 +41,7 @@ export class WebWorkerClientBasedL1ValidatorService
   public readonly l1Block: L1BlockAPI;
   public readonly validatorsAll: ValidatorsAllAPI;
   public readonly validatorsActive: ValidatorsActiveAPI;
+  public readonly wallet: WalletAPI;
   private helper: AsyncRequestHelper;
 
   constructor() {
@@ -48,6 +51,7 @@ export class WebWorkerClientBasedL1ValidatorService
     this.l1Block = new WebWorkerClientBasedL1BlockAPI(helper);
     this.validatorsAll = new WebWorkerClientBasedValidatorsAllAPI(helper);
     this.validatorsActive = new WebWorkerClientBasedValidatorsActiveAPI(helper);
+    this.wallet = new WebWorkerClientBasedWalletAPI(helper);
   }
 
   /**

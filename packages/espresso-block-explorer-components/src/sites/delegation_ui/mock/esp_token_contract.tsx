@@ -1,4 +1,4 @@
-import { assertNotNull } from '@/assert/assert';
+import { assert, assertNotNull } from '@/assert/assert';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { ESPTokenContract } from '@/contracts/esp_token/esp_token_interface';
 import { bigintCodec, hexArrayBufferCodec } from '@/convert/codec';
@@ -6,7 +6,7 @@ import { createKeccakHash } from '@/crypto/keccak/family';
 import React from 'react';
 import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
-import { MockL1MethodsImpl } from './l1_methods';
+import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
 import { MockAddress } from './rainbow_kit';
 
 /**
@@ -55,7 +55,7 @@ function applyActionToState(
  * representing an action that modifies the state of the
  * MockESPTokenContract.
  */
-abstract class ESPTokenContractStateAction {
+abstract class ESPTokenContractStateAction implements UnderlyingTransaction {
   public readonly contractAddress: undefined | `0x${string}`;
   public abstract readonly from: `0x${string}`;
   public abstract readonly to: `0x${string}`;
@@ -194,7 +194,7 @@ export class MockESPTokenContractImpl implements ESPTokenContract {
   constructor(
     private readonly l1Methods: MockL1MethodsImpl,
     state: MockESPTokenContractState,
-    public readonly accountAddress: `0x${string}` | null = null,
+    public accountAddress: `0x${string}` | null = null,
   ) {
     if (!this.l1Methods.mockReadContractStorage(ESPTokenStorageSymbol)) {
       this.l1Methods.mockWriteContractStorage(ESPTokenStorageSymbol, {
@@ -222,6 +222,10 @@ export class MockESPTokenContractImpl implements ESPTokenContract {
       this.state,
       accountAddress,
     );
+  }
+
+  setAccountAddress(accountAddress: `0x${string}` | null): void {
+    this.accountAddress = accountAddress;
   }
 
   get lastUpdate(): Date {
@@ -368,17 +372,25 @@ export const MockESPTokenContract: React.FC<React.PropsWithChildren> = ({
 }) => {
   const l1Methods = React.useContext(L1MethodsContext);
   const contractState = useMockESPContractState();
-  const accountAddress = React.useContext(RainbowKitAccountAddressContext);
+  const accountAddress = React.useContext(RainbowKitAccountAddressContext) as
+    | null
+    | `0x${string}`;
+
+  // assertInstanceOf(l1Methods, MockL1MethodsImpl);
+  assert(l1Methods instanceof MockL1MethodsImpl);
+
+  const [contract] = React.useState(
+    new MockESPTokenContractImpl(l1Methods, contractState),
+  );
+
+  React.useEffect(() => {
+    contract.setAccountAddress(accountAddress);
+    return () => {};
+  }, [contract, accountAddress]);
 
   if (!(l1Methods instanceof MockL1MethodsImpl)) {
     throw new Error('MockESPTokenContract requires MockL1MethodsImpl');
   }
-
-  const contract = new MockESPTokenContractImpl(
-    l1Methods,
-    contractState,
-    accountAddress as null | `0x${string}`,
-  );
 
   return (
     <ESPTokenContractContext.Provider value={contract}>

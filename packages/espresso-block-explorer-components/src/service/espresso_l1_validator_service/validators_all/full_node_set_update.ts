@@ -18,12 +18,11 @@ import { fullNodeSetDiffArrayJSONCodec } from './full_node_set_diff/full_node_se
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L20-L26
  */
 export class FullNodeSetUpdate {
-  readonly l1Block: L1BlockInfo;
-  readonly diff: FullNodeSetDiff[];
-
-  constructor(l1Block: L1BlockInfo, diff: FullNodeSetDiff[] = []) {
-    this.l1Block = l1Block;
-    this.diff = diff;
+  constructor(
+    public readonly l1Block: L1BlockInfo,
+    public readonly diff: FullNodeSetDiff[] = [],
+  ) {
+    Object.freeze(this);
   }
 
   toJSON() {

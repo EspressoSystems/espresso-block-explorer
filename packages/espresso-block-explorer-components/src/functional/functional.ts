@@ -458,3 +458,28 @@ export function zipWithIterable<T, U, V>(
 ): Generator<V> {
   return zipWithIterator(ts[Symbol.iterator](), us[Symbol.iterator](), zipper);
 }
+
+/**
+ * singletonIterable is a convenience function that creates an iterable
+ * containing a single element.
+ */
+export function* singletonIterable<T>(element: T): Generator<T> {
+  yield element;
+}
+
+/**
+ * appendIterables concatenates multiple iterables into a single iterable.
+ */
+export function* appendIterables<T>(...iterables: Iterable<T>[]): Generator<T> {
+  for (const iterable of iterables) {
+    yield* iterable;
+  }
+}
+
+/**
+ * emptyIterator is an Iterable / Iterator that yields no elements.
+ */
+// eslint-disable-next-line require-yield
+export function* emptyIterator<T>(): Generator<T> {
+  return;
+}

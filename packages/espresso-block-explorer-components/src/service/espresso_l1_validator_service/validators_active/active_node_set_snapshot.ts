@@ -23,12 +23,11 @@ import {
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L43-L49
  */
 export class ActiveNodeSetSnapshot {
-  readonly espressoBlock: EpochAndBlock;
-  readonly nodes: ActiveNodeSetEntry[];
-
-  constructor(espressoBlock: EpochAndBlock, Nodes: ActiveNodeSetEntry[]) {
-    this.espressoBlock = espressoBlock;
-    this.nodes = Nodes;
+  constructor(
+    public readonly espressoBlock: EpochAndBlock,
+    public readonly nodes: ActiveNodeSetEntry[],
+  ) {
+    Object.freeze(this);
   }
 
   toJSON() {

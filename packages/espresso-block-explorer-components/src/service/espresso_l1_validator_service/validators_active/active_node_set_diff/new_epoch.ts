@@ -16,11 +16,9 @@ import { ActiveNodeSetDiff } from './active_node_set_diff';
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L71
  */
 export class NewEpoch extends ActiveNodeSetDiff {
-  readonly entries: ActiveNodeSetEntry[];
-
-  constructor(entries: ActiveNodeSetEntry[]) {
+  constructor(public readonly entries: ActiveNodeSetEntry[]) {
     super();
-    this.entries = entries;
+    Object.freeze(this);
   }
 
   toJSON() {

@@ -18,7 +18,6 @@ export const RetrieveLatestL1BlockID: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const l1DelegationAPI = React.useContext(L1ValidatorServiceContext);
-
   const latestL1BlockPromise = l1DelegationAPI.l1Block.getLatestBlock();
 
   return (
