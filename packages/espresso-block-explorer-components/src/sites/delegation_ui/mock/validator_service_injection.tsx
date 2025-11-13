@@ -350,25 +350,28 @@ function processActionPendingUndelegation(
 }
 
 function processActionOnPendingExits(
-  delegator: ArrayBuffer,
+  _delegator: ArrayBuffer,
   pendingExits: PendingWithdrawal[],
-  action: StakeTableStateActions,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _action: StakeTableStateActions,
 ): PendingWithdrawal[] {
   return pendingExits;
 }
 
 function processActionOnClaimedRewards(
-  delegator: ArrayBuffer,
+  _delegator: ArrayBuffer,
   claimedRewards: bigint,
-  action: StakeTableStateActions,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _action: StakeTableStateActions,
 ): bigint {
   return claimedRewards;
 }
 
 function processActionOnL1Block(
-  delegator: ArrayBuffer,
+  _delegator: ArrayBuffer,
   l1Block: L1BlockInfo,
-  action: StakeTableStateActions,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _action: StakeTableStateActions,
 ): L1BlockInfo {
   return l1Block;
 }
