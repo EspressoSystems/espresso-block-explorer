@@ -136,10 +136,9 @@ describe('MockStakeTableV2ContractImpl', () => {
         address,
         [stake, status],
       ] of createInitialStakeTableContractState().validators) {
-        const [retrievedStake, retrievedStatus] =
-          await contract.validator(address);
-        expect(retrievedStake).toBe(stake);
-        expect(retrievedStatus).toBe(status);
+        const validator = await contract.validator(address);
+        expect(validator.stake).toBe(stake);
+        expect(validator.status).toBe(status);
       }
     });
 
@@ -240,7 +239,8 @@ describe('MockStakeTableV2ContractImpl', () => {
         nonExistentValidator,
         nonExistentDelegator,
       );
-      expect(undelegation).toEqual([0n, 0n]);
+      expect(undelegation.amount).toEqual(0n);
+      expect(undelegation.timestamp).toEqual(0n);
     });
 
     it('should return the correct exit escrow period', async () => {
@@ -386,11 +386,11 @@ describe('MockStakeTableV2ContractImpl', () => {
         ).resolves.not.toThrowError();
 
         // Verify that the undelegation was recorded
-        const [undelegatedAmount] = await contract.undelegation(
+        const undelegation = await contract.undelegation(
           validatorAddress0,
           ACCOUNT1,
         );
-        expect(undelegatedAmount).toBe(delegationAmount);
+        expect(undelegation.amount).toBe(delegationAmount);
 
         // Wait for the exit escrow period to pass
         await sleep(500);
@@ -402,11 +402,11 @@ describe('MockStakeTableV2ContractImpl', () => {
         ).resolves.not.toThrowError();
 
         // Verify that the undelegation record has been cleared
-        const [finalUndelegatedAmount] = await contract.undelegation(
+        const finalUndelegation = await contract.undelegation(
           validatorAddress0,
           ACCOUNT1,
         );
-        expect(finalUndelegatedAmount).toBe(0n);
+        expect(finalUndelegation.amount).toBe(0n);
 
         // Verify that the ESP token balance was updated after withdrawal
         await expect(espTokenContract.balanceOf(ACCOUNT1)).resolves.toBe(

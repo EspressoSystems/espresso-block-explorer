@@ -16,7 +16,7 @@ export type RawUndelegation = readonly [bigint, bigint];
 
 export class Validator {
   constructor(
-    public readonly amount: bigint,
+    public readonly stake: bigint,
     public readonly status: ValidatorStatus,
   ) {
     Object.freeze(this);
@@ -28,7 +28,7 @@ export class Validator {
 
   toJSON() {
     return [
-      bigintCodec.encode(this.amount),
+      bigintCodec.encode(this.stake),
       numberCodec.encode(this.status),
     ] as const;
   }
