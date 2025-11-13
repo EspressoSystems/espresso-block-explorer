@@ -1,0 +1,60 @@
+:root {
+  --collapsable-section--padding-block: 12px;
+  --collapsable-section--padding-inline: 12px;
+  --collapsable-section--background-color: #fff;
+  --collapsable-section--foreground-color: inherit;
+  --collapsable-section--border-width: 1px;
+  --collapsable-section--border-style: solid;
+  --collapsable-section--border-color: #ccc;
+  --collapsable-section--border-radius: 8px;
+}
+
+.collapsable-section {
+  padding-inline: var(--collapsable-section--padding-inline);
+  padding-block: var(--collapsable-section--padding-block);
+  background: var(--collapsable-section--background-color);
+  color: var(--collapsable-section--foreground-color);
+  --icon--fill-color: var(--collapsable-section--foreground-color);
+
+  border-width: var(--collapsable-section--border-width);
+  border-style: var(--collapsable-section--border-style);
+  border-color: var(--collapsable-section--border-color);
+  border-radius: var(--collapsable-section--border-radius);
+  margin-block-start: 8px;
+  margin-block-end: 8px;
+}
+
+.collapsable-section > :not(.collapsable-header) {
+  margin-block-start: 8px;
+}
+
+.collapsable-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  --button-base--default--height: 28px;
+  --button-base--default--background-color: #fff;
+  --button-base--default--foreground-color: var(
+    --collapsable-section--foreground-color
+  );
+  --button-base--hovered--background-color: #fff8;
+  --button-base--hovered--foreground-color: var(
+    --collapsable-section--foreground-color
+  );
+}
+
+.collapsable-header h2 {
+  font-family: PPNeueMontreal, sans-serif;
+  text-transform: none;
+  font-size: 14px;
+  line-height: 16px;
+  color: inherit;
+}
+
+.collapsable-header h2 svg {
+  width: 16px;
+  height: 16px;
+  margin-inline-end: 8px;
+  vertical-align: bottom;
+}

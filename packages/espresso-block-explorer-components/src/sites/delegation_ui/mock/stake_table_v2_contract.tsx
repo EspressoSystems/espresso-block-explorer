@@ -2,6 +2,8 @@ import { assert, assertNotNull } from '@/assert/assert';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { ESPTokenContract } from '@/contracts/esp_token/esp_token_interface';
 import {
+  RawUndelegation,
+  RawValidator,
   Undelegation,
   Validator,
   ValidatorStatus,
@@ -14,9 +16,12 @@ import { bigintCodec, hexArrayBufferCodec } from '@/convert/codec';
 import { createKeccakHash } from '@/crypto/keccak';
 import { nodeList } from '@/data_source/fake_data_source';
 import {
+  appendIterables,
+  dropIterable,
   expandIterable,
   foldRIterable,
   mapIterable,
+  takeIterable,
 } from '@/functional/functional';
 import React from 'react';
 import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
@@ -25,6 +30,7 @@ import { StakeTableContractContext } from '../contexts/stake_table_contract_cont
 import { StakeTableV2ContractContext } from '../contexts/stake_table_v2_contract_context';
 import { MockESPTokenContractImpl } from './esp_token_contract';
 import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
+import { MockAddress } from './rainbow_kit';
 
 /**
  * StakeTableState defines the structure of the mock
@@ -32,11 +38,11 @@ import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
  */
 export interface StakeTableState {
   contractAddress: `0x${string}`;
-  validators: Map<`0x${string}`, Validator>;
+  validators: Map<`0x${string}`, RawValidator>;
   blsKeys: Set<`0x${string}`>;
   validatorExits: Map<`0x${string}`, bigint>;
   delegations: Map<`0x${string}`, Map<`0x${string}`, bigint>>;
-  undelegations: Map<`0x${string}`, Map<`0x${string}`, Undelegation>>;
+  undelegations: Map<`0x${string}`, Map<`0x${string}`, RawUndelegation>>;
   exitEscrowPeriod: bigint;
 
   pauserRole: `0x${string}`;
@@ -208,7 +214,7 @@ export class Undelegate extends StakeTableStateActions {
     const newUndelegations = new Map(state.undelegations);
     const undelegatorMap =
       newUndelegations.get(this.validator) ??
-      new Map<`0x${string}`, Undelegation>();
+      new Map<`0x${string}`, RawUndelegation>();
     undelegatorMap.set(this.delegator, [
       this.value,
       BigInt(this.ts.valueOf()) + state.exitEscrowPeriod,
@@ -266,7 +272,7 @@ export class ClaimWithdrawal extends StakeTableStateActions {
     const newUndelegations = new Map(state.undelegations);
     const undelegatorMap =
       newUndelegations.get(this.validator) ??
-      new Map<`0x${string}`, Undelegation>();
+      new Map<`0x${string}`, RawUndelegation>();
     undelegatorMap.delete(this.delegator);
     newUndelegations.set(this.validator, undelegatorMap);
 
@@ -475,7 +481,8 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
   }
 
   async validator(account: `0x${string}`): Promise<Validator> {
-    return this.state.validators.get(account) ?? [0n, 0];
+    const result = this.state.validators.get(account) ?? [0n, 0];
+    return Validator.fromRaw(result);
   }
 
   async blsKey(): Promise<boolean> {
@@ -497,7 +504,11 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
     validator: `0x${string}`,
     delegator: `0x${string}`,
   ): Promise<Undelegation> {
-    return this.state.undelegations.get(validator)?.get(delegator) ?? [0n, 0n];
+    const result = this.state.undelegations.get(validator)?.get(delegator) ?? [
+      0n,
+      0n,
+    ];
+    return Undelegation.fromRaw(result);
   }
 
   async exitEscrowPeriod(): Promise<bigint> {
@@ -541,7 +552,7 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
     }
 
     const validatorInfo = await this.validator(validator);
-    if (validatorInfo[1] !== ValidatorStatus.active) {
+    if (validatorInfo.status !== ValidatorStatus.active) {
       throw new Error('Validator is not active');
     }
 
@@ -614,24 +625,23 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
       this.accountAddress,
     );
 
-    if (!undelegation[0]) {
+    if (!undelegation.amount) {
       throw new Error(
         'No undelegation found for this delegator and validator.',
       );
     }
 
-    const [amount, releaseTime] = undelegation;
-    if (currentTime < releaseTime) {
+    if (currentTime < undelegation.timestamp) {
       throw new Error('Undelegation period has not yet elapsed.');
     }
 
-    await this.espToken.transfer(this.accountAddress, amount);
+    await this.espToken.transfer(this.accountAddress, undelegation.amount);
 
     const action = new ClaimWithdrawal(
       this.address,
       validator,
       this.accountAddress,
-      amount,
+      undelegation.amount,
     );
     applyActionToState(this.l1Methods, action);
     return action.hash();
@@ -642,8 +652,8 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
     if (!this.accountAddress) {
       throw new Error('No account address available for claim validator exit.');
     }
-    const exit = await this.validatorExit(validator);
-    if (!exit) {
+    const exit = (await this.validatorExit(validator)) ?? null;
+    if (exit === null) {
       throw new Error('Validator is not exiting.');
     }
 
@@ -678,7 +688,8 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
  */
 function useMockStakeTableContractState(
   espTokenContract: ESPTokenContract,
-  initialStakes: Map<`0x${string}`, Map<`0x${string}`, bigint>> = new Map(),
+  initialState: Partial<StakeTableState>,
+  // initialStakes: Map<`0x${string}`, Map<`0x${string}`, bigint>> = new Map(),
 ): StakeTableState {
   const contractAddress = '0x0000000000000000000000000000000000000002';
 
@@ -688,31 +699,20 @@ function useMockStakeTableContractState(
   );
 
   const [state] = React.useState<StakeTableState>({
-    contractAddress,
-    validators: new Map(
-      mapIterable(initialStakes, ([validatorKey]) => [
-        validatorKey,
-        [
-          foldRIterable(
-            (acc, stake) => acc + stake,
-            0n,
-            (initialStakes.get(validatorKey) ?? new Map()).values(),
-          ),
-          ValidatorStatus.active,
-        ],
-      ]),
-    ),
-    blsKeys: new Set(),
-    validatorExits: new Map(),
-    delegations: initialStakes,
-    undelegations: new Map(),
-    exitEscrowPeriod: 2000n,
+    contractAddress: initialState?.contractAddress ?? contractAddress,
+    validators: initialState?.validators ?? new Map(),
+    blsKeys: initialState?.blsKeys ?? new Set(),
+    validatorExits: initialState?.validatorExits ?? new Map(),
+    delegations: initialState?.delegations ?? new Map(),
+    undelegations: initialState?.undelegations ?? new Map(),
+    exitEscrowPeriod: initialState?.exitEscrowPeriod ?? 2000n,
 
-    pauserRole: '0xPAUSER_ROLE',
-    minCommissionIncreaseInterval: 2000n,
-    maxCommissionIncrease: 1,
-    commissionTracking: new Map(),
-    schnorrKeys: new Set(),
+    pauserRole: initialState?.pauserRole ?? '0xPAUSER_ROLE',
+    minCommissionIncreaseInterval:
+      initialState?.minCommissionIncreaseInterval ?? 2000n,
+    maxCommissionIncrease: initialState?.maxCommissionIncrease ?? 1,
+    commissionTracking: initialState?.commissionTracking ?? new Map(),
+    schnorrKeys: initialState?.schnorrKeys ?? new Set(),
 
     lastUpdate: new Date(),
   } as const satisfies StakeTableState);
@@ -751,16 +751,46 @@ export const MockStakeTableV2Contract: React.FC<React.PropsWithChildren> = ({
   assert(espTokenContract instanceof MockESPTokenContractImpl);
 
   const initialStakes = new Map(
-    mapIterable(nodeList, (node) => {
-      const address = hexArrayBufferCodec.encode(node.address);
-      return [address, new Map([[address, node.stake]])];
-    }),
+    appendIterables(
+      mapIterable(takeIterable(nodeList, nodeList.length - 2), (node) => {
+        const address = hexArrayBufferCodec.encode(node.address);
+        return [address, new Map([[address, node.stake]])];
+      }),
+      mapIterable(dropIterable(nodeList, nodeList.length - 2), (node) => {
+        const address = hexArrayBufferCodec.encode(node.address);
+        return [
+          address,
+          new Map([
+            [address, (node.stake * 9n) / 10n],
+            [MockAddress, (node.stake * 1n) / 10n],
+          ]),
+        ];
+      }),
+    ),
   );
 
-  const contractState = useMockStakeTableContractState(
-    espTokenContract,
-    initialStakes,
-  );
+  const contractState = useMockStakeTableContractState(espTokenContract, {
+    validators: new Map(
+      mapIterable(initialStakes, ([validatorKey, others]) => [
+        validatorKey,
+        [
+          foldRIterable(
+            (acc, stake) => acc + stake,
+            0n,
+            (initialStakes.get(validatorKey) ?? new Map()).values(),
+          ),
+          others.size > 1 ? ValidatorStatus.exited : ValidatorStatus.active,
+        ],
+      ]),
+    ),
+    delegations: initialStakes,
+    validatorExits: new Map(
+      mapIterable(dropIterable(nodeList, nodeList.length - 2), (node) => {
+        const address = hexArrayBufferCodec.encode(node.address);
+        return [address, 0n];
+      }),
+    ),
+  });
 
   const [contract] = React.useState(
     new MockStakeTableV2ContractImpl(

@@ -1,4 +1,4 @@
-import { stdBase64ArrayBufferCodec } from '@/convert/codec';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   emptyIterator,
   mapIterable,
@@ -46,14 +46,14 @@ export const DeriveRank: React.FC<React.PropsWithChildren> = ({ children }) => {
   const validatorsAndScore = Array.from(
     zipWithIterable(
       mapIterable(allValidators?.nodes ?? emptyIterator<NodeSetEntry>(), (a) =>
-        stdBase64ArrayBufferCodec.encode(a.address),
+        hexArrayBufferCodec.encode(a.address),
       ),
       mapIterable(
         allValidators?.nodes ?? emptyIterator<NodeSetEntry>(),
         (node) =>
           score(
             node,
-            consensusSet.get(stdBase64ArrayBufferCodec.encode(node.address)),
+            consensusSet.get(hexArrayBufferCodec.encode(node.address)),
           ),
       ),
       (a, b) => [a, b] as const,

@@ -1,7 +1,11 @@
 import { Config } from 'wagmi';
 import { readContract, writeContract } from 'wagmi/actions';
 import StakeTableAbi from './stake_table_abi';
-import { StakeTableContract } from './stake_table_interface';
+import {
+  StakeTableContract,
+  Undelegation,
+  Validator,
+} from './stake_table_interface';
 
 export class StakeTableRemote implements StakeTableContract {
   // Implementation of ESPTokenContract methods would go here
@@ -40,7 +44,7 @@ export class StakeTableRemote implements StakeTableContract {
       args: [account],
     });
 
-    return result;
+    return Validator.fromRaw(result);
   }
 
   async blsKey(blsKeyHash: `0x${string}`) {
@@ -74,13 +78,15 @@ export class StakeTableRemote implements StakeTableContract {
   }
 
   async undelegation(validator: `0x${string}`, delegator: `0x${string}`) {
-    return readContract(this.config, {
+    const result = await readContract(this.config, {
       abi: StakeTableAbi,
       address: this.address,
       chainId: this.chainID,
       functionName: 'undelegations',
       args: [validator, delegator],
     });
+
+    return Undelegation.fromRaw(result);
   }
 
   async exitEscrowPeriod() {

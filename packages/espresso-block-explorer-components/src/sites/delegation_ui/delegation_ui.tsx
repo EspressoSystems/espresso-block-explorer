@@ -3,9 +3,12 @@ import './colors.css';
 import { RetrieveActiveValidators } from './contexts/active_validators_context';
 import { RetrieveAllValidators } from './contexts/all_validators_context';
 import { DeriveConsensusSet } from './contexts/consensus_map_context';
+import { DeriveCurrentDelegations } from './contexts/current_delegations_context';
 import { ProvideESPBalance } from './contexts/esp_balance_context';
 import { RetrieveLatestL1BlockID } from './contexts/l1_block_id_context';
 import { ProvideL1RefreshTimestampContext } from './contexts/l1_refresh_timestamp_context';
+import { DerivePendingExits } from './contexts/pending_exits_context';
+import { DerivePendingUndelegations } from './contexts/pending_undelegations_context';
 import { DeriveRank } from './contexts/rank_map_context';
 import { DeriveTotalStake } from './contexts/total_stake_context';
 import { ProvideTotalSupply } from './contexts/total_supply_context';
@@ -47,9 +50,15 @@ const ProvideContexts: React.FC<React.PropsWithChildren> = ({ children }) => {
                   <DeriveTotalStake>
                     <DeriveConsensusSet>
                       <DeriveRank>
-                        <ProvideValidatorSelection>
-                          {children}
-                        </ProvideValidatorSelection>
+                        <DeriveCurrentDelegations>
+                          <DerivePendingUndelegations>
+                            <DerivePendingExits>
+                              <ProvideValidatorSelection>
+                                {children}
+                              </ProvideValidatorSelection>
+                            </DerivePendingExits>
+                          </DerivePendingUndelegations>
+                        </DeriveCurrentDelegations>
                       </DeriveRank>
                     </DeriveConsensusSet>
                   </DeriveTotalStake>

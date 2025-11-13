@@ -22,7 +22,8 @@ interface MockRainbowKitState {
  * MockAddress is a predefined mock address used in the
  * MockRainbowKit component.
  */
-export const MockAddress = '0xdeadc0dedeadc0dedeadc0dedeadc0dedeadc0de';
+export const MockAddress: `0x${string}` =
+  '0xdeadc0dedeadc0dedeadc0dedeadc0dedeadc0de';
 
 /**
  * MockAccount is a predefined mock account used in the

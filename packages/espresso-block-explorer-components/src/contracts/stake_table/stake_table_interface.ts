@@ -1,10 +1,58 @@
+import { bigintCodec } from '@/convert/codec/bigint';
+import { numberCodec } from '@/convert/codec/number';
+
 export enum ValidatorStatus {
   unknown,
   active,
   exited,
 }
-export type Validator = readonly [bigint, ValidatorStatus];
-export type Undelegation = readonly [bigint, bigint];
+
+export type RawValidator = readonly [bigint, ValidatorStatus];
+
+/**
+ * Undelegation represents an undelegation entry with amount and timestamp.
+ */
+export type RawUndelegation = readonly [bigint, bigint];
+
+export class Validator {
+  constructor(
+    public readonly amount: bigint,
+    public readonly status: ValidatorStatus,
+  ) {
+    Object.freeze(this);
+  }
+
+  static fromRaw(validator: RawValidator) {
+    return new Validator(validator[0], validator[1]);
+  }
+
+  toJSON() {
+    return [
+      bigintCodec.encode(this.amount),
+      numberCodec.encode(this.status),
+    ] as const;
+  }
+}
+
+export class Undelegation {
+  constructor(
+    public readonly amount: bigint,
+    public readonly timestamp: bigint,
+  ) {
+    Object.freeze(this);
+  }
+
+  static fromRaw(undelegation: RawUndelegation) {
+    return new Undelegation(undelegation[0], undelegation[1]);
+  }
+
+  toJSON() {
+    return [
+      bigintCodec.encode(this.amount),
+      bigintCodec.encode(this.timestamp),
+    ] as const;
+  }
+}
 
 /**
  * StakeTableContractReadOnly defines the read-only interface for the

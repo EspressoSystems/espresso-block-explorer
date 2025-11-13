@@ -25,8 +25,7 @@
   --validator-node-table--cell--foreground-color: var(--color--brown--4);
 }
 
-table.all-validators-table,
-div.all-validators-grid {
+table.all-validators-table {
   border-radius: 8px;
   border-width: 1px;
   font-size: 12px;
@@ -47,23 +46,19 @@ div.all-validators-grid {
     );
 }
 
-table.all-validators-table th:nth-child(1),
-div.all-validators-grid div:nth-child(1) {
+table.all-validators-table th:nth-child(1) {
   border-radius: 8px 0 0 0;
 }
 
-table.all-validators-table th:nth-last-child(1),
-div.all-validators-grid div:nth-child(7) {
+table.all-validators-table th:nth-last-child(1) {
   border-radius: 0 8px 0 0;
 }
 
-table.all-validators-table tr:nth-last-child(1) td:nth-child(1),
-div.all-validators-grid div:nth-last-child(7) {
+table.all-validators-table tr:nth-last-child(1) td:nth-child(1) {
   border-radius: 0 0 0 8px;
 }
 
-table.all-validators-table tr:nth-last-child(1) td:nth-last-child(1),
-div.all-validators-grid div:nth-last-child(1) {
+table.all-validators-table tr:nth-last-child(1) td:nth-last-child(1) {
   border-radius: 0 0 8px 0;
 }
 
@@ -137,7 +132,7 @@ table.all-validators-table td.no-data {
   padding-block-end: 150px;
 }
 
-table.all-validators-table button.bbtn.action {
+table.all-validators-table {
   --button-base--default--background-color: var(--color--brown--2);
   --button-base--default--foreground-color: var(--color--brown--0);
   /* --button-base--default--outline-color: var(--color--transparent); */
@@ -151,30 +146,4 @@ table.all-validators-table button.bbtn.action {
   --button-base--default--font-family: IBM Plex Mono, monospace;
   --button-base--default--border-width: 1px;
   --button-base--default--border-style: solid;
-}
-
-table.all-validators-table.undelegation {
-  --validator-node-table--border-color: #0000003d;
-  --validator-node-table--gradient-color-start: transparent;
-  --validator-node-table--gradient-color-middle: transparent;
-  --validator-node-table--gradient-color-end: transparent;
-  --validator-node-table--background--gradient-color-start: transparent;
-  --validator-node-table--background--gradient-color-end: transparent;
-  --validator-node-table--header--background-color: #ffffff99;
-  --validator-node-table--cell--background-color: #ffffff;
-  --validator-node-table--cell--foreground-color: #000000e0;
-  --validator-node-table--header--foreground-color: #000000b8;
-  /* --validator-node-table--button--background-color: var(--color--brown--4);
-  --validator-node-table--button--foreground-color: var(--color--brown--0); */
-}
-
-table.all-validators-table.undelegation button.bbtn.action {
-  --button-base--default--background-color: #00000066;
-  --button-base--default--foreground-color: #ffffff;
-  --button-base--default--border-color: 00000066;
-  /* --button-base--default--outline-color: var(--color--transparent);
-  --button-base--hovered--background-color: var(--color--brown--1);
-  --button-base--hovered--foreground-color: var(--color--brown--4);
-  --button-base--default--border-color: var(--color--brown--3);
-  --button-base--pressed--background-color: var(--color--slate-200); */
 }

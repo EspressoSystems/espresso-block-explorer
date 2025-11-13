@@ -3,6 +3,8 @@ import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { ESPTokenContract } from '@/contracts/esp_token/esp_token_interface';
 import { bigintCodec, hexArrayBufferCodec } from '@/convert/codec';
 import { createKeccakHash } from '@/crypto/keccak/family';
+import { nodeList } from '@/data_source/fake_data_source';
+import { foldRIterable } from '@/functional/functional';
 import React from 'react';
 import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
@@ -340,19 +342,33 @@ export class MockESPTokenContractImpl implements ESPTokenContract {
  * useMockESPContractState is a custom React hook that initializes
  * and returns the state for the MockESPTokenContract.
  */
-function useMockESPContractState() {
+function useMockESPContractState(
+  initialState?: Partial<MockESPTokenContractState>,
+) {
   const contractAddress = '0x0000000000000000000000000000000000000001';
   // Mocked ESPTokenContract State
   const [state] = React.useState<MockESPTokenContractState>({
-    contractAddress,
-    version: [1, 0, 0],
-    name: 'Espresso Token',
-    symbol: 'ESP',
-    decimals: 18,
-    totalSupply: 1_234_567_8900n * 10n ** 18n,
-    balances: new Map([[MockAddress, 5_000_000_000_000_000_000_000n]]),
-    allowances: new Map(),
-    lastUpdate: new Date(),
+    contractAddress: initialState?.contractAddress ?? contractAddress,
+    version: initialState?.version ?? [1, 0, 0],
+    name: initialState?.name ?? 'Espresso Token',
+    symbol: initialState?.symbol ?? 'ESP',
+    decimals: initialState?.decimals ?? 18,
+    totalSupply: initialState?.totalSupply ?? 1_234_567_8900n * 10n ** 18n,
+    balances:
+      initialState?.balances ??
+      new Map([
+        // Load some initial balance for our Mock Account
+        [MockAddress, 5_000_000_000_000_000_000_000n],
+
+        // Set the initial Balance for the default address of the Mock Stake
+        // Table contract to be equal to all of the expected stake
+        [
+          `0x0000000000000000000000000000000000000002`,
+          foldRIterable((acc, next) => acc + next.stake, 0n, nodeList),
+        ],
+      ]),
+    allowances: initialState?.allowances ?? new Map(),
+    lastUpdate: initialState?.lastUpdate ?? new Date(),
   } as const satisfies MockESPTokenContractState);
 
   return state;

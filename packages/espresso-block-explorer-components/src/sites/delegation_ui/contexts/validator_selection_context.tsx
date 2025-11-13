@@ -16,6 +16,13 @@ export class ValidatorSelected extends ValidatorSelectionEnum {
   }
 }
 
+export class ClaimRewards extends ValidatorSelectionEnum {
+  constructor() {
+    super();
+    Object.freeze(this);
+  }
+}
+
 export class ValidatorConfirmed extends ValidatorSelectionEnum {
   constructor(public readonly validatorAddress: ArrayBuffer) {
     super();
@@ -31,6 +38,20 @@ export class ValidatorConfirmedStake extends ValidatorSelectionEnum {
 }
 
 export class ValidatorConfirmedUndelegate extends ValidatorSelectionEnum {
+  constructor(public readonly validatorAddress: ArrayBuffer) {
+    super();
+    Object.freeze(this);
+  }
+}
+
+export class ValidatorConfirmedUndelegateWithdraw extends ValidatorSelectionEnum {
+  constructor(public readonly validatorAddress: ArrayBuffer) {
+    super();
+    Object.freeze(this);
+  }
+}
+
+export class ValidatorConfirmedExitWithdraw extends ValidatorSelectionEnum {
   constructor(public readonly validatorAddress: ArrayBuffer) {
     super();
     Object.freeze(this);
