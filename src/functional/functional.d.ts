@@ -171,3 +171,16 @@ export declare function zipWithIterator<T, U, V>(itT: Iterator<T>, itU: Iterator
  * AsyncIterable.
  */
 export declare function zipWithIterable<T, U, V>(ts: Iterable<T>, us: Iterable<U>, zipper: (t: T, u: U) => V): Generator<V>;
+/**
+ * singletonIterable is a convenience function that creates an iterable
+ * containing a single element.
+ */
+export declare function singletonIterable<T>(element: T): Generator<T>;
+/**
+ * appendIterables concatenates multiple iterables into a single iterable.
+ */
+export declare function appendIterables<T>(...iterables: Iterable<T>[]): Generator<T>;
+/**
+ * emptyIterator is an Iterable / Iterator that yields no elements.
+ */
+export declare function emptyIterator<T>(): Generator<T>;

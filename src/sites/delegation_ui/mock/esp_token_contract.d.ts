@@ -32,10 +32,11 @@ export interface MockESPTokenContractState {
  */
 export declare class MockESPTokenContractImpl implements ESPTokenContract {
     private readonly l1Methods;
-    readonly accountAddress: `0x${string}` | null;
+    accountAddress: `0x${string}` | null;
     constructor(l1Methods: MockL1MethodsImpl, state: MockESPTokenContractState, accountAddress?: `0x${string}` | null);
     get state(): MockESPTokenContractState;
     replaceAccountAddress(accountAddress: `0x${string}` | null): MockESPTokenContractImpl;
+    setAccountAddress(accountAddress: `0x${string}` | null): void;
     get lastUpdate(): Date;
     get address(): `0x${string}`;
     getVersion(): Promise<readonly [number, number, number]>;

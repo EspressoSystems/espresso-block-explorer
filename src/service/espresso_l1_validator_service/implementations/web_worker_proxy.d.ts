@@ -2,6 +2,7 @@ import { L1BlockAPIRequest, WebWorkerProxyL1API } from '../l1_block/implementati
 import { L1ValidatorService } from '../l1_validator_service_api';
 import { ValidatorsActiveAPIRequest, WebWorkerProxyValidatorsActiveAPI } from '../validators_active/implementations/web_worker_proxy';
 import { ValidatorsActiveAllRequest, WebWorkerProxyValidatorsAllAPI } from '../validators_all/implementations/web_worker_proxy';
+import { WalletAPIRequest, WebWorkerProxyWalletAPI } from '../wallet/implementations/web_worker_proxy';
 import { WebWorkerRequest } from '../web_worker_types';
 /**
  * ProxyRequest represents a Web Worker request for the Proxy itself.
@@ -16,6 +17,7 @@ export declare class WebWorkerL1ValidatorService {
     readonly l1Block: WebWorkerProxyL1API;
     readonly validatorsActive: WebWorkerProxyValidatorsActiveAPI;
     readonly validatorsAll: WebWorkerProxyValidatorsAllAPI;
+    readonly wallet: WebWorkerProxyWalletAPI;
     constructor(service: L1ValidatorService);
-    handleRequest(request: L1BlockAPIRequest | ValidatorsActiveAPIRequest | ValidatorsActiveAllRequest): Promise<unknown>;
+    handleRequest(request: L1BlockAPIRequest | ValidatorsActiveAPIRequest | ValidatorsActiveAllRequest | WalletAPIRequest): Promise<unknown>;
 }

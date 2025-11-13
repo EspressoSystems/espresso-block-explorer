@@ -9,4 +9,5 @@ import { L1BlockAPI } from '../l1_block_api';
  */
 export declare class UnimplementedL1BlockAPI implements L1BlockAPI {
     getBlockForHeight(): Promise<L1BlockID>;
+    getLatestBlock(): Promise<L1BlockID>;
 }

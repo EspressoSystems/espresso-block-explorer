@@ -127,6 +127,10 @@ export declare function emptyAsyncIterable<T>(): AsyncGenerator<T>;
  */
 export declare function timerAsyncIterable(intervalMs: number, emitImmediate?: boolean): AsyncGenerator<Date>;
 /**
+ * neverPromise is a static promise that never resolves or rejects.
+ */
+export declare const neverPromise: Promise<unknown>;
+/**
  * neverAsyncIterable is an async iterable that never yields any values
  * and never completes.
  */

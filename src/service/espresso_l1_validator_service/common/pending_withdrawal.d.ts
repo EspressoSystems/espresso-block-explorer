@@ -1,3 +1,4 @@
+import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec/array';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 /**
  * PendingWithdrawal represents a pending withdrawal.
@@ -38,4 +39,5 @@ export declare class PendingWithdrawalJSONCodec extends TypeCheckingCodec<Pendin
  * PendingWithdrawal objects to and from JSON.
  */
 export declare const pendingWithdrawalJSONCodec: PendingWithdrawalJSONCodec;
+export declare const pendingWithdrawalArrayJSONCodec: ArrayCodec<PendingWithdrawal, unknown>;
 export {};

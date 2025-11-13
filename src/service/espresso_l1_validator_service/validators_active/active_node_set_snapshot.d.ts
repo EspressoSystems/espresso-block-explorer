@@ -14,7 +14,7 @@ import { EpochAndBlock } from '../common/epoch_and_block';
 export declare class ActiveNodeSetSnapshot {
     readonly espressoBlock: EpochAndBlock;
     readonly nodes: ActiveNodeSetEntry[];
-    constructor(espressoBlock: EpochAndBlock, Nodes: ActiveNodeSetEntry[]);
+    constructor(espressoBlock: EpochAndBlock, nodes: ActiveNodeSetEntry[]);
     toJSON(): unknown;
 }
 /**

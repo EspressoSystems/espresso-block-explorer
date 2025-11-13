@@ -5,7 +5,7 @@ import { BlockTag } from 'viem';
 import { GetBalanceParameters, GetBlockParameters, GetBlockReturnType, GetTransactionParameters, GetTransactionReceiptParameters, GetTransactionReturnType } from 'wagmi/actions';
 type Config = typeof fakeData;
 type ChainID = Config['chains'][0]['id'];
-interface UnderlyingTransaction {
+export interface UnderlyingTransaction {
     contractAddress: undefined | `0x${string}`;
     from: `0x${string}`;
     to: `0x${string}`;
@@ -13,7 +13,7 @@ interface UnderlyingTransaction {
     gas: bigint;
     hash(): `0x${string}`;
 }
-interface Transaction {
+export interface L1Transaction {
     hash: `0x${string}`;
     from: `0x${string}`;
     to: `0x${string}`;
@@ -27,58 +27,60 @@ interface Block {
     hash: `0x${string}`;
     height: bigint;
     timestamp: bigint;
-    transactions: Transaction[];
+    transactions: L1Transaction[];
+}
+export interface L1TransactionCallback {
+    l1Transaction(action: UnderlyingTransaction): void;
 }
 export declare class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     private storage;
-    readonly accountAddress: `0x${string}` | null;
+    accountAddress: `0x${string}` | null;
     constructor(storage: MockL1State, accountAddress?: `0x${string}` | null);
     replaceAccountAddress(accountAddress: `0x${string}` | null): MockL1MethodsImpl;
+    setAccountAddress(accountAddress: `0x${string}` | null): void;
     getBalance(parameters: GetBalanceParameters<Config>): Promise<{
-        decimals: number;
-        formatted: string;
-        symbol: string;
-        value: bigint;
+        readonly decimals: 18;
+        readonly formatted: string;
+        readonly symbol: "ESP";
+        readonly value: bigint;
     }>;
     estimateGas(): Promise<bigint>;
-    receiptFromTransactionAndBlock(tx: Transaction, block: Block): {
-        chainId: number;
-        blockHash: `0x${string}`;
-        blockNumber: bigint;
-        contractAddress: `0x${string}` | undefined;
-        cumulativeGasUsed: bigint;
-        cumulativeGasPrice: bigint;
-        effectiveGasPrice: bigint;
-        from: `0x${string}`;
-        gasUsed: bigint;
-        logs: never[];
-        logsBloom: string;
-        status: number;
-        to: `0x${string}`;
-        transactionHash: `0x${string}`;
-        transactionIndex: number;
-        type: number;
+    receiptFromTransactionAndBlock(tx: L1Transaction, block: Block): {
+        readonly chainId: 31337;
+        readonly blockHash: `0x${string}`;
+        readonly blockNumber: bigint;
+        readonly contractAddress: `0x${string}` | undefined;
+        readonly cumulativeGasUsed: bigint;
+        readonly effectiveGasPrice: 1n;
+        readonly from: `0x${string}`;
+        readonly gasUsed: bigint;
+        readonly logs: [];
+        readonly logsBloom: "0x";
+        readonly status: "success";
+        readonly to: `0x${string}`;
+        readonly transactionHash: `0x${string}`;
+        readonly transactionIndex: number;
+        readonly type: "legacy";
     };
     getTransactionReceipt(parameters: GetTransactionReceiptParameters<Config, ChainID>): Promise<{
-        chainId: number;
-        blockHash: `0x${string}`;
-        blockNumber: bigint;
-        contractAddress: `0x${string}` | undefined;
-        cumulativeGasUsed: bigint;
-        cumulativeGasPrice: bigint;
-        effectiveGasPrice: bigint;
-        from: `0x${string}`;
-        gasUsed: bigint;
-        logs: never[];
-        logsBloom: string;
-        status: number;
-        to: `0x${string}`;
-        transactionHash: `0x${string}`;
-        transactionIndex: number;
-        type: number;
+        readonly chainId: 31337;
+        readonly blockHash: `0x${string}`;
+        readonly blockNumber: bigint;
+        readonly contractAddress: `0x${string}` | undefined;
+        readonly cumulativeGasUsed: bigint;
+        readonly effectiveGasPrice: 1n;
+        readonly from: `0x${string}`;
+        readonly gasUsed: bigint;
+        readonly logs: [];
+        readonly logsBloom: "0x";
+        readonly status: "success";
+        readonly to: `0x${string}`;
+        readonly transactionHash: `0x${string}`;
+        readonly transactionIndex: number;
+        readonly type: "legacy";
     }>;
-    transactionFromTransactionAndBlock(txn: Transaction, block: Block): GetTransactionReturnType<Config, ChainID>;
-    transactionFromTransactionAndBlock(txn: Transaction, block: null): Omit<GetTransactionReturnType<Config, ChainID>, 'blockNumber' | 'blockHash' | 'transactionIndex'>;
+    transactionFromTransactionAndBlock(txn: L1Transaction, block: Block): GetTransactionReturnType<Config, ChainID>;
+    transactionFromTransactionAndBlock(txn: L1Transaction, block: null): Omit<GetTransactionReturnType<Config, ChainID>, 'blockNumber' | 'blockHash' | 'transactionIndex'>;
     getTransaction(parameters: GetTransactionParameters<Config, ChainID>): Promise<Omit<GetTransactionReturnType<import('wagmi').Config<readonly [import('viem').Chain, ...import('viem').Chain[]], Record<number, import('wagmi').Transport<string, Record<string, any>, import('viem').EIP1193RequestFn>>, readonly import('wagmi').CreateConnectorFn[]>, number>, "blockNumber" | "blockHash" | "transactionIndex">>;
     blockHeightFromTag(blockTag?: BlockTag): bigint;
     blockHeightFromGetBlockParameters<includeTransactions extends boolean = false, blockTag extends BlockTag = 'latest'>(parameters?: GetBlockParameters<includeTransactions, blockTag, Config, ChainID>): bigint;
@@ -241,6 +243,8 @@ export declare class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
         chainId: number;
     }>;
     getBlockNumber<includeTransactions extends boolean = false, blockTag extends BlockTag = 'latest'>(parameters?: GetBlockParameters<includeTransactions, blockTag, Config, ChainID>): Promise<bigint>;
+    private transactionCallBack;
+    setTransactionCallback(transactionCallBack: null | L1TransactionCallback): void;
     mockWriteContractStorage<T>(key: symbol, value: T): void;
     mockReadContractStorage<T>(key: symbol): T | undefined;
     mockWriteTransaction(tx: UnderlyingTransaction): void;
@@ -248,10 +252,10 @@ export declare class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
 }
 export interface MockL1State {
     balances: Map<`0x${string}`, bigint>;
-    transactions: Map<`0x${string}`, Transaction>;
+    transactions: Map<`0x${string}`, L1Transaction>;
     accountAddress: `0x${string}` | null;
     pendingBlockHeight: bigint;
-    pendingTransactions: Transaction[];
+    pendingTransactions: L1Transaction[];
     transactionToBlockMap: Map<`0x${string}`, bigint>;
     blocks: Block[];
     contractStorage: Map<symbol, unknown>;

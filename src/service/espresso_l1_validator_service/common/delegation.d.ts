@@ -1,3 +1,4 @@
+import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { EpochAndBlock } from './epoch_and_block';
 /**
@@ -39,4 +40,5 @@ export declare class DelegationJSONCodec extends TypeCheckingCodec<Delegation, u
  * Delegation objects to and from JSON.
  */
 export declare const delegationJSONCodec: DelegationJSONCodec;
+export declare const delegationArrayJSONCodec: ArrayCodec<Delegation, Delegation>;
 export {};
