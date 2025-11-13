@@ -3,8 +3,25 @@ export declare enum ValidatorStatus {
     active = 1,
     exited = 2
 }
-export type Validator = readonly [bigint, ValidatorStatus];
-export type Undelegation = readonly [bigint, bigint];
+export type RawValidator = readonly [bigint, ValidatorStatus];
+/**
+ * Undelegation represents an undelegation entry with amount and timestamp.
+ */
+export type RawUndelegation = readonly [bigint, bigint];
+export declare class Validator {
+    readonly stake: bigint;
+    readonly status: ValidatorStatus;
+    constructor(stake: bigint, status: ValidatorStatus);
+    static fromRaw(validator: RawValidator): Validator;
+    toJSON(): readonly [unknown, number];
+}
+export declare class Undelegation {
+    readonly amount: bigint;
+    readonly timestamp: bigint;
+    constructor(amount: bigint, timestamp: bigint);
+    static fromRaw(undelegation: RawUndelegation): Undelegation;
+    toJSON(): readonly [unknown, unknown];
+}
 /**
  * StakeTableContractReadOnly defines the read-only interface for the
  * Stake Table Contract.

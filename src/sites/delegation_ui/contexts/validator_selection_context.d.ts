@@ -8,6 +8,9 @@ export declare class ValidatorSelected extends ValidatorSelectionEnum {
     readonly validatorAddress: ArrayBuffer;
     constructor(validatorAddress: ArrayBuffer);
 }
+export declare class ClaimRewards extends ValidatorSelectionEnum {
+    constructor();
+}
 export declare class ValidatorConfirmed extends ValidatorSelectionEnum {
     readonly validatorAddress: ArrayBuffer;
     constructor(validatorAddress: ArrayBuffer);
@@ -17,6 +20,14 @@ export declare class ValidatorConfirmedStake extends ValidatorSelectionEnum {
     constructor(validatorAddress: ArrayBuffer);
 }
 export declare class ValidatorConfirmedUndelegate extends ValidatorSelectionEnum {
+    readonly validatorAddress: ArrayBuffer;
+    constructor(validatorAddress: ArrayBuffer);
+}
+export declare class ValidatorConfirmedUndelegateWithdraw extends ValidatorSelectionEnum {
+    readonly validatorAddress: ArrayBuffer;
+    constructor(validatorAddress: ArrayBuffer);
+}
+export declare class ValidatorConfirmedExitWithdraw extends ValidatorSelectionEnum {
     readonly validatorAddress: ArrayBuffer;
     constructor(validatorAddress: ArrayBuffer);
 }

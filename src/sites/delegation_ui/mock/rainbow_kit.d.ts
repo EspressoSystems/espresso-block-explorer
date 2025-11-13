@@ -2,7 +2,7 @@
  * MockAddress is a predefined mock address used in the
  * MockRainbowKit component.
  */
-export declare const MockAddress = "0xdeadc0dedeadc0dedeadc0dedeadc0dedeadc0de";
+export declare const MockAddress: `0x${string}`;
 /**
  * MockRainbowKit is a React component that provides
  * mock implementations of RainbowKit contexts for testing

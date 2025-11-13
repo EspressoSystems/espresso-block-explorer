@@ -1,5 +1,5 @@
 import { ESPTokenContract } from '../../../contracts/esp_token/esp_token_interface';
-import { Undelegation, Validator } from '../../../contracts/stake_table/stake_table_interface';
+import { RawUndelegation, RawValidator, Undelegation, Validator } from '../../../contracts/stake_table/stake_table_interface';
 import { CommissionTracking, StakeTableV2Contract } from '../../../contracts/stake_table_v2/stake_table_v2_interface';
 import { default as React } from 'react';
 import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
@@ -9,11 +9,11 @@ import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
  */
 export interface StakeTableState {
     contractAddress: `0x${string}`;
-    validators: Map<`0x${string}`, Validator>;
+    validators: Map<`0x${string}`, RawValidator>;
     blsKeys: Set<`0x${string}`>;
     validatorExits: Map<`0x${string}`, bigint>;
     delegations: Map<`0x${string}`, Map<`0x${string}`, bigint>>;
-    undelegations: Map<`0x${string}`, Map<`0x${string}`, Undelegation>>;
+    undelegations: Map<`0x${string}`, Map<`0x${string}`, RawUndelegation>>;
     exitEscrowPeriod: bigint;
     pauserRole: `0x${string}`;
     minCommissionIncreaseInterval: bigint;

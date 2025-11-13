@@ -1,5 +1,5 @@
 import { Config } from 'wagmi';
-import { StakeTableContract } from './stake_table_interface';
+import { StakeTableContract, Undelegation, Validator } from './stake_table_interface';
 export declare class StakeTableRemote implements StakeTableContract {
     protected readonly config: Config;
     protected readonly chainID: number;
@@ -7,11 +7,11 @@ export declare class StakeTableRemote implements StakeTableContract {
     constructor(config: Config, chainID: number, address: `0x${string}`);
     lightClient(): Promise<`0x${string}`>;
     token(): Promise<`0x${string}`>;
-    validator(account: `0x${string}`): Promise<readonly [bigint, number]>;
+    validator(account: `0x${string}`): Promise<Validator>;
     blsKey(blsKeyHash: `0x${string}`): Promise<boolean>;
     validatorExit(validator: `0x${string}`): Promise<bigint>;
     delegation(validator: `0x${string}`, delegator: `0x${string}`): Promise<bigint>;
-    undelegation(validator: `0x${string}`, delegator: `0x${string}`): Promise<readonly [bigint, bigint]>;
+    undelegation(validator: `0x${string}`, delegator: `0x${string}`): Promise<Undelegation>;
     exitEscrowPeriod(): Promise<bigint>;
     getVersion(): Promise<readonly [number, number, number]>;
     deregisterValidator(): Promise<`0x${string}`>;

@@ -1,0 +1,16 @@
+import{j as o}from"./iframe-CPO7J-5p.js";import{D as m}from"./LoadingProvider-BqsRdxCF.js";import"./DateTimeFormattersProvider-Br7i94ug.js";import"./LocaleProvider-Bld4Cmnt.js";import"./PagePathProvider-CVfe-phe.js";import"./NowProvider-DR2Q-jZs.js";import"./NumberFormattersProvider-BNSL7wtz.js";import"./PathResolverProvider-Yb-kM41j.js";import{g as e,s as i}from"./data_table_shared-5swmVaO_.js";import"./blocks-BbRoLXeF.js";import{P as s}from"./nodes-BnjHQtbM.js";import{m as p,i as n}from"./functional-Cgf59ne2.js";import"./string-IJEBdhwx.js";import"./validator-BovotZF2.js";import{T as l}from"./TaggedBase64-S1MhFE0d.js";import{a as c}from"./TransactionSummaryDataTable-Cqoc4Uq4.js";import"./preload-helper-PPVm8Dsz.js";import"./MissingElementError-CbV3pOXz.js";import"./UnimplementedError-CdIPpzwU.js";import"./react.esm-BE0DeXnC.js";import"./index-CXZCJYEZ.js";import"./index-DFaGZFUT.js";import"./client-HWUfghTq.js";import"./sleep-CW-vxfof.js";import"./monetary_value-B0ntaWrJ.js";import"./assert-BI051aL8.js";import"./data-Cpeha0UW.js";import"./url-Bph6d-ow.js";import"./wallet_address-1_HiFw02.js";import"./array_buffer-cBr8gIXV.js";import"./base64-KHURY7_E.js";import"./SkeletonContent-GAQeMj3L.js";import"./transaction_summary-_-RUzodv.js";import"./CopyButton-CsfM4kgz.js";import"./higher_order-DNzVPoVw.js";import"./CheckCircleFilled-DFjBzG3O.js";import"./SVGIconBase-C4fKu3m4.js";import"./Copy-ZeHugg_G.js";/* empty css               */import"./DateTimeText-BSKNW-oJ.js";import"./NumberText-DiIXgfZY.js";import"./TaggedBase64Text-DAyR8Ad1.js";import"./Text-BU7JBOLk.js";import"./DataTable-CPdkIla6.js";import"./typography-DYIw_45M.js";import"./ChevronUp-Bnp9fN0M.js";import"./Link-D93Tauvt.js";import"./RollUpSimple-hFWQoXO7.js";import"./Payments-DPL7EKgO.js";import"./TwitterIcon-Dul1GJJZ.js";import"./ArrowRight-CzLQOgJz.js";import"./Close-B_dKNFHZ.js";import"./MediumIcon-oFKoJmOG.js";import"./EspressoLogo-DKYN6oXw.js";import"./EspressoLogoAndTitle-CQFDawcb.js";import"./Menu-DvFyVqos.js";import"./SearchGlass-BRiFJj4j.js";import"./XIcon-G3sIz8-S.js";const u=t=>o.jsx(m.Provider,{value:t.transactionSummaries,children:o.jsx(c,{})}),gt={title:"components/Data/Transaction Summary Data Table/Interactions",component:u,args:{transactionSummaries:[]},argTypes:{transactionSummaries:{control:"object"}}},d=new s,w=Array.from(p(n(20),t=>({hash:new l("TxHash",d.fillBytes(32)),rollups:[1],block:t,offset:t,time:new Date(Date.now()+t*1e3)}))),r={args:{transactionSummaries:w},play:async({canvasElement:t,step:a})=>{await a("retrieve the data table element",async()=>{await e(t)}),await a("sort all columns",async()=>{await i(t)})}};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`{
+  args: {
+    transactionSummaries
+  },
+  play: async ({
+    canvasElement,
+    step
+  }) => {
+    await step('retrieve the data table element', async () => {
+      await getDataTable(canvasElement);
+    });
+    await step('sort all columns', async () => {
+      await selectAllTableHeaderCellsTwice(canvasElement);
+    });
+  }
+}`,...r.parameters?.docs?.source}}};const xt=["Interactions"];export{r as Interactions,xt as __namedExportsOrder,gt as default};
