@@ -37,7 +37,8 @@ export const RetrieveActiveValidators: React.FC<React.PropsWithChildren> = ({
 const ResolveActiveValidators: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const data = React.useContext(DataContext) as null | ActiveNodeSetSnapshot;
+  const data = (React.useContext(DataContext) ??
+    null) as null | ActiveNodeSetSnapshot;
   return (
     <ActiveValidatorsContext.Provider value={data}>
       {children}

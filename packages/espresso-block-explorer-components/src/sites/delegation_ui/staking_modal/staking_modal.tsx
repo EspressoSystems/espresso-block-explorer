@@ -18,6 +18,7 @@ import {
   ValidatorConfirmedUndelegateWithdraw,
   ValidatorSelectionContext,
 } from '../contexts/validator_selection_context';
+import { ClaimRewardsContent } from './claim_rewards_content';
 import { ProvideCurrentAllowanceToStakeTable } from './contexts/current_allowance_context';
 import { ProvideCurrentPendingUndelegationToValidator } from './contexts/current_pending_undelegation_from_validator_context';
 import {
@@ -26,6 +27,7 @@ import {
 } from './contexts/current_stake_to_validator_context';
 import { ProvideClaimValidatorExitPromiseContext } from './contexts/perfom_claim_validator_exit_context';
 import { ProvideApproveAsyncIterableContext } from './contexts/perform_approve_delegation_context';
+import { ProvideClaimRewardsPromiseContext } from './contexts/perform_claim_rewards_context';
 import { ProvideClaimWithdrawalPromiseContext } from './contexts/perform_claim_withdrawal_context';
 import { ProvideDelegateAsyncIterableContext } from './contexts/perform_delegation_context';
 import { ProvideUndelegateAsyncIterableContext } from './contexts/perform_undelgation_context';
@@ -51,7 +53,11 @@ const StakingModalContent: React.FC = () => {
   const selectedValidator = React.useContext(ValidatorSelectionContext);
 
   if (selectedValidator instanceof ClaimRewards) {
-    // TODO: Implement ClaimRewards UI here
+    return (
+      <ProvideClaimRewardsPromiseContext>
+        <ClaimRewardsContent />
+      </ProvideClaimRewardsPromiseContext>
+    );
   }
 
   if (
@@ -105,7 +111,9 @@ const ProvideCurrentStakingInformation: React.FC<React.PropsWithChildren> = ({
             <ProvideUndelegateAsyncIterableContext>
               <ProvideClaimWithdrawalPromiseContext>
                 <ProvideClaimValidatorExitPromiseContext>
-                  {children}
+                  <ProvideClaimRewardsPromiseContext>
+                    {children}
+                  </ProvideClaimRewardsPromiseContext>
                 </ProvideClaimValidatorExitPromiseContext>
               </ProvideClaimWithdrawalPromiseContext>
             </ProvideUndelegateAsyncIterableContext>

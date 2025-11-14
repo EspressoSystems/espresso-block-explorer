@@ -4,7 +4,6 @@ import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
 import { NoticeArea } from './notice_area';
-import './unstaking_initial_summary_and_interactions.css';
 import { ValidatorDisplayArea } from './validator_display_area';
 
 export const PendingExitSummaryAndInteraction: React.FC = () => {

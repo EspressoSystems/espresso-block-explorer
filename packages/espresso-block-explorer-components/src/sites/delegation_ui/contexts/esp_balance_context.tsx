@@ -103,7 +103,7 @@ const ProvideESPBalanceAsyncSnapshot: React.FC<React.PropsWithChildren> = ({
 const ConvertDataToESPBalance: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const balance = React.useContext(DataContext) as null | bigint;
+  const balance = (React.useContext(DataContext) ?? null) as null | bigint;
 
   return (
     <ESPBalanceContext.Provider value={balance ?? 0n}>

@@ -11,7 +11,7 @@
   grid-area: title;
   color: var(--color--brown--3);
   font-weight: 500;
-  letter-spacing: 0%;
+  letter-spacing: 0;
 }
 
 .bcard.card-value .action {

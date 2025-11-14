@@ -43,7 +43,8 @@ export const RetrieveAllValidators: React.FC<React.PropsWithChildren> = ({
 const ResolveAllValidators: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const data = React.useContext(DataContext) as null | FullNodeSetSnapshot;
+  const data = (React.useContext(DataContext) ??
+    null) as null | FullNodeSetSnapshot;
   return (
     <AllValidatorsContext.Provider value={data}>
       {children}
