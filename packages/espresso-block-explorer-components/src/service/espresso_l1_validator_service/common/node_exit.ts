@@ -1,4 +1,4 @@
-import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   assertRecordWithKeys,
   Converter,
@@ -39,7 +39,7 @@ class ValidatorExitEntryJSONDecoder implements Converter<unknown, NodeExit> {
     assertRecordWithKeys(input, 'address', 'exit_time');
 
     return new NodeExit(
-      stdBase64ArrayBufferCodec.decode(input.address),
+      hexArrayBufferCodec.decode(input.address),
       new Date(input.exit_time as string),
     );
   }
@@ -52,7 +52,7 @@ class ValidatorExitEntryJSONDecoder implements Converter<unknown, NodeExit> {
 class ValidatorExitEntryJSONEncoder implements Converter<NodeExit, unknown> {
   convert(input: NodeExit): unknown {
     return {
-      address: stdBase64ArrayBufferCodec.encode(input.address),
+      address: hexArrayBufferCodec.encode(input.address),
       exit_time: input.exitTime.toISOString(),
     };
   }

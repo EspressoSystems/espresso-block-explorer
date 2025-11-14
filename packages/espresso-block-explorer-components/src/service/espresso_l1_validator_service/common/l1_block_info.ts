@@ -1,13 +1,11 @@
-import {
-  bigintCodec,
-  numberCodec,
-  stdBase64ArrayBufferCodec,
-} from '@/convert/codec';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { bigintCodec } from '@/convert/codec/bigint';
 import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
 
 /**
  * L1BlockInfo contains information about an L1 block.
@@ -40,7 +38,7 @@ class L1BlockInfoJSONDecoder implements Converter<unknown, L1BlockInfo> {
 
     return new L1BlockInfo(
       bigintCodec.decode(input.number),
-      stdBase64ArrayBufferCodec.decode(input.hash),
+      hexArrayBufferCodec.decode(input.hash),
       new Date(numberCodec.decode(input.timestamp)),
     );
   }
@@ -53,7 +51,7 @@ class L1BlockInfoJSONEncoder implements Converter<L1BlockInfo, unknown> {
   convert(input: L1BlockInfo): unknown {
     return {
       number: bigintCodec.encode(input.number),
-      hash: stdBase64ArrayBufferCodec.encode(input.hash),
+      hash: hexArrayBufferCodec.encode(input.hash),
       timestamp: numberCodec.encode(input.timestamp.valueOf()),
     };
   }

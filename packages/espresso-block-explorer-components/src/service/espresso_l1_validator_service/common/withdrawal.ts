@@ -1,5 +1,5 @@
 import { bigintCodec } from '@/convert/codec';
-import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   assertRecordWithKeys,
   Converter,
@@ -32,8 +32,8 @@ export class Withdrawal {
 class WithdrawalEncoder implements Converter<Withdrawal, unknown> {
   convert(input: Withdrawal): unknown {
     return {
-      delegator: stdBase64ArrayBufferCodec.encode(input.delegator),
-      node: stdBase64ArrayBufferCodec.encode(input.node),
+      delegator: hexArrayBufferCodec.encode(input.delegator),
+      node: hexArrayBufferCodec.encode(input.node),
       amount: bigintCodec.encode(input.amount),
     };
   }
@@ -47,8 +47,8 @@ class WithdrawalDecoder implements Converter<unknown, Withdrawal> {
     assertRecordWithKeys(input, 'delegator', 'node', 'amount');
 
     return new Withdrawal(
-      stdBase64ArrayBufferCodec.decode(input.delegator),
-      stdBase64ArrayBufferCodec.decode(input.node),
+      hexArrayBufferCodec.decode(input.delegator),
+      hexArrayBufferCodec.decode(input.node),
       bigintCodec.decode(input.amount),
     );
   }

@@ -1,4 +1,5 @@
-import { bigintCodec, stdBase64ArrayBufferCodec } from '@/convert/codec';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { bigintCodec } from '@/convert/codec/bigint';
 import {
   assertRecordWithKeys,
   Converter,
@@ -36,8 +37,8 @@ class L1BlockIDJSONDecoder implements Converter<unknown, L1BlockID> {
 
     return new L1BlockID(
       bigintCodec.decode(input.number),
-      stdBase64ArrayBufferCodec.decode(input.hash),
-      stdBase64ArrayBufferCodec.decode(input.parent),
+      hexArrayBufferCodec.decode(input.hash),
+      hexArrayBufferCodec.decode(input.parent),
     );
   }
 }
@@ -49,8 +50,8 @@ class L1BlockIDJSONEncoder implements Converter<L1BlockID, unknown> {
   convert(input: L1BlockID): unknown {
     return {
       number: bigintCodec.encode(input.number),
-      hash: stdBase64ArrayBufferCodec.encode(input.hash),
-      parent: stdBase64ArrayBufferCodec.encode(input.parent),
+      hash: hexArrayBufferCodec.encode(input.hash),
+      parent: hexArrayBufferCodec.encode(input.parent),
     };
   }
 }
