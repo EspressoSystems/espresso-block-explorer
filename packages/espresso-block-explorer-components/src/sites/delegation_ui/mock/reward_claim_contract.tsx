@@ -202,13 +202,13 @@ export class MockRewardClaimContractImpl implements RewardClaimContract {
  * useMockRewardClaimState is a custom React hook that initializes
  * and returns the state for the MockRewardClaimContract.
  */
-function useMockRewardClaimState() {
+function useMockRewardClaimState(initialState?: Partial<MockRewardClaimState>) {
   const contractAddress = '0x0000000000000000000000000000000000000003';
   // Mocked ESPTokenContract State
   const [state] = React.useState<MockRewardClaimState>({
-    contractAddress,
-    claimedRewards: new Map(),
-    lastUpdate: new Date(),
+    contractAddress: initialState?.contractAddress ?? contractAddress,
+    claimedRewards: initialState?.claimedRewards ?? new Map(),
+    lastUpdate: initialState?.lastUpdate ?? new Date(),
   } as const satisfies MockRewardClaimState);
 
   return state;
