@@ -12,7 +12,6 @@ import {
   singletonIterable,
 } from '@/functional/functional';
 import { Delegation } from '@/service/espresso_l1_validator_service/common/delegation';
-import { EpochAndBlock } from '@/service/espresso_l1_validator_service/common/epoch_and_block';
 import { L1BlockInfo } from '@/service/espresso_l1_validator_service/common/l1_block_info';
 import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
 import { L1BlockAPI } from '@/service/espresso_l1_validator_service/l1_block/l1_block_api';
@@ -91,8 +90,6 @@ const zeroSnapshot = new WalletSnapshot(
   new L1BlockInfo(0n, new ArrayBuffer(), new Date(0)),
 );
 
-const zeroEpochAndBlock = new EpochAndBlock(0n, 0n, new Date(0));
-
 class MockStatefulWalletAPI implements WalletAPI, L1TransactionCallback {
   constructor(
     private state: MockStatefulWalletState = {
@@ -108,7 +105,6 @@ class MockStatefulWalletAPI implements WalletAPI, L1TransactionCallback {
                     hexArrayBufferCodec.decode(MockAddress),
                     node.address,
                     node.stake / 10n,
-                    zeroEpochAndBlock,
                   ),
               ),
             ),
@@ -311,7 +307,7 @@ function processStakeTableActionOnNodes(
   if (!existingDelegation) {
     iterable = appendIterables(
       delegations,
-      singletonIterable(new Delegation(delegator, node, 0n, zeroEpochAndBlock)),
+      singletonIterable(new Delegation(delegator, node, 0n)),
     );
   }
 
@@ -344,25 +340,15 @@ function processStakeTableActionOnDelegation(
   }
 
   if (action instanceof Delegate) {
-    return new Delegation(
-      delegator,
-      node,
-      delegation.amount + action.value,
-      delegation.effective,
-    );
+    return new Delegation(delegator, node, delegation.amount + action.value);
   }
 
   if (action instanceof Undelegate) {
-    return new Delegation(
-      delegator,
-      node,
-      delegation.amount - action.value,
-      delegation.effective,
-    );
+    return new Delegation(delegator, node, delegation.amount - action.value);
   }
 
   if (action instanceof ClaimValidatorExit) {
-    return new Delegation(delegator, node, 0n, delegation.effective);
+    return new Delegation(delegator, node, 0n);
   }
 
   return delegation;

@@ -1,10 +1,10 @@
-import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec';
-import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
 import { Ratio, ratioCodec } from './ratio';
 
 /**
@@ -16,11 +16,11 @@ import { Ratio, ratioCodec } from './ratio';
  * API.
  * https://www.notion.so/espressosys/Delegation-UI-Service-Specification-2942431b68e980968c28cc5099a4e8f2?source=copy_link#2942431b68e9803791a7f90f4d247228
  * Defined in rust here:
- * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L107-L113
+ * https://github.com/EspressoSystems/staking-ui-service/blob/a2317eb04e89fae58421080dd8f5db1524748476/src/types/common.rs#L104C12-L110
  */
 export class ParticipationChange {
   constructor(
-    public readonly address: ArrayBuffer,
+    public readonly node: number,
     public readonly ratio: Ratio,
   ) {
     Object.freeze(this);
@@ -39,10 +39,10 @@ class ParticipationChangeJSONDecoder
   implements Converter<unknown, ParticipationChange>
 {
   convert(input: unknown): ParticipationChange {
-    assertRecordWithKeys(input, 'address', 'percentage');
+    assertRecordWithKeys(input, 'node', 'percentage');
 
     return new ParticipationChange(
-      stdBase64ArrayBufferCodec.decode(input.address),
+      numberCodec.decode(input.node),
       ratioCodec.decode(input.percentage),
     );
   }
@@ -57,7 +57,7 @@ class ParticipationChangeJSONEncoder
 {
   convert(input: ParticipationChange): unknown {
     return {
-      address: stdBase64ArrayBufferCodec.encode(input.address),
+      node: numberCodec.encode(input.node),
       percentage: ratioCodec.encode(input.ratio),
     };
   }
