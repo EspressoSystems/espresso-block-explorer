@@ -1,5 +1,8 @@
 .claimable-rewards-card {
-  --button-base--default--background-color: #34d399;
-  --button-base--hovered--background-color: #34d39988;
+  --button-base--default--background-color: var(--color--undesign--green-2);
+  --button-base--hovered--background-color: var(
+    --color--undesign--green-2--alpha-80
+  );
+
   --button-base--default--height: 28px;
 }

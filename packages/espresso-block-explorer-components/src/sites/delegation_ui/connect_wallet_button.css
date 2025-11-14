@@ -1,13 +1,13 @@
 .bbtn.connect-wallet {
-  --text--color: #fff;
-  --icon--fill-color: #fff;
+  --text--color: var(--color--brown--0);
+  --icon--fill-color: var(--color--brown--0);
 
   --button-base--default--border-radius: 6px;
   --button-base--default--background-color: var(--color--brown--4);
-  --button-base--default--foreground-color: #fff;
+  --button-base--default--foreground-color: var(--color--brown--0);
   --button-base--default--gap: 6px;
 
-  color: #fff;
+  color: var(--color--brown--0);
   padding: 10px 12px 10px 10px;
 }
 
