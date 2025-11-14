@@ -1,6 +1,7 @@
 import { RewardClaimContract } from '../../../contracts/reward_claim/reward_claim_interface';
 import { default as React } from 'react';
-import { MockL1MethodsImpl } from './l1_methods';
+import { MockESPTokenContractImpl } from './esp_token_contract';
+import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
 /**
  * RewardClaimState defines the structure of the mock
  * RewardClaimContract state.
@@ -10,12 +11,44 @@ export interface MockRewardClaimState {
     claimedRewards: Map<`0x${string}`, bigint>;
     lastUpdate: Date;
 }
+export declare abstract class RewardClaimStateAction implements UnderlyingTransaction {
+    readonly contractAddress: undefined | `0x${string}`;
+    abstract readonly from: `0x${string}`;
+    abstract readonly to: `0x${string}`;
+    abstract readonly value: bigint;
+    abstract readonly gas: bigint;
+    readonly ts: Date;
+    /**
+     * hash computes a unique hash for the action instance.
+     */
+    abstract hash(): `0x${string}`;
+    /**
+     * applyToState applies the action to the given contract state
+     * and returns the new state.
+     */
+    abstract applyToState(state: MockRewardClaimState): MockRewardClaimState;
+}
+export declare class ClaimRewardAction extends RewardClaimStateAction {
+    readonly contractAddress: `0x${string}`;
+    readonly delegator: `0x${string}`;
+    readonly lifetimeRewards: bigint;
+    readonly authData: `0x${string}`;
+    readonly gas: bigint;
+    get from(): `0x${string}`;
+    get to(): `0x${string}`;
+    get value(): bigint;
+    constructor(contractAddress: `0x${string}`, delegator: `0x${string}`, lifetimeRewards: bigint, authData: `0x${string}`);
+    hash(): `0x${string}`;
+    applyToState(state: MockRewardClaimState): MockRewardClaimState;
+}
 export declare class MockRewardClaimContractImpl implements RewardClaimContract {
     private readonly l1Methods;
-    readonly accountAddress: `0x${string}` | null;
-    constructor(l1Methods: MockL1MethodsImpl, state: MockRewardClaimState, accountAddress?: `0x${string}` | null);
+    private readonly espToken;
+    accountAddress: `0x${string}` | null;
+    constructor(l1Methods: MockL1MethodsImpl, espToken: MockESPTokenContractImpl, state: MockRewardClaimState, accountAddress?: `0x${string}` | null);
     get state(): MockRewardClaimState;
     replaceAccountAddress(accountAddress: `0x${string}` | null): MockRewardClaimContractImpl;
+    setAccountAddress(accountAddress: `0x${string}` | null): void;
     get lastUpdate(): Date;
     get address(): `0x${string}`;
     claimedRewards(address: `0x${string}`): Promise<bigint>;

@@ -1,20 +1,4 @@
-/**
- * HotShotQueryService is an interface that defines an interface for the
- * actual HotShot Query Service as a DataSource.
- *
- * Its methods are meant to reflect the actual endpoints of the HotShot Query
- * Service API.  However, the intention is that practically anything *could*
- * implement this interface and be used as a DataSource for the live
- * Block Explorer.
- *
- * It should be noted that the HotShot Query Service is a volatile API that
- * will change often without warning, so by itself, it's likely not the best
- * thing to utilize. However, for demo purposes, it's what we have, and it's
- * what we shall utilize.
- *
- * Please bear in mind that this interface is meant to reflect the HotShot
- * Query Service that is deployed via a Sequencer.
- */
+import { HeightAndAddress } from './cappuccino/reward_state/height_and_address';
 export interface Leaf {
 }
 export interface HotShotQueryServiceAvailabilityAPI<Leaf, Block, Transaction> {
@@ -39,6 +23,9 @@ export interface HotShotQueryServiceAvailabilityStreamsAPI<Leaf, Block, Header> 
     streamBlocks(height: number): AsyncIterator<Block>;
     streamHeaders(height: number): AsyncIterator<Header>;
 }
-export interface HotShotQueryServiceRewardStateAPI {
+export interface HotShotQueryServiceRewardStateAPI<RewardsClaimInput> {
     getLatestRewardBalance(address: string): Promise<null | bigint>;
+    getLatestRewardClaimInput(address: string): Promise<null | RewardsClaimInput>;
+    getRewardBalance(request: HeightAndAddress): Promise<null | bigint>;
+    getRewardClaimInput(request: HeightAndAddress): Promise<null | RewardsClaimInput>;
 }

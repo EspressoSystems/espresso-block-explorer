@@ -1,4 +1,5 @@
 import { HotShotQueryServiceRewardStateAPI } from '../../types';
+import { RewardClaimInput } from './reward_claim_input';
 /**
  * CappuccinoHotShotQueryServiceRewardStateAPI is a type that represents the
  * Reward State API for the Cappuccino HotShot Query Service. This interface
@@ -6,7 +7,7 @@ import { HotShotQueryServiceRewardStateAPI } from '../../types';
  * allow for easy interactions with the Reward State API, while also allowing for
  * different implementations for testing purposes.
  */
-export type CappuccinoHotShotQueryServiceRewardStateAPI = HotShotQueryServiceRewardStateAPI;
+export type CappuccinoHotShotQueryServiceRewardStateAPI = HotShotQueryServiceRewardStateAPI<RewardClaimInput>;
 /**
  * UnimplementedCappuccinoHotShotQueryServiceRewardStateAPI is a class that
  * implements the CappuccinoHotShotQueryServiceRewardStateAPI interface, but
@@ -16,4 +17,7 @@ export type CappuccinoHotShotQueryServiceRewardStateAPI = HotShotQueryServiceRew
  */
 export declare class UnimplementedCappuccinoHotShotQueryServiceRewardStateAPI implements CappuccinoHotShotQueryServiceRewardStateAPI {
     getLatestRewardBalance(): Promise<bigint>;
+    getLatestRewardClaimInput(): Promise<RewardClaimInput | null>;
+    getRewardBalance(): Promise<null | bigint>;
+    getRewardClaimInput(): Promise<RewardClaimInput | null>;
 }
