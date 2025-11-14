@@ -4,7 +4,6 @@ import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { ApproveButton } from './approve_button';
-import { BackButton } from './back_button';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { DelegateButton } from './delegate_button';
 import './new_delegation_content.css';
@@ -22,7 +21,6 @@ export const NewDelegationContent: React.FC = () => {
   return (
     <>
       <StakingHeader>
-        <BackButton />
         <StakingModalTitle>
           <Text text="Delegate" />
           <Text text=" / " />

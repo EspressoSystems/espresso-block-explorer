@@ -10,7 +10,6 @@ import { DialogModal } from '../contexts/modal_context';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
 import {
   ClaimRewards,
-  SetValidatorSelectionContext,
   ValidatorConfirmed,
   ValidatorConfirmedExitWithdraw,
   ValidatorConfirmedStake,
@@ -32,6 +31,11 @@ import { ProvideClaimWithdrawalPromiseContext } from './contexts/perform_claim_w
 import { ProvideDelegateAsyncIterableContext } from './contexts/perform_delegation_context';
 import { ProvideUndelegateAsyncIterableContext } from './contexts/perform_undelgation_context';
 import { ProvideStakingAmountContexts } from './contexts/staking_amount_context';
+import { ProvideStakingModalClose } from './contexts/staking_modal_close_context';
+import {
+  ProvideStakingHistory,
+  StakingModalHistoryControlsContext,
+} from './contexts/staking_modal_history_context';
 import { ManageStakeContent } from './manage_stake_content';
 import { NewDelegationContent } from './new_delegation_content';
 import './staking_modal.css';
@@ -43,7 +47,11 @@ import { WithdrawExitContent } from './withdraw_exit_content';
 export const StakingModal: React.FC = () => {
   return (
     <DialogModal className="staking-modal" closedby="none">
-      <StakingModalContent />
+      <ProvideStakingHistory>
+        <ProvideStakingModalClose>
+          <StakingModalContent />
+        </ProvideStakingModalClose>
+      </ProvideStakingHistory>
     </DialogModal>
   );
 };
@@ -126,7 +134,7 @@ const ProvideCurrentStakingInformation: React.FC<React.PropsWithChildren> = ({
 
 const ValidatorConfirmedContent: React.FC = () => {
   const selectedValidator = React.useContext(ValidatorSelectionContext);
-  const setSelectedValidator = React.useContext(SetValidatorSelectionContext);
+  const historyControls = React.useContext(StakingModalHistoryControlsContext);
   const currentStakeToValidator = React.useContext(
     CurrentStakeToValidatorContext,
   );
@@ -143,11 +151,11 @@ const ValidatorConfirmedContent: React.FC = () => {
       return;
     }
 
-    setSelectedValidator(
+    historyControls.replace(
       new ValidatorConfirmedStake(selectedValidator.validatorAddress),
     );
     return () => {};
-  }, [selectedValidator, setSelectedValidator, currentStakeToValidator]);
+  }, [selectedValidator, historyControls, currentStakeToValidator]);
 
   if (selectedValidator instanceof ValidatorConfirmedExitWithdraw) {
     return <WithdrawExitContent />;

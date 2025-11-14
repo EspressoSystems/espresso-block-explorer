@@ -7,14 +7,8 @@ import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
-import { ModalContext } from '../contexts/modal_context';
 import { StakeTableContractContext } from '../contexts/stake_table_contract_context';
-import {
-  NoValidatorSelected,
-  SetValidatorSelectionContext,
-} from '../contexts/validator_selection_context';
 import ButtonLarge from '../elements/buttons/button_large';
-import { BackButton } from './back_button';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { CurrentPendingUndelegationFromValidatorContext } from './contexts/current_pending_undelegation_from_validator_context';
 import {
@@ -23,6 +17,7 @@ import {
   PerformClaimWithdrawalReceiptRetrieved,
   SetClaimWithdrawalAsyncIterableContext,
 } from './contexts/perform_claim_withdrawal_context';
+import { StakingModalCloseContext } from './contexts/staking_modal_close_context';
 import { PendingClaimOverviewArea } from './pending_claim_overview_area';
 import { PendingClaimSummaryAndInteraction } from './pending_claim_summary_and_interaction';
 import { StakingContent } from './staking_content';
@@ -35,7 +30,6 @@ export const WithdrawClaimContent: React.FC = () => {
   return (
     <>
       <StakingHeader>
-        <BackButton />
         <StakingModalTitle>
           <Text text="Claim" />
           <Text text=" / " />
@@ -62,8 +56,7 @@ const WithdrawClaimActionsArea: React.FC = () => {
   const validatorAddress = hexArrayBufferCodec.encode(confirmedValidator);
   const asyncSnapshot = React.useContext(ClaimWithdrawalAsyncSnapshotContext);
   const setL1Timestamp = React.useContext(SetL1RefreshTimestampContext);
-  const modalControls = React.useContext(ModalContext);
-  const setSelection = React.useContext(SetValidatorSelectionContext);
+  const close = React.useContext(StakingModalCloseContext);
   const setClaimWithdrawalAsyncIterable = React.useContext(
     SetClaimWithdrawalAsyncIterableContext,
   );
@@ -135,12 +128,7 @@ const WithdrawClaimActionsArea: React.FC = () => {
         <div>
           <Text text="Stake Claimed Successfully" />
         </div>
-        <ButtonLarge
-          onClick={() => {
-            setSelection(new NoValidatorSelected());
-            modalControls.close();
-          }}
-        >
+        <ButtonLarge onClick={close}>
           <Text text="Close" />
         </ButtonLarge>
       </div>

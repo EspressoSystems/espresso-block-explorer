@@ -12,7 +12,6 @@ import React from 'react';
 import { AllValidatorsContext } from '../contexts/all_validators_context';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
 import {
-  SetValidatorSelectionContext,
   ValidatorConfirmed,
   ValidatorSelected,
   ValidatorSelectionContext,
@@ -21,6 +20,7 @@ import ButtonLarge from '../elements/buttons/button_large';
 import { NodeNameCell } from '../validator_nodes_table/common/cells/node_name_cell';
 import { RankCell } from '../validator_nodes_table/common/cells/rank_cell';
 import { CloseStakingModalButton } from './close_staking_modal';
+import { StakingModalHistoryControlsContext } from './contexts/staking_modal_history_context';
 import { LabelValueSplit } from './label_value_split';
 import { StakingContent } from './staking_content';
 import { StakingHeader } from './staking_header';
@@ -108,7 +108,8 @@ const ValidatorSearch: React.FC = () => {
 function filterListWithSearchTerm(
   nodes: NodeSetEntry[],
   searchTerm: string,
-): NodeSetEntry[] {
+): NodeSetEntry[];
+function filterListWithSearchTerm(nodes: NodeSetEntry[]): NodeSetEntry[] {
   return nodes;
 }
 
@@ -146,14 +147,14 @@ const ValidatorList: React.FC = () => {
 const NodeRow: React.FC = () => {
   const node = React.useContext(ValidatorNodeContext);
   const selection = React.useContext(ValidatorSelectionContext);
-  const setSelection = React.useContext(SetValidatorSelectionContext);
+  const historyControls = React.useContext(StakingModalHistoryControlsContext);
 
   const isSelected =
     selection instanceof ValidatorSelected &&
     compareArrayBuffer(selection.validatorAddress, node.address) === 0;
 
   const select = () => {
-    setSelection(new ValidatorSelected(node.address));
+    historyControls.replace(new ValidatorSelected(node.address));
   };
 
   return (
@@ -240,14 +241,16 @@ const ValidatorConfirmArea: React.FC = () => {
   const selection = React.useContext(
     ValidatorSelectionContext,
   ) as ValidatorSelected;
-  const setSelection = React.useContext(SetValidatorSelectionContext);
+  const historyControls = React.useContext(StakingModalHistoryControlsContext);
   assert(selection instanceof ValidatorSelected);
 
   return (
     <div className="validator-confirm-area">
       <ButtonLarge
         onClick={() =>
-          setSelection(new ValidatorConfirmed(selection.validatorAddress))
+          historyControls.push(
+            new ValidatorConfirmed(selection.validatorAddress),
+          )
         }
       >
         <Text text="Next" />
