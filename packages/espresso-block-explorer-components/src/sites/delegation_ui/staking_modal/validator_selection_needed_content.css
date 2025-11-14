@@ -1,0 +1,89 @@
+.validator-selection-split {
+  display: flex;
+  flex-direction: row;
+  flex-basis: 50%;
+  max-height: 358px;
+  max-width: 585px;
+  width: 585px;
+}
+
+.validator-selection-split > * {
+  flex: 1 1;
+}
+
+.validator-selection-list {
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--color--brown--0);
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.validator-selection-list table.validator-list {
+  --icon--fill-color: transparent;
+  width: 100%;
+  table-layout: auto;
+  border-spacing: 0;
+}
+
+.validator-selection-list table.validator-list tr {
+  border-bottom: 1px solid var(--color--brown--3--alpha-24);
+
+  transition:
+    background-color 240ms ease-in-out,
+    color 240ms ease-in-out;
+  will-change: background-color, color, var(--icon--fill-color);
+}
+
+.validator-selection-list table.validator-list tr td {
+  border-bottom: 1px solid var(--color--brown--3--alpha-24);
+}
+.validator-selection-list table.validator-list tr:nth-last-child(1) td {
+  border-bottom: none;
+}
+
+.validator-selection-list table.validator-list td {
+  padding-inline: 16px;
+  padding-block: 12px;
+  cursor: pointer;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.validator-selection-list tr[data-selected='true'] {
+  background: var(--color--brown--4);
+  color: var(--color--brown--0);
+  --icon--fill-color: var(--color--brown--0);
+}
+
+.selection-details {
+  background: var(--color--brown--0);
+  border-inline-start: 1px solid var(--color--brown--3--alpha-24);
+  display: flex;
+  flex-direction: column;
+}
+
+.node-summary-area {
+  padding: 24px;
+}
+
+.staking-modal-staking-overview-area .staking-modal-label-value-split {
+  flex-direction: column;
+}
+
+.staking-modal-staking-overview-area
+  .staking-modal-label-value-split
+  *:nth-child(2) {
+  color: var(--color--undesign--brown-1);
+}
+
+.flex {
+  flex: 1;
+}
+
+.validator-confirm-area {
+  display: flex;
+  padding: 24px;
+  justify-content: flex-end;
+  justify-self: flex-end;
+}

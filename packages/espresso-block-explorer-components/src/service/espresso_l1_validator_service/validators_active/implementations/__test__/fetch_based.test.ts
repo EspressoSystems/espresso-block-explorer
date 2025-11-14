@@ -90,12 +90,7 @@ describe('FetchBasedValidatorsActiveAPI', () => {
         new EpochAndBlock(epoch, block, new Date()),
         [
           new ActiveNodeSetDiffNewBlock(
-            [
-              new ParticipationChange(
-                prng.fillBytes(32),
-                new Ratio(prng.nextFloat()),
-              ),
-            ],
+            [new ParticipationChange(1, new Ratio(prng.nextFloat()))],
             new CappuccinoAPIBitVec(
               CappuccinoAPIBitVecOrder.lsb0,
               new CappuccinoAPIBitVecHead(8, 0),

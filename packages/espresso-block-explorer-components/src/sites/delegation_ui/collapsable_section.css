@@ -1,11 +1,11 @@
 :root {
   --collapsable-section--padding-block: 12px;
   --collapsable-section--padding-inline: 12px;
-  --collapsable-section--background-color: #fff;
+  --collapsable-section--background-color: var(--color--brown--0);
   --collapsable-section--foreground-color: inherit;
   --collapsable-section--border-width: 1px;
   --collapsable-section--border-style: solid;
-  --collapsable-section--border-color: #ccc;
+  --collapsable-section--border-color: transparent;
   --collapsable-section--border-radius: 8px;
 }
 
@@ -34,11 +34,11 @@
   align-items: center;
 
   --button-base--default--height: 28px;
-  --button-base--default--background-color: #fff;
+  --button-base--default--background-color: var(--color--brown--0);
   --button-base--default--foreground-color: var(
     --collapsable-section--foreground-color
   );
-  --button-base--hovered--background-color: #fff8;
+  --button-base--hovered--background-color: var(--color--brown--0--alpha-53);
   --button-base--hovered--foreground-color: var(
     --collapsable-section--foreground-color
   );

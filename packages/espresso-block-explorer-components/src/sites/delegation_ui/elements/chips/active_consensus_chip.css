@@ -6,6 +6,6 @@
       var(--color--undesign--green-1--alpha-16),
       var(--color--undesign--green-1--alpha-16)
     ),
-    linear-gradient(0deg, var(--color--brown--0), var(--color--brown--0));
+    var(--color--brown--0);
   border: 1px solid var(--color--undesign--green-1--alpha-80);
 }

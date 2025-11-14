@@ -2,13 +2,12 @@ import Text from '@/components/text/Text';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import {
-  SetValidatorSelectionContext,
   ValidatorConfirmedStake,
   ValidatorConfirmedUndelegate,
 } from '../contexts/validator_selection_context';
 import ButtonLarge from '../elements/buttons/button_large';
-import { BackButton } from './back_button';
 import { CloseStakingModalButton } from './close_staking_modal';
+import { StakingModalHistoryControlsContext } from './contexts/staking_modal_history_context';
 import './manage_stake_content.css';
 import { ManageStakeInitialSummary } from './manage_stake_initial_summary';
 import { StakingContent } from './staking_content';
@@ -19,7 +18,6 @@ export const ManageStakeContent: React.FC = () => {
   return (
     <>
       <StakingHeader>
-        <BackButton />
         <StakingModalTitle>
           <Text text="Manage Stake" />
         </StakingModalTitle>
@@ -34,16 +32,14 @@ export const ManageStakeContent: React.FC = () => {
 };
 
 const ManageStakeActionsArea: React.FC = () => {
-  const setValidatorSelection = React.useContext(SetValidatorSelectionContext);
+  const historyControls = React.useContext(StakingModalHistoryControlsContext);
   const confirmedValidator = React.useContext(ConfirmedValidatorContext);
 
   return (
     <div className="staking-modal-manage-stake-actions-area">
       <ButtonLarge
         onClick={() => {
-          setValidatorSelection(
-            new ValidatorConfirmedStake(confirmedValidator),
-          );
+          historyControls.push(new ValidatorConfirmedStake(confirmedValidator));
         }}
       >
         <Text text="Delegate More" />
@@ -51,7 +47,7 @@ const ManageStakeActionsArea: React.FC = () => {
 
       <ButtonLarge
         onClick={() => {
-          setValidatorSelection(
+          historyControls.push(
             new ValidatorConfirmedUndelegate(confirmedValidator),
           );
         }}

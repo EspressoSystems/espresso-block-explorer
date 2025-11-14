@@ -5,20 +5,18 @@ import {
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
-import { EpochAndBlock, epochAndBlockNumberJSONCodec } from './epoch_and_block';
 
 /**
  * Delegation represents a delegation event to a validator node.
  *
  * The Delegation type is defined by the rust code here:
- * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L117-L129
+ * https://github.com/EspressoSystems/staking-ui-service/blob/a2317eb04e89fae58421080dd8f5db1524748476/src/types/common.rs#L114-L123
  */
 export class Delegation {
   constructor(
     public readonly delegator: ArrayBuffer,
     public readonly node: ArrayBuffer,
     public readonly amount: bigint,
-    public readonly effective: EpochAndBlock,
   ) {
     Object.freeze(this);
   }
@@ -37,7 +35,6 @@ class DelegationEncoder implements Converter<Delegation, unknown> {
       delegator: stdBase64ArrayBufferCodec.encode(input.delegator),
       node: stdBase64ArrayBufferCodec.encode(input.node),
       amount: bigintCodec.encode(input.amount),
-      effective: epochAndBlockNumberJSONCodec.encode(input.effective),
     };
   }
 }
@@ -53,7 +50,6 @@ class DelegationDecoder implements Converter<unknown, Delegation> {
       stdBase64ArrayBufferCodec.decode(input.delegator),
       stdBase64ArrayBufferCodec.decode(input.node),
       bigintCodec.decode(input.amount),
-      epochAndBlockNumberJSONCodec.decode(input.effective),
     );
   }
 }

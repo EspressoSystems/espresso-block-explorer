@@ -12,6 +12,7 @@
   --color--brown--6: #130401;
   --color--brown--0--alpha-015: #ffffff05;
   --color--brown--0--alpha-32: #ffffff51;
+  --color--brown--0--alpha-53: #ffffff88;
   --color--brown--0--alpha-60: #ffffff99;
   --color--brown--1--alpha-32: #fcebde52;
   --color--brown--1--alpha-50: #fcebde80;
@@ -22,10 +23,14 @@
   --color--brown--4--alpha-04: #451f170a;
   --color--brown--4--alpha-32: #451f1752;
   --color--brown--4--alpha-40: #451f1766;
+  --color--brown--4--alpha-50: #451f1780;
 
   --color--blue--0: #d0e8f4;
   --color--blue--1: #1eb6f8;
   --color--blue--2: #0c81b4;
+  --color--blue--2--alpha-08: #0c81b414;
+  --color--blue--2--alpha-53: #0c81b488;
+  --color--blue--2--alpha-72: #0c81b4b8;
 
   --color--green--0: #f0e89d;
   --color--green--1: #b9ad3e;
@@ -42,11 +47,21 @@
    * These colors are not listed in the Style Guide but are used in the
    * delegation UI components.
    */
+  --color--undesign--black--alpha-08: #00000014;
   --color--undesign--black--alpha-16: #00000029;
   --color--undesign--black--alpha-24: #0000003d;
   --color--undesign--black--alpha-32: #00000052;
+  --color--undesign--black--alpha-40: #00000066;
+  --color--undesign--black--alpha-60: #00000099;
+  --color--undesign--black--alpha-66: #000000aa;
+  --color--undesign--black--alpha-72: #000000b8;
+  --color--undesign--black--alpha-88: #000000e0;
+  --color--undesign--white-1: #eaeaea;
   --color--undesign--green-1: #34d399;
   --color--undesign--green-1--alpha-16: #34d39928;
   --color--undesign--green-1--alpha-80: #34d399cc;
+  --color--undesign--green-2: #10b981;
+  --color--undesign--green-2--alpha-80: #10b9cc;
   --color--undesign--red--1: #f43f5e;
+  --color--undesign--brown-1: #451f17e0;
 }

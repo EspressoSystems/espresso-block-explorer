@@ -7,11 +7,11 @@
 }
 
 .staking-modal-unstaking-options-area .bbtn {
-  --button-base--default--background-color: #fcebde;
-  --button-base--default--foreground-color: #451f17;
+  --button-base--default--background-color: var(--color--brown--1);
+  --button-base--default--foreground-color: var(--color--brown--4);
   --button-base--default--border-width: 1px;
   --button-base--default--border-style: solid;
-  --button-base--default--border-color: #b672373d;
+  --button-base--default--border-color: var(--color--brown--3--alpha-24);
   --button-base--default--font-size: 16px;
   --button-base--default--padding-inline: 16px;
   --button-base--default--padding-block: 24px;
@@ -19,7 +19,7 @@
 }
 
 .staking-modal-unstaking-options-area .bbtn[data-selected='true'] {
-  --button-base--default--background-color: #b67237;
-  --button-base--default--foreground-color: #ffffff;
-  --button-base--default--border-color: #b67237;
+  --button-base--default--background-color: var(--color--brown--3);
+  --button-base--default--foreground-color: var(--color--brown--0);
+  --button-base--default--border-color: var(--color--brown--3);
 }

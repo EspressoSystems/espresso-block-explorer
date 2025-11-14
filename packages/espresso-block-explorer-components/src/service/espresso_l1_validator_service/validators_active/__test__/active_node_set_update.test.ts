@@ -26,7 +26,7 @@ describe('ActiveNodeSetUpdate', () => {
         new EpochAndBlock(epoch, block, new Date()),
         [
           new ActiveNodeSetDiffNewBlock(
-            [new ParticipationChange(prng.fillBytes(32), new Ratio(1.5))],
+            [new ParticipationChange(1, new Ratio(1.5))],
             new CappuccinoAPIBitVec(
               CappuccinoAPIBitVecOrder.lsb0,
               new CappuccinoAPIBitVecHead(8, 0),

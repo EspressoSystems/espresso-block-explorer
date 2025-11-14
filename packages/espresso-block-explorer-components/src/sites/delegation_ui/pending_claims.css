@@ -1,28 +1,39 @@
 .pending-claims {
-  --collapsable-section--background-color: #d0e8f4;
-  --collapsable-section--foreground-color: #0c81b4;
-  --collapsable-section--border-color: #0c81b414;
+  --collapsable-section--background-color: var(--color--blue--0);
+  --collapsable-section--foreground-color: var(--color--blue--2);
+  --collapsable-section--border-color: var(--color--blue--2--alpha-08);
+
+  --icon--fill-color: var(--color--blue--2);
+  --icon--stroke-color: var(--color--blue--2);
 }
 
 .pending-claims table.all-validators-table {
-  --validator-node-table--border-color: #0000003d;
+  --validator-node-table--border-color: var(--color--undesign--black--alpha-24);
   --validator-node-table--gradient-color-start: transparent;
   --validator-node-table--gradient-color-middle: transparent;
   --validator-node-table--gradient-color-end: transparent;
   --validator-node-table--background--gradient-color-start: transparent;
   --validator-node-table--background--gradient-color-end: transparent;
-  --validator-node-table--header--background-color: #ffffff99;
-  --validator-node-table--cell--background-color: #ffffff;
-  --validator-node-table--cell--foreground-color: #000000e0;
-  --validator-node-table--header--foreground-color: #0c81b4b8;
+  --validator-node-table--header--background-color: var(
+    --color--brown--0--alpha-60
+  );
+  --validator-node-table--cell--background-color: var(--color--brown--0);
+  --validator-node-table--cell--foreground-color: var(
+    --color--undesign--black--alpha-88
+  );
+  --validator-node-table--header--foreground-color: var(
+    --color--blue--2--alpha-72
+  );
 
-  --button-base--default--background-color: #00000066;
-  --button-base--default--foreground-color: #ffffff;
-  --button-base--default--border-color: #00000066;
+  --button-base--default--background-color: var(
+    --color--undesign--black--alpha-40
+  );
+  --button-base--default--foreground-color: var(--color--brown--0);
+  --button-base--default--border-color: var(--color--undesign--black--alpha-40);
 
   --button-base--default--border-width: 0;
-  --button-base--default--background-color: #0c81b4;
+  --button-base--default--background-color: var(--color--blue--2);
   --button-base--default--foreground-color: var(--color--brown--0);
-  --button-base--hovered--background-color: #0c81b488;
+  --button-base--hovered--background-color: var(--color--blue--2--alpha-53);
   --button-base--hovered--foreground-color: var(--color--brown--0);
 }

@@ -1,20 +1,24 @@
 import Text from '@/components/text/Text';
 import React from 'react';
-import {
-  NoValidatorSelected,
-  SetValidatorSelectionContext,
-} from '../contexts/validator_selection_context';
 import ButtonFlat from '../elements/buttons/button_flat';
 import './back_button.css';
+import { StakingModalHistoryControlsContext } from './contexts/staking_modal_history_context';
 
+/**
+ * BackButton component renders a button that allows users to navigate back in
+ * the staking modal history.
+ *
+ * It will display nothing if there is no history to go back to.
+ */
 export const BackButton: React.FC = () => {
-  const setSelection = React.useContext(SetValidatorSelectionContext);
+  const historyControls = React.useContext(StakingModalHistoryControlsContext);
+
+  if (!historyControls.canGoBack) {
+    return null;
+  }
 
   return (
-    <ButtonFlat
-      className="back-modal-button"
-      onClick={() => setSelection(new NoValidatorSelected())}
-    >
+    <ButtonFlat className="back-modal-button" onClick={historyControls.back}>
       <Text text="Back" />
     </ButtonFlat>
   );

@@ -14,7 +14,7 @@
   margin: 0 auto;
   top: 32px;
   z-index: 0;
-  background: #de9e67;
+  background: var(--color--brown--2);
   filter: blur(320px);
   left: 50%;
   opacity: 8%;

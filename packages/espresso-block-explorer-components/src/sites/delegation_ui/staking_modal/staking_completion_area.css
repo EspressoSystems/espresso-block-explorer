@@ -1,7 +1,11 @@
 .staking-modal-completion-area {
   background:
-    linear-gradient(0deg, rgba(252, 235, 222, 0.5), rgba(252, 235, 222, 0.5)),
-    linear-gradient(0deg, var(--color--brown--0), var(--color--brown--0));
+    linear-gradient(
+      0deg,
+      var(--color--brown--1--alpha-50),
+      var(--color--brown--1--alpha-50)
+    ),
+    var(--color--brown--0);
   padding: 16px;
 }
 
