@@ -23,7 +23,6 @@ import {
   PerformClaimWithdrawalReceiptRetrieved,
   SetClaimWithdrawalAsyncIterableContext,
 } from './contexts/perform_claim_withdrawal_context';
-import './new_delegation_content.css';
 import { PendingClaimOverviewArea } from './pending_claim_overview_area';
 import { PendingClaimSummaryAndInteraction } from './pending_claim_summary_and_interaction';
 import { StakingContent } from './staking_content';

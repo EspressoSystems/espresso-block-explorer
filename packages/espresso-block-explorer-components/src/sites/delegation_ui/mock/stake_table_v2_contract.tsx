@@ -127,7 +127,7 @@ export class Delegate extends StakeTableStateActions {
     hasher.update(textEncoder.encode(this.validator).buffer);
     hasher.update(textEncoder.encode(this.delegator).buffer);
     hasher.update(
-      textEncoder.encode(bigintCodec.encoder.convert(this.value)).buffer,
+      textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
     );
     return hexArrayBufferCodec.encode(hasher.digest());
   }
@@ -139,10 +139,10 @@ export class Delegate extends StakeTableStateActions {
     const newValidators = new Map(state.validators);
     const validatorInfo = newValidators.get(this.validator) ?? [0n, 0];
     const currentAmount = delegatorMap.get(this.delegator) ?? 0n;
-    delegatorMap.set(this.delegator, currentAmount + this.value);
+    delegatorMap.set(this.delegator, currentAmount + this.amount);
     newDelegations.set(this.validator, delegatorMap);
     newValidators.set(this.validator, [
-      validatorInfo[0] + this.value,
+      validatorInfo[0] + this.amount,
       validatorInfo[1],
     ]);
 
@@ -188,7 +188,7 @@ export class Undelegate extends StakeTableStateActions {
     hasher.update(textEncoder.encode(this.validator).buffer);
     hasher.update(textEncoder.encode(this.delegator).buffer);
     hasher.update(
-      textEncoder.encode(bigintCodec.encoder.convert(this.value)).buffer,
+      textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
     );
     hasher.update(
       textEncoder.encode(bigintCodec.encoder.convert(this.exitEscrowPeriod))
@@ -203,11 +203,11 @@ export class Undelegate extends StakeTableStateActions {
       newDelegations.get(this.validator) ?? new Map<`0x${string}`, bigint>();
     const currentAmount = delegatorMap.get(this.delegator) ?? 0n;
     const newValidators = new Map(state.validators);
-    delegatorMap.set(this.delegator, currentAmount - this.value);
+    delegatorMap.set(this.delegator, currentAmount - this.amount);
     newDelegations.set(this.validator, delegatorMap);
     const validatorInfo = newValidators.get(this.validator) ?? [0n, 0];
     newValidators.set(this.validator, [
-      validatorInfo[0] - this.value,
+      validatorInfo[0] - this.amount,
       validatorInfo[1],
     ]);
 
@@ -216,7 +216,7 @@ export class Undelegate extends StakeTableStateActions {
       newUndelegations.get(this.validator) ??
       new Map<`0x${string}`, RawUndelegation>();
     undelegatorMap.set(this.delegator, [
-      this.value,
+      this.amount,
       BigInt(this.ts.valueOf()) + state.exitEscrowPeriod,
     ]);
     newUndelegations.set(this.validator, undelegatorMap);
@@ -263,7 +263,7 @@ export class ClaimWithdrawal extends StakeTableStateActions {
     hasher.update(textEncoder.encode(this.validator).buffer);
     hasher.update(textEncoder.encode(this.delegator).buffer);
     hasher.update(
-      textEncoder.encode(bigintCodec.encoder.convert(this.value)).buffer,
+      textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
     );
     return hexArrayBufferCodec.encode(hasher.digest());
   }
@@ -316,7 +316,7 @@ export class ClaimValidatorExit extends StakeTableStateActions {
     hasher.update(textEncoder.encode(this.validator).buffer);
     hasher.update(textEncoder.encode(this.delegator).buffer);
     hasher.update(
-      textEncoder.encode(bigintCodec.encoder.convert(this.value)).buffer,
+      textEncoder.encode(bigintCodec.encoder.convert(this.amount)).buffer,
     );
     return hexArrayBufferCodec.encode(hasher.digest());
   }
@@ -528,6 +528,15 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
       throw new Error(
         'No account address available for deregistering validator.',
       );
+    }
+
+    const validator = await this.validator(this.accountAddress);
+    if (validator.status === ValidatorStatus.exited) {
+      throw new Error('Validator has already exited');
+    }
+
+    if (validator.status !== ValidatorStatus.active) {
+      throw new Error('Validator is not active');
     }
 
     const action = new ValidatorExit(

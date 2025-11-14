@@ -7,10 +7,10 @@ import UnimplementedError from '@/errors/UnimplementedError';
 import { BlockHeightResponse } from '../types';
 import {
   WebWorkerRequest,
-  WebWorkerResponseError,
-  WebWorkerResponseSuccess,
   webWorkerRequestCodec,
+  WebWorkerResponseError,
   webWorkerResponseErrorCodec,
+  WebWorkerResponseSuccess,
   webWorkerResponseSuccessCodec,
 } from '../web_worker_types';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from './availability/availability_api';
@@ -49,6 +49,11 @@ import { cappuccinoExplorerGetTransactionSummariesResponseCodec } from './explor
 import { CappuccinoHotShotQueryService } from './hot_shot_query_service_api';
 import { FakeDataCappuccinoHotShotQueryService } from './implementations/fake_data';
 import { FetchBasedCappuccinoHotShotQueryService } from './implementations/remote_api';
+import {
+  HeightAndAddress,
+  heightAndAddressCodec,
+} from './reward_state/height_and_address';
+import { nullableRewardClaimInputCodec } from './reward_state/reward_claim_input';
 import { CappuccinoHotShotQueryServiceRewardStateAPI } from './reward_state/reward_start_api';
 import { CappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
 
@@ -313,12 +318,48 @@ class WebWorkerProxyRewardStateAPI {
     );
   }
 
+  async getLatestRewardClaimInput(address: string) {
+    return nullableRewardClaimInputCodec.encode(
+      await this.service.getLatestRewardClaimInput(address),
+    );
+  }
+
+  async getRewardBalance(request: HeightAndAddress) {
+    return nullableBigintCodec.encode(
+      await this.service.getRewardBalance(request),
+    );
+  }
+
+  async getRewardClaimInput(request: HeightAndAddress) {
+    return nullableRewardClaimInputCodec.encode(
+      await this.service.getRewardClaimInput(request),
+    );
+  }
+
   async handleRequest(request: RewardStateRequest): Promise<unknown> {
     switch (request.method) {
       case 'getLatestRewardBalance':
         return await this.getLatestRewardBalance(
           stringCodec.decode(request.param[0]),
         );
+
+      case 'getLatestRewardClaimInput':
+        return await this.getLatestRewardClaimInput(
+          stringCodec.decode(request.param[0]),
+        );
+
+      case 'getRewardBalance':
+        return await this.getRewardBalance(
+          heightAndAddressCodec.decode(request.param[0]),
+        );
+
+      case 'getRewardClaimInput':
+        return await this.getRewardClaimInput(
+          heightAndAddressCodec.decode(request.param[0]),
+        );
+
+      default:
+        throw new UnimplementedError();
     }
   }
 }

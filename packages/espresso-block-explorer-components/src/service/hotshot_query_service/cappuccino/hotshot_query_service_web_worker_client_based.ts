@@ -89,6 +89,14 @@ import {
 } from './explorer/get_transaction_summaries_response';
 import { CappuccinoHotShotQueryService } from './hot_shot_query_service_api';
 import ProxyWorker from './hotshot_query_service_web_worker_api.js?worker';
+import {
+  HeightAndAddress,
+  heightAndAddressCodec,
+} from './reward_state/height_and_address';
+import {
+  nullableRewardClaimInputCodec,
+  RewardClaimInput,
+} from './reward_state/reward_claim_input';
 import { CappuccinoHotShotQueryServiceRewardStateAPI } from './reward_state/reward_start_api';
 import { CappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
 
@@ -380,6 +388,34 @@ class WebWorkerClientBasedCappuccinoHotShotQueryServiceRewardStateAPI
       nullableBigintCodec,
       'getLatestRewardBalance',
       stringCodec.encode(address),
+    );
+  }
+
+  async getLatestRewardClaimInput(
+    address: string,
+  ): Promise<RewardClaimInput | null> {
+    return await this.sendRequest(
+      nullableRewardClaimInputCodec,
+      'getLatestRewardClaimInput',
+      stringCodec.encode(address),
+    );
+  }
+
+  async getRewardBalance(request: HeightAndAddress): Promise<null | bigint> {
+    return await this.sendRequest(
+      nullableBigintCodec,
+      'getRewardBalance',
+      heightAndAddressCodec.encode(request),
+    );
+  }
+
+  async getRewardClaimInput(
+    request: HeightAndAddress,
+  ): Promise<RewardClaimInput | null> {
+    return await this.sendRequest(
+      nullableRewardClaimInputCodec,
+      'getRewardClaimInput',
+      heightAndAddressCodec.encode(request),
     );
   }
 }

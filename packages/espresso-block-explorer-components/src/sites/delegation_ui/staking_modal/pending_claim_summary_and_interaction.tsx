@@ -4,7 +4,6 @@ import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { CurrentPendingUndelegationFromValidatorContext } from './contexts/current_pending_undelegation_from_validator_context';
 import { NoticeArea } from './notice_area';
-import './unstaking_initial_summary_and_interactions.css';
 import { ValidatorDisplayArea } from './validator_display_area';
 
 export const PendingClaimSummaryAndInteraction: React.FC = () => {

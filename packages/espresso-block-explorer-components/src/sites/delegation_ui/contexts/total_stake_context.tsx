@@ -71,11 +71,9 @@ const DeriveTotalStakeFromStakeTableV2Contract: React.FC<
 const TranslateDataContextToTotalStake: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const data = React.useContext(DataContext);
-  console.debug('TranslateDataContextToTotalStake data:', data);
+  const data = React.useContext(DataContext) ?? null;
 
-  const value =
-    data === null || data === undefined || typeof data !== 'bigint' ? 0n : data;
+  const value = data === null || typeof data !== 'bigint' ? 0n : data;
 
   return (
     <TotalStakeContext.Provider value={value}>

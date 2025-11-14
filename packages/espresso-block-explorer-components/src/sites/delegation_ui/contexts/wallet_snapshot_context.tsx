@@ -52,7 +52,7 @@ export const RetrieveWalletSnapshot: React.FC<React.PropsWithChildren> = ({
 const ResolveWalletSnapshot: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const data = React.useContext(DataContext) as null | WalletSnapshot;
+  const data = (React.useContext(DataContext) ?? null) as null | WalletSnapshot;
 
   return (
     <WalletSnapshotContext.Provider value={data}>

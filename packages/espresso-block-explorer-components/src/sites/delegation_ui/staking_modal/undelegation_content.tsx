@@ -22,7 +22,6 @@ import {
   UndelegateAsyncSnapshotContext,
 } from './contexts/perform_undelgation_context';
 import { StakingAmountContext } from './contexts/staking_amount_context';
-import './new_delegation_content.css';
 import { StakingContent } from './staking_content';
 import { StakingHeader } from './staking_header';
 import { StakingModalTitle } from './staking_modal_title';

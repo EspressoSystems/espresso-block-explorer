@@ -366,6 +366,13 @@ function useMockESPContractState(
           `0x0000000000000000000000000000000000000002`,
           foldRIterable((acc, next) => acc + next.stake, 0n, nodeList),
         ],
+
+        // Set the initial balance for the reward state contract, so we
+        // can claim rewards
+        [
+          '0x0000000000000000000000000000000000000003',
+          1_000_000_000_000_000_000_000_000_000n,
+        ],
       ]),
     allowances: initialState?.allowances ?? new Map(),
     lastUpdate: initialState?.lastUpdate ?? new Date(),

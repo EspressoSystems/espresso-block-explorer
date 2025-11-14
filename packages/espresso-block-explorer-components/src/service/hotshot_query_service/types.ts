@@ -16,6 +16,8 @@
  * Query Service that is deployed via a Sequencer.
  */
 
+import { HeightAndAddress } from './cappuccino/reward_state/height_and_address';
+
 export interface Leaf {}
 
 // Let's just focus on what we need for now, instead of the entirety of the
@@ -90,6 +92,14 @@ export interface HotShotQueryServiceAvailabilityStreamsAPI<
   streamHeaders(height: number): AsyncIterator<Header>;
 }
 
-export interface HotShotQueryServiceRewardStateAPI {
+export interface HotShotQueryServiceRewardStateAPI<RewardsClaimInput> {
   getLatestRewardBalance(address: string): Promise<null | bigint>;
+  getLatestRewardClaimInput(address: string): Promise<null | RewardsClaimInput>;
+
+  getRewardBalance(request: HeightAndAddress): Promise<null | bigint>;
+  getRewardClaimInput(
+    request: HeightAndAddress,
+  ): Promise<null | RewardsClaimInput>;
+
+  // getRewardClaimInput(address: string): Promise<null | bigint>;
 }

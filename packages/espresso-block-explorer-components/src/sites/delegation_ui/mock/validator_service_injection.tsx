@@ -33,10 +33,16 @@ import {
 } from './l1_methods';
 import { MockAddress } from './rainbow_kit';
 import {
+  ClaimRewardAction,
+  RewardClaimStateAction,
+} from './reward_claim_contract';
+import {
+  ClaimValidatorExit,
   ClaimWithdrawal,
   Delegate,
   StakeTableStateActions,
   Undelegate,
+  ValidatorExit,
 } from './stake_table_v2_contract';
 
 // This file aims to provide a mock injection for the L1 Validator Service
@@ -141,10 +147,19 @@ class MockStatefulWalletAPI implements WalletAPI, L1TransactionCallback {
       this.reportStakeTableAction(action);
       return;
     }
+
+    if (action instanceof RewardClaimStateAction) {
+      this.reportRewardClaimAction(action);
+      return;
+    }
   }
 
   reportStakeTableAction(action: StakeTableStateActions): void {
-    this.state = processActionOnState(this.state, action);
+    this.state = processStakeTableActionOnState(this.state, action);
+  }
+
+  reportRewardClaimAction(action: RewardClaimStateAction): void {
+    this.state = processRewardClaimActionOnState(this.state, action);
   }
 }
 
@@ -172,21 +187,36 @@ class MockValidatorService implements L1ValidatorService {
 function determineWalletAddressFromAction(
   action: StakeTableStateActions,
 ): `0x${string}` | null {
-  if (action instanceof Delegate || action instanceof Undelegate) {
-    return action.delegator;
-  }
-
-  if (action instanceof ClaimWithdrawal) {
+  if (
+    action instanceof Delegate ||
+    action instanceof Undelegate ||
+    action instanceof ClaimWithdrawal ||
+    action instanceof ClaimValidatorExit
+  ) {
     return action.delegator;
   }
 
   return null;
 }
 
-function processActionOnState(
+function processStakeTableActionOnState(
   state: MockStatefulWalletState,
   action: StakeTableStateActions,
 ): MockStatefulWalletState {
+  if (action instanceof ValidatorExit) {
+    // We handle validator exits separately, since they do not target
+    // a specific delegator, but rather have implications for all
+    // delegator currently delegated to the validator.
+
+    return {
+      snapshots: new Map(
+        mapIterable(state.snapshots, (entry) =>
+          processValidatorExitOnSnapshotEntry(entry, action),
+        ),
+      ),
+    };
+  }
+
   let it: Iterable<[`0x${string}`, WalletSnapshot]> = state.snapshots;
   const expectedWalletAddress = determineWalletAddressFromAction(action);
 
@@ -204,19 +234,21 @@ function processActionOnState(
   // What's the expected wallet address?
   return {
     snapshots: new Map(
-      mapIterable(it, (entry) => processActionOnSnapshotEntry(entry, action)),
+      mapIterable(it, (entry) =>
+        processStakeTableActionOnSnapshotEntry(entry, action),
+      ),
     ),
   };
 }
 
-function processActionOnSnapshotEntry(
+function processStakeTableActionOnSnapshotEntry(
   state: [`0x${string}`, WalletSnapshot],
   action: StakeTableStateActions,
 ): [`0x${string}`, WalletSnapshot] {
   const [delegator, snapshot] = state;
   return [
     delegator,
-    processActionOnWalletSnapshot(
+    processStakeTableActionOnWalletSnapshot(
       hexArrayBufferCodec.decode(delegator),
       snapshot,
       action,
@@ -224,31 +256,45 @@ function processActionOnSnapshotEntry(
   ];
 }
 
-function processActionOnWalletSnapshot(
+function processStakeTableActionOnWalletSnapshot(
   delegator: ArrayBuffer,
   snapshot: WalletSnapshot,
   action: StakeTableStateActions,
 ): WalletSnapshot {
   return new WalletSnapshot(
-    processActionOnNodes(delegator, snapshot.nodes, action),
-    processActionOnPendingUndelegations(
+    processStakeTableActionOnNodes(delegator, snapshot.nodes, action),
+    processStakeTableActionOnPendingUndelegations(
       delegator,
       snapshot.pendingUndelegations,
       action,
     ),
-    processActionOnPendingExits(delegator, snapshot.pendingExits, action),
-    processActionOnClaimedRewards(delegator, snapshot.claimedRewards, action),
-    processActionOnL1Block(delegator, snapshot.l1Block, action),
+    processStakeTableActionOnPendingExits(
+      delegator,
+      snapshot.pendingExits,
+      action,
+    ),
+    processStakeTableActionOnClaimedRewards(
+      delegator,
+      snapshot.claimedRewards,
+      action,
+    ),
+    processStakeTableActionOnL1Block(delegator, snapshot.l1Block, action),
   );
 }
 
-function processActionOnNodes(
+function processStakeTableActionOnNodes(
   delegator: ArrayBuffer,
   delegations: Delegation[],
   action: StakeTableStateActions,
 ): Delegation[] {
   // Does this delegations entry have an entry for the validator in the action?;
-  if (!(action instanceof Delegate || action instanceof Undelegate)) {
+  if (
+    !(
+      action instanceof Delegate ||
+      action instanceof Undelegate ||
+      action instanceof ClaimValidatorExit
+    )
+  ) {
     return delegations;
   }
 
@@ -272,14 +318,19 @@ function processActionOnNodes(
   return Array.from(
     filterIterable(
       mapIterable(iterable, (delegation) =>
-        processActionOnDelegation(delegator, node, delegation, action),
+        processStakeTableActionOnDelegation(
+          delegator,
+          node,
+          delegation,
+          action,
+        ),
       ),
       (delegation) => delegation.amount > 0n,
     ),
   );
 }
 
-function processActionOnDelegation(
+function processStakeTableActionOnDelegation(
   delegator: ArrayBuffer,
   node: ArrayBuffer,
   delegation: Delegation,
@@ -296,8 +347,8 @@ function processActionOnDelegation(
     return new Delegation(
       delegator,
       node,
-      delegation.amount + action.amount,
-      zeroEpochAndBlock,
+      delegation.amount + action.value,
+      delegation.effective,
     );
   }
 
@@ -305,15 +356,19 @@ function processActionOnDelegation(
     return new Delegation(
       delegator,
       node,
-      delegation.amount - action.amount,
-      zeroEpochAndBlock,
+      delegation.amount - action.value,
+      delegation.effective,
     );
+  }
+
+  if (action instanceof ClaimValidatorExit) {
+    return new Delegation(delegator, node, 0n, delegation.effective);
   }
 
   return delegation;
 }
 
-function processActionOnPendingUndelegations(
+function processStakeTableActionOnPendingUndelegations(
   delegator: ArrayBuffer,
   pendingUndelegations: PendingWithdrawal[],
   action: StakeTableStateActions,
@@ -344,7 +399,7 @@ function processActionOnPendingUndelegations(
   return Array.from(
     filterIterable(
       mapIterable(iterable, (pendingUndelegation) =>
-        processActionPendingUndelegation(
+        processStakeTableActionPendingUndelegation(
           delegator,
           node,
           pendingUndelegation,
@@ -356,7 +411,7 @@ function processActionOnPendingUndelegations(
   );
 }
 
-function processActionPendingUndelegation(
+function processStakeTableActionPendingUndelegation(
   delegator: ArrayBuffer,
   node: ArrayBuffer,
   pendingUndelegation: PendingWithdrawal,
@@ -385,29 +440,182 @@ function processActionPendingUndelegation(
   return pendingUndelegation;
 }
 
-function processActionOnPendingExits(
-  _delegator: ArrayBuffer,
+function processStakeTableActionOnPendingExits(
+  delegator: ArrayBuffer,
   pendingExits: PendingWithdrawal[],
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _action: StakeTableStateActions,
+  action: StakeTableStateActions,
 ): PendingWithdrawal[] {
-  return pendingExits;
+  if (
+    !(action instanceof ValidatorExit || action instanceof ClaimValidatorExit)
+  ) {
+    return pendingExits;
+  }
+
+  let it: Iterable<PendingWithdrawal> = pendingExits;
+
+  // Does the validator exit exist?
+  const nodeString = action.validator;
+  const node = hexArrayBufferCodec.decode(nodeString);
+
+  if (
+    firstWhereIterable(
+      pendingExits,
+      (pendingExit) => compareArrayBuffer(pendingExit.node, node) === 0,
+    )
+  ) {
+    it = appendIterables(
+      pendingExits,
+      singletonIterable(
+        new PendingWithdrawal(delegator, node, 0n, new Date(0)),
+      ),
+    );
+  }
+
+  return Array.from(
+    filterIterable(
+      mapIterable(it, (pendingExit) =>
+        processStakeTableActionOnPendingExit(
+          delegator,
+          node,
+          pendingExit,
+          action,
+        ),
+      ),
+      (pendingExits) => pendingExits.amount > 0n,
+    ),
+  );
 }
 
-function processActionOnClaimedRewards(
+function processStakeTableActionOnPendingExit(
+  delegator: ArrayBuffer,
+  node: ArrayBuffer,
+  pendingExit: PendingWithdrawal,
+  action: StakeTableStateActions,
+): PendingWithdrawal {
+  if (
+    compareArrayBuffer(pendingExit.delegator, delegator) !== 0 ||
+    compareArrayBuffer(pendingExit.node, node) !== 0
+  ) {
+    return pendingExit;
+  }
+
+  if (action instanceof ValidatorExit) {
+    return new PendingWithdrawal(
+      delegator,
+      node,
+      action.value,
+      new Date(Number(action.exitTime)),
+    );
+  }
+
+  if (action instanceof ClaimValidatorExit) {
+    return new PendingWithdrawal(delegator, node, 0n, new Date(0));
+  }
+
+  return pendingExit;
+}
+
+function processStakeTableActionOnClaimedRewards(
+  delegator: ArrayBuffer,
+  claimedRewards: bigint,
+  action: StakeTableStateActions,
+): bigint;
+function processStakeTableActionOnClaimedRewards(
   _delegator: ArrayBuffer,
   claimedRewards: bigint,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _action: StakeTableStateActions,
 ): bigint {
   return claimedRewards;
 }
 
-function processActionOnL1Block(
+function processStakeTableActionOnL1Block(
+  delegator: ArrayBuffer,
+  l1Block: L1BlockInfo,
+  action: StakeTableStateActions,
+): L1BlockInfo;
+function processStakeTableActionOnL1Block(
   _delegator: ArrayBuffer,
   l1Block: L1BlockInfo,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _action: StakeTableStateActions,
 ): L1BlockInfo {
   return l1Block;
+}
+
+function processValidatorExitOnSnapshotEntry(
+  entry: [`0x${string}`, WalletSnapshot],
+  action: ValidatorExit,
+): [`0x${string}`, WalletSnapshot] {
+  // We want to add entries to `pendingExits` based on the stakes in `nodes`.
+
+  const validatorKey = action.validator;
+  const validator = hexArrayBufferCodec.decode(validatorKey);
+  const [delegatorKey, snapshot] = entry;
+  const delegator = hexArrayBufferCodec.decode(delegatorKey);
+  const existingNode = firstWhereIterable(
+    snapshot.nodes,
+    (node) => compareArrayBuffer(node.node, validator) === 0,
+  );
+  if (!existingNode) {
+    return entry;
+  }
+
+  return [
+    delegatorKey,
+    new WalletSnapshot(
+      snapshot.nodes,
+      snapshot.pendingUndelegations,
+      Array.from(
+        appendIterables(
+          snapshot.pendingExits,
+          singletonIterable(
+            new PendingWithdrawal(
+              delegator,
+              validator,
+              existingNode.amount,
+              new Date(Number(action.exitTime)),
+            ),
+          ),
+        ),
+      ),
+      snapshot.claimedRewards,
+      snapshot.l1Block,
+    ),
+  ];
+}
+
+function processRewardClaimActionOnState(
+  state: MockStatefulWalletState,
+  action: RewardClaimStateAction,
+): MockStatefulWalletState {
+  return {
+    snapshots: new Map(
+      mapIterable(state.snapshots, (entry) =>
+        processRewardClaimActionOnSnapshot(entry, action),
+      ),
+    ),
+  };
+}
+
+function processRewardClaimActionOnSnapshot(
+  entry: [`0x${string}`, WalletSnapshot],
+  action: RewardClaimStateAction,
+): [`0x${string}`, WalletSnapshot] {
+  if (!(action instanceof ClaimRewardAction)) {
+    return entry;
+  }
+
+  const [delegatorKey, snapshot] = entry;
+  if (delegatorKey !== action.delegator) {
+    return entry;
+  }
+
+  // This reward applies to us
+  return [
+    delegatorKey,
+    new WalletSnapshot(
+      snapshot.nodes,
+      snapshot.pendingUndelegations,
+      snapshot.pendingExits,
+      snapshot.claimedRewards + action.value,
+      snapshot.l1Block,
+    ),
+  ];
 }

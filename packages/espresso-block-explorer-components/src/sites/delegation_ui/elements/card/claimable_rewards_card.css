@@ -1,0 +1,5 @@
+.claimable-rewards-card {
+  --button-base--default--background-color: #34d399;
+  --button-base--hovered--background-color: #34d39988;
+  --button-base--default--height: 28px;
+}

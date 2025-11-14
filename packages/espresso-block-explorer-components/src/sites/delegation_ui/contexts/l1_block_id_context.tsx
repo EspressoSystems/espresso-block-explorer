@@ -33,7 +33,7 @@ export const RetrieveLatestL1BlockID: React.FC<React.PropsWithChildren> = ({
  * and provides it via the L1BlockIDContext to its children.
  */
 const ResolveL1BlockID: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const data = React.useContext(DataContext) as null | L1BlockID;
+  const data = (React.useContext(DataContext) ?? null) as null | L1BlockID;
   return (
     <L1BlockIDContext.Provider value={data}>
       {children}

@@ -106,7 +106,7 @@ const ProvideTotalSupplyAsyncSnapshot: React.FC<React.PropsWithChildren> = ({
 const ConvertDataToTotalSupply: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const totalSupply = React.useContext(DataContext) as null | bigint;
+  const totalSupply = (React.useContext(DataContext) ?? null) as null | bigint;
 
   return (
     <TotalSupplyContext.Provider value={totalSupply}>
