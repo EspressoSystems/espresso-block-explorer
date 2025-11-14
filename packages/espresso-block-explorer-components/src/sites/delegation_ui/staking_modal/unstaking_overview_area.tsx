@@ -41,7 +41,7 @@ const NewBalance: React.FC = () => {
   return (
     <LabelValueSplit>
       <span>
-        <Text text="New Balance" />
+        <Text text="Balance after Escrow" />
       </span>
       <span>
         <MoneyText money={MonetaryValue.ESP(balance + stakingAmount.value)} />
