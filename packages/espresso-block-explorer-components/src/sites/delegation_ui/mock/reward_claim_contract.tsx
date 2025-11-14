@@ -232,9 +232,8 @@ export const MockRewardClaimContract: React.FC<React.PropsWithChildren> = ({
   const accountAddress = React.useContext(RainbowKitAccountAddressContext);
   assert(l1Methods instanceof MockL1MethodsImpl);
   assert(espToken instanceof MockESPTokenContractImpl);
-  const contract = React.useMemo(
+  const [contract] = React.useState(
     () => new MockRewardClaimContractImpl(l1Methods, espToken, contractState),
-    [l1Methods, espToken, contractState],
   );
 
   React.useEffect(() => {
