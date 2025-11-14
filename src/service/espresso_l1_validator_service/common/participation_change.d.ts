@@ -1,4 +1,4 @@
-import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec';
+import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec/array';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { Ratio } from './ratio';
 /**
@@ -10,12 +10,12 @@ import { Ratio } from './ratio';
  * API.
  * https://www.notion.so/espressosys/Delegation-UI-Service-Specification-2942431b68e980968c28cc5099a4e8f2?source=copy_link#2942431b68e9803791a7f90f4d247228
  * Defined in rust here:
- * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L107-L113
+ * https://github.com/EspressoSystems/staking-ui-service/blob/a2317eb04e89fae58421080dd8f5db1524748476/src/types/common.rs#L104C12-L110
  */
 export declare class ParticipationChange {
-    readonly address: ArrayBuffer;
+    readonly node: number;
     readonly ratio: Ratio;
-    constructor(address: ArrayBuffer, ratio: Ratio);
+    constructor(node: number, ratio: Ratio);
     toJSON(): unknown;
 }
 /**
