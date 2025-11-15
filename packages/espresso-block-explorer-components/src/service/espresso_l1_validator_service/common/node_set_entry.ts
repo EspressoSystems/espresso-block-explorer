@@ -1,5 +1,5 @@
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec';
-import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { bigintCodec } from '@/convert/codec/bigint';
 import {
   assertRecordWithKeys,
@@ -19,12 +19,15 @@ import { Ratio, ratioCodec } from './ratio';
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L26-L38
  */
 export class NodeSetEntry {
+  public readonly addressText: `0x${string}`;
+
   constructor(
     public readonly address: ArrayBuffer,
     public readonly stakingKey: TaggedBase64,
     public readonly stake: bigint,
     public readonly commission: Ratio,
   ) {
+    this.addressText = hexArrayBufferCodec.encode(address);
     Object.freeze(this);
   }
 
@@ -48,7 +51,7 @@ class NodeSetEntryJSONDecoder implements Converter<unknown, NodeSetEntry> {
     );
 
     return new NodeSetEntry(
-      stdBase64ArrayBufferCodec.decode(input.address),
+      hexArrayBufferCodec.decode(input.address),
       taggedBase64Codec.decode(input.staking_key),
       bigintCodec.decode(input.stake),
       ratioCodec.decode(input.commission),
@@ -63,7 +66,7 @@ class NodeSetEntryJSONDecoder implements Converter<unknown, NodeSetEntry> {
 class NodeSetEntryJSONEncoder implements Converter<NodeSetEntry, unknown> {
   convert(input: NodeSetEntry): unknown {
     return {
-      address: stdBase64ArrayBufferCodec.encode(input.address),
+      address: hexArrayBufferCodec.encode(input.address),
       staking_key: taggedBase64Codec.encode(input.stakingKey),
       stake: bigintCodec.encode(input.stake),
       commission: ratioCodec.encode(input.commission),

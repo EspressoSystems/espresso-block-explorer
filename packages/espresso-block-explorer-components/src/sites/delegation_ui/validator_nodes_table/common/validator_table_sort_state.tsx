@@ -149,7 +149,7 @@ function sortByParticipationRate(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  * sortByHotShotConsensus sorts validators by their HotShot consensus status.
  */
 function sortByHotShotConsensus(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  return Number(Number(a[2]) - Number(b[2]));
+  return Number(Boolean(a[2])) - Number(Boolean(b[2]));
 }
 
 /**
@@ -217,8 +217,8 @@ function getSortDirection(
 function sortWithState(
   allValidators: null | FullNodeSetSnapshot,
   tableState: TableSortState<CellType>,
-  rankMap: Map<string, number>,
-  consensusSet: Map<string, ActiveNodeSetEntry>,
+  rankMap: Map<`0x${string}`, number>,
+  consensusSet: Map<`0x${string}`, ActiveNodeSetEntry>,
 ): null | FullNodeSetSnapshot {
   if (!allValidators) {
     return allValidators;

@@ -714,11 +714,11 @@ function useMockStakeTableContractState(
     validatorExits: initialState?.validatorExits ?? new Map(),
     delegations: initialState?.delegations ?? new Map(),
     undelegations: initialState?.undelegations ?? new Map(),
-    exitEscrowPeriod: initialState?.exitEscrowPeriod ?? 2000n,
+    exitEscrowPeriod: initialState?.exitEscrowPeriod ?? 60000n,
 
     pauserRole: initialState?.pauserRole ?? '0xPAUSER_ROLE',
     minCommissionIncreaseInterval:
-      initialState?.minCommissionIncreaseInterval ?? 2000n,
+      initialState?.minCommissionIncreaseInterval ?? 60000n,
     maxCommissionIncrease: initialState?.maxCommissionIncrease ?? 1,
     commissionTracking: initialState?.commissionTracking ?? new Map(),
     schnorrKeys: initialState?.schnorrKeys ?? new Set(),

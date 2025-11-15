@@ -1,5 +1,6 @@
-import { ArrayCodec, ArrayDecoder, bigintCodec } from '@/convert/codec';
-import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { ArrayCodec, ArrayDecoder } from '@/convert/codec/array';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { bigintCodec } from '@/convert/codec/bigint';
 import {
   assertRecordWithKeys,
   Converter,
@@ -32,8 +33,8 @@ export class Delegation {
 class DelegationEncoder implements Converter<Delegation, unknown> {
   convert(input: Delegation): unknown {
     return {
-      delegator: stdBase64ArrayBufferCodec.encode(input.delegator),
-      node: stdBase64ArrayBufferCodec.encode(input.node),
+      delegator: hexArrayBufferCodec.encode(input.delegator),
+      node: hexArrayBufferCodec.encode(input.node),
       amount: bigintCodec.encode(input.amount),
     };
   }
@@ -47,8 +48,8 @@ class DelegationDecoder implements Converter<unknown, Delegation> {
     assertRecordWithKeys(input, 'delegator', 'node', 'amount', 'effective');
 
     return new Delegation(
-      stdBase64ArrayBufferCodec.decode(input.delegator),
-      stdBase64ArrayBufferCodec.decode(input.node),
+      hexArrayBufferCodec.decode(input.delegator),
+      hexArrayBufferCodec.decode(input.node),
       bigintCodec.decode(input.amount),
     );
   }

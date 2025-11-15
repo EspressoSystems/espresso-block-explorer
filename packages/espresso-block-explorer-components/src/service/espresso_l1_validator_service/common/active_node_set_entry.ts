@@ -1,5 +1,5 @@
-import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec';
-import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   assertRecordWithKeys,
   Converter,
@@ -46,7 +46,7 @@ class ActiveNodeSetEntryJSONDecoder
     );
 
     return new ActiveNodeSetEntry(
-      stdBase64ArrayBufferCodec.decode(input.address),
+      hexArrayBufferCodec.decode(input.address),
       ratioCodec.decode(input.voter_participation),
       ratioCodec.decode(input.leader_participation),
     );
@@ -62,7 +62,7 @@ class ActiveNodeSetEntryJSONEncoder
 {
   convert(input: ActiveNodeSetEntry): unknown {
     return {
-      address: stdBase64ArrayBufferCodec.encode(input.address),
+      address: hexArrayBufferCodec.encode(input.address),
       voter_participation: ratioCodec.encode(input.voterParticipation),
       leader_participation: ratioCodec.encode(input.leaderParticipation),
     };

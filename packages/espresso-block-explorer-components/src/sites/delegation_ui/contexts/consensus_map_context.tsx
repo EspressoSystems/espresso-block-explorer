@@ -9,7 +9,7 @@ import { ActiveValidatorsContext } from './active_validators_context';
  * for the current set of active validator addresses in base64 format.
  */
 export const ConsensusMapContext = React.createContext<
-  Map<string, ActiveNodeSetEntry>
+  Map<`0x${string}`, ActiveNodeSetEntry>
 >(new Map());
 
 /**
@@ -22,7 +22,7 @@ export const DeriveConsensusSet: React.FC<React.PropsWithChildren> = ({
 }) => {
   const activeValidators = React.useContext(ActiveValidatorsContext);
 
-  const activeValidatorAddresses = new Map<string, ActiveNodeSetEntry>(
+  const activeValidatorAddresses = new Map<`0x${string}`, ActiveNodeSetEntry>(
     mapIterable(activeValidators?.nodes ?? [], (node) => [
       hexArrayBufferCodec.encode(node.address),
       node,

@@ -1,5 +1,5 @@
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
-import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { bigintCodec } from '@/convert/codec/bigint';
 import {
   assertRecordWithKeys,
@@ -37,8 +37,8 @@ class PendingWithdrawalEncoder
 {
   convert(input: PendingWithdrawal): unknown {
     return {
-      delegator: stdBase64ArrayBufferCodec.encode(input.delegator),
-      node: stdBase64ArrayBufferCodec.encode(input.node),
+      delegator: hexArrayBufferCodec.encode(input.delegator),
+      node: hexArrayBufferCodec.encode(input.node),
       amount: bigintCodec.encode(input.amount),
       available_time: numberCodec.encode(input.availableTime.valueOf()),
     };
@@ -61,8 +61,8 @@ class PendingWithdrawalDecoder
     );
 
     return new PendingWithdrawal(
-      stdBase64ArrayBufferCodec.decode(input.delegator),
-      stdBase64ArrayBufferCodec.decode(input.node),
+      hexArrayBufferCodec.decode(input.delegator),
+      hexArrayBufferCodec.decode(input.node),
       bigintCodec.decode(input.amount),
       new Date(numberCodec.decode(input.available_time)),
     );
