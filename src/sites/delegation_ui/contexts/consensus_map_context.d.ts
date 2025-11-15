@@ -4,7 +4,7 @@ import { default as React } from 'react';
  * ConsensusMapContext provides a React Context
  * for the current set of active validator addresses in base64 format.
  */
-export declare const ConsensusMapContext: React.Context<Map<string, ActiveNodeSetEntry>>;
+export declare const ConsensusMapContext: React.Context<Map<`0x${string}`, ActiveNodeSetEntry>>;
 /**
  * DeriveConsensusSet is a React Component that
  * derives the current consensus set from the active validators

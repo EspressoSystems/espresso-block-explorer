@@ -1,4 +1,4 @@
-import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec';
+import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec/array';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 /**
  * Delegation represents a delegation event to a validator node.

@@ -16,6 +16,7 @@ export declare class NodeSetEntry {
     readonly stakingKey: TaggedBase64;
     readonly stake: bigint;
     readonly commission: Ratio;
+    readonly addressText: `0x${string}`;
     constructor(address: ArrayBuffer, stakingKey: TaggedBase64, stake: bigint, commission: Ratio);
     toJSON(): unknown;
 }
