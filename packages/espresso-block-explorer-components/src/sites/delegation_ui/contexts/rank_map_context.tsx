@@ -14,7 +14,7 @@ import { ConsensusMapContext } from './consensus_map_context';
  * RankMapContext provides a React Context
  * for the current mapping of validator addresses to their ranks.
  */
-export const RankMapContext = React.createContext<Map<string, number>>(
+export const RankMapContext = React.createContext<Map<`0x${string}`, number>>(
   new Map(),
 );
 
@@ -60,7 +60,7 @@ export const DeriveRank: React.FC<React.PropsWithChildren> = ({ children }) => {
     ),
   ).sort((a, b) => b[1] - a[1]);
 
-  const validatorsAndRank = new Map<string, number>(
+  const validatorsAndRank = new Map<`0x${string}`, number>(
     validatorsAndScore.map(
       (addressAndScore, index) => [addressAndScore[0], index + 1] as const,
     ),
