@@ -65,3 +65,12 @@ export const nullableBigintArrayCodec = new ArrayCodec(
   new ArrayDecoder(nullableBigintCodec),
   new ArrayEncoder(nullableBigintCodec),
 );
+
+/**
+ * BigInts can end up serialized occasionally, so we add a toJSON method
+ * to the BigInt prototype to ensure that it doesn't cause React to crash
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(BigInt.prototype as any).toJSON = function () {
+  return bigintCodec.encode(this);
+};

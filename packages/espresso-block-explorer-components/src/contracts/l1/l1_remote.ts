@@ -1,6 +1,8 @@
-import { BlockTag } from 'viem';
+import { BlockTag, FeeValuesType } from 'viem';
 import { Config } from 'wagmi';
 import {
+  estimateFeesPerGas,
+  EstimateFeesPerGasParameters,
   estimateGas,
   EstimateGasParameters,
   getBalance,
@@ -30,21 +32,41 @@ export class L1MethodsRemote<
   // Readable methods
 
   async getBalance(parameters: GetBalanceParameters<config>) {
-    return getBalance(this.config, parameters);
+    return getBalance(this.config, { ...parameters, chainId: this.chainID });
+  }
+
+  async estimateFeesPerGas(
+    parameters: EstimateFeesPerGasParameters<FeeValuesType, config>,
+  ) {
+    const result = await estimateFeesPerGas(this.config, {
+      ...parameters,
+      chainId: this.chainID,
+    });
+
+    // result.maxPriorityFeePerGas;
+    // result.maxFeePerGas;
+    // result.gasPrice;
+    return result;
   }
 
   async estimateGas(parameters: EstimateGasParameters<config, chainId>) {
-    return estimateGas(this.config, parameters);
+    return estimateGas(this.config, { ...parameters, chainId: this.chainID });
   }
 
   async getTransactionReceipt(
     parameters: GetTransactionReceiptParameters<config>,
   ) {
-    return getTransactionReceipt(this.config, parameters);
+    return getTransactionReceipt(this.config, {
+      ...parameters,
+      chainId: this.chainID,
+    });
   }
 
   async getTransaction(parameters: GetTransactionParameters<config, chainId>) {
-    return getTransaction(this.config, parameters);
+    return getTransaction(this.config, {
+      ...parameters,
+      chainId: this.chainID,
+    });
   }
 
   async getBlock<
@@ -58,10 +80,13 @@ export class L1MethodsRemote<
       chainId
     >,
   ) {
-    return getBlock(this.config, parameters);
+    return getBlock(this.config, { ...parameters, chainId: this.chainID });
   }
 
   async getBlockNumber(parameters?: GetBlockNumberParameters<config, chainId>) {
-    return getBlockNumber(this.config, parameters);
+    return getBlockNumber(this.config, {
+      ...parameters,
+      chainId: this.chainID,
+    });
   }
 }

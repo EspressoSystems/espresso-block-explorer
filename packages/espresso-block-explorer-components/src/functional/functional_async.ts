@@ -455,7 +455,7 @@ export async function* timerAsyncIterable(
 /**
  * neverPromise is a static promise that never resolves or rejects.
  */
-export const neverPromise = new Promise(() => {});
+export const neverPromise: Promise<never> = new Promise(() => {});
 
 /**
  * neverAsyncIterable is an async iterable that never yields any values

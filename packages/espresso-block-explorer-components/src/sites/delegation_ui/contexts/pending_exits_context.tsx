@@ -1,4 +1,3 @@
-import { hexArrayBufferCodec } from '@/convert/codec';
 import { emptyIterator, mapIterable } from '@/functional/functional';
 import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
 import React from 'react';
@@ -25,10 +24,7 @@ export const DerivePendingExits: React.FC<React.PropsWithChildren> = ({
   const pendingExits = new Map(
     mapIterable(
       walletSnapshot?.pendingExits ?? emptyIterator<PendingWithdrawal>(),
-      (pendingWithdrawal) => [
-        hexArrayBufferCodec.encode(pendingWithdrawal.node),
-        pendingWithdrawal,
-      ],
+      (pendingWithdrawal) => [pendingWithdrawal.nodeText, pendingWithdrawal],
     ),
   );
 

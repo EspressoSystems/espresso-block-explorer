@@ -1,4 +1,3 @@
-import { sleep } from '@/async/sleep';
 import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
 import { AsyncSnapshot } from '@/components/data/async_data/AsyncSnapshot';
 import { AsyncSnapshotContext } from '@/components/data/async_data/AsyncSnapshotContext';
@@ -7,25 +6,29 @@ import { StakeTableContract } from '@/contracts/stake_table/stake_table_interfac
 import { neverAsyncIterable } from '@/functional/functional_async';
 import React from 'react';
 import { Config } from 'wagmi';
-import { GetTransactionReceiptReturnType } from 'wagmi/actions';
+import {
+  performWriteTransaction,
+  PerformWriteTransactionState,
+} from './perform_write_states';
 
 export const UndelegateAsyncIterableContext =
-  React.createContext<null | AsyncIterable<PerformUndelegateState>>(null);
+  React.createContext<null | AsyncIterable<PerformWriteTransactionState>>(null);
+
 export const SetUndelegationAsyncIterableContext = React.createContext<
   React.Dispatch<
-    React.SetStateAction<null | AsyncIterable<PerformUndelegateState>>
+    React.SetStateAction<null | AsyncIterable<PerformWriteTransactionState>>
   >
 >(() => {});
 
 export const UndelegateAsyncSnapshotContext = React.createContext<
-  AsyncSnapshot<PerformUndelegateState>
+  AsyncSnapshot<PerformWriteTransactionState>
 >(AsyncSnapshot.nothing());
 
 export const ProvideUndelegateAsyncIterableContext: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const [asyncIterable, setAsyncIterable] =
-    React.useState<null | AsyncIterable<PerformUndelegateState>>(null);
+    React.useState<null | AsyncIterable<PerformWriteTransactionState>>(null);
 
   return (
     <UndelegateAsyncIterableContext.Provider value={asyncIterable}>
@@ -58,7 +61,7 @@ const ConvertUndelegationAsyncSnapshot: React.FC<React.PropsWithChildren> = ({
 }) => {
   const asyncSnapshot = React.useContext(
     AsyncSnapshotContext,
-  ) as AsyncSnapshot<PerformUndelegateState>;
+  ) as AsyncSnapshot<PerformWriteTransactionState>;
   const asyncIterable = React.useContext(UndelegateAsyncIterableContext);
 
   return (
@@ -70,35 +73,6 @@ const ConvertUndelegationAsyncSnapshot: React.FC<React.PropsWithChildren> = ({
   );
 };
 
-export abstract class PerformUndelegateState {}
-
-export class PerformUndelegationWaiting extends PerformUndelegateState {
-  constructor() {
-    super();
-  }
-}
-
-export class PerformUndelegationSucceeded extends PerformUndelegateState {
-  constructor(public readonly transactionHash: `0x${string}`) {
-    super();
-  }
-}
-
-export class PerformUndelegationReceiptWaiting extends PerformUndelegateState {
-  constructor(public readonly transactionHash: `0x${string}`) {
-    super();
-  }
-}
-
-export class PerformUndelegationReceiptRetrieved extends PerformUndelegateState {
-  constructor(
-    public readonly transactionHash: `0x${string}`,
-    public readonly receipt: GetTransactionReceiptReturnType<Config>,
-  ) {
-    super();
-  }
-}
-
 export async function* performUndelegation(
   l1Methods: L1Methods<Config, number>,
   stakeTableContract: StakeTableContract,
@@ -106,46 +80,9 @@ export async function* performUndelegation(
   stakingAmount: bigint,
   setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>,
 ) {
-  // Indicate that we are waiting for the Undelegation to complete
-  yield new PerformUndelegationWaiting();
-
-  const transactionHash = await stakeTableContract.undelegate(
-    validatorAddress,
-    stakingAmount,
+  yield* performWriteTransaction(
+    l1Methods,
+    async () => stakeTableContract.undelegate(validatorAddress, stakingAmount),
+    setL1Timestamp,
   );
-
-  yield new PerformUndelegationSucceeded(transactionHash);
-
-  // We wait for the transaction receipt
-  yield new PerformUndelegationReceiptWaiting(transactionHash);
-
-  // We'll try multiple times to retrieve the receipt
-  try {
-    for (let i = 0; i < 24; i++) {
-      try {
-        const receipt = await l1Methods.getTransactionReceipt({
-          hash: transactionHash,
-        });
-
-        yield new PerformUndelegationReceiptRetrieved(transactionHash, receipt);
-        return;
-      } catch (err) {
-        if (i === 23) {
-          console.error(
-            '<<<< HERE performUndelegation failed to retrieve receipt:',
-            err,
-          );
-          throw err;
-        }
-        //  TODO: Inspect the errors before blindly retrying
-
-        // Sleep for a second before retrying
-        await sleep(1000);
-      }
-    }
-  } finally {
-    setL1Timestamp(new Date());
-  }
-
-  throw new Error('no receipt received');
 }

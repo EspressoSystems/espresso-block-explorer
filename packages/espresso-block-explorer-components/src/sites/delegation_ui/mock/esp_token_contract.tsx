@@ -6,8 +6,12 @@ import { createKeccakHash } from '@/crypto/keccak/family';
 import { nodeList } from '@/data_source/fake_data_source';
 import { foldRIterable } from '@/functional/functional';
 import React from 'react';
-import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
+import {
+  ESPTokenContractContext,
+  ESPTokenContractGasEstimatorContext,
+} from '../contexts/esp_token_contract_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
+import { MockESPTokenContractGasEstimatorImpl } from './esp_token_contract_gas_estimator';
 import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
 import { MockAddress } from './rainbow_kit';
 
@@ -417,7 +421,11 @@ export const MockESPTokenContract: React.FC<React.PropsWithChildren> = ({
 
   return (
     <ESPTokenContractContext.Provider value={contract}>
-      {children}
+      <ESPTokenContractGasEstimatorContext.Provider
+        value={new MockESPTokenContractGasEstimatorImpl()}
+      >
+        {children}
+      </ESPTokenContractGasEstimatorContext.Provider>
     </ESPTokenContractContext.Provider>
   );
 };

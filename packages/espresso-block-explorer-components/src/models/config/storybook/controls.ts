@@ -1,3 +1,8 @@
+import {
+  hexArrayBufferCodec,
+  rawStdBase64ArrayBufferCodec,
+  rawURLBase64ArrayBufferCodec,
+} from '@/convert/codec/array_buffer';
 import { Environment } from '../environment/environment';
 
 export const environmentControlArgType = {
@@ -24,6 +29,11 @@ export const espTokenContractAddressControlArgType = {
   description: 'ESP Token Contract Address',
 } as const;
 
+export const rewardClaimContractAddressControlArgType = {
+  control: { type: 'text' },
+  description: 'Reward Claim Contract Address',
+} as const;
+
 export const queryServiceNodeURLControlArgType = {
   control: { type: 'text' },
   description:
@@ -33,30 +43,71 @@ export const queryServiceNodeURLControlArgType = {
 export const nodeValidatorWebSocketURLControlArgType = {
   control: { type: 'text' },
   description:
-    'Node Validator WebSocket URL (starting with ws:// or wss://, ending with the version. E?. ws://localhost:9000/v0/)',
+    'Node Validator WebSocket URL (starting with ws:// or wss://, ending with the version. Eg. ws://localhost:9000/v0/)',
+} as const;
+
+export const l1ValidatorServiceURLControlArgType = {
+  control: { type: 'text' },
+  description:
+    'L1 Validator Service URL (starting with http:// or https://, ending with the version. Eg: http://localhost:9100/v0/)',
+} as const;
+
+export const queryServiceNodeURLEncodedControlArgType = {
+  control: { type: 'text' },
+  description:
+    'Query Service Node URL encoded a base64 or hex string (alternative to hotshotQueryServiceURL, allows encoding the URL in the storybook URL)',
+} as const;
+
+export const nodeValidatorWebSocketURLEncodedControlArgType = {
+  control: { type: 'text' },
+  description:
+    'Node Validator WebSocket URL encoded a base64 or hex string (alternative to nodeValidatorWebSocketURL, allows encoding the URL in the storybook URL)',
+} as const;
+
+export const l1ValidatorServiceURLEncodedControlArgType = {
+  control: { type: 'text' },
+  description:
+    'L1 Validator Service URL encoded a base64 or hex string (alternative to l1ValidatorServiceURL, allows encoding the URL in the storybook URL)',
+} as const;
+
+export const rewardClaimContractAddressArgType = {
+  control: { type: 'text' },
+  description: 'Reward Claim Contract Address',
 } as const;
 
 export const environmentArgTypes = {
   environment: environmentControlArgType,
   hotshotQueryServiceURL: queryServiceNodeURLControlArgType,
+  hotShotQueryServiceURLEncoded: queryServiceNodeURLEncodedControlArgType,
   nodeValidatorWebSocketURL: nodeValidatorWebSocketURLControlArgType,
+  nodeValidatorWebSocketURLEncoded:
+    nodeValidatorWebSocketURLEncodedControlArgType,
 } as const;
+
+export const environmentArgsTypesL1ValidatorService = {
+  l1ValidatorServiceURL: l1ValidatorServiceURLControlArgType,
+  l1ValidatorServiceURLEncoded: l1ValidatorServiceURLEncodedControlArgType,
+};
 
 export const environmentArgTypesWithContracts = {
   ...environmentArgTypes,
   stakeTableContractAddress: stakeTableContractAddressControlArgType,
   espTokenContractAddress: espTokenContractAddressControlArgType,
+  rewardClaimContractAddress: rewardClaimContractAddressControlArgType,
 } as const;
 
 export interface EnvironmentArgs {
   environment: Environment;
   hotshotQueryServiceURL?: string;
+  hotshotQueryServiceURLEncoded?: string;
   nodeValidatorWebSocketURL?: string;
+  nodeValidatorWebSocketURLEncoded?: string;
 }
 
 export interface EnvironmentWithContractsArgs extends EnvironmentArgs {
   stakeTableContractAddress?: `0x${string}`;
   espTokenContractAddress?: `0x${string}`;
+  rewardClaimContractAddress?: `0x${string}`;
 }
 
 export const environmentArgsMilk: EnvironmentArgs = {
@@ -130,6 +181,53 @@ export const environmentArgsLocalDevNet: EnvironmentArgs = {
 export const environmentArgsLocalDevNetWithContracts: EnvironmentWithContractsArgs =
   {
     ...environmentArgsLocalDevNet,
-    stakeTableContractAddress: '0x12975173b87f7595ee45dffb2ab812ece596bf84',
-    espTokenContractAddress: '0x0c8e79f3534b00d9a3d4a856b665bf4ebc22f2ba',
+    stakeTableContractAddress: '0xefdc2a236dba7a8f60726b49abc79ee6b22ed445',
+    espTokenContractAddress: '0x80f43505d8d1a739504eb4237eb15b2e0048da8d',
+    rewardClaimContractAddress: undefined,
   };
+
+/**
+ * extractURLWithEncodedFallback tries to extract a URL from the provided url
+ * string. If the url is not provided or invalid, it attempts to decode the
+ * encodedFallback which can be a hex or base64 encoded representation of the
+ * URL.
+ */
+export function extractURLWithEncodedFallback(
+  url: undefined | null | string,
+  encodedFallback: undefined | null | string,
+): undefined | string {
+  if (url) {
+    try {
+      return new URL(url).toString();
+    } catch (error) {
+      console.error('Invalid URL provided:', url, error);
+      return undefined;
+    }
+  }
+
+  if (!encodedFallback) {
+    return undefined;
+  }
+
+  try {
+    const textDecoder = new TextDecoder();
+    // Assumed to be a hex string
+    if (encodedFallback.startsWith('0x')) {
+      const urlString = hexArrayBufferCodec.decode(encodedFallback);
+      return new URL(textDecoder.decode(urlString)).toString();
+    }
+
+    if (/[+/=_-]/.test(encodedFallback)) {
+      // Assumed to be a standard base64 string
+      const urlString = rawStdBase64ArrayBufferCodec.decode(encodedFallback);
+      return new URL(textDecoder.decode(urlString)).toString();
+    }
+
+    // Assumed to be a url safe base64 string
+    const urlString = rawURLBase64ArrayBufferCodec.decode(encodedFallback);
+    return new URL(textDecoder.decode(urlString)).toString();
+  } catch (error) {
+    console.error('Invalid encoded URL provided:', encodedFallback, error);
+    return undefined;
+  }
+}

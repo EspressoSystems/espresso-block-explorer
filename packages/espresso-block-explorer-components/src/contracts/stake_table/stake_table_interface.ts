@@ -1,5 +1,6 @@
 import { bigintCodec } from '@/convert/codec/bigint';
 import { numberCodec } from '@/convert/codec/number';
+import { GasEstimatorForContract } from '../l1/l1_interface';
 
 export enum ValidatorStatus {
   unknown,
@@ -99,3 +100,10 @@ export interface StakeTableContractWriteable {
 export interface StakeTableContract
   extends StakeTableContractReadOnly,
     StakeTableContractWriteable {}
+
+/**
+ * StakeTableContractGasEstimator defines the gas estimator type for the
+ * Stake Table Contract.
+ */
+export type StakeTableContractGasEstimator =
+  GasEstimatorForContract<StakeTableContractWriteable>;

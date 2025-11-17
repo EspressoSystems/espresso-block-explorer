@@ -1,7 +1,6 @@
 import { Now } from '@/components/contexts/NowProvider';
 import Text from '@/components/text/Text';
 import TimeLeftText from '@/components/text/TimeLeftText';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import React from 'react';
 import { PendingExitsContext } from 'sites/delegation_ui/contexts/pending_exits_context';
 import { PendingUndelegationsContext } from 'sites/delegation_ui/contexts/pending_undelegations_context';
@@ -18,7 +17,7 @@ export const ClaimInCell: React.FC = () => {
   const pendingExits = React.useContext(PendingExitsContext);
   const pendingUndelegations = React.useContext(PendingUndelegationsContext);
 
-  const validatorAddress = hexArrayBufferCodec.encode(validator.address);
+  const validatorAddress = validator.addressText;
   const pendingExit = pendingExits.get(validatorAddress) ?? null;
   const pendingUndelegation =
     pendingUndelegations.get(validatorAddress) ?? null;

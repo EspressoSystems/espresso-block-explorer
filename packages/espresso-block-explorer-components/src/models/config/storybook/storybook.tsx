@@ -83,6 +83,7 @@ export interface StoryBookSpecifyEnvironmentAndContractsProps
   extends StoryBookSpecifyEnvironmentProps {
   espTokenContractAddress?: string;
   stakeTableContractAddress?: string;
+  rewardClaimContractAddress?: string;
 }
 
 export const StoryBookSpecifyEnvironmentAndContracts: React.FC<
@@ -93,6 +94,7 @@ export const StoryBookSpecifyEnvironmentAndContracts: React.FC<
   nodeValidatorWebSocketURL,
   espTokenContractAddress,
   stakeTableContractAddress,
+  rewardClaimContractAddress,
   l1ValidatorServiceURL,
   children,
 }) => {
@@ -100,6 +102,7 @@ export const StoryBookSpecifyEnvironmentAndContracts: React.FC<
   const espressoConfig = deriveAddressesWithEnvironmentFallback(
     resolveContractAddress(espTokenContractAddress),
     resolveContractAddress(stakeTableContractAddress),
+    resolveContractAddress(rewardClaimContractAddress),
   );
 
   return (

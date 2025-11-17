@@ -10,9 +10,9 @@ import { CurrentAllowanceToStakeTableContext } from './contexts/current_allowanc
 import {
   ApproveAsyncSnapshotContext,
   performApprove,
-  PerformApproveReceiptReceived,
   SetApproveAsyncIterableContext,
 } from './contexts/perform_approve_delegation_context';
+import { PerformWriteTransactionReceiptRetrieved } from './contexts/perform_write_states';
 import { StakingAmountContext } from './contexts/staking_amount_context';
 
 export const ApproveButton: React.FC = () => {
@@ -83,7 +83,7 @@ export const ApproveButton: React.FC = () => {
   if (
     asyncSnapshot.asyncState === AsyncState.waiting ||
     (asyncSnapshot.data &&
-      !(asyncSnapshot.data instanceof PerformApproveReceiptReceived))
+      !(asyncSnapshot.data instanceof PerformWriteTransactionReceiptRetrieved))
   ) {
     return (
       <ButtonLarge className="btn-approve approving" disabled>

@@ -4,7 +4,6 @@ import {
   RainbowKitModalContext,
 } from '@/components/rainbowkit';
 import Text from '@/components/text/Text';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import React from 'react';
 import { CurrentDelegationsContext } from 'sites/delegation_ui/contexts/current_delegations_context';
 import { ModalContext } from 'sites/delegation_ui/contexts/modal_context';
@@ -45,7 +44,7 @@ export const ActionsCell: React.FC = () => {
     );
   }
 
-  const validatorAddress = hexArrayBufferCodec.encode(validator.address);
+  const validatorAddress = validator.addressText;
   const pendingExit = pendingExits.get(validatorAddress) ?? null;
   const pendingUndelegation =
     pendingUndelegations.get(validatorAddress) ?? null;

@@ -1,5 +1,9 @@
 import { EspressoConfigContext } from '@/components/config';
-import { RewardClaimContract } from '@/contracts/reward_claim/reward_claim_interface';
+import { RewardClaimContractGasEstimatorRemote } from '@/contracts/reward_claim/reward_claim_gas_estimator_remote';
+import {
+  RewardClaimContract,
+  RewardClaimContractGasEstimator,
+} from '@/contracts/reward_claim/reward_claim_interface';
 import { RewardClaimRemote } from '@/contracts/reward_claim/reward_claim_remote';
 import React from 'react';
 import { useConfig } from 'wagmi';
@@ -10,6 +14,13 @@ import { useConfig } from 'wagmi';
  */
 export const RewardClaimContractContext =
   React.createContext<null | RewardClaimContract>(null);
+
+/**
+ * RewardClaimContractGasEstimatorContext is a React context that provides
+ * the Reward Claim contract gas estimator instance.
+ */
+export const RewardClaimContractGasEstimatorContext =
+  React.createContext<null | RewardClaimContractGasEstimator>(null);
 
 /**
  * ProvideRewardClaimContract is a React component that provides
@@ -36,17 +47,29 @@ const ProvideRewardClaimContractUtilizingWagmi: React.FC<
   const config = useConfig();
   const espressoConfig = React.useContext(EspressoConfigContext);
 
-  const rewardClaim = !espressoConfig?.stakeTableContractAddress
+  const rewardClaim = !espressoConfig?.rewardClaimContractAddress
     ? null
     : new RewardClaimRemote(
         config,
         config.chains[0].id,
-        espressoConfig.stakeTableContractAddress,
+        espressoConfig.rewardClaimContractAddress,
+      );
+
+  const rewardClaimGasEstimator = !espressoConfig?.rewardClaimContractAddress
+    ? null
+    : new RewardClaimContractGasEstimatorRemote(
+        config,
+        config.chains[0].id,
+        espressoConfig.rewardClaimContractAddress,
       );
 
   return (
     <RewardClaimContractContext.Provider value={rewardClaim}>
-      {children}
+      <RewardClaimContractGasEstimatorContext.Provider
+        value={rewardClaimGasEstimator}
+      >
+        {children}
+      </RewardClaimContractGasEstimatorContext.Provider>
     </RewardClaimContractContext.Provider>
   );
 };

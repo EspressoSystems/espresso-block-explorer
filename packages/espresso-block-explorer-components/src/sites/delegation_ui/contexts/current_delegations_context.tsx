@@ -1,4 +1,3 @@
-import { hexArrayBufferCodec } from '@/convert/codec';
 import { emptyIterator, mapIterable } from '@/functional/functional';
 import { Delegation } from '@/service/espresso_l1_validator_service/common/delegation';
 import React from 'react';
@@ -24,10 +23,7 @@ export const DeriveCurrentDelegations: React.FC<React.PropsWithChildren> = ({
   const pendingExits = new Map(
     mapIterable(
       walletSnapshot?.nodes ?? emptyIterator<Delegation>(),
-      (pendingWithdrawal) => [
-        hexArrayBufferCodec.encode(pendingWithdrawal.node),
-        pendingWithdrawal,
-      ],
+      (pendingWithdrawal) => [pendingWithdrawal.nodeText, pendingWithdrawal],
     ),
   );
 

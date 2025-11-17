@@ -1,6 +1,8 @@
-import { BlockTag } from 'viem';
+import { BlockTag, FeeValuesType } from 'viem';
 import { Config } from 'wagmi';
 import {
+  EstimateFeesPerGasParameters,
+  EstimateFeesPerGasReturnType,
   estimateGas,
   EstimateGasParameters,
   getBalance,
@@ -25,6 +27,13 @@ export interface L1MethodsReadOnly<
   getBalance(
     parameters: GetBalanceParameters<config>,
   ): ReturnType<typeof getBalance<config>>;
+
+  /**
+   * estimateFeesPerGas will estimate the amount of fees per gas.
+   */
+  estimateFeesPerGas(
+    parameters: EstimateFeesPerGasParameters<FeeValuesType, config>,
+  ): Promise<EstimateFeesPerGasReturnType>;
 
   /**
    * Action for estimating the gas necessary to complete a transaction without
@@ -80,3 +89,16 @@ export interface L1Methods<
   chainId extends config['chains'][number]['id'],
 > extends L1MethodsReadOnly<config, chainId>,
     L1MethodsWritable {}
+
+/**
+ * GasEstimatorForContract defines the gas estimator type for a
+ * contract.
+ */
+export type GasEstimatorForContract<Contract> = {
+  [method in keyof Contract]: Contract[method] extends (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ...args: any[]
+  ) => Promise<`0x${string}`>
+    ? (...args: Parameters<Contract[method]>) => Promise<bigint>
+    : never;
+};

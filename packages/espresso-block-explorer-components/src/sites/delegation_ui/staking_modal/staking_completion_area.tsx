@@ -2,10 +2,8 @@ import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
 import Text from '@/components/text/Text';
 import React from 'react';
 import ButtonLarge from '../elements/buttons/button_large';
-import {
-  DelegateAsyncSnapshotContext,
-  PerformDelegationReceiptRetrieved,
-} from './contexts/perform_delegation_context';
+import { DelegateAsyncSnapshotContext } from './contexts/perform_delegation_context';
+import { PerformWriteTransactionReceiptRetrieved } from './contexts/perform_write_states';
 import { StakingModalCloseContext } from './contexts/staking_modal_close_context';
 import './staking_completion_area.css';
 
@@ -18,7 +16,7 @@ export const StakingCompletionArea: React.FC = () => {
   }
 
   const data = asyncSnapshot.data;
-  if (!(data instanceof PerformDelegationReceiptRetrieved)) {
+  if (!(data instanceof PerformWriteTransactionReceiptRetrieved)) {
     return null;
   }
 

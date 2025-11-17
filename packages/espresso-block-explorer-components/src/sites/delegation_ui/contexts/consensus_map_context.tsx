@@ -1,4 +1,3 @@
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { mapIterable } from '@/functional/functional';
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
 import React from 'react';
@@ -24,7 +23,7 @@ export const DeriveConsensusSet: React.FC<React.PropsWithChildren> = ({
 
   const activeValidatorAddresses = new Map<`0x${string}`, ActiveNodeSetEntry>(
     mapIterable(activeValidators?.nodes ?? [], (node) => [
-      hexArrayBufferCodec.encode(node.address),
+      node.addressText,
       node,
     ]),
   );

@@ -1,20 +1,27 @@
+import { DataContext } from '@/components/contexts/DataProvider';
 import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
+import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import Text from '@/components/text/Text';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { neverPromise } from '@/functional/functional_async';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
-import { StakeTableContractContext } from '../contexts/stake_table_contract_context';
+import {
+  StakeTableContractContext,
+  StakeTableContractGasEstimatorContext,
+} from '../contexts/stake_table_contract_context';
 import ButtonLarge from '../elements/buttons/button_large';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
+import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
 import {
   performUndelegation,
-  PerformUndelegationReceiptRetrieved,
   SetUndelegationAsyncIterableContext,
   UndelegateAsyncSnapshotContext,
 } from './contexts/perform_undelgation_context';
+import { PerformWriteTransactionReceiptRetrieved } from './contexts/perform_write_states';
 import { StakingAmountContext } from './contexts/staking_amount_context';
 import { StakingModalCloseContext } from './contexts/staking_modal_close_context';
 import { StakingContent } from './staking_content';
@@ -34,11 +41,49 @@ export const UndelegationContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <UnstakingInitialSummaryAndInteraction />
-        <UnstakingOverviewArea />
-        <UnstakingActionsArea />
+        <ProvideContractGasEstimate>
+          <UnstakingInitialSummaryAndInteraction />
+          <UnstakingOverviewArea />
+          <UnstakingActionsArea />
+        </ProvideContractGasEstimate>
       </StakingContent>
     </>
+  );
+};
+
+const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const validator = React.useContext(ConfirmedValidatorContext);
+  const currentStake = React.useContext(CurrentStakeToValidatorContext);
+  const rewardClaimGasEstimator = React.useContext(
+    StakeTableContractGasEstimatorContext,
+  );
+
+  const promise =
+    !rewardClaimGasEstimator || !currentStake
+      ? neverPromise
+      : rewardClaimGasEstimator.undelegate(
+          hexArrayBufferCodec.encode(validator),
+          currentStake,
+        );
+
+  return (
+    <PromiseResolver promise={promise}>
+      <TransformDataToGasEstimate>{children}</TransformDataToGasEstimate>
+    </PromiseResolver>
+  );
+};
+
+const TransformDataToGasEstimate: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const data = (React.useContext(DataContext) ?? null) as null | bigint;
+
+  return (
+    <EstimatedContractGasContext.Provider value={data}>
+      {children}
+    </EstimatedContractGasContext.Provider>
   );
 };
 
@@ -74,6 +119,7 @@ const UnstakingActionsArea: React.FC = () => {
       </div>
     );
   }
+
   const performUndelegationAction = () =>
     setUndelegationAsyncIterable(
       performUndelegation(
@@ -88,7 +134,7 @@ const UnstakingActionsArea: React.FC = () => {
   if (
     asyncSnapshot.asyncState === AsyncState.waiting ||
     (asyncSnapshot.data &&
-      !(asyncSnapshot.data instanceof PerformUndelegationReceiptRetrieved))
+      !(asyncSnapshot.data instanceof PerformWriteTransactionReceiptRetrieved))
   ) {
     return (
       <div className="staking-modal-unstaking-actions-area waiting">

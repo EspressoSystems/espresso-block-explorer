@@ -1,3 +1,5 @@
+import { GasEstimatorForContract } from '../l1/l1_interface';
+
 /**
  * RewardClaimContractReadOnly defines the read-only interface for the
  * Reward Claim Contract.
@@ -27,3 +29,10 @@ export interface RewardClaimContractWriteable {
 export interface RewardClaimContract
   extends RewardClaimContractReadOnly,
     RewardClaimContractWriteable {}
+
+/**
+ * RewardClaimContractGasEstimator defines the gas estimator type for the
+ * Reward Claim Contract.
+ */
+export type RewardClaimContractGasEstimator =
+  GasEstimatorForContract<RewardClaimContractWriteable>;

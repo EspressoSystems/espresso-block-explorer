@@ -15,12 +15,14 @@ import { numberCodec } from '@/convert/codec/number';
  * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/common.rs#L133-L147
  */
 export class PendingWithdrawal {
+  public readonly nodeText: `0x${string}`;
   constructor(
     public readonly delegator: ArrayBuffer,
     public readonly node: ArrayBuffer,
     public readonly amount: bigint,
     public readonly availableTime: Date,
   ) {
+    this.nodeText = hexArrayBufferCodec.encode(node);
     Object.freeze(this);
   }
 

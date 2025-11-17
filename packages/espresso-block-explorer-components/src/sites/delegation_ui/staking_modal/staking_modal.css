@@ -11,4 +11,5 @@ dialog.staking-modal {
   border-radius: 12px;
   border-width: 1px;
   max-width: 585px;
+  min-width: 400px;
 }

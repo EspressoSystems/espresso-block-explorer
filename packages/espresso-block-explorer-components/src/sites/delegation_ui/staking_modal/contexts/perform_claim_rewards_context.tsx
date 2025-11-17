@@ -1,4 +1,3 @@
-import { sleep } from '@/async/sleep';
 import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
 import { AsyncSnapshot } from '@/components/data/async_data/AsyncSnapshot';
 import { AsyncSnapshotContext } from '@/components/data/async_data/AsyncSnapshotContext';
@@ -9,25 +8,29 @@ import { neverAsyncIterable } from '@/functional/functional_async';
 import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
 import React from 'react';
 import { Config } from 'wagmi';
-import { GetTransactionReceiptReturnType } from 'wagmi/actions';
+import {
+  performWriteTransaction,
+  PerformWriteTransactionState,
+} from './perform_write_states';
 
 export const PerformClaimRewardsAsyncIterableContext =
-  React.createContext<null | AsyncIterable<PerformClaimRewardsState>>(null);
+  React.createContext<null | AsyncIterable<PerformWriteTransactionState>>(null);
+
 export const SetClaimRewardsAsyncIterableContext = React.createContext<
   React.Dispatch<
-    React.SetStateAction<null | AsyncIterable<PerformClaimRewardsState>>
+    React.SetStateAction<null | AsyncIterable<PerformWriteTransactionState>>
   >
 >(() => {});
 
 export const ClaimRewardsAsyncSnapshotContext = React.createContext<
-  AsyncSnapshot<PerformClaimRewardsState>
+  AsyncSnapshot<PerformWriteTransactionState>
 >(AsyncSnapshot.nothing());
 
 export const ProvideClaimRewardsPromiseContext: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const [asyncIterable, setAsyncIterable] =
-    React.useState<null | AsyncIterable<PerformClaimRewardsState>>(null);
+    React.useState<null | AsyncIterable<PerformWriteTransactionState>>(null);
 
   return (
     <PerformClaimRewardsAsyncIterableContext.Provider value={asyncIterable}>
@@ -61,7 +64,7 @@ const ConvertClaimRewardsAsyncSnapshot: React.FC<React.PropsWithChildren> = ({
 }) => {
   const asyncSnapshot = React.useContext(
     AsyncSnapshotContext,
-  ) as AsyncSnapshot<PerformClaimRewardsState>;
+  ) as AsyncSnapshot<PerformWriteTransactionState>;
   const asyncIterable = React.useContext(
     PerformClaimRewardsAsyncIterableContext,
   );
@@ -75,81 +78,19 @@ const ConvertClaimRewardsAsyncSnapshot: React.FC<React.PropsWithChildren> = ({
   );
 };
 
-export abstract class PerformClaimRewardsState {}
-
-export class PerformClaimRewardsWaiting extends PerformClaimRewardsState {
-  constructor() {
-    super();
-  }
-}
-
-export class PerformClaimRewardsSucceeded extends PerformClaimRewardsState {
-  constructor(public readonly transactionHash: `0x${string}`) {
-    super();
-  }
-}
-
-export class PerformClaimRewardsReceiptWaiting extends PerformClaimRewardsState {
-  constructor(public readonly transactionHash: `0x${string}`) {
-    super();
-  }
-}
-
-export class PerformClaimRewardsReceiptRetrieved extends PerformClaimRewardsState {
-  constructor(
-    public readonly transactionHash: `0x${string}`,
-    public readonly receipt: GetTransactionReceiptReturnType<Config>,
-  ) {
-    super();
-  }
-}
-
 export async function* performClaimRewards(
   l1Methods: L1Methods<Config, number>,
   rewardClaimContract: RewardClaimContract,
   rewardClaimInput: RewardClaimInput,
   setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>,
 ) {
-  // Indicate that we are waiting for the ClaimRewards to complete
-  yield new PerformClaimRewardsWaiting();
-
-  const transactionHash = await rewardClaimContract.claimRewards(
-    rewardClaimInput.lifetimeRewards,
-    hexArrayBufferCodec.encode(rewardClaimInput.authData),
+  yield* performWriteTransaction(
+    l1Methods,
+    async () =>
+      rewardClaimContract.claimRewards(
+        rewardClaimInput.lifetimeRewards,
+        hexArrayBufferCodec.encode(rewardClaimInput.authData),
+      ),
+    setL1Timestamp,
   );
-
-  yield new PerformClaimRewardsSucceeded(transactionHash);
-
-  // We wait for the transaction receipt
-  yield new PerformClaimRewardsReceiptWaiting(transactionHash);
-
-  // We'll try multiple times to retrieve the receipt
-  try {
-    for (let i = 0; i < 24; i++) {
-      try {
-        const receipt = await l1Methods.getTransactionReceipt({
-          hash: transactionHash,
-        });
-
-        yield new PerformClaimRewardsReceiptRetrieved(transactionHash, receipt);
-        return;
-      } catch (err) {
-        if (i === 23) {
-          console.error(
-            '<<<< HERE performClaimRewards failed to retrieve receipt:',
-            err,
-          );
-          throw err;
-        }
-        //  TODO: Inspect the errors before blindly retrying
-
-        // Sleep for a second before retrying
-        await sleep(1000);
-      }
-    }
-  } finally {
-    setL1Timestamp(new Date());
-  }
-
-  throw new Error('no receipt received');
 }
