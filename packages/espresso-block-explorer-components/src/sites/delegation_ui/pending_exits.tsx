@@ -1,7 +1,6 @@
 import { Now } from '@/components/contexts/NowProvider';
 import Text from '@/components/text/Text';
 import Unlock from '@/components/visual/icons/feather/unlock';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { filterIterable } from '@/functional/functional';
 import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
 import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
@@ -92,7 +91,7 @@ function filterAllValidators(
     allValidators.l1Block,
     Array.from(
       filterIterable(allValidators.nodes, (node) =>
-        pendingExits.has(hexArrayBufferCodec.encode(node.address)),
+        pendingExits.has(node.addressText),
       ),
     ),
   );

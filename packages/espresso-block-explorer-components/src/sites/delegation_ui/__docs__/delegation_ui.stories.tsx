@@ -7,8 +7,10 @@ import {
   environmentArgsLocalDevNetWithContracts,
   environmentArgsMainnetWithContracts,
   environmentArgsMilkWithContracts,
+  environmentArgsTypesL1ValidatorService,
   environmentArgsWaterWithContracts,
   environmentArgTypesWithContracts,
+  extractURLWithEncodedFallback,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
@@ -23,8 +25,11 @@ interface ExampleProps {
   stakeTableContractAddress?: string;
   espTokenContractAddress?: string;
   hotshotQueryServiceURL?: string;
+  hotShotQueryServiceURLEncoded?: string;
   nodeValidatorWebSocketURL?: string;
+  nodeValidatorWebSocketURLEncoded?: string;
   l1ValidatorServiceURL?: string;
+  l1ValidatorServiceURLEncoded?: string;
 }
 
 const Example: React.FC<ExampleProps> = ({
@@ -32,8 +37,11 @@ const Example: React.FC<ExampleProps> = ({
   stakeTableContractAddress,
   espTokenContractAddress,
   hotshotQueryServiceURL,
+  hotShotQueryServiceURLEncoded,
   nodeValidatorWebSocketURL,
+  nodeValidatorWebSocketURLEncoded,
   l1ValidatorServiceURL,
+  l1ValidatorServiceURLEncoded,
   ...rest
 }) => {
   return (
@@ -42,9 +50,18 @@ const Example: React.FC<ExampleProps> = ({
         environment={environment}
         stakeTableContractAddress={stakeTableContractAddress}
         espTokenContractAddress={espTokenContractAddress}
-        hotshotQueryServiceURL={hotshotQueryServiceURL}
-        nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
-        l1ValidatorServiceURL={l1ValidatorServiceURL}
+        hotshotQueryServiceURL={extractURLWithEncodedFallback(
+          hotshotQueryServiceURL,
+          hotShotQueryServiceURLEncoded,
+        )}
+        nodeValidatorWebSocketURL={extractURLWithEncodedFallback(
+          nodeValidatorWebSocketURL,
+          nodeValidatorWebSocketURLEncoded,
+        )}
+        l1ValidatorServiceURL={extractURLWithEncodedFallback(
+          l1ValidatorServiceURL,
+          l1ValidatorServiceURLEncoded,
+        )}
       >
         <EnvironmentBanner />
         <ProvideTickEverySecond>
@@ -71,13 +88,14 @@ const meta: Meta = {
     environment: Environment.fakeData,
     stakeTableContractAddress: undefined,
     espTokenContractAddress: undefined,
+    rewardClaimContractAddress: undefined,
     hotshotQueryServiceURL: undefined,
     nodeValidatorWebSocketURL: undefined,
     l1ValidatorServiceURL: undefined,
   },
   argTypes: {
     ...environmentArgTypesWithContracts,
-    l1ValidatorServiceURL: { control: 'text' },
+    ...environmentArgsTypesL1ValidatorService,
   },
 
   globals: {
@@ -122,5 +140,8 @@ export const FakeData: Story = {
 };
 
 export const LocalDevNet: Story = {
-  args: environmentArgsLocalDevNetWithContracts,
+  args: {
+    ...environmentArgsLocalDevNetWithContracts,
+    l1ValidatorServiceURL: 'http://localhost:8080/v0/',
+  },
 };

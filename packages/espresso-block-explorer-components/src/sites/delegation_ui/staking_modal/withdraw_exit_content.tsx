@@ -1,22 +1,29 @@
+import { DataContext } from '@/components/contexts/DataProvider';
 import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
+import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import Text from '@/components/text/Text';
 import WalletAddressText from '@/components/text/WalletAddressText';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { neverPromise } from '@/functional/functional_async';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
-import { StakeTableContractContext } from '../contexts/stake_table_contract_context';
+import {
+  StakeTableContractContext,
+  StakeTableContractGasEstimatorContext,
+} from '../contexts/stake_table_contract_context';
 import ButtonLarge from '../elements/buttons/button_large';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
+import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
 import {
   ClaimValidatorExitAsyncSnapshotContext,
   performClaimValidatorExit,
-  PerformClaimValidatorExitReceiptRetrieved,
   SetClaimValidatorExitAsyncIterableContext,
 } from './contexts/perfom_claim_validator_exit_context';
+import { PerformWriteTransactionReceiptRetrieved } from './contexts/perform_write_states';
 import { StakingModalCloseContext } from './contexts/staking_modal_close_context';
 import { PendingExitOverviewArea } from './pending_exit_overview_area';
 import { PendingExitSummaryAndInteraction } from './pending_exit_summary_and_interaction';
@@ -38,11 +45,46 @@ export const WithdrawExitContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <PendingExitSummaryAndInteraction />
-        <PendingExitOverviewArea />
-        <WithdrawExitActionsArea />
+        <ProvideContractGasEstimate>
+          <PendingExitSummaryAndInteraction />
+          <PendingExitOverviewArea />
+          <WithdrawExitActionsArea />
+        </ProvideContractGasEstimate>
       </StakingContent>
     </>
+  );
+};
+
+const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const validator = React.useContext(ConfirmedValidatorContext);
+  const rewardClaimGasEstimator = React.useContext(
+    StakeTableContractGasEstimatorContext,
+  );
+
+  const promise = !rewardClaimGasEstimator
+    ? neverPromise
+    : rewardClaimGasEstimator.claimValidatorExit(
+        hexArrayBufferCodec.encode(validator),
+      );
+
+  return (
+    <PromiseResolver promise={promise}>
+      <TransformDataToGasEstimate>{children}</TransformDataToGasEstimate>
+    </PromiseResolver>
+  );
+};
+
+const TransformDataToGasEstimate: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const data = (React.useContext(DataContext) ?? null) as null | bigint;
+
+  return (
+    <EstimatedContractGasContext.Provider value={data}>
+      {children}
+    </EstimatedContractGasContext.Provider>
   );
 };
 
@@ -91,9 +133,7 @@ const WithdrawExitActionsArea: React.FC = () => {
   if (
     asyncSnapshot.asyncState === AsyncState.waiting ||
     (asyncSnapshot.data &&
-      !(
-        asyncSnapshot.data instanceof PerformClaimValidatorExitReceiptRetrieved
-      ))
+      !(asyncSnapshot.data instanceof PerformWriteTransactionReceiptRetrieved))
   ) {
     return (
       <div className="staking-modal-unstaking-actions-area waiting">

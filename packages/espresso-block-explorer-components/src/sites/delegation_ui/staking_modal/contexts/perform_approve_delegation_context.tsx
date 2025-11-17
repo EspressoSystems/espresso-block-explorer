@@ -1,4 +1,3 @@
-import { sleep } from '@/async/sleep';
 import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
 import { AsyncSnapshot } from '@/components/data/async_data/AsyncSnapshot';
 import { AsyncSnapshotContext } from '@/components/data/async_data/AsyncSnapshotContext';
@@ -8,25 +7,28 @@ import { StakeTableContract } from '@/contracts/stake_table/stake_table_interfac
 import { neverAsyncIterable } from '@/functional/functional_async';
 import React from 'react';
 import { Config } from 'wagmi';
-import { GetTransactionReceiptReturnType } from 'wagmi/actions';
+import {
+  performWriteTransaction,
+  PerformWriteTransactionState,
+} from './perform_write_states';
 
 export const ApproveAsyncIterableContext =
-  React.createContext<null | AsyncIterable<PerformApproveState>>(null);
+  React.createContext<null | AsyncIterable<PerformWriteTransactionState>>(null);
 
 export const SetApproveAsyncIterableContext = React.createContext<
   React.Dispatch<
-    React.SetStateAction<null | AsyncIterable<PerformApproveState>>
+    React.SetStateAction<null | AsyncIterable<PerformWriteTransactionState>>
   >
 >(() => {});
 export const ApproveAsyncSnapshotContext = React.createContext<
-  AsyncSnapshot<PerformApproveState>
+  AsyncSnapshot<PerformWriteTransactionState>
 >(AsyncSnapshot.nothing());
 
 export const ProvideApproveAsyncIterableContext: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const [asyncIterable, setAsyncIterable] =
-    React.useState<null | AsyncIterable<PerformApproveState>>(null);
+    React.useState<null | AsyncIterable<PerformWriteTransactionState>>(null);
 
   return (
     <ApproveAsyncIterableContext.Provider value={asyncIterable}>
@@ -55,7 +57,7 @@ const ConvertApproveAsyncSnapshot: React.FC<React.PropsWithChildren> = ({
 }) => {
   const asyncSnapshot = React.useContext(
     AsyncSnapshotContext,
-  ) as AsyncSnapshot<PerformApproveState>;
+  ) as AsyncSnapshot<PerformWriteTransactionState>;
   const promise = React.useContext(ApproveAsyncIterableContext);
 
   return (
@@ -67,78 +69,19 @@ const ConvertApproveAsyncSnapshot: React.FC<React.PropsWithChildren> = ({
   );
 };
 
-export abstract class PerformApproveState {}
-
-export class PerformApproveWaiting extends PerformApproveState {
-  constructor() {
-    super();
-  }
-}
-
-export class PerformApproveDone extends PerformApproveState {
-  constructor(public readonly transactionHash: `0x${string}`) {
-    super();
-  }
-}
-
-export class PerformApproveReceiptWaiting extends PerformApproveState {
-  constructor(public readonly transactionHash: `0x${string}`) {
-    super();
-  }
-}
-
-export class PerformApproveReceiptReceived extends PerformApproveState {
-  constructor(
-    public readonly transactionHash: `0x${string}`,
-    public readonly receipt: GetTransactionReceiptReturnType<Config>,
-  ) {
-    super();
-  }
-}
-
 export async function* performApprove(
   l1Methods: L1Methods<Config, number>,
   espContract: ESPTokenContract,
   stakeTableContract: StakeTableContract,
   setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>,
 ) {
-  yield new PerformApproveWaiting();
-
-  const transactionHash = await espContract.approve(
-    stakeTableContract.address,
-    0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffffn,
+  yield* performWriteTransaction(
+    l1Methods,
+    async () =>
+      espContract.approve(
+        stakeTableContract.address,
+        0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffffn,
+      ),
+    setL1Timestamp,
   );
-
-  yield new PerformApproveDone(transactionHash);
-
-  yield new PerformApproveReceiptWaiting(transactionHash);
-
-  try {
-    for (let i = 0; i < 24; i++) {
-      try {
-        const receipt = await l1Methods.getTransactionReceipt({
-          hash: transactionHash,
-        });
-
-        yield new PerformApproveReceiptReceived(transactionHash, receipt);
-        return;
-      } catch (err) {
-        if (i === 23) {
-          console.error(
-            '<<<< HERE performApprove failed to retrieve receipt:',
-            err,
-          );
-          throw err;
-        }
-        //  TODO: Inspect the errors before blindly retrying
-
-        // Sleep for a second before retrying
-        await sleep(1000);
-      }
-    }
-  } finally {
-    setL1Timestamp(new Date());
-  }
-
-  throw new Error('no receipt received');
 }

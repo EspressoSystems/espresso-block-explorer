@@ -1,14 +1,46 @@
 import React from 'react';
 import './modal_context.css';
 
+/**
+ * ModalControls defines the interface for controlling a modal dialog.
+ */
 export interface ModalControls {
+  /**
+   * ref is a React ref to the HTMLDialogElement.
+   */
   ref: React.Ref<HTMLDialogElement>;
+
+  /**
+   * open opens the modal dialog.
+   */
   open: () => void;
+
+  /**
+   * close closes the modal dialog.
+   */
   close: () => void;
+
+  /**
+   * setOpenState sets the open state of the modal dialog.
+   *
+   * NOTE: This is provided to allow a Dialog onClose callback to
+   * set the open state to false when the dialog is closed by
+   * user interaction (e.g., clicking outside the dialog).  This is
+   * not meant to be consumed by users unless he/she knows what he/she
+   * is doing.
+   */
   setOpenState: (isOpen: boolean) => void;
+
+  /**
+   * isOpen indicates whether the modal dialog is open.
+   */
   isOpen: boolean;
 }
 
+/**
+ * ModalContext is a React context that provides
+ * the modal controls for a dialog.
+ */
 export const ModalContext = React.createContext<ModalControls>({
   ref: null,
   open: () => {},
@@ -17,6 +49,10 @@ export const ModalContext = React.createContext<ModalControls>({
   isOpen: false,
 });
 
+/**
+ * useModalState is a custom React hook that provides
+ * the modal controls for a dialog.
+ */
 function useModalState(): ModalControls {
   const ref = React.useRef<HTMLDialogElement>(null);
   const [isOpen, setIsOpen] = React.useState(false);
@@ -42,6 +78,10 @@ function useModalState(): ModalControls {
   return { ref, open, close, setOpenState, isOpen };
 }
 
+/**
+ * ProvideDialogModalControls is a React component that provides
+ * the modal controls via ModalContext.
+ */
 export const ProvideDialogModalControls: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
@@ -52,6 +92,10 @@ export const ProvideDialogModalControls: React.FC<React.PropsWithChildren> = ({
   );
 };
 
+/**
+ * DialogModal is a React component that renders a dialog element
+ * and connects it to the ModalContext for control.
+ */
 export const DialogModal: React.FC<
   React.DetailedHTMLProps<
     React.DialogHTMLAttributes<HTMLDialogElement>,

@@ -5,9 +5,11 @@
 export function deriveAddressesWithEnvironmentFallback(
   espTokenContractAddress: null | `0x${string}` = null,
   stakeTableContractAddress: null | `0x${string}` = null,
+  rewardClaimContractAddress: null | `0x${string}` = null,
 ) {
   return {
     espTokenContractAddress: espTokenContractAddress ?? null,
     stakeTableContractAddress: stakeTableContractAddress ?? null,
+    rewardClaimContractAddress: rewardClaimContractAddress ?? null,
   };
 }

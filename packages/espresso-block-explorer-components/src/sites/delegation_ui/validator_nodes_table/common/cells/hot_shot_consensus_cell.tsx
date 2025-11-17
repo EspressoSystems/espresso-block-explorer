@@ -1,4 +1,3 @@
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import React from 'react';
 import { ConsensusMapContext } from 'sites/delegation_ui/contexts/consensus_map_context';
 import { ValidatorNodeContext } from 'sites/delegation_ui/contexts/validator_node_context';
@@ -13,7 +12,7 @@ export const HotShotConsensusCell: React.FC = () => {
   const validator = React.useContext(ValidatorNodeContext);
   const consensusSet = React.useContext(ConsensusMapContext);
 
-  const address = hexArrayBufferCodec.encode(validator.address);
+  const address = validator.addressText;
 
   if (consensusSet.has(address)) {
     return <ActiveConsensusChip />;

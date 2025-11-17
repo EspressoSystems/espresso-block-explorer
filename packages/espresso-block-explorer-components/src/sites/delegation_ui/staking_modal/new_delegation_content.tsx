@@ -1,10 +1,18 @@
+import { DataContext } from '@/components/contexts/DataProvider';
+import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import Text from '@/components/text/Text';
 import WalletAddressText from '@/components/text/WalletAddressText';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { neverPromise } from '@/functional/functional_async';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
+import { ESPBalanceContext } from '../contexts/esp_balance_context';
+import { StakeTableContractGasEstimatorContext } from '../contexts/stake_table_contract_context';
 import { ApproveButton } from './approve_button';
 import { CloseStakingModalButton } from './close_staking_modal';
+import { CurrentAllowanceToStakeTableContext } from './contexts/current_allowance_context';
+import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
 import { DelegateButton } from './delegate_button';
 import './new_delegation_content.css';
 import { NewStakeInstructionsAndProgress } from './new_stake_instructions_and_progress';
@@ -29,12 +37,57 @@ export const NewDelegationContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <StakingInitialSummaryAndInteraction />
-        <StakingOverviewArea />
-        <StakingActionsArea />
-        <StakingCompletionArea />
+        <ProvideContractGasEstimate>
+          <StakingInitialSummaryAndInteraction />
+          <StakingOverviewArea />
+          <StakingActionsArea />
+          <StakingCompletionArea />
+        </ProvideContractGasEstimate>
       </StakingContent>
     </>
+  );
+};
+
+const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const allowance = React.useContext(CurrentAllowanceToStakeTableContext) ?? 0n;
+  const balance = React.useContext(ESPBalanceContext);
+  const validator = React.useContext(ConfirmedValidatorContext);
+  const rewardClaimGasEstimator = React.useContext(
+    StakeTableContractGasEstimatorContext,
+  );
+
+  const amountToTry = allowance < balance ? allowance : balance;
+
+  const promise =
+    !rewardClaimGasEstimator ||
+    balance <= 0n ||
+    allowance === null ||
+    allowance <= 0n ||
+    amountToTry <= 0n
+      ? neverPromise
+      : rewardClaimGasEstimator.delegate(
+          hexArrayBufferCodec.encode(validator),
+          amountToTry,
+        );
+
+  return (
+    <PromiseResolver promise={promise}>
+      <TransformDataToGasEstimate>{children}</TransformDataToGasEstimate>
+    </PromiseResolver>
+  );
+};
+
+const TransformDataToGasEstimate: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const data = (React.useContext(DataContext) ?? null) as null | bigint;
+
+  return (
+    <EstimatedContractGasContext.Provider value={data}>
+      {children}
+    </EstimatedContractGasContext.Provider>
   );
 };
 

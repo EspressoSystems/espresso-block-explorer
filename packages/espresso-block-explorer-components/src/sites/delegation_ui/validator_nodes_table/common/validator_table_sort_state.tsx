@@ -1,4 +1,3 @@
-import { hexArrayBufferCodec } from '@/convert/codec';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { compareArrayBuffer } from '@/functional/functional';
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
@@ -232,7 +231,7 @@ function sortWithState(
     allValidators.l1Block,
     allValidators.nodes
       .map((node) => {
-        const key = hexArrayBufferCodec.encode(node.address);
+        const key = node.addressText;
         return [
           node,
           rankMap.get(key) ?? Number.MAX_SAFE_INTEGER,

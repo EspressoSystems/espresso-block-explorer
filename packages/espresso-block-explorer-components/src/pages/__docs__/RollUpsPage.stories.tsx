@@ -9,6 +9,7 @@ import {
   environmentArgsMilk,
   environmentArgsWater,
   environmentArgTypes,
+  extractURLWithEncodedFallback,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
@@ -22,19 +23,29 @@ import { StoryBookPathResolver } from '../StoryBookPathResolver';
 interface ExampleProps {
   environment: Environment;
   hotshotQueryServiceURL?: string;
+  hotShotQueryServiceURLEncoded?: string;
   nodeValidatorWebSocketURL?: string;
+  nodeValidatorWebSocketURLEncoded?: string;
 }
 
 const Example: React.FC<ExampleProps> = ({
   environment,
   hotshotQueryServiceURL,
+  hotShotQueryServiceURLEncoded,
   nodeValidatorWebSocketURL,
+  nodeValidatorWebSocketURLEncoded,
   ...rest
 }) => (
   <StoryBookSpecifyEnvironment
     environment={environment}
-    hotshotQueryServiceURL={hotshotQueryServiceURL}
-    nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
+    hotshotQueryServiceURL={extractURLWithEncodedFallback(
+      hotshotQueryServiceURL,
+      hotShotQueryServiceURLEncoded,
+    )}
+    nodeValidatorWebSocketURL={extractURLWithEncodedFallback(
+      nodeValidatorWebSocketURL,
+      nodeValidatorWebSocketURLEncoded,
+    )}
   >
     <EnvironmentBanner />
     <ProvideTickEverySecond>

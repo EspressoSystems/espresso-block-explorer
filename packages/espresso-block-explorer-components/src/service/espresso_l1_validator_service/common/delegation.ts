@@ -14,11 +14,15 @@ import {
  * https://github.com/EspressoSystems/staking-ui-service/blob/a2317eb04e89fae58421080dd8f5db1524748476/src/types/common.rs#L114-L123
  */
 export class Delegation {
+  public readonly delegatorText: `0x${string}`;
+  public readonly nodeText: `0x${string}`;
   constructor(
     public readonly delegator: ArrayBuffer,
     public readonly node: ArrayBuffer,
     public readonly amount: bigint,
   ) {
+    this.delegatorText = hexArrayBufferCodec.encode(delegator);
+    this.nodeText = hexArrayBufferCodec.encode(node);
     Object.freeze(this);
   }
 

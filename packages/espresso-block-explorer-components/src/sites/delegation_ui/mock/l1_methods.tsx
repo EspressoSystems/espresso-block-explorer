@@ -6,6 +6,7 @@ import { fakeData } from '@/models/config/storybook/wagmi';
 import React from 'react';
 import { BlockTag } from 'viem';
 import {
+  EstimateFeesPerGasReturnType,
   GetBalanceParameters,
   GetBalanceReturnType,
   GetBlockParameters,
@@ -95,6 +96,14 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
       symbol: 'ESP',
       value: balance,
     } as const satisfies GetBalanceReturnType;
+  }
+
+  async estimateFeesPerGas(): Promise<EstimateFeesPerGasReturnType> {
+    return {
+      maxPriorityFeePerGas: 1_000_000_000n,
+      maxFeePerGas: 15_000_000_000n,
+      gasPrice: 15_000_000_000n,
+    };
   }
 
   async estimateGas() {

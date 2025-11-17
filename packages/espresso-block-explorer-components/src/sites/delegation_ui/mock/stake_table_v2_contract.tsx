@@ -26,11 +26,18 @@ import {
 import React from 'react';
 import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
-import { StakeTableContractContext } from '../contexts/stake_table_contract_context';
-import { StakeTableV2ContractContext } from '../contexts/stake_table_v2_contract_context';
+import {
+  StakeTableContractContext,
+  StakeTableContractGasEstimatorContext,
+} from '../contexts/stake_table_contract_context';
+import {
+  StakeTableV2ContractContext,
+  StakeTableV2ContractGasEstimatorContext,
+} from '../contexts/stake_table_v2_contract_context';
 import { MockESPTokenContractImpl } from './esp_token_contract';
 import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
 import { MockAddress } from './rainbow_kit';
+import { MockStakeTableV2ContractGasEstimatorImpl } from './stake_table_v2_contract_gas_estimator';
 
 /**
  * StakeTableState defines the structure of the mock
@@ -815,10 +822,16 @@ export const MockStakeTableV2Contract: React.FC<React.PropsWithChildren> = ({
     return () => {};
   }, [contract, accountAddress]);
 
+  const gasEstimator = new MockStakeTableV2ContractGasEstimatorImpl();
+
   return (
     <StakeTableV2ContractContext.Provider value={contract}>
       <StakeTableContractContext.Provider value={contract}>
-        {children}
+        <StakeTableV2ContractGasEstimatorContext.Provider value={gasEstimator}>
+          <StakeTableContractGasEstimatorContext.Provider value={gasEstimator}>
+            {children}
+          </StakeTableContractGasEstimatorContext.Provider>
+        </StakeTableV2ContractGasEstimatorContext.Provider>
       </StakeTableContractContext.Provider>
     </StakeTableV2ContractContext.Provider>
   );

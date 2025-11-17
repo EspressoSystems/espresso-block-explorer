@@ -1,3 +1,4 @@
+import { GasEstimatorForContract } from '../l1/l1_interface';
 import {
   StakeTableContractReadOnly,
   StakeTableContractWriteable,
@@ -27,3 +28,10 @@ export interface StakeTableV2ContractWriteable
 export interface StakeTableV2Contract
   extends StakeTableV2ContractReadOnly,
     StakeTableV2ContractWriteable {}
+
+/**
+ * StakeTableV2ContractGasEstimator defines the gas estimator type for the
+ * Stake Table V2 Contract.
+ */
+export type StakeTableV2ContractGasEstimator =
+  GasEstimatorForContract<StakeTableV2ContractWriteable>;

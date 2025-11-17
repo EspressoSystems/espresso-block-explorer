@@ -8,7 +8,7 @@ export const CloseStakingModalButton: React.FC = () => {
   const close = React.useContext(StakingModalCloseContext);
 
   return (
-    <ButtonFlat className="close-modal-button" onClick={close}>
+    <ButtonFlat className="close-modal-button" title="close" onClick={close}>
       <Close />
     </ButtonFlat>
   );

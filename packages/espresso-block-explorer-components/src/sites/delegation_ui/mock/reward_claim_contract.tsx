@@ -7,9 +7,13 @@ import { createKeccakHash } from '@/crypto/keccak/family';
 import React from 'react';
 import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
-import { RewardClaimContractContext } from '../contexts/reward_claim_contract_context';
+import {
+  RewardClaimContractContext,
+  RewardClaimContractGasEstimatorContext,
+} from '../contexts/reward_claim_contract_context';
 import { MockESPTokenContractImpl } from './esp_token_contract';
 import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
+import { MockRewardClaimContractGasEstimatorImpl } from './reward_claim_contract_gas_estimator';
 
 /**
  * RewardClaimState defines the structure of the mock
@@ -243,7 +247,11 @@ export const MockRewardClaimContract: React.FC<React.PropsWithChildren> = ({
 
   return (
     <RewardClaimContractContext.Provider value={contract}>
-      {children}
+      <RewardClaimContractGasEstimatorContext.Provider
+        value={new MockRewardClaimContractGasEstimatorImpl()}
+      >
+        {children}
+      </RewardClaimContractGasEstimatorContext.Provider>
     </RewardClaimContractContext.Provider>
   );
 };
