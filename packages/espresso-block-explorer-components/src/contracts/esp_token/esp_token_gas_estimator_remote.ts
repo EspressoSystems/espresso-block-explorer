@@ -3,6 +3,12 @@ import { estimateContractGas } from '../l1/estimate_contract_gas';
 import EspTokenAbi from './esp_token_abi';
 import { ESPTokenContractGasEstimator } from './esp_token_interface';
 
+/**
+ * ESPTokenContractGasEstimatorRemote implements
+ * ESPTokenContractGasEstimator by making remote calls to estimate gas
+ * for ESP token contract methods. It is implemented via the Wagmi
+ * estimateContractGas utility function.
+ */
 export class ESPTokenContractGasEstimatorRemote
   implements ESPTokenContractGasEstimator
 {
@@ -13,8 +19,9 @@ export class ESPTokenContractGasEstimatorRemote
     public readonly address: `0x${string}`,
   ) {}
 
-  async transfer(to: `0x${string}`, value: bigint) {
+  async transfer(account: `0x${string}`, to: `0x${string}`, value: bigint) {
     return estimateContractGas(this.config, {
+      account,
       abi: EspTokenAbi,
       address: this.address,
       chainId: this.chainID,
@@ -23,8 +30,9 @@ export class ESPTokenContractGasEstimatorRemote
     });
   }
 
-  async approve(spender: `0x${string}`, value: bigint) {
+  async approve(account: `0x${string}`, spender: `0x${string}`, value: bigint) {
     return estimateContractGas(this.config, {
+      account,
       abi: EspTokenAbi,
       address: this.address,
       chainId: this.chainID,
@@ -33,8 +41,14 @@ export class ESPTokenContractGasEstimatorRemote
     });
   }
 
-  async transferFrom(from: `0x${string}`, to: `0x${string}`, value: bigint) {
+  async transferFrom(
+    account: `0x${string}`,
+    from: `0x${string}`,
+    to: `0x${string}`,
+    value: bigint,
+  ) {
     return estimateContractGas(this.config, {
+      account,
       abi: EspTokenAbi,
       address: this.address,
       chainId: this.chainID,

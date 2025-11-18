@@ -32,20 +32,16 @@ interface ExampleProps {
 const Example: React.FC<ExampleProps> = ({
   environment,
   hotshotQueryServiceURL,
-  hotShotQueryServiceURLEncoded,
   nodeValidatorWebSocketURL,
-  nodeValidatorWebSocketURLEncoded,
   ...rest
 }) => (
   <StoryBookSpecifyEnvironment
     environment={environment}
     hotshotQueryServiceURL={extractURLWithEncodedFallback(
       hotshotQueryServiceURL,
-      hotShotQueryServiceURLEncoded,
     )}
     nodeValidatorWebSocketURL={extractURLWithEncodedFallback(
       nodeValidatorWebSocketURL,
-      nodeValidatorWebSocketURLEncoded,
     )}
   >
     <EnvironmentBanner />

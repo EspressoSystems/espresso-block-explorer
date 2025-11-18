@@ -24,18 +24,14 @@ import { StoryBookPathResolver } from '../StoryBookPathResolver';
 interface ExampleProps {
   environment: Environment;
   hotshotQueryServiceURL?: string;
-  hotShotQueryServiceURLEncoded?: string;
   nodeValidatorWebSocketURL?: string;
-  nodeValidatorWebSocketURLEncoded?: string;
   block: number;
 }
 
 const Example: React.FC<ExampleProps> = ({
   environment,
   hotshotQueryServiceURL,
-  hotShotQueryServiceURLEncoded,
   nodeValidatorWebSocketURL,
-  nodeValidatorWebSocketURLEncoded,
   block,
   ...rest
 }) => (
@@ -43,11 +39,9 @@ const Example: React.FC<ExampleProps> = ({
     environment={environment}
     hotshotQueryServiceURL={extractURLWithEncodedFallback(
       hotshotQueryServiceURL,
-      hotShotQueryServiceURLEncoded,
     )}
     nodeValidatorWebSocketURL={extractURLWithEncodedFallback(
       nodeValidatorWebSocketURL,
-      nodeValidatorWebSocketURLEncoded,
     )}
   >
     <EnvironmentBanner />

@@ -1,4 +1,4 @@
-import { ArrayCodec, ArrayDecoder } from '@/convert/codec/array';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { bigintCodec } from '@/convert/codec/bigint';
 import {
@@ -49,7 +49,7 @@ class DelegationEncoder implements Converter<Delegation, unknown> {
  */
 class DelegationDecoder implements Converter<unknown, Delegation> {
   convert(input: unknown): Delegation {
-    assertRecordWithKeys(input, 'delegator', 'node', 'amount', 'effective');
+    assertRecordWithKeys(input, 'delegator', 'node', 'amount');
 
     return new Delegation(
       hexArrayBufferCodec.decode(input.delegator),
@@ -79,5 +79,5 @@ export const delegationJSONCodec = new DelegationJSONCodec();
 
 export const delegationArrayJSONCodec = new ArrayCodec(
   new ArrayDecoder(delegationJSONCodec),
-  new ArrayDecoder(delegationJSONCodec),
+  new ArrayEncoder(delegationJSONCodec),
 );

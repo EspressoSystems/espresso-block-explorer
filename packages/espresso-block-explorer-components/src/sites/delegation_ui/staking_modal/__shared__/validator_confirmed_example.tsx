@@ -28,30 +28,13 @@ import { CurrentAllowanceToStakeTableContext } from '../contexts/current_allowan
 import { CurrentPendingUndelegationFromValidatorContext } from '../contexts/current_pending_undelegation_from_validator_context';
 import { CurrentStakeToValidatorContext } from '../contexts/current_stake_to_validator_context';
 import { ProvideEstimatedFeesPerGas } from '../contexts/estimated_fees_per_gas_context';
-import {
-  ClaimValidatorExitAsyncSnapshotContext,
-  PerformClaimValidatorExitState,
-} from '../contexts/perfom_claim_validator_exit_context';
-import {
-  ApproveAsyncSnapshotContext,
-  PerformApproveState,
-} from '../contexts/perform_approve_delegation_context';
-import {
-  ClaimRewardsAsyncSnapshotContext,
-  PerformClaimRewardsState,
-} from '../contexts/perform_claim_rewards_context';
-import {
-  ClaimWithdrawalAsyncSnapshotContext,
-  PerformClaimWithdrawalState,
-} from '../contexts/perform_claim_withdrawal_context';
-import {
-  DelegateAsyncSnapshotContext,
-  PerformDelegateState,
-} from '../contexts/perform_delegation_context';
-import {
-  PerformUndelegateState,
-  UndelegateAsyncSnapshotContext,
-} from '../contexts/perform_undelgation_context';
+import { ClaimValidatorExitAsyncSnapshotContext } from '../contexts/perfom_claim_validator_exit_context';
+import { ApproveAsyncSnapshotContext } from '../contexts/perform_approve_delegation_context';
+import { ClaimRewardsAsyncSnapshotContext } from '../contexts/perform_claim_rewards_context';
+import { ClaimWithdrawalAsyncSnapshotContext } from '../contexts/perform_claim_withdrawal_context';
+import { DelegateAsyncSnapshotContext } from '../contexts/perform_delegation_context';
+import { UndelegateAsyncSnapshotContext } from '../contexts/perform_undelgation_context';
+import { PerformWriteTransactionState } from '../contexts/perform_write_states';
 import { StakingAmountContext } from '../contexts/staking_amount_context';
 import { ProvideStakingHistory } from '../contexts/staking_modal_history_context';
 import { ValidatorConfirmedContent } from '../staking_modal_validator_confirmed_content';
@@ -72,12 +55,12 @@ export interface ValidatorConfirmedExampleProps {
   lifetimeRewardsClaimed: string;
   currentStakeToNode: string;
   undelegation: Undelegation;
-  undelegationAsyncSnapshot: AsyncSnapshot<PerformUndelegateState>;
-  approvalAsyncSnapshot: AsyncSnapshot<PerformApproveState>;
-  delegationAsyncSnapshot: AsyncSnapshot<PerformDelegateState>;
-  claimWithDrawalAsyncSnapshot: AsyncSnapshot<PerformClaimWithdrawalState>;
-  claimExitAsyncSnapshot: AsyncSnapshot<PerformClaimValidatorExitState>;
-  claimRewardsAsyncSnapshot: AsyncSnapshot<PerformClaimRewardsState>;
+  undelegationAsyncSnapshot: AsyncSnapshot<PerformWriteTransactionState>;
+  approvalAsyncSnapshot: AsyncSnapshot<PerformWriteTransactionState>;
+  delegationAsyncSnapshot: AsyncSnapshot<PerformWriteTransactionState>;
+  claimWithDrawalAsyncSnapshot: AsyncSnapshot<PerformWriteTransactionState>;
+  claimExitAsyncSnapshot: AsyncSnapshot<PerformWriteTransactionState>;
+  claimRewardsAsyncSnapshot: AsyncSnapshot<PerformWriteTransactionState>;
 }
 
 const Content: React.FC = () => {

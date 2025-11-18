@@ -62,7 +62,7 @@ export const milk: WagmiConfig = createConfig({
 export const localDevNet: WagmiConfig = createConfig({
   chains: [
     defineChain({
-      id: 31337,
+      id: 900,
       name: 'GETH (Local DevNet)',
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
       rpcUrls: {

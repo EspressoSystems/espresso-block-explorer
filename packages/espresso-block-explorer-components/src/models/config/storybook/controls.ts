@@ -52,24 +52,6 @@ export const l1ValidatorServiceURLControlArgType = {
     'L1 Validator Service URL (starting with http:// or https://, ending with the version. Eg: http://localhost:9100/v0/)',
 } as const;
 
-export const queryServiceNodeURLEncodedControlArgType = {
-  control: { type: 'text' },
-  description:
-    'Query Service Node URL encoded a base64 or hex string (alternative to hotshotQueryServiceURL, allows encoding the URL in the storybook URL)',
-} as const;
-
-export const nodeValidatorWebSocketURLEncodedControlArgType = {
-  control: { type: 'text' },
-  description:
-    'Node Validator WebSocket URL encoded a base64 or hex string (alternative to nodeValidatorWebSocketURL, allows encoding the URL in the storybook URL)',
-} as const;
-
-export const l1ValidatorServiceURLEncodedControlArgType = {
-  control: { type: 'text' },
-  description:
-    'L1 Validator Service URL encoded a base64 or hex string (alternative to l1ValidatorServiceURL, allows encoding the URL in the storybook URL)',
-} as const;
-
 export const rewardClaimContractAddressArgType = {
   control: { type: 'text' },
   description: 'Reward Claim Contract Address',
@@ -78,15 +60,11 @@ export const rewardClaimContractAddressArgType = {
 export const environmentArgTypes = {
   environment: environmentControlArgType,
   hotshotQueryServiceURL: queryServiceNodeURLControlArgType,
-  hotShotQueryServiceURLEncoded: queryServiceNodeURLEncodedControlArgType,
   nodeValidatorWebSocketURL: nodeValidatorWebSocketURLControlArgType,
-  nodeValidatorWebSocketURLEncoded:
-    nodeValidatorWebSocketURLEncodedControlArgType,
 } as const;
 
 export const environmentArgsTypesL1ValidatorService = {
   l1ValidatorServiceURL: l1ValidatorServiceURLControlArgType,
-  l1ValidatorServiceURLEncoded: l1ValidatorServiceURLEncodedControlArgType,
 };
 
 export const environmentArgTypesWithContracts = {
@@ -99,9 +77,7 @@ export const environmentArgTypesWithContracts = {
 export interface EnvironmentArgs {
   environment: Environment;
   hotshotQueryServiceURL?: string;
-  hotshotQueryServiceURLEncoded?: string;
   nodeValidatorWebSocketURL?: string;
-  nodeValidatorWebSocketURLEncoded?: string;
 }
 
 export interface EnvironmentWithContractsArgs extends EnvironmentArgs {
@@ -187,47 +163,46 @@ export const environmentArgsLocalDevNetWithContracts: EnvironmentWithContractsAr
   };
 
 /**
- * extractURLWithEncodedFallback tries to extract a URL from the provided url
+ * extractURLWithmaybeURL tries to extract a URL from the provided url
  * string. If the url is not provided or invalid, it attempts to decode the
  * encodedFallback which can be a hex or base64 encoded representation of the
  * URL.
  */
 export function extractURLWithEncodedFallback(
-  url: undefined | null | string,
-  encodedFallback: undefined | null | string,
+  maybeURL: undefined | null | string,
 ): undefined | string {
-  if (url) {
-    try {
-      return new URL(url).toString();
-    } catch (error) {
-      console.error('Invalid URL provided:', url, error);
-      return undefined;
-    }
+  if (!maybeURL) {
+    return undefined;
   }
 
-  if (!encodedFallback) {
-    return undefined;
+  // First step, try to decode the URL as a URL directly
+  try {
+    return new URL(maybeURL).toString();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_err) {
+    // We were not provided a valid URL, we'll try to treat it as if it were
+    // an encoded string instead.
   }
 
   try {
     const textDecoder = new TextDecoder();
     // Assumed to be a hex string
-    if (encodedFallback.startsWith('0x')) {
-      const urlString = hexArrayBufferCodec.decode(encodedFallback);
+    if (maybeURL.startsWith('0x')) {
+      const urlString = hexArrayBufferCodec.decode(maybeURL);
       return new URL(textDecoder.decode(urlString)).toString();
     }
 
-    if (/[+/=_-]/.test(encodedFallback)) {
+    if (/[+/=_-]/.test(maybeURL)) {
       // Assumed to be a standard base64 string
-      const urlString = rawStdBase64ArrayBufferCodec.decode(encodedFallback);
+      const urlString = rawStdBase64ArrayBufferCodec.decode(maybeURL);
       return new URL(textDecoder.decode(urlString)).toString();
     }
 
     // Assumed to be a url safe base64 string
-    const urlString = rawURLBase64ArrayBufferCodec.decode(encodedFallback);
+    const urlString = rawURLBase64ArrayBufferCodec.decode(maybeURL);
     return new URL(textDecoder.decode(urlString)).toString();
   } catch (error) {
-    console.error('Invalid encoded URL provided:', encodedFallback, error);
+    console.error('Invalid encoded URL provided:', maybeURL, error);
     return undefined;
   }
 }

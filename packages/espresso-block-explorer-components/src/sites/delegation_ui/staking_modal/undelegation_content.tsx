@@ -1,6 +1,7 @@
 import { DataContext } from '@/components/contexts/DataProvider';
 import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
 import PromiseResolver from '@/components/data/async_data/PromiseResolver';
+import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/Text';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { neverPromise } from '@/functional/functional_async';
@@ -21,7 +22,7 @@ import {
   SetUndelegationAsyncIterableContext,
   UndelegateAsyncSnapshotContext,
 } from './contexts/perform_undelgation_context';
-import { PerformWriteTransactionReceiptRetrieved } from './contexts/perform_write_states';
+import { PerformWriteTransactionStatus } from './contexts/perform_write_states';
 import { StakingAmountContext } from './contexts/staking_amount_context';
 import { StakingModalCloseContext } from './contexts/staking_modal_close_context';
 import { StakingContent } from './staking_content';
@@ -54,6 +55,7 @@ export const UndelegationContent: React.FC = () => {
 const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
+  const account = React.useContext(RainbowKitAccountAddressContext);
   const validator = React.useContext(ConfirmedValidatorContext);
   const currentStake = React.useContext(CurrentStakeToValidatorContext);
   const rewardClaimGasEstimator = React.useContext(
@@ -61,9 +63,10 @@ const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
   );
 
   const promise =
-    !rewardClaimGasEstimator || !currentStake
+    !rewardClaimGasEstimator || !currentStake || !account
       ? neverPromise
       : rewardClaimGasEstimator.undelegate(
+          account,
           hexArrayBufferCodec.encode(validator),
           currentStake,
         );
@@ -134,7 +137,10 @@ const UnstakingActionsArea: React.FC = () => {
   if (
     asyncSnapshot.asyncState === AsyncState.waiting ||
     (asyncSnapshot.data &&
-      !(asyncSnapshot.data instanceof PerformWriteTransactionReceiptRetrieved))
+      !(
+        asyncSnapshot.data.status >=
+        PerformWriteTransactionStatus.receiptRetrieved
+      ))
   ) {
     return (
       <div className="staking-modal-unstaking-actions-area waiting">

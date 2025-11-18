@@ -1,6 +1,7 @@
 import { DataContext } from '@/components/contexts';
 import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
 import PromiseResolver from '@/components/data/async_data/PromiseResolver';
+import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/Text';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { neverPromise } from '@/functional/functional_async';
@@ -23,7 +24,7 @@ import {
   performClaimRewards,
   SetClaimRewardsAsyncIterableContext,
 } from './contexts/perform_claim_rewards_context';
-import { PerformWriteTransactionReceiptRetrieved } from './contexts/perform_write_states';
+import { PerformWriteTransactionStatus } from './contexts/perform_write_states';
 import { StakingModalCloseContext } from './contexts/staking_modal_close_context';
 import { StakingContent } from './staking_content';
 import { StakingHeader } from './staking_header';
@@ -52,15 +53,17 @@ export const ClaimRewardsContent: React.FC = () => {
 const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
+  const account = React.useContext(RainbowKitAccountAddressContext);
   const claimRewardsInput = React.useContext(EspressoRewardClaimInputContext);
   const rewardClaimGasEstimator = React.useContext(
     RewardClaimContractGasEstimatorContext,
   );
 
   const promise =
-    !claimRewardsInput || !rewardClaimGasEstimator
+    !claimRewardsInput || !rewardClaimGasEstimator || !account
       ? neverPromise
       : rewardClaimGasEstimator.claimRewards(
+          account,
           claimRewardsInput.lifetimeRewards,
           hexArrayBufferCodec.encode(claimRewardsInput.authData),
         );
@@ -134,7 +137,10 @@ const ClaimRewardsActionsArea: React.FC = () => {
   if (
     asyncSnapshot.asyncState === AsyncState.waiting ||
     (asyncSnapshot.data &&
-      !(asyncSnapshot.data instanceof PerformWriteTransactionReceiptRetrieved))
+      !(
+        asyncSnapshot.data.status >=
+        PerformWriteTransactionStatus.receiptRetrieved
+      ))
   ) {
     return (
       <div className="staking-modal-unstaking-actions-area waiting">

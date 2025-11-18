@@ -5,7 +5,7 @@ import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { CurrentAllowanceToStakeTableContext } from './contexts/current_allowance_context';
 import { ApproveAsyncSnapshotContext } from './contexts/perform_approve_delegation_context';
 import { DelegateAsyncSnapshotContext } from './contexts/perform_delegation_context';
-import { PerformWriteTransactionReceiptRetrieved } from './contexts/perform_write_states';
+import { PerformWriteTransactionStatus } from './contexts/perform_write_states';
 import { StakingAmountContext } from './contexts/staking_amount_context';
 import './new_stake_instructions_and_progress.css';
 import { ProgressIndicatorArea } from './progress_indicator_area';
@@ -58,7 +58,8 @@ export const NewStakeInstructionsAndProgress: React.FC = () => {
     if (
       approveAsyncSnapshot.asyncState === AsyncState.waiting ||
       approveData === null ||
-      !(approveData instanceof PerformWriteTransactionReceiptRetrieved)
+      approveData === undefined ||
+      !(approveData.status >= PerformWriteTransactionStatus.receiptRetrieved)
     ) {
       return (
         <div className="staking-modal-instructions-and-progress waiting">
@@ -70,7 +71,7 @@ export const NewStakeInstructionsAndProgress: React.FC = () => {
       );
     }
 
-    if (approveData instanceof PerformWriteTransactionReceiptRetrieved) {
+    if (approveData.status >= PerformWriteTransactionStatus.receiptRetrieved) {
       return (
         <div className="staking-modal-instructions-and-progress approved succeeded">
           <span>
@@ -131,7 +132,8 @@ export const NewStakeInstructionsAndProgress: React.FC = () => {
   if (
     delegateAsyncSnapshot.asyncState === AsyncState.waiting ||
     data === null ||
-    !(data instanceof PerformWriteTransactionReceiptRetrieved)
+    data === undefined ||
+    !(data.status >= PerformWriteTransactionStatus.receiptRetrieved)
   ) {
     return (
       <div className="staking-modal-instructions-and-progress approved delegated waiting">
@@ -143,7 +145,7 @@ export const NewStakeInstructionsAndProgress: React.FC = () => {
     );
   }
 
-  if (data instanceof PerformWriteTransactionReceiptRetrieved) {
+  if (data.status >= PerformWriteTransactionStatus.receiptRetrieved) {
     return (
       <div className="staking-modal-instructions-and-progress approved delegated succeeded">
         <span>
