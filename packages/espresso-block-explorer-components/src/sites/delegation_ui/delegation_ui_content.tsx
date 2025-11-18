@@ -300,7 +300,7 @@ function applySectionFilter(
 
   const targetStake =
     allStakes.length < 100
-      ? allStakes[allStakes.length - 1]
+      ? allStakes[0] - 1n
       : allStakes[allStakes.length - 100];
 
   return new FullNodeSetSnapshot(
@@ -381,6 +381,7 @@ const SearchValidator: React.FC = () => {
         className="search-node"
         value={searchTerm}
         onChange={(_event, searchTerm) => setSearchTerm(searchTerm)}
+        placeholder="Search Validator"
       />
       <SearchGlass />
     </div>
@@ -418,8 +419,15 @@ const OnlyTop100Filter: React.FC = () => {
 
   return (
     <span className="only-top-100-filter">
-      <Text text="Only show top 100" />
-      <BaseSwitch value={showTop100} onChange={setShowTop100} />
+      <label htmlFor="show-top-100">
+        <Text text="Only show top 100" />
+      </label>
+
+      <BaseSwitch
+        id="show-top-100"
+        value={showTop100}
+        onChange={setShowTop100}
+      />
     </span>
   );
 };

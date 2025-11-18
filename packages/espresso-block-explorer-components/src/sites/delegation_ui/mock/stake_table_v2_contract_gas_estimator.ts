@@ -1,5 +1,9 @@
 import { StakeTableV2ContractGasEstimator } from '@/contracts/stake_table_v2/stake_table_v2_interface';
 
+/**
+ * MockStakeTableV2ContractGasEstimatorImpl is a mock implementation of
+ * StakeTableV2ContractGasEstimator for testing purposes.
+ */
 export class MockStakeTableV2ContractGasEstimatorImpl
   implements StakeTableV2ContractGasEstimator
 {
@@ -8,11 +12,11 @@ export class MockStakeTableV2ContractGasEstimatorImpl
   }
 
   async delegate(): Promise<bigint> {
-    return 68501n;
+    return 69144n;
   }
 
   async undelegate(): Promise<bigint> {
-    return 88783n;
+    return 89736n;
   }
 
   async claimWithdrawal(): Promise<bigint> {

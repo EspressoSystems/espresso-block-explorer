@@ -26,9 +26,7 @@ import TransactionsForBlockPage from '../TransactionsForBlockPage';
 interface ExampleProps {
   environment: Environment;
   hotshotQueryServiceURL?: string;
-  hotShotQueryServiceURLEncoded?: string;
   nodeValidatorWebSocketURL?: string;
-  nodeValidatorWebSocketURLEncoded?: string;
   startAtBlock: number;
   offset: number;
 }
@@ -36,9 +34,7 @@ interface ExampleProps {
 const Example: React.FC<ExampleProps> = ({
   environment,
   hotshotQueryServiceURL,
-  hotShotQueryServiceURLEncoded,
   nodeValidatorWebSocketURL,
-  nodeValidatorWebSocketURLEncoded,
   startAtBlock,
   offset,
   ...rest
@@ -47,11 +43,9 @@ const Example: React.FC<ExampleProps> = ({
     environment={environment}
     hotshotQueryServiceURL={extractURLWithEncodedFallback(
       hotshotQueryServiceURL,
-      hotShotQueryServiceURLEncoded,
     )}
     nodeValidatorWebSocketURL={extractURLWithEncodedFallback(
       nodeValidatorWebSocketURL,
-      nodeValidatorWebSocketURLEncoded,
     )}
   >
     <EnvironmentBanner />

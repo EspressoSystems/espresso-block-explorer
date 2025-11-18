@@ -3,6 +3,12 @@ import { estimateContractGas } from '../l1/estimate_contract_gas';
 import ClaimRewardsAbi from './reward_claim_abi';
 import { RewardClaimContractGasEstimator } from './reward_claim_interface';
 
+/**
+ * RewardClaimContractGasEstimatorRemote implements
+ * RewardClaimContractGasEstimator by making remote calls to estimate gas
+ * for reward claim contract methods. It is implemented via the Wagmi
+ * estimateContractGas utility function.
+ */
 export class RewardClaimContractGasEstimatorRemote
   implements RewardClaimContractGasEstimator
 {
@@ -14,11 +20,12 @@ export class RewardClaimContractGasEstimatorRemote
   ) {}
 
   async claimRewards(
+    account: `0x${string}`,
     lifetimeRewards: bigint,
     authData: `0x${string}`,
   ): Promise<bigint> {
-    return 100005n;
     return estimateContractGas(this.config, {
+      account,
       abi: ClaimRewardsAbi,
       address: this.address,
       chainId: this.chainID,

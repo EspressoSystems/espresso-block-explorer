@@ -1,5 +1,9 @@
 import { ESPTokenContractGasEstimator } from '@/contracts/esp_token/esp_token_interface';
 
+/**
+ * MockESPTokenContractGasEstimatorImpl is a mock implementation of
+ * ESPTokenContractGasEstimator for testing purposes.
+ */
 export class MockESPTokenContractGasEstimatorImpl
   implements ESPTokenContractGasEstimator
 {

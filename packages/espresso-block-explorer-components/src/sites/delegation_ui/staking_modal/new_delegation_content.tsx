@@ -1,5 +1,6 @@
 import { DataContext } from '@/components/contexts/DataProvider';
 import PromiseResolver from '@/components/data/async_data/PromiseResolver';
+import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/Text';
 import WalletAddressText from '@/components/text/WalletAddressText';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
@@ -51,6 +52,7 @@ export const NewDelegationContent: React.FC = () => {
 const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
+  const account = React.useContext(RainbowKitAccountAddressContext);
   const allowance = React.useContext(CurrentAllowanceToStakeTableContext) ?? 0n;
   const balance = React.useContext(ESPBalanceContext);
   const validator = React.useContext(ConfirmedValidatorContext);
@@ -65,9 +67,11 @@ const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
     balance <= 0n ||
     allowance === null ||
     allowance <= 0n ||
-    amountToTry <= 0n
+    amountToTry <= 0n ||
+    !account
       ? neverPromise
       : rewardClaimGasEstimator.delegate(
+          account,
           hexArrayBufferCodec.encode(validator),
           amountToTry,
         );

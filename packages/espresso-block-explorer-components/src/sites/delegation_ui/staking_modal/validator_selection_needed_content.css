@@ -27,7 +27,9 @@
 }
 
 .validator-selection-list table.validator-list tr {
-  border-bottom: 1px solid var(--color--brown--3--alpha-24);
+  border-block-end-width: 1px;
+  border-block-end-style: solid;
+  border-block-end-color: var(--color--brown--3--alpha-24);
 
   transition:
     background-color 240ms ease-in-out,
@@ -36,10 +38,12 @@
 }
 
 .validator-selection-list table.validator-list tr td {
-  border-bottom: 1px solid var(--color--brown--3--alpha-24);
+  border-block-end-width: 1px;
+  border-block-end-style: solid;
+  border-block-end-color: var(--color--brown--3--alpha-24);
 }
 .validator-selection-list table.validator-list tr:nth-last-child(1) td {
-  border-bottom: none;
+  border-block-end: none;
 }
 
 .validator-selection-list table.validator-list td {
@@ -58,7 +62,9 @@
 
 .selection-details {
   background: var(--color--brown--0);
-  border-inline-start: 1px solid var(--color--brown--3--alpha-24);
+  border-inline-start-width: 1px;
+  border-inline-start-style: solid;
+  border-inline-start-color: var(--color--brown--3--alpha-24);
   display: flex;
   flex-direction: column;
 }

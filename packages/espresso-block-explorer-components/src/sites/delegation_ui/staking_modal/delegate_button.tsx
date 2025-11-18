@@ -14,7 +14,7 @@ import {
   performDelegation,
   SetDelegationAsyncIterableContext,
 } from './contexts/perform_delegation_context';
-import { PerformWriteTransactionReceiptRetrieved } from './contexts/perform_write_states';
+import { PerformWriteTransactionStatus } from './contexts/perform_write_states';
 import { StakingAmountContext } from './contexts/staking_amount_context';
 
 export const DelegateButton: React.FC = () => {
@@ -43,7 +43,10 @@ export const DelegateButton: React.FC = () => {
     // We're waiting for an approval to complete
     asyncSnapshot.asyncState === AsyncState.waiting ||
     (asyncSnapshot.data &&
-      !(asyncSnapshot.data instanceof PerformWriteTransactionReceiptRetrieved))
+      !(
+        asyncSnapshot.data.status >=
+        PerformWriteTransactionStatus.receiptRetrieved
+      ))
   ) {
     return (
       <ButtonLarge className="btn-delegate" disabled>

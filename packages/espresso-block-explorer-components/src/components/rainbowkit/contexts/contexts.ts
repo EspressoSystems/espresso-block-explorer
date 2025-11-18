@@ -71,7 +71,7 @@ export type RainbowKitAccount = NonNullable<RenderProps['account']>;
  * display the wallet address.
  */
 export const RainbowKitAccountAddressContext = React.createContext<
-  string | null
+  `0x${string}` | null
 >(null);
 
 export const RainbowKitAccountDisplayBalanceContext = React.createContext<

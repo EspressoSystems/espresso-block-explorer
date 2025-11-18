@@ -4,19 +4,30 @@ import { Config } from 'wagmi';
 import { GetTransactionReceiptReturnType } from 'wagmi/actions';
 
 /**
+ * PerformWriteTransactionStatus is an enum that represents the various states
+ * of writing a transaction to the blockchain.
+ */
+export enum PerformWriteTransactionStatus {
+  waitingForWrite,
+  writeSucceeded,
+  waitingForReceipt,
+  receiptRetrieved,
+}
+
+/**
  * PerformWriteTransactionState is an enum that represents the various states
  * of writing a transaction to the blockchain.
  */
-export abstract class PerformWriteTransactionState {}
+export abstract class PerformWriteTransactionState {
+  abstract readonly status: PerformWriteTransactionStatus;
+}
 
 /**
  * PerformWriteTransactionWaiting represents the state where a transaction
  * write has been submitted, and is in progress, but it hasn't completed yet.
  */
 export class PerformWriteTransactionWaiting extends PerformWriteTransactionState {
-  constructor() {
-    super();
-  }
+  readonly status = PerformWriteTransactionStatus.waitingForWrite;
 }
 
 /**
@@ -27,6 +38,7 @@ export class PerformWriteTransactionSucceeded extends PerformWriteTransactionSta
   constructor(public readonly transactionHash: `0x${string}`) {
     super();
   }
+  readonly status = PerformWriteTransactionStatus.writeSucceeded;
 }
 
 /**
@@ -39,6 +51,7 @@ export class PerformWriteTransactionReceiptWaiting extends PerformWriteTransacti
   constructor(public readonly transactionHash: `0x${string}`) {
     super();
   }
+  readonly status = PerformWriteTransactionStatus.waitingForReceipt;
 }
 
 /**
@@ -52,6 +65,8 @@ export class PerformWriteTransactionReceiptRetrieved extends PerformWriteTransac
   ) {
     super();
   }
+
+  readonly status = PerformWriteTransactionStatus.receiptRetrieved;
 }
 
 export async function* performWriteTransaction(

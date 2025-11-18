@@ -3,6 +3,12 @@ import { estimateContractGas } from '../l1/estimate_contract_gas';
 import StakeTableAbi from './stake_table_abi';
 import { StakeTableContractGasEstimator } from './stake_table_interface';
 
+/**
+ * StakeTableContractGasEstimatorRemote implements
+ * StakeTableContractGasEstimator by making remote calls to estimate gas
+ * for stake table contract methods. It is implemented via the Wagmi
+ * estimateContractGas utility function.
+ */
 export class StakeTableContractGasEstimatorRemote
   implements StakeTableContractGasEstimator
 {
@@ -13,9 +19,9 @@ export class StakeTableContractGasEstimatorRemote
     public readonly address: `0x${string}`,
   ) {}
 
-  async deregisterValidator() {
-    return 100001n;
+  async deregisterValidator(account: `0x${string}`) {
     return estimateContractGas(this.config, {
+      account,
       abi: StakeTableAbi,
       address: this.address,
       chainId: this.chainID,
@@ -23,9 +29,13 @@ export class StakeTableContractGasEstimatorRemote
     });
   }
 
-  async delegate(validator: `0x${string}`, amount: bigint) {
-    return 68501n;
+  async delegate(
+    account: `0x${string}`,
+    validator: `0x${string}`,
+    amount: bigint,
+  ) {
     return estimateContractGas(this.config, {
+      account,
       abi: StakeTableAbi,
       address: this.address,
       chainId: this.chainID,
@@ -34,9 +44,13 @@ export class StakeTableContractGasEstimatorRemote
     });
   }
 
-  async undelegate(validator: `0x${string}`, amount: bigint) {
-    return 88783n;
+  async undelegate(
+    account: `0x${string}`,
+    validator: `0x${string}`,
+    amount: bigint,
+  ) {
     return estimateContractGas(this.config, {
+      account,
       abi: StakeTableAbi,
       address: this.address,
       chainId: this.chainID,
@@ -45,9 +59,9 @@ export class StakeTableContractGasEstimatorRemote
     });
   }
 
-  async claimWithdrawal(validator: `0x${string}`) {
-    return 100002n;
+  async claimWithdrawal(account: `0x${string}`, validator: `0x${string}`) {
     return estimateContractGas(this.config, {
+      account,
       abi: StakeTableAbi,
       address: this.address,
       chainId: this.chainID,
@@ -56,9 +70,9 @@ export class StakeTableContractGasEstimatorRemote
     });
   }
 
-  async claimValidatorExit(validator: `0x${string}`) {
-    return 100003n;
+  async claimValidatorExit(account: `0x${string}`, validator: `0x${string}`) {
     return estimateContractGas(this.config, {
+      account,
       abi: StakeTableAbi,
       address: this.address,
       chainId: this.chainID,

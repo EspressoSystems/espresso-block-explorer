@@ -1,25 +1,40 @@
+import React from 'react';
 import './switch.css';
 
-export interface BaseSwitchProps {
+/**
+ * BaseSwitchProps defines the properties for the BaseSwitch component.
+ */
+export interface BaseSwitchProps
+  extends Omit<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'value'> {
   value?: boolean;
   onChange?: (checked: boolean) => void;
   disabled?: boolean;
 }
 
-export const BaseSwitch: React.FC<BaseSwitchProps> = (props) => {
+/**
+ * BaseSwitch is a simple switch component that represents a boolean value.
+ * It is implemented via a checkbox input element.
+ */
+export const BaseSwitch: React.FC<BaseSwitchProps> = ({
+  value,
+  disabled,
+  onChange,
+  ...rest
+}) => {
   return (
     <input
       type="checkbox"
       className="bswitch"
-      checked={props.value}
-      disabled={props.disabled}
+      checked={value}
+      disabled={disabled}
       onChange={(event) => {
-        if (!props.onChange) {
+        if (!onChange) {
           return;
         }
 
-        props.onChange(event.target.checked);
+        onChange(event.target.checked);
       }}
+      {...rest}
     />
   );
 };

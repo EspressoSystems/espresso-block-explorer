@@ -99,6 +99,9 @@ export type GasEstimatorForContract<Contract> = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ...args: any[]
   ) => Promise<`0x${string}`>
-    ? (...args: Parameters<Contract[method]>) => Promise<bigint>
+    ? (
+        account: `0x${string}`,
+        ...args: Parameters<Contract[method]>
+      ) => Promise<bigint>
     : never;
 };

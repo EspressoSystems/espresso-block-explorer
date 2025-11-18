@@ -1,5 +1,7 @@
 dialog.staking-modal .staking-modal-header {
-  border-bottom: 1px solid var(--color--brown--3--alpha-24);
+  border-block-end-width: 1px;
+  border-block-end-style: solid;
+  border-block-end-color: var(--color--brown--3--alpha-24);
   background:
     linear-gradient(
       0deg,

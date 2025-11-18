@@ -124,7 +124,9 @@ export function* generateAllNodeIdentityInformationData(
   const numNodes = prng.nextRange(100, 350);
 
   for (let i = 0; i < numNodes; i++) {
-    yield generateNodeIdentityInformationData(prng);
+    yield generateNodeIdentityInformationData(
+      new PseudoRandomNumberGenerator(i),
+    );
   }
 }
 

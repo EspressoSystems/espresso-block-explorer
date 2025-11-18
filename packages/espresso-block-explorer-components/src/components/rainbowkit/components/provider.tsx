@@ -97,7 +97,9 @@ export const ProvideRainbowKitAccount: React.FC<
 > = ({ value, children }) => {
   return (
     <RainbowKitAccountContext.Provider value={value}>
-      <RainbowKitAccountAddressContext.Provider value={value?.address ?? null}>
+      <RainbowKitAccountAddressContext.Provider
+        value={(value?.address ?? null) as `0x${string}` | null}
+      >
         <RainbowKitAccountDisplayBalanceContext.Provider
           value={value?.displayBalance ?? null}
         >

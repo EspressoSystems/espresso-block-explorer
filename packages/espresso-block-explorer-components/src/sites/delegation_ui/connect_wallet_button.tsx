@@ -33,7 +33,7 @@ export const ConnectWalletButton: React.FC = () => {
           className="connect-wallet connected-wallet"
           onClick={modals.openAccountModal}
         >
-          <Text text="Connect Wallet" />
+          <Text text="Disconnect" />
           <LogOut />
         </ButtonLarge>
       </span>

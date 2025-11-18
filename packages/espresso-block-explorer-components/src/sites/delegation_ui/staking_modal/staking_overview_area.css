@@ -11,17 +11,27 @@
   line-height: 16px;
 }
 
+.staking-modal-staking-overview-area.only-three > *:nth-child(3) {
+  grid-column: span 2;
+}
+
 .staking-modal-label-value-split {
   display: flex;
   justify-content: space-between;
   padding: 10px 24px;
-  border-bottom: 1px solid var(--color--brown--3--alpha-24);
+  border-block-end-width: 1px;
+  border-block-end-style: solid;
+  border-block-end-color: var(--color--brown--3--alpha-24);
 }
 
 .staking-modal-label-value-split:nth-child(-n + 2) {
-  border-top: 1px solid var(--color--brown--3--alpha-24);
+  border-block-start-width: 1px;
+  border-block-start-style: solid;
+  border-block-start-color: var(--color--brown--3--alpha-24);
 }
 
 .staking-modal-label-value-split:nth-child(odd) {
-  border-right: 1px solid var(--color--brown--3--alpha-24);
+  border-inline-end-width: 1px;
+  border-inline-end-style: solid;
+  border-inline-end-color: var(--color--brown--3--alpha-24);
 }
