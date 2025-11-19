@@ -1,5 +1,5 @@
+import { ValidatorSelectionEnum } from '../../contexts/validator_selection_context';
 import { default as React } from 'react';
-import { ValidatorSelectionEnum } from 'sites/delegation_ui/contexts/validator_selection_context';
 /**
  * StakingModalHistoryContext represents the "stack" of navigation history
  * performed within the staking modal. This allows us to keep a history,

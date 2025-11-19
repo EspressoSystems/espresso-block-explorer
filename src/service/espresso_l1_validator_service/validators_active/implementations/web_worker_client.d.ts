@@ -16,5 +16,6 @@ export declare class WebWorkerClientBasedValidatorsActiveAPI implements Validato
      */
     private sendRequest;
     active(): Promise<ActiveNodeSetSnapshot>;
+    activeFor(height: bigint): Promise<ActiveNodeSetSnapshot>;
     updatesSince(hash: bigint): Promise<ActiveNodeSetUpdate>;
 }

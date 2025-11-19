@@ -8,5 +8,6 @@ import { ValidatorsActiveAPI } from '../validators_active_api';
  */
 export declare class FakeDataValidatorsActiveAPI implements ValidatorsActiveAPI {
     active(): Promise<ActiveNodeSetSnapshot>;
+    activeFor(): Promise<ActiveNodeSetSnapshot>;
     updatesSince(): Promise<ActiveNodeSetUpdate>;
 }

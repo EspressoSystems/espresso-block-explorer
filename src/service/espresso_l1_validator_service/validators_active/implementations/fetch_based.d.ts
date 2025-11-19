@@ -11,5 +11,6 @@ export declare class FetchBasedValidatorsActiveAPI implements ValidatorsActiveAP
     private readonly baseURL;
     constructor(fetcher: typeof fetch, baseURL: URL);
     active(): Promise<ActiveNodeSetSnapshot>;
+    activeFor(height: bigint): Promise<ActiveNodeSetSnapshot>;
     updatesSince(block: bigint): Promise<ActiveNodeSetUpdate>;
 }

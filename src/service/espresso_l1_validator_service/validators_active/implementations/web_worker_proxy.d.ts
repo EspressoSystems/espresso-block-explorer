@@ -16,6 +16,7 @@ export declare class WebWorkerProxyValidatorsActiveAPI {
     private service;
     constructor(service: ValidatorsActiveAPI);
     active(): Promise<ActiveNodeSetSnapshot>;
+    activeFor(height: bigint): Promise<ActiveNodeSetSnapshot>;
     updatesSince(hash: bigint): Promise<ActiveNodeSetUpdate>;
     handleRequest(request: ValidatorsActiveAPIRequest): Promise<unknown>;
 }
