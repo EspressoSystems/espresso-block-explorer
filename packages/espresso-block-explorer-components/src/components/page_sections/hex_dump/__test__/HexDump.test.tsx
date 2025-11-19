@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 import { describe, expect, it } from 'vitest';
 import HexDump from '../HexDump';
 
@@ -16,8 +15,8 @@ describe('Hex Dump Component', () => {
     {
       const hexDump = screen.getByTestId('1');
       expect(hexDump).toBeInTheDocument();
-      expect(hexDump.tagName).equals('PRE');
-      expect(hexDump).toHaveTextContent('000000 abbc cdde');
+      expect(hexDump.tagName).equals('DIV');
+      expect(hexDump).toHaveTextContent('000000abbc cdde');
     }
 
     rerender(
@@ -35,9 +34,9 @@ describe('Hex Dump Component', () => {
     {
       const hexDump = screen.getByTestId('1');
       expect(hexDump).toBeInTheDocument();
-      expect(hexDump.tagName).equals('PRE');
+      expect(hexDump.tagName).equals('DIV');
       expect(hexDump).toHaveTextContent(
-        '000000 abbc cdde eff0 0112 2334 4556 6778 899a 000010 abbc cdde eff0',
+        '000000 000010abbc cdde eff0 0112 2334 4556 6778 899a abbc cdde eff0',
       );
     }
   });
