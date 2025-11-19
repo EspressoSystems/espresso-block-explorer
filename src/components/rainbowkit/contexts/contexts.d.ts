@@ -54,7 +54,7 @@ export type RainbowKitAccount = NonNullable<RenderProps['account']>;
  * of the RainbowKit.  This context is useful for components that need to
  * display the wallet address.
  */
-export declare const RainbowKitAccountAddressContext: React.Context<string | null>;
+export declare const RainbowKitAccountAddressContext: React.Context<`0x${string}` | null>;
 export declare const RainbowKitAccountDisplayBalanceContext: React.Context<string | null>;
 export declare const RainbowKitAccountDisplayNameContext: React.Context<string | null>;
 export declare const RainbowKitAccountENSAvatarContext: React.Context<string | null>;

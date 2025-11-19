@@ -1,3 +1,4 @@
+import { GasEstimatorForContract } from '../l1/l1_interface';
 import { StakeTableContractReadOnly, StakeTableContractWriteable } from '../stake_table/stake_table_interface';
 export type CommissionTracking = readonly [number, bigint];
 export interface StakeTableV2ContractReadOnly extends StakeTableContractReadOnly {
@@ -23,3 +24,8 @@ export interface StakeTableV2ContractWriteable extends StakeTableContractWriteab
 }
 export interface StakeTableV2Contract extends StakeTableV2ContractReadOnly, StakeTableV2ContractWriteable {
 }
+/**
+ * StakeTableV2ContractGasEstimator defines the gas estimator type for the
+ * Stake Table V2 Contract.
+ */
+export type StakeTableV2ContractGasEstimator = GasEstimatorForContract<StakeTableV2ContractWriteable>;

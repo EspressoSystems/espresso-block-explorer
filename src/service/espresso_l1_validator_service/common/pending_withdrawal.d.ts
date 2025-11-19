@@ -11,6 +11,7 @@ export declare class PendingWithdrawal {
     readonly node: ArrayBuffer;
     readonly amount: bigint;
     readonly availableTime: Date;
+    readonly nodeText: `0x${string}`;
     constructor(delegator: ArrayBuffer, node: ArrayBuffer, amount: bigint, availableTime: Date);
     toJSON(): unknown;
 }

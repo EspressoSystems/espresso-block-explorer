@@ -11,5 +11,6 @@ export declare const StoryBookSpecifyEnvironment: React.FC<StoryBookSpecifyEnvir
 export interface StoryBookSpecifyEnvironmentAndContractsProps extends StoryBookSpecifyEnvironmentProps {
     espTokenContractAddress?: string;
     stakeTableContractAddress?: string;
+    rewardClaimContractAddress?: string;
 }
 export declare const StoryBookSpecifyEnvironmentAndContracts: React.FC<StoryBookSpecifyEnvironmentAndContractsProps>;

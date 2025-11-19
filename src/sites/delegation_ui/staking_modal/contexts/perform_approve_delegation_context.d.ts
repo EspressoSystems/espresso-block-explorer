@@ -4,27 +4,9 @@ import { L1Methods } from '../../../../contracts/l1/l1_interface';
 import { StakeTableContract } from '../../../../contracts/stake_table/stake_table_interface';
 import { default as React } from 'react';
 import { Config } from 'wagmi';
-import { GetTransactionReceiptReturnType } from 'wagmi/actions';
-export declare const ApproveAsyncIterableContext: React.Context<AsyncIterable<PerformApproveState> | null>;
-export declare const SetApproveAsyncIterableContext: React.Context<React.Dispatch<React.SetStateAction<AsyncIterable<PerformApproveState> | null>>>;
-export declare const ApproveAsyncSnapshotContext: React.Context<AsyncSnapshot<PerformApproveState>>;
+import { PerformWriteTransactionState } from './perform_write_states';
+export declare const ApproveAsyncIterableContext: React.Context<AsyncIterable<PerformWriteTransactionState> | null>;
+export declare const SetApproveAsyncIterableContext: React.Context<React.Dispatch<React.SetStateAction<AsyncIterable<PerformWriteTransactionState> | null>>>;
+export declare const ApproveAsyncSnapshotContext: React.Context<AsyncSnapshot<PerformWriteTransactionState>>;
 export declare const ProvideApproveAsyncIterableContext: React.FC<React.PropsWithChildren>;
-export declare abstract class PerformApproveState {
-}
-export declare class PerformApproveWaiting extends PerformApproveState {
-    constructor();
-}
-export declare class PerformApproveDone extends PerformApproveState {
-    readonly transactionHash: `0x${string}`;
-    constructor(transactionHash: `0x${string}`);
-}
-export declare class PerformApproveReceiptWaiting extends PerformApproveState {
-    readonly transactionHash: `0x${string}`;
-    constructor(transactionHash: `0x${string}`);
-}
-export declare class PerformApproveReceiptReceived extends PerformApproveState {
-    readonly transactionHash: `0x${string}`;
-    readonly receipt: GetTransactionReceiptReturnType<Config>;
-    constructor(transactionHash: `0x${string}`, receipt: GetTransactionReceiptReturnType<Config>);
-}
-export declare function performApprove(l1Methods: L1Methods<Config, number>, espContract: ESPTokenContract, stakeTableContract: StakeTableContract, setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>): AsyncGenerator<PerformApproveWaiting | PerformApproveDone | PerformApproveReceiptWaiting | PerformApproveReceiptReceived, void, unknown>;
+export declare function performApprove(l1Methods: L1Methods<Config, number>, espContract: ESPTokenContract, stakeTableContract: StakeTableContract, setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>): AsyncGenerator<import('./perform_write_states').PerformWriteTransactionWaiting | import('./perform_write_states').PerformWriteTransactionSucceeded | import('./perform_write_states').PerformWriteTransactionReceiptWaiting | import('./perform_write_states').PerformWriteTransactionReceiptRetrieved, void, unknown>;

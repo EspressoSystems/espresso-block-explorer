@@ -1,2 +1,5 @@
 import { default as React } from 'react';
-export declare const StakingModal: React.FC;
+export interface StakingModalProps {
+    open?: boolean;
+}
+export declare const StakingModal: React.FC<StakingModalProps>;

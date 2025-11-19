@@ -18,6 +18,12 @@ export declare const espTokenContractAddressControlArgType: {
     };
     readonly description: "ESP Token Contract Address";
 };
+export declare const rewardClaimContractAddressControlArgType: {
+    readonly control: {
+        readonly type: "text";
+    };
+    readonly description: "Reward Claim Contract Address";
+};
 export declare const queryServiceNodeURLControlArgType: {
     readonly control: {
         readonly type: "text";
@@ -28,7 +34,19 @@ export declare const nodeValidatorWebSocketURLControlArgType: {
     readonly control: {
         readonly type: "text";
     };
-    readonly description: "Node Validator WebSocket URL (starting with ws:// or wss://, ending with the version. E?. ws://localhost:9000/v0/)";
+    readonly description: "Node Validator WebSocket URL (starting with ws:// or wss://, ending with the version. Eg. ws://localhost:9000/v0/)";
+};
+export declare const l1ValidatorServiceURLControlArgType: {
+    readonly control: {
+        readonly type: "text";
+    };
+    readonly description: "L1 Validator Service URL (starting with http:// or https://, ending with the version. Eg: http://localhost:9100/v0/)";
+};
+export declare const rewardClaimContractAddressArgType: {
+    readonly control: {
+        readonly type: "text";
+    };
+    readonly description: "Reward Claim Contract Address";
 };
 export declare const environmentArgTypes: {
     readonly environment: {
@@ -48,7 +66,15 @@ export declare const environmentArgTypes: {
         readonly control: {
             readonly type: "text";
         };
-        readonly description: "Node Validator WebSocket URL (starting with ws:// or wss://, ending with the version. E?. ws://localhost:9000/v0/)";
+        readonly description: "Node Validator WebSocket URL (starting with ws:// or wss://, ending with the version. Eg. ws://localhost:9000/v0/)";
+    };
+};
+export declare const environmentArgsTypesL1ValidatorService: {
+    l1ValidatorServiceURL: {
+        readonly control: {
+            readonly type: "text";
+        };
+        readonly description: "L1 Validator Service URL (starting with http:// or https://, ending with the version. Eg: http://localhost:9100/v0/)";
     };
 };
 export declare const environmentArgTypesWithContracts: {
@@ -63,6 +89,12 @@ export declare const environmentArgTypesWithContracts: {
             readonly type: "text";
         };
         readonly description: "ESP Token Contract Address";
+    };
+    readonly rewardClaimContractAddress: {
+        readonly control: {
+            readonly type: "text";
+        };
+        readonly description: "Reward Claim Contract Address";
     };
     readonly environment: {
         readonly options: readonly [Environment.water, Environment.milk, Environment.mainnet, Environment.decaf, Environment.fakeData, Environment.localDevNet];
@@ -81,7 +113,7 @@ export declare const environmentArgTypesWithContracts: {
         readonly control: {
             readonly type: "text";
         };
-        readonly description: "Node Validator WebSocket URL (starting with ws:// or wss://, ending with the version. E?. ws://localhost:9000/v0/)";
+        readonly description: "Node Validator WebSocket URL (starting with ws:// or wss://, ending with the version. Eg. ws://localhost:9000/v0/)";
     };
 };
 export interface EnvironmentArgs {
@@ -92,6 +124,7 @@ export interface EnvironmentArgs {
 export interface EnvironmentWithContractsArgs extends EnvironmentArgs {
     stakeTableContractAddress?: `0x${string}`;
     espTokenContractAddress?: `0x${string}`;
+    rewardClaimContractAddress?: `0x${string}`;
 }
 export declare const environmentArgsMilk: EnvironmentArgs;
 export declare const environmentArgsMilkWithContracts: EnvironmentWithContractsArgs;
@@ -105,3 +138,10 @@ export declare const environmentArgsFakeData: EnvironmentArgs;
 export declare const environmentArgsFakeDataWithContracts: EnvironmentWithContractsArgs;
 export declare const environmentArgsLocalDevNet: EnvironmentArgs;
 export declare const environmentArgsLocalDevNetWithContracts: EnvironmentWithContractsArgs;
+/**
+ * extractURLWithmaybeURL tries to extract a URL from the provided url
+ * string. If the url is not provided or invalid, it attempts to decode the
+ * encodedFallback which can be a hex or base64 encoded representation of the
+ * URL.
+ */
+export declare function extractURLWithEncodedFallback(maybeURL: undefined | null | string): undefined | string;

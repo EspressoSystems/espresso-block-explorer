@@ -129,7 +129,7 @@ export declare function timerAsyncIterable(intervalMs: number, emitImmediate?: b
 /**
  * neverPromise is a static promise that never resolves or rejects.
  */
-export declare const neverPromise: Promise<unknown>;
+export declare const neverPromise: Promise<never>;
 /**
  * neverAsyncIterable is an async iterable that never yields any values
  * and never completes.

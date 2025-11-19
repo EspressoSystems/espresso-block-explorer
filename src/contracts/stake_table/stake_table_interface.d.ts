@@ -1,3 +1,4 @@
+import { GasEstimatorForContract } from '../l1/l1_interface';
 export declare enum ValidatorStatus {
     unknown = 0,
     active = 1,
@@ -55,3 +56,8 @@ export interface StakeTableContractWriteable {
  */
 export interface StakeTableContract extends StakeTableContractReadOnly, StakeTableContractWriteable {
 }
+/**
+ * StakeTableContractGasEstimator defines the gas estimator type for the
+ * Stake Table Contract.
+ */
+export type StakeTableContractGasEstimator = GasEstimatorForContract<StakeTableContractWriteable>;

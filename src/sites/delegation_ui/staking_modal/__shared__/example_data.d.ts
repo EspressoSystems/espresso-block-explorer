@@ -1,0 +1,12 @@
+import { ActiveNodeSetSnapshot } from '../../../../../../../../../../../../src/service/espresso_l1_validator_service/validators_active/active_node_set_snapshot';
+import { FullNodeSetSnapshot } from '../../../../../../../../../../../../src/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
+import { WalletSnapshot } from '../../../../../../../../../../../../src/service/espresso_l1_validator_service/wallet/wallet_snapshot';
+import { GetTransactionReceiptReturnType } from 'wagmi/actions';
+export declare const fullValidatorSet: FullNodeSetSnapshot;
+export declare const activeValidatorSet: ActiveNodeSetSnapshot;
+export declare const INDEX_STAKED = 6;
+export declare const INDEX_UNDELEGATE = 7;
+export declare const INDEX_EXIT = 8;
+export declare const walletSnapshot: WalletSnapshot;
+export declare const FAKE_TRANSACTION_HASH = "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef";
+export declare const FAKE_RECEIPT: GetTransactionReceiptReturnType;

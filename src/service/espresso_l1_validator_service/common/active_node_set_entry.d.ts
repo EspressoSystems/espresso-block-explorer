@@ -14,6 +14,7 @@ export declare class ActiveNodeSetEntry {
     readonly address: ArrayBuffer;
     readonly voterParticipation: Ratio;
     readonly leaderParticipation: Ratio;
+    readonly addressText: `0x${string}`;
     constructor(address: ArrayBuffer, voterParticipation: Ratio, leaderParticipation: Ratio);
     toJSON(): unknown;
 }

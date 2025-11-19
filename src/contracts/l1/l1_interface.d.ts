@@ -1,11 +1,15 @@
-import { BlockTag } from 'viem';
+import { BlockTag, FeeValuesType } from 'viem';
 import { Config } from 'wagmi';
-import { estimateGas, EstimateGasParameters, getBalance, GetBalanceParameters, getBlock, getBlockNumber, GetBlockNumberParameters, GetBlockParameters, getTransaction, GetTransactionParameters, getTransactionReceipt, GetTransactionReceiptParameters } from 'wagmi/actions';
+import { EstimateFeesPerGasParameters, EstimateFeesPerGasReturnType, estimateGas, EstimateGasParameters, getBalance, GetBalanceParameters, getBlock, getBlockNumber, GetBlockNumberParameters, GetBlockParameters, getTransaction, GetTransactionParameters, getTransactionReceipt, GetTransactionReceiptParameters } from 'wagmi/actions';
 export interface L1MethodsReadOnly<config extends Config, chainId extends config['chains'][number]['id']> {
     /**
      * Action for fetching native currency or token balance.
      */
     getBalance(parameters: GetBalanceParameters<config>): ReturnType<typeof getBalance<config>>;
+    /**
+     * estimateFeesPerGas will estimate the amount of fees per gas.
+     */
+    estimateFeesPerGas(parameters: EstimateFeesPerGasParameters<FeeValuesType, config>): Promise<EstimateFeesPerGasReturnType>;
     /**
      * Action for estimating the gas necessary to complete a transaction without
      * submitting it to the network.
@@ -32,3 +36,10 @@ export interface L1MethodsWritable {
 }
 export interface L1Methods<config extends Config, chainId extends config['chains'][number]['id']> extends L1MethodsReadOnly<config, chainId>, L1MethodsWritable {
 }
+/**
+ * GasEstimatorForContract defines the gas estimator type for a
+ * contract.
+ */
+export type GasEstimatorForContract<Contract> = {
+    [method in keyof Contract]: Contract[method] extends (...args: any[]) => Promise<`0x${string}`> ? (account: `0x${string}`, ...args: Parameters<Contract[method]>) => Promise<bigint> : never;
+};

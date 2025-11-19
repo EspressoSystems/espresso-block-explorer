@@ -1,0 +1,2 @@
+import{h as a}from"./array_buffer-DuWTC5ee.js";const r=e=>a.encode(e.value);try{r.displayName="FullHexText",r.__docgenInfo={description:`FullHexText is a simple Text component that renders the given ArrayBuffer as
+a hex string`,displayName:"FullHexText",props:{value:{defaultValue:null,description:"",name:"value",required:!0,type:{name:"ArrayBuffer"}},leadingChars:{defaultValue:null,description:"",name:"leadingChars",required:!1,type:{name:"number"}},trailingChars:{defaultValue:null,description:"",name:"trailingChars",required:!1,type:{name:"number"}}}}}catch{}export{r as F};

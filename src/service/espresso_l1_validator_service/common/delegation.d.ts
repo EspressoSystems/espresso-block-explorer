@@ -10,6 +10,8 @@ export declare class Delegation {
     readonly delegator: ArrayBuffer;
     readonly node: ArrayBuffer;
     readonly amount: bigint;
+    readonly delegatorText: `0x${string}`;
+    readonly nodeText: `0x${string}`;
     constructor(delegator: ArrayBuffer, node: ArrayBuffer, amount: bigint);
     toJSON(): unknown;
 }
@@ -38,5 +40,5 @@ export declare class DelegationJSONCodec extends TypeCheckingCodec<Delegation, u
  * Delegation objects to and from JSON.
  */
 export declare const delegationJSONCodec: DelegationJSONCodec;
-export declare const delegationArrayJSONCodec: ArrayCodec<Delegation, Delegation>;
+export declare const delegationArrayJSONCodec: ArrayCodec<Delegation, unknown>;
 export {};

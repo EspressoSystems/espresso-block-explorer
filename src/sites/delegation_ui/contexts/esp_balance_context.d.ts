@@ -14,9 +14,3 @@ export declare const ProvideESPBalance: React.FC<React.PropsWithChildren>;
  * and provides it via TotalSupplyContext.
  */
 export declare const ProvideTotalSupplyFromContractCall: React.FC<React.PropsWithChildren>;
-/**
- * ProvideTotalSupplyFromContractRead is a React component that fetches
- * the total supply of the ESP token from the blockchain
- * and provides it via TotalSupplyContext.
- */
-export declare const ProvideESPBalanceFromContractRead: React.FC<React.PropsWithChildren>;

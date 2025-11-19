@@ -4,27 +4,9 @@ import { RewardClaimContract } from '../../../../contracts/reward_claim/reward_c
 import { RewardClaimInput } from '../../../../../../../../../../../../src/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
 import { default as React } from 'react';
 import { Config } from 'wagmi';
-import { GetTransactionReceiptReturnType } from 'wagmi/actions';
-export declare const PerformClaimRewardsAsyncIterableContext: React.Context<AsyncIterable<PerformClaimRewardsState> | null>;
-export declare const SetClaimRewardsAsyncIterableContext: React.Context<React.Dispatch<React.SetStateAction<AsyncIterable<PerformClaimRewardsState> | null>>>;
-export declare const ClaimRewardsAsyncSnapshotContext: React.Context<AsyncSnapshot<PerformClaimRewardsState>>;
+import { PerformWriteTransactionState } from './perform_write_states';
+export declare const PerformClaimRewardsAsyncIterableContext: React.Context<AsyncIterable<PerformWriteTransactionState> | null>;
+export declare const SetClaimRewardsAsyncIterableContext: React.Context<React.Dispatch<React.SetStateAction<AsyncIterable<PerformWriteTransactionState> | null>>>;
+export declare const ClaimRewardsAsyncSnapshotContext: React.Context<AsyncSnapshot<PerformWriteTransactionState>>;
 export declare const ProvideClaimRewardsPromiseContext: React.FC<React.PropsWithChildren>;
-export declare abstract class PerformClaimRewardsState {
-}
-export declare class PerformClaimRewardsWaiting extends PerformClaimRewardsState {
-    constructor();
-}
-export declare class PerformClaimRewardsSucceeded extends PerformClaimRewardsState {
-    readonly transactionHash: `0x${string}`;
-    constructor(transactionHash: `0x${string}`);
-}
-export declare class PerformClaimRewardsReceiptWaiting extends PerformClaimRewardsState {
-    readonly transactionHash: `0x${string}`;
-    constructor(transactionHash: `0x${string}`);
-}
-export declare class PerformClaimRewardsReceiptRetrieved extends PerformClaimRewardsState {
-    readonly transactionHash: `0x${string}`;
-    readonly receipt: GetTransactionReceiptReturnType<Config>;
-    constructor(transactionHash: `0x${string}`, receipt: GetTransactionReceiptReturnType<Config>);
-}
-export declare function performClaimRewards(l1Methods: L1Methods<Config, number>, rewardClaimContract: RewardClaimContract, rewardClaimInput: RewardClaimInput, setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>): AsyncGenerator<PerformClaimRewardsWaiting | PerformClaimRewardsSucceeded | PerformClaimRewardsReceiptWaiting | PerformClaimRewardsReceiptRetrieved, void, unknown>;
+export declare function performClaimRewards(l1Methods: L1Methods<Config, number>, rewardClaimContract: RewardClaimContract, rewardClaimInput: RewardClaimInput, setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>): AsyncGenerator<import('./perform_write_states').PerformWriteTransactionWaiting | import('./perform_write_states').PerformWriteTransactionSucceeded | import('./perform_write_states').PerformWriteTransactionReceiptWaiting | import('./perform_write_states').PerformWriteTransactionReceiptRetrieved, void, unknown>;
