@@ -4,12 +4,17 @@ import PercentageText from '@/components/text/PercentageText';
 import Text from '@/components/text/Text';
 import WalletAddressText from '@/components/text/WalletAddressText';
 import { Check } from '@/components/visual';
-import { compareArrayBuffer } from '@/functional/functional';
+import { compareArrayBuffer, filterIterable } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import React from 'react';
 import { AllValidatorsContext } from '../contexts/all_validators_context';
+import { RankMapContext } from '../contexts/rank_map_context';
+import {
+  ProvideSearchFilter,
+  SearchFilterContext,
+} from '../contexts/search_filter_context';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
 import {
   ValidatorConfirmed,
@@ -17,6 +22,8 @@ import {
   ValidatorSelectionContext,
 } from '../contexts/validator_selection_context';
 import ButtonLarge from '../elements/buttons/button_large';
+import { applySearchTermNodeFilter } from '../search_term_node_filter';
+import { SearchValidator } from '../search_validator';
 import { NodeNameCell } from '../validator_nodes_table/common/cells/node_name_cell';
 import { RankCell } from '../validator_nodes_table/common/cells/rank_cell';
 import { CloseStakingModalButton } from './close_staking_modal';
@@ -47,37 +54,20 @@ export const ValidatorSelectionNeededContent: React.FC = () => {
 const ValidatorSelection: React.FC = () => {
   return (
     <div className="validator-selection-split">
-      <ProvideSearchTerm>
+      <ProvideSearchFilter>
         <ProvideNodeList>
-          <ValidatorSelectionList />
+          <div className="validator-selection-split-start">
+            <SearchValidator />
+            <ValidatorSelectionList />
+          </div>
         </ProvideNodeList>
-      </ProvideSearchTerm>
+      </ProvideSearchFilter>
       <ValidatorSelectionDetails />
     </div>
   );
 };
 
 const NodeListContext = React.createContext<NodeSetEntry[]>([]);
-const SearchTermContext = React.createContext<string>('');
-const SetSearchTermContext = React.createContext<
-  React.Dispatch<React.SetStateAction<string>>
->(() => {});
-
-function useSearchTerm(initialTerm?: string) {
-  return React.useState(initialTerm ?? '');
-}
-
-const ProvideSearchTerm: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [searchTerm, setSearchTerm] = useSearchTerm();
-
-  return (
-    <SearchTermContext.Provider value={searchTerm}>
-      <SetSearchTermContext.Provider value={setSearchTerm}>
-        {children}
-      </SetSearchTermContext.Provider>
-    </SearchTermContext.Provider>
-  );
-};
 
 const ProvideNodeList: React.FC<React.PropsWithChildren> = ({ children }) => {
   const allValidators = React.useContext(AllValidatorsContext);
@@ -93,7 +83,6 @@ const ProvideNodeList: React.FC<React.PropsWithChildren> = ({ children }) => {
 const ValidatorSelectionList: React.FC = () => {
   return (
     <div className="validator-selection-list">
-      <ValidatorSearch />
       <FilteredValidatorList>
         <ValidatorList />
       </FilteredValidatorList>
@@ -101,28 +90,23 @@ const ValidatorSelectionList: React.FC = () => {
   );
 };
 
-const ValidatorSearch: React.FC = () => {
-  return null;
-};
-
-function filterListWithSearchTerm(
-  nodes: NodeSetEntry[],
-  searchTerm: string,
-): NodeSetEntry[];
-function filterListWithSearchTerm(nodes: NodeSetEntry[]): NodeSetEntry[] {
-  return nodes;
-}
-
 const FilteredValidatorList: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const nodes = React.useContext(NodeListContext);
-  const searchTerm = React.useContext(SearchTermContext);
+  const searchFilter = React.useContext(SearchFilterContext);
+  const rankMap = React.useContext(RankMapContext);
+
+  const filteredNodes = Array.from(
+    filterIterable(nodes, applySearchTermNodeFilter(searchFilter)),
+  ).sort((a, b) => {
+    const rankA = rankMap.get(a.addressText) ?? Number.MAX_SAFE_INTEGER;
+    const rankB = rankMap.get(b.addressText) ?? Number.MAX_SAFE_INTEGER;
+    return rankA - rankB;
+  });
 
   return (
-    <NodeListContext.Provider
-      value={filterListWithSearchTerm(nodes, searchTerm)}
-    >
+    <NodeListContext.Provider value={filteredNodes}>
       {children}
     </NodeListContext.Provider>
   );
