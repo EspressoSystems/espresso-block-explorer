@@ -1,4 +1,5 @@
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
+import { NullCodec } from '../../../../../../../../../../../src/convert/codec/null';
 /**
  * Ratio represents an immutable ratio value between 0 and 1.
  * This type exists to provide type safety and clarity when dealing with
@@ -22,4 +23,5 @@ export declare class RatioCodec extends TypeCheckingCodec<Ratio, unknown> {
     readonly decoder: RatioDecoder;
 }
 export declare const ratioCodec: RatioCodec;
+export declare const nullableRatioCodec: NullCodec<Ratio, unknown>;
 export {};
