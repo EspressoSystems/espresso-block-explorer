@@ -1,17 +1,14 @@
 'use client';
 
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
 import {
   Environment,
   EnvironmentContext,
   EspressoAddresses,
   EspressoConfigContext,
-  RainbowKitContextInjector,
 } from 'espresso-block-explorer-components';
 import React from 'react';
 import { EnvironmentConfig } from './read_from_env';
-import { DeriveWagmiFromEnvironment } from './wagmi';
 
 export interface DeriveEnvironmentFromEnvProps {
   env: EnvironmentConfig;
@@ -38,13 +35,7 @@ export const DeriveEnvironmentFromEnv: React.FC<
           } as EspressoAddresses
         }
       >
-        <DeriveWagmiFromEnvironment>
-          <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider>
-              <RainbowKitContextInjector>{children}</RainbowKitContextInjector>
-            </RainbowKitProvider>
-          </QueryClientProvider>
-        </DeriveWagmiFromEnvironment>
+        {children}
       </EspressoConfigContext.Provider>
     </EnvironmentContext.Provider>
   );

@@ -15,6 +15,13 @@ import {
 import { PerformWriteTransactionStatus } from './contexts/perform_write_states';
 import { StakingAmountContext } from './contexts/staking_amount_context';
 
+/**
+ * ApproveButton is a React component that displays the approve button
+ * for delegating stake in the staking modal.
+ *
+ * This button controls the approval of the ESP token contract to allow
+ * the stake table contract to spend the user's ESP tokens for delegation.
+ */
 export const ApproveButton: React.FC = () => {
   const setL1Timestamp = React.useContext(SetL1RefreshTimestampContext);
   const l1Methods = React.useContext(L1MethodsContext);
@@ -32,23 +39,7 @@ export const ApproveButton: React.FC = () => {
 
   const needAllowanceIncrease = stakingAmount.value > (allowance ?? 0n);
 
-  if (
-    !needAllowanceIncrease ||
-    (asyncSnapshot.asyncState === AsyncState.done && !asyncSnapshot.hasError)
-  ) {
-    return (
-      <ButtonLarge className="btn-approve approved" disabled>
-        <Text text="Approved" />
-      </ButtonLarge>
-    );
-  }
-
-  if (
-    !l1Methods ||
-    !espContract ||
-    !stakeTableContract ||
-    stakingAmount.value === 0n
-  ) {
+  if (!l1Methods || !espContract || !stakeTableContract) {
     return (
       <ButtonLarge className="btn-approve" disabled>
         <Text text="Approve" />
@@ -71,7 +62,7 @@ export const ApproveButton: React.FC = () => {
     );
   };
 
-  if (asyncSnapshot.asyncState === AsyncState.done && asyncSnapshot.hasError) {
+  if (asyncSnapshot.hasError) {
     // There was an error approving
     return (
       <ButtonLarge className="btn-approve retry" onClick={handleApproveClick}>
@@ -81,15 +72,35 @@ export const ApproveButton: React.FC = () => {
   }
 
   if (
-    asyncSnapshot.asyncState === AsyncState.waiting ||
-    (asyncSnapshot.data &&
-      !(
-        asyncSnapshot.data.status >=
-        PerformWriteTransactionStatus.receiptRetrieved
-      ))
+    !needAllowanceIncrease ||
+    (asyncSnapshot.hasData &&
+      (asyncSnapshot.data?.status ?? 0) >
+        PerformWriteTransactionStatus.receiptRetrieved)
   ) {
+    // Approval succeeded
     return (
       <ButtonLarge className="btn-approve approving" disabled>
+        <Text text="Approved" />
+      </ButtonLarge>
+    );
+  }
+
+  if (
+    asyncSnapshot.asyncState === AsyncState.waiting ||
+    asyncSnapshot.asyncState == AsyncState.active
+  ) {
+    // We are waiting for the transaction to be completed
+    return (
+      <ButtonLarge className="btn-approve approving" disabled>
+        <Text text="Approve" />
+      </ButtonLarge>
+    );
+  }
+
+  if (stakingAmount.value <= 0n) {
+    // We have no staking amount
+    return (
+      <ButtonLarge className="btn-approve" disabled>
         <Text text="Approve" />
       </ButtonLarge>
     );

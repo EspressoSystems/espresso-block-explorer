@@ -95,6 +95,10 @@ const TransformDataToGasEstimate: React.FC<React.PropsWithChildren> = ({
   );
 };
 
+/**
+ * StakingActionsArea is a React component that displays the actions area
+ * for new delegations in the staking modal.
+ */
 const StakingActionsArea: React.FC = () => {
   return (
     <div className="staking-modal-staking-actions-area">

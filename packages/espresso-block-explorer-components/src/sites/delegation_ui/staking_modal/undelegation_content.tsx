@@ -5,6 +5,7 @@ import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/context
 import Text from '@/components/text/Text';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { neverPromise } from '@/functional/functional_async';
+import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
@@ -23,7 +24,10 @@ import {
   UndelegateAsyncSnapshotContext,
 } from './contexts/perform_undelgation_context';
 import { PerformWriteTransactionStatus } from './contexts/perform_write_states';
-import { StakingAmountContext } from './contexts/staking_amount_context';
+import {
+  SetStakingAmountContext,
+  StakingAmountContext,
+} from './contexts/staking_amount_context';
 import { StakingModalCloseContext } from './contexts/staking_modal_close_context';
 import { StakingContent } from './staking_content';
 import { StakingHeader } from './staking_header';
@@ -95,6 +99,7 @@ const UnstakingActionsArea: React.FC = () => {
   const stakeTableContract = React.useContext(StakeTableContractContext);
   const confirmedValidator = React.useContext(ConfirmedValidatorContext);
   const stakingAmount = React.useContext(StakingAmountContext);
+  const setStakingAmount = React.useContext(SetStakingAmountContext);
   const currentStake = React.useContext(CurrentStakeToValidatorContext) ?? 0n;
   const validatorAddress = hexArrayBufferCodec.encode(confirmedValidator);
   const asyncSnapshot = React.useContext(UndelegateAsyncSnapshotContext);
@@ -105,13 +110,9 @@ const UnstakingActionsArea: React.FC = () => {
   );
 
   if (
-    l1Methods === null ||
     // If the Contracts are not set
-    stakeTableContract === null ||
-    // We have no staking amount
-    stakingAmount.value <= 0n ||
-    // We don't have the balance to cover the staking amount
-    stakingAmount.value > currentStake
+    l1Methods === null ||
+    stakeTableContract === null
   ) {
     return (
       <div className="staking-modal-unstaking-actions-area">
@@ -130,18 +131,53 @@ const UnstakingActionsArea: React.FC = () => {
         stakeTableContract,
         validatorAddress,
         stakingAmount.value,
-        setL1Timestamp,
+        (date) => {
+          setStakingAmount(MonetaryValue.ESP(0n));
+          setL1Timestamp(date);
+        },
       ),
     );
 
+  if (asyncSnapshot.hasError) {
+    // There was an error undelegating
+    return (
+      <div className="staking-modal-unstaking-actions-area error">
+        <div>
+          <Text text="Undelegation Failed" />
+        </div>
+        <ButtonLarge
+          className="btn-undelegate"
+          onClick={performUndelegationAction}
+        >
+          <Text text="Retry" />
+        </ButtonLarge>
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.hasData &&
+    (asyncSnapshot.data?.status ?? 0) >=
+      PerformWriteTransactionStatus.receiptRetrieved
+  ) {
+    // Undelegation succeeded
+    return (
+      <div className="staking-modal-unstaking-actions-area succeeded">
+        <div>
+          <Text text="Delegation Successful" />
+        </div>
+        <ButtonLarge onClick={close}>
+          <Text text="Close" />
+        </ButtonLarge>
+      </div>
+    );
+  }
+
   if (
     asyncSnapshot.asyncState === AsyncState.waiting ||
-    (asyncSnapshot.data &&
-      !(
-        asyncSnapshot.data.status >=
-        PerformWriteTransactionStatus.receiptRetrieved
-      ))
+    asyncSnapshot.asyncState == AsyncState.active
   ) {
+    // We are waiting for the transaction to be completed
     return (
       <div className="staking-modal-unstaking-actions-area waiting">
         <div>
@@ -154,30 +190,17 @@ const UnstakingActionsArea: React.FC = () => {
     );
   }
 
-  if (asyncSnapshot.asyncState === AsyncState.done) {
-    if (asyncSnapshot.hasError) {
-      return (
-        <div className="staking-modal-unstaking-actions-area error">
-          <div>
-            <Text text="Undelegation Failed" />
-          </div>
-          <ButtonLarge
-            className="btn-undelegate"
-            onClick={performUndelegationAction}
-          >
-            <Text text="Retry" />
-          </ButtonLarge>
-        </div>
-      );
-    }
-
+  if (
+    // We have no staking amount
+    stakingAmount.value <= 0n ||
+    // We don't have the balance to cover the staking amount
+    stakingAmount.value > currentStake
+  ) {
     return (
-      <div className="staking-modal-unstaking-actions-area succeeded">
-        <div>
-          <Text text="Delegation Successful" />
-        </div>
-        <ButtonLarge onClick={close}>
-          <Text text="Close" />
+      <div className="staking-modal-unstaking-actions-area">
+        <div>&nbsp;</div>
+        <ButtonLarge className="btn-undelegate" disabled>
+          <Text text="Undelegate" />
         </ButtonLarge>
       </div>
     );

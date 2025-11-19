@@ -1,6 +1,6 @@
-import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
 import Text from '@/components/text/Text';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { ESPBalanceContext } from '../contexts/esp_balance_context';
@@ -15,12 +15,16 @@ import {
   SetDelegationAsyncIterableContext,
 } from './contexts/perform_delegation_context';
 import { PerformWriteTransactionStatus } from './contexts/perform_write_states';
-import { StakingAmountContext } from './contexts/staking_amount_context';
+import {
+  SetStakingAmountContext,
+  StakingAmountContext,
+} from './contexts/staking_amount_context';
 
 export const DelegateButton: React.FC = () => {
   const setL1Timestamp = React.useContext(SetL1RefreshTimestampContext);
   const l1Methods = React.useContext(L1MethodsContext);
   const stakingAmount = React.useContext(StakingAmountContext);
+  const setStakingAmount = React.useContext(SetStakingAmountContext);
   const balance = React.useContext(ESPBalanceContext);
   const stakeTableContract = React.useContext(StakeTableContractContext);
   const allowance = React.useContext(CurrentAllowanceToStakeTableContext) ?? 0n;
@@ -31,22 +35,9 @@ export const DelegateButton: React.FC = () => {
   const confirmedValidator = React.useContext(ConfirmedValidatorContext);
 
   if (
-    l1Methods === null ||
     // If the Contracts are not set
-    stakeTableContract === null ||
-    // We have no staking amount
-    stakingAmount.value <= 0n ||
-    // We don't have the balance to cover the staking amount
-    stakingAmount.value > balance ||
-    // We don't have enough allowance to cover the staking amount
-    stakingAmount.value > allowance ||
-    // We're waiting for an approval to complete
-    asyncSnapshot.asyncState === AsyncState.waiting ||
-    (asyncSnapshot.data &&
-      !(
-        asyncSnapshot.data.status >=
-        PerformWriteTransactionStatus.receiptRetrieved
-      ))
+    l1Methods === null ||
+    stakeTableContract === null
   ) {
     return (
       <ButtonLarge className="btn-delegate" disabled>
@@ -54,6 +45,7 @@ export const DelegateButton: React.FC = () => {
       </ButtonLarge>
     );
   }
+
   const validatorAddress = hexArrayBufferCodec.encode(confirmedValidator);
   const handleDelegateClick = () => {
     setDelegationAsyncIterable(
@@ -62,12 +54,15 @@ export const DelegateButton: React.FC = () => {
         stakeTableContract,
         validatorAddress,
         stakingAmount.value,
-        setL1Timestamp,
+        (date) => {
+          setStakingAmount(MonetaryValue.ESP(0n));
+          setL1Timestamp(date);
+        },
       ),
     );
   };
 
-  if (asyncSnapshot.asyncState === AsyncState.done && asyncSnapshot.hasError) {
+  if (asyncSnapshot.hasError) {
     // There was an error delegating
     return (
       <ButtonLarge className="btn-delegate retry" onClick={handleDelegateClick}>
@@ -76,11 +71,31 @@ export const DelegateButton: React.FC = () => {
     );
   }
 
-  if (asyncSnapshot.asyncState === AsyncState.done && !asyncSnapshot.hasError) {
+  if (
+    asyncSnapshot.hasData &&
+    (asyncSnapshot.data?.status ?? 0) >=
+      PerformWriteTransactionStatus.receiptRetrieved
+  ) {
     // Delegation succeeded
     return (
       <ButtonLarge className="btn-delegate approved" disabled>
         <Text text="Delegated" />
+      </ButtonLarge>
+    );
+  }
+
+  if (
+    // We have no staking amount
+    stakingAmount.value <= 0n ||
+    // We don't have the balance to cover the staking amount
+    stakingAmount.value > balance ||
+    // We don't have enough allowance to cover the staking amount
+    stakingAmount.value > allowance
+  ) {
+    // Disable the button
+    return (
+      <ButtonLarge className="btn-delegate" disabled>
+        <Text text="Delegate" />
       </ButtonLarge>
     );
   }

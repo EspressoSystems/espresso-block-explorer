@@ -14,6 +14,10 @@ import { StakingContent } from './staking_content';
 import { StakingHeader } from './staking_header';
 import { StakingModalTitle } from './staking_modal_title';
 
+/**
+ * ManageStakeContent is a React component that displays the content
+ * for managing stake in the staking modal.
+ */
 export const ManageStakeContent: React.FC = () => {
   return (
     <>
@@ -31,6 +35,10 @@ export const ManageStakeContent: React.FC = () => {
   );
 };
 
+/**
+ * ManageStakeActionsArea is a React component that displays the actions area
+ * for managing stake in the staking modal.
+ */
 const ManageStakeActionsArea: React.FC = () => {
   const historyControls = React.useContext(StakingModalHistoryControlsContext);
   const confirmedValidator = React.useContext(ConfirmedValidatorContext);
