@@ -5,7 +5,7 @@ import {
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
-import { Ratio, ratioCodec } from './ratio';
+import { nullableRatioCodec, Ratio } from './ratio';
 
 /**
  * ActiveNodeSetEntry represents a single entry in the active node set.
@@ -20,8 +20,8 @@ export class ActiveNodeSetEntry {
   public readonly addressText: `0x${string}`;
   constructor(
     public readonly address: ArrayBuffer,
-    public readonly voterParticipation: Ratio,
-    public readonly leaderParticipation: Ratio,
+    public readonly voterParticipation: null | Ratio,
+    public readonly leaderParticipation: null | Ratio,
   ) {
     this.addressText = hexArrayBufferCodec.encode(address);
     Object.freeze(this);
@@ -49,8 +49,8 @@ class ActiveNodeSetEntryJSONDecoder
 
     return new ActiveNodeSetEntry(
       hexArrayBufferCodec.decode(input.address),
-      ratioCodec.decode(input.voter_participation),
-      ratioCodec.decode(input.leader_participation),
+      nullableRatioCodec.decode(input.voter_participation),
+      nullableRatioCodec.decode(input.leader_participation),
     );
   }
 }
@@ -65,8 +65,10 @@ class ActiveNodeSetEntryJSONEncoder
   convert(input: ActiveNodeSetEntry): unknown {
     return {
       address: hexArrayBufferCodec.encode(input.address),
-      voter_participation: ratioCodec.encode(input.voterParticipation),
-      leader_participation: ratioCodec.encode(input.leaderParticipation),
+      voter_participation: nullableRatioCodec.encode(input.voterParticipation),
+      leader_participation: nullableRatioCodec.encode(
+        input.leaderParticipation,
+      ),
     };
   }
 }

@@ -1,4 +1,6 @@
-import { Converter, numberCodec, TypeCheckingCodec } from '@/convert/codec';
+import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
+import { numberCodec } from '@/convert/codec/number';
 
 /**
  * Ratio represents an immutable ratio value between 0 and 1.
@@ -41,3 +43,8 @@ export class RatioCodec extends TypeCheckingCodec<Ratio, unknown> {
 }
 
 export const ratioCodec = new RatioCodec();
+
+export const nullableRatioCodec = new NullCodec(
+  new NullDecoder(ratioCodec),
+  new NullEncoder(ratioCodec),
+);

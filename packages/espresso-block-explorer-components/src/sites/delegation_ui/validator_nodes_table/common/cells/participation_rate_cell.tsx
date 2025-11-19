@@ -13,7 +13,7 @@ export const ParticipationRateCell: React.FC = () => {
 
   const activeValidator = consensusMap.get(validator.addressText);
 
-  if (!activeValidator) {
+  if (!activeValidator || activeValidator.voterParticipation == null) {
     return <Text text="-" />;
   }
 

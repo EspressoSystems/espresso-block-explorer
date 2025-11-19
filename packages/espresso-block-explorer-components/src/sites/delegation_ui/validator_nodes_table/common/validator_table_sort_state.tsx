@@ -130,8 +130,8 @@ function sortByFee(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  * sortByMissedSlots sorts validators by their missed slots.
  */
 function sortByMissedSlots(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  const aMissed = a[2]?.leaderParticipation.ratio ?? -1;
-  const bMissed = b[2]?.leaderParticipation.ratio ?? -1;
+  const aMissed = a[2]?.leaderParticipation?.ratio ?? -1;
+  const bMissed = b[2]?.leaderParticipation?.ratio ?? -1;
   return aMissed - bMissed;
 }
 
@@ -139,8 +139,8 @@ function sortByMissedSlots(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  * sortByParticipationRate sorts validators by their participation rate.
  */
 function sortByParticipationRate(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  const aRate = a[2]?.voterParticipation.ratio ?? -1;
-  const bRate = b[2]?.voterParticipation.ratio ?? -1;
+  const aRate = a[2]?.voterParticipation?.ratio ?? -1;
+  const bRate = b[2]?.voterParticipation?.ratio ?? -1;
   return aRate - bRate;
 }
 

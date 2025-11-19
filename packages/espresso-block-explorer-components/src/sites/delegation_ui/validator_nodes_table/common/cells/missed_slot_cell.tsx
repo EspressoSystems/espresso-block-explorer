@@ -13,7 +13,7 @@ export const MissedSlotsCell: React.FC = () => {
 
   const activeValidator = consensusMap.get(validator.addressText);
 
-  if (!activeValidator) {
+  if (!activeValidator || activeValidator.leaderParticipation == null) {
     return <Text text="-" />;
   }
 
