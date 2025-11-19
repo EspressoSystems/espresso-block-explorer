@@ -15,8 +15,10 @@ import {
 import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
+import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import React from 'react';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '../../../pages/CappuccinoHotShotQueryServiceAPIContext';
+import { delegationUIInteractions } from '../__shared__/delegation_ui_shared';
 import { ProvideL1ValidatorServiceAPIContext } from '../contexts/l1_validator_api_context';
 import DelegationUI from '../delegation_ui';
 import { L1ValidatorServiceMockInjection } from '../mock/validator_service_injection';
@@ -28,6 +30,7 @@ interface ExampleProps {
   hotshotQueryServiceURL?: string;
   nodeValidatorWebSocketURL?: string;
   l1ValidatorServiceURL?: string;
+  spoofAccountAddress?: `0x${string}`;
 }
 
 const Example: React.FC<ExampleProps> = ({
@@ -37,6 +40,7 @@ const Example: React.FC<ExampleProps> = ({
   hotshotQueryServiceURL,
   nodeValidatorWebSocketURL,
   l1ValidatorServiceURL,
+  spoofAccountAddress,
   ...rest
 }) => {
   return (
@@ -57,16 +61,34 @@ const Example: React.FC<ExampleProps> = ({
       >
         <EnvironmentBanner />
         <ProvideTickEverySecond>
-          <ProvideCappuccinoHotShotQueryServiceAPIContext>
-            <ProvideL1ValidatorServiceAPIContext>
-              <L1ValidatorServiceMockInjection>
-                <DelegationUI {...rest} />
-              </L1ValidatorServiceMockInjection>
-            </ProvideL1ValidatorServiceAPIContext>
-          </ProvideCappuccinoHotShotQueryServiceAPIContext>
+          <SpoofAccountAddress account={spoofAccountAddress}>
+            <ProvideCappuccinoHotShotQueryServiceAPIContext>
+              <ProvideL1ValidatorServiceAPIContext>
+                <L1ValidatorServiceMockInjection>
+                  <DelegationUI {...rest} />
+                </L1ValidatorServiceMockInjection>
+              </ProvideL1ValidatorServiceAPIContext>
+            </ProvideCappuccinoHotShotQueryServiceAPIContext>
+          </SpoofAccountAddress>
         </ProvideTickEverySecond>
       </StoryBookSpecifyEnvironmentAndContracts>
     </>
+  );
+};
+
+const SpoofAccountAddress: React.FC<
+  React.PropsWithChildren<{
+    account?: `0x${string}`;
+  }>
+> = ({ account, children }) => {
+  const currentAccount = React.useContext(RainbowKitAccountAddressContext);
+
+  const resolvedAccount = account ?? currentAccount;
+
+  return (
+    <RainbowKitAccountAddressContext.Provider value={resolvedAccount}>
+      {children}
+    </RainbowKitAccountAddressContext.Provider>
   );
 };
 
@@ -84,10 +106,16 @@ const meta: Meta = {
     hotshotQueryServiceURL: undefined,
     nodeValidatorWebSocketURL: undefined,
     l1ValidatorServiceURL: undefined,
+    spoofAccountAddress: undefined,
   },
   argTypes: {
     ...environmentArgTypesWithContracts,
     ...environmentArgsTypesL1ValidatorService,
+    spoofAccountAddress: {
+      control: 'text',
+      description:
+        'An optional account address to spoof as the connected wallet address in RainbowKit.',
+    },
   },
 
   globals: {
@@ -119,7 +147,8 @@ export const Water: Story = {
 export const Decaf: Story = {
   args: {
     ...environmentArgsDecafWithContracts,
-    l1ValidatorServiceURL: 'https://staking.decaf.testnet.espresso.network/v0/',
+    l1ValidatorServiceURL:
+      'https://staking.decaf.testnet.espresso.network/v0/staking/',
   },
 };
 
@@ -129,6 +158,13 @@ export const Mainnet: Story = {
 
 export const FakeData: Story = {
   args: environmentArgsFakeDataWithContracts,
+};
+
+export const FakeDataInteractions: Story = {
+  args: environmentArgsFakeDataWithContracts,
+  play: async ({ canvasElement, step }) => {
+    await delegationUIInteractions(canvasElement, step);
+  },
 };
 
 export const LocalDevNet: Story = {

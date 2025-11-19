@@ -17,6 +17,25 @@ import { ExplorerConfig } from '../environment/explorer';
 import { deriveAddressesWithEnvironmentFallback } from './espresso';
 import { getWagmiConfigForEnvironment } from './wagmi';
 
+// This is added to serve as a polyfill to prevent errors when running
+// tests that occur when running tests in an environment that does not
+// have localStorage methods defined.
+if (
+  typeof localStorage === 'undefined' ||
+  typeof localStorage.getItem === 'undefined'
+) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (globalThis as any).localStorage = {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getItem: (_key: string) => null,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setItem: (_key: string, _value: string) => {},
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    removeItem: (_key: string) => {},
+    clear: () => {},
+  };
+}
+
 export interface StoryBookSpecifyEnvironmentProps {
   environment?: Environment;
   hotshotQueryServiceURL?: string;
