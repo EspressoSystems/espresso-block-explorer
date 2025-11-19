@@ -1,19 +1,19 @@
 import { nodeList } from '@/data_source/fake_data_source';
-import { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
-import { ActiveValidatorsContext } from 'sites/delegation_ui/contexts/active_validators_context';
-import { AllValidatorsContext } from 'sites/delegation_ui/contexts/all_validators_context';
-import { DeriveConsensusSet } from 'sites/delegation_ui/contexts/consensus_map_context';
-import { ESPBalanceContext } from 'sites/delegation_ui/contexts/esp_balance_context';
-import { DialogModal } from 'sites/delegation_ui/contexts/modal_context';
-import { DeriveRank } from 'sites/delegation_ui/contexts/rank_map_context';
+import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
+import { AllValidatorsContext } from '@/sites/delegation_ui/contexts/all_validators_context';
+import { DeriveConsensusSet } from '@/sites/delegation_ui/contexts/consensus_map_context';
+import { ESPBalanceContext } from '@/sites/delegation_ui/contexts/esp_balance_context';
+import { DialogModal } from '@/sites/delegation_ui/contexts/modal_context';
+import { DeriveRank } from '@/sites/delegation_ui/contexts/rank_map_context';
 import {
   NoValidatorSelected,
   ProvideValidatorSelection,
   ValidatorSelected,
   ValidatorSelectionContext,
   ValidatorSelectionEnum,
-} from 'sites/delegation_ui/contexts/validator_selection_context';
+} from '@/sites/delegation_ui/contexts/validator_selection_context';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import React from 'react';
 import {
   activeValidatorSet,
   fullValidatorSet,

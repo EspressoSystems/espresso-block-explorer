@@ -1,8 +1,8 @@
 import PercentageText from '@/components/text/PercentageText';
 import Text from '@/components/text/Text';
+import { TotalStakeContext } from '@/sites/delegation_ui/contexts/total_stake_context';
+import { TotalSupplyContext } from '@/sites/delegation_ui/contexts/total_supply_context';
 import React from 'react';
-import { TotalStakeContext } from 'sites/delegation_ui/contexts/total_stake_context';
-import { TotalSupplyContext } from 'sites/delegation_ui/contexts/total_supply_context';
 import { NetworkStatValue } from './network_stat_value';
 
 /**

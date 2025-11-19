@@ -1,6 +1,6 @@
+import { AllValidatorsContext } from '@/sites/delegation_ui/contexts/all_validators_context';
+import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import React from 'react';
-import { AllValidatorsContext } from 'sites/delegation_ui/contexts/all_validators_context';
-import { ValidatorNodeContext } from 'sites/delegation_ui/contexts/validator_node_context';
 import '../table.css';
 import { ClaimsDelegationTableHeader } from './claims_table_header';
 import { PendingExitsNodeValidatorTableRow } from './pending_exits_table_row';

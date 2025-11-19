@@ -1,6 +1,6 @@
 import { nodeList } from '@/data_source/fake_data_source';
+import { ValidatorConfirmed } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { ValidatorConfirmed } from 'sites/delegation_ui/contexts/validator_selection_context';
 import { fullValidatorSet, INDEX_STAKED } from '../__shared__/example_data';
 import {
   DefaultMeta,

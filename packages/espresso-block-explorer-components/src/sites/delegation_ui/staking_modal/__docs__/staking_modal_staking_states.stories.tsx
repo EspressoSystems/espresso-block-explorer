@@ -3,8 +3,8 @@ import {
   AsyncState,
 } from '@/components/data/async_data/AsyncSnapshot';
 import { nodeList } from '@/data_source/fake_data_source';
+import { ValidatorConfirmedStake } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { ValidatorConfirmedStake } from 'sites/delegation_ui/contexts/validator_selection_context';
 import {
   FAKE_RECEIPT,
   FAKE_TRANSACTION_HASH,

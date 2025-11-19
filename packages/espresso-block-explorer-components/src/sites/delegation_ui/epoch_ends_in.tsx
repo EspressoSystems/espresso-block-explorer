@@ -1,8 +1,8 @@
 import NumberText from '@/components/text/NumberText';
 import Text from '@/components/text/Text';
 import TimeLeftText from '@/components/text/TimeLeftText';
+import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
 import React from 'react';
-import { ActiveValidatorsContext } from 'sites/delegation_ui/contexts/active_validators_context';
 import { NetworkStatValue } from './network_stat_value';
 
 export const EpochEndsIn: React.FC = () => {

@@ -1,10 +1,10 @@
 import { lastIterable, takeIterable } from '@/functional/functional';
-import React from 'react';
 import {
   SetValidatorSelectionContext,
   ValidatorSelectionContext,
   ValidatorSelectionEnum,
-} from 'sites/delegation_ui/contexts/validator_selection_context';
+} from '@/sites/delegation_ui/contexts/validator_selection_context';
+import React from 'react';
 
 /**
  * StakingModalHistoryContext represents the "stack" of navigation history

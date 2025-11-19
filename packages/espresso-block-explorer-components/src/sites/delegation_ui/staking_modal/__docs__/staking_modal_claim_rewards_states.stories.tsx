@@ -2,8 +2,8 @@ import {
   AsyncSnapshot,
   AsyncState,
 } from '@/components/data/async_data/AsyncSnapshot';
+import { ClaimRewards } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { ClaimRewards } from 'sites/delegation_ui/contexts/validator_selection_context';
 import {
   FAKE_RECEIPT,
   FAKE_TRANSACTION_HASH,

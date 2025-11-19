@@ -4,10 +4,10 @@ import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/context
 import { Undelegation } from '@/contracts/stake_table/stake_table_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { neverPromise } from '@/functional/functional_async';
+import { ConfirmedValidatorContext } from '@/sites/delegation_ui/contexts/confirmed_valdiator_context';
+import { L1RefreshTimestampContext } from '@/sites/delegation_ui/contexts/l1_refresh_timestamp_context';
+import { StakeTableContractContext } from '@/sites/delegation_ui/contexts/stake_table_contract_context';
 import React from 'react';
-import { ConfirmedValidatorContext } from 'sites/delegation_ui/contexts/confirmed_valdiator_context';
-import { L1RefreshTimestampContext } from 'sites/delegation_ui/contexts/l1_refresh_timestamp_context';
-import { StakeTableContractContext } from 'sites/delegation_ui/contexts/stake_table_contract_context';
 
 export const CurrentPendingUndelegationFromValidatorContext =
   React.createContext<null | Undelegation>(null);

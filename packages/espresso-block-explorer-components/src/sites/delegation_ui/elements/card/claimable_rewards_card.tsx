@@ -1,14 +1,14 @@
 import MoneyText from '@/components/text/MoneyText';
 import Text from '@/components/text/Text';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
-import React from 'react';
-import { LifetimeClaimedRewardsContext } from 'sites/delegation_ui/contexts/claimed_rewards_context';
-import { ModalContext } from 'sites/delegation_ui/contexts/modal_context';
-import { EspressoRewardClaimInputContext } from 'sites/delegation_ui/contexts/reward_claim_input_context';
+import { LifetimeClaimedRewardsContext } from '@/sites/delegation_ui/contexts/claimed_rewards_context';
+import { ModalContext } from '@/sites/delegation_ui/contexts/modal_context';
+import { EspressoRewardClaimInputContext } from '@/sites/delegation_ui/contexts/reward_claim_input_context';
 import {
   ClaimRewards,
   SetValidatorSelectionContext,
-} from 'sites/delegation_ui/contexts/validator_selection_context';
+} from '@/sites/delegation_ui/contexts/validator_selection_context';
+import React from 'react';
 import ButtonLarge from '../buttons/button_large';
 import { CardContentValue } from './card_content_value';
 import { CardValue } from './card_value';

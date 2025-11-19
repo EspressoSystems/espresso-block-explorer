@@ -1,9 +1,9 @@
-import React from 'react';
-import { ModalContext } from 'sites/delegation_ui/contexts/modal_context';
+import { ModalContext } from '@/sites/delegation_ui/contexts/modal_context';
 import {
   NoValidatorSelected,
   SetValidatorSelectionContext,
-} from 'sites/delegation_ui/contexts/validator_selection_context';
+} from '@/sites/delegation_ui/contexts/validator_selection_context';
+import React from 'react';
 import { StakingModalHistoryControlsContext } from './staking_modal_history_context';
 
 /**
