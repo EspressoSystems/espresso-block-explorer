@@ -59,7 +59,7 @@ function useModalState(): ModalControls {
 
   const open = () => {
     if (ref.current && !isOpen) {
-      ref.current.showModal();
+      ref.current.showModal?.();
       setIsOpen(true);
     }
   };

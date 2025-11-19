@@ -102,7 +102,10 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     return {
       maxPriorityFeePerGas: 1_000_000_000n,
       maxFeePerGas: 15_000_000_000n,
-      gasPrice: 15_000_000_000n,
+      formatted: {
+        maxPriorityFeePerGas: '1',
+        maxFeePerGas: '15',
+      },
     };
   }
 
@@ -218,7 +221,9 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     } satisfies GetTransactionReturnType<Config, ChainID>;
   }
 
-  async getTransaction(parameters: GetTransactionParameters<Config, ChainID>) {
+  async getTransaction(
+    parameters: GetTransactionParameters<Config, ChainID>,
+  ): Promise<GetTransactionReturnType<Config, ChainID>> {
     const txHash = parameters.hash;
     if (!txHash) {
       throw new Error('Transaction hash is required');
@@ -234,7 +239,10 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
         throw new Error('Transaction not found');
       }
 
-      return this.transactionFromTransactionAndBlock(pendingTx, null);
+      return this.transactionFromTransactionAndBlock(
+        pendingTx,
+        null,
+      ) as GetTransactionReturnType<Config, ChainID>;
     }
 
     const block = this.storage.blocks[Number(tx.blockHeight)];
@@ -350,7 +358,9 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
       Config,
       ChainID
     >,
-  ) {
+  ): Promise<
+    GetBlockReturnType<includeTransactions, blockTag, Config, ChainID>
+  > {
     const height = this.blockHeightFromGetBlockParameters(parameters);
     const block = this.storage.blocks[Number(height)];
 
@@ -358,7 +368,10 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
       throw new Error('Block not found');
     }
 
-    return this.blockFromBlock(block, parameters?.includeTransactions);
+    return this.blockFromBlock(
+      block,
+      parameters?.includeTransactions,
+    ) as GetBlockReturnType<includeTransactions, blockTag, Config, ChainID>;
   }
 
   async getBlockNumber<

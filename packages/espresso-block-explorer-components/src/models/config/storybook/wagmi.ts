@@ -85,7 +85,8 @@ export const fakeData: WagmiConfig = createConfig({
       id: 31337 as const,
       name: 'GETH (Fake Data)',
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-      rpcUrls: {},
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      rpcUrls: {} as any,
       testnet: true,
       connectors: [
         mock({
