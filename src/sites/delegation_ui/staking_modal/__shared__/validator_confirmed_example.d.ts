@@ -43,6 +43,9 @@ export declare const DefaultMeta: {
             get error(): undefined | unknown;
             get hasData(): boolean;
             get hasError(): boolean;
+            toJSON(): {
+                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+            };
         };
         readonly approvalAsyncSnapshot: {
             get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
@@ -50,6 +53,9 @@ export declare const DefaultMeta: {
             get error(): undefined | unknown;
             get hasData(): boolean;
             get hasError(): boolean;
+            toJSON(): {
+                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+            };
         };
         readonly delegationAsyncSnapshot: {
             get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
@@ -57,6 +63,9 @@ export declare const DefaultMeta: {
             get error(): undefined | unknown;
             get hasData(): boolean;
             get hasError(): boolean;
+            toJSON(): {
+                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+            };
         };
         readonly claimWithDrawalAsyncSnapshot: {
             get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
@@ -64,6 +73,9 @@ export declare const DefaultMeta: {
             get error(): undefined | unknown;
             get hasData(): boolean;
             get hasError(): boolean;
+            toJSON(): {
+                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+            };
         };
         readonly claimExitAsyncSnapshot: {
             get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
@@ -71,6 +83,9 @@ export declare const DefaultMeta: {
             get error(): undefined | unknown;
             get hasData(): boolean;
             get hasError(): boolean;
+            toJSON(): {
+                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+            };
         };
         readonly claimRewardsAsyncSnapshot: {
             get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
@@ -78,6 +93,9 @@ export declare const DefaultMeta: {
             get error(): undefined | unknown;
             get hasData(): boolean;
             get hasError(): boolean;
+            toJSON(): {
+                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+            };
         };
     };
     readonly argTypes: {

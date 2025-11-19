@@ -46,6 +46,9 @@ export declare abstract class AsyncSnapshot<T> {
      * updates.
      */
     static withError<T>(asyncState: AsyncState, error: unknown): AsyncSnapshotError<T>;
+    toJSON(): {
+        asyncState: AsyncState;
+    };
 }
 /**
  * AsyncSnapshotNothing represents a non-state of an AsyncSnapshot.  It is
