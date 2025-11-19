@@ -8,6 +8,10 @@ describe('UnimplementedActiveValidatorsAPI', () => {
   it('should throw UnimplementedError', async () => {
     await expect(service.active()).rejects.toThrowError(UnimplementedError);
 
+    await expect(service.activeFor(5n)).rejects.toThrowError(
+      UnimplementedError,
+    );
+
     await expect(service.updatesSince(5n)).rejects.toThrowError(
       UnimplementedError,
     );

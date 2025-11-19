@@ -48,6 +48,10 @@ export class FakeDataValidatorsActiveAPI implements ValidatorsActiveAPI {
     );
   }
 
+  async activeFor(): Promise<ActiveNodeSetSnapshot> {
+    return this.active();
+  }
+
   async updatesSince(): Promise<ActiveNodeSetUpdate> {
     throw new UnimplementedError();
   }

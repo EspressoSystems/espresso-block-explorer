@@ -9,6 +9,10 @@ describe('FakeDataValidatorsActiveAPI', () => {
     await expect(service.active()).resolves.not.toBeNull();
   });
 
+  it('should resolve', async () => {
+    await expect(service.activeFor(5n)).resolves.not.toBeNull();
+  });
+
   it('should throw UnimplementedError', async () => {
     await expect(service.updatesSince(5n)).rejects.toThrowError(
       UnimplementedError,

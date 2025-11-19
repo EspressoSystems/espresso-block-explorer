@@ -37,6 +37,10 @@ export class WebWorkerProxyValidatorsActiveAPI {
     return this.service.active();
   }
 
+  async activeFor(height: bigint): Promise<ActiveNodeSetSnapshot> {
+    return this.service.activeFor(height);
+  }
+
   async updatesSince(hash: bigint): Promise<ActiveNodeSetUpdate> {
     return this.service.updatesSince(hash);
   }

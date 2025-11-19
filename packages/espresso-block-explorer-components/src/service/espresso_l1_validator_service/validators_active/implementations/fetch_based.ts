@@ -29,6 +29,13 @@ export class FetchBasedValidatorsActiveAPI implements ValidatorsActiveAPI {
     );
   }
 
+  async activeFor(height: bigint): Promise<ActiveNodeSetSnapshot> {
+    const url = new URL(`active/${height}`, this.baseURL);
+    return this.fetcher(url).then(
+      validateAndExpandResponse(activeNodeSetSnapshotJSONCodec.decoder),
+    );
+  }
+
   async updatesSince(block: bigint): Promise<ActiveNodeSetUpdate> {
     const url = new URL(`active/updates/${block}`, this.baseURL);
     return this.fetcher(url).then(
