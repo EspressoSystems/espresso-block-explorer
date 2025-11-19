@@ -43,7 +43,7 @@ export interface Completer<T> {
  * behavior of how Promises init functions work in Javascript.
  */
 function notReady(): never {
-  return assert(false, 'completer is not ready, this should never be reached');
+  assert(false, 'completer is not ready, this should never be reached');
 }
 
 function throwAlreadyCompleted(): never {
