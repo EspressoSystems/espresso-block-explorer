@@ -24,7 +24,12 @@ class RuntimeBenchmarkEvaluator extends BenchmarkEvaluator<
   readonly epsilon = 20;
 
   async runBenchmarkSuites(suites: readonly BenchmarkSuite[]) {
-    return Promise.all(suites.map((suite) => this.runBenchmarkSuite(suite)));
+    const results: BenchmarkSuiteResult[] = [];
+    for (const suite of suites) {
+      results.push(await this.runBenchmarkSuite(suite));
+    }
+
+    return results;
   }
 
   async runBenchmarkSuite(
@@ -40,7 +45,11 @@ class RuntimeBenchmarkEvaluator extends BenchmarkEvaluator<
   async runBenchmarkCases(
     cases: readonly BenchmarkCase[],
   ): Promise<BenchmarkCaseResult[]> {
-    return Promise.all(cases.map((c) => this.runBenchmarkCase(c)));
+    const results: BenchmarkCaseResult[] = [];
+    for (const c of cases) {
+      results.push(await this.runBenchmarkCase(c));
+    }
+    return results;
   }
 
   async runBenchmarkCase(
@@ -82,8 +91,8 @@ class RuntimeBenchmarkEvaluator extends BenchmarkEvaluator<
       }
 
       // Ramp up the number of attempts.
-      if (factor > 10) {
-        samples = samples * 10;
+      if (factor > 100) {
+        samples = samples * 100;
       } else {
         samples = Math.floor(samples * factor);
       }
@@ -174,11 +183,11 @@ function printCaseResults(caseResults: BenchmarkCaseResult[], indent: number) {
       [
         indentStr,
         name,
-        '\t'.repeat(Math.floor((l1 - name.length) / 8) + 1),
+        ' '.repeat(l1 - name.length + 1),
         nStr,
-        '\t'.repeat(Math.floor((l2 - nStr.length) / 8) + 1),
+        ' '.repeat(l2 - nStr.length + 1),
         durationStr,
-        '\t'.repeat(Math.floor((l3 - durationStr.length) / 8) + 1),
+        ' '.repeat(l3 - durationStr.length + 1),
       ].join(''),
     );
   }
