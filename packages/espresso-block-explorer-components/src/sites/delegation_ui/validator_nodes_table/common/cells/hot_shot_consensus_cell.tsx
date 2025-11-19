@@ -1,8 +1,8 @@
+import { ConsensusMapContext } from '@/sites/delegation_ui/contexts/consensus_map_context';
+import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
+import { ActiveConsensusChip } from '@/sites/delegation_ui/elements/chips/active_consensus_chip';
+import { InactiveConsensusChip } from '@/sites/delegation_ui/elements/chips/inactive_consensus_chip';
 import React from 'react';
-import { ConsensusMapContext } from 'sites/delegation_ui/contexts/consensus_map_context';
-import { ValidatorNodeContext } from 'sites/delegation_ui/contexts/validator_node_context';
-import { ActiveConsensusChip } from 'sites/delegation_ui/elements/chips/active_consensus_chip';
-import { InactiveConsensusChip } from 'sites/delegation_ui/elements/chips/inactive_consensus_chip';
 
 /**
  * HotShotConsensusCell displays whether a validator is part of the

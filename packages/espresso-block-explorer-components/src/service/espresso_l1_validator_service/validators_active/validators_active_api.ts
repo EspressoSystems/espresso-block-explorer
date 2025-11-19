@@ -19,6 +19,12 @@ export interface ValidatorsActiveAPI {
   active(): Promise<ActiveNodeSetSnapshot>;
 
   /**
+   * activeFor retrieves a snapshot of the active validator set at
+   * the provided block number.
+   */
+  activeFor(number: bigint): Promise<ActiveNodeSetSnapshot>;
+
+  /**
    * updatesSince retrieves all updates to the active validator set since the
    * provided block number.
    */

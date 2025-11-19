@@ -84,6 +84,58 @@ describe('FetchBasedValidatorsActiveAPI', () => {
 
     {
       const prng = new PseudoRandomNumberGenerator(Date.now());
+
+      const block = prng.nextRangeBigInt(0n, 1000n);
+      const epoch = block / 3000n;
+      const response = new ActiveNodeSetSnapshot(
+        new EpochAndBlock(epoch, block, new Date()),
+        [
+          new ActiveNodeSetEntry(
+            prng.fillBytes(32),
+            new Ratio(prng.nextFloat()),
+            new Ratio(prng.nextFloat()),
+          ),
+          new ActiveNodeSetEntry(
+            prng.fillBytes(32),
+            new Ratio(prng.nextFloat()),
+            new Ratio(prng.nextFloat()),
+          ),
+          new ActiveNodeSetEntry(
+            prng.fillBytes(32),
+            new Ratio(1.0),
+            new Ratio(0.5),
+          ),
+          new ActiveNodeSetEntry(
+            prng.fillBytes(32),
+            new Ratio(0.75),
+            new Ratio(0.25),
+          ),
+        ],
+      );
+
+      const fetcher: typeof fetch = async (input) => {
+        validateRequestMethodAndURL(
+          'GET',
+          'https://example.com/v0/validators/active/5',
+          input,
+        );
+
+        return mockFetch200JSONResponse(
+          Buffer.from(
+            JSON.stringify(activeNodeSetSnapshotJSONCodec.encode(response)),
+          ),
+        );
+      };
+      const service: ValidatorsActiveAPI = new FetchBasedValidatorsActiveAPI(
+        fetcher,
+        baseURL,
+      );
+
+      await expect(service.activeFor(5n)).resolves.to.deep.equal(response);
+    }
+
+    {
+      const prng = new PseudoRandomNumberGenerator(Date.now());
       const block = prng.nextRangeBigInt(0n, 1000n);
       const epoch = block / 3000n;
       const response = new ActiveNodeSetUpdate(

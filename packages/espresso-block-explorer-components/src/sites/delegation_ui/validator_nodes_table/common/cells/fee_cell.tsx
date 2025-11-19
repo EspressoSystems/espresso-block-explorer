@@ -1,6 +1,6 @@
 import PercentageText from '@/components/text/PercentageText';
+import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import React from 'react';
-import { ValidatorNodeContext } from 'sites/delegation_ui/contexts/validator_node_context';
 
 /**
  * FeeCell displays the commission fee of a validator as a percentage.

@@ -2,8 +2,8 @@ import MoneyText from '@/components/text/MoneyText';
 import Text from '@/components/text/Text';
 import { foldRIterable } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { WalletSnapshotContext } from '@/sites/delegation_ui/contexts/wallet_snapshot_context';
 import React from 'react';
-import { WalletSnapshotContext } from 'sites/delegation_ui/contexts/wallet_snapshot_context';
 import { CardContentValue } from './card_content_value';
 import { CardValue } from './card_value';
 

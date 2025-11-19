@@ -3,10 +3,10 @@ import { compareArrayBuffer } from '@/functional/functional';
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
+import { AllValidatorsContext } from '@/sites/delegation_ui/contexts/all_validators_context';
+import { ConsensusMapContext } from '@/sites/delegation_ui/contexts/consensus_map_context';
+import { RankMapContext } from '@/sites/delegation_ui/contexts/rank_map_context';
 import React from 'react';
-import { AllValidatorsContext } from 'sites/delegation_ui/contexts/all_validators_context';
-import { ConsensusMapContext } from 'sites/delegation_ui/contexts/consensus_map_context';
-import { RankMapContext } from 'sites/delegation_ui/contexts/rank_map_context';
 
 /**
  * CellType enumerates the different types of columns that can be

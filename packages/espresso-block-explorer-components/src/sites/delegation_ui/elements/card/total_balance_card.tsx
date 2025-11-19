@@ -1,8 +1,8 @@
 import MoneyText from '@/components/text/MoneyText';
 import Text from '@/components/text/Text';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { ESPBalanceContext } from '@/sites/delegation_ui/contexts/esp_balance_context';
 import React from 'react';
-import { ESPBalanceContext } from 'sites/delegation_ui/contexts/esp_balance_context';
 import { CardContentValue } from './card_content_value';
 import { CardValue } from './card_value';
 

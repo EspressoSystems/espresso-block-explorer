@@ -83,7 +83,7 @@ const SpoofAccountAddress: React.FC<
 > = ({ account, children }) => {
   const currentAccount = React.useContext(RainbowKitAccountAddressContext);
 
-  const resolvedAccount = account ?? currentAccount;
+  const resolvedAccount = account || currentAccount;
 
   return (
     <RainbowKitAccountAddressContext.Provider value={resolvedAccount}>

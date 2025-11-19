@@ -1,6 +1,6 @@
+import { AllValidatorsContext } from '@/sites/delegation_ui/contexts/all_validators_context';
+import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import React from 'react';
-import { AllValidatorsContext } from 'sites/delegation_ui/contexts/all_validators_context';
-import { ValidatorNodeContext } from 'sites/delegation_ui/contexts/validator_node_context';
 import '../table.css';
 import { DelegationTableHeader } from './delegation_table_header';
 import { NodeValidatorTableRow } from './node_validator_table_row';

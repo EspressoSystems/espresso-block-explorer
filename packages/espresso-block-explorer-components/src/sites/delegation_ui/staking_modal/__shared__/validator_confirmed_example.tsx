@@ -3,26 +3,26 @@ import { Undelegation } from '@/contracts/stake_table/stake_table_interface';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
-import React from 'react';
-import { ActiveValidatorsContext } from 'sites/delegation_ui/contexts/active_validators_context';
-import { AllValidatorsContext } from 'sites/delegation_ui/contexts/all_validators_context';
-import { LifetimeClaimedRewardsContext } from 'sites/delegation_ui/contexts/claimed_rewards_context';
-import { ConfirmedValidatorContext } from 'sites/delegation_ui/contexts/confirmed_valdiator_context';
-import { DeriveConsensusSet } from 'sites/delegation_ui/contexts/consensus_map_context';
-import { ESPBalanceContext } from 'sites/delegation_ui/contexts/esp_balance_context';
-import { DialogModal } from 'sites/delegation_ui/contexts/modal_context';
-import { DeriveRank } from 'sites/delegation_ui/contexts/rank_map_context';
-import { EspressoRewardClaimInputContext } from 'sites/delegation_ui/contexts/reward_claim_input_context';
-import { ValidatorNodeContext } from 'sites/delegation_ui/contexts/validator_node_context';
+import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
+import { AllValidatorsContext } from '@/sites/delegation_ui/contexts/all_validators_context';
+import { LifetimeClaimedRewardsContext } from '@/sites/delegation_ui/contexts/claimed_rewards_context';
+import { ConfirmedValidatorContext } from '@/sites/delegation_ui/contexts/confirmed_valdiator_context';
+import { DeriveConsensusSet } from '@/sites/delegation_ui/contexts/consensus_map_context';
+import { ESPBalanceContext } from '@/sites/delegation_ui/contexts/esp_balance_context';
+import { DialogModal } from '@/sites/delegation_ui/contexts/modal_context';
+import { DeriveRank } from '@/sites/delegation_ui/contexts/rank_map_context';
+import { EspressoRewardClaimInputContext } from '@/sites/delegation_ui/contexts/reward_claim_input_context';
+import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import {
   ClaimRewards,
   ProvideValidatorSelection,
   ValidatorConfirmedUndelegateWithdraw,
   ValidatorSelectionContext,
   ValidatorSelectionEnum,
-} from 'sites/delegation_ui/contexts/validator_selection_context';
-import { WalletSnapshotContext } from 'sites/delegation_ui/contexts/wallet_snapshot_context';
-import { FakeDataMockOverrides } from 'sites/delegation_ui/mock/fake_data';
+} from '@/sites/delegation_ui/contexts/validator_selection_context';
+import { WalletSnapshotContext } from '@/sites/delegation_ui/contexts/wallet_snapshot_context';
+import { FakeDataMockOverrides } from '@/sites/delegation_ui/mock/fake_data';
+import React from 'react';
 import { ClaimRewardsContent } from '../claim_rewards_content';
 import { CurrentAllowanceToStakeTableContext } from '../contexts/current_allowance_context';
 import { CurrentPendingUndelegationFromValidatorContext } from '../contexts/current_pending_undelegation_from_validator_context';

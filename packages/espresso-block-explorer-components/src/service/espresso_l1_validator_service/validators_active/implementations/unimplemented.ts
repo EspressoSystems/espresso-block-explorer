@@ -15,6 +15,10 @@ export class UnimplementedActiveValidatorsAPI implements ValidatorsActiveAPI {
     throw new UnimplementedError();
   }
 
+  async activeFor(): Promise<ActiveNodeSetSnapshot> {
+    throw new UnimplementedError();
+  }
+
   async updatesSince(): Promise<ActiveNodeSetUpdate> {
     throw new UnimplementedError();
   }

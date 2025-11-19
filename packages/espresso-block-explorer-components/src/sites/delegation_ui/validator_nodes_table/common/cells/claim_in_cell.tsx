@@ -1,10 +1,10 @@
 import { Now } from '@/components/contexts/NowProvider';
 import Text from '@/components/text/Text';
 import TimeLeftText from '@/components/text/TimeLeftText';
+import { PendingExitsContext } from '@/sites/delegation_ui/contexts/pending_exits_context';
+import { PendingUndelegationsContext } from '@/sites/delegation_ui/contexts/pending_undelegations_context';
+import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import React from 'react';
-import { PendingExitsContext } from 'sites/delegation_ui/contexts/pending_exits_context';
-import { PendingUndelegationsContext } from 'sites/delegation_ui/contexts/pending_undelegations_context';
-import { ValidatorNodeContext } from 'sites/delegation_ui/contexts/validator_node_context';
 import './claim_in_cell.css';
 
 /**

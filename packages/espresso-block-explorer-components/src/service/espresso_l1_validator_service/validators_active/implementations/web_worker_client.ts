@@ -44,6 +44,15 @@ export class WebWorkerClientBasedValidatorsActiveAPI
   async active(): Promise<ActiveNodeSetSnapshot> {
     return await this.sendRequest(activeNodeSetSnapshotJSONCodec, 'active');
   }
+
+  async activeFor(height: bigint): Promise<ActiveNodeSetSnapshot> {
+    return await this.sendRequest(
+      activeNodeSetSnapshotJSONCodec,
+      'activeFor',
+      bigintCodec.encode(height),
+    );
+  }
+
   async updatesSince(hash: bigint): Promise<ActiveNodeSetUpdate> {
     return await this.sendRequest(
       activeNodeSetUpdateJSONCodec,

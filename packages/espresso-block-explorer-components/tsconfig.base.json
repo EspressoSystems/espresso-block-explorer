@@ -18,6 +18,7 @@
       "@/loading/*": ["./components/loading/*"],
       "@/models/*": ["./models/*"],
       "@/service/*": ["./service/*"],
+      "@/sites/*": ["./sites/*"],
       "@/text/*": ["./components/text/*"],
       "@/typography/*": ["./components/typography/*"],
       "@/visual/*": ["./components/visual/*"]

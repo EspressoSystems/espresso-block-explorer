@@ -2,10 +2,10 @@ import { DataContext } from '@/components/contexts/DataProvider';
 import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import { neverPromise } from '@/functional/functional_async';
+import { ESPTokenContractContext } from '@/sites/delegation_ui/contexts/esp_token_contract_context';
+import { L1RefreshTimestampContext } from '@/sites/delegation_ui/contexts/l1_refresh_timestamp_context';
+import { StakeTableContractContext } from '@/sites/delegation_ui/contexts/stake_table_contract_context';
 import React from 'react';
-import { ESPTokenContractContext } from 'sites/delegation_ui/contexts/esp_token_contract_context';
-import { L1RefreshTimestampContext } from 'sites/delegation_ui/contexts/l1_refresh_timestamp_context';
-import { StakeTableContractContext } from 'sites/delegation_ui/contexts/stake_table_contract_context';
 
 export const CurrentAllowanceToStakeTableContext = React.createContext<
   null | bigint
