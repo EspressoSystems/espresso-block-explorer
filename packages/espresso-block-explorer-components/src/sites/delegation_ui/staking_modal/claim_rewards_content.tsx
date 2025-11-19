@@ -30,6 +30,10 @@ import { StakingContent } from './staking_content';
 import { StakingHeader } from './staking_header';
 import { StakingModalTitle } from './staking_modal_title';
 
+/**
+ * ClaimRewardsContent is a React component that displays the content
+ * for claiming rewards in the staking modal.
+ */
 export const ClaimRewardsContent: React.FC = () => {
   return (
     <>
@@ -50,6 +54,10 @@ export const ClaimRewardsContent: React.FC = () => {
   );
 };
 
+/**
+ * ProvideContractGasEstimate is a React component that provides the gas
+ * estimate for claiming rewards to its children.
+ */
 const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
@@ -87,6 +95,10 @@ const TransformDataToGasEstimate: React.FC<React.PropsWithChildren> = ({
   );
 };
 
+/**
+ * ClaimRewardsActionsArea is a React component that displays the actions area
+ * for claiming rewards in the staking modal.
+ */
 const ClaimRewardsActionsArea: React.FC = () => {
   const l1Methods = React.useContext(L1MethodsContext);
   const rewardClaimContract = React.useContext(RewardClaimContractContext);
@@ -107,13 +119,11 @@ const ClaimRewardsActionsArea: React.FC = () => {
     lifetimeClaimedRewards;
 
   if (
-    l1Methods === null ||
     // If the Contracts are not set
+    l1Methods === null ||
     rewardClaimContract === null ||
     // We do not have a reward claim input
-    rewardClaimInput === null ||
-    // We have no rewards to claim
-    claimableRewardsBalance <= 0n
+    rewardClaimInput === null
   ) {
     return (
       <div className="staking-modal-unstaking-actions-area">
@@ -124,6 +134,7 @@ const ClaimRewardsActionsArea: React.FC = () => {
       </div>
     );
   }
+
   const performClaimRewardsAction = () =>
     setClaimRewardsAsyncIterable(
       performClaimRewards(
@@ -134,14 +145,46 @@ const ClaimRewardsActionsArea: React.FC = () => {
       ),
     );
 
+  if (asyncSnapshot.hasError) {
+    // There was an error claiming rewards
+    return (
+      <div className="staking-modal-unstaking-actions-area error">
+        <div>
+          <Text text="Claim Failed" />
+        </div>
+        <ButtonLarge
+          className="btn-undelegate"
+          onClick={performClaimRewardsAction}
+        >
+          <Text text="Retry" />
+        </ButtonLarge>
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.hasData &&
+    (asyncSnapshot.data?.status ?? 0) >=
+      PerformWriteTransactionStatus.receiptRetrieved
+  ) {
+    // We have received the receipt, we *should* be good to go
+    return (
+      <div className="staking-modal-unstaking-actions-area succeeded">
+        <div>
+          <Text text="Claim Successful" />
+        </div>
+        <ButtonLarge onClick={close}>
+          <Text text="Close" />
+        </ButtonLarge>
+      </div>
+    );
+  }
+
   if (
     asyncSnapshot.asyncState === AsyncState.waiting ||
-    (asyncSnapshot.data &&
-      !(
-        asyncSnapshot.data.status >=
-        PerformWriteTransactionStatus.receiptRetrieved
-      ))
+    asyncSnapshot.asyncState == AsyncState.active
   ) {
+    // We are waiting for the transaction to be completed
     return (
       <div className="staking-modal-unstaking-actions-area waiting">
         <div>
@@ -154,30 +197,13 @@ const ClaimRewardsActionsArea: React.FC = () => {
     );
   }
 
-  if (asyncSnapshot.asyncState === AsyncState.done) {
-    if (asyncSnapshot.hasError) {
-      return (
-        <div className="staking-modal-unstaking-actions-area error">
-          <div>
-            <Text text="Claim Failed" />
-          </div>
-          <ButtonLarge
-            className="btn-undelegate"
-            onClick={performClaimRewardsAction}
-          >
-            <Text text="Retry" />
-          </ButtonLarge>
-        </div>
-      );
-    }
-
+  if (claimableRewardsBalance <= 0n) {
+    // We have no rewards to claim
     return (
-      <div className="staking-modal-unstaking-actions-area succeeded">
-        <div>
-          <Text text="Claim Successful" />
-        </div>
-        <ButtonLarge onClick={close}>
-          <Text text="Close" />
+      <div className="staking-modal-unstaking-actions-area">
+        <div>&nbsp;</div>
+        <ButtonLarge className="btn-undelegate" disabled>
+          <Text text="Claim Rewards" />
         </ButtonLarge>
       </div>
     );

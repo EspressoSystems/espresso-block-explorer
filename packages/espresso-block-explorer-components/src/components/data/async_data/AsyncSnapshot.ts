@@ -73,6 +73,12 @@ export abstract class AsyncSnapshot<T> {
   public static withError<T>(asyncState: AsyncState, error: unknown) {
     return new AsyncSnapshotError<T>(asyncState, error);
   }
+
+  toJSON() {
+    return {
+      asyncState: this.asyncState,
+    };
+  }
 }
 
 /**

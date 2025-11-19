@@ -4,8 +4,8 @@ import './progress_indicator_area.css';
 export const ProgressIndicatorArea: React.FC = () => {
   return (
     <>
-      <DecorationDotsMask />
       <div className="staking-modal-progress-indicator-area" />
+      <DecorationDotsMask />
     </>
   );
 };

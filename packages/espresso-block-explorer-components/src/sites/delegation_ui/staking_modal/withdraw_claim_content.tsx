@@ -109,11 +109,9 @@ const WithdrawClaimActionsArea: React.FC = () => {
   const toWithdraw = undelegationObject?.amount ?? 0n;
 
   if (
-    l1Methods === null ||
     // If the Contracts are not set
-    stakeTableContract === null ||
-    // We have no staking amount
-    toWithdraw <= 0n
+    l1Methods === null ||
+    stakeTableContract === null
   ) {
     return (
       <div className="staking-modal-unstaking-actions-area">
@@ -135,14 +133,46 @@ const WithdrawClaimActionsArea: React.FC = () => {
       ),
     );
 
+  if (asyncSnapshot.hasError) {
+    // There was an error processing the claim withdrawal.
+    return (
+      <div className="staking-modal-unstaking-actions-area error">
+        <div>
+          <Text text="Claim Stake Failed" />
+        </div>
+        <ButtonLarge
+          className="btn-undelegate"
+          onClick={performClaimWithdrawalAction}
+        >
+          <Text text="Retry" />
+        </ButtonLarge>
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.hasData &&
+    (asyncSnapshot.data?.status ?? 0) >=
+      PerformWriteTransactionStatus.receiptRetrieved
+  ) {
+    // Claim withdrawal succeeded
+    return (
+      <div className="staking-modal-unstaking-actions-area succeeded">
+        <div>
+          <Text text="Stake Claimed Successfully" />
+        </div>
+        <ButtonLarge onClick={close}>
+          <Text text="Close" />
+        </ButtonLarge>
+      </div>
+    );
+  }
+
   if (
     asyncSnapshot.asyncState === AsyncState.waiting ||
-    (asyncSnapshot.data &&
-      !(
-        asyncSnapshot.data.status >=
-        PerformWriteTransactionStatus.receiptRetrieved
-      ))
+    asyncSnapshot.asyncState == AsyncState.active
   ) {
+    // We are waiting for the claim withdrawal to be processed.
     return (
       <div className="staking-modal-unstaking-actions-area waiting">
         <div>
@@ -155,30 +185,13 @@ const WithdrawClaimActionsArea: React.FC = () => {
     );
   }
 
-  if (asyncSnapshot.asyncState === AsyncState.done) {
-    if (asyncSnapshot.hasError) {
-      return (
-        <div className="staking-modal-unstaking-actions-area error">
-          <div>
-            <Text text="Claim Stake Failed" />
-          </div>
-          <ButtonLarge
-            className="btn-undelegate"
-            onClick={performClaimWithdrawalAction}
-          >
-            <Text text="Retry" />
-          </ButtonLarge>
-        </div>
-      );
-    }
-
+  if (toWithdraw <= 0n) {
+    // We have no staking amount
     return (
-      <div className="staking-modal-unstaking-actions-area succeeded">
-        <div>
-          <Text text="Stake Claimed Successfully" />
-        </div>
-        <ButtonLarge onClick={close}>
-          <Text text="Close" />
+      <div className="staking-modal-unstaking-actions-area">
+        <div>&nbsp;</div>
+        <ButtonLarge className="btn-undelegate" disabled>
+          <Text text="Claim Stake" />
         </ButtonLarge>
       </div>
     );

@@ -109,11 +109,9 @@ const WithdrawExitActionsArea: React.FC = () => {
   );
 
   if (
-    l1Methods === null ||
     // If the Contracts are not set
-    stakeTableContract === null ||
-    // We have no staking amount
-    currentStakeToValidator <= 0n
+    l1Methods === null ||
+    stakeTableContract === null
   ) {
     return (
       <div className="staking-modal-unstaking-actions-area">
@@ -124,6 +122,7 @@ const WithdrawExitActionsArea: React.FC = () => {
       </div>
     );
   }
+
   const performClaimExitAction = () =>
     setClaimExitAsyncIterable(
       performClaimValidatorExit(
@@ -134,14 +133,46 @@ const WithdrawExitActionsArea: React.FC = () => {
       ),
     );
 
+  if (asyncSnapshot.hasError) {
+    // There was an error claiming exit
+    return (
+      <div className="staking-modal-unstaking-actions-area error">
+        <div>
+          <Text text="Claim Exit Failed" />
+        </div>
+        <ButtonLarge
+          className="btn-undelegate"
+          onClick={performClaimExitAction}
+        >
+          <Text text="Retry" />
+        </ButtonLarge>
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.hasData &&
+    (asyncSnapshot.data?.status ?? 0) >=
+      PerformWriteTransactionStatus.receiptRetrieved
+  ) {
+    // Claim exit succeeded
+    return (
+      <div className="staking-modal-unstaking-actions-area succeeded">
+        <div>
+          <Text text="Exit Claimed Successfully" />
+        </div>
+        <ButtonLarge onClick={close}>
+          <Text text="Close" />
+        </ButtonLarge>
+      </div>
+    );
+  }
+
   if (
     asyncSnapshot.asyncState === AsyncState.waiting ||
-    (asyncSnapshot.data &&
-      !(
-        asyncSnapshot.data.status >=
-        PerformWriteTransactionStatus.receiptRetrieved
-      ))
+    asyncSnapshot.asyncState == AsyncState.active
   ) {
+    // We are waiting for the transaction to be completed
     return (
       <div className="staking-modal-unstaking-actions-area waiting">
         <div>
@@ -154,30 +185,13 @@ const WithdrawExitActionsArea: React.FC = () => {
     );
   }
 
-  if (asyncSnapshot.asyncState === AsyncState.done) {
-    if (asyncSnapshot.hasError) {
-      return (
-        <div className="staking-modal-unstaking-actions-area error">
-          <div>
-            <Text text="Claim Exit Failed" />
-          </div>
-          <ButtonLarge
-            className="btn-undelegate"
-            onClick={performClaimExitAction}
-          >
-            <Text text="Retry" />
-          </ButtonLarge>
-        </div>
-      );
-    }
-
+  if (currentStakeToValidator <= 0n) {
+    // We have no staking amount
     return (
-      <div className="staking-modal-unstaking-actions-area succeeded">
-        <div>
-          <Text text="Exit Claimed Successfully" />
-        </div>
-        <ButtonLarge onClick={close}>
-          <Text text="Close" />
+      <div className="staking-modal-unstaking-actions-area">
+        <div>&nbsp;</div>
+        <ButtonLarge className="btn-undelegate" disabled>
+          <Text text="Claim Exit" />
         </ButtonLarge>
       </div>
     );
