@@ -28,8 +28,8 @@ function score(
   return (
     Number(node.stake) *
     (1 - node.commission.valueOf()) *
-    (active?.leaderParticipation?.valueOf() ?? 0.5) *
-    (active?.voterParticipation?.valueOf() ?? 0.5)
+    (2 - (active?.leaderParticipation?.valueOf() ?? 0.0)) *
+    (1 + (active?.voterParticipation?.valueOf() ?? 0.0))
   );
 }
 
