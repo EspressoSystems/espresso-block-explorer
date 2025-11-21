@@ -7,3 +7,4 @@ import { default as React } from 'react';
  * rewards by the active wallet.
  */
 export declare const ClaimableRewardsCard: React.FC;
+export declare const ClaimAllButton: React.FC<React.PropsWithChildren>;
