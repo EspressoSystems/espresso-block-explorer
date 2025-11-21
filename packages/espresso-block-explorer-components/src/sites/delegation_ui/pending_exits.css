@@ -42,3 +42,32 @@
   );
   --button-base--hovered--foreground-color: var(--color--brown--0);
 }
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .pending-exits {
+    margin-inline: 16px;
+  }
+
+  .pending-exits table.all-validators-table {
+    margin-inline: 0;
+  }
+
+  .pending-exits table.all-validators-table tbody tr td:nth-child(9)::before {
+    content: '';
+  }
+
+  .pending-exits table.all-validators-table tbody tr td:nth-child(9) {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+
+  .pending-exits table.all-validators-table tbody tr td:nth-child(9) .bbtn {
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+}

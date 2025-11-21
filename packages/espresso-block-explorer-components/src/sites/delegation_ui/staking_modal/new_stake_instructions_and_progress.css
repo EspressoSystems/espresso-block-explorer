@@ -2,6 +2,10 @@
   background: var(--color--brown--3);
 }
 
+.bbtn.retry {
+  background: var(--color--undesign--red--1);
+}
+
 .staking-modal-instruction-and-progress {
   position: relative;
   color: var(--color--brown--text);

@@ -101,3 +101,20 @@
 .staking-modal-current-balance-label {
   opacity: 60%;
 }
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .staking-modal-initial-summary-and-interaction {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'notice'
+      'validator'
+      'interaction'
+      'extra';
+  }
+}
+
+@media screen and (max-width: 320px) {
+}

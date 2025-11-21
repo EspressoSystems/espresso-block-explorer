@@ -37,7 +37,9 @@ export const ClaimableRewardsCard: React.FC = () => {
       <h2>
         <Text text="Claimable Rewards" />
       </h2>
-      <ClaimAllButton />
+      <ClaimAllButton>
+        <Text text="Claim All" />
+      </ClaimAllButton>
 
       <CardContentValue>
         <MoneyText money={MonetaryValue.ESP(claimableRewards)} />
@@ -46,7 +48,9 @@ export const ClaimableRewardsCard: React.FC = () => {
   );
 };
 
-const ClaimAllButton: React.FC = () => {
+export const ClaimAllButton: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
   const claimableRewardsInput = React.useContext(
     EspressoRewardClaimInputContext,
   );
@@ -62,7 +66,7 @@ const ClaimAllButton: React.FC = () => {
   if (claimableRewards <= 0n) {
     return (
       <ButtonLarge className="action" disabled>
-        <Text text="Claim All" />
+        {children}
       </ButtonLarge>
     );
   }
@@ -75,7 +79,7 @@ const ClaimAllButton: React.FC = () => {
         modalControls.open();
       }}
     >
-      <Text text="Claim All" />
+      {children}
     </ButtonLarge>
   );
 };

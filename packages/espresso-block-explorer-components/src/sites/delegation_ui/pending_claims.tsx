@@ -70,8 +70,8 @@ const PendingClaimsSection: React.FC = () => {
   return (
     <CollapsableSection className="pending-claims">
       <CollapsableHeader>
+        <Unlock />
         <h2>
-          <Unlock />
           <Text text="Your recently unstaked your delegation.  You can claim back your delegation now." />
         </h2>
       </CollapsableHeader>

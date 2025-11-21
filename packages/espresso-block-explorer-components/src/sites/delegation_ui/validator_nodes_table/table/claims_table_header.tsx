@@ -10,6 +10,7 @@ import { ValidatorHeadCell } from '../common/cells/validator_head_cell';
 import {
   CellType,
   TableSortControlsContext,
+  TableSortStateContext,
 } from '../common/validator_table_sort_state';
 
 /**
@@ -17,35 +18,70 @@ import {
  * the header row of the delegation table with sortable columns.
  */
 export const ClaimsDelegationTableHeader: React.FC = () => {
-  const { sortBy } = React.useContext(TableSortControlsContext);
+  const { sortBy: toggleSort } = React.useContext(TableSortControlsContext);
+  const { sortDirection, sortBy } = React.useContext(TableSortStateContext);
 
   return (
     <thead>
       <tr>
-        <th className="sortable" onClick={() => sortBy(CellType.rank)}>
+        <th
+          className="sortable"
+          data-sort-column={
+            sortBy === CellType.rank ? sortDirection : undefined
+          }
+          onClick={() => toggleSort(CellType.rank)}
+        >
           <RankHeadCell />
         </th>
-        <th className="sortable" onClick={() => sortBy(CellType.validator)}>
+        <th
+          className="sortable"
+          data-sort-column={
+            sortBy === CellType.validator ? sortDirection : undefined
+          }
+          onClick={() => toggleSort(CellType.validator)}
+        >
           <ValidatorHeadCell />
         </th>
-        <th className="sortable" onClick={() => sortBy(CellType.totalStake)}>
+        <th
+          className="sortable"
+          data-sort-column={
+            sortBy === CellType.totalStake ? sortDirection : undefined
+          }
+          onClick={() => toggleSort(CellType.totalStake)}
+        >
           <TotalStakeHeadCell />
         </th>
-        <th className="sortable" onClick={() => sortBy(CellType.fee)}>
+        <th
+          className="sortable"
+          data-sort-column={sortBy === CellType.fee ? sortDirection : undefined}
+          onClick={() => toggleSort(CellType.fee)}
+        >
           <FeeHeadCell />
         </th>
-        <th className="sortable" onClick={() => sortBy(CellType.missedSlots)}>
+        <th
+          className="sortable"
+          data-sort-column={
+            sortBy === CellType.missedSlots ? sortDirection : undefined
+          }
+          onClick={() => toggleSort(CellType.missedSlots)}
+        >
           <MissedSlotsHeadCell />
         </th>
         <th
           className="sortable"
-          onClick={() => sortBy(CellType.participationRate)}
+          data-sort-column={
+            sortBy === CellType.participationRate ? sortDirection : undefined
+          }
+          onClick={() => toggleSort(CellType.participationRate)}
         >
           <ParticipationRateHeadCell />
         </th>
         <th
           className="sortable"
-          onClick={() => sortBy(CellType.hotShotConsensus)}
+          data-sort-column={
+            sortBy === CellType.hotShotConsensus ? sortDirection : undefined
+          }
+          onClick={() => toggleSort(CellType.hotShotConsensus)}
         >
           <HotShotConsensusHeadCell />
         </th>

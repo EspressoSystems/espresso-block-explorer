@@ -1,3 +1,4 @@
+import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
 import Text from '@/components/text/Text';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
@@ -80,6 +81,18 @@ export const DelegateButton: React.FC = () => {
     return (
       <ButtonLarge className="btn-delegate approved" disabled>
         <Text text="Delegated" />
+      </ButtonLarge>
+    );
+  }
+
+  if (
+    asyncSnapshot.asyncState === AsyncState.waiting ||
+    asyncSnapshot.asyncState == AsyncState.active
+  ) {
+    // We are waiting for the transaction to be completed
+    return (
+      <ButtonLarge className="btn-delegate approving" disabled>
+        <Text text="Delegate" />
       </ButtonLarge>
     );
   }

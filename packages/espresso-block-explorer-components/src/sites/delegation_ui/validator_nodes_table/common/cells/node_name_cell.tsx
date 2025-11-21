@@ -2,6 +2,7 @@ import WalletAddressText from '@/components/text/WalletAddressText';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import React from 'react';
+import CopyWalletAddress from './copy_wallet_address';
 
 /**
  * NameNodeCell displays the wallet address of a validator node. It is
@@ -10,5 +11,11 @@ import React from 'react';
  */
 export const NodeNameCell: React.FC = () => {
   const validator = React.useContext(ValidatorNodeContext);
-  return <WalletAddressText value={new WalletAddress(validator.address)} />;
+  const walletAddress = new WalletAddress(validator.address);
+
+  return (
+    <CopyWalletAddress value={walletAddress}>
+      <WalletAddressText value={walletAddress} />
+    </CopyWalletAddress>
+  );
 };

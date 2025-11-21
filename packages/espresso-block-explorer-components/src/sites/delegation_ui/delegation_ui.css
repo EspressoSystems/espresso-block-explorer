@@ -16,6 +16,7 @@ main.delegation-ui {
     var(--color--brown--1) 100%
   );
   color: var(--color--brown--text);
+  overflow: hidden;
 }
 
 main.delegation-ui::before {

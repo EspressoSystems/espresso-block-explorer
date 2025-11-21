@@ -1,4 +1,6 @@
 import { addClassToClassName } from '@/components/higher_order';
+import Text from '@/components/text/Text';
+import ChevronDown from '@/components/visual/icons/feather/chevron_down';
 import React from 'react';
 import './collapsable_section.css';
 import {
@@ -18,11 +20,28 @@ export const CollapsableSection: React.FC<CollapsableSectionProps> = ({
   ...rest
 }) => {
   return (
+    <ProvideCollapseState>
+      <CollapseContent className={className} {...rest}>
+        {children}
+      </CollapseContent>
+    </ProvideCollapseState>
+  );
+};
+
+const CollapseContent: React.FC<CollapsableSectionProps> = ({
+  children,
+  className,
+  ...rest
+}) => {
+  const collapseState = React.useContext(CollapseStateContext);
+
+  return (
     <section
       className={addClassToClassName(className, 'collapsable-section')}
       {...rest}
+      data-collapsed={collapseState === CollapseState.collapsed}
     >
-      <ProvideCollapseState>{children}</ProvideCollapseState>
+      {children}
     </section>
   );
 };
@@ -56,10 +75,13 @@ const CollapseToggleButton: React.FC = () => {
 
   return (
     <ButtonLarge
-      className="collapse-toggle"
+      className="bbtn-collapse-toggle"
       onClick={() => setCollapseState(determineCollapseToggle(collapseState))}
     >
-      {collapseState ? 'Collapse' : 'Expand'}
+      <span>
+        <Text text={collapseState ? 'Collapse' : 'Expand'} />
+      </span>
+      <ChevronDown />
     </ButtonLarge>
   );
 };

@@ -22,7 +22,7 @@ export const ConnectWalletButton: React.FC = () => {
 
   if (address) {
     return (
-      <span>
+      <span className="wallet-connected-container">
         <span className="wallet-address-preview">
           <WalletAddressText
             value={new WalletAddress(hexArrayBufferCodec.decode(address))}
@@ -33,7 +33,9 @@ export const ConnectWalletButton: React.FC = () => {
           className="connect-wallet connected-wallet"
           onClick={modals.openAccountModal}
         >
-          <Text text="Disconnect" />
+          <span className="disconnect-label">
+            <Text text="Disconnect" />
+          </span>
           <LogOut />
         </ButtonLarge>
       </span>

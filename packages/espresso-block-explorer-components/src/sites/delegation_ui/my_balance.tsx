@@ -2,7 +2,10 @@ import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import Text from '@/components/text/Text';
 import React from 'react';
 import { AvailableBalanceCard } from './elements/card/available_balance_card';
-import { ClaimableRewardsCard } from './elements/card/claimable_rewards_card';
+import {
+  ClaimableRewardsCard,
+  ClaimAllButton,
+} from './elements/card/claimable_rewards_card';
 import { TotalBalanceCard } from './elements/card/total_balance_card';
 import { TotalStakedCard } from './elements/card/total_staked_card';
 import './my_balance.css';
@@ -25,6 +28,10 @@ export const MyBalance: React.FC = () => {
         <TotalStakedCard />
         <ClaimableRewardsCard />
       </div>
+
+      <ClaimAllButton>
+        <Text text="Claim All Rewards" />
+      </ClaimAllButton>
     </section>
   );
 };

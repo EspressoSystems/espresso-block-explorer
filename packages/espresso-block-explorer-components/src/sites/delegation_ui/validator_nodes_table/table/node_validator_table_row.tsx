@@ -1,5 +1,6 @@
 import { ActionsCell } from '../common/cells/actions_cell';
 import { ClaimInCell } from '../common/cells/claim_in_cell';
+import { CombinedDetailsCell } from '../common/cells/combined_details_cell';
 import { FeeCell } from '../common/cells/fee_cell';
 import { HotShotConsensusCell } from '../common/cells/hot_shot_consensus_cell';
 import { MissedSlotsCell } from '../common/cells/missed_slot_cell';
@@ -15,6 +16,9 @@ import { TotalStakeCell } from '../common/cells/total_stake_cell';
 export const NodeValidatorTableRow: React.FC = () => {
   return (
     <tr>
+      <td className="combined-details-cell">
+        <CombinedDetailsCell />
+      </td>
       <td>
         <RankCell />
       </td>

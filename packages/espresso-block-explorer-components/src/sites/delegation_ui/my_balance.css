@@ -14,3 +14,30 @@ section.my-balance > h2 {
   margin-block-start: 32px;
   margin-block-end: 16px;
 }
+
+.my-balance > .bbtn {
+  display: none;
+}
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .my-balance {
+    padding-inline: 16px;
+  }
+
+  .my-balance-stats {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 108px);
+  }
+
+  .my-balance > .bbtn {
+    display: block;
+    margin-top: 8px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+}

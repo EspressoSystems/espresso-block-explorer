@@ -22,6 +22,7 @@
 .btn-segmented .bbtn {
   --button-base--default--height: 28px;
   --button-base--default--border-radius: 4px;
+  white-space: nowrap;
 }
 
 .btn-segmented .bbtn[data-selected='false'] {

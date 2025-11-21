@@ -79,7 +79,7 @@ export const ApproveButton: React.FC = () => {
   ) {
     // Approval succeeded
     return (
-      <ButtonLarge className="btn-approve approving" disabled>
+      <ButtonLarge className="btn-approve approved" disabled>
         <Text text="Approved" />
       </ButtonLarge>
     );

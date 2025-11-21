@@ -1,0 +1,19 @@
+button.bbtn--copy {
+  appearance: none;
+  box-sizing: border-box;
+  margin: 0 4px;
+  padding: 0;
+  background-color: transparent;
+  --icon--fill-color: var(--validator-node-table--header--foreground-color);
+  border: none;
+  cursor: pointer;
+}
+
+button.bbtn--copy > svg {
+  width: 14px;
+  height: 14px;
+}
+
+button.bbtn--copy.copied {
+  --icon--fill-color: var(--color--undesign--green-2);
+}
