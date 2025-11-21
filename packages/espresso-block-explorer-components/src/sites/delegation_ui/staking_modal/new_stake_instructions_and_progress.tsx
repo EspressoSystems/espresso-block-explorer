@@ -78,14 +78,8 @@ export const NewStakeInstructionsAndProgress: React.FC = () => {
     (approveAsyncSnapshot.data?.status ?? 0) >=
       PerformWriteTransactionStatus.receiptRetrieved
   ) {
-    return (
-      <div className="staking-modal-instructions-and-progress approved succeeded">
-        <span>
-          <Text text="Approval successful" />
-        </span>
-        <ProgressIndicatorArea />
-      </div>
-    );
+    // We don't display a state here to avoid confusing the user
+    // since, we need to prompt them to confirm the delegation next.
   }
 
   // Approval attempt waiting

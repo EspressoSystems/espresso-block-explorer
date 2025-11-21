@@ -56,14 +56,14 @@ export const SufficientBalance: Story = {
 
 export const ApproveSubmitting: Story = {
   args: {
-    amount: '0',
+    amount: '1250000000000000000',
     approvalAsyncSnapshot: AsyncSnapshot.waiting(),
   },
 };
 
 export const ApproveWaiting: Story = {
   args: {
-    amount: '0',
+    amount: '1250000000000000000',
     approvalAsyncSnapshot: AsyncSnapshot.withData(
       AsyncState.active,
       new PerformWriteTransactionWaiting(),
@@ -73,7 +73,7 @@ export const ApproveWaiting: Story = {
 
 export const ApproveSubmitted: Story = {
   args: {
-    amount: '0',
+    amount: '1250000000000000000',
     approvalAsyncSnapshot: AsyncSnapshot.withData(
       AsyncState.active,
       new PerformWriteTransactionSucceeded(FAKE_TRANSACTION_HASH),
@@ -83,7 +83,7 @@ export const ApproveSubmitted: Story = {
 
 export const ApproveWaitingForReceipt: Story = {
   args: {
-    amount: '0',
+    amount: '1250000000000000000',
     approvalAsyncSnapshot: AsyncSnapshot.withData(
       AsyncState.active,
       new PerformWriteTransactionReceiptWaiting(FAKE_TRANSACTION_HASH),
@@ -93,7 +93,8 @@ export const ApproveWaitingForReceipt: Story = {
 
 export const ApproveReceiptRetrieved: Story = {
   args: {
-    amount: '0',
+    allowance: '1250000000000000000',
+    amount: '1250000000000000000',
     approvalAsyncSnapshot: AsyncSnapshot.withData(
       AsyncState.done,
       new PerformWriteTransactionReceiptRetrieved(
