@@ -1,0 +1,23 @@
+import WalletAddress from '@/models/wallet_address/wallet_address';
+import React from 'react';
+import CopyButton from './copy_button';
+
+export interface CopyWalletAddressProps {
+  value: WalletAddress;
+  children: React.ReactNode | React.ReactNode[];
+}
+
+/**
+ * CopyWalletAddress is a component that will display a `CopyButton` with the
+ * contents for the `CopyButton` the EIP-55 Formatted Wallet Address
+ */
+const CopyWalletAddress: React.FC<CopyWalletAddressProps> = (props) => {
+  return (
+    <span>
+      {props.children}
+      <CopyButton content={props.value.toString()} />
+    </span>
+  );
+};
+
+export default CopyWalletAddress;

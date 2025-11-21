@@ -56,14 +56,14 @@ export const SufficientBalance: Story = {
 
 export const ApproveSubmitting: Story = {
   args: {
-    amount: '1250000000000000000',
+    amount: '0',
     approvalAsyncSnapshot: AsyncSnapshot.waiting(),
   },
 };
 
 export const ApproveWaiting: Story = {
   args: {
-    amount: '1250000000000000000',
+    amount: '0',
     approvalAsyncSnapshot: AsyncSnapshot.withData(
       AsyncState.active,
       new PerformWriteTransactionWaiting(),
@@ -73,7 +73,7 @@ export const ApproveWaiting: Story = {
 
 export const ApproveSubmitted: Story = {
   args: {
-    amount: '1250000000000000000',
+    amount: '0',
     approvalAsyncSnapshot: AsyncSnapshot.withData(
       AsyncState.active,
       new PerformWriteTransactionSucceeded(FAKE_TRANSACTION_HASH),
@@ -83,7 +83,7 @@ export const ApproveSubmitted: Story = {
 
 export const ApproveWaitingForReceipt: Story = {
   args: {
-    amount: '1250000000000000000',
+    amount: '0',
     approvalAsyncSnapshot: AsyncSnapshot.withData(
       AsyncState.active,
       new PerformWriteTransactionReceiptWaiting(FAKE_TRANSACTION_HASH),
@@ -93,7 +93,7 @@ export const ApproveWaitingForReceipt: Story = {
 
 export const ApproveReceiptRetrieved: Story = {
   args: {
-    amount: '1250000000000000000',
+    amount: '0',
     approvalAsyncSnapshot: AsyncSnapshot.withData(
       AsyncState.done,
       new PerformWriteTransactionReceiptRetrieved(
@@ -114,9 +114,16 @@ export const ApproveSubmissionError: Story = {
   },
 };
 
+export const NoApprovalNeeded: Story = {
+  args: {
+    allowance: '1250000000000000000',
+    amount: '1250000000000000000',
+  },
+};
+
 export const DelegateSubmitting: Story = {
   args: {
-    amount: '1250000000000000000',
+    amount: '0',
     allowance: '1250000000000000000',
     delegationAsyncSnapshot: AsyncSnapshot.waiting(),
   },
@@ -124,7 +131,7 @@ export const DelegateSubmitting: Story = {
 
 export const DelegateWaiting: Story = {
   args: {
-    amount: '1250000000000000000',
+    amount: '0',
     allowance: '1250000000000000000',
     delegationAsyncSnapshot: AsyncSnapshot.withData(
       AsyncState.active,
@@ -135,7 +142,7 @@ export const DelegateWaiting: Story = {
 
 export const DelegateSubmitted: Story = {
   args: {
-    amount: '1250000000000000000',
+    amount: '0',
     allowance: '1250000000000000000',
     delegationAsyncSnapshot: AsyncSnapshot.withData(
       AsyncState.active,
@@ -146,7 +153,7 @@ export const DelegateSubmitted: Story = {
 
 export const DelegateWaitingForReceipt: Story = {
   args: {
-    amount: '1250000000000000000',
+    amount: '0',
     allowance: '1250000000000000000',
     delegationAsyncSnapshot: AsyncSnapshot.withData(
       AsyncState.active,
@@ -157,7 +164,7 @@ export const DelegateWaitingForReceipt: Story = {
 
 export const DelegateReceiptRetrieved: Story = {
   args: {
-    amount: '1250000000000000000',
+    amount: '0',
     allowance: '1250000000000000000',
     delegationAsyncSnapshot: AsyncSnapshot.withData(
       AsyncState.done,

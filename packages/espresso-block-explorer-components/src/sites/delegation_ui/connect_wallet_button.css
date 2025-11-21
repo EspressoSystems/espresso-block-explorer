@@ -9,8 +9,29 @@
 
   color: var(--color--brown--0);
   padding: 10px 12px 10px 10px;
+  white-space: nowrap;
+}
+
+.wallet-connected-container {
+  white-space: nowrap;
 }
 
 .wallet-address-preview {
   color: var(--color--brown--3);
+}
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .bbtn.connect-wallet .disconnect-label {
+    display: none;
+  }
+  .bbtn.connect-wallet svg.icon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media screen and (max-width: 320px) {
 }

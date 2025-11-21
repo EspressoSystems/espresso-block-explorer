@@ -4,6 +4,7 @@
   color: (--color--brown--text);
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr;
+  grid-template-areas: 'approve status delegate';
   gap: 24px;
   padding: 24px;
   padding-top: 48px;
@@ -14,4 +15,30 @@
   text-align: center;
   text-transform: uppercase;
   --button-base--default--height: 43px;
+}
+
+.staking-modal-staking-actions-area .bbtn.btn-approve {
+  grid-area: approve;
+}
+
+.staking-modal-staking-actions-area .staking-modal-instructions-and-progress {
+  grid-area: status;
+}
+
+.staking-modal-staking-actions-area .bbtn.btn-delegate {
+  grid-area: delegate;
+}
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .staking-modal-staking-actions-area {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: 'status status' 'approve delegate';
+    padding-top: 24px;
+  }
+}
+
+@media screen and (max-width: 320px) {
 }

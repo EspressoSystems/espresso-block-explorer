@@ -1,4 +1,5 @@
 import Text from '@/components/text/Text';
+import ChevronDown from '@/components/visual/icons/feather/chevron_down';
 import VerticalScroll from '@/components/visual/icons/feather/vertical-scroll';
 
 /**
@@ -11,6 +12,7 @@ export const HotShotConsensusHeadCell: React.FC = () => {
       <Text text="Consensus" />
       &nbsp;
       <VerticalScroll />
+      <ChevronDown />
     </>
   );
 };

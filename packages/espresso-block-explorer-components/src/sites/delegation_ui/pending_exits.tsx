@@ -67,8 +67,8 @@ const PendingExitsSection: React.FC = () => {
   return (
     <CollapsableSection className="pending-exits">
       <CollapsableHeader>
+        <Unlock />
         <h2>
-          <Unlock />
           <Text text="Validators you have delegated to have exited the Staking Table.  You can claim back your delegation now." />
         </h2>
       </CollapsableHeader>

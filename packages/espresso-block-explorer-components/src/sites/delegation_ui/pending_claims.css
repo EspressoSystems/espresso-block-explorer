@@ -37,3 +37,33 @@
   --button-base--hovered--background-color: var(--color--blue--2--alpha-53);
   --button-base--hovered--foreground-color: var(--color--brown--0);
 }
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .pending-claims {
+    margin-inline: 16px;
+  }
+
+  .pending-claims table.all-validators-table {
+    margin-inline: 0;
+  }
+
+  .pending-claims table.all-validators-table tbody tr td:nth-child(9)::before {
+    content: '';
+  }
+
+  .pending-claims table.all-validators-table tbody tr td:nth-child(9) {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    border-radius: 0 0 8px 8px;
+  }
+
+  .pending-claims table.all-validators-table tbody tr td:nth-child(9) .bbtn {
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+}

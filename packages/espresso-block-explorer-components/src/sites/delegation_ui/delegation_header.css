@@ -14,3 +14,16 @@ header.delegation {
   color: var(--delegation-header--text--color);
   --icon--fill-color: var(--delegation-header--text--color);
 }
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  header.delegation {
+    margin-inline: 20px;
+    margin-block: 20px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+}

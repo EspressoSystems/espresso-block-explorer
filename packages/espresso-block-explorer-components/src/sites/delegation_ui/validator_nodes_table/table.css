@@ -66,10 +66,31 @@ table.all-validators-table {
   border-spacing: 0;
 }
 
-table.all-validators-table th svg.icon {
-  vertical-align: middle;
+table.all-validators-table th svg.icon:nth-child(1) {
+  vertical-align: text-top;
+  padding-inline: 2px;
   width: 12px;
   height: 12px;
+}
+
+table.all-validators-table th[data-sort-column] svg.icon:nth-child(1) {
+  display: none;
+}
+
+table.all-validators-table th:not([data-sort-column]) svg.icon:nth-child(2) {
+  display: none;
+}
+
+table.all-validators-table th svg.icon:nth-child(2) {
+  vertical-align: text-top;
+  width: 16px;
+  height: 16px;
+  transition: transform 240ms ease-in-out;
+  will-change: transform;
+}
+
+table.all-validators-table th[data-sort-column='1'] svg.icon:nth-child(2) {
+  transform: rotate(180deg);
 }
 
 table.all-validators-table th {
@@ -103,6 +124,10 @@ table.all-validators-table tbody {
 }
 table.all-validators-table tbody tr td {
   background: var(--validator-node-table--cell--background-color);
+}
+
+table.all-validators-table tbody tr td:nth-child(1) {
+  display: none;
 }
 
 table.all-validators-table tbody tr:not(:nth-last-child(1)) td {
@@ -146,4 +171,170 @@ table.all-validators-table {
   --button-base--default--font-family: IBM Plex Mono, monospace;
   --button-base--default--border-width: 1px;
   --button-base--default--border-style: solid;
+}
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  table.all-validators-table {
+    margin: 0 16px;
+    background: none;
+    border: none;
+    border-radius: none;
+    display: block;
+    width: unset;
+  }
+
+  table.all-validators-table thead {
+    display: none;
+  }
+
+  table.all-validators-table tbody {
+    display: grid;
+    gap: 8px;
+  }
+
+  table.all-validators-table tbody tr:not(:nth-last-child(1)) td {
+    border: none;
+  }
+
+  table.all-validators-table tbody tr td:not(:nth-last-child(-n + 2)) {
+    border-bottom: 1px solid var(--validator-node-table--border-color);
+  }
+
+  table.all-validators-table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 76px auto auto 72px;
+    border: 1px solid var(--validator-node-table--border-color);
+    background: var(--color--brown--0);
+    border-radius: 8px;
+    overflow: hidden;
+    justify-content: stretch;
+    align-items: stretch;
+  }
+
+  table.all-validators-table th:nth-child(1) {
+    border-radius: 0;
+  }
+
+  table.all-validators-table th:nth-last-child(1) {
+    border-radius: 0;
+  }
+
+  table.all-validators-table tr:nth-last-child(1) td:nth-child(1) {
+    border-radius: 0;
+  }
+
+  table.all-validators-table tr:nth-last-child(1) td:nth-last-child(1) {
+    border-radius: 0;
+  }
+
+  table.all-validators-table tbody tr td {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 10px 24px;
+    height: unset;
+    justify-content: center;
+  }
+
+  table.all-validators-table tbody tr td::before {
+    color: var(--validator-node-table--header--foreground-color);
+    text-transform: uppercase;
+  }
+
+  table.all-validators-table tbody tr td:nth-child(1) {
+    display: unset;
+    border-block-end: 1px solid var(--validator-node-table--border-color);
+    grid-column-start: 1;
+    grid-column-end: 3;
+    border-radius: 8px 8px 0 0;
+  }
+
+  table.all-validators-table tbody tr td:nth-child(1) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+  }
+
+  table.all-validators-table tbody tr td:nth-child(1)::after {
+    content: '';
+    order: 4;
+    flex: 1;
+  }
+
+  table.all-validators-table tbody tr td:nth-child(1) > .consensus-chip {
+    order: 5;
+  }
+
+  table.all-validators-table tbody tr td:nth-child(2) {
+    display: none;
+  }
+
+  table.all-validators-table tbody tr td:nth-child(3) {
+    display: none;
+  }
+
+  table.all-validators-table tbody tr td:nth-child(8) {
+    display: none;
+  }
+
+  table.all-validators-table tbody tr td:nth-child(4)::before {
+    content: 'Total Stake';
+  }
+
+  table.all-validators-table tbody tr td:nth-child(4) {
+    order: 4;
+  }
+
+  table.all-validators-table tbody tr td:nth-child(5)::before {
+    content: 'Commission';
+  }
+
+  table.all-validators-table tbody tr td:nth-child(5) {
+    order: 5;
+    border-inline-start: 1px solid var(--validator-node-table--border-color);
+  }
+
+  table.all-validators-table tbody tr td:nth-child(6)::before {
+    content: 'Missed Slots';
+  }
+  table.all-validators-table tbody tr td:nth-child(6) {
+    order: 6;
+  }
+
+  table.all-validators-table tbody tr td:nth-child(7)::before {
+    content: 'Participation';
+  }
+  table.all-validators-table tbody tr td:nth-child(7) {
+    order: 7;
+    border-inline-start: 1px solid var(--validator-node-table--border-color);
+  }
+
+  table.all-validators-table tbody tr td:nth-child(9)::before {
+    content: 'Claim In';
+  }
+  table.all-validators-table tbody tr td:nth-child(9) {
+    order: 8;
+    padding-block: 16px;
+    border-radius: 0 0 0 8px;
+  }
+
+  table.all-validators-table tbody tr td:nth-child(10) {
+    order: 9;
+    padding-block: 16px;
+    border-radius: 0 0 8px 0;
+  }
+
+  table.all-validators-table tbody tr td:nth-child(10) .bbtn {
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 320px) {
 }

@@ -43,3 +43,32 @@
   letter-spacing: 0;
   margin: 0;
 }
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .network-stats {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto auto;
+    gap: 16px;
+    height: fit-content;
+  }
+
+  .network-stats-grid {
+    padding-inline: 16px;
+  }
+
+  .network-stat-value {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .network-stats h1 {
+    margin-inline: 16px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+}

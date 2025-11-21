@@ -30,8 +30,9 @@
 
 .collapsable-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  gap: 8px;
 
   --button-base--default--height: 28px;
   --button-base--default--background-color: var(--color--brown--0);
@@ -50,11 +51,55 @@
   font-size: 14px;
   line-height: 16px;
   color: inherit;
+  flex: 1 1 auto;
 }
 
-.collapsable-header h2 svg {
+.collapsable-header > svg {
   width: 16px;
   height: 16px;
-  margin-inline-end: 8px;
   vertical-align: bottom;
+  flex: 0 0 16px;
+}
+
+.collapsable-header::after {
+  content: '';
+  order: 0;
+  flex: 1;
+}
+
+.collapsable-header .bbtn-collapse-toggle {
+  order: 4;
+}
+
+.collapsable-header .bbtn-collapse-toggle svg {
+  display: none;
+}
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .collapsable-header .bbtn-collapse-toggle svg {
+    display: unset;
+    transform: rotateZ(0);
+    transition: transform 240ms ease-in-out;
+    will-change: transform;
+  }
+
+  [data-collapsed='false'] .collapsable-header .bbtn-collapse-toggle svg {
+    transform: rotateZ(180deg);
+  }
+
+  .collapsable-header .bbtn-collapse-toggle > :nth-child(1) {
+    display: none;
+  }
+
+  .collapsable-header .bbtn-collapse-toggle {
+    padding: 0 2px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media screen and (max-width: 320px) {
 }

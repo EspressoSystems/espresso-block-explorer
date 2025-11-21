@@ -6,3 +6,15 @@
 
   --button-base--default--height: 28px;
 }
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .claimable-rewards-card .bbtn {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 320px) {
+}

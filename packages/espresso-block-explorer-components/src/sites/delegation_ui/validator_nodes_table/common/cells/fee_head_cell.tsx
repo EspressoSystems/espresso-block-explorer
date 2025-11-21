@@ -1,4 +1,5 @@
 import Text from '@/components/text/Text';
+import ChevronDown from '@/components/visual/icons/feather/chevron_down';
 import VerticalScroll from '@/components/visual/icons/feather/vertical-scroll';
 import React from 'react';
 
@@ -11,6 +12,7 @@ export const FeeHeadCell: React.FC = () => {
       <Text text="Commission Rate" />
       &nbsp;
       <VerticalScroll />
+      <ChevronDown />
     </>
   );
 };

@@ -4,7 +4,11 @@
   width: 182px;
   height: 20px;
   background: var(--color--brown--3--alpha-32);
-  mask-image: url(#dots-mask);
+  /* mask-image: url(#dots-mask); */
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-image: url(dots_mask.svg);
   overflow: hidden;
 }
 
@@ -16,9 +20,22 @@
   width: 100%;
   height: 100%;
   background: transparent;
-  /* mask-image: url(#dots-mask); */
   transition:
     background-color 240ms ease-in-out,
     width 240ms ease-in-out;
   will-change: background-color, width;
+}
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .staking-modal-progress-indicator-area {
+    width: 305px;
+    height: 34px;
+    margin-inline: auto;
+  }
+}
+
+@media screen and (max-width: 320px) {
 }
