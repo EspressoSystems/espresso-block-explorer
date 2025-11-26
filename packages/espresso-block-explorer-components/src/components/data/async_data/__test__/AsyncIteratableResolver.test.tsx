@@ -78,8 +78,6 @@ describe('Async Iterable Resolver Component', () => {
       expect(entry.error).equals(undefined);
     }
 
-    console.log(resolutionStack);
-
     for (let i = 1; i < N + 1; i++) {
       // intermediate state
       const entry = resolutionStack[i];
