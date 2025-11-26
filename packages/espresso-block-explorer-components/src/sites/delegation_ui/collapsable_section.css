@@ -86,7 +86,7 @@
     will-change: transform;
   }
 
-  [data-collapsed='false'] .collapsable-header .bbtn-collapse-toggle svg {
+  [open] .collapsable-header .bbtn-collapse-toggle svg {
     transform: rotateZ(180deg);
   }
 

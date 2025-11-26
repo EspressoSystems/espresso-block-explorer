@@ -12,7 +12,7 @@ import {
 import ButtonLarge from './elements/buttons/button_large';
 
 export interface CollapsableSectionProps
-  extends React.HTMLAttributes<HTMLElement> {}
+  extends React.HTMLAttributes<HTMLDetailsElement> {}
 
 export const CollapsableSection: React.FC<CollapsableSectionProps> = ({
   children,
@@ -33,16 +33,29 @@ const CollapseContent: React.FC<CollapsableSectionProps> = ({
   className,
   ...rest
 }) => {
+  const detailsRef = React.useRef<HTMLDetailsElement>(null);
   const collapseState = React.useContext(CollapseStateContext);
+  const setCollapseState = React.useContext(SetCollapseStateContext);
 
   return (
-    <section
+    <details
+      ref={detailsRef}
       className={addClassToClassName(className, 'collapsable-section')}
       {...rest}
-      data-collapsed={collapseState === CollapseState.collapsed}
+      open={collapseState === CollapseState.expanded}
+      onToggle={(event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        if (event.newState === 'open') {
+          setCollapseState(CollapseState.expanded);
+          return;
+        }
+
+        setCollapseState(CollapseState.collapsed);
+      }}
     >
       {children}
-    </section>
+    </details>
   );
 };
 
@@ -53,10 +66,10 @@ export const CollapsableHeader: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   children,
 }) => {
   return (
-    <div className="collapsable-header">
+    <summary className="collapsable-header">
       {children}
       <CollapseToggleButton />
-    </div>
+    </summary>
   );
 };
 
