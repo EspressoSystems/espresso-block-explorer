@@ -253,13 +253,20 @@ table.all-validators-table {
     border-radius: 8px 8px 0 0;
   }
 
-  table.all-validators-table tbody tr td:nth-child(1) {
+  table.all-validators-table tbody tr td:not(.no-data):nth-child(1) {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 8px;
     font-size: 18px;
+  }
+
+  table.all-validators-table tbody tr td.no-data:nth-child(1) {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 5;
   }
 
   table.all-validators-table tbody tr td:not(.no-data):nth-child(1)::after {
