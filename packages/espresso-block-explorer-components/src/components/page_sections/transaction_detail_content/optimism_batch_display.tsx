@@ -5,7 +5,6 @@ import { uint8ArrayToArrayBufferCodec } from '@/convert/codec';
 import { createBufferedDataView, Endianess } from '@/convert/data_view';
 import { createRLPDeserializer } from '@/convert/rlp';
 import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
-import { isNitroIntegrationNamespace } from '@/models/block_explorer/rollup_entry/data';
 import { decodeEthHeader, EthHeader } from '@/service/ethereum/header';
 import {
   decodeEthTransaction,
@@ -132,7 +131,7 @@ export const OptimismBatchDecodeAndDisplay: React.FC = () => {
   const details = React.useContext(TransactionDetailContext);
   const data = details.tree;
 
-  if (!isNitroIntegrationNamespace(data.namespace)) {
+  if (data.namespace !== 22266222) {
     // Only Display information for Nitro based project namespaces.
     return <></>;
   }

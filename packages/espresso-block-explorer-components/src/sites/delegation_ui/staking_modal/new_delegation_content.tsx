@@ -13,6 +13,8 @@ import { StakeTableContractGasEstimatorContext } from '../contexts/stake_table_c
 import { ApproveButton } from './approve_button';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { CurrentAllowanceToStakeTableContext } from './contexts/current_allowance_context';
+import { ProvideCurrentCurrentEpochActiveValidators } from './contexts/current_epoch_active_validators_context';
+import { ProvideEpochCurrentStakeToValidator } from './contexts/current_epoch_stake_to_validator_context';
 import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
 import { DelegateButton } from './delegate_button';
 import './new_delegation_content.css';
@@ -32,24 +34,39 @@ export const NewDelegationContent: React.FC = () => {
       <StakingHeader>
         <StakingModalTitle>
           <Text text="Delegate" />
-          <Text text=" / " />
-          <WalletAddressText value={new WalletAddress(confirmedValidator)} />
+          &nbsp;
+          <Text text="/" />
+          &nbsp;
+          <WalletAddressText
+            value={
+              new WalletAddress(hexArrayBufferCodec.decode(confirmedValidator))
+            }
+          />
         </StakingModalTitle>
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <ProvideContractGasEstimate>
-          <StakingInitialSummaryAndInteraction />
-          <StakingOverviewArea />
-          <StakingActionsArea />
-          <StakingCompletionArea />
-        </ProvideContractGasEstimate>
+        <ProvideCurrentCurrentEpochActiveValidators>
+          <ProvideEpochCurrentStakeToValidator>
+            <ProvideDelegateContractGasEstimate>
+              <StakingInitialSummaryAndInteraction />
+              <StakingOverviewArea />
+              <StakingActionsArea />
+              <StakingCompletionArea />
+            </ProvideDelegateContractGasEstimate>
+          </ProvideEpochCurrentStakeToValidator>
+        </ProvideCurrentCurrentEpochActiveValidators>
       </StakingContent>
     </>
   );
 };
 
-const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
+/**
+ * ProvideDelegateContractGasEstimate is a React component that provides the gas
+ * estimate the delegate method on the StakeTable.  The estimate is passed
+ * to its children via the EstimatedContractGasContext.
+ */
+const ProvideDelegateContractGasEstimate: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const account = React.useContext(RainbowKitAccountAddressContext);
@@ -62,19 +79,27 @@ const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
 
   const amountToTry = allowance < balance ? allowance : balance;
 
-  const promise =
-    !rewardClaimGasEstimator ||
-    balance <= 0n ||
-    allowance === null ||
-    allowance <= 0n ||
-    amountToTry <= 0n ||
-    !account
-      ? neverPromise
-      : rewardClaimGasEstimator.delegate(
-          account,
-          hexArrayBufferCodec.encode(validator),
-          amountToTry,
-        );
+  const promise = React.useMemo(
+    () =>
+      !rewardClaimGasEstimator ||
+      balance <= 0n ||
+      allowance === null ||
+      allowance <= 0n ||
+      amountToTry <= 0n ||
+      !account
+        ? neverPromise
+        : rewardClaimGasEstimator.delegate(account, validator, amountToTry),
+
+    // We only want to refresh this, if the estimator changes, or if the
+    // criteria of our account or validator switch between being set or not,
+    // or if the amount is positive or not.
+    //
+    // Beyond these conditions, the gas price is assumed to be the same,
+    // regardless of the specific values utilized.
+    //
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [rewardClaimGasEstimator, !!account, !!validator, amountToTry > 0n],
+  );
 
   return (
     <PromiseResolver promise={promise}>

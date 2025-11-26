@@ -42,7 +42,7 @@ class PendingWithdrawalEncoder
       delegator: hexArrayBufferCodec.encode(input.delegator),
       node: hexArrayBufferCodec.encode(input.node),
       amount: bigintCodec.encode(input.amount),
-      available_time: numberCodec.encode(input.availableTime.valueOf()),
+      available_time: numberCodec.encode(input.availableTime.valueOf() / 1000),
     };
   }
 }
@@ -66,7 +66,7 @@ class PendingWithdrawalDecoder
       hexArrayBufferCodec.decode(input.delegator),
       hexArrayBufferCodec.decode(input.node),
       bigintCodec.decode(input.amount),
-      new Date(numberCodec.decode(input.available_time)),
+      new Date(numberCodec.decode(input.available_time) * 1000),
     );
   }
 }

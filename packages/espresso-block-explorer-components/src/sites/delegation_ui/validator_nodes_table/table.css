@@ -126,7 +126,7 @@ table.all-validators-table tbody tr td {
   background: var(--validator-node-table--cell--background-color);
 }
 
-table.all-validators-table tbody tr td:nth-child(1) {
+table.all-validators-table tbody tr td:not(.no-data):nth-child(1) {
   display: none;
 }
 
@@ -262,13 +262,17 @@ table.all-validators-table {
     font-size: 18px;
   }
 
-  table.all-validators-table tbody tr td:nth-child(1)::after {
+  table.all-validators-table tbody tr td:not(.no-data):nth-child(1)::after {
     content: '';
     order: 4;
     flex: 1;
   }
 
-  table.all-validators-table tbody tr td:nth-child(1) > .consensus-chip {
+  table.all-validators-table
+    tbody
+    tr
+    td:not(.not-data):nth-child(1)
+    > .consensus-chip {
     order: 5;
   }
 

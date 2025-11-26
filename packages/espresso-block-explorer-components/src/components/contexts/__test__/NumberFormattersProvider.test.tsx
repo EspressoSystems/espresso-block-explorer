@@ -49,7 +49,9 @@ describe('Number Formatters Provider', () => {
           <OverrideNumberFormatters
             formatters={{
               default: new Intl.NumberFormat('en-US', {}),
+              percentage: new Intl.NumberFormat('en-US', {}),
               bytes: new Intl.NumberFormat('en-US', {}),
+              bytesPerSecond: new Intl.NumberFormat('en-US', {}),
               variableBytes: new Intl.NumberFormat('en-US', {}),
               transactionsPerSecond: new Intl.NumberFormat('en-US', {}),
               gwei: new Intl.NumberFormat('en-US', {}),
@@ -59,8 +61,11 @@ describe('Number Formatters Provider', () => {
               EUR: new Intl.NumberFormat('en-US', {}),
               JPY: new Intl.NumberFormat('en-US', {}),
               ESP: new Intl.NumberFormat('en-US', {}),
+              ESPFull: new Intl.NumberFormat('en-US', {}),
               ETH: new Intl.NumberFormat('en-US', {}),
+              ETHFull: new Intl.NumberFormat('en-US', {}),
               XBT: new Intl.NumberFormat('en-US', {}),
+              XBTFull: new Intl.NumberFormat('en-US', {}),
             }}
           >
             <ConsumeNumberFormattersComponent />
@@ -75,7 +80,9 @@ describe('Number Formatters Provider', () => {
           <OverrideNumberFormatters
             formatters={{
               default: new Intl.NumberFormat('de-DE', {}),
+              percentage: new Intl.NumberFormat('en-US', {}),
               bytes: new Intl.NumberFormat('en-US', {}),
+              bytesPerSecond: new Intl.NumberFormat('en-US', {}),
               variableBytes: new Intl.NumberFormat('en-US', {}),
               transactionsPerSecond: new Intl.NumberFormat('en-US', {}),
               gwei: new Intl.NumberFormat('en-US', {}),
@@ -85,8 +92,11 @@ describe('Number Formatters Provider', () => {
               EUR: new Intl.NumberFormat('en-US', {}),
               JPY: new Intl.NumberFormat('en-US', {}),
               ESP: new Intl.NumberFormat('en-US', {}),
+              ESPFull: new Intl.NumberFormat('en-US', {}),
               ETH: new Intl.NumberFormat('en-US', {}),
+              ETHFull: new Intl.NumberFormat('en-US', {}),
               XBT: new Intl.NumberFormat('en-US', {}),
+              XBTFull: new Intl.NumberFormat('en-US', {}),
             }}
           >
             <ConsumeNumberFormattersComponent />

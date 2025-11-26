@@ -35,7 +35,11 @@ import {
   StakeTableV2ContractGasEstimatorContext,
 } from '../contexts/stake_table_v2_contract_context';
 import { MockESPTokenContractImpl } from './esp_token_contract';
-import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
+import {
+  MockContractStorage,
+  MockL1MethodsImpl,
+  UnderlyingTransaction,
+} from './l1_methods';
 import { MockAddress } from './rainbow_kit';
 import { MockStakeTableV2ContractGasEstimatorImpl } from './stake_table_v2_contract_gas_estimator';
 
@@ -43,22 +47,50 @@ import { MockStakeTableV2ContractGasEstimatorImpl } from './stake_table_v2_contr
  * StakeTableState defines the structure of the mock
  * StakeTableV2Contract state.
  */
-export interface StakeTableState {
-  contractAddress: `0x${string}`;
-  validators: Map<`0x${string}`, RawValidator>;
-  blsKeys: Set<`0x${string}`>;
-  validatorExits: Map<`0x${string}`, bigint>;
-  delegations: Map<`0x${string}`, Map<`0x${string}`, bigint>>;
-  undelegations: Map<`0x${string}`, Map<`0x${string}`, RawUndelegation>>;
-  exitEscrowPeriod: bigint;
+export class StakeTableState implements MockContractStorage {
+  constructor(
+    public readonly contractAddress: `0x${string}`,
+    public readonly validators: Map<`0x${string}`, RawValidator>,
+    public readonly blsKeys: Set<`0x${string}`>,
+    public readonly validatorExits: Map<`0x${string}`, bigint>,
+    public readonly delegations: Map<`0x${string}`, Map<`0x${string}`, bigint>>,
+    public readonly undelegations: Map<
+      `0x${string}`,
+      Map<`0x${string}`, RawUndelegation>
+    >,
+    public readonly exitEscrowPeriod: bigint,
 
-  pauserRole: `0x${string}`;
-  minCommissionIncreaseInterval: bigint;
-  maxCommissionIncrease: number;
-  commissionTracking: Map<`0x${string}`, CommissionTracking>;
-  schnorrKeys: Set<`0x${string}`>;
+    public readonly pauserRole: `0x${string}`,
+    public readonly minCommissionIncreaseInterval: bigint,
+    public readonly maxCommissionIncrease: number,
+    public readonly commissionTracking: Map<`0x${string}`, CommissionTracking>,
+    public readonly schnorrKeys: Set<`0x${string}`>,
 
-  lastUpdate: Date;
+    public readonly lastUpdate: Date,
+  ) {}
+
+  applyTransaction(tx: UnderlyingTransaction): StakeTableState {
+    if (tx instanceof StakeTableStateActions) {
+      const nextState = tx.applyToState(this);
+      return new StakeTableState(
+        nextState.contractAddress,
+        nextState.validators,
+        nextState.blsKeys,
+        nextState.validatorExits,
+        nextState.delegations,
+        nextState.undelegations,
+        nextState.exitEscrowPeriod,
+        nextState.pauserRole,
+        nextState.minCommissionIncreaseInterval,
+        nextState.maxCommissionIncrease,
+        nextState.commissionTracking,
+        nextState.schnorrKeys,
+        new Date(),
+      );
+    }
+
+    return this;
+  }
 }
 
 /**
@@ -92,12 +124,10 @@ function applyActionToState(
 
   assertNotNull(currentState);
 
-  const nextState = {
-    ...action.applyToState(currentState),
-    lastUpdate: action.ts,
-  };
+  // Apply the action to the current state, just to make sure it doesn't error
+  // or anything.
+  action.applyToState(currentState);
 
-  l1Methods.mockWriteContractStorage(StakeTableStorageSymbol, nextState);
   l1Methods.mockWriteTransaction(action);
 }
 
@@ -141,8 +171,9 @@ export class Delegate extends StakeTableStateActions {
 
   applyToState(state: StakeTableState): StakeTableState {
     const newDelegations = new Map(state.delegations);
-    const delegatorMap =
-      newDelegations.get(this.validator) ?? new Map<`0x${string}`, bigint>();
+    const delegatorMap = new Map(
+      newDelegations.get(this.validator) ?? new Map<`0x${string}`, bigint>(),
+    );
     const newValidators = new Map(state.validators);
     const validatorInfo = newValidators.get(this.validator) ?? [0n, 0];
     const currentAmount = delegatorMap.get(this.delegator) ?? 0n;
@@ -153,11 +184,21 @@ export class Delegate extends StakeTableStateActions {
       validatorInfo[1],
     ]);
 
-    return {
-      ...state,
-      validators: newValidators,
-      delegations: newDelegations,
-    };
+    return new StakeTableState(
+      state.contractAddress,
+      newValidators,
+      state.blsKeys,
+      state.validatorExits,
+      newDelegations,
+      state.undelegations,
+      state.exitEscrowPeriod,
+      state.pauserRole,
+      state.minCommissionIncreaseInterval,
+      state.maxCommissionIncrease,
+      state.commissionTracking,
+      state.schnorrKeys,
+      state.lastUpdate,
+    );
   }
 }
 
@@ -206,8 +247,9 @@ export class Undelegate extends StakeTableStateActions {
 
   applyToState(state: StakeTableState): StakeTableState {
     const newDelegations = new Map(state.delegations);
-    const delegatorMap =
-      newDelegations.get(this.validator) ?? new Map<`0x${string}`, bigint>();
+    const delegatorMap = new Map(
+      newDelegations.get(this.validator) ?? new Map<`0x${string}`, bigint>(),
+    );
     const currentAmount = delegatorMap.get(this.delegator) ?? 0n;
     const newValidators = new Map(state.validators);
     delegatorMap.set(this.delegator, currentAmount - this.amount);
@@ -219,21 +261,31 @@ export class Undelegate extends StakeTableStateActions {
     ]);
 
     const newUndelegations = new Map(state.undelegations);
-    const undelegatorMap =
+    const undelegatorMap = new Map(
       newUndelegations.get(this.validator) ??
-      new Map<`0x${string}`, RawUndelegation>();
+        new Map<`0x${string}`, RawUndelegation>(),
+    );
     undelegatorMap.set(this.delegator, [
       this.amount,
       BigInt(this.ts.valueOf()) + state.exitEscrowPeriod,
     ]);
     newUndelegations.set(this.validator, undelegatorMap);
 
-    return {
-      ...state,
-      validators: newValidators,
-      delegations: newDelegations,
-      undelegations: newUndelegations,
-    };
+    return new StakeTableState(
+      state.contractAddress,
+      newValidators,
+      state.blsKeys,
+      state.validatorExits,
+      newDelegations,
+      newUndelegations,
+      state.exitEscrowPeriod,
+      state.pauserRole,
+      state.minCommissionIncreaseInterval,
+      state.maxCommissionIncrease,
+      state.commissionTracking,
+      state.schnorrKeys,
+      state.lastUpdate,
+    );
   }
 }
 
@@ -277,16 +329,28 @@ export class ClaimWithdrawal extends StakeTableStateActions {
 
   applyToState(state: StakeTableState): StakeTableState {
     const newUndelegations = new Map(state.undelegations);
-    const undelegatorMap =
+    const undelegatorMap = new Map(
       newUndelegations.get(this.validator) ??
-      new Map<`0x${string}`, RawUndelegation>();
+        new Map<`0x${string}`, RawUndelegation>(),
+    );
     undelegatorMap.delete(this.delegator);
     newUndelegations.set(this.validator, undelegatorMap);
 
-    return {
-      ...state,
-      undelegations: newUndelegations,
-    };
+    return new StakeTableState(
+      state.contractAddress,
+      state.validators,
+      state.blsKeys,
+      state.validatorExits,
+      state.delegations,
+      newUndelegations,
+      state.exitEscrowPeriod,
+      state.pauserRole,
+      state.minCommissionIncreaseInterval,
+      state.maxCommissionIncrease,
+      state.commissionTracking,
+      state.schnorrKeys,
+      state.lastUpdate,
+    );
   }
 }
 
@@ -332,16 +396,27 @@ export class ClaimValidatorExit extends StakeTableStateActions {
     const newValidatorExits = new Map(state.validatorExits);
     newValidatorExits.delete(this.validator);
     const newDelegations = new Map(state.delegations);
-    const delegatorMap =
-      newDelegations.get(this.validator) ?? new Map<`0x${string}`, bigint>();
+    const delegatorMap = new Map(
+      newDelegations.get(this.validator) ?? new Map<`0x${string}`, bigint>(),
+    );
     delegatorMap.delete(this.delegator);
     newDelegations.set(this.validator, delegatorMap);
 
-    return {
-      ...state,
-      delegations: newDelegations,
-      validatorExits: newValidatorExits,
-    };
+    return new StakeTableState(
+      state.contractAddress,
+      state.validators,
+      state.blsKeys,
+      newValidatorExits,
+      newDelegations,
+      state.undelegations,
+      state.exitEscrowPeriod,
+      state.pauserRole,
+      state.minCommissionIncreaseInterval,
+      state.maxCommissionIncrease,
+      state.commissionTracking,
+      state.schnorrKeys,
+      state.lastUpdate,
+    );
   }
 }
 
@@ -389,11 +464,21 @@ export class ValidatorExit extends StakeTableStateActions {
       ValidatorStatus.exited,
     ]);
 
-    return {
-      ...state,
-      validatorExits: newValidatorExits,
-      validators: newValidators,
-    };
+    return new StakeTableState(
+      state.contractAddress,
+      newValidators,
+      state.blsKeys,
+      newValidatorExits,
+      state.delegations,
+      state.undelegations,
+      state.exitEscrowPeriod,
+      state.pauserRole,
+      state.minCommissionIncreaseInterval,
+      state.maxCommissionIncrease,
+      state.commissionTracking,
+      state.schnorrKeys,
+      state.lastUpdate,
+    );
   }
 }
 
@@ -714,24 +799,26 @@ function useMockStakeTableContractState(
     'expected espTokenContract to be an instance of MockESPTokenContractImpl',
   );
 
-  const [state] = React.useState<StakeTableState>({
-    contractAddress: initialState?.contractAddress ?? contractAddress,
-    validators: initialState?.validators ?? new Map(),
-    blsKeys: initialState?.blsKeys ?? new Set(),
-    validatorExits: initialState?.validatorExits ?? new Map(),
-    delegations: initialState?.delegations ?? new Map(),
-    undelegations: initialState?.undelegations ?? new Map(),
-    exitEscrowPeriod: initialState?.exitEscrowPeriod ?? 60000n,
+  const [state] = React.useState<StakeTableState>(
+    new StakeTableState(
+      initialState?.contractAddress ?? contractAddress,
+      initialState?.validators ?? new Map(),
+      initialState?.blsKeys ?? new Set(),
+      initialState?.validatorExits ?? new Map(),
+      initialState?.delegations ?? new Map(),
+      initialState?.undelegations ?? new Map(),
+      initialState?.exitEscrowPeriod ?? 60000n,
 
-    pauserRole: initialState?.pauserRole ?? '0xPAUSER_ROLE',
-    minCommissionIncreaseInterval:
+      initialState?.pauserRole ?? '0xPAUSER_ROLE',
+
       initialState?.minCommissionIncreaseInterval ?? 60000n,
-    maxCommissionIncrease: initialState?.maxCommissionIncrease ?? 1,
-    commissionTracking: initialState?.commissionTracking ?? new Map(),
-    schnorrKeys: initialState?.schnorrKeys ?? new Set(),
+      initialState?.maxCommissionIncrease ?? 1,
+      initialState?.commissionTracking ?? new Map(),
+      initialState?.schnorrKeys ?? new Set(),
 
-    lastUpdate: new Date(),
-  } as const satisfies StakeTableState);
+      new Date(),
+    ),
+  );
 
   return state;
 }

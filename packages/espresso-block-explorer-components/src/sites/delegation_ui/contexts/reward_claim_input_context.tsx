@@ -1,5 +1,5 @@
 import { DataContext } from '@/components/contexts/DataProvider';
-import { PromiseResolver } from '@/components/data';
+import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { neverPromise } from '@/functional/functional_async';
 import { HeightAndAddress } from '@/service/hotshot_query_service/cappuccino/reward_state/height_and_address';
@@ -25,23 +25,32 @@ export const RetrieveEspressoRewardClaimInput: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   // We'll refresh every time this timestamp updates
-  React.useContext(EspressoRefreshTimestampContext);
+  const refreshTimestamp = React.useContext(EspressoRefreshTimestampContext);
   const espressoHeight = React.useContext(EspressoBlockHeightContext);
   const accountAddress = React.useContext(RainbowKitAccountAddressContext);
-
   const hotShotQueryService = React.useContext(
     CappuccinoHotShotQueryServiceAPIContext,
   );
 
-  const currentBlockHeight =
-    espressoHeight === undefined || espressoHeight === null || !accountAddress
-      ? neverPromise
-      : hotShotQueryService.rewardState.getRewardClaimInput(
-          new HeightAndAddress(Number(espressoHeight), accountAddress),
-        );
+  const promise = React.useMemo(
+    () =>
+      !espressoHeight || !accountAddress || !hotShotQueryService
+        ? neverPromise
+        : hotShotQueryService.rewardState.getRewardClaimInput(
+            new HeightAndAddress(Number(espressoHeight), accountAddress),
+          ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      refreshTimestamp,
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      !!espressoHeight && espressoHeight > 0n,
+      accountAddress,
+      hotShotQueryService,
+    ],
+  );
 
   return (
-    <PromiseResolver promise={currentBlockHeight}>
+    <PromiseResolver promise={promise}>
       <ResolveRewardClaimInput>{children}</ResolveRewardClaimInput>
     </PromiseResolver>
   );

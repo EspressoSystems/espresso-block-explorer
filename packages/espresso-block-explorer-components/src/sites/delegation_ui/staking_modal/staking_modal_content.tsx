@@ -1,3 +1,4 @@
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { compareArrayBuffer } from '@/functional/functional';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
@@ -14,37 +15,50 @@ import {
   ValidatorConfirmedUndelegate,
   ValidatorConfirmedUndelegateWithdraw,
   ValidatorSelectionContext,
+  ValidatorSelectionEnum,
 } from '../contexts/validator_selection_context';
 import { ClaimRewardsContent } from './claim_rewards_content';
-import { ProvideEstimatedFeesPerGas } from './contexts/estimated_fees_per_gas_context';
-import { ProvideClaimRewardsPromiseContext } from './contexts/perform_claim_rewards_context';
-import { ProvideStakingAmountContexts } from './contexts/staking_amount_context';
-import { ProvideCurrentStakingInformation } from './provide_staking_information';
 import { ValidatorConfirmedContent } from './staking_modal_validator_confirmed_content';
 import { ValidatorSelectionNeededContent } from './validator_selection_needed_content';
 
-export const StakingModalContent: React.FC = () => {
+const ProvideConfirmationContexts: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
   const allValidators = React.useContext(AllValidatorsContext);
   const selectedValidator = React.useContext(ValidatorSelectionContext);
 
-  if (selectedValidator instanceof ClaimRewards) {
-    return (
-      <ProvideEstimatedFeesPerGas>
-        <ProvideClaimRewardsPromiseContext>
-          <ClaimRewardsContent />
-        </ProvideClaimRewardsPromiseContext>
-      </ProvideEstimatedFeesPerGas>
-    );
-  }
+  const foundValidator = determineValidator(allValidators, selectedValidator);
+  const confirmedValidator = determineConfirmedValidator(selectedValidator);
 
-  if (
+  return (
+    <ValidatorNodeContext.Provider value={foundValidator}>
+      <ConfirmedValidatorContext.Provider value={confirmedValidator}>
+        {children}
+      </ConfirmedValidatorContext.Provider>
+    </ValidatorNodeContext.Provider>
+  );
+};
+
+function isValidatorConfirmed(
+  selectedValidator: ValidatorSelectionEnum,
+): selectedValidator is ValidatorSelectionEnum & {
+  validatorAddress: ArrayBuffer;
+} {
+  return (
     selectedValidator instanceof ValidatorConfirmed ||
     selectedValidator instanceof ValidatorConfirmedStake ||
     selectedValidator instanceof ValidatorConfirmedUndelegate ||
     selectedValidator instanceof ValidatorConfirmedExitWithdraw ||
     selectedValidator instanceof ValidatorConfirmedUndelegateWithdraw
-  ) {
-    const foundValidator =
+  );
+}
+
+function determineValidator(
+  allValidators: null | { nodes: NodeSetEntry[] },
+  selectedValidator: ValidatorSelectionEnum,
+): NodeSetEntry {
+  if (isValidatorConfirmed(selectedValidator)) {
+    return (
       allValidators?.nodes.find(
         (validator) =>
           compareArrayBuffer(
@@ -56,23 +70,47 @@ export const StakingModalContent: React.FC = () => {
         selectedValidator.validatorAddress,
         new TaggedBase64('', new ArrayBuffer(0)),
         0n,
-        new Ratio(0),
-      );
-
-    return (
-      <ValidatorNodeContext.Provider value={foundValidator}>
-        <ConfirmedValidatorContext.Provider
-          value={selectedValidator.validatorAddress}
-        >
-          <ProvideStakingAmountContexts>
-            <ProvideCurrentStakingInformation>
-              <ValidatorConfirmedContent />
-            </ProvideCurrentStakingInformation>
-          </ProvideStakingAmountContexts>
-        </ConfirmedValidatorContext.Provider>
-      </ValidatorNodeContext.Provider>
+        Ratio.floatingPoint(0),
+      )
     );
   }
 
+  return new NodeSetEntry(
+    new ArrayBuffer(0),
+    new TaggedBase64('', new ArrayBuffer(0)),
+    0n,
+    Ratio.floatingPoint(0),
+  );
+}
+
+function determineConfirmedValidator(
+  selectedValidator: ValidatorSelectionEnum,
+): `0x${string}` {
+  if (isValidatorConfirmed(selectedValidator)) {
+    return hexArrayBufferCodec.encode(selectedValidator.validatorAddress);
+  }
+
+  return `0x`;
+}
+
+const StakingModalContentRouter: React.FC = () => {
+  const selectedValidator = React.useContext(ValidatorSelectionContext);
+
+  if (selectedValidator instanceof ClaimRewards) {
+    return <ClaimRewardsContent />;
+  }
+
+  if (isValidatorConfirmed(selectedValidator)) {
+    return <ValidatorConfirmedContent />;
+  }
+
   return <ValidatorSelectionNeededContent />;
+};
+
+export const StakingModalContent: React.FC = () => {
+  return (
+    <ProvideConfirmationContexts>
+      <StakingModalContentRouter />
+    </ProvideConfirmationContexts>
+  );
 };

@@ -1,30 +1,48 @@
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { nodeList } from '@/data_source/fake_data_source';
+import BadResponseClientError from '@/errors/BadResponseClientError';
 import UnimplementedError from '@/errors/UnimplementedError';
 import {
   appendIterables,
   compareArrayBuffer,
   dropIterable,
+  expandIterable,
   filterIterable,
   firstWhereIterable,
   mapIterable,
   singletonIterable,
 } from '@/functional/functional';
 import { Delegation } from '@/service/espresso_l1_validator_service/common/delegation';
+import { EpochAndBlock } from '@/service/espresso_l1_validator_service/common/epoch_and_block';
+import { L1BlockID } from '@/service/espresso_l1_validator_service/common/l1_block_id';
 import { L1BlockInfo } from '@/service/espresso_l1_validator_service/common/l1_block_info';
 import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
+import { Withdrawal } from '@/service/espresso_l1_validator_service/common/withdrawal';
 import { L1BlockAPI } from '@/service/espresso_l1_validator_service/l1_block/l1_block_api';
 import { L1ValidatorService } from '@/service/espresso_l1_validator_service/l1_validator_service_api';
+import { ActiveNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_active/active_node_set_snapshot';
+import { ActiveNodeSetUpdate } from '@/service/espresso_l1_validator_service/validators_active/active_node_set_update';
 import { ValidatorsActiveAPI } from '@/service/espresso_l1_validator_service/validators_active/validators_active_api';
+import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
+import { FullNodeSetUpdate } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_update';
 import { ValidatorsAllAPI } from '@/service/espresso_l1_validator_service/validators_all/validators_all_api';
 import { WalletAPI } from '@/service/espresso_l1_validator_service/wallet/wallet_api';
+import { WalletDiffClaimedRewards } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/claimed_rewards';
+import { WalletDiffDelegatedToNode } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/delegated_to_node';
+import { WalletDiffNodeExitWithdrawal } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/node_exit_withdrawal';
+import { WalletDiffUndelegatedFromNode } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/undelegated_from_node';
+import { WalletDiffUndelegationWithdrawal } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/undelegation_withdrawal';
+import { WalletDiff } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/wallet_diff';
 import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
 import { WalletUpdate } from '@/service/espresso_l1_validator_service/wallet/wallet_update';
+import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
+import { CappuccinoHotShotQueryServiceAPIContext } from 'pages';
 import React from 'react';
 import { Config } from 'wagmi';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
 import { L1ValidatorServiceContext } from '../contexts/l1_validator_api_context';
+import { ESPTokenContractStateAction } from './esp_token_contract';
 import {
   L1TransactionCallback,
   MockL1MethodsImpl,
@@ -55,10 +73,13 @@ export const L1ValidatorServiceMockInjection: React.FC<
 > = ({ children }) => {
   const l1Methods = React.useContext(L1MethodsContext);
   const service = React.useContext(L1ValidatorServiceContext);
+  const hotShotQueryService = React.useContext(
+    CappuccinoHotShotQueryServiceAPIContext,
+  );
 
   return (
     <L1ValidatorServiceContext.Provider
-      value={determineService(service, l1Methods)}
+      value={determineService(service, l1Methods, hotShotQueryService)}
     >
       {children}
     </L1ValidatorServiceContext.Provider>
@@ -68,9 +89,14 @@ export const L1ValidatorServiceMockInjection: React.FC<
 function determineService(
   service: L1ValidatorService,
   l1Methods: null | L1Methods<Config, number>,
+  hotShotQueryService: CappuccinoHotShotQueryService,
 ) {
   if (l1Methods instanceof MockL1MethodsImpl) {
-    const newService = new MockValidatorService(service);
+    const newService = new MockValidatorService(
+      l1Methods,
+      service,
+      hotShotQueryService,
+    );
     l1Methods.setTransactionCallback(newService.wallet);
     return newService;
   }
@@ -90,8 +116,39 @@ const zeroSnapshot = new WalletSnapshot(
   new L1BlockInfo(0n, new ArrayBuffer(), new Date(0)),
 );
 
+class MockL1BlockAPI implements L1BlockAPI {
+  constructor(private l1Methods: MockL1MethodsImpl) {}
+
+  async getBlockForHeight(number: bigint): Promise<L1BlockID> {
+    const block = this.l1Methods.mockBlockByHeight(number);
+    if (!block) {
+      throw new BadResponseClientError(404, null, 'block not found');
+    }
+
+    return new L1BlockID(
+      block.height,
+      hexArrayBufferCodec.decode(block.hash),
+      hexArrayBufferCodec.decode(block.parentHash),
+    );
+  }
+
+  async getLatestBlock(): Promise<L1BlockID> {
+    const block = this.l1Methods.mockLatestBlock();
+    if (!block) {
+      throw new BadResponseClientError(404, null, 'block not found');
+    }
+
+    return new L1BlockID(
+      block.height,
+      hexArrayBufferCodec.decode(block.hash),
+      hexArrayBufferCodec.decode(block.parentHash),
+    );
+  }
+}
+
 class MockStatefulWalletAPI implements WalletAPI, L1TransactionCallback {
   constructor(
+    private l1Methods: MockL1MethodsImpl,
     private state: MockStatefulWalletState = {
       snapshots: new Map([
         [
@@ -129,13 +186,111 @@ class MockStatefulWalletAPI implements WalletAPI, L1TransactionCallback {
     },
   ) {}
 
-  async snapshot(address: ArrayBuffer): Promise<WalletSnapshot> {
+  async snapshot(
+    address: ArrayBuffer,
+    hash: ArrayBuffer,
+  ): Promise<WalletSnapshot> {
+    // Block needs to exist first
+    if (!this.l1Methods.mockBlockByHash(hexArrayBufferCodec.encode(hash))) {
+      throw new BadResponseClientError(404, null, 'block not found');
+    }
+
     const hexAddress = hexArrayBufferCodec.encode(address);
     return this.state.snapshots.get(hexAddress) ?? zeroSnapshot;
   }
 
-  async updates(): Promise<WalletUpdate> {
-    throw new UnimplementedError();
+  async updates(
+    address: ArrayBuffer,
+    hash: ArrayBuffer,
+  ): Promise<WalletUpdate> {
+    const hashStr = hexArrayBufferCodec.encode(hash);
+    const addressString = hexArrayBufferCodec.encode(address);
+    // Block needs to exist first
+    if (!this.l1Methods.mockBlockByHash(hashStr)) {
+      throw new BadResponseClientError(404, null, 'block not found');
+    }
+
+    // Grab transactions for the block
+    const transactions = mapIterable(
+      this.l1Methods.mockTransactionsForBlockHash(hashStr) ?? [],
+      (tx) => tx.transaction,
+    );
+
+    // Let's inspect these actions to see if any of them generate
+    // wallet updates.
+    const updates = expandIterable(transactions, (tx): Iterable<WalletDiff> => {
+      if (tx instanceof StakeTableStateActions) {
+        if (tx instanceof Delegate && tx.delegator === addressString) {
+          return [
+            new WalletDiffDelegatedToNode(
+              new Delegation(
+                address,
+                hexArrayBufferCodec.decode(tx.validator),
+                tx.amount,
+              ),
+            ),
+          ];
+        }
+
+        if (tx instanceof Undelegate && tx.delegator === addressString) {
+          return [
+            new WalletDiffUndelegatedFromNode(
+              new PendingWithdrawal(
+                address,
+                hexArrayBufferCodec.decode(tx.validator),
+                tx.amount,
+                new Date(Date.now() + Number(tx.exitEscrowPeriod)),
+              ),
+            ),
+          ];
+        }
+
+        if (tx instanceof ValidatorExit) {
+          //
+        }
+
+        if (
+          tx instanceof ClaimValidatorExit &&
+          tx.delegator === addressString
+        ) {
+          return [
+            new WalletDiffNodeExitWithdrawal(
+              new Withdrawal(
+                address,
+                hexArrayBufferCodec.decode(tx.validator),
+                tx.amount,
+              ),
+            ),
+          ];
+        }
+
+        if (tx instanceof ClaimWithdrawal && tx.delegator === addressString) {
+          return [
+            new WalletDiffUndelegationWithdrawal(
+              new Withdrawal(
+                address,
+                hexArrayBufferCodec.decode(tx.validator),
+                tx.amount,
+              ),
+            ),
+          ];
+        }
+      }
+
+      if (tx instanceof ESPTokenContractStateAction) {
+        //
+      }
+
+      if (tx instanceof RewardClaimStateAction) {
+        if (tx instanceof ClaimRewardAction && tx.delegator === addressString) {
+          return [new WalletDiffClaimedRewards(tx.lifetimeRewards)];
+        }
+      }
+
+      return [];
+    });
+
+    return new WalletUpdate(zeroSnapshot.l1Block, Array.from(updates));
   }
 
   l1Transaction(action: UnderlyingTransaction): void {
@@ -159,20 +314,86 @@ class MockStatefulWalletAPI implements WalletAPI, L1TransactionCallback {
   }
 }
 
+class MockStatefulValidatorsAllAPI implements ValidatorsAllAPI {
+  constructor(
+    private readonly l1Methods: MockL1MethodsImpl,
+    private readonly service: ValidatorsAllAPI,
+  ) {}
+
+  async snapshot(hash: ArrayBuffer): Promise<FullNodeSetSnapshot> {
+    return this.service.snapshot(hash);
+  }
+
+  async updatesSince(hash: ArrayBuffer): Promise<FullNodeSetUpdate> {
+    const hashStr = hexArrayBufferCodec.encode(hash);
+    const block = this.l1Methods.mockBlockByHash(hashStr);
+    if (!block) {
+      throw new BadResponseClientError(404, null, 'block not found');
+    }
+
+    return new FullNodeSetUpdate(
+      new L1BlockInfo(
+        block.height,
+        hexArrayBufferCodec.decode(block.hash),
+        new Date(Number(block.timestamp)),
+      ),
+      [],
+    );
+  }
+}
+
+class MockStatefulValidatorsActiveAPI implements ValidatorsActiveAPI {
+  constructor(
+    private readonly l1Methods: MockL1MethodsImpl,
+    private readonly service: ValidatorsActiveAPI,
+    private readonly hotShotQueryService: CappuccinoHotShotQueryService,
+  ) {}
+
+  async active(): Promise<ActiveNodeSetSnapshot> {
+    return this.service.active();
+  }
+
+  async activeFor(number: bigint): Promise<ActiveNodeSetSnapshot> {
+    return this.service.activeFor(number);
+  }
+
+  async updatesSince(number: bigint): Promise<ActiveNodeSetUpdate> {
+    const latestBlock = await this.hotShotQueryService.status.blockHeight();
+    if (number > BigInt(latestBlock)) {
+      throw new BadResponseClientError(404, null, 'block not found');
+    }
+
+    const blocksPerEpoch = 100n;
+    const epoch = EpochAndBlock.determineEpoch(number, blocksPerEpoch);
+
+    return new ActiveNodeSetUpdate(
+      new EpochAndBlock(epoch, number, new Date()),
+      [],
+    );
+  }
+}
+
 class MockValidatorService implements L1ValidatorService {
-  public readonly wallet = new MockStatefulWalletAPI();
-  constructor(private service: L1ValidatorService) {}
-
-  get l1Block(): L1BlockAPI {
-    return this.service.l1Block;
-  }
-
-  get validatorsAll(): ValidatorsAllAPI {
-    return this.service.validatorsAll;
-  }
-
-  get validatorsActive(): ValidatorsActiveAPI {
-    return this.service.validatorsActive;
+  public readonly l1Block: MockL1BlockAPI;
+  public readonly wallet: MockStatefulWalletAPI;
+  public readonly validatorsAll: MockStatefulValidatorsAllAPI;
+  public readonly validatorsActive: MockStatefulValidatorsActiveAPI;
+  constructor(
+    private l1Methods: MockL1MethodsImpl,
+    private service: L1ValidatorService,
+    private hotShotQueryService: CappuccinoHotShotQueryService,
+  ) {
+    this.l1Block = new MockL1BlockAPI(l1Methods);
+    this.wallet = new MockStatefulWalletAPI(l1Methods);
+    this.validatorsAll = new MockStatefulValidatorsAllAPI(
+      l1Methods,
+      service.validatorsAll,
+    );
+    this.validatorsActive = new MockStatefulValidatorsActiveAPI(
+      l1Methods,
+      service.validatorsActive,
+      hotShotQueryService,
+    );
   }
 
   setURL(): Promise<boolean> {

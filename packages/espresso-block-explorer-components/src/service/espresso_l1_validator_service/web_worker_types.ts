@@ -1,4 +1,5 @@
 import { assertInstanceOf } from '@/assert/assert';
+import { breakpoint } from '@/assert/debugger';
 import {
   Codec,
   Converter,
@@ -433,7 +434,7 @@ export class AsyncRequestHelper {
    */
   handleError(event: ErrorEvent) {
     // eslint-disable-next-line no-debugger
-    debugger;
+    breakpoint();
     console.error('encountered error setting up Web worker', event);
   }
 }

@@ -1,3 +1,5 @@
+import { assert } from '@/assert/assert';
+import { breakpoint } from '@/assert/debugger';
 import {
   assertRecordWithKeys,
   bigintCodec,
@@ -21,6 +23,31 @@ export class EpochAndBlock {
     public readonly timestamp: Date,
   ) {
     Object.freeze(this);
+  }
+
+  static determineEpoch(block: bigint, blocksPerEpoch: bigint): bigint {
+    if (blocksPerEpoch === 0n) {
+      // This shouldn't happen
+      breakpoint();
+      return 0n;
+    }
+
+    return block / blocksPerEpoch + 1n;
+  }
+
+  get blocksPerEpoch(): bigint {
+    if (this.epoch === 0n) {
+      // This shouldn't happen
+      breakpoint();
+      return 0n;
+    }
+
+    const blocksPerEpoch = this.block / (this.epoch - 1n);
+    assert(
+      this.epoch === this.block / blocksPerEpoch + 1n,
+      'Inconsistent epoch and block numbers',
+    );
+    return blocksPerEpoch;
   }
 
   toJSON() {

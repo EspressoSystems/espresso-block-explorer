@@ -13,14 +13,14 @@ describe('ActiveNodeSetSnapshot', () => {
     it('should serialize and deserialize correctly', () => {
       const prng = new PseudoRandomNumberGenerator(Date.now());
       const block = prng.nextRangeBigInt(0n, 1_000_000n);
-      const epoch = block / 3000n;
+      const epoch = EpochAndBlock.determineEpoch(block, 3000n);
       const example = new ActiveNodeSetSnapshot(
         new EpochAndBlock(epoch, block, new Date()),
         [
           new ActiveNodeSetEntry(
             prng.fillBytes(32),
-            new Ratio(prng.nextFloat()),
-            new Ratio(prng.nextFloat()),
+            Ratio.floatingPoint(prng.nextFloat()),
+            Ratio.floatingPoint(prng.nextFloat()),
           ),
         ],
       );

@@ -1,6 +1,5 @@
 import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
 import Text from '@/components/text/Text';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
@@ -47,7 +46,7 @@ export const DelegateButton: React.FC = () => {
     );
   }
 
-  const validatorAddress = hexArrayBufferCodec.encode(confirmedValidator);
+  const validatorAddress = confirmedValidator;
   const handleDelegateClick = () => {
     setDelegationAsyncIterable(
       performDelegation(

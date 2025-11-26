@@ -1,3 +1,5 @@
+import { breakpoint } from './debugger';
+
 /**
  * FailedAssertion is an error that indicates that an assertion failed. This
  * error is meant to be thrown when a condition that should be true is not.
@@ -9,7 +11,6 @@ export class FailedAssertion extends Error {
   constructor(message: string = 'assertion failed') {
     super(message);
     Object.freeze(this);
-    // eslint-disable-next-line no-debugger
-    debugger;
+    breakpoint();
   }
 }

@@ -7,8 +7,10 @@ import ProvideAsyncStates from './ProvideAsyncStates';
  * AsyncIterableResolverProps represents the props that can be passed to the
  * AsyncIterableResolver.
  */
-export interface AsyncIterableResolverProps<T> {
-  asyncIterable: AsyncIterable<T>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface AsyncIterableResolverProps<T, R = any, N = any> {
+  asyncIterable: AsyncIterable<T, R, N>;
+  next?: N;
   children?: React.ReactNode | React.ReactNode[];
 }
 
@@ -29,6 +31,7 @@ const AsyncIterableResolver: React.FC<AsyncIterableResolverProps<unknown>> = (
   props,
 ) => {
   const asyncIterable = props.asyncIterable;
+  const next = props.next;
   const [state, setState] = React.useState<AsyncIterableResolverState<unknown>>(
     {
       asyncIterable,
@@ -94,7 +97,7 @@ const AsyncIterableResolver: React.FC<AsyncIterableResolverProps<unknown>> = (
       snapshot.asyncState === AsyncState.waiting ||
       snapshot.asyncState === AsyncState.active
     ) {
-      const promise = asyncIterator.next();
+      const promise = asyncIterator.next(next);
       setTheState({
         asyncIterable,
         inFlightPromise: promise,
@@ -115,6 +118,7 @@ const AsyncIterableResolver: React.FC<AsyncIterableResolverProps<unknown>> = (
     snapshot.data,
     state.inFlightPromise,
     state.asyncIterable,
+    next,
   ]);
 
   return (

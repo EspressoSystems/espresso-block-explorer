@@ -28,7 +28,7 @@ describe('VotersSnapshot', () => {
 
       expect(voter0.order).toBe(CappuccinoAPIBitVecOrder.lsb0);
       expect(voter0.bits).toBe(7);
-      expect(voter0.data).to.deep.equal([23]);
+      expect(voter0.data).to.deep.equal([23n]);
       expect(voter0.head.width).toBe(16);
       expect(voter0.head.index).toBe(0);
     }

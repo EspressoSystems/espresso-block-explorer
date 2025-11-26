@@ -12,6 +12,6 @@ export const ValidatorNodeContext = React.createContext<NodeSetEntry>(
     new ArrayBuffer(0),
     new TaggedBase64('', new ArrayBuffer(0)),
     0n,
-    new Ratio(0),
+    Ratio.floatingPoint(0),
   ),
 );

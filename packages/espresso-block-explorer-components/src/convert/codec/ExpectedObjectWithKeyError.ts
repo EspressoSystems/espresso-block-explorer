@@ -1,3 +1,5 @@
+import { breakpoint } from '@/assert/debugger';
+
 /**
  * ExpectedObjectWithKeyError is thrown when the inspection of an object fails
  * to make the expected shape.  This is usually encountered when attempting to
@@ -16,6 +18,7 @@ export default class ExpectedObjectWithKeyError extends Error {
     this.haveType = haveType;
     this.key = key;
     Object.freeze(this);
+    breakpoint();
   }
 
   toJSON() {

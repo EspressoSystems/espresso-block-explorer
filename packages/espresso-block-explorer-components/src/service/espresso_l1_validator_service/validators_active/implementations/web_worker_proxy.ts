@@ -50,6 +50,11 @@ export class WebWorkerProxyValidatorsActiveAPI {
       case 'active':
         return activeNodeSetSnapshotJSONCodec.encode(await this.active());
 
+      case 'activeFor':
+        return activeNodeSetSnapshotJSONCodec.encode(
+          await this.activeFor(bigintCodec.decode(request.param[0])),
+        );
+
       case 'updatesSince':
         return activeNodeSetUpdateJSONCodec.encode(
           await this.updatesSince(bigintCodec.decode(request.param[0])),

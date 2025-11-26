@@ -24,9 +24,9 @@ export const EpochEndsIn: React.FC = () => {
     );
   }
 
-  const epoch = activeValidators.espressoBlock.epoch;
-  const block = activeValidators.espressoBlock.block;
-  const blocksPerEpoch = block / epoch;
+  const epochAndBlock = activeValidators.espressoBlock;
+  const block = epochAndBlock.block;
+  const blocksPerEpoch = epochAndBlock.blocksPerEpoch;
   const blockInEpoch = block % blocksPerEpoch;
   const blocksLeft = blocksPerEpoch - blockInEpoch;
 

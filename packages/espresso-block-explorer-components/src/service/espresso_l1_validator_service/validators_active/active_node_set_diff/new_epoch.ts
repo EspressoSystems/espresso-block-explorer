@@ -1,8 +1,5 @@
+import { hexArrayBufferArrayCodec } from '@/convert/codec';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import {
-  ActiveNodeSetEntry,
-  activeNodeSetEntryArrayJSONCodec,
-} from '../../common/active_node_set_entry';
 import { ActiveNodeSetDiff } from './active_node_set_diff';
 
 /**
@@ -13,10 +10,10 @@ import { ActiveNodeSetDiff } from './active_node_set_diff';
  * in the Espresso L1 Validator Service API documentation.
  * https://www.notion.so/espressosys/Delegation-UI-Service-Specification-2942431b68e980968c28cc5099a4e8f2?source=copy_link#2962431b68e9804d9c99ea7b6a2c87ca
  * Defined in rust here:
- * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L71
+ * https://github.com/EspressoSystems/staking-ui-service/blob/c0df4fb15586b521272087967ae4e1faf7a4994b/src/types/global.rs#L94
  */
 export class NewEpoch extends ActiveNodeSetDiff {
-  constructor(public readonly entries: ActiveNodeSetEntry[]) {
+  constructor(public readonly entries: ArrayBuffer[]) {
     super();
     Object.freeze(this);
   }
@@ -31,7 +28,7 @@ export class NewEpoch extends ActiveNodeSetDiff {
  */
 class CurrentEpochJSONDecoder implements Converter<unknown, NewEpoch> {
   convert(input: unknown): NewEpoch {
-    return new NewEpoch(activeNodeSetEntryArrayJSONCodec.decode(input));
+    return new NewEpoch(hexArrayBufferArrayCodec.decode(input));
   }
 }
 
@@ -40,7 +37,7 @@ class CurrentEpochJSONDecoder implements Converter<unknown, NewEpoch> {
  */
 class CurrentEpochJSONEncoder implements Converter<NewEpoch, unknown> {
   convert(input: NewEpoch): unknown {
-    return activeNodeSetEntryArrayJSONCodec.encode(input.entries);
+    return hexArrayBufferArrayCodec.encode(input.entries);
   }
 }
 

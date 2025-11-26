@@ -13,7 +13,7 @@ import { CardValue } from './card_value';
  * Total Balance is defined as the sum of the Available Balance and the
  * Staked Balance.
  *
- * TODO: Should this include the pending Rewards as well?
+ * @todo: should this include pending Rewards as well?
  */
 export const TotalBalanceCard: React.FC = () => {
   const balance = React.useContext(ESPBalanceContext);

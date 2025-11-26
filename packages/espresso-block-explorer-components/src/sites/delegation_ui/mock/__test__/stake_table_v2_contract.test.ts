@@ -9,7 +9,7 @@ import {
   MockESPTokenContractImpl,
   MockESPTokenContractState,
 } from '../esp_token_contract';
-import { MockL1MethodsImpl, MockL1State } from '../l1_methods';
+import { L1Transaction, MockL1MethodsImpl, MockL1State } from '../l1_methods';
 import {
   MockStakeTableV2ContractImpl,
   StakeTableState,
@@ -19,6 +19,14 @@ const ACCOUNT1: `0x${string}` = '0x1111111111111111111111111111111111111111';
 const ACCOUNT2: `0x${string}` = '0x2222222222222222222222222222222222222222';
 
 function createInitialL1MethodsState(): MockL1State {
+  const blockZero = {
+    hash: `0x0000000000000000000000000000000000000000`,
+    parentHash: '0x',
+    height: 0n,
+    timestamp: 0n,
+    transactions: [] as L1Transaction[],
+  } as const;
+
   return {
     balances: new Map(),
     transactions: new Map(),
@@ -26,20 +34,17 @@ function createInitialL1MethodsState(): MockL1State {
     pendingBlockHeight: 1n,
     pendingTransactions: [],
     transactionToBlockMap: new Map(),
-    blocks: [
-      {
-        hash: `0x0000000000000000000000000000000000000000`,
-        height: 0n,
-        timestamp: 0n,
-        transactions: [],
-      },
-    ],
+    blocks: [blockZero],
+    hashToBlockMap: new Map([[blockZero.hash, blockZero]]),
 
     contractStorage: new Map(),
   };
 }
 
-function createInitialMockESPTokenContractState(): MockESPTokenContractState {
+function createInitialMockESPTokenContractState(): Omit<
+  MockESPTokenContractState,
+  'applyTransaction'
+> {
   return {
     contractAddress: '0x0000000000000000000000000000000000000000',
     version: [1, 0, 0],
@@ -56,7 +61,10 @@ function createInitialMockESPTokenContractState(): MockESPTokenContractState {
   };
 }
 
-function createInitialStakeTableContractState(): StakeTableState {
+function createInitialStakeTableContractState(): Omit<
+  StakeTableState,
+  'applyTransaction'
+> {
   return {
     contractAddress: '0x0000000000000000000000000000000000000001',
     validators: new Map(
@@ -100,17 +108,56 @@ function setupInitialL1Methods(
 
 function setupInitialESPTokenContractState(
   l1Methods: MockL1MethodsImpl,
-  state: MockESPTokenContractState = createInitialMockESPTokenContractState(),
+  state: Omit<
+    MockESPTokenContractState,
+    'applyTransaction'
+  > = createInitialMockESPTokenContractState(),
 ) {
-  return new MockESPTokenContractImpl(l1Methods, state, null);
+  return new MockESPTokenContractImpl(
+    l1Methods,
+    new MockESPTokenContractState(
+      state.contractAddress,
+      state.version,
+      state.name,
+      state.symbol,
+      state.decimals,
+      state.totalSupply,
+      state.balances,
+      state.allowances,
+      state.lastUpdate,
+    ),
+    null,
+  );
 }
 
 function setupInitialContractState(
   l1Methods: MockL1MethodsImpl = setupInitialL1Methods(),
   espToken: ESPTokenContract = setupInitialESPTokenContractState(l1Methods),
-  state: StakeTableState = createInitialStakeTableContractState(),
+  state: Omit<
+    StakeTableState,
+    'applyTransaction'
+  > = createInitialStakeTableContractState(),
 ) {
-  return new MockStakeTableV2ContractImpl(l1Methods, espToken, state, null);
+  return new MockStakeTableV2ContractImpl(
+    l1Methods,
+    espToken,
+    new StakeTableState(
+      state.contractAddress,
+      state.validators,
+      state.blsKeys,
+      state.validatorExits,
+      state.delegations,
+      state.undelegations,
+      state.exitEscrowPeriod,
+      state.pauserRole,
+      state.minCommissionIncreaseInterval,
+      state.maxCommissionIncrease,
+      state.commissionTracking,
+      state.schnorrKeys,
+      state.lastUpdate,
+    ),
+    null,
+  );
 }
 
 describe('MockStakeTableV2ContractImpl', () => {
@@ -342,9 +389,6 @@ describe('MockStakeTableV2ContractImpl', () => {
 
         const initialAccount1Balance =
           await espTokenContract.balanceOf(ACCOUNT1);
-        // const initialContractBalance = await espTokenContract.balanceOf(
-        //   contract.address,
-        // );
 
         const delegationAmount = 100_000_000_000_000_000_000_000_000n;
         await expect(
@@ -353,6 +397,7 @@ describe('MockStakeTableV2ContractImpl', () => {
             0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffffn,
           ),
         ).resolves.not.toThrowError();
+        l1Methods.mockAdvanceBlock();
 
         // update the contract state
         const validatorAddress0 = Array.from(
@@ -365,6 +410,7 @@ describe('MockStakeTableV2ContractImpl', () => {
         await expect(
           contract.delegate(validatorAddress0, delegationAmount),
         ).resolves.not.toThrowError();
+        l1Methods.mockAdvanceBlock();
 
         // Verify that the delegation was recorded
         await expect(
@@ -384,6 +430,7 @@ describe('MockStakeTableV2ContractImpl', () => {
         await expect(
           contract.undelegate(validatorAddress0, delegationAmount),
         ).resolves.not.toThrowError();
+        l1Methods.mockAdvanceBlock();
 
         // Verify that the undelegation was recorded
         const undelegation = await contract.undelegation(
@@ -400,6 +447,7 @@ describe('MockStakeTableV2ContractImpl', () => {
         await expect(
           contract.claimWithdrawal(validatorAddress0),
         ).resolves.not.toThrowError();
+        l1Methods.mockAdvanceBlock();
 
         // Verify that the undelegation record has been cleared
         const finalUndelegation = await contract.undelegation(
@@ -416,6 +464,7 @@ describe('MockStakeTableV2ContractImpl', () => {
         await expect(
           contract.delegate(validatorAddress1, delegationAmount),
         ).resolves.not.toThrowError();
+        l1Methods.mockAdvanceBlock();
 
         // Verify that the delegation was recorded
         await expect(
@@ -429,6 +478,7 @@ describe('MockStakeTableV2ContractImpl', () => {
         await expect(
           validatorContract.deregisterValidator(),
         ).resolves.not.toThrowError();
+        l1Methods.mockAdvanceBlock();
 
         const expectedExit = BigInt(Date.now());
         await expect(
@@ -445,6 +495,7 @@ describe('MockStakeTableV2ContractImpl', () => {
         await expect(
           contract.claimValidatorExit(validatorAddress1),
         ).resolves.not.toThrowError();
+        l1Methods.mockAdvanceBlock();
 
         await expect(
           contract.delegation(validatorAddress1, ACCOUNT1),

@@ -41,7 +41,11 @@ export const WithdrawClaimContent: React.FC = () => {
         <StakingModalTitle>
           <Text text="Claim" />
           <Text text=" / " />
-          <WalletAddressText value={new WalletAddress(confirmedValidator)} />
+          <WalletAddressText
+            value={
+              new WalletAddress(hexArrayBufferCodec.decode(confirmedValidator))
+            }
+          />
         </StakingModalTitle>
         <CloseStakingModalButton />
       </StakingHeader>
@@ -61,17 +65,14 @@ const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
 }) => {
   const account = React.useContext(RainbowKitAccountAddressContext);
   const validator = React.useContext(ConfirmedValidatorContext);
-  const rewardClaimGasEstimator = React.useContext(
+  const stakeTableGasEstimator = React.useContext(
     StakeTableContractGasEstimatorContext,
   );
 
   const promise =
-    !rewardClaimGasEstimator || !account
+    !stakeTableGasEstimator || !account
       ? neverPromise
-      : rewardClaimGasEstimator.claimWithdrawal(
-          account,
-          hexArrayBufferCodec.encode(validator),
-        );
+      : stakeTableGasEstimator.claimWithdrawal(account, validator);
 
   return (
     <PromiseResolver promise={promise}>
@@ -99,7 +100,7 @@ const WithdrawClaimActionsArea: React.FC = () => {
   const undelegationObject = React.useContext(
     CurrentPendingUndelegationFromValidatorContext,
   );
-  const validatorAddress = hexArrayBufferCodec.encode(confirmedValidator);
+  const validatorAddress = confirmedValidator;
   const asyncSnapshot = React.useContext(ClaimWithdrawalAsyncSnapshotContext);
   const setL1Timestamp = React.useContext(SetL1RefreshTimestampContext);
   const close = React.useContext(StakingModalCloseContext);

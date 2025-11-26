@@ -3,7 +3,7 @@ import {
   MockESPTokenContractImpl,
   MockESPTokenContractState,
 } from '../esp_token_contract';
-import { MockL1MethodsImpl, MockL1State } from '../l1_methods';
+import { L1Transaction, MockL1MethodsImpl, MockL1State } from '../l1_methods';
 import {
   MockRewardClaimContractImpl,
   MockRewardClaimState,
@@ -16,6 +16,14 @@ const REWARD_CLAIM_CONTRACT_ADDRESS =
   '0x0000000000000000000000000000000000000003';
 
 function createInitialL1MethodsState(): MockL1State {
+  const blockZero = {
+    hash: `0x0000000000000000000000000000000000000000`,
+    parentHash: `0x`,
+    height: 0n,
+    timestamp: 0n,
+    transactions: [] as L1Transaction[],
+  } as const;
+
   return {
     balances: new Map(),
     transactions: new Map(),
@@ -23,20 +31,17 @@ function createInitialL1MethodsState(): MockL1State {
     pendingBlockHeight: 1n,
     pendingTransactions: [],
     transactionToBlockMap: new Map(),
-    blocks: [
-      {
-        hash: `0x0000000000000000000000000000000000000000`,
-        height: 0n,
-        timestamp: 0n,
-        transactions: [],
-      },
-    ],
+    blocks: [blockZero],
+    hashToBlockMap: new Map([[blockZero.hash, blockZero]]),
 
     contractStorage: new Map(),
   };
 }
 
-function createInitialMockESPTokenContractState(): MockESPTokenContractState {
+function createInitialMockESPTokenContractState(): Omit<
+  MockESPTokenContractState,
+  'applyTransaction'
+> {
   return {
     contractAddress: ESP_CONTRACT_ADDRESS,
     version: [1, 0, 0],
@@ -54,7 +59,10 @@ function createInitialMockESPTokenContractState(): MockESPTokenContractState {
   };
 }
 
-function createInitialMockRewardClaimContractState(): MockRewardClaimState {
+function createInitialMockRewardClaimContractState(): Omit<
+  MockRewardClaimState,
+  'applyTransaction'
+> {
   return {
     contractAddress: REWARD_CLAIM_CONTRACT_ADDRESS,
     claimedRewards: new Map(),
@@ -70,9 +78,26 @@ function setupInitialL1Methods(
 
 function setupInitialESPTokenContractState(
   l1Methods: MockL1MethodsImpl,
-  state: MockESPTokenContractState = createInitialMockESPTokenContractState(),
+  state: Omit<
+    MockESPTokenContractState,
+    'applyTransaction'
+  > = createInitialMockESPTokenContractState(),
 ) {
-  return new MockESPTokenContractImpl(l1Methods, state, null);
+  return new MockESPTokenContractImpl(
+    l1Methods,
+    new MockESPTokenContractState(
+      state.contractAddress,
+      state.version,
+      state.name,
+      state.symbol,
+      state.decimals,
+      state.totalSupply,
+      state.balances,
+      state.allowances,
+      state.lastUpdate,
+    ),
+    null,
+  );
 }
 
 function setupInitialContractState(
@@ -80,9 +105,21 @@ function setupInitialContractState(
   espToken: MockESPTokenContractImpl = setupInitialESPTokenContractState(
     l1Methods,
   ),
-  state: MockRewardClaimState = createInitialMockRewardClaimContractState(),
+  state: Omit<
+    MockRewardClaimState,
+    'applyTransaction'
+  > = createInitialMockRewardClaimContractState(),
 ) {
-  return new MockRewardClaimContractImpl(l1Methods, espToken, state, null);
+  return new MockRewardClaimContractImpl(
+    l1Methods,
+    espToken,
+    new MockRewardClaimState(
+      state.contractAddress,
+      state.claimedRewards,
+      state.lastUpdate,
+    ),
+    null,
+  );
 }
 
 describe('MockRewardClaimContractImpl', () => {
@@ -101,12 +138,14 @@ describe('MockRewardClaimContractImpl', () => {
   describe('write', () => {
     describe('transfer', () => {
       it('should allow for any claimed rewards', async () => {
+        const l1Methods = setupInitialL1Methods();
         const contract =
-          setupInitialContractState().replaceAccountAddress(ACCOUNT2);
+          setupInitialContractState(l1Methods).replaceAccountAddress(ACCOUNT2);
 
         await expect(
           contract.claimRewards(1000n, `0x00`),
         ).resolves.not.toThrowError();
+        l1Methods.mockAdvanceBlock();
 
         await expect(contract.claimedRewards(ACCOUNT2)).resolves.toBe(1000n);
       });

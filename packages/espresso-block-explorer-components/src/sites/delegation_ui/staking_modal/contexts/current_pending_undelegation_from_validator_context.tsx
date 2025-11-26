@@ -2,7 +2,6 @@ import { DataContext } from '@/components/contexts/DataProvider';
 import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import { Undelegation } from '@/contracts/stake_table/stake_table_interface';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { neverPromise } from '@/functional/functional_async';
 import { ConfirmedValidatorContext } from '@/sites/delegation_ui/contexts/confirmed_valdiator_context';
 import { L1RefreshTimestampContext } from '@/sites/delegation_ui/contexts/l1_refresh_timestamp_context';
@@ -24,7 +23,7 @@ export const ProvideCurrentPendingUndelegationToValidator: React.FC<
     !stakeTableContract || !accountAddress || !confirmedValidator
       ? neverPromise
       : stakeTableContract.undelegation(
-          hexArrayBufferCodec.encode(confirmedValidator),
+          confirmedValidator,
           accountAddress.toLowerCase() as `0x${string}`,
         );
 

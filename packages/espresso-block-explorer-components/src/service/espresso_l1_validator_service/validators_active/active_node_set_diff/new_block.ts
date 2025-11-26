@@ -3,24 +3,22 @@ import {
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
+import { numberArrayCodec, numberCodec } from '@/convert/codec/number';
 import {
   CappuccinoAPIBitVec,
   cappuccinoAPIBitVecCodec,
 } from '@/service/hotshot_query_service/cappuccino/availability/bit_vec';
-import {
-  ParticipationChange,
-  participationChangeArrayJSONCodec,
-} from '../../common/participation_change';
 import { ActiveNodeSetDiff } from './active_node_set_diff';
 
 /**
  * Defined in rust here:
- * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L65
+ * https://github.com/EspressoSystems/staking-ui-service/blob/c0df4fb15586b521272087967ae4e1faf7a4994b/src/types/global.rs#L65-L91
  */
 export class ActiveNodeSetDiffNewBlock extends ActiveNodeSetDiff {
   constructor(
-    public readonly leaders: ParticipationChange[],
-    public readonly voters: CappuccinoAPIBitVec,
+    public readonly leaderIndex: number,
+    public readonly failedLeaders: number[],
+    public readonly votersBitVec: CappuccinoAPIBitVec,
   ) {
     super();
     Object.freeze(this);
@@ -39,9 +37,10 @@ class ActiveNodeSetDiffNewBlockJSONDecoder
   implements Converter<unknown, ActiveNodeSetDiffNewBlock>
 {
   convert(input: unknown): ActiveNodeSetDiffNewBlock {
-    assertRecordWithKeys(input, 'leaders', 'voters');
+    assertRecordWithKeys(input, 'leader', 'failed_leaders', 'voters');
     return new ActiveNodeSetDiffNewBlock(
-      participationChangeArrayJSONCodec.decode(input.leaders),
+      numberCodec.decode(input.leader),
+      numberArrayCodec.decode(input.failed_leaders),
       cappuccinoAPIBitVecCodec.decode(input.voters),
     );
   }
@@ -56,8 +55,9 @@ class ActiveNodeSetDiffNewBlockJSONEncoder
 {
   convert(input: ActiveNodeSetDiffNewBlock): unknown {
     return {
-      leaders: participationChangeArrayJSONCodec.encode(input.leaders),
-      voters: cappuccinoAPIBitVecCodec.encode(input.voters),
+      leader: numberCodec.encode(input.leaderIndex),
+      failed_leaders: numberArrayCodec.encode(input.failedLeaders),
+      voters: cappuccinoAPIBitVecCodec.encode(input.votersBitVec),
     };
   }
 }

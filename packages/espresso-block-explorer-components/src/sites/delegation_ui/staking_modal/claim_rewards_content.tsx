@@ -19,9 +19,11 @@ import { ClaimableRewardsOverviewArea } from './claimable_rewards_overview_area'
 import { ClaimableRewardsSummaryAndInteraction } from './claimable_rewards_summary_and_interaction';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
+import { ProvideEstimatedFeesPerGas } from './contexts/estimated_fees_per_gas_context';
 import {
   ClaimRewardsAsyncSnapshotContext,
   performClaimRewards,
+  ProvideClaimRewardsAsyncIterableContext,
   SetClaimRewardsAsyncIterableContext,
 } from './contexts/perform_claim_rewards_context';
 import { PerformWriteTransactionStatus } from './contexts/perform_write_states';
@@ -36,21 +38,23 @@ import { StakingModalTitle } from './staking_modal_title';
  */
 export const ClaimRewardsContent: React.FC = () => {
   return (
-    <>
-      <StakingHeader>
-        <StakingModalTitle>
-          <Text text="Claim All" />
-        </StakingModalTitle>
-        <CloseStakingModalButton />
-      </StakingHeader>
-      <StakingContent>
-        <ProvideContractGasEstimate>
-          <ClaimableRewardsSummaryAndInteraction />
-          <ClaimableRewardsOverviewArea />
-          <ClaimRewardsActionsArea />
-        </ProvideContractGasEstimate>
-      </StakingContent>
-    </>
+    <ProvideEstimatedFeesPerGas>
+      <ProvideClaimRewardsAsyncIterableContext>
+        <StakingHeader>
+          <StakingModalTitle>
+            <Text text="Claim All" />
+          </StakingModalTitle>
+          <CloseStakingModalButton />
+        </StakingHeader>
+        <StakingContent>
+          <ProvideContractGasEstimate>
+            <ClaimableRewardsSummaryAndInteraction />
+            <ClaimableRewardsOverviewArea />
+            <ClaimRewardsActionsArea />
+          </ProvideContractGasEstimate>
+        </StakingContent>
+      </ProvideClaimRewardsAsyncIterableContext>
+    </ProvideEstimatedFeesPerGas>
   );
 };
 

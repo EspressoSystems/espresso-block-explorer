@@ -160,7 +160,7 @@ function top100Filter(showTop100: boolean, targetStake: bigint) {
   }
 
   return (node: NodeSetEntry) => {
-    return node.stake >= targetStake;
+    return node.stake >= targetStake && node.stake > 0n;
   };
 }
 

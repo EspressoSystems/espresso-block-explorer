@@ -12,33 +12,51 @@ import {
   RewardClaimContractGasEstimatorContext,
 } from '../contexts/reward_claim_contract_context';
 import { MockESPTokenContractImpl } from './esp_token_contract';
-import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
+import {
+  MockContractStorage,
+  MockL1MethodsImpl,
+  UnderlyingTransaction,
+} from './l1_methods';
 import { MockRewardClaimContractGasEstimatorImpl } from './reward_claim_contract_gas_estimator';
 
 /**
  * RewardClaimState defines the structure of the mock
  * RewardClaimContract state.
  */
-export interface MockRewardClaimState {
-  contractAddress: `0x${string}`;
+export class MockRewardClaimState implements MockContractStorage {
+  constructor(
+    public readonly contractAddress: `0x${string}`,
 
-  claimedRewards: Map<`0x${string}`, bigint>;
+    public readonly claimedRewards: Map<`0x${string}`, bigint>,
 
-  lastUpdate: Date;
+    public readonly lastUpdate: Date,
+  ) {}
+
+  applyTransaction(tx: UnderlyingTransaction): MockContractStorage {
+    if (tx instanceof RewardClaimStateAction) {
+      const nextState = tx.applyToState(this);
+      return new MockRewardClaimState(
+        nextState.contractAddress,
+        nextState.claimedRewards,
+        new Date(),
+      );
+    }
+
+    return this;
+  }
 }
 
 function applyActionToState(
   l1Methods: MockL1MethodsImpl,
   action: RewardClaimStateAction,
 ): void {
-  const currentState: null | MockRewardClaimState =
-    l1Methods.mockReadContractStorage(RewardClaimStorageSymbol) ?? null;
+  const currentState =
+    l1Methods.mockReadContractStorage<MockRewardClaimState>(
+      RewardClaimStorageSymbol,
+    ) ?? null;
   assertNotNull(currentState);
 
-  l1Methods.mockWriteContractStorage(RewardClaimStorageSymbol, {
-    ...action.applyToState(currentState),
-    lastUpdate: action.ts,
-  });
+  action.applyToState(currentState);
   l1Methods.mockWriteTransaction(action);
 }
 
@@ -104,10 +122,11 @@ export class ClaimRewardAction extends RewardClaimStateAction {
     const nextMap = new Map(state.claimedRewards);
     nextMap.set(this.delegator, this.lifetimeRewards);
 
-    return {
-      ...state,
-      claimedRewards: nextMap,
-    };
+    return new MockRewardClaimState(
+      state.contractAddress,
+      nextMap,
+      state.lastUpdate,
+    );
   }
 }
 
@@ -119,9 +138,14 @@ export class MockRewardClaimContractImpl implements RewardClaimContract {
     public accountAddress: `0x${string}` | null = null,
   ) {
     if (!this.l1Methods.mockReadContractStorage(RewardClaimStorageSymbol)) {
-      this.l1Methods.mockWriteContractStorage(RewardClaimStorageSymbol, {
-        ...state,
-      });
+      this.l1Methods.mockWriteContractStorage(
+        RewardClaimStorageSymbol,
+        new MockRewardClaimState(
+          state.contractAddress,
+          state.claimedRewards,
+          state.lastUpdate,
+        ),
+      );
     }
 
     this.accountAddress = accountAddress;
@@ -209,11 +233,13 @@ export class MockRewardClaimContractImpl implements RewardClaimContract {
 function useMockRewardClaimState(initialState?: Partial<MockRewardClaimState>) {
   const contractAddress = '0x0000000000000000000000000000000000000003';
   // Mocked ESPTokenContract State
-  const [state] = React.useState<MockRewardClaimState>({
-    contractAddress: initialState?.contractAddress ?? contractAddress,
-    claimedRewards: initialState?.claimedRewards ?? new Map(),
-    lastUpdate: initialState?.lastUpdate ?? new Date(),
-  } as const satisfies MockRewardClaimState);
+  const [state] = React.useState<MockRewardClaimState>(
+    new MockRewardClaimState(
+      initialState?.contractAddress ?? contractAddress,
+      initialState?.claimedRewards ?? new Map(),
+      initialState?.lastUpdate ?? new Date(),
+    ),
+  );
 
   return state;
 }

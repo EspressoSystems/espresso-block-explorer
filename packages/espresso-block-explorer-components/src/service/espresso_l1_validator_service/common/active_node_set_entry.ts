@@ -1,11 +1,13 @@
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { bigintCodec } from '@/convert/codec/bigint';
 import {
   assertRecordWithKeys,
   Converter,
+  isRecordWithKeys,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
-import { nullableRatioCodec, Ratio } from './ratio';
+import { nullableRatioCodec, Ratio, RatioRational } from './ratio';
 
 /**
  * ActiveNodeSetEntry represents a single entry in the active node set.
@@ -40,17 +42,40 @@ class ActiveNodeSetEntryJSONDecoder
   implements Converter<unknown, ActiveNodeSetEntry>
 {
   convert(input: unknown): ActiveNodeSetEntry {
+    if (
+      isRecordWithKeys(
+        input,
+        'address',
+        'voter_participation',
+        'leader_participation',
+      )
+    ) {
+      return new ActiveNodeSetEntry(
+        hexArrayBufferCodec.decode(input.address),
+        nullableRatioCodec.decode(input.voter_participation),
+        nullableRatioCodec.decode(input.leader_participation),
+      );
+    }
+
     assertRecordWithKeys(
       input,
       'address',
-      'voter_participation',
-      'leader_participation',
+      'eligible_votes',
+      'proposals',
+      'slots',
+      'votes',
     );
 
     return new ActiveNodeSetEntry(
       hexArrayBufferCodec.decode(input.address),
-      nullableRatioCodec.decode(input.voter_participation),
-      nullableRatioCodec.decode(input.leader_participation),
+      Ratio.rational(
+        bigintCodec.decode(input.votes),
+        bigintCodec.decode(input.eligible_votes),
+      ),
+      Ratio.rational(
+        bigintCodec.decode(input.proposals),
+        bigintCodec.decode(input.slots),
+      ),
     );
   }
 }
@@ -63,6 +88,21 @@ class ActiveNodeSetEntryJSONEncoder
   implements Converter<ActiveNodeSetEntry, unknown>
 {
   convert(input: ActiveNodeSetEntry): unknown {
+    if (
+      input.voterParticipation instanceof RatioRational &&
+      input.leaderParticipation instanceof RatioRational
+    ) {
+      return {
+        address: hexArrayBufferCodec.encode(input.address),
+        eligible_votes: bigintCodec.encode(
+          input.voterParticipation.denominator,
+        ),
+        proposals: bigintCodec.encode(input.leaderParticipation.numerator),
+        slots: bigintCodec.encode(input.leaderParticipation.denominator),
+        votes: bigintCodec.encode(input.voterParticipation.numerator),
+      };
+    }
+
     return {
       address: hexArrayBufferCodec.encode(input.address),
       voter_participation: nullableRatioCodec.encode(input.voterParticipation),

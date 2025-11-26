@@ -26,7 +26,7 @@ export const ClaimRewardsAsyncSnapshotContext = React.createContext<
   AsyncSnapshot<PerformWriteTransactionState>
 >(AsyncSnapshot.nothing());
 
-export const ProvideClaimRewardsPromiseContext: React.FC<
+export const ProvideClaimRewardsAsyncIterableContext: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const [asyncIterable, setAsyncIterable] =

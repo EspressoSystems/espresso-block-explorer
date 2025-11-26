@@ -7,14 +7,22 @@ export interface MoneyTextProps {
   money: MonetaryValue;
 }
 
-function determineValue(money: MonetaryValue): number | bigint {
-  if (money.value % money.currency.significantDigitsMultiplier === 0n) {
-    return money.value / money.currency.significantDigitsMultiplier;
+function padStart(str: string, length: number, padChar: string): string {
+  while (str.length < length) {
+    str = padChar + str;
   }
+  return str;
+}
 
-  return (
-    Number(money.value) / Number(money.currency.significantDigitsMultiplier)
-  );
+function determineValue(money: MonetaryValue): Intl.StringNumericLiteral {
+  // We want the full value, and we want to be precise.
+  // So let's craft a simple basic string format for precision.
+
+  const wholeValue = money.value / money.currency.significantDigitsMultiplier;
+  const fractionalValue =
+    money.value % money.currency.significantDigitsMultiplier;
+
+  return `${wholeValue}.${padStart(String(fractionalValue), money.currency.significantDigits, '0')}` as Intl.StringNumericLiteral;
 }
 
 /**
@@ -82,7 +90,7 @@ const DefaultFormatterMoneyText: React.FC<DefaultMoneyTextProps> = (props) => {
 };
 
 interface SpecificCodeProps {
-  value: number | bigint;
+  value: number | bigint | Intl.StringNumericLiteral;
 }
 
 /**

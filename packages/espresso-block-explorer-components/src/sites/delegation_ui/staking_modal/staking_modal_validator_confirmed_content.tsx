@@ -10,14 +10,26 @@ import {
 } from '../contexts/validator_selection_context';
 import { ProvideCurrentPendingUndelegationToValidator } from './contexts/current_pending_undelegation_from_validator_context';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
+import { ProvideStakingAmountContexts } from './contexts/staking_amount_context';
 import { StakingModalHistoryControlsContext } from './contexts/staking_modal_history_context';
 import { ManageStakeContent } from './manage_stake_content';
 import { NewDelegationContent } from './new_delegation_content';
+import { ProvideCurrentStakingInformation } from './provide_staking_information';
 import { UndelegationContent } from './undelegation_content';
 import { WithdrawClaimContent } from './withdraw_claim_content';
 import { WithdrawExitContent } from './withdraw_exit_content';
 
 export const ValidatorConfirmedContent: React.FC = () => {
+  return (
+    <ProvideStakingAmountContexts>
+      <ProvideCurrentStakingInformation>
+        <ValidatorConfirmedSpecificContent />
+      </ProvideCurrentStakingInformation>
+    </ProvideStakingAmountContexts>
+  );
+};
+
+const ValidatorConfirmedSpecificContent: React.FC = () => {
   const selectedValidator = React.useContext(ValidatorSelectionContext);
   const historyControls = React.useContext(StakingModalHistoryControlsContext);
   const currentStakeToValidator = React.useContext(

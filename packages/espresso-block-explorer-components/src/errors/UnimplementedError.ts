@@ -1,3 +1,4 @@
+import { breakpoint } from '@/assert/debugger';
 import {
   Converter,
   TypeCheckingCodec,
@@ -18,8 +19,7 @@ export default class UnimplementedError extends BaseError {
   constructor(message: string = 'unimplemented') {
     super(message);
     Object.freeze(this);
-    // eslint-disable-next-line no-debugger
-    debugger;
+    breakpoint();
   }
 
   get code(): string {

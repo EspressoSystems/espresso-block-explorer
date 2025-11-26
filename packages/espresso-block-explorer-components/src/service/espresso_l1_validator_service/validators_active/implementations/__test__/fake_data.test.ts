@@ -1,4 +1,3 @@
-import UnimplementedError from '@/errors/UnimplementedError';
 import { describe, expect, it } from 'vitest';
 import { ValidatorsActiveAPI } from '../../validators_active_api';
 import { FakeDataValidatorsActiveAPI } from '../fake_data';
@@ -14,8 +13,6 @@ describe('FakeDataValidatorsActiveAPI', () => {
   });
 
   it('should throw UnimplementedError', async () => {
-    await expect(service.updatesSince(5n)).rejects.toThrowError(
-      UnimplementedError,
-    );
+    await expect(service.updatesSince(5n)).resolves.not.toBeNull();
   });
 });
