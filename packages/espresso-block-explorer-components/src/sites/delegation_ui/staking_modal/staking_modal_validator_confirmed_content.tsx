@@ -8,7 +8,6 @@ import {
   ValidatorConfirmedUndelegateWithdraw,
   ValidatorSelectionContext,
 } from '../contexts/validator_selection_context';
-import { ProvideCurrentPendingUndelegationToValidator } from './contexts/current_pending_undelegation_from_validator_context';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
 import { ProvideStakingAmountContexts } from './contexts/staking_amount_context';
 import { StakingModalHistoryControlsContext } from './contexts/staking_modal_history_context';
@@ -59,11 +58,7 @@ const ValidatorConfirmedSpecificContent: React.FC = () => {
   }
 
   if (selectedValidator instanceof ValidatorConfirmedUndelegateWithdraw) {
-    return (
-      <ProvideCurrentPendingUndelegationToValidator>
-        <WithdrawClaimContent />
-      </ProvideCurrentPendingUndelegationToValidator>
-    );
+    return <WithdrawClaimContent />;
   }
 
   if (selectedValidator instanceof ValidatorConfirmedStake) {

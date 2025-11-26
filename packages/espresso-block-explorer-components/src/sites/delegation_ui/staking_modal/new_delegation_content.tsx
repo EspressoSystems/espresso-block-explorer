@@ -12,7 +12,10 @@ import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { StakeTableContractGasEstimatorContext } from '../contexts/stake_table_contract_context';
 import { ApproveButton } from './approve_button';
 import { CloseStakingModalButton } from './close_staking_modal';
-import { CurrentAllowanceToStakeTableContext } from './contexts/current_allowance_context';
+import {
+  CurrentAllowanceToStakeTableContext,
+  ProvideCurrentAllowanceToStakeTable,
+} from './contexts/current_allowance_context';
 import { ProvideCurrentCurrentEpochActiveValidators } from './contexts/current_epoch_active_validators_context';
 import { ProvideEpochCurrentStakeToValidator } from './contexts/current_epoch_stake_to_validator_context';
 import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
@@ -46,16 +49,18 @@ export const NewDelegationContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <ProvideCurrentCurrentEpochActiveValidators>
-          <ProvideEpochCurrentStakeToValidator>
-            <ProvideDelegateContractGasEstimate>
-              <StakingInitialSummaryAndInteraction />
-              <StakingOverviewArea />
-              <StakingActionsArea />
-              <StakingCompletionArea />
-            </ProvideDelegateContractGasEstimate>
-          </ProvideEpochCurrentStakeToValidator>
-        </ProvideCurrentCurrentEpochActiveValidators>
+        <ProvideCurrentAllowanceToStakeTable>
+          <ProvideCurrentCurrentEpochActiveValidators>
+            <ProvideEpochCurrentStakeToValidator>
+              <ProvideDelegateContractGasEstimate>
+                <StakingInitialSummaryAndInteraction />
+                <StakingOverviewArea />
+                <StakingActionsArea />
+                <StakingCompletionArea />
+              </ProvideDelegateContractGasEstimate>
+            </ProvideEpochCurrentStakeToValidator>
+          </ProvideCurrentCurrentEpochActiveValidators>
+        </ProvideCurrentAllowanceToStakeTable>
       </StakingContent>
     </>
   );

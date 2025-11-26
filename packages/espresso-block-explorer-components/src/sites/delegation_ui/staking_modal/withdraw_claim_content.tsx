@@ -17,7 +17,10 @@ import {
 } from '../contexts/stake_table_contract_context';
 import ButtonLarge from '../elements/buttons/button_large';
 import { CloseStakingModalButton } from './close_staking_modal';
-import { CurrentPendingUndelegationFromValidatorContext } from './contexts/current_pending_undelegation_from_validator_context';
+import {
+  CurrentPendingUndelegationFromValidatorContext,
+  ProvideCurrentPendingUndelegationToValidator,
+} from './contexts/current_pending_undelegation_from_validator_context';
 import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
 import {
   ClaimWithdrawalAsyncSnapshotContext,
@@ -50,11 +53,13 @@ export const WithdrawClaimContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <ProvideContractGasEstimate>
-          <PendingClaimSummaryAndInteraction />
-          <PendingClaimOverviewArea />
-          <WithdrawClaimActionsArea />
-        </ProvideContractGasEstimate>
+        <ProvideCurrentPendingUndelegationToValidator>
+          <ProvideContractGasEstimate>
+            <PendingClaimSummaryAndInteraction />
+            <PendingClaimOverviewArea />
+            <WithdrawClaimActionsArea />
+          </ProvideContractGasEstimate>
+        </ProvideCurrentPendingUndelegationToValidator>
       </StakingContent>
     </>
   );

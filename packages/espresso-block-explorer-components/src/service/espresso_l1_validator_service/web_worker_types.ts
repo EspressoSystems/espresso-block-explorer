@@ -433,7 +433,6 @@ export class AsyncRequestHelper {
    * handleError handles errors that occur in the Web Worker
    */
   handleError(event: ErrorEvent) {
-    // eslint-disable-next-line no-debugger
     breakpoint();
     console.error('encountered error setting up Web worker', event);
   }
