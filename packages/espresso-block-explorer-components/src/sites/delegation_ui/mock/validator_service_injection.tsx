@@ -344,7 +344,6 @@ class MockStatefulValidatorsAllAPI implements ValidatorsAllAPI {
 
 class MockStatefulValidatorsActiveAPI implements ValidatorsActiveAPI {
   constructor(
-    private readonly l1Methods: MockL1MethodsImpl,
     private readonly service: ValidatorsActiveAPI,
     private readonly hotShotQueryService: CappuccinoHotShotQueryService,
   ) {}
@@ -379,9 +378,9 @@ class MockValidatorService implements L1ValidatorService {
   public readonly validatorsAll: MockStatefulValidatorsAllAPI;
   public readonly validatorsActive: MockStatefulValidatorsActiveAPI;
   constructor(
-    private l1Methods: MockL1MethodsImpl,
-    private service: L1ValidatorService,
-    private hotShotQueryService: CappuccinoHotShotQueryService,
+    l1Methods: MockL1MethodsImpl,
+    service: L1ValidatorService,
+    hotShotQueryService: CappuccinoHotShotQueryService,
   ) {
     this.l1Block = new MockL1BlockAPI(l1Methods);
     this.wallet = new MockStatefulWalletAPI(l1Methods);
@@ -390,7 +389,6 @@ class MockValidatorService implements L1ValidatorService {
       service.validatorsAll,
     );
     this.validatorsActive = new MockStatefulValidatorsActiveAPI(
-      l1Methods,
       service.validatorsActive,
       hotShotQueryService,
     );
