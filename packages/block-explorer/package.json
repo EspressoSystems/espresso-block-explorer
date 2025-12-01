@@ -14,13 +14,14 @@
   "dependencies": {
     "@rainbow-me/rainbowkit": "^2.2.5",
     "@tanstack/react-query": "^5.80.2",
-    "next": "^15.5.4",
+    "next": "^16.0.6",
     "react": "^19",
     "react-dom": "^19",
     "viem": "^2.30.6",
-    "wagmi": "^2.15.4"
+    "wagmi": "^2.19.5"
   },
   "devDependencies": {
+    "@eslint/compat": "^2.0.0",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.29.0",
     "@testing-library/react": "^16",
@@ -30,15 +31,15 @@
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
     "@vitejs/plugin-react": "^5.0.4",
-    "@vitest/coverage-istanbul": "^3",
-    "@vitest/web-worker": "^3",
+    "@vitest/coverage-istanbul": "^4.0.14",
+    "@vitest/web-worker": "^4.0.14",
     "eslint": "^9",
-    "eslint-config-next": "^15",
+    "eslint-config-next": "^16.0.6",
     "espresso-block-explorer-components": "file:../espresso-block-explorer-components",
     "jsdom": "^27.0.0",
     "next-router-mock": "^1",
     "typescript": "^5",
     "vite": "^7.1.11",
-    "vitest": "^3"
+    "vitest": "^4.0.14"
   }
 }
