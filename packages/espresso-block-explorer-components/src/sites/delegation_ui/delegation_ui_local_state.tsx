@@ -1,9 +1,9 @@
+import { breakpoint } from '@/assert/debugger';
 import { sleep } from '@/async/sleep';
 import { DataContext } from '@/components/contexts/DataProvider';
-import { Now } from '@/components/contexts/NowProvider';
 import { AsyncIterableResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
-import { nullableHexArrayBufferCodec } from '@/convert/codec';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import BadResponseClientError from '@/errors/BadResponseClientError';
 import WebWorkerErrorResponse from '@/errors/WebWorkerErrorResponse';
 import { compareArrayBuffer } from '@/functional/functional';
@@ -16,8 +16,6 @@ import { applyAllNodesUpdate } from '@/service/espresso_l1_validator_service/val
 import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
 import { applyWalletSnapshotUpdates } from '@/service/espresso_l1_validator_service/wallet/apply_wallet_update';
 import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
-import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
-import { CappuccinoHotShotQueryServiceAPIContext } from 'pages';
 import React from 'react';
 import { ActiveValidatorsContext } from './contexts/active_validators_context';
 import { AllValidatorsContext } from './contexts/all_validators_context';
@@ -28,250 +26,58 @@ import { L1ValidatorServiceContext } from './contexts/l1_validator_api_context';
 import { WalletSnapshotContext } from './contexts/wallet_snapshot_context';
 
 /**
- * The purpose of this file is to codify the local state representation of the
- * L1 Validator Service API data, that will automatically periodically check
- * and update itself with new data as it becomes available.
- *
- * The data derived from the local state will be provided automatically via
- * React Contexts to provide information, and updates to the Delegation UI.
+ * MINIMUM_SLEEP_TIME defines the minimum sleep time
+ * between polling attempts.
  */
+const MINIMUM_SLEEP_TIME = 100; // in ms
 
 /**
- * DelegationUILocalState represents the local state
- * of the Delegation UI data.
- */
-export interface DelegationUILocalState {
-  l1Block: null | L1BlockID;
-  espressoEpochAndBlock: null | EpochAndBlock;
-  espressoBlockHeight: null | number;
-  activeWalletAddress: null | ArrayBuffer;
-
-  nodesAllSnapshot: null | FullNodeSetSnapshot;
-  nodesActiveSnapshot: null | ActiveNodeSetSnapshot;
-  walletSnapshot: null | WalletSnapshot;
-
-  lastUpdated: null | Date;
-}
-
-const POLLING_RATE = 1000; // in ms
-
-/**
- * delegationUILocalStateStream is an async generator function
- * that yields updated DelegationUILocalState objects
- * as new data becomes available from the L1 Validator Service API.
+ * isSameL1Block determines if two L1BlockID objects
+ * represent the same L1 Block.
  *
- * This method starts with the basic data.  After a syncing delay, it will
- * fetch the latest block information from the L1, an the latest Espresso
- * Block height.  Using this information, it will make further determinations
- * about what data to fetch next, and how to apply it.
+ * This is a convenience check to quickly rule out L1 Block equality.
  */
-async function* delegationUILocalStateStream(
-  l1ValidatorService: L1ValidatorService,
-  hotShotQueryService: CappuccinoHotShotQueryService,
-  activeAccount: null | ArrayBuffer,
-) {
-  let state: DelegationUILocalState = {
-    l1Block: null,
-    espressoEpochAndBlock: null,
-    espressoBlockHeight: null,
-    activeWalletAddress: activeAccount,
-
-    nodesAllSnapshot: null,
-    nodesActiveSnapshot: null,
-    walletSnapshot: null,
-
-    lastUpdated: null,
-  };
-
-  let shouldSlowDown: boolean = false;
-  let lastAddress: null | ArrayBuffer = null;
-  let lastNow: null | Date = null;
-
-  while (true) {
-    const [nextAddress, now]: [null | ArrayBuffer, Date] =
-      (yield state) ?? null;
-
-    if (
-      lastAddress === nextAddress &&
-      lastNow?.valueOf() === now.valueOf() &&
-      shouldSlowDown
-    ) {
-      // No changes to the input, we can skip processing.
-
-      // Sleep for a little bit, so that we don't hot loop
-      await sleep(100);
-      continue;
-    }
-    lastAddress = nextAddress;
-    lastNow = now;
-
-    // First we fetch our initial states.
-    const [blockInfo, espressoHeight] = await Promise.all([
-      // Should we fetch the block information from the L1 Instead of the
-      // L1 Validator service?
-
-      getNextL1Block(state, l1ValidatorService),
-
-      getNextEspressoBlockHeight(state, hotShotQueryService),
-    ]);
-
-    if (blockInfo && isL1ReorgDetected(state.l1Block, blockInfo)) {
-      // We have detected a reorg, we need to reset our state, and
-      // start over.
-      state = {
-        l1Block: null,
-        espressoEpochAndBlock: null,
-        espressoBlockHeight: null,
-        activeWalletAddress: null,
-
-        nodesAllSnapshot: null,
-        nodesActiveSnapshot: null,
-        walletSnapshot: null,
-
-        lastUpdated: null,
-      };
-      continue;
-    }
-
-    const [nextState, nextShouldSlowDown] = await deriveAndApplyStateChanges(
-      state,
-      l1ValidatorService,
-      blockInfo,
-      espressoHeight,
-      nextAddress,
-    );
-
-    state = nextState;
-    shouldSlowDown = nextShouldSlowDown;
+function isSameL1Block(a: null | L1BlockID, b: null | L1BlockID) {
+  if (a === null && b === null) {
+    return true;
   }
+
+  if (a === null || b === null) {
+    return false;
+  }
+
+  return a.number === b.number && compareArrayBuffer(a.hash, b.hash) === 0;
 }
 
 /**
- * getNextL1BlockHeight retrieves the next L1BlockID that is available from
- * the L1 Validator Service.
- *
- * If we're starting fresh, we won't have a previous `l1Block`, so we'll
- * retrieve the latest block available from the service.  Otherwise, we
- * should have the `l1Block`, and we will then try to get the next block
- * in the sequence from the service.
- *
- * If we fail to retrieve the next block, we will swallow the error and
- * return null.  This is done as we're actually expecting the retrieval
- * of the next block to fail often, and we want to be able to make progress
- * when the Espresso chain is moving at the same time.
+ * isNotFoundError is a helper function to determine if an error
+ * is, or has, an underlying error that results from a 404 server response.
  */
-async function getNextL1Block(
-  state: DelegationUILocalState,
-  l1ValidatorService: L1ValidatorService,
-): Promise<null | L1BlockID> {
-  const previousL1Block = state.l1Block;
-  try {
-    if (previousL1Block) {
-      // If we had a previous l1 block, we want to try for the next block.
-      return await l1ValidatorService.l1Block.getBlockForHeight(
-        previousL1Block.number + 1n,
-      );
-    }
-
-    return await l1ValidatorService.l1Block.getLatestBlock();
-  } catch (err) {
-    // We failed to retrieve the latest block.  This could be due to
-    // a number of reasons.  The main reasons are as follows:
-    // 1. The block is not yet available.
-    // 2. There is a network issue.
-    // 3. The service we are requesting th block from is down.
-    //
-    // In all of these cases, it's not the end of the world, we'll
-    // just try again on the next iteration anyway, so we can just
-    // swallow the error here.
-    let localError: unknown = err;
-    if (err instanceof WebWorkerErrorResponse) {
-      // We have a WebWorkerErrorResponse, we can inspect the underlying
-      // cause.
-      localError = err.error;
-    }
-
-    if (
-      localError instanceof BadResponseClientError &&
-      localError.status === 404
-    ) {
-      // This likely means that the active validator set is not yet
-      // available.  We can just return the previous state.
-      return null;
-    }
-
-    console.debug(
-      'failed to retrieve latest l1 block info',
-      err,
-      previousL1Block,
-    );
-    return null;
+function isNotFoundError(error: unknown) {
+  let localError: unknown = error;
+  if (error instanceof WebWorkerErrorResponse) {
+    // We have a WebWorkerErrorResponse, we can inspect the underlying
+    localError = error.error;
   }
+
+  if (
+    localError instanceof BadResponseClientError &&
+    localError.status === 404
+  ) {
+    // This likely means that the active validator set is not yet
+    // available.  We can just return the previous state.
+    return true;
+  }
+
+  return false;
 }
 
 /**
- * getNextEspressoBlockHeight retrieves the next Espresso block height
- * that we will be looking for information for.
- *
- * If we are starting fresh, we will fetch the latest block height from
- * the HotShotQueryService.  We anticipate that the staking service will
- * actually be a little bit behind the latest block, so we will subtract
- * one from the latest height.
- *
- * If we already have an espressoBlockHeight, we will simply increment
- * it by one, and try to fetch data for that block height.
- *
- * If we fail to retrieve the latest block height, we will swallow
- * the error and return null.  This shouldn't happen very often, as we
- * should only need to perform the initial latest block check once.
- * However, since this will be polled periodically, it will just attempt
- * again on the next iteration.
+ * isRetryableError determines if an error that does not represent
+ * a category of errors that prevent the attempt from being reattempted.
  */
-async function getNextEspressoBlockHeight(
-  state: DelegationUILocalState,
-  hotShotQueryService: CappuccinoHotShotQueryService,
-): Promise<null | number> {
-  if (state.espressoBlockHeight) {
-    return state.espressoBlockHeight + 1;
-  }
-
-  try {
-    const height = await hotShotQueryService.status.blockHeight();
-    return height - 1;
-  } catch (err) {
-    // We failed to retrieve the latest Espresso block height.
-    // This could be due to a number of reasons.  The main reasons
-    // are as follows:
-    // 1. There is a network issue.
-    // 2. The service we are requesting the latest height from is down.
-    //
-    // In all of these cases, it's not the end of the world, we'll
-    // just try again on the next iteration anyway, so we can just
-    // swallow the error here.
-    let localError: unknown = err;
-    if (err instanceof WebWorkerErrorResponse) {
-      // We have a WebWorkerErrorResponse, we can inspect the underlying
-      // cause.
-      localError = err.error;
-    }
-
-    if (
-      localError instanceof BadResponseClientError &&
-      localError.status === 404
-    ) {
-      // This likely means that the active validator set is not yet
-      // available.  We can just return the previous state.
-      return null;
-    }
-
-    console.debug(
-      'failed to retrieve latest espresso block height',
-      err,
-      state.espressoBlockHeight,
-    );
-
-    return null;
-  }
+function isARetryableError(error: unknown) {
+  return isNotFoundError(error);
 }
 
 /**
@@ -312,312 +118,595 @@ function isL1ReorgDetected(
   return false;
 }
 
-async function deriveAndApplyStateChanges(
-  state: DelegationUILocalState,
+/**
+ * L!_BLOCK_ID_POLLING_RATE defines how often we poll
+ * for new L1 Block IDs.
+ */
+const L1_BLOCK_ID_POLLING_RATE = 1_000; // in ms
+
+/**
+ * fetchNextL1BlockID attempts to fetch the next L1 Block ID
+ * after the provided previousL1BlockID.  If previousL1BlockID
+ * is null, the latest L1 Block ID is fetched.
+ */
+async function fetchNextL1BlockID(
   l1ValidatorService: L1ValidatorService,
-  newL1Block: null | L1BlockID,
-  newEspressoBlockHeight: null | number,
-  nextAddress: null | ArrayBuffer,
-): Promise<[DelegationUILocalState, boolean]> {
-  const [nextAllState, nextActiveState, nextWalletState] = await Promise.all([
-    deriveAndApplyNodesAllStateChanges(
-      state.nodesAllSnapshot,
-      l1ValidatorService,
-      newL1Block,
-    ),
-
-    deriveAndApplyNodesActiveStateChanges(
-      state.nodesActiveSnapshot,
-      l1ValidatorService,
-      newEspressoBlockHeight,
-    ),
-
-    deriveAndApplyWalletStateChanges(
-      state.walletSnapshot,
-      state.activeWalletAddress,
-      l1ValidatorService,
-      newL1Block,
-      nextAddress,
-    ),
-  ] as const);
-
-  const shouldSlowDown =
-    state.nodesAllSnapshot === nextAllState &&
-    state.nodesActiveSnapshot === nextActiveState &&
-    state.walletSnapshot === nextWalletState;
-
-  return [
-    {
-      l1Block: nextAllState && newL1Block ? newL1Block : state.l1Block,
-      espressoEpochAndBlock:
-        nextActiveState?.espressoBlock ?? state.espressoEpochAndBlock,
-      espressoBlockHeight: nextActiveState
-        ? Number(nextActiveState.espressoBlock.block)
-        : state.espressoBlockHeight,
-      activeWalletAddress: nextWalletState
-        ? nextAddress
-        : state.activeWalletAddress,
-
-      nodesAllSnapshot: nextAllState,
-      nodesActiveSnapshot: nextActiveState,
-      walletSnapshot: nextWalletState,
-
-      lastUpdated: new Date(),
-    },
-    shouldSlowDown,
-  ];
-}
-
-async function deriveAndApplyNodesAllStateChanges(
-  state: null | FullNodeSetSnapshot,
-  l1ValidatorService: L1ValidatorService,
-  newL1Block: null | L1BlockID,
-): Promise<null | FullNodeSetSnapshot> {
-  if (!newL1Block) {
-    // We can't fetch new data without a new L1 block.
-    return state;
-  }
-
-  if (!state) {
-    // We have no previous state, we need to fetch the current snapshot.
+  previousL1BlockID: null | L1BlockID,
+  pollingInterval: number = L1_BLOCK_ID_POLLING_RATE,
+) {
+  while (true) {
     try {
-      return await l1ValidatorService.validatorsAll.snapshot(newL1Block.hash);
-    } catch (err) {
-      console.debug(
-        'failed to retrieve full node set snapshot',
-        newL1Block,
-        err,
-      );
+      if (!previousL1BlockID) {
+        return await l1ValidatorService.l1Block.getLatestBlock();
+      }
 
-      return state;
+      return await l1ValidatorService.l1Block.getBlockForHeight(
+        previousL1BlockID.number + 1n,
+      );
+    } catch (err) {
+      if (isARetryableError(err)) {
+        // This likely means that the active validator set is not yet
+        // available.  We can just return the previous state.
+        await sleep(pollingInterval);
+        continue;
+      }
+
+      throw err;
     }
   }
+}
 
-  try {
-    const update = await l1ValidatorService.validatorsAll.updatesSince(
-      newL1Block.hash,
+/**
+ * l1BlocksIDStream is an async generator that yields new L1 Block IDs
+ * as they become available.
+ */
+async function* l1BlocksIDStream(
+  l1ValidatorService: L1ValidatorService,
+  pollingInterval: number = L1_BLOCK_ID_POLLING_RATE,
+) {
+  let lastL1Block: L1BlockID = await fetchNextL1BlockID(
+    l1ValidatorService,
+    null,
+    pollingInterval,
+  );
+
+  // Yield the l1 block immediately before going into the loop
+  yield lastL1Block;
+
+  while (true) {
+    await sleep(pollingInterval);
+    lastL1Block = await fetchNextL1BlockID(
+      l1ValidatorService,
+      lastL1Block,
+      pollingInterval,
     );
-
-    return applyAllNodesUpdate(state, update);
-  } catch (err) {
-    console.debug(
-      'failed to retrieve full node set snapshot updates',
-      newL1Block,
-      err,
-    );
-
-    return state;
+    yield lastL1Block;
   }
 }
 
-async function deriveAndApplyNodesActiveStateChanges(
-  state: null | ActiveNodeSetSnapshot,
+/**
+ * ProvideL1BlockID is a context provider that provides the latest
+ * L1 Block ID to its children.
+ */
+const ProvideL1BlockID: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const l1ValidatorService = React.useContext(L1ValidatorServiceContext);
+  const stream = React.useMemo(
+    () => l1BlocksIDStream(l1ValidatorService),
+    [l1ValidatorService],
+  );
+
+  return (
+    <AsyncIterableResolver asyncIterable={stream}>
+      <TransformDataToL1BlockID>{children}</TransformDataToL1BlockID>
+    </AsyncIterableResolver>
+  );
+};
+
+/**
+ * TransformDataToL1BlockID transforms the data provided by DataContext
+ * into the L1BlockIDContext.
+ */
+const TransformDataToL1BlockID: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const data = (React.useContext(DataContext) ?? null) as null | L1BlockID;
+
+  return (
+    <L1BlockIDContext.Provider value={data}>
+      {children}
+    </L1BlockIDContext.Provider>
+  );
+};
+
+/**
+ * ESPRESSO_BLOCK_HEIGHT_POLLING_RATE defines how often we poll
+ * for changes based on the Espresso Block Height.
+ */
+const ESPRESSO_BLOCK_HEIGHT_POLLING_RATE = 1_000; // in ms
+
+/**
+ * retrieveL1AllNodesSnapshot attempts to retrieve the FullNodeSetSnapshot
+ * for the provided L1 Block ID.
+ */
+async function retrieveL1AllNodesSnapshot(
   l1ValidatorService: L1ValidatorService,
-  newEspressoBlockHeight: null | number,
-): Promise<null | ActiveNodeSetSnapshot> {
-  if (!state) {
-    // We have no previous state, we need to fetch the current snapshot.
+  l1BlockID: L1BlockID,
+) {
+  let penalty = MINIMUM_SLEEP_TIME; // start with a low penalty in ms
+  while (true) {
+    try {
+      return await l1ValidatorService.validatorsAll.snapshot(l1BlockID.hash);
+    } catch (err) {
+      if (isARetryableError(err)) {
+        // This likely means that the active validator set is not yet
+        // available.  We can just return the previous state.
+        await sleep(penalty);
+        penalty = Math.min(penalty * 2, 5_000); // exponential backoff up to 5s
+        continue;
+      }
+
+      // Re throw the error
+      throw err;
+    }
+  }
+}
+
+/**
+ * retrieveL1AllNodesSnapshot attempts to retrieve the FullNodeSetSnapshot
+ * for the provided L1 Block ID.
+ */
+async function retrieveL1AllNodesUpdates(
+  l1ValidatorService: L1ValidatorService,
+  l1BlockID: L1BlockID,
+) {
+  let penalty = MINIMUM_SLEEP_TIME; // start with a low penalty in ms
+  while (true) {
+    try {
+      return await l1ValidatorService.validatorsAll.updatesSince(
+        l1BlockID.hash,
+      );
+    } catch (err) {
+      if (isARetryableError(err)) {
+        // This likely means that the active validator set is not yet
+        // available.  We can just return the previous state.
+        await sleep(penalty);
+        penalty = Math.min(penalty * 2, 5_000); // exponential backoff up to 5s
+        continue;
+      }
+
+      // Re throw the error
+      throw err;
+    }
+  }
+}
+
+/**
+ * allNodesStream is an async generator that yields the FullNodeSetSnapshot
+ * as it is updated over time.
+ */
+async function* allNodesStream(l1ValidatorService: L1ValidatorService) {
+  let lastL1Block: null | L1BlockID = yield null;
+  while (lastL1Block === null) {
+    // We don't want to hot loop here, so we need to wait a little bit.
+    await sleep(MINIMUM_SLEEP_TIME);
+
+    // We cannot progress without an l1 Block
+    lastL1Block = yield null;
+  }
+
+  let allNodes: FullNodeSetSnapshot = await retrieveL1AllNodesSnapshot(
+    l1ValidatorService,
+    lastL1Block,
+  );
+  while (true) {
+    const nextL1Block: L1BlockID = yield allNodes;
+
+    // Did we receive the same block again?
+    if (isSameL1Block(nextL1Block, lastL1Block)) {
+      // We receive the same block again.  This is due to the
+      // AsyncIterableResolver polling before the next block is available.
+      // This is not an error, but we don't have any work to do here.
+      // So we'll sleep until the next block is different.
+      await sleep(MINIMUM_SLEEP_TIME);
+      continue;
+    }
+
+    if (
+      // Reorg detection
+      isL1ReorgDetected(lastL1Block, nextL1Block)
+    ) {
+      breakpoint();
+      allNodes = await retrieveL1AllNodesSnapshot(
+        l1ValidatorService,
+        nextL1Block,
+      );
+      lastL1Block = nextL1Block;
+      continue;
+    }
+
+    const updates = await retrieveL1AllNodesUpdates(
+      l1ValidatorService,
+      nextL1Block,
+    );
+
+    // Apply the updates to our local state
+    allNodes = applyAllNodesUpdate(allNodes, updates);
+    lastL1Block = nextL1Block;
+  }
+}
+
+/**
+ * ProvideAllValidators is a context provider that provides the latest
+ * FullNodeSetSnapshot to its children.
+ */
+const ProvideAllValidators: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const l1ValidatorService = React.useContext(L1ValidatorServiceContext);
+  const l1Block = React.useContext(L1BlockIDContext);
+  const stream = React.useMemo(
+    () => allNodesStream(l1ValidatorService),
+    [l1ValidatorService],
+  );
+
+  return (
+    <AsyncIterableResolver asyncIterable={stream} next={l1Block}>
+      <TransformDataToAllValidators>{children}</TransformDataToAllValidators>
+    </AsyncIterableResolver>
+  );
+};
+
+/**
+ * TransformDataToAllValidators transforms the data provided by DataContext
+ * into the AllValidatorsContext.
+ */
+const TransformDataToAllValidators: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const data = (React.useContext(DataContext) ??
+    null) as null | FullNodeSetSnapshot;
+  return (
+    <AllValidatorsContext.Provider value={data}>
+      {children}
+    </AllValidatorsContext.Provider>
+  );
+};
+
+/**
+ * retrieveLatestActiveValidatorsSnapshot attempts to retrieve the latest
+ * ActiveNodeSetSnapshot.
+ */
+async function retrieveLatestActiveValidatorsSnapshot(
+  l1ValidatorService: L1ValidatorService,
+) {
+  let penalty = MINIMUM_SLEEP_TIME; // start with a low penalty in ms
+  while (true) {
     try {
       return await l1ValidatorService.validatorsActive.active();
     } catch (err) {
       let localError: unknown = err;
       if (err instanceof WebWorkerErrorResponse) {
         // We have a WebWorkerErrorResponse, we can inspect the underlying
-        // cause.
         localError = err.error;
       }
-
       if (
         localError instanceof BadResponseClientError &&
         localError.status === 404
       ) {
         // This likely means that the active validator set is not yet
         // available.  We can just return the previous state.
-        return state;
+        await sleep(penalty);
+        penalty = Math.min(penalty * 2, 5_000); // exponential backoff up to 5s
+        continue;
       }
-      console.debug(
-        'failed to retrieve active node set snapshot',
-        newEspressoBlockHeight,
-        err,
-      );
-
-      return state;
+      // Re throw the error
+      throw err;
     }
-  }
-
-  try {
-    const update = await l1ValidatorService.validatorsActive.updatesSince(
-      BigInt(state.espressoBlock.block + 1n),
-    );
-
-    return applyActiveNodesUpdate(state, update);
-  } catch (err) {
-    let localError: unknown = err;
-    if (err instanceof WebWorkerErrorResponse) {
-      // We have a WebWorkerErrorResponse, we can inspect the underlying
-      // cause.
-      localError = err.error;
-    }
-
-    if (
-      localError instanceof BadResponseClientError &&
-      localError.status === 404
-    ) {
-      // This likely means that the active validator set is not yet
-      // available.  We can just return the previous state.
-      await sleep(POLLING_RATE);
-      return state;
-    }
-
-    console.debug(
-      'failed to retrieve active node set snapshot updates',
-      newEspressoBlockHeight,
-      err,
-    );
-
-    return state;
   }
 }
 
-async function deriveAndApplyWalletStateChanges(
-  state: null | WalletSnapshot,
-  activeWalletAddress: null | ArrayBuffer,
+/**
+ * retrieveUpdatesSinceLastActiveValidatorsSnapshot attempts to retrieve
+ * the updates to the ActiveNodeSetSnapshot since the provided
+ * epochAndBlock.
+ */
+async function retrieveUpdatesSinceLastActiveValidatorsSnapshot(
   l1ValidatorService: L1ValidatorService,
-  newL1Block: null | L1BlockID,
-  nextAddress: null | ArrayBuffer,
-): Promise<null | WalletSnapshot> {
-  if (nextAddress === null) {
-    // No active address, then we shouldn't have any wallet state.
-    return null;
-  }
-
-  if (!newL1Block) {
-    // We can't fetch new data without a new L1 block.
-    return state;
-  }
-
-  if (
-    (nextAddress === null) !== (activeWalletAddress === null) ||
-    (nextAddress &&
-      activeWalletAddress &&
-      compareArrayBuffer(nextAddress, activeWalletAddress) !== 0) ||
-    state === null
-  ) {
-    // The active address has changed, or we have no state,
-    // in either case, we need to try and fetch the current
-    // wallet snapshot for the new address.
-
+  epochAndBlock: EpochAndBlock,
+  pollingInterval: number = ESPRESSO_BLOCK_HEIGHT_POLLING_RATE,
+) {
+  while (true) {
     try {
-      return await l1ValidatorService.wallet.snapshot(
-        nextAddress,
-        newL1Block.hash,
+      return await l1ValidatorService.validatorsActive.updatesSince(
+        epochAndBlock.block + 1n,
       );
     } catch (err) {
-      console.debug(
-        'failed to retrieve wallet snapshot',
-        nextAddress,
-        newL1Block,
-        err,
-      );
+      if (isARetryableError(err)) {
+        // This likely means that the active validator set is not yet
+        // available.  We can just return the previous state.
+        await sleep(pollingInterval);
+        continue;
+      }
 
-      // We failed to retrieve the wallet snapshot
-      // Fallback onto the previous state.
-      return state;
+      throw err;
     }
-  }
-
-  // We want to apply an update using the diffs to the wallet.
-  try {
-    const update = await l1ValidatorService.wallet.updates(
-      nextAddress,
-      newL1Block.hash,
-    );
-
-    /**
-     * @todo detect a reorg via the wallet updates?
-     */
-
-    return applyWalletSnapshotUpdates(state, update);
-  } catch (err) {
-    console.debug(
-      'failed to retrieve wallet snapshot updates',
-      nextAddress,
-      newL1Block,
-      err,
-    );
-
-    // We failed to retrieve the wallet snapshot updates
-    // Fallback onto the previous state.
-    return state;
   }
 }
 
-export const ProvideDelegationUILocalState: React.FC<
-  React.PropsWithChildren
-> = ({ children }) => {
-  const now = React.useContext(Now);
-  const l1ValidatorService = React.useContext(L1ValidatorServiceContext);
-  const hotshotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
-  const activeAccountAddress = React.useContext(
-    RainbowKitAccountAddressContext,
-  );
-  const activeAccount =
-    nullableHexArrayBufferCodec.decode(activeAccountAddress);
+/**
+ * activeValidatorsStream provides a stream of ActiveNodeSetSnapshot updates.
+ */
+async function* activeValidatorsStream(
+  l1ValidatorService: L1ValidatorService,
+  pollingInterval: number = ESPRESSO_BLOCK_HEIGHT_POLLING_RATE,
+) {
+  let activeNodes =
+    await retrieveLatestActiveValidatorsSnapshot(l1ValidatorService);
 
-  const delegationUILocalStateIterable = React.useMemo(
-    () =>
-      delegationUILocalStateStream(
+  let epochAndBlock = activeNodes.espressoBlock;
+
+  while (true) {
+    yield activeNodes;
+
+    const activeNodesUpdate =
+      await retrieveUpdatesSinceLastActiveValidatorsSnapshot(
         l1ValidatorService,
-        hotshotQueryService,
-        activeAccount,
-      ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [l1ValidatorService, hotshotQueryService],
-  );
+        epochAndBlock,
+        pollingInterval,
+      );
 
+    activeNodes = applyActiveNodesUpdate(activeNodes, activeNodesUpdate);
+    epochAndBlock = activeNodes.espressoBlock;
+  }
+}
+
+/**
+ * ProvideActiveValidators is a context provider that provides the latest
+ * ActiveNodeSetSnapshot to its children.
+ */
+const ProvideActiveValidators: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const l1ValidatorService = React.useContext(L1ValidatorServiceContext);
+  const stream = React.useMemo(
+    () => activeValidatorsStream(l1ValidatorService),
+    [l1ValidatorService],
+  );
   return (
-    <AsyncIterableResolver
-      asyncIterable={delegationUILocalStateIterable}
-      next={[activeAccount, now]}
-    >
-      <ResolveDelegationUILocalState>{children}</ResolveDelegationUILocalState>
+    <AsyncIterableResolver asyncIterable={stream}>
+      <TransformDataToActiveValidators>
+        {children}
+      </TransformDataToActiveValidators>
     </AsyncIterableResolver>
   );
 };
 
-const ResolveDelegationUILocalState: React.FC<React.PropsWithChildren> = ({
+/**
+ * TransformDataToActiveValidators transforms the data provided by DataContext
+ * into the ActiveValidatorsContext.
+ */
+const TransformDataToActiveValidators: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const data = React.useContext(DataContext) as
-    | undefined
-    | null
-    | DelegationUILocalState;
+  const data = (React.useContext(DataContext) ??
+    null) as null | ActiveNodeSetSnapshot;
 
   return (
-    <L1BlockIDContext.Provider value={data?.l1Block ?? null}>
-      <EspressoBlockHeightContext.Provider
-        value={BigInt(data?.espressoBlockHeight ?? 0)}
+    <EspressoBlockHeightContext.Provider
+      value={data?.espressoBlock.block ?? null}
+    >
+      <EspressoCurrentEpochContext.Provider
+        value={data?.espressoBlock.epoch ?? 0n}
       >
-        <EspressoCurrentEpochContext.Provider
-          value={data?.espressoEpochAndBlock?.epoch ?? 0n}
-        >
-          <ActiveValidatorsContext.Provider
-            value={data?.nodesActiveSnapshot ?? null}
-          >
-            <AllValidatorsContext.Provider
-              value={data?.nodesAllSnapshot ?? null}
-            >
-              <WalletSnapshotContext.Provider
-                value={data?.walletSnapshot ?? null}
-              >
-                {children}
-              </WalletSnapshotContext.Provider>
-            </AllValidatorsContext.Provider>
-          </ActiveValidatorsContext.Provider>
-        </EspressoCurrentEpochContext.Provider>
-      </EspressoBlockHeightContext.Provider>
-    </L1BlockIDContext.Provider>
+        <ActiveValidatorsContext.Provider value={data}>
+          {children}
+        </ActiveValidatorsContext.Provider>
+      </EspressoCurrentEpochContext.Provider>
+    </EspressoBlockHeightContext.Provider>
+  );
+};
+
+/**
+ * retrieveWalletSnapshot attempts to retrieve the WalletSnapshot
+ * for the provided L1 Block ID and active wallet address.
+ */
+async function retrieveWalletSnapshot(
+  l1ValidatorService: L1ValidatorService,
+  l1BlockID: L1BlockID,
+  activeWallet: null | `0x${string}`,
+) {
+  if (!activeWallet) {
+    return null;
+  }
+  const address = hexArrayBufferCodec.decode(activeWallet);
+  let penalty = MINIMUM_SLEEP_TIME; // start with a low penalty in ms
+  while (true) {
+    try {
+      return await l1ValidatorService.wallet.snapshot(address, l1BlockID.hash);
+    } catch (err) {
+      if (isARetryableError(err)) {
+        // This likely means that the active validator set is not yet
+        // available.  We can just return the previous state.
+        await sleep(penalty);
+        penalty = Math.min(penalty * 2, 5_000); // exponential backoff up to 5s
+        continue;
+      }
+
+      // Re throw the error
+      throw err;
+    }
+  }
+}
+
+/**
+ * retrieveWalletUpdates attempts to retrieve the WalletSnapshot
+ * updates for the provided L1 Block ID and active wallet address.
+ */
+async function retrieveWalletUpdates(
+  l1ValidatorService: L1ValidatorService,
+  l1BlockID: L1BlockID,
+  activeWallet: `0x${string}`,
+) {
+  const address = hexArrayBufferCodec.decode(activeWallet);
+  let penalty = MINIMUM_SLEEP_TIME; // start with a low penalty in ms
+  while (true) {
+    try {
+      return await l1ValidatorService.wallet.updates(address, l1BlockID.hash);
+    } catch (err) {
+      if (isARetryableError(err)) {
+        // This likely means that the active validator set is not yet
+        // available.  We can just return the previous state.
+        await sleep(penalty);
+        penalty = Math.min(penalty * 2, 5_000); // exponential backoff up to 5s
+        continue;
+      }
+      // Re throw the error
+      throw err;
+    }
+  }
+}
+
+/**
+ * activeWalletStateStream provides a stream of WalletSnapshot
+ * updates.
+ */
+async function* activeWalletStateStream(
+  l1ValidatorService: L1ValidatorService,
+) {
+  let [l1BlockID, activeAccount]: [null | L1BlockID, null | `0x${string}`] =
+    yield null;
+  while (l1BlockID === null) {
+    // We don't want to hot loop here, so we need to wait a little bit.
+    await sleep(MINIMUM_SLEEP_TIME);
+    // We cannot progress without an l1 Block
+    [l1BlockID, activeAccount] = yield null;
+  }
+
+  // This is an interesting situation, we need an active account
+  // to be able to fetch the wallet state.  We may not have one, so we need
+  // to contend with
+  let walletSnapshot: null | WalletSnapshot = await retrieveWalletSnapshot(
+    l1ValidatorService,
+    l1BlockID,
+    activeAccount,
+  );
+
+  while (true) {
+    const [nextL1BlockID, nextActiveAccount]: [
+      L1BlockID,
+      null | `0x${string}`,
+    ] = yield walletSnapshot;
+
+    // Did we receive the same input again?
+    if (
+      isSameL1Block(nextL1BlockID, l1BlockID) &&
+      nextActiveAccount === activeAccount
+    ) {
+      // We receive the same input again.  This is due to the
+      // AsyncIterableResolver polling before the next block is available.
+      // This is not an error, but we don't have any work to do here.
+      // So we'll sleep until the next input is different.
+      await sleep(MINIMUM_SLEEP_TIME);
+      continue;
+    }
+
+    if (
+      // Do we not have a wallet snapshot yet?
+      !walletSnapshot ||
+      // Has the active account changed?
+      activeAccount !== nextActiveAccount ||
+      // Do we detect and L1 Reorg?
+      isL1ReorgDetected(l1BlockID, nextL1BlockID)
+    ) {
+      walletSnapshot = await retrieveWalletSnapshot(
+        l1ValidatorService,
+        nextL1BlockID,
+        nextActiveAccount,
+      );
+      l1BlockID = nextL1BlockID;
+      activeAccount = nextActiveAccount;
+
+      // NOTE: We could sleep here... but it doesn't seem particularly
+      //       necessary.
+      continue;
+    }
+
+    // Do we not have an account?
+    if (!nextActiveAccount) {
+      walletSnapshot = null;
+      l1BlockID = nextL1BlockID;
+      activeAccount = nextActiveAccount;
+      // We do not have an account, we have no potential work to do.
+      continue;
+    }
+
+    // Let's retrieve our updates
+    const updates = await retrieveWalletUpdates(
+      l1ValidatorService,
+      nextL1BlockID,
+      nextActiveAccount,
+    );
+
+    // Apply the updates to our local state
+    walletSnapshot = applyWalletSnapshotUpdates(walletSnapshot, updates);
+    l1BlockID = nextL1BlockID;
+    activeAccount = nextActiveAccount;
+  }
+}
+
+/**
+ * ProvideActiveWalletSnapshot is a context provider that provides the latest
+ * WalletSnapshot to its children.
+ */
+const ProvideActiveWalletSnapshot: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const l1ValidatorService = React.useContext(L1ValidatorServiceContext);
+  const l1BlockID = React.useContext(L1BlockIDContext);
+  const activeWallet = React.useContext(RainbowKitAccountAddressContext);
+
+  const stream = React.useMemo(
+    () => activeWalletStateStream(l1ValidatorService),
+    [l1ValidatorService],
+  );
+
+  return (
+    <AsyncIterableResolver
+      asyncIterable={stream}
+      next={[l1BlockID, activeWallet]}
+    >
+      <TransformDataToActiveWalletSnapshot>
+        {children}
+      </TransformDataToActiveWalletSnapshot>
+    </AsyncIterableResolver>
+  );
+};
+
+/**
+ * TransformDataToActiveWalletSnapshot transforms the data provided by
+ * DataContext into the WalletSnapshotContext.
+ */
+const TransformDataToActiveWalletSnapshot: React.FC<
+  React.PropsWithChildren
+> = ({ children }) => {
+  const data = (React.useContext(DataContext) ?? null) as null | WalletSnapshot;
+  return (
+    <WalletSnapshotContext.Provider value={data}>
+      {children}
+    </WalletSnapshotContext.Provider>
+  );
+};
+
+export const ProvideDelegationUILocalState: React.FC<
+  React.PropsWithChildren
+> = ({ children }) => {
+  return (
+    <ProvideL1BlockID>
+      <ProvideAllValidators>
+        <ProvideActiveValidators>
+          <ProvideActiveWalletSnapshot>{children}</ProvideActiveWalletSnapshot>
+        </ProvideActiveValidators>
+      </ProvideAllValidators>
+    </ProvideL1BlockID>
   );
 };
