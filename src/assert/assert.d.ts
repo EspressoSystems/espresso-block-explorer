@@ -32,7 +32,7 @@ export declare function assertType(value: unknown, type: string): never;
 /**
  * assertNotNull is a function that will assert that a given value is not null.
  */
-export declare function assertNotNull<T>(value: null | T): asserts value is T;
+export declare function assertNotNull<T>(value: undefined | null | T): asserts value is T;
 /**
  * assertInstanceOf ia function that ensures that the given value is in fact
  * an instanceof the given constructor function.

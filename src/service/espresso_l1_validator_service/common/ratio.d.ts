@@ -5,12 +5,27 @@ import { NullCodec } from '../../../../../../../../../../../src/convert/codec/nu
  * This type exists to provide type safety and clarity when dealing with
  * ratio values in the codebase.
  */
-export declare class Ratio {
-    readonly ratio: number;
-    constructor(ratio: number);
+export declare abstract class Ratio {
+    abstract readonly ratio: number;
+    protected constructor();
+    static floatingPoint(ratio: number): RatioFloat;
+    static rational(numerator: bigint, denominator: bigint): RatioRational;
+    abstract oneMinus(): Ratio;
     valueOf(): number;
     toString(): string;
     toJSON(): unknown;
+}
+export declare class RatioFloat extends Ratio {
+    readonly ratio: number;
+    constructor(ratio: number);
+    oneMinus(): Ratio;
+}
+export declare class RatioRational extends Ratio {
+    readonly numerator: bigint;
+    readonly denominator: bigint;
+    constructor(numerator: bigint, denominator: bigint);
+    oneMinus(): RatioRational;
+    get ratio(): number;
 }
 declare class RatioEncoder implements Converter<Ratio, unknown> {
     convert(input: Ratio): unknown;

@@ -135,3 +135,12 @@ export declare const neverPromise: Promise<never>;
  * and never completes.
  */
 export declare function neverAsyncIterable(): AsyncGenerator<never>;
+/**
+ * singletonAsyncIterable is a convenience function that creates an async
+ * iterable containing a single element.
+ */
+export declare function singletonAsyncIterable<T>(element: T): AsyncGenerator<T>;
+/**
+ * appendAsyncIterables concatenates multiple async iterables into a single iterable.
+ */
+export declare function appendAsyncIterables<T>(...iterables: AsyncIterable<T>[]): AsyncGenerator<T>;

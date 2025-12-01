@@ -3,8 +3,9 @@ import { default as React } from 'react';
  * AsyncIterableResolverProps represents the props that can be passed to the
  * AsyncIterableResolver.
  */
-export interface AsyncIterableResolverProps<T> {
-    asyncIterable: AsyncIterable<T>;
+export interface AsyncIterableResolverProps<T, R = any, N = any> {
+    asyncIterable: AsyncIterable<T, R, N>;
+    next?: N;
     children?: React.ReactNode | React.ReactNode[];
 }
 /**

@@ -1,4 +1,4 @@
-import { WebWorkerRequest } from '../web_worker_types';
+import { WebWorkerRequest } from '../../../../../../../../../../../src/service/espresso_l1_validator_service/web_worker_types';
 type ProxyRequest = WebWorkerRequest<'proxy', 'set-url', [string]>;
 type PostMessageFunction = typeof postMessage;
 export declare class WebWorkerProxy {

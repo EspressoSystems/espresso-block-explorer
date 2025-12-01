@@ -31,7 +31,7 @@ export declare class CappuccinoAPILeaf {
                     index: number;
                 };
                 bits: number;
-                data: number[];
+                data: unknown[];
             })[] | null;
             is_genesis: boolean;
             _pd: null;
@@ -92,7 +92,7 @@ export declare class CappuccinoAPILeafEncoder implements Converter<CappuccinoAPI
                     index: number;
                 };
                 bits: number;
-                data: number[];
+                data: unknown[];
             })[] | null;
             is_genesis: boolean;
             _pd: null;

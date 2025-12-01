@@ -7,5 +7,5 @@ import { PerformWriteTransactionState } from './perform_write_states';
 export declare const ClaimWithdrawalAsyncIterableContext: React.Context<AsyncIterable<PerformWriteTransactionState> | null>;
 export declare const SetClaimWithdrawalAsyncIterableContext: React.Context<React.Dispatch<React.SetStateAction<AsyncIterable<PerformWriteTransactionState> | null>>>;
 export declare const ClaimWithdrawalAsyncSnapshotContext: React.Context<AsyncSnapshot<PerformWriteTransactionState>>;
-export declare const ProvideClaimWithdrawalPromiseContext: React.FC<React.PropsWithChildren>;
+export declare const ProvideClaimWithdrawalAsyncIterableContext: React.FC<React.PropsWithChildren>;
 export declare function performClaimWithdrawal(l1Methods: L1Methods<Config, number>, stakeTableContract: StakeTableContract, validatorAddress: `0x${string}`, setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>): AsyncGenerator<import('./perform_write_states').PerformWriteTransactionWaiting | import('./perform_write_states').PerformWriteTransactionSucceeded | import('./perform_write_states').PerformWriteTransactionReceiptWaiting | import('./perform_write_states').PerformWriteTransactionReceiptRetrieved, void, unknown>;

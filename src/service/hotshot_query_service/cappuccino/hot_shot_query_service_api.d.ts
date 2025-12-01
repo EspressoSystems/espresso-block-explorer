@@ -1,7 +1,8 @@
-import { CappuccinoHotShotQueryServiceAvailabilityAPI, UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI } from './availability/availability_api';
-import { CappuccinoHotShotQueryServiceExplorerAPI, UnimplementedCappuccinoHotShotQueryServiceExplorerAPI } from './explorer/explorer_api';
-import { CappuccinoHotShotQueryServiceRewardStateAPI, UnimplementedCappuccinoHotShotQueryServiceRewardStateAPI } from './reward_state/reward_start_api';
-import { CappuccinoHotShotQueryServiceStatusAPI, UnimplementedCappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
+import { CappuccinoHotShotQueryServiceAvailabilityAPI } from './availability/availability_api';
+import { CappuccinoHotShotQueryServiceExplorerAPI } from './explorer/explorer_api';
+import { CappuccinoHotShotQueryServiceNodeAPI } from './node/node_api';
+import { CappuccinoHotShotQueryServiceRewardStateAPI } from './reward_state/reward_start_api';
+import { CappuccinoHotShotQueryServiceStatusAPI } from './status/status_api';
 /**
  * CappuccinoHotShotQueryService is a type that represents the Cappuccino
  * HotShot Query Service. This interface represents the idealized interactions
@@ -14,19 +15,6 @@ export interface CappuccinoHotShotQueryService {
     readonly status: CappuccinoHotShotQueryServiceStatusAPI;
     readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;
     readonly rewardState: CappuccinoHotShotQueryServiceRewardStateAPI;
+    readonly node: CappuccinoHotShotQueryServiceNodeAPI;
     setURL(url: string): Promise<boolean>;
-}
-/**
- * UnimplementedCappuccinoHotShotQueryService is a class that implements the
- * CappuccinoHotShotQueryService interface, but throws an UnimplementedError for
- * all methods. This class is meant to be used as a placeholder for the
- * Cappuccino HotShot Query Service, and should be replaced with a real
- * implementation.
- */
-export declare class UnimplementedCappuccinoHotShotQueryService implements CappuccinoHotShotQueryService {
-    readonly availability: UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI;
-    readonly status: UnimplementedCappuccinoHotShotQueryServiceStatusAPI;
-    readonly explorer: UnimplementedCappuccinoHotShotQueryServiceExplorerAPI;
-    readonly rewardState: UnimplementedCappuccinoHotShotQueryServiceRewardStateAPI;
-    setURL(): Promise<boolean>;
 }

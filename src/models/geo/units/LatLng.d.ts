@@ -19,7 +19,10 @@ export default class LatLng<Unit extends NumberLike> implements GenericLATLNG<La
     max(o: LatLng<Unit>): LatLng<Unit>;
     toString(): string;
 }
-export declare class LatLngEncoder<Unit extends NumberLike> implements Converter<LatLng<Unit>, [number, number]> {
+export declare class LatLngEncoder<Unit extends NumberLike> implements Converter<LatLng<Unit>, [
+    number,
+    number
+]> {
     readonly unitCodec: Codec<Unit, number, unknown>;
     constructor(unitCodec: Codec<Unit, number, unknown>);
     convert(input: LatLng<Unit>): [number, number];

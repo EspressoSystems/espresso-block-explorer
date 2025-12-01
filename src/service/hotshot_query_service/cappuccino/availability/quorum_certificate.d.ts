@@ -27,7 +27,7 @@ export declare class CappuccinoAPIQuorumCertificate {
                 index: number;
             };
             bits: number;
-            data: number[];
+            data: unknown[];
         })[] | null;
         is_genesis: boolean;
         _pd: null;
@@ -50,7 +50,7 @@ export declare class CappuccinoAPIQuorumCertificateEncoder implements Converter<
                 index: number;
             };
             bits: number;
-            data: number[];
+            data: unknown[];
         })[] | null;
         is_genesis: boolean;
         _pd: null;

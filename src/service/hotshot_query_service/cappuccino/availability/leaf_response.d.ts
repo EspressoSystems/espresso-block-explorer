@@ -24,7 +24,7 @@ export declare class CappuccinoAPILeafResponse {
                         index: number;
                     };
                     bits: number;
-                    data: number[];
+                    data: unknown[];
                 })[] | null;
                 is_genesis: boolean;
                 _pd: null;
@@ -78,7 +78,7 @@ export declare class CappuccinoAPILeafResponse {
                     index: number;
                 };
                 bits: number;
-                data: number[];
+                data: unknown[];
             })[] | null;
             is_genesis: boolean;
             _pd: null;
@@ -105,7 +105,7 @@ export declare class CappuccinoAPILeafResponseEncoder implements Converter<Cappu
                         index: number;
                     };
                     bits: number;
-                    data: number[];
+                    data: unknown[];
                 })[] | null;
                 is_genesis: boolean;
                 _pd: null;
@@ -159,7 +159,7 @@ export declare class CappuccinoAPILeafResponseEncoder implements Converter<Cappu
                     index: number;
                 };
                 bits: number;
-                data: number[];
+                data: unknown[];
             })[] | null;
             is_genesis: boolean;
             _pd: null;

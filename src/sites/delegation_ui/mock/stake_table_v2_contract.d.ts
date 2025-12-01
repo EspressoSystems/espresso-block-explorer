@@ -2,25 +2,27 @@ import { ESPTokenContract } from '../../../contracts/esp_token/esp_token_interfa
 import { RawUndelegation, RawValidator, Undelegation, Validator } from '../../../contracts/stake_table/stake_table_interface';
 import { CommissionTracking, StakeTableV2Contract } from '../../../contracts/stake_table_v2/stake_table_v2_interface';
 import { default as React } from 'react';
-import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
+import { MockContractStorage, MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
 /**
  * StakeTableState defines the structure of the mock
  * StakeTableV2Contract state.
  */
-export interface StakeTableState {
-    contractAddress: `0x${string}`;
-    validators: Map<`0x${string}`, RawValidator>;
-    blsKeys: Set<`0x${string}`>;
-    validatorExits: Map<`0x${string}`, bigint>;
-    delegations: Map<`0x${string}`, Map<`0x${string}`, bigint>>;
-    undelegations: Map<`0x${string}`, Map<`0x${string}`, RawUndelegation>>;
-    exitEscrowPeriod: bigint;
-    pauserRole: `0x${string}`;
-    minCommissionIncreaseInterval: bigint;
-    maxCommissionIncrease: number;
-    commissionTracking: Map<`0x${string}`, CommissionTracking>;
-    schnorrKeys: Set<`0x${string}`>;
-    lastUpdate: Date;
+export declare class StakeTableState implements MockContractStorage {
+    readonly contractAddress: `0x${string}`;
+    readonly validators: Map<`0x${string}`, RawValidator>;
+    readonly blsKeys: Set<`0x${string}`>;
+    readonly validatorExits: Map<`0x${string}`, bigint>;
+    readonly delegations: Map<`0x${string}`, Map<`0x${string}`, bigint>>;
+    readonly undelegations: Map<`0x${string}`, Map<`0x${string}`, RawUndelegation>>;
+    readonly exitEscrowPeriod: bigint;
+    readonly pauserRole: `0x${string}`;
+    readonly minCommissionIncreaseInterval: bigint;
+    readonly maxCommissionIncrease: number;
+    readonly commissionTracking: Map<`0x${string}`, CommissionTracking>;
+    readonly schnorrKeys: Set<`0x${string}`>;
+    readonly lastUpdate: Date;
+    constructor(contractAddress: `0x${string}`, validators: Map<`0x${string}`, RawValidator>, blsKeys: Set<`0x${string}`>, validatorExits: Map<`0x${string}`, bigint>, delegations: Map<`0x${string}`, Map<`0x${string}`, bigint>>, undelegations: Map<`0x${string}`, Map<`0x${string}`, RawUndelegation>>, exitEscrowPeriod: bigint, pauserRole: `0x${string}`, minCommissionIncreaseInterval: bigint, maxCommissionIncrease: number, commissionTracking: Map<`0x${string}`, CommissionTracking>, schnorrKeys: Set<`0x${string}`>, lastUpdate: Date);
+    applyTransaction(tx: UnderlyingTransaction): StakeTableState;
 }
 /**
  * StakeTableStateActions is an abstract base class

@@ -8,5 +8,5 @@ import { PerformWriteTransactionState } from './perform_write_states';
 export declare const PerformClaimRewardsAsyncIterableContext: React.Context<AsyncIterable<PerformWriteTransactionState> | null>;
 export declare const SetClaimRewardsAsyncIterableContext: React.Context<React.Dispatch<React.SetStateAction<AsyncIterable<PerformWriteTransactionState> | null>>>;
 export declare const ClaimRewardsAsyncSnapshotContext: React.Context<AsyncSnapshot<PerformWriteTransactionState>>;
-export declare const ProvideClaimRewardsPromiseContext: React.FC<React.PropsWithChildren>;
+export declare const ProvideClaimRewardsAsyncIterableContext: React.FC<React.PropsWithChildren>;
 export declare function performClaimRewards(l1Methods: L1Methods<Config, number>, rewardClaimContract: RewardClaimContract, rewardClaimInput: RewardClaimInput, setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>): AsyncGenerator<import('./perform_write_states').PerformWriteTransactionWaiting | import('./perform_write_states').PerformWriteTransactionSucceeded | import('./perform_write_states').PerformWriteTransactionReceiptWaiting | import('./perform_write_states').PerformWriteTransactionReceiptRetrieved, void, unknown>;

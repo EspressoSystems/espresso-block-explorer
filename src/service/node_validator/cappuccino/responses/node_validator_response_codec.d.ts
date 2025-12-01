@@ -29,7 +29,7 @@ declare class CappuccinoNodeValidatorResponseEncoder implements Converter<Cappuc
                 index: number;
             };
             bits: number;
-            data: number[];
+            data: unknown[];
         };
     } | {
         NodeIdentitySnapshot: unknown[];
@@ -45,7 +45,7 @@ declare class CappuccinoNodeValidatorResponseEncoder implements Converter<Cappuc
                 index: number;
             };
             bits: number;
-            data: number[];
+            data: unknown[];
         }[];
     };
 }

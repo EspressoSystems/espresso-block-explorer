@@ -1,0 +1,1 @@
+import{N as o,h as c,j as s,T as d,g as l,I as t}from"./string-De_JMoQm.js";class a{convert(e){if(!l(e))throw new t(typeof e,"string");return new URL(e)}}class w{convert(e){return e.toString()}}class i extends d{encoder=new w;decoder=new a}const r=new i,g=new o(new c(r),new s(r));export{g as n};

@@ -32,7 +32,7 @@ export declare class NodeValidatorServiceResponse extends WebWorkerProxyResponse
                     index: number;
                 };
                 bits: number;
-                data: number[];
+                data: unknown[];
             };
         } | {
             NodeIdentitySnapshot: unknown[];
@@ -48,7 +48,7 @@ export declare class NodeValidatorServiceResponse extends WebWorkerProxyResponse
                     index: number;
                 };
                 bits: number;
-                data: number[];
+                data: unknown[];
             }[];
         };
     };
@@ -80,7 +80,7 @@ declare class NodeValidatorServiceResponseEncoder implements Converter<NodeValid
                     index: number;
                 };
                 bits: number;
-                data: number[];
+                data: unknown[];
             };
         } | {
             NodeIdentitySnapshot: unknown[];
@@ -96,7 +96,7 @@ declare class NodeValidatorServiceResponseEncoder implements Converter<NodeValid
                     index: number;
                 };
                 bits: number;
-                data: number[];
+                data: unknown[];
             }[];
         };
     };

@@ -7,13 +7,3 @@ import { HotShotQueryServiceStatusAPI } from '../../types';
  * different implementations for testing purposes.
  */
 export type CappuccinoHotShotQueryServiceStatusAPI = HotShotQueryServiceStatusAPI;
-/**
- * UnimplementedCappuccinoHotShotQueryServiceStatusAPI is a class that
- * implements the CappuccinoHotShotQueryServiceStatusAPI interface, but
- * throws an UnimplementedError for all methods. This class is meant to be used
- * as a placeholder for the Status API, and should be replaced with a real
- * implementation.
- */
-export declare class UnimplementedCappuccinoHotShotQueryServiceStatusAPI implements CappuccinoHotShotQueryServiceStatusAPI {
-    blockHeight(): Promise<number>;
-}

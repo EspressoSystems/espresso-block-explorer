@@ -25,12 +25,16 @@ export interface L1Transaction {
 }
 interface Block {
     hash: `0x${string}`;
+    parentHash: `0x${string}`;
     height: bigint;
     timestamp: bigint;
     transactions: L1Transaction[];
 }
 export interface L1TransactionCallback {
     l1Transaction(action: UnderlyingTransaction): void;
+}
+export interface MockContractStorage {
+    applyTransaction(tx: UnderlyingTransaction): MockContractStorage;
 }
 export declare class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     private storage;
@@ -92,9 +96,13 @@ export declare class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     getBlockNumber<includeTransactions extends boolean = false, blockTag extends BlockTag = 'latest'>(parameters?: GetBlockParameters<includeTransactions, blockTag, Config, ChainID>): Promise<bigint>;
     private transactionCallBack;
     setTransactionCallback(transactionCallBack: null | L1TransactionCallback): void;
-    mockWriteContractStorage<T>(key: symbol, value: T): void;
-    mockReadContractStorage<T>(key: symbol): T | undefined;
+    mockWriteContractStorage<T extends MockContractStorage>(key: symbol, value: T): void;
+    mockReadContractStorage<T extends MockContractStorage>(key: symbol): T | undefined;
     mockWriteTransaction(tx: UnderlyingTransaction): void;
+    mockBlockByHeight(height: bigint): Block | null;
+    mockLatestBlock(): Block;
+    mockBlockByHash(hash: `0x${string}`): Block | null;
+    mockTransactionsForBlockHash(hash: `0x${string}`): L1Transaction[] | null;
     mockAdvanceBlock(): void;
 }
 export interface MockL1State {
@@ -105,8 +113,13 @@ export interface MockL1State {
     pendingTransactions: L1Transaction[];
     transactionToBlockMap: Map<`0x${string}`, bigint>;
     blocks: Block[];
-    contractStorage: Map<symbol, unknown>;
+    hashToBlockMap: Map<`0x${string}`, Block>;
+    contractStorage: Map<symbol, MockContractStorage>;
 }
+interface AutoAdvanceL1MethodsProps extends React.PropsWithChildren {
+    interval?: number;
+}
+export declare const ProvideAutoAdvanceL1Methods: React.FC<React.PropsWithChildren<AutoAdvanceL1MethodsProps>>;
 /**
  * MockESPTokenContract is a React component that provides
  * a mock ESPTokenContract implementation via context for

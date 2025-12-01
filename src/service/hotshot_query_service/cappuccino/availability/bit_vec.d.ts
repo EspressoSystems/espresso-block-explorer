@@ -60,8 +60,8 @@ export declare class CappuccinoAPIBitVec implements Iterable<boolean> {
     readonly order: CappuccinoAPIBitVecOrder;
     readonly head: CappuccinoAPIBitVecHead;
     readonly bits: number;
-    readonly data: number[];
-    constructor(order: CappuccinoAPIBitVecOrder, head: CappuccinoAPIBitVecHead, bits: number, data: number[]);
+    readonly data: bigint[];
+    constructor(order: CappuccinoAPIBitVecOrder, head: CappuccinoAPIBitVecHead, bits: number, data: bigint[]);
     private getBitVecIndexIterable;
     [Symbol.iterator](): Iterator<boolean>;
     toJSON(): {
@@ -71,7 +71,7 @@ export declare class CappuccinoAPIBitVec implements Iterable<boolean> {
             index: number;
         };
         bits: number;
-        data: number[];
+        data: unknown[];
     };
 }
 export declare class CappuccinoAPIBitVecDecoder implements Converter<unknown, CappuccinoAPIBitVec> {
@@ -85,7 +85,7 @@ export declare class CappuccinoAPIBitVecEncoder implements Converter<CappuccinoA
             index: number;
         };
         bits: number;
-        data: number[];
+        data: unknown[];
     };
 }
 export declare class CappuccinoAPIBitVecCodec extends TypeCheckingCodec<CappuccinoAPIBitVec, ReturnType<InstanceType<new () => CappuccinoAPIBitVecEncoder>['convert']>> {
@@ -100,5 +100,5 @@ export declare const cappuccinoAPIBitVecArrayCodec: ArrayCodec<CappuccinoAPIBitV
         index: number;
     };
     bits: number;
-    data: number[];
+    data: unknown[];
 }>;

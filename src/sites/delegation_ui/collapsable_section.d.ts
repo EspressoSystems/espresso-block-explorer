@@ -1,5 +1,5 @@
 import { default as React } from 'react';
-export interface CollapsableSectionProps extends React.HTMLAttributes<HTMLElement> {
+export interface CollapsableSectionProps extends React.HTMLAttributes<HTMLDetailsElement> {
 }
 export declare const CollapsableSection: React.FC<CollapsableSectionProps>;
 export interface CollapsableHeaderProps extends React.HTMLAttributes<HTMLElement> {

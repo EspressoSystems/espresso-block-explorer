@@ -18,18 +18,3 @@ import { CappuccinoExplorerGetTransactionSummariesResponse } from './get_transac
  * different implementations for testing purposes.
  */
 export type CappuccinoHotShotQueryServiceExplorerAPI = HotShotQueryServiceExplorerAPI<CappuccinoExplorerGetBlockDetailRequest, CappuccinoExplorerGetBlockDetailResponse, CappuccinoExplorerGetBlockSummariesRequest, CappuccinoExplorerGetBlockSummariesResponse, CappuccinoExplorerGetTransactionDetailRequest, CappuccinoExplorerGetTransactionDetailResponse, CappuccinoExplorerGetTransactionSummariesRequest, CappuccinoExplorerGetTransactionSummariesResponse, void, CappuccinoExplorerGetExplorerSummaryResponse, CappuccinoExplorerGetSearchResultRequest, CappuccinoExplorerGetSearchResultResponse>;
-/**
- * UnimplementedCappuccinoHotShotQueryServiceExplorerAPI is a class that
- * implements the CappuccinoHotShotQueryServiceExplorerAPI interface, but
- * throws an UnimplementedError for all methods. This class is meant to be used
- * as a placeholder for the Explorer API, and should be replaced with a real
- * implementation.
- */
-export declare class UnimplementedCappuccinoHotShotQueryServiceExplorerAPI implements CappuccinoHotShotQueryServiceExplorerAPI {
-    getBlockDetail(): Promise<CappuccinoExplorerGetBlockDetailResponse>;
-    getBlockSummaries(): Promise<CappuccinoExplorerGetBlockSummariesResponse>;
-    getTransactionDetail(): Promise<CappuccinoExplorerGetTransactionDetailResponse>;
-    getTransactionSummaries(): Promise<CappuccinoExplorerGetTransactionSummariesResponse>;
-    getExplorerOverview(): Promise<CappuccinoExplorerGetExplorerSummaryResponse>;
-    getSearchResult(): Promise<CappuccinoExplorerGetSearchResultResponse>;
-}

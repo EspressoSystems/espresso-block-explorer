@@ -1,0 +1,16 @@
+import{j as o}from"./iframe-6qRHL8kK.js";import{D as m}from"./LoadingProvider-CiRo7IyT.js";import"./DateTimeFormattersProvider-CTAmKTvQ.js";import"./LocaleProvider-Dn-Cb6v6.js";import"./PagePathProvider-BB5_V-vn.js";import"./NowProvider-DFWj2jBI.js";import"./NumberFormattersProvider-BaYHxeOC.js";import"./PathResolverProvider-BhkdUZ3l.js";import{g as e,s as i}from"./data_table_shared-CewjWZOt.js";import"./blocks-Vs1RfMPo.js";import{P as p}from"./nodes-DRGfJywc.js";import{m as s,i as n}from"./functional-DfB4rlpz.js";import"./string-De_JMoQm.js";import"./validator-BUSEmKKD.js";import{T as l}from"./TaggedBase64-CSIwxIxH.js";import{a as c}from"./TransactionSummaryDataTable-gYuUpZnX.js";import"./preload-helper-PPVm8Dsz.js";import"./MissingElementError-BvD5kqNE.js";import"./UnimplementedError-ByG_fP0m.js";import"./react.esm-mVV27ITt.js";import"./index-DAPUY6YU.js";import"./index-JrXKFfwy.js";import"./client-BZLXbOhf.js";import"./sleep-CW-vxfof.js";import"./monetary_value-h2r6a0FR.js";import"./assert-B11BgmXM.js";import"./data-Cpeha0UW.js";import"./bigint-CUIR6GFU.js";import"./wallet_address-CTiRjRjo.js";import"./array_buffer-BXDx5OgG.js";import"./base64-BqC1I8uO.js";import"./url-BemJHibL.js";import"./SkeletonContent-BPdzUoF-.js";import"./transaction_summary-_-RUzodv.js";import"./CopyButton-DRgo3UZF.js";import"./higher_order-BVrk3P2P.js";import"./CheckCircleFilled-BenepkbP.js";import"./SVGIconBase-A4DT5FtI.js";import"./Copy-CZ3brQky.js";/* empty css               */import"./DateTimeText-D6RW9Z_V.js";import"./NumberText-CX4omtIU.js";import"./TaggedBase64Text-Cgw7TagP.js";import"./Text-BU7JBOLk.js";import"./DataTable-CYgJuLpt.js";import"./typography-CU0Q2b4v.js";import"./ChevronUp-CvbK-QV1.js";import"./Link-BnT3lQB9.js";import"./RollUpSimple-B5XaUZkW.js";import"./Payments-B8QxXbh9.js";import"./TwitterIcon-gTR-r0Lw.js";import"./ArrowRight-hZ-JyIot.js";import"./Close-Cwv1jWQX.js";import"./MediumIcon-CkLT4fpl.js";import"./EspressoLogo-DDpNobQ0.js";import"./EspressoLogoAndTitle-BT9jlPU7.js";import"./Menu-CpkyJ5fa.js";import"./SearchGlass-BuDCMh7z.js";import"./XIcon-BSunDx6h.js";const u=t=>o.jsx(m.Provider,{value:t.transactionSummaries,children:o.jsx(c,{})}),Dt={title:"components/Data/Transaction Summary Data Table/Interactions",component:u,args:{transactionSummaries:[]},argTypes:{transactionSummaries:{control:"object"}}},T=new p,d=Array.from(s(n(20),t=>({hash:new l("TxHash",T.fillBytes(32)),rollups:[1],block:t,offset:t,time:new Date(Date.now()+t*1e3)}))),a={args:{transactionSummaries:d},play:async({canvasElement:t,step:r})=>{await r("retrieve the data table element",async()=>{await e(t)}),await r("sort all columns",async()=>{await i(t)})}};a.parameters={...a.parameters,docs:{...a.parameters?.docs,source:{originalSource:`{
+  args: {
+    transactionSummaries
+  },
+  play: async ({
+    canvasElement,
+    step
+  }) => {
+    await step('retrieve the data table element', async () => {
+      await getDataTable(canvasElement);
+    });
+    await step('sort all columns', async () => {
+      await selectAllTableHeaderCellsTwice(canvasElement);
+    });
+  }
+}`,...a.parameters?.docs?.source}}};const St=["TransactionSummaryDataTable"];export{a as TransactionSummaryDataTable,St as __namedExportsOrder,Dt as default};

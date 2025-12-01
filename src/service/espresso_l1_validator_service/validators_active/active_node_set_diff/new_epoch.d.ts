@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-import { ActiveNodeSetEntry } from '../../common/active_node_set_entry';
 import { ActiveNodeSetDiff } from './active_node_set_diff';
 /**
  * NewEpoch represents the beginning of a new epoch in the active validator set.
@@ -9,11 +8,11 @@ import { ActiveNodeSetDiff } from './active_node_set_diff';
  * in the Espresso L1 Validator Service API documentation.
  * https://www.notion.so/espressosys/Delegation-UI-Service-Specification-2942431b68e980968c28cc5099a4e8f2?source=copy_link#2962431b68e9804d9c99ea7b6a2c87ca
  * Defined in rust here:
- * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L71
+ * https://github.com/EspressoSystems/staking-ui-service/blob/c0df4fb15586b521272087967ae4e1faf7a4994b/src/types/global.rs#L94
  */
 export declare class NewEpoch extends ActiveNodeSetDiff {
-    readonly entries: ActiveNodeSetEntry[];
-    constructor(entries: ActiveNodeSetEntry[]);
+    readonly entries: ArrayBuffer[];
+    constructor(entries: ArrayBuffer[]);
     toJSON(): unknown;
 }
 /**

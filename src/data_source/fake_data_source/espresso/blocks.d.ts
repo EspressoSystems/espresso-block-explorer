@@ -11,12 +11,12 @@ export declare function createGenesisEspressoBlock(): GeneratedEspressoBlock;
  * This will generate the genesis block, and then all of the blocks up to the
  * current time.
  */
-export declare function generateAllEspressoBlocks(prng?: PseudoRandomNumberGenerator): AsyncGenerator<GeneratedEspressoBlock>;
+export declare function generateAllEspressoBlocks(prng?: PseudoRandomNumberGenerator, now?: number): AsyncGenerator<GeneratedEspressoBlock>;
 /**
  * streamNewBlocks will generate new blocks as they are generated.  This will
  * keep generating blocks until the end of time.
  */
-export declare function streamNewEspressoBlocks(prng: PseudoRandomNumberGenerator, incomingTime: number, incomingHeight: number): AsyncGenerator<GeneratedEspressoBlock>;
+export declare function streamNewEspressoBlocks(prng: PseudoRandomNumberGenerator, incomingTime: number, incomingHeight: number, shouldSleep?: boolean): AsyncGenerator<GeneratedEspressoBlock>;
 export type GeneratedEspressoBlock = {
     hash: TaggedBase64;
     height: number;

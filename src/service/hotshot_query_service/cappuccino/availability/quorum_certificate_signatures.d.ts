@@ -17,7 +17,7 @@ export declare class CappuccinoAPIQuorumCertificateSignatures {
             index: number;
         };
         bits: number;
-        data: number[];
+        data: unknown[];
     })[];
 }
 export declare class CappuccinoAPIQuorumCertificateSignaturesDecoder implements Converter<unknown, CappuccinoAPIQuorumCertificateSignatures> {
@@ -31,7 +31,7 @@ export declare class CappuccinoAPIQuorumCertificateSignaturesEncoder implements 
             index: number;
         };
         bits: number;
-        data: number[];
+        data: unknown[];
     })[];
 }
 export declare class CappuccinoAPIQuorumCertificateSignaturesCodec extends TypeCheckingCodec<CappuccinoAPIQuorumCertificateSignatures, ReturnType<InstanceType<new () => CappuccinoAPIQuorumCertificateSignaturesEncoder>['convert']>> {
@@ -46,5 +46,5 @@ export declare const nullableCappuccinoAPIQuorumCertificateSignaturesCodec: Null
         index: number;
     };
     bits: number;
-    data: number[];
+    data: unknown[];
 })[]>;

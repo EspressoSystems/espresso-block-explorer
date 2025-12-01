@@ -13,5 +13,5 @@ export declare class BigintCodec extends TypeCheckingCodec<bigint> {
 }
 export declare const bigintCodec: BigintCodec;
 export declare const nullableBigintCodec: NullCodec<bigint, unknown>;
-export declare const BigintArrayCodec: ArrayCodec<bigint, unknown>;
+export declare const bigintArrayCodec: ArrayCodec<bigint, unknown>;
 export declare const nullableBigintArrayCodec: ArrayCodec<bigint | null, unknown>;

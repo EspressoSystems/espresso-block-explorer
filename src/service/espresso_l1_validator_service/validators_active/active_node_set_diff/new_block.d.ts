@@ -1,15 +1,15 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { CappuccinoAPIBitVec } from '../../../../../../../../../../../../src/service/hotshot_query_service/cappuccino/availability/bit_vec';
-import { ParticipationChange } from '../../common/participation_change';
 import { ActiveNodeSetDiff } from './active_node_set_diff';
 /**
  * Defined in rust here:
- * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L65
+ * https://github.com/EspressoSystems/staking-ui-service/blob/c0df4fb15586b521272087967ae4e1faf7a4994b/src/types/global.rs#L65-L91
  */
 export declare class ActiveNodeSetDiffNewBlock extends ActiveNodeSetDiff {
-    readonly leaders: ParticipationChange[];
-    readonly voters: CappuccinoAPIBitVec;
-    constructor(leaders: ParticipationChange[], voters: CappuccinoAPIBitVec);
+    readonly leaderIndex: number;
+    readonly failedLeaders: number[];
+    readonly votersBitVec: CappuccinoAPIBitVec;
+    constructor(leaderIndex: number, failedLeaders: number[], votersBitVec: CappuccinoAPIBitVec);
     toJSON(): unknown;
 }
 /**

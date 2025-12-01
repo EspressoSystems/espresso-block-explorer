@@ -16,18 +16,3 @@ export interface CappuccinoHotShotQueryServiceAvailabilityAPI extends HotShotQue
     getTransactionSummaryRange(height: number, offset: number, limit: number): Promise<CappuccinoDerivedTransactionSummary[]>;
     getTransactionSummaryRangeForRollup(namespace: number, height: number, offset: number, limit: number): Promise<CappuccinoDerivedTransactionSummary[]>;
 }
-/**
- * UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI is a class that
- * implements the CappuccinoHotShotQueryServiceAvailabilityAPI interface, but
- * throws an UnimplementedError for all methods. This class is meant to be used
- * as a placeholder for the Availability API, and should be replaced with a real
- * implementation.
- */
-export declare class UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI implements CappuccinoHotShotQueryServiceAvailabilityAPI {
-    getLeafFromHeight(): Promise<CappuccinoAPILeafResponse>;
-    getTransactionFromHeightAndOffset(): Promise<CappuccinoAPITransactionResponse>;
-    getBlockFromHeight(): Promise<CappuccinoAPIBlock>;
-    getBlockSummaries(): Promise<CappuccinoDerivedBlockSummary[]>;
-    getTransactionSummaryRange(): Promise<CappuccinoDerivedTransactionSummary[]>;
-    getTransactionSummaryRangeForRollup(): Promise<CappuccinoDerivedTransactionSummary[]>;
-}

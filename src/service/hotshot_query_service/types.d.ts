@@ -29,3 +29,7 @@ export interface HotShotQueryServiceRewardStateAPI<RewardsClaimInput> {
     getRewardBalance(request: HeightAndAddress): Promise<null | bigint>;
     getRewardClaimInput(request: HeightAndAddress): Promise<null | RewardsClaimInput>;
 }
+export interface HotShotQueryServiceNodeAPI<StakeTable, Validators> {
+    getStakeTableForEpoch(epoch: number): Promise<StakeTable>;
+    getValidatorsAtEpoch(epoch: number): Promise<Validators>;
+}

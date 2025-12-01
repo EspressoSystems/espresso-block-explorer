@@ -1,5 +1,4 @@
 import { default as React } from 'react';
-import { default as VariableBytesNumberFormat } from './VariableBytesNumberFormat';
 /**
  * createDefaultNumberFormatters will create the default Number formatting
  * data structures required by other parts of the application.
@@ -17,7 +16,7 @@ declare function createDefaultNumberFormatters(locale: string): {
     default: Intl.NumberFormat;
     percentage: Intl.NumberFormat;
     bytes: Intl.NumberFormat;
-    variableBytes: VariableBytesNumberFormat;
+    variableBytes: Intl.NumberFormat;
     transactionsPerSecond: Intl.NumberFormat;
     bytesPerSecond: Intl.NumberFormat;
     wei: Intl.NumberFormat;
@@ -26,8 +25,11 @@ declare function createDefaultNumberFormatters(locale: string): {
     JPY: Intl.NumberFormat;
     EUR: Intl.NumberFormat;
     GBP: Intl.NumberFormat;
+    ETHFull: Intl.NumberFormat;
     ETH: Intl.NumberFormat;
+    ESPFull: Intl.NumberFormat;
     ESP: Intl.NumberFormat;
+    XBTFull: Intl.NumberFormat;
     XBT: Intl.NumberFormat;
 };
 /**
@@ -39,7 +41,7 @@ declare const CurrentNumberFormatters: React.Context<{
     default: Intl.NumberFormat;
     percentage: Intl.NumberFormat;
     bytes: Intl.NumberFormat;
-    variableBytes: VariableBytesNumberFormat;
+    variableBytes: Intl.NumberFormat;
     transactionsPerSecond: Intl.NumberFormat;
     bytesPerSecond: Intl.NumberFormat;
     wei: Intl.NumberFormat;
@@ -48,8 +50,11 @@ declare const CurrentNumberFormatters: React.Context<{
     JPY: Intl.NumberFormat;
     EUR: Intl.NumberFormat;
     GBP: Intl.NumberFormat;
+    ETHFull: Intl.NumberFormat;
     ETH: Intl.NumberFormat;
+    ESPFull: Intl.NumberFormat;
     ESP: Intl.NumberFormat;
+    XBTFull: Intl.NumberFormat;
     XBT: Intl.NumberFormat;
 }>;
 export { CurrentNumberFormatters };

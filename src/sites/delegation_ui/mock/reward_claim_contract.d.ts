@@ -1,15 +1,17 @@
 import { RewardClaimContract } from '../../../contracts/reward_claim/reward_claim_interface';
 import { default as React } from 'react';
 import { MockESPTokenContractImpl } from './esp_token_contract';
-import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
+import { MockContractStorage, MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
 /**
  * RewardClaimState defines the structure of the mock
  * RewardClaimContract state.
  */
-export interface MockRewardClaimState {
-    contractAddress: `0x${string}`;
-    claimedRewards: Map<`0x${string}`, bigint>;
-    lastUpdate: Date;
+export declare class MockRewardClaimState implements MockContractStorage {
+    readonly contractAddress: `0x${string}`;
+    readonly claimedRewards: Map<`0x${string}`, bigint>;
+    readonly lastUpdate: Date;
+    constructor(contractAddress: `0x${string}`, claimedRewards: Map<`0x${string}`, bigint>, lastUpdate: Date);
+    applyTransaction(tx: UnderlyingTransaction): MockContractStorage;
 }
 export declare abstract class RewardClaimStateAction implements UnderlyingTransaction {
     readonly contractAddress: undefined | `0x${string}`;

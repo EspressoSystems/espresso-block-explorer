@@ -12,6 +12,8 @@ export declare class EpochAndBlock {
     readonly block: bigint;
     readonly timestamp: Date;
     constructor(epoch: bigint, block: bigint, timestamp: Date);
+    static determineEpoch(block: bigint, blocksPerEpoch: bigint): bigint;
+    get blocksPerEpoch(): bigint;
     toJSON(): unknown;
 }
 /**
