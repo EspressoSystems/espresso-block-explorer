@@ -1,5 +1,6 @@
 import { OverrideLocale } from '@/contexts/LocaleProvider';
 import { ProvideDerivedNumberFormatters } from '@/contexts/NumberFormattersProvider';
+import { bigintCodec } from '@/convert/codec/bigint';
 import { currencyCodeCodec } from '@/models/block_explorer/currency_code';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -18,7 +19,7 @@ const Example: React.FC<ExampleProps> = (props) => (
         money={
           new MonetaryValue(
             currencyCodeCodec.decode(props.currency),
-            BigInt(props.amount),
+            bigintCodec.decode(props.amount),
           )
         }
       />

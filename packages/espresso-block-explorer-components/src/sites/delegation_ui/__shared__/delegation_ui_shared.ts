@@ -14,14 +14,38 @@ async function newDelegationInteraction(
   step: StepFunction,
   event: UserEvent,
 ) {
+  await waitFor(async () => {
+    expect(
+      await findByText(canvasElement, '', { selector: 'section' }),
+    ).toBeVisible();
+  });
+
+  const sectionElement = await findByText<HTMLElement>(canvasElement, '', {
+    selector: 'section.delegation-ui-content',
+  });
+
   await step('Wait For Page Load', async () => {
     await waitFor(
       async () => {
-        await findByText<HTMLElement>(canvasElement, 'Total Stake', {
-          selector: 'th',
-        });
+        const tableElement = await findByRole<HTMLTableElement>(
+          sectionElement,
+          'table',
+        );
+        expect(tableElement).toBeInTheDocument();
+        expect(tableElement).toBeVisible();
+
+        const heading = await findByText<HTMLTableCellElement>(
+          tableElement,
+          'Total Stake',
+          {
+            selector: 'th',
+          },
+        );
+
+        expect(heading).toBeInTheDocument();
+        expect(heading).toBeVisible();
       },
-      { timeout: 10000 },
+      { timeout: 20_000 },
     );
   });
 

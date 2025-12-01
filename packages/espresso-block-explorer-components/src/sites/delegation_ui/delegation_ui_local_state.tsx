@@ -90,7 +90,6 @@ async function* delegationUILocalStateStream(
   while (true) {
     const [nextAddress, now]: [null | ArrayBuffer, Date] =
       (yield state) ?? null;
-    const previousL1Block = state.l1Block;
 
     if (
       lastAddress === nextAddress &&
@@ -111,83 +110,9 @@ async function* delegationUILocalStateStream(
       // Should we fetch the block information from the L1 Instead of the
       // L1 Validator service?
 
-      (previousL1Block
-        ? l1ValidatorService.l1Block.getBlockForHeight(
-            previousL1Block.number + 1n,
-          )
-        : l1ValidatorService.l1Block.getLatestBlock()
-      ).catch(async (err) => {
-        // We failed to retrieve the latest block.  This could be due to
-        // a number of reasons.  The main reasons are as follows:
-        // 1. The block is not yet available.
-        // 2. There is a network issue.
-        // 3. The service we are requesting th block from is down.
-        //
-        // In all of these cases, it's not the end of the world, we'll
-        // just try again on the next iteration anyway, so we can just
-        // swallow the error here.
-        let localError: unknown = err;
-        if (err instanceof WebWorkerErrorResponse) {
-          // We have a WebWorkerErrorResponse, we can inspect the underlying
-          // cause.
-          localError = err.error;
-        }
+      getNextL1Block(state, l1ValidatorService),
 
-        if (
-          localError instanceof BadResponseClientError &&
-          localError.status === 404
-        ) {
-          // This likely means that the active validator set is not yet
-          // available.  We can just return the previous state.
-          return null;
-        }
-
-        console.debug(
-          'failed to retrieve latest l1 block info',
-          err,
-          previousL1Block,
-        );
-        return null;
-      }),
-
-      // Fetch the latest Espresso block height
-      (state.espressoBlockHeight
-        ? Promise.resolve(state.espressoBlockHeight + 1)
-        : hotShotQueryService.status.blockHeight().then((height) => height - 1)
-      ).catch(async (err) => {
-        // We failed to retrieve the latest Espresso block height.
-        // This could be due to a number of reasons.  The main reasons
-        // are as follows:
-        // 1. There is a network issue.
-        // 2. The service we are requesting the latest height from is down.
-        //
-        // In all of these cases, it's not the end of the world, we'll
-        // just try again on the next iteration anyway, so we can just
-        // swallow the error here.
-        let localError: unknown = err;
-        if (err instanceof WebWorkerErrorResponse) {
-          // We have a WebWorkerErrorResponse, we can inspect the underlying
-          // cause.
-          localError = err.error;
-        }
-
-        if (
-          localError instanceof BadResponseClientError &&
-          localError.status === 404
-        ) {
-          // This likely means that the active validator set is not yet
-          // available.  We can just return the previous state.
-          return null;
-        }
-
-        console.debug(
-          'failed to retrieve latest espresso block height',
-          err,
-          state.espressoBlockHeight,
-        );
-
-        return null;
-      }),
+      getNextEspressoBlockHeight(state, hotShotQueryService),
     ]);
 
     if (blockInfo && isL1ReorgDetected(state.l1Block, blockInfo)) {
@@ -218,6 +143,134 @@ async function* delegationUILocalStateStream(
 
     state = nextState;
     shouldSlowDown = nextShouldSlowDown;
+  }
+}
+
+/**
+ * getNextL1BlockHeight retrieves the next L1BlockID that is available from
+ * the L1 Validator Service.
+ *
+ * If we're starting fresh, we won't have a previous `l1Block`, so we'll
+ * retrieve the latest block available from the service.  Otherwise, we
+ * should have the `l1Block`, and we will then try to get the next block
+ * in the sequence from the service.
+ *
+ * If we fail to retrieve the next block, we will swallow the error and
+ * return null.  This is done as we're actually expecting the retrieval
+ * of the next block to fail often, and we want to be able to make progress
+ * when the Espresso chain is moving at the same time.
+ */
+async function getNextL1Block(
+  state: DelegationUILocalState,
+  l1ValidatorService: L1ValidatorService,
+): Promise<null | L1BlockID> {
+  const previousL1Block = state.l1Block;
+  try {
+    if (previousL1Block) {
+      // If we had a previous l1 block, we want to try for the next block.
+      return await l1ValidatorService.l1Block.getBlockForHeight(
+        previousL1Block.number + 1n,
+      );
+    }
+
+    return await l1ValidatorService.l1Block.getLatestBlock();
+  } catch (err) {
+    // We failed to retrieve the latest block.  This could be due to
+    // a number of reasons.  The main reasons are as follows:
+    // 1. The block is not yet available.
+    // 2. There is a network issue.
+    // 3. The service we are requesting th block from is down.
+    //
+    // In all of these cases, it's not the end of the world, we'll
+    // just try again on the next iteration anyway, so we can just
+    // swallow the error here.
+    let localError: unknown = err;
+    if (err instanceof WebWorkerErrorResponse) {
+      // We have a WebWorkerErrorResponse, we can inspect the underlying
+      // cause.
+      localError = err.error;
+    }
+
+    if (
+      localError instanceof BadResponseClientError &&
+      localError.status === 404
+    ) {
+      // This likely means that the active validator set is not yet
+      // available.  We can just return the previous state.
+      return null;
+    }
+
+    console.debug(
+      'failed to retrieve latest l1 block info',
+      err,
+      previousL1Block,
+    );
+    return null;
+  }
+}
+
+/**
+ * getNextEspressoBlockHeight retrieves the next Espresso block height
+ * that we will be looking for information for.
+ *
+ * If we are starting fresh, we will fetch the latest block height from
+ * the HotShotQueryService.  We anticipate that the staking service will
+ * actually be a little bit behind the latest block, so we will subtract
+ * one from the latest height.
+ *
+ * If we already have an espressoBlockHeight, we will simply increment
+ * it by one, and try to fetch data for that block height.
+ *
+ * If we fail to retrieve the latest block height, we will swallow
+ * the error and return null.  This shouldn't happen very often, as we
+ * should only need to perform the initial latest block check once.
+ * However, since this will be polled periodically, it will just attempt
+ * again on the next iteration.
+ */
+async function getNextEspressoBlockHeight(
+  state: DelegationUILocalState,
+  hotShotQueryService: CappuccinoHotShotQueryService,
+): Promise<null | number> {
+  if (state.espressoBlockHeight) {
+    return state.espressoBlockHeight + 1;
+  }
+
+  try {
+    const height = await hotShotQueryService.status.blockHeight();
+    return height - 1;
+  } catch (err) {
+    // We failed to retrieve the latest Espresso block height.
+    // This could be due to a number of reasons.  The main reasons
+    // are as follows:
+    // 1. There is a network issue.
+    // 2. The service we are requesting the latest height from is down.
+    //
+    // In all of these cases, it's not the end of the world, we'll
+    // just try again on the next iteration anyway, so we can just
+    // swallow the error here.
+    let localError: unknown = err;
+    if (err instanceof WebWorkerErrorResponse) {
+      // We have a WebWorkerErrorResponse, we can inspect the underlying
+      // cause.
+      localError = err.error;
+    }
+
+    if (
+      localError instanceof BadResponseClientError &&
+      localError.status === 404
+    ) {
+      // This likely means that the active validator set is not yet
+      // available.  We can just return the previous state.
+      return null;
+    }
+
+    console.debug(
+      'failed to retrieve latest espresso block height',
+      err,
+      state.espressoBlockHeight,
+    );
+
+    return null;
   }
 }
 

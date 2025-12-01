@@ -540,12 +540,14 @@ function useMockL1State(initialState: Partial<MockL1State> = {}) {
   return state;
 }
 
-interface AutoAdvanceL1MethodsProps {
+interface AutoAdvanceL1MethodsProps extends React.PropsWithChildren {
   interval?: number;
 }
 
-const AutoAdvanceL1Methods: React.FC<AutoAdvanceL1MethodsProps> = (props) => {
-  const interval = props.interval ?? 12000;
+export const ProvideAutoAdvanceL1Methods: React.FC<
+  React.PropsWithChildren<AutoAdvanceL1MethodsProps>
+> = ({ interval: passedInterval, children }) => {
+  const interval = passedInterval ?? 12000;
   const l1Methods = React.useContext(L1MethodsContext);
   React.useEffect(() => {
     if (!(l1Methods instanceof MockL1MethodsImpl)) {
@@ -559,7 +561,7 @@ const AutoAdvanceL1Methods: React.FC<AutoAdvanceL1MethodsProps> = (props) => {
     return () => clearInterval(intervalHandle);
   }, [l1Methods, interval]);
 
-  return null;
+  return children;
 };
 
 /**
@@ -585,7 +587,6 @@ export const MockL1Methods: React.FC<React.PropsWithChildren> = ({
 
   return (
     <L1MethodsContext.Provider value={l1Methods}>
-      <AutoAdvanceL1Methods />
       {children}
     </L1MethodsContext.Provider>
   );
