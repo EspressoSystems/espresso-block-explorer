@@ -158,3 +158,15 @@ The [Block Explorer](packages/block-explorer/README.md) is a
 for the `Block Explorer`. It is built using the
 [Espresso Block Explorer Components](packages/espresso-block-explorer-components/README.md).
 library with very little logic, beyond handling routing paths.
+
+## Copyright
+
+**(c) 2025 Espresso Systems** `espresso-block-explorer` was developed by
+Espresso Systems. While we plan to adopt an open source license, we have not
+yet selected one. As such, all rights are reserved for the time being. Please
+reach out to us if you have thoughts on licensing.
+
+# Disclaimer
+
+**DISCLAIMER:** This software is provided "as is" and its security has not
+been externally audited. Use at your own risk.
