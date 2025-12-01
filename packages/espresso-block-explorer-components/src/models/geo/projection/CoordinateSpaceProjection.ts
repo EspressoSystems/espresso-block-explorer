@@ -12,9 +12,9 @@ import { GeodesicProjection } from './GeodesicProjection';
  * latitude and longitude values in radians and density independent points of
  * the resolution of the targeted area.
  */
-export default class CoordinateSpaceProjection<N extends NumberLike>
-  implements GeodesicProjection<NumberLike, DensityIndependentPoint>
-{
+export default class CoordinateSpaceProjection<
+  N extends NumberLike,
+> implements GeodesicProjection<NumberLike, DensityIndependentPoint> {
   readonly minInput: LatLng<N>;
   readonly maxInput: LatLng<N>;
   readonly minOutput: LatLng<DensityIndependentPoint>;

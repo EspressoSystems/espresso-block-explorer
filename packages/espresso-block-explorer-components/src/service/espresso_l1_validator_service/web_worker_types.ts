@@ -1,4 +1,5 @@
 import { assertInstanceOf } from '@/assert/assert';
+import { breakpoint } from '@/assert/debugger';
 import {
   Codec,
   Converter,
@@ -65,9 +66,10 @@ export class WebWorkerRequest<
  * WebWorkerRequestJSONDecoder is the Codec for encoding and decoding
  * WebWorkerRequest as a JSON value.
  */
-class WebWorkerRequestJSONDecoder
-  implements Converter<unknown, WebWorkerRequest>
-{
+class WebWorkerRequestJSONDecoder implements Converter<
+  unknown,
+  WebWorkerRequest
+> {
   convert(input: unknown): WebWorkerRequest {
     assertRecordWithKeys(input, 'requestID', 'api', 'method', 'param');
 
@@ -147,9 +149,10 @@ export class WebWorkerResponseSuccess extends WebWorkerResponse {
  * WebWorkerResponseSuccessJSONDecoder is the Codec for encoding and decoding
  * WebWorkerResponseSuccess as a JSON value.
  */
-class WebWorkerResponseSuccessJSONDecoder
-  implements Converter<unknown, WebWorkerResponseSuccess>
-{
+class WebWorkerResponseSuccessJSONDecoder implements Converter<
+  unknown,
+  WebWorkerResponseSuccess
+> {
   convert(input: unknown): WebWorkerResponseSuccess {
     assertRecordWithKeys(input, 'requestID', 'response');
 
@@ -164,9 +167,7 @@ class WebWorkerResponseSuccessJSONDecoder
  * WebWorkerResponseSuccessJSONEncoder is the Converter for encoding
  * WebWorkerResponseSuccess to a JSON value.
  */
-class WebWorkerResponseSuccessJSONEncoder
-  implements Converter<WebWorkerResponseSuccess>
-{
+class WebWorkerResponseSuccessJSONEncoder implements Converter<WebWorkerResponseSuccess> {
   convert(input: WebWorkerResponseSuccess) {
     assertInstanceOf(input, WebWorkerResponseSuccess);
 
@@ -219,9 +220,10 @@ export class WebWorkerResponseError extends WebWorkerResponse {
  * WebWorkerResponseErrorJSONDecoder is the Codec for encoding and decoding
  * WebWorkerResponseError as a JSON value.
  */
-class WebWorkerResponseErrorJSONDecoder
-  implements Converter<unknown, WebWorkerResponseError>
-{
+class WebWorkerResponseErrorJSONDecoder implements Converter<
+  unknown,
+  WebWorkerResponseError
+> {
   convert(input: unknown): WebWorkerResponseError {
     assertRecordWithKeys(input, 'requestID', 'error');
 
@@ -236,9 +238,7 @@ class WebWorkerResponseErrorJSONDecoder
  * WebWorkerResponseErrorJSONEncoder is the Converter for encoding
  * WebWorkerResponseError to a JSON value.
  */
-class WebWorkerResponseErrorJSONEncoder
-  implements Converter<WebWorkerResponseError>
-{
+class WebWorkerResponseErrorJSONEncoder implements Converter<WebWorkerResponseError> {
   convert(input: WebWorkerResponseError) {
     assertInstanceOf(input, WebWorkerResponseError);
 
@@ -275,9 +275,10 @@ export const webWorkerResponseErrorJSONCodec =
  * WebWorkerResponseJSONDecoder is the Codec for encoding and decoding
  * WebWorkerResponse (either success or error) as a JSON value.
  */
-class WebWorkerResponseJSONDecoder
-  implements Converter<unknown, WebWorkerResponse>
-{
+class WebWorkerResponseJSONDecoder implements Converter<
+  unknown,
+  WebWorkerResponse
+> {
   convert(input: unknown): WebWorkerResponse {
     if (isRecord(input, 'response', isUnknown)) {
       return webWorkerResponseSuccessJSONCodec.decode(input);
@@ -432,8 +433,7 @@ export class AsyncRequestHelper {
    * handleError handles errors that occur in the Web Worker
    */
   handleError(event: ErrorEvent) {
-    // eslint-disable-next-line no-debugger
-    debugger;
+    breakpoint();
     console.error('encountered error setting up Web worker', event);
   }
 }

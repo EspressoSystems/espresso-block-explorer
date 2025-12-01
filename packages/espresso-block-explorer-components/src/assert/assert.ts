@@ -104,8 +104,13 @@ export function assertType(value: unknown, type: string) {
 /**
  * assertNotNull is a function that will assert that a given value is not null.
  */
-export function assertNotNull<T>(value: null | T): asserts value is T {
-  assert(value !== null, 'expected a non-null value, received null');
+export function assertNotNull<T>(
+  value: undefined | null | T,
+): asserts value is T {
+  assert(
+    value !== null && value !== undefined,
+    'expected a non-null value, received null',
+  );
 }
 
 /**

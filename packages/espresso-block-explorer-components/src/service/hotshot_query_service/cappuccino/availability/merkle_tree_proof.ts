@@ -30,9 +30,10 @@ export class CappuccinoAPIMerkleTreeEmptyProof extends CappuccinoAPIMerkleTreePr
   }
 }
 
-export class CappuccinoAPIMerkleTreeEmptyProofDecoder
-  implements Converter<unknown, CappuccinoAPIMerkleTreeEmptyProof>
-{
+export class CappuccinoAPIMerkleTreeEmptyProofDecoder implements Converter<
+  unknown,
+  CappuccinoAPIMerkleTreeEmptyProof
+> {
   convert(input: unknown): CappuccinoAPIMerkleTreeEmptyProof {
     if (!isString(input) || input !== 'Empty') {
       throw new InvalidInputError();
@@ -42,9 +43,7 @@ export class CappuccinoAPIMerkleTreeEmptyProofDecoder
   }
 }
 
-export class CappuccinoAPIMerkleTreeEmptyProofEncoder
-  implements Converter<CappuccinoAPIMerkleTreeEmptyProof>
-{
+export class CappuccinoAPIMerkleTreeEmptyProofEncoder implements Converter<CappuccinoAPIMerkleTreeEmptyProof> {
   convert(input: CappuccinoAPIMerkleTreeEmptyProof) {
     assertInstanceOf(input, CappuccinoAPIMerkleTreeEmptyProof);
 
@@ -85,9 +84,10 @@ export class CappuccinoAPIMerkleTreeLeafProof extends CappuccinoAPIMerkleTreePro
   }
 }
 
-export class CappuccinoAPIMerkleTreeLeafProofDecoder
-  implements Converter<unknown, CappuccinoAPIMerkleTreeLeafProof>
-{
+export class CappuccinoAPIMerkleTreeLeafProofDecoder implements Converter<
+  unknown,
+  CappuccinoAPIMerkleTreeLeafProof
+> {
   convert(input: unknown): CappuccinoAPIMerkleTreeLeafProof {
     assertRecordWithKeys(input, 'Leaf');
 
@@ -103,9 +103,7 @@ export class CappuccinoAPIMerkleTreeLeafProofDecoder
   }
 }
 
-export class CappuccinoAPIMerkleTreeLeafProofEncoder
-  implements Converter<CappuccinoAPIMerkleTreeLeafProof>
-{
+export class CappuccinoAPIMerkleTreeLeafProofEncoder implements Converter<CappuccinoAPIMerkleTreeLeafProof> {
   convert(input: CappuccinoAPIMerkleTreeLeafProof) {
     assertInstanceOf(input, CappuccinoAPIMerkleTreeLeafProof);
 
@@ -149,9 +147,10 @@ export class CappuccinoAPIMerkleTreeForgottenSubTreeProof extends CappuccinoAPIM
   }
 }
 
-export class CappuccinoAPIMerkleTreeForgottenSubTreeProofDecoder
-  implements Converter<unknown, CappuccinoAPIMerkleTreeForgottenSubTreeProof>
-{
+export class CappuccinoAPIMerkleTreeForgottenSubTreeProofDecoder implements Converter<
+  unknown,
+  CappuccinoAPIMerkleTreeForgottenSubTreeProof
+> {
   convert(input: unknown): CappuccinoAPIMerkleTreeForgottenSubTreeProof {
     assertRecordWithKeys(input, 'ForgettenSubtree');
 
@@ -164,9 +163,7 @@ export class CappuccinoAPIMerkleTreeForgottenSubTreeProofDecoder
   }
 }
 
-export class CappuccinoAPIMerkleTreeForgottenSubTreeProofEncoder
-  implements Converter<CappuccinoAPIMerkleTreeForgottenSubTreeProof>
-{
+export class CappuccinoAPIMerkleTreeForgottenSubTreeProofEncoder implements Converter<CappuccinoAPIMerkleTreeForgottenSubTreeProof> {
   convert(input: CappuccinoAPIMerkleTreeForgottenSubTreeProof) {
     assertInstanceOf(input, CappuccinoAPIMerkleTreeForgottenSubTreeProof);
 
@@ -212,9 +209,10 @@ export class CappuccinoAPIMerkleTreeBranchProof extends CappuccinoAPIMerkleTreeP
   }
 }
 
-export class CappuccinoAPIMerkleTreeBranchProofDecoder
-  implements Converter<unknown, CappuccinoAPIMerkleTreeBranchProof>
-{
+export class CappuccinoAPIMerkleTreeBranchProofDecoder implements Converter<
+  unknown,
+  CappuccinoAPIMerkleTreeBranchProof
+> {
   convert(input: unknown): CappuccinoAPIMerkleTreeBranchProof {
     assertRecordWithKeys(input, 'Branch');
 
@@ -228,18 +226,15 @@ export class CappuccinoAPIMerkleTreeBranchProofDecoder
   }
 }
 
-export class CappuccinoAPIMerkleTreeBranchProofEncoder
-  implements
-    Converter<
-      CappuccinoAPIMerkleTreeBranchProof,
-      {
-        readonly Branch: {
-          readonly value: string;
-          readonly children: unknown[];
-        };
-      }
-    >
-{
+export class CappuccinoAPIMerkleTreeBranchProofEncoder implements Converter<
+  CappuccinoAPIMerkleTreeBranchProof,
+  {
+    readonly Branch: {
+      readonly value: string;
+      readonly children: unknown[];
+    };
+  }
+> {
   convert(input: CappuccinoAPIMerkleTreeBranchProof): {
     readonly Branch: { readonly value: string; readonly children: unknown[] };
   } {
@@ -267,9 +262,10 @@ export class CappuccinoAPIMerkleTreeBranchProofCodec extends TypeCheckingCodec<
 export const cappuccinoAPIMerkleTreeBranchProofCodec =
   new CappuccinoAPIMerkleTreeBranchProofCodec();
 
-export class CappuccinoAPIMerkleTreeProofDecoder
-  implements Converter<unknown, CappuccinoAPIMerkleTreeProof>
-{
+export class CappuccinoAPIMerkleTreeProofDecoder implements Converter<
+  unknown,
+  CappuccinoAPIMerkleTreeProof
+> {
   convert(input: unknown): CappuccinoAPIMerkleTreeProof {
     if (isRecord(input, 'Leaf', isUnknown)) {
       return cappuccinoAPIMerkleTreeLeafProofCodec.decoder.convert(input);
@@ -293,9 +289,7 @@ export class CappuccinoAPIMerkleTreeProofDecoder
   }
 }
 
-export class CappuccinoAPIMerkleTreeProofEncoder
-  implements Converter<CappuccinoAPIMerkleTreeProof>
-{
+export class CappuccinoAPIMerkleTreeProofEncoder implements Converter<CappuccinoAPIMerkleTreeProof> {
   convert(input: CappuccinoAPIMerkleTreeProof) {
     assertInstanceOf(input, CappuccinoAPIMerkleTreeProof);
 

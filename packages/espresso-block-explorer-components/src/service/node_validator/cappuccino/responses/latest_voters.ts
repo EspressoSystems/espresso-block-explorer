@@ -35,9 +35,10 @@ export class CappuccinoLatestVoters extends CappuccinoNodeValidatorResponse {
   }
 }
 
-class CappuccinoLatestVotersDecoder
-  implements Converter<unknown, CappuccinoLatestVoters>
-{
+class CappuccinoLatestVotersDecoder implements Converter<
+  unknown,
+  CappuccinoLatestVoters
+> {
   convert(input: unknown): CappuccinoLatestVoters {
     assertRecordWithKeys(input, kCappuccinoLatestVotersType);
 
@@ -47,9 +48,7 @@ class CappuccinoLatestVotersDecoder
   }
 }
 
-class CappuccinoLatestVotersEncoder
-  implements Converter<CappuccinoLatestVoters>
-{
+class CappuccinoLatestVotersEncoder implements Converter<CappuccinoLatestVoters> {
   convert(input: CappuccinoLatestVoters) {
     return {
       [kCappuccinoLatestVotersType]: cappuccinoAPIBitVecCodec.encode(

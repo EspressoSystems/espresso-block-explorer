@@ -1,7 +1,8 @@
 import { Converter, TypeCheckingCodec } from './convert';
-export class Uint8ArrayToArrayBufferConverter
-  implements Converter<Uint8Array, ArrayBuffer>
-{
+export class Uint8ArrayToArrayBufferConverter implements Converter<
+  Uint8Array,
+  ArrayBuffer
+> {
   convert(input: Uint8Array): ArrayBuffer {
     const buffer = new ArrayBuffer(input.byteLength);
     const view = new Uint8Array(buffer);
@@ -10,9 +11,10 @@ export class Uint8ArrayToArrayBufferConverter
   }
 }
 
-export class ArrayBufferToUint8ArrayConverter
-  implements Converter<ArrayBuffer, Uint8Array>
-{
+export class ArrayBufferToUint8ArrayConverter implements Converter<
+  ArrayBuffer,
+  Uint8Array
+> {
   convert(input: ArrayBuffer): Uint8Array {
     return new Uint8Array(input);
   }

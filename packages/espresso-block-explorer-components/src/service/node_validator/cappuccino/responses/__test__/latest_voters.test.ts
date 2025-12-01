@@ -18,7 +18,7 @@ describe('LatestVoters', () => {
 
       expect(latestVoters.order).toBe(CappuccinoAPIBitVecOrder.lsb0);
       expect(latestVoters.bits).toBe(7);
-      expect(latestVoters.data).to.deep.equal([23]);
+      expect(latestVoters.data).to.deep.equal([23n]);
       expect(latestVoters.head.width).toBe(16);
       expect(latestVoters.head.index).toBe(0);
     }

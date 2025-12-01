@@ -140,9 +140,7 @@ async function* convertBlockToCappuccinoAPITransactionResponse(
   });
 }
 
-export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI
-  implements CappuccinoHotShotQueryServiceAvailabilityAPI
-{
+export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements CappuccinoHotShotQueryServiceAvailabilityAPI {
   async getLeafFromHeight(height: number): Promise<CappuccinoAPILeafResponse> {
     const block = await this.getBlockFromHeight(height);
 

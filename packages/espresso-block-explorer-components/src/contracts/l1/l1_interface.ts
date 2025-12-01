@@ -87,8 +87,8 @@ export interface L1MethodsWritable {}
 export interface L1Methods<
   config extends Config,
   chainId extends config['chains'][number]['id'],
-> extends L1MethodsReadOnly<config, chainId>,
-    L1MethodsWritable {}
+>
+  extends L1MethodsReadOnly<config, chainId>, L1MethodsWritable {}
 
 /**
  * GasEstimatorForContract defines the gas estimator type for a

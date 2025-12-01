@@ -19,7 +19,7 @@ const sampleNodeData = nodeList.map(
       node.address,
       node.pubkey,
       node.stake,
-      new Ratio(node.commission / 10_000),
+      Ratio.floatingPoint(node.commission / 10_000),
     ),
 );
 
@@ -35,8 +35,8 @@ const activeNodes = top100Nodes.map(
   (node) =>
     new ActiveNodeSetEntry(
       node.address,
-      new Ratio(prng.nextFloat()),
-      new Ratio(prng.nextFloat()),
+      Ratio.floatingPoint(prng.nextFloat()),
+      Ratio.floatingPoint(prng.nextFloat()),
     ),
 );
 
@@ -46,7 +46,7 @@ export const fullValidatorSet = new FullNodeSetSnapshot(
 );
 
 export const activeValidatorSet = new ActiveNodeSetSnapshot(
-  new EpochAndBlock(0n, 0n, new Date(0)),
+  new EpochAndBlock(EpochAndBlock.determineEpoch(0n, 100n), 0n, new Date(0)),
   activeNodes,
 );
 

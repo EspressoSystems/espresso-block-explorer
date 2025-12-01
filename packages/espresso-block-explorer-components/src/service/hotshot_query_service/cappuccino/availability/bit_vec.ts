@@ -1,11 +1,16 @@
 import { assert, assertInstanceOf } from '@/assert/assert';
-import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec';
+import {
+  ArrayCodec,
+  ArrayDecoder,
+  ArrayEncoder,
+  bigintArrayCodec,
+} from '@/convert/codec';
 import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
-import { numberArrayCodec, numberCodec } from '@/convert/codec/number';
+import { numberCodec } from '@/convert/codec/number';
 import UnimplementedError from '@/errors/UnimplementedError';
 import { mapIterable } from '@/functional/functional';
 import {
@@ -75,13 +80,13 @@ export class CappuccinoAPIBitVec implements Iterable<boolean> {
   readonly order: CappuccinoAPIBitVecOrder;
   readonly head: CappuccinoAPIBitVecHead;
   readonly bits: number;
-  readonly data: number[];
+  readonly data: bigint[];
 
   constructor(
     order: CappuccinoAPIBitVecOrder,
     head: CappuccinoAPIBitVecHead,
     bits: number,
-    data: number[],
+    data: bigint[],
   ) {
     this.order = order;
     this.head = head;
@@ -109,9 +114,10 @@ export class CappuccinoAPIBitVec implements Iterable<boolean> {
   }
 }
 
-export class CappuccinoAPIBitVecDecoder
-  implements Converter<unknown, CappuccinoAPIBitVec>
-{
+export class CappuccinoAPIBitVecDecoder implements Converter<
+  unknown,
+  CappuccinoAPIBitVec
+> {
   convert(input: unknown): CappuccinoAPIBitVec {
     assertRecordWithKeys(input, 'order', 'head', 'bits', 'data');
 
@@ -119,14 +125,12 @@ export class CappuccinoAPIBitVecDecoder
       cappuccinoAPIBitVecOrderCodec.decode(input.order),
       cappuccinoAPIBitVecHeadCodec.decode(input.head),
       numberCodec.decode(input.bits),
-      numberArrayCodec.decode(input.data),
+      bigintArrayCodec.decode(input.data),
     );
   }
 }
 
-export class CappuccinoAPIBitVecEncoder
-  implements Converter<CappuccinoAPIBitVec>
-{
+export class CappuccinoAPIBitVecEncoder implements Converter<CappuccinoAPIBitVec> {
   convert(input: CappuccinoAPIBitVec) {
     assertInstanceOf(input, CappuccinoAPIBitVec);
 
@@ -134,7 +138,7 @@ export class CappuccinoAPIBitVecEncoder
       order: cappuccinoAPIBitVecOrderCodec.encode(input.order),
       head: cappuccinoAPIBitVecHeadCodec.encode(input.head),
       bits: numberCodec.encode(input.bits),
-      data: numberArrayCodec.encode(input.data),
+      data: bigintArrayCodec.encode(input.data),
     };
   }
 }
@@ -153,21 +157,18 @@ export const cappuccinoAPIBitVecArrayCodec = new ArrayCodec(
   new ArrayEncoder(cappuccinoAPIBitVecCodec),
 );
 
-function readBitAtIndex(data: number[], index: BitVecIndex): boolean {
-  return ((data[index.bucket] >> index.bitOffset) & 0x01) === 0x01;
+function readBitAtIndex(data: bigint[], index: BitVecIndex): boolean {
+  return ((data[index.bucket] >> index.bitOffset) & 1n) === 1n;
 }
 
 // An index indicates the position of the specific bit within the BitVec.
 // As such, it is a combination of the bucket, and the bit offset into that
 // bucket.
 class BitVecIndex {
-  readonly bucket: number;
-  readonly bitOffset: number;
-
-  constructor(bucket: number, bitOffset: number) {
-    this.bucket = bucket;
-    this.bitOffset = bitOffset;
-  }
+  constructor(
+    public readonly bucket: number,
+    public readonly bitOffset: bigint,
+  ) {}
 }
 
 /**
@@ -186,7 +187,7 @@ class BitVecIndex {
  */
 function determineBitWidthShift(bitWidth: number): number {
   assert(
-    bitWidth === 8 || bitWidth === 16 || bitWidth === 32,
+    bitWidth === 8 || bitWidth === 16 || bitWidth === 32 || bitWidth === 64,
     'bit width should be a power of two that is supported',
   );
 
@@ -199,6 +200,9 @@ function determineBitWidthShift(bitWidth: number): number {
 
     case 32:
       return 5;
+
+    case 64:
+      return 6;
 
     default:
       throw new UnimplementedError();
@@ -213,17 +217,17 @@ class Lsb0BitVecIndexIterator implements Iterator<BitVecIndex> {
   private readonly totalBits: number;
 
   // Utility properties for quicker computations
-  private readonly bitWidthMask: number;
-  private readonly bitWidthShift: number;
+  private readonly bitWidthMask: bigint;
+  private readonly bitWidthShift: bigint;
   // We are starting at the back, and moving towards the front
 
-  private offset: number = 0;
+  private offset: bigint = 0n;
 
   constructor(bitWidth: number, totalBits: number) {
     this.totalBits = totalBits;
 
-    const bitWidthShift = determineBitWidthShift(bitWidth);
-    this.bitWidthMask = bitWidth - 1;
+    const bitWidthShift = BigInt(determineBitWidthShift(bitWidth));
+    this.bitWidthMask = BigInt(bitWidth) - 1n;
     this.bitWidthShift = bitWidthShift;
   }
 
@@ -235,8 +239,8 @@ class Lsb0BitVecIndexIterator implements Iterator<BitVecIndex> {
     const bucket = this.offset >> this.bitWidthShift;
     const bitOffset = this.offset & this.bitWidthMask;
 
-    this.offset += 1;
-    return { done: false, value: new BitVecIndex(bucket, bitOffset) };
+    this.offset += 1n;
+    return { done: false, value: new BitVecIndex(Number(bucket), bitOffset) };
   }
 }
 
@@ -260,22 +264,22 @@ class Lsb0BitVecIndexIterable implements Iterable<BitVecIndex> {
  */
 class Msb0BitVecIndexIterator implements Iterator<BitVecIndex> {
   // So we are starting at the back, and we are going to go to 0.
-  private readonly bitWidth: number;
-  private readonly totalBits: number;
+  private readonly bitWidth: bigint;
+  private readonly totalBits: bigint;
 
   // Utility properties for quicker computations
-  private readonly bitWidthMask: number;
-  private readonly bitWidthShift: number;
+  private readonly bitWidthMask: bigint;
+  private readonly bitWidthShift: bigint;
   // We are starting at the back, and moving towards the front
 
-  private offset: number = 0;
+  private offset: bigint = 0n;
 
   constructor(bitWidth: number, totalBits: number) {
-    this.bitWidth = bitWidth;
-    this.totalBits = totalBits;
+    this.bitWidth = BigInt(bitWidth);
+    this.totalBits = BigInt(totalBits);
 
-    const bitWidthShift = determineBitWidthShift(bitWidth);
-    this.bitWidthMask = bitWidth - 1;
+    const bitWidthShift = BigInt(determineBitWidthShift(bitWidth));
+    this.bitWidthMask = BigInt(bitWidth) - 1n;
     this.bitWidthShift = bitWidthShift;
   }
 
@@ -285,10 +289,10 @@ class Msb0BitVecIndexIterator implements Iterator<BitVecIndex> {
     }
 
     const bucket = this.offset >> this.bitWidthShift;
-    const bitOffset = this.bitWidth - 1 - (this.offset & this.bitWidthMask);
+    const bitOffset = this.bitWidth - 1n - (this.offset & this.bitWidthMask);
 
-    this.offset += 1;
-    return { done: false, value: new BitVecIndex(bucket, bitOffset) };
+    this.offset += 1n;
+    return { done: false, value: new BitVecIndex(Number(bucket), bitOffset) };
   }
 }
 

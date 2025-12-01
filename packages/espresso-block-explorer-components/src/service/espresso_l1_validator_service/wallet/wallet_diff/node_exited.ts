@@ -22,9 +22,10 @@ export class WalletDiffNodeExited extends WalletDiff {
  * WalletDiffNodeExitedJSONDecoder decodes WalletDiffNodeExited
  * objects from a JSON object.
  */
-class WalletDiffNodeExitedJSONDecoder
-  implements Converter<unknown, WalletDiffNodeExited>
-{
+class WalletDiffNodeExitedJSONDecoder implements Converter<
+  unknown,
+  WalletDiffNodeExited
+> {
   convert(input: unknown): WalletDiffNodeExited {
     return new WalletDiffNodeExited(pendingWithdrawalJSONCodec.decode(input));
   }
@@ -34,9 +35,10 @@ class WalletDiffNodeExitedJSONDecoder
  * WalletDiffNodeExitedJSONEncoder encodes WalletDiffNodeExited
  * objects to a JSON object.
  */
-class WalletDiffNodeExitedJSONEncoder
-  implements Converter<WalletDiffNodeExited, unknown>
-{
+class WalletDiffNodeExitedJSONEncoder implements Converter<
+  WalletDiffNodeExited,
+  unknown
+> {
   convert(input: WalletDiffNodeExited): unknown {
     return pendingWithdrawalJSONCodec.encode(input.pendingWithdrawal);
   }

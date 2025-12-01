@@ -24,8 +24,7 @@ import { L1Methods } from './l1_interface';
 export class L1MethodsRemote<
   config extends Config,
   chainId extends config['chains'][number]['id'],
-> implements L1Methods<config, chainId>
-{
+> implements L1Methods<config, chainId> {
   // Implementation of ESPTokenContract methods would go here
   constructor(
     private readonly config: config,

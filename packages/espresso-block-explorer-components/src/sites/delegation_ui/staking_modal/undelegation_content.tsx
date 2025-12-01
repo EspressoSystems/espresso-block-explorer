@@ -1,9 +1,8 @@
 import { DataContext } from '@/components/contexts/DataProvider';
+import { PromiseResolver } from '@/components/data';
 import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
-import PromiseResolver from '@/components/data/async_data/PromiseResolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/Text';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { neverPromise } from '@/functional/functional_async';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
@@ -46,34 +45,63 @@ export const UndelegationContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <ProvideContractGasEstimate>
+        <ProvideUndelegateContractGasEstimate>
           <UnstakingInitialSummaryAndInteraction />
           <UnstakingOverviewArea />
           <UnstakingActionsArea />
-        </ProvideContractGasEstimate>
+        </ProvideUndelegateContractGasEstimate>
       </StakingContent>
     </>
   );
 };
 
-const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
+/**
+ * ProvideUndelegateContractGasEstimate provides an estimated gas amount
+ * for undelegation operations to its children via the
+ * EstimatedContractGasContext.
+ */
+const ProvideUndelegateContractGasEstimate: React.FC<
+  React.PropsWithChildren
+> = ({ children }) => {
   const account = React.useContext(RainbowKitAccountAddressContext);
+  const currentStakeToValidator =
+    React.useContext(CurrentStakeToValidatorContext) ?? 0n;
   const validator = React.useContext(ConfirmedValidatorContext);
-  const currentStake = React.useContext(CurrentStakeToValidatorContext);
-  const rewardClaimGasEstimator = React.useContext(
+  const stakeTableGasEstimator = React.useContext(
     StakeTableContractGasEstimatorContext,
   );
 
-  const promise =
-    !rewardClaimGasEstimator || !currentStake || !account
-      ? neverPromise
-      : rewardClaimGasEstimator.undelegate(
-          account,
-          hexArrayBufferCodec.encode(validator),
-          currentStake,
-        );
+  const promise = React.useMemo(
+    () =>
+      !account ||
+      !validator ||
+      !stakeTableGasEstimator ||
+      !currentStakeToValidator
+        ? neverPromise
+        : stakeTableGasEstimator.undelegate(
+            account,
+            validator,
+            currentStakeToValidator,
+          ),
+
+    // We only want to refresh this, if the estimator changes, or if the
+    // criteria of our account or validator switch between being set or not,
+    // or if the stake to the current validator is positive or not.
+    //
+    // Beyond these conditions, the gas price is assumed to be the same,
+    // regardless of the specific values utilized.
+    //
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      stakeTableGasEstimator,
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      !!account,
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      !!validator,
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      currentStakeToValidator > 0n,
+    ],
+  );
 
   return (
     <PromiseResolver promise={promise}>
@@ -101,7 +129,7 @@ const UnstakingActionsArea: React.FC = () => {
   const stakingAmount = React.useContext(StakingAmountContext);
   const setStakingAmount = React.useContext(SetStakingAmountContext);
   const currentStake = React.useContext(CurrentStakeToValidatorContext) ?? 0n;
-  const validatorAddress = hexArrayBufferCodec.encode(confirmedValidator);
+  const validatorAddress = confirmedValidator;
   const asyncSnapshot = React.useContext(UndelegateAsyncSnapshotContext);
   const setL1Timestamp = React.useContext(SetL1RefreshTimestampContext);
   const close = React.useContext(StakingModalCloseContext);

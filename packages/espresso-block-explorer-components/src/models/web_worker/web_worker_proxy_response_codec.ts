@@ -28,9 +28,10 @@ const registry = new Map<
 registry.set(kErrorResponseType, errorResponseCodec);
 registry.set(kWebSocketResponseType, webSocketResponseCodec);
 
-class WebWorkerProxyResponseEncoder
-  implements Converter<WebWorkerProxyResponse, unknown>
-{
+class WebWorkerProxyResponseEncoder implements Converter<
+  WebWorkerProxyResponse,
+  unknown
+> {
   convert(input: WebWorkerProxyResponse) {
     const codec = registry.get(input.type);
     if (!codec) {
@@ -46,9 +47,10 @@ class WebWorkerProxyResponseEncoder
   }
 }
 
-class WebWorkerProxyResponseDecoder
-  implements Converter<unknown, WebWorkerProxyResponse>
-{
+class WebWorkerProxyResponseDecoder implements Converter<
+  unknown,
+  WebWorkerProxyResponse
+> {
   convert(input: unknown): WebWorkerProxyResponse {
     if (typeof input !== 'object' || input === null) {
       throw new InvalidTypeError(typeof input, 'object');
@@ -102,9 +104,10 @@ export function registerWebWorkerProxyResponseCodec(
 export const webWorkerProxyResponseCodec = new WebWorkerProxyResponseCodec();
 
 // EspressoError to WebWorkerProxyResponse Converter
-class EspressoErrorToWebWorkerProxyResponseConverter
-  implements Converter<EspressoError, WebWorkerProxyResponse>
-{
+class EspressoErrorToWebWorkerProxyResponseConverter implements Converter<
+  EspressoError,
+  WebWorkerProxyResponse
+> {
   convert(input: EspressoError) {
     return new ErrorResponse(input);
   }
@@ -114,9 +117,10 @@ export const espressoErrorToWebWorkerProxyResponseConverter =
   new EspressoErrorToWebWorkerProxyResponseConverter();
 
 // WebSocketStatus to WebWorkerProxyResponse Converter
-class WebSocketStatusToWebWorkerProxyResponseConverter
-  implements Converter<WebSocketStatus, WebWorkerProxyResponse>
-{
+class WebSocketStatusToWebWorkerProxyResponseConverter implements Converter<
+  WebSocketStatus,
+  WebWorkerProxyResponse
+> {
   convert(input: WebSocketStatus) {
     return new WebSocketResponse(input);
   }

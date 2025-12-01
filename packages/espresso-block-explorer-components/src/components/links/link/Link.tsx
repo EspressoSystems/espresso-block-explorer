@@ -17,11 +17,10 @@ type CreateElementTarget = Parameters<typeof React.createElement>[0];
 export const InternalLinkAnchorComponentContext =
   React.createContext<CreateElementTarget>('a');
 
-export interface LinkProps
-  extends React.DetailedHTMLProps<
-    React.AnchorHTMLAttributes<HTMLAnchorElement>,
-    HTMLAnchorElement
-  > {}
+export interface LinkProps extends React.DetailedHTMLProps<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  HTMLAnchorElement
+> {}
 
 /**
  * InternalLink component represents a simple Anchor tag link. This link is

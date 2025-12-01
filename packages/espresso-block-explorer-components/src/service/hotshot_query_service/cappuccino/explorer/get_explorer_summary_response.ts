@@ -21,9 +21,10 @@ export class CappuccinoExplorerGetExplorerSummaryResponse {
   }
 }
 
-class CappuccinoExplorerGetExplorerSummaryResponseDecoder
-  implements Converter<unknown, CappuccinoExplorerGetExplorerSummaryResponse>
-{
+class CappuccinoExplorerGetExplorerSummaryResponseDecoder implements Converter<
+  unknown,
+  CappuccinoExplorerGetExplorerSummaryResponse
+> {
   convert(input: unknown): CappuccinoExplorerGetExplorerSummaryResponse {
     assertRecordWithKeys(input, 'explorer_summary');
 
@@ -33,9 +34,10 @@ class CappuccinoExplorerGetExplorerSummaryResponseDecoder
   }
 }
 
-class CappuccinoExplorerGetExplorerSummaryResponseEncoder
-  implements Converter<CappuccinoExplorerGetExplorerSummaryResponse, unknown>
-{
+class CappuccinoExplorerGetExplorerSummaryResponseEncoder implements Converter<
+  CappuccinoExplorerGetExplorerSummaryResponse,
+  unknown
+> {
   convert(input: CappuccinoExplorerGetExplorerSummaryResponse): unknown {
     assertInstanceOf(input, CappuccinoExplorerGetExplorerSummaryResponse);
 

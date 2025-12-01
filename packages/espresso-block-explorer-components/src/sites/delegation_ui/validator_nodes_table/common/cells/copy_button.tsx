@@ -5,11 +5,10 @@ import { addClassToClassName } from '@/higher_order';
 import React from 'react';
 import './copy_button.css';
 
-export interface ButtonProps
-  extends React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  > {
+export interface ButtonProps extends React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+> {
   content: string;
 }
 

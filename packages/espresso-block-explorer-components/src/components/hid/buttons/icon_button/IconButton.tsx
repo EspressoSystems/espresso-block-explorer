@@ -16,11 +16,10 @@ const IconButton: React.FC<ButtonProps> = ({ className, ...props }) => (
 
 export default IconButton;
 
-export interface PresentationButtonProps
-  extends React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  > {}
+export interface PresentationButtonProps extends React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+> {}
 
 export const PresentationIconButton: React.FC<PresentationButtonProps> = ({
   className,

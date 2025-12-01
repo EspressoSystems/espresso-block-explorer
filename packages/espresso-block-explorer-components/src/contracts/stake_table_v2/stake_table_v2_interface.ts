@@ -6,8 +6,7 @@ import {
 
 export type CommissionTracking = readonly [number, bigint];
 
-export interface StakeTableV2ContractReadOnly
-  extends StakeTableContractReadOnly {
+export interface StakeTableV2ContractReadOnly extends StakeTableContractReadOnly {
   PAUSER_ROLE(): Promise<`0x${string}`>;
   minCommissionIncreaseInterval(): Promise<bigint>;
   maxCommissionIncrease(): Promise<number>;
@@ -15,8 +14,7 @@ export interface StakeTableV2ContractReadOnly
   commissionTracking(validator: `0x${string}`): Promise<CommissionTracking>;
 }
 
-export interface StakeTableV2ContractWriteable
-  extends StakeTableContractWriteable {
+export interface StakeTableV2ContractWriteable extends StakeTableContractWriteable {
   updateConsensusKeysV2(
     blsVk: { x0: bigint; x1: bigint; y0: bigint; y1: bigint },
     schnorrVk: { x: bigint; y: bigint },
@@ -26,8 +24,7 @@ export interface StakeTableV2ContractWriteable
 }
 
 export interface StakeTableV2Contract
-  extends StakeTableV2ContractReadOnly,
-    StakeTableV2ContractWriteable {}
+  extends StakeTableV2ContractReadOnly, StakeTableV2ContractWriteable {}
 
 /**
  * StakeTableV2ContractGasEstimator defines the gas estimator type for the

@@ -1,3 +1,4 @@
+import { breakpoint } from '@/assert/debugger';
 import {
   Converter,
   TypeCheckingCodec,
@@ -14,6 +15,7 @@ export default class InvalidInputError extends BaseError {
   constructor(message = 'invalid input') {
     super(message);
     Object.freeze(this);
+    breakpoint();
   }
 
   get code(): string {
@@ -21,9 +23,10 @@ export default class InvalidInputError extends BaseError {
   }
 }
 
-class InvalidInputErrorDecoder
-  implements Converter<unknown, InvalidInputError>
-{
+class InvalidInputErrorDecoder implements Converter<
+  unknown,
+  InvalidInputError
+> {
   convert(input: unknown): InvalidInputError {
     assertRecordWithKeys(input, 'code', 'message');
     assertErrorCode(input, kInvalidInputErrorCode);

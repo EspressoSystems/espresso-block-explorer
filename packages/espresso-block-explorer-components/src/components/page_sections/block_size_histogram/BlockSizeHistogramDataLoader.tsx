@@ -21,8 +21,10 @@ export interface BlockSizeHistogramData {
  * retrieve the data that is expected to be displayed on the Block Size
  * Histogram. It is expected to be used to retrieve the data asynchronously.
  */
-export interface BlockSizeHistogramAsyncRetriever
-  extends AsyncRetriever<void, BlockSizeHistogramData> {}
+export interface BlockSizeHistogramAsyncRetriever extends AsyncRetriever<
+  void,
+  BlockSizeHistogramData
+> {}
 
 /**
  * The BlockSizeHistogramAsyncRetrieverContext is a React context that is

@@ -9,9 +9,10 @@ import { GeodesicProjection } from './GeodesicProjection';
  * DegreesRadiansProjection is a geodesic projection which converts between
  * latitude and longitude values in degrees and radians.
  */
-export default class DegreesRadiansProjection
-  implements GeodesicProjection<Degrees, Radians>
-{
+export default class DegreesRadiansProjection implements GeodesicProjection<
+  Degrees,
+  Radians
+> {
   readonly minInput = new LatLng(
     new Latitude(new Degrees(-90)),
     new Longitude(new Degrees(-180)),

@@ -29,9 +29,7 @@ export abstract class CappuccinoExplorerGetTransactionDetailRequest {
   }
 }
 
-class CappuccinoExplorerGetTransactionDetailRequestEncoder
-  implements Converter<CappuccinoExplorerGetTransactionDetailRequest>
-{
+class CappuccinoExplorerGetTransactionDetailRequestEncoder implements Converter<CappuccinoExplorerGetTransactionDetailRequest> {
   convert(input: CappuccinoExplorerGetTransactionDetailRequest) {
     assertInstanceOf(input, CappuccinoExplorerGetTransactionDetailRequest);
 
@@ -55,9 +53,10 @@ class CappuccinoExplorerGetTransactionDetailRequestEncoder
   }
 }
 
-class CappuccinoExplorerGetTransactionDetailRequestDecoder
-  implements Converter<unknown, CappuccinoExplorerGetTransactionDetailRequest>
-{
+class CappuccinoExplorerGetTransactionDetailRequestDecoder implements Converter<
+  unknown,
+  CappuccinoExplorerGetTransactionDetailRequest
+> {
   convert(input: unknown): CappuccinoExplorerGetTransactionDetailRequest {
     if (
       isRecord(input, 'height', isUnknown) &&

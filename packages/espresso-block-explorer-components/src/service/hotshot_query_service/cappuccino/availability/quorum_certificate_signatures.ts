@@ -27,9 +27,10 @@ export class CappuccinoAPIQuorumCertificateSignatures {
   }
 }
 
-export class CappuccinoAPIQuorumCertificateSignaturesDecoder
-  implements Converter<unknown, CappuccinoAPIQuorumCertificateSignatures>
-{
+export class CappuccinoAPIQuorumCertificateSignaturesDecoder implements Converter<
+  unknown,
+  CappuccinoAPIQuorumCertificateSignatures
+> {
   convert(input: unknown): CappuccinoAPIQuorumCertificateSignatures {
     if (!isUnknownArray(input) || input.length !== 2) {
       throw new InvalidTypeError(typeof input, 'Array');
@@ -42,9 +43,7 @@ export class CappuccinoAPIQuorumCertificateSignaturesDecoder
   }
 }
 
-export class CappuccinoAPIQuorumCertificateSignaturesEncoder
-  implements Converter<CappuccinoAPIQuorumCertificateSignatures>
-{
+export class CappuccinoAPIQuorumCertificateSignaturesEncoder implements Converter<CappuccinoAPIQuorumCertificateSignatures> {
   convert(input: CappuccinoAPIQuorumCertificateSignatures) {
     assertInstanceOf(input, CappuccinoAPIQuorumCertificateSignatures);
 

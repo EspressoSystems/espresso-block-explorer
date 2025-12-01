@@ -25,9 +25,10 @@ export class CappuccinoAPIBQuorumCertificateData {
   }
 }
 
-export class CappuccinoAPIBQuorumCertificateDataDecoder
-  implements Converter<unknown, CappuccinoAPIBQuorumCertificateData>
-{
+export class CappuccinoAPIBQuorumCertificateDataDecoder implements Converter<
+  unknown,
+  CappuccinoAPIBQuorumCertificateData
+> {
   convert(input: unknown): CappuccinoAPIBQuorumCertificateData {
     assertRecordWithKeys(input, 'leaf_commit');
 
@@ -37,9 +38,7 @@ export class CappuccinoAPIBQuorumCertificateDataDecoder
   }
 }
 
-export class CappuccinoAPIBQuorumCertificateDataEncoder
-  implements Converter<CappuccinoAPIBQuorumCertificateData>
-{
+export class CappuccinoAPIBQuorumCertificateDataEncoder implements Converter<CappuccinoAPIBQuorumCertificateData> {
   convert(input: CappuccinoAPIBQuorumCertificateData) {
     assertInstanceOf(input, CappuccinoAPIBQuorumCertificateData);
 

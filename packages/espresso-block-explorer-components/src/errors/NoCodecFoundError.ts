@@ -1,3 +1,4 @@
+import { breakpoint } from '@/assert/debugger';
 import { stringCodec } from '@/convert/codec/string';
 
 const kNoCodecFoundErrorCode = 'NoCodecFoundError';
@@ -11,8 +12,7 @@ export default class NoCodecFoundError extends Error {
     super(message);
     this.codec = codec;
     Object.freeze(this);
-    // eslint-disable-next-line no-debugger
-    debugger;
+    breakpoint();
   }
 
   toJSON() {

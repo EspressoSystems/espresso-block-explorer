@@ -12,7 +12,11 @@ import {
 } from '../contexts/esp_token_contract_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
 import { MockESPTokenContractGasEstimatorImpl } from './esp_token_contract_gas_estimator';
-import { MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
+import {
+  MockContractStorage,
+  MockL1MethodsImpl,
+  UnderlyingTransaction,
+} from './l1_methods';
 import { MockAddress } from './rainbow_kit';
 
 /**
@@ -24,17 +28,40 @@ import { MockAddress } from './rainbow_kit';
  * accurate to the live contract, and are only intended to provide
  * a reasonable facsimile for UI and interaction testing.
  */
-export interface MockESPTokenContractState {
-  contractAddress: `0x${string}`;
-  version: [number, number, number];
-  name: string;
-  symbol: string;
-  decimals: number;
-  totalSupply: bigint;
-  balances: Map<`0x${string}`, bigint>;
-  allowances: Map<`0x${string}`, Map<`0x${string}`, bigint>>;
+export class MockESPTokenContractState implements MockContractStorage {
+  constructor(
+    public readonly contractAddress: `0x${string}`,
+    public readonly version: [number, number, number],
+    public readonly name: string,
+    public readonly symbol: string,
+    public readonly decimals: number,
+    public readonly totalSupply: bigint,
+    public readonly balances: Map<`0x${string}`, bigint>,
+    public readonly allowances: Map<`0x${string}`, Map<`0x${string}`, bigint>>,
 
-  lastUpdate: Date;
+    public readonly lastUpdate: Date,
+  ) {}
+
+  public applyTransaction(
+    tx: UnderlyingTransaction,
+  ): MockESPTokenContractState {
+    if (tx instanceof ESPTokenContractStateAction) {
+      const nextState = tx.applyToState(this);
+      return new MockESPTokenContractState(
+        nextState.contractAddress,
+        nextState.version,
+        nextState.name,
+        nextState.symbol,
+        nextState.decimals,
+        nextState.totalSupply,
+        nextState.balances,
+        nextState.allowances,
+        new Date(),
+      );
+    }
+
+    return this;
+  }
 }
 
 /**
@@ -45,14 +72,20 @@ function applyActionToState(
   l1Methods: MockL1MethodsImpl,
   action: ESPTokenContractStateAction,
 ): void {
-  const currentState: null | MockESPTokenContractState =
-    l1Methods.mockReadContractStorage(ESPTokenStorageSymbol) ?? null;
+  const currentState =
+    l1Methods.mockReadContractStorage<MockESPTokenContractState>(
+      ESPTokenStorageSymbol,
+    ) ?? null;
   assertNotNull(currentState);
 
-  l1Methods.mockWriteContractStorage(ESPTokenStorageSymbol, {
-    ...action.applyToState(currentState),
-    lastUpdate: action.ts,
-  });
+  // Run the contract function just to make sure no errors occur,
+  // but we do not store the resulting state here.
+  action.applyToState(currentState);
+
+  // l1Methods.mockWriteContractStorage(ESPTokenStorageSymbol, {
+  //   ...action.applyToState(currentState),
+  //   lastUpdate: action.ts,
+  // });
   l1Methods.mockWriteTransaction(action);
 }
 
@@ -61,7 +94,7 @@ function applyActionToState(
  * representing an action that modifies the state of the
  * MockESPTokenContract.
  */
-abstract class ESPTokenContractStateAction implements UnderlyingTransaction {
+export abstract class ESPTokenContractStateAction implements UnderlyingTransaction {
   public readonly contractAddress: undefined | `0x${string}`;
   public abstract readonly from: `0x${string}`;
   public abstract readonly to: `0x${string}`;
@@ -87,7 +120,7 @@ abstract class ESPTokenContractStateAction implements UnderlyingTransaction {
  * TransferBalance represents a token transfer action
  * within the MockESPTokenContract.
  */
-class TransferBalance extends ESPTokenContractStateAction {
+export class TransferBalance extends ESPTokenContractStateAction {
   public readonly gas: bigint = 21000n;
 
   constructor(
@@ -124,10 +157,17 @@ class TransferBalance extends ESPTokenContractStateAction {
     newBalances.set(this.from, fromBalance - this.value);
     newBalances.set(this.to, toBalance + this.value);
 
-    return {
-      ...state,
-      balances: newBalances,
-    };
+    return new MockESPTokenContractState(
+      state.contractAddress,
+      state.version,
+      state.name,
+      state.symbol,
+      state.decimals,
+      state.totalSupply,
+      newBalances,
+      state.allowances,
+      state.lastUpdate,
+    );
   }
 }
 
@@ -135,7 +175,7 @@ class TransferBalance extends ESPTokenContractStateAction {
  * ApproveAllowance represents an approval action
  * within the MockESPTokenContract.
  */
-class ApproveAllowance extends ESPTokenContractStateAction {
+export class ApproveAllowance extends ESPTokenContractStateAction {
   public readonly gas: bigint = 21000n;
 
   get from(): `0x${string}` {
@@ -178,10 +218,17 @@ class ApproveAllowance extends ESPTokenContractStateAction {
     ownerAllowances.set(this.spender, this.value);
     newAllowances.set(this.owner, ownerAllowances);
 
-    return {
-      ...state,
-      allowances: newAllowances,
-    };
+    return new MockESPTokenContractState(
+      state.contractAddress,
+      state.version,
+      state.name,
+      state.symbol,
+      state.decimals,
+      state.totalSupply,
+      state.balances,
+      newAllowances,
+      state.lastUpdate,
+    );
   }
 }
 
@@ -203,9 +250,20 @@ export class MockESPTokenContractImpl implements ESPTokenContract {
     public accountAddress: `0x${string}` | null = null,
   ) {
     if (!this.l1Methods.mockReadContractStorage(ESPTokenStorageSymbol)) {
-      this.l1Methods.mockWriteContractStorage(ESPTokenStorageSymbol, {
-        ...state,
-      });
+      this.l1Methods.mockWriteContractStorage(
+        ESPTokenStorageSymbol,
+        new MockESPTokenContractState(
+          state.contractAddress,
+          state.version,
+          state.name,
+          state.symbol,
+          state.decimals,
+          state.totalSupply,
+          state.balances,
+          state.allowances,
+          state.lastUpdate,
+        ),
+      );
     }
 
     this.accountAddress = accountAddress;
@@ -351,36 +409,37 @@ function useMockESPContractState(
 ) {
   const contractAddress = '0x0000000000000000000000000000000000000001';
   // Mocked ESPTokenContract State
-  const [state] = React.useState<MockESPTokenContractState>({
-    contractAddress: initialState?.contractAddress ?? contractAddress,
-    version: initialState?.version ?? [1, 0, 0],
-    name: initialState?.name ?? 'Espresso Token',
-    symbol: initialState?.symbol ?? 'ESP',
-    decimals: initialState?.decimals ?? 18,
-    totalSupply: initialState?.totalSupply ?? 1_234_567_8900n * 10n ** 18n,
-    balances:
+  const [state] = React.useState<MockESPTokenContractState>(
+    new MockESPTokenContractState(
+      initialState?.contractAddress ?? contractAddress,
+      initialState?.version ?? [1, 0, 0],
+      initialState?.name ?? 'Espresso Token',
+      initialState?.symbol ?? 'ESP',
+      initialState?.decimals ?? 18,
+      initialState?.totalSupply ?? 1_234_567_8900n * 10n ** 18n,
       initialState?.balances ??
-      new Map([
-        // Load some initial balance for our Mock Account
-        [MockAddress, 5_000_000_000_000_000_000_000n],
+        new Map([
+          // Load some initial balance for our Mock Account
+          [MockAddress, 5_000_000_000_000_000_000_000n],
 
-        // Set the initial Balance for the default address of the Mock Stake
-        // Table contract to be equal to all of the expected stake
-        [
-          `0x0000000000000000000000000000000000000002`,
-          foldRIterable((acc, next) => acc + next.stake, 0n, nodeList),
-        ],
+          // Set the initial Balance for the default address of the Mock Stake
+          // Table contract to be equal to all of the expected stake
+          [
+            `0x0000000000000000000000000000000000000002`,
+            foldRIterable((acc, next) => acc + next.stake, 0n, nodeList),
+          ],
 
-        // Set the initial balance for the reward state contract, so we
-        // can claim rewards
-        [
-          '0x0000000000000000000000000000000000000003',
-          1_000_000_000_000_000_000_000_000_000n,
-        ],
-      ]),
-    allowances: initialState?.allowances ?? new Map(),
-    lastUpdate: initialState?.lastUpdate ?? new Date(),
-  } as const satisfies MockESPTokenContractState);
+          // Set the initial balance for the reward state contract, so we
+          // can claim rewards
+          [
+            '0x0000000000000000000000000000000000000003',
+            1_000_000_000_000_000_000_000_000_000n,
+          ],
+        ]),
+      initialState?.allowances ?? new Map(),
+      initialState?.lastUpdate ?? new Date(),
+    ),
+  );
 
   return state;
 }

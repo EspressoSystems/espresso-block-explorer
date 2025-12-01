@@ -34,15 +34,16 @@ export class PendingWithdrawal {
 /**
  * PendingWithdrawalEncoder encodes PendingWithdrawal objects to a JSON object.
  */
-class PendingWithdrawalEncoder
-  implements Converter<PendingWithdrawal, unknown>
-{
+class PendingWithdrawalEncoder implements Converter<
+  PendingWithdrawal,
+  unknown
+> {
   convert(input: PendingWithdrawal): unknown {
     return {
       delegator: hexArrayBufferCodec.encode(input.delegator),
       node: hexArrayBufferCodec.encode(input.node),
       amount: bigintCodec.encode(input.amount),
-      available_time: numberCodec.encode(input.availableTime.valueOf()),
+      available_time: numberCodec.encode(input.availableTime.valueOf() / 1000),
     };
   }
 }
@@ -50,9 +51,10 @@ class PendingWithdrawalEncoder
 /**
  * PendingWithdrawalDecoder decodes PendingWithdrawal objects from a JSON object.
  */
-class PendingWithdrawalDecoder
-  implements Converter<unknown, PendingWithdrawal>
-{
+class PendingWithdrawalDecoder implements Converter<
+  unknown,
+  PendingWithdrawal
+> {
   convert(input: unknown): PendingWithdrawal {
     assertRecordWithKeys(
       input,
@@ -66,7 +68,7 @@ class PendingWithdrawalDecoder
       hexArrayBufferCodec.decode(input.delegator),
       hexArrayBufferCodec.decode(input.node),
       bigintCodec.decode(input.amount),
-      new Date(numberCodec.decode(input.available_time)),
+      new Date(numberCodec.decode(input.available_time) * 1000),
     );
   }
 }

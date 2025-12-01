@@ -1,10 +1,8 @@
 import { BlockExplorerConfigContext } from '@/components/config/explorer';
-import {
-  CappuccinoHotShotQueryService,
-  UnimplementedCappuccinoHotShotQueryService,
-} from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
-import { WebWorkerClientBasedCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hotshot_query_service_web_worker_client_based';
+import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
 import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
+import { UnimplementedCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/unimplemented';
+import { WebWorkerClientBasedCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/web_worker_client';
 import React from 'react';
 
 export const CappuccinoHotShotQueryServiceAPIContext =

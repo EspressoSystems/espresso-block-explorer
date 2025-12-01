@@ -35,9 +35,10 @@ export class ParticipationChange {
  * ParticipationChangeJSONDecoder decodes ParticipationChange objects from a
  * JSON object.
  */
-class ParticipationChangeJSONDecoder
-  implements Converter<unknown, ParticipationChange>
-{
+class ParticipationChangeJSONDecoder implements Converter<
+  unknown,
+  ParticipationChange
+> {
   convert(input: unknown): ParticipationChange {
     assertRecordWithKeys(input, 'node', 'percentage');
 
@@ -52,9 +53,10 @@ class ParticipationChangeJSONDecoder
  * ParticipationChangeJSONEncoder encodes ParticipationChange objects to a JSON
  * object.
  */
-class ParticipationChangeJSONEncoder
-  implements Converter<ParticipationChange, unknown>
-{
+class ParticipationChangeJSONEncoder implements Converter<
+  ParticipationChange,
+  unknown
+> {
   convert(input: ParticipationChange): unknown {
     return {
       node: numberCodec.encode(input.node),

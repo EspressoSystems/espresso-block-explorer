@@ -10,5 +10,7 @@ export interface RollupDetailRequest {
   transactionsPerPage?: number;
 }
 
-export interface RollUpDetailAsyncRetriever
-  extends AsyncRetriever<RollupDetailRequest, RollUpDetailEntry[]> {}
+export interface RollUpDetailAsyncRetriever extends AsyncRetriever<
+  RollupDetailRequest,
+  RollUpDetailEntry[]
+> {}

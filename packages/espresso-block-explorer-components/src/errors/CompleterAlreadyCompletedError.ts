@@ -24,9 +24,10 @@ export class CompleterAlreadyCompletedError extends BaseError {
 }
 
 const kCompleterAlreadyCompletedErrorCode = 'CompleterAlreadyCompletedError';
-class CompleterAlreadyCompletedErrorDecoder
-  implements Converter<unknown, CompleterAlreadyCompletedError>
-{
+class CompleterAlreadyCompletedErrorDecoder implements Converter<
+  unknown,
+  CompleterAlreadyCompletedError
+> {
   convert(input: unknown): CompleterAlreadyCompletedError {
     assertRecordWithKeys(input, 'code', 'message');
     assertErrorCode(input, kCompleterAlreadyCompletedErrorCode);

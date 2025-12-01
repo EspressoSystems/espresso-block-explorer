@@ -67,9 +67,10 @@ export class ValidatorDecoder implements Converter<unknown, Validator> {
   }
 }
 
-export class ValidatorEncoder
-  implements Converter<Validator, Record<string, unknown>>
-{
+export class ValidatorEncoder implements Converter<
+  Validator,
+  Record<string, unknown>
+> {
   convert(input: Validator): Record<string, unknown> {
     assertInstanceOf(input, Validator);
 

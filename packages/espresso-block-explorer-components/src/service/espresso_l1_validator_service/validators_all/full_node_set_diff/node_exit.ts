@@ -34,9 +34,10 @@ export class FullNodeSetDiffNodeExit extends FullNodeSetDiff {
  * ValidatorExitJSONDecoder decodes FullValidatorSetDiffValidatorExit
  * objects from a JSON object.
  */
-class FullNodeSetDiffNodeExitJSONDecoder
-  implements Converter<unknown, FullNodeSetDiffNodeExit>
-{
+class FullNodeSetDiffNodeExitJSONDecoder implements Converter<
+  unknown,
+  FullNodeSetDiffNodeExit
+> {
   convert(input: unknown): FullNodeSetDiffNodeExit {
     assertRecordWithKeys(input, 'validator_exit');
 
@@ -50,9 +51,10 @@ class FullNodeSetDiffNodeExitJSONDecoder
  * ValidatorExitJSONEncoder encodes FullValidatorSetDiffValidatorExit
  * objects to a JSON object.
  */
-class FullNodeSetDiffNodeExitJSONEncoder
-  implements Converter<FullNodeSetDiffNodeExit, unknown>
-{
+class FullNodeSetDiffNodeExitJSONEncoder implements Converter<
+  FullNodeSetDiffNodeExit,
+  unknown
+> {
   convert(input: FullNodeSetDiffNodeExit): unknown {
     return {
       validator_exit: validatorExitEntryJSONCodec.encode(input.validatorExit),

@@ -25,9 +25,10 @@ export class IncorrectBase64PaddingError extends BaseError {
   }
 }
 
-class IncorrectBase64PaddingErrorDecoder
-  implements Converter<unknown, IncorrectBase64PaddingError>
-{
+class IncorrectBase64PaddingErrorDecoder implements Converter<
+  unknown,
+  IncorrectBase64PaddingError
+> {
   convert(input: unknown): IncorrectBase64PaddingError {
     assertRecordWithKeys(input, 'code', 'message');
     assertErrorCode(input, kIncorrectBase64PaddingErrorCode);

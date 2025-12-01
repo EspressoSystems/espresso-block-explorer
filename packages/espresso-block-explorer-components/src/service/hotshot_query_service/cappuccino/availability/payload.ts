@@ -24,9 +24,10 @@ export class CappuccinoAPIPayload {
   }
 }
 
-export class CappuccinoAPIPayloadDecoder
-  implements Converter<unknown, CappuccinoAPIPayload>
-{
+export class CappuccinoAPIPayloadDecoder implements Converter<
+  unknown,
+  CappuccinoAPIPayload
+> {
   convert(input: unknown): CappuccinoAPIPayload {
     assertRecordWithKeys(input, 'transaction_nmt');
 
@@ -36,9 +37,7 @@ export class CappuccinoAPIPayloadDecoder
   }
 }
 
-export class CappuccinoAPIPayloadEncoder
-  implements Converter<CappuccinoAPIPayload>
-{
+export class CappuccinoAPIPayloadEncoder implements Converter<CappuccinoAPIPayload> {
   convert(input: CappuccinoAPIPayload) {
     assertInstanceOf(input, CappuccinoAPIPayload);
 

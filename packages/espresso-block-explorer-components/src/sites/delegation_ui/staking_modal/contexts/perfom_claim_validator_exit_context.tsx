@@ -24,7 +24,7 @@ export const ClaimValidatorExitAsyncSnapshotContext = React.createContext<
   AsyncSnapshot<PerformWriteTransactionState>
 >(AsyncSnapshot.nothing());
 
-export const ProvideClaimValidatorExitPromiseContext: React.FC<
+export const ProvideClaimValidatorExitAsyncIterableContext: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const [asyncIterable, setAsyncIterable] =

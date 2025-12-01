@@ -4,6 +4,7 @@ import Text from '@/components/text/Text';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
+import { CurrentEpochStakeToValidatorContext } from './contexts/current_epoch_stake_to_validator_context';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
 import { LabelValueSplit } from './label_value_split';
 import './staking_overview_area.css';
@@ -21,13 +22,30 @@ export const StakingOverviewArea: React.FC = () => {
 };
 
 const CurrentEpochStake: React.FC = () => {
+  const currentEpochStake = React.useContext(
+    CurrentEpochStakeToValidatorContext,
+  );
+
+  if (!currentEpochStake) {
+    return (
+      <LabelValueSplit>
+        <span>
+          <Text text="Current Epoch Stake" />
+        </span>
+        <span>
+          <Text text="-" />
+        </span>
+      </LabelValueSplit>
+    );
+  }
+
   return (
     <LabelValueSplit>
       <span>
         <Text text="Current Epoch Stake" />
       </span>
       <span>
-        <Text text="-" />
+        <MoneyText money={MonetaryValue.ESP(currentEpochStake)} />
       </span>
     </LabelValueSplit>
   );

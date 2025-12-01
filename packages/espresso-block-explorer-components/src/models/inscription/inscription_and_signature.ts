@@ -45,9 +45,7 @@ export default class InscriptionAndSignature {
  * InscriptionAndSignature into a JSON object that can be used to represent
  * the InscriptionAndSignature.
  */
-class InscriptionAndSignatureEncoder
-  implements Converter<InscriptionAndSignature>
-{
+class InscriptionAndSignatureEncoder implements Converter<InscriptionAndSignature> {
   convert(input: InscriptionAndSignature) {
     return {
       inscription: inscriptionCodec.encode(input.inscription),
@@ -60,9 +58,10 @@ class InscriptionAndSignatureEncoder
  * InscriptionAndSignatureDecoder is a Converter that converts a JSON object
  * into an InscriptionAndSignature.
  */
-class InscriptionAndSignatureDecoder
-  implements Converter<unknown, InscriptionAndSignature>
-{
+class InscriptionAndSignatureDecoder implements Converter<
+  unknown,
+  InscriptionAndSignature
+> {
   convert(input: unknown) {
     assertRecordWithKeys(input, 'inscription', 'signature');
     return new InscriptionAndSignature(
@@ -111,9 +110,10 @@ export function serializeBincodeInscriptionAndSignature(
   );
 }
 
-class InscriptionAndSignatureBincodeEncoder
-  implements Converter<InscriptionAndSignature, ArrayBuffer>
-{
+class InscriptionAndSignatureBincodeEncoder implements Converter<
+  InscriptionAndSignature,
+  ArrayBuffer
+> {
   convert(input: InscriptionAndSignature) {
     const buffer = new ArrayBuffer(1024);
     const serializer = createBincodeSerializer(
@@ -126,9 +126,10 @@ class InscriptionAndSignatureBincodeEncoder
   }
 }
 
-class InscriptionAndSignatureBincodeDecoder
-  implements Converter<unknown, InscriptionAndSignature>
-{
+class InscriptionAndSignatureBincodeDecoder implements Converter<
+  unknown,
+  InscriptionAndSignature
+> {
   convert(input: unknown) {
     if (!(input instanceof ArrayBuffer)) {
       throw new Error('Expected ArrayBuffer');

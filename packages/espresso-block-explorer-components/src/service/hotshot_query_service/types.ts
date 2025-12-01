@@ -103,3 +103,8 @@ export interface HotShotQueryServiceRewardStateAPI<RewardsClaimInput> {
 
   // getRewardClaimInput(address: string): Promise<null | bigint>;
 }
+
+export interface HotShotQueryServiceNodeAPI<StakeTable, Validators> {
+  getStakeTableForEpoch(epoch: number): Promise<StakeTable>;
+  getValidatorsAtEpoch(epoch: number): Promise<Validators>;
+}

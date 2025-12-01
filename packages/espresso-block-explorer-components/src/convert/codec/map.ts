@@ -31,9 +31,10 @@ export class MapObjectDecoder<K, V> implements Converter<unknown, Map<K, V>> {
   }
 }
 
-export class MapObjectEncoder<K, V>
-  implements Converter<Map<K, V>, Record<string, unknown>>
-{
+export class MapObjectEncoder<K, V> implements Converter<
+  Map<K, V>,
+  Record<string, unknown>
+> {
   private readonly keyCodec: TypeCheckingCodec<K, string>;
   private readonly valueCodec: TypeCheckingCodec<V, unknown>;
   constructor(

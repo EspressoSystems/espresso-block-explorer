@@ -24,7 +24,7 @@ export const ClaimWithdrawalAsyncSnapshotContext = React.createContext<
   AsyncSnapshot<PerformWriteTransactionState>
 >(AsyncSnapshot.nothing());
 
-export const ProvideClaimWithdrawalPromiseContext: React.FC<
+export const ProvideClaimWithdrawalAsyncIterableContext: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const [asyncIterable, setAsyncIterable] =

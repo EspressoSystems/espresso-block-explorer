@@ -1,5 +1,6 @@
 import { AsyncSnapshot } from '@/components/data/async_data/AsyncSnapshot';
 import { Undelegation } from '@/contracts/stake_table/stake_table_interface';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
@@ -111,7 +112,9 @@ export const ValidatorConfirmedExample: React.FC<
                             <DeriveRank>
                               <DeriveConsensusSet>
                                 <ConfirmedValidatorContext.Provider
-                                  value={props.selection.validatorAddress}
+                                  value={hexArrayBufferCodec.encode(
+                                    props.selection.validatorAddress,
+                                  )}
                                 >
                                   <DialogModal className="staking-modal" open>
                                     <ProvideStakingHistory>

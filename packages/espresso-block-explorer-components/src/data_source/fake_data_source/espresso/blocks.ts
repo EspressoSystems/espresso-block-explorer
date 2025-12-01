@@ -51,6 +51,7 @@ export function createGenesisEspressoBlock(): GeneratedEspressoBlock {
  */
 async function* generateAllCurrentBlocks(
   prng: PseudoRandomNumberGenerator,
+  now: number = getNow(),
 ): AsyncGenerator<GeneratedEspressoBlock> {
   // The way we want to generate this is by first determining how many seconds
   // it took to generate the block.  The concept graph is indicating that we
@@ -61,7 +62,6 @@ async function* generateAllCurrentBlocks(
 
   let height = 1;
   let time = getStartingSeed();
-  const now = getNow();
   while (time < now) {
     const genTimeS = Math.floor(prng.nextFloat() * 14 * 1000);
     yield generateIndividualEspressoBlock(
@@ -84,9 +84,10 @@ export async function* generateAllEspressoBlocks(
   prng: PseudoRandomNumberGenerator = new PseudoRandomNumberGenerator(
     getStartingSeed(),
   ),
+  now: number = getNow(),
 ): AsyncGenerator<GeneratedEspressoBlock> {
   yield createGenesisEspressoBlock();
-  yield* generateAllCurrentBlocks(prng);
+  yield* generateAllCurrentBlocks(prng, now);
 }
 
 /**
@@ -97,13 +98,16 @@ export async function* streamNewEspressoBlocks(
   prng: PseudoRandomNumberGenerator,
   incomingTime: number,
   incomingHeight: number,
+  shouldSleep: boolean = true,
 ): AsyncGenerator<GeneratedEspressoBlock> {
   let time = incomingTime;
   let height = incomingHeight;
   while (true) {
     const genTimeS = Math.floor(prng.nextFloat() * 14 * 1000);
     const toWaitMs = time + genTimeS - Date.now();
-    await sleep(toWaitMs);
+    if (shouldSleep && toWaitMs > 0) {
+      await sleep(toWaitMs);
+    }
 
     yield generateIndividualEspressoBlock(
       new PseudoRandomNumberGenerator(height + genTimeS),

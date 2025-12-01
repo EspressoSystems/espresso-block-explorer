@@ -36,9 +36,7 @@ import {
   cappuccinoExplorerGetTransactionSummariesResponseCodec,
 } from '../get_transaction_summaries_response';
 
-export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI
-  implements CappuccinoHotShotQueryServiceExplorerAPI
-{
+export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI implements CappuccinoHotShotQueryServiceExplorerAPI {
   private readonly fetcher: typeof fetch;
   private readonly baseURL: URL;
 

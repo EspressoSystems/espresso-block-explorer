@@ -30,9 +30,10 @@ export default class BadResponseServerError extends BaseBadResponseError {
 }
 
 const kBadResponseServerErrorCode = 'BadResponseServerError';
-class BadResponseServerErrorDecoder
-  implements Converter<unknown, BadResponseServerError>
-{
+class BadResponseServerErrorDecoder implements Converter<
+  unknown,
+  BadResponseServerError
+> {
   convert(input: unknown): BadResponseServerError {
     assertRecordWithKeys(input, 'code', 'message', 'status');
     assertErrorCode(input, kBadResponseServerErrorCode);

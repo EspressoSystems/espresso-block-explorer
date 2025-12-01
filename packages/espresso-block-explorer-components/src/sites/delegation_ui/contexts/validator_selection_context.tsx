@@ -1,3 +1,4 @@
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import React from 'react';
 
 export abstract class ValidatorSelectionEnum {}
@@ -7,12 +8,22 @@ export class NoValidatorSelected extends ValidatorSelectionEnum {
     super();
     Object.freeze(this);
   }
+
+  toJSON() {
+    return 'NoValidatorSelected';
+  }
 }
 
 export class ValidatorSelected extends ValidatorSelectionEnum {
   constructor(public readonly validatorAddress: ArrayBuffer) {
     super();
     Object.freeze(this);
+  }
+
+  toJSON() {
+    return {
+      ValidatorSelected: hexArrayBufferCodec.encode(this.validatorAddress),
+    };
   }
 }
 
@@ -21,12 +32,22 @@ export class ClaimRewards extends ValidatorSelectionEnum {
     super();
     Object.freeze(this);
   }
+
+  toJSON() {
+    return 'ClaimRewards';
+  }
 }
 
 export class ValidatorConfirmed extends ValidatorSelectionEnum {
   constructor(public readonly validatorAddress: ArrayBuffer) {
     super();
     Object.freeze(this);
+  }
+
+  toJSON() {
+    return {
+      ValidatorConfirmed: hexArrayBufferCodec.encode(this.validatorAddress),
+    };
   }
 }
 
@@ -35,12 +56,28 @@ export class ValidatorConfirmedStake extends ValidatorSelectionEnum {
     super();
     Object.freeze(this);
   }
+
+  toJSON() {
+    return {
+      ValidatorConfirmedStake: hexArrayBufferCodec.encode(
+        this.validatorAddress,
+      ),
+    };
+  }
 }
 
 export class ValidatorConfirmedUndelegate extends ValidatorSelectionEnum {
   constructor(public readonly validatorAddress: ArrayBuffer) {
     super();
     Object.freeze(this);
+  }
+
+  toJSON() {
+    return {
+      ValidatorConfirmedUndelegate: hexArrayBufferCodec.encode(
+        this.validatorAddress,
+      ),
+    };
   }
 }
 
@@ -49,12 +86,28 @@ export class ValidatorConfirmedUndelegateWithdraw extends ValidatorSelectionEnum
     super();
     Object.freeze(this);
   }
+
+  toJSON() {
+    return {
+      ValidatorConfirmedUndelegateWithdraw: hexArrayBufferCodec.encode(
+        this.validatorAddress,
+      ),
+    };
+  }
 }
 
 export class ValidatorConfirmedExitWithdraw extends ValidatorSelectionEnum {
   constructor(public readonly validatorAddress: ArrayBuffer) {
     super();
     Object.freeze(this);
+  }
+
+  toJSON() {
+    return {
+      ValidatorConfirmedExitWithdraw: hexArrayBufferCodec.encode(
+        this.validatorAddress,
+      ),
+    };
   }
 }
 

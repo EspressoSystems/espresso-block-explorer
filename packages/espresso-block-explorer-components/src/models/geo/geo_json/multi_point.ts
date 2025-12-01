@@ -61,9 +61,10 @@ class GeoJSONMultiPointEncoder implements Converter<GeoJSONMultiPoint> {
 /**
  * A converter that can decode a GeoJSON object into a GeoJSONMultiPoint.
  */
-class GeoJSONMultiPointDecoder
-  implements Converter<unknown, GeoJSONMultiPoint>
-{
+class GeoJSONMultiPointDecoder implements Converter<
+  unknown,
+  GeoJSONMultiPoint
+> {
   readonly codec: Codec<LatLng<Degrees>[], unknown>;
   constructor(codec: Codec<LatLng<Degrees>[], unknown>) {
     this.codec = codec;

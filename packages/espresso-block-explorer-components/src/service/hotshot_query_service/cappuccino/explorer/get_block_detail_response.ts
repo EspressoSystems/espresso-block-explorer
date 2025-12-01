@@ -21,9 +21,10 @@ export class CappuccinoExplorerGetBlockDetailResponse {
   }
 }
 
-class CappuccinoExplorerGetBlockDetailResponseDecoder
-  implements Converter<unknown, CappuccinoExplorerGetBlockDetailResponse>
-{
+class CappuccinoExplorerGetBlockDetailResponseDecoder implements Converter<
+  unknown,
+  CappuccinoExplorerGetBlockDetailResponse
+> {
   convert(input: unknown): CappuccinoExplorerGetBlockDetailResponse {
     assertRecordWithKeys(input, 'block_detail');
 
@@ -33,9 +34,10 @@ class CappuccinoExplorerGetBlockDetailResponseDecoder
   }
 }
 
-class CappuccinoExplorerGetBlockDetailResponseEncoder
-  implements Converter<CappuccinoExplorerGetBlockDetailResponse, unknown>
-{
+class CappuccinoExplorerGetBlockDetailResponseEncoder implements Converter<
+  CappuccinoExplorerGetBlockDetailResponse,
+  unknown
+> {
   convert(input: CappuccinoExplorerGetBlockDetailResponse): unknown {
     assertInstanceOf(input, CappuccinoExplorerGetBlockDetailResponse);
 

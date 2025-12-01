@@ -1,5 +1,4 @@
 import { nodeList } from '@/data_source/fake_data_source/espresso/nodes';
-import UnimplementedError from '@/errors/UnimplementedError';
 import { mapIterable } from '@/functional/functional';
 import { L1BlockInfo } from '../../common/l1_block_info';
 import { NodeSetEntry } from '../../common/node_set_entry';
@@ -23,7 +22,7 @@ export class FakeDataValidatorsAllAPI implements ValidatorsAllAPI {
             entry.address,
             entry.stateVerKey,
             entry.stake,
-            new Ratio(entry.commission / 10_000),
+            Ratio.floatingPoint(entry.commission / 10_000),
           );
         }),
       ),
@@ -31,6 +30,7 @@ export class FakeDataValidatorsAllAPI implements ValidatorsAllAPI {
   }
 
   async updatesSince(): Promise<FullNodeSetUpdate> {
-    throw new UnimplementedError();
+    const snapshot = await this.snapshot();
+    return new FullNodeSetUpdate(snapshot.l1Block, []);
   }
 }

@@ -33,9 +33,7 @@ export default class GeoJSONFeatureCollection {
  * GeoJSONFeatureCollectionEncoder is a class that encodes a
  * GeoJSONFeatureCollection object into a JSON compatible object.
  */
-class GeoJSONFeatureCollectionEncoder
-  implements Converter<GeoJSONFeatureCollection>
-{
+class GeoJSONFeatureCollectionEncoder implements Converter<GeoJSONFeatureCollection> {
   readonly codec: Codec<GeoJSONFeature[]>;
   constructor(codec: Codec<GeoJSONFeature[]>) {
     this.codec = codec;
@@ -53,9 +51,10 @@ class GeoJSONFeatureCollectionEncoder
  * GeoJSONFeatureCollectionDecoder is a class that decodes a JSON compatible
  * object into a GeoJSONFeatureCollection object.
  */
-class GeoJSONFeatureCollectionDecoder
-  implements Converter<unknown, GeoJSONFeatureCollection>
-{
+class GeoJSONFeatureCollectionDecoder implements Converter<
+  unknown,
+  GeoJSONFeatureCollection
+> {
   readonly codec: Codec<GeoJSONFeature[]>;
   constructor(codec: Codec<GeoJSONFeature[]>) {
     this.codec = codec;

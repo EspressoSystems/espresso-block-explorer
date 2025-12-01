@@ -17,9 +17,10 @@ import { GeodesicProjection } from './GeodesicProjection';
  */
 const extremeLongitudePoint = 85.05133;
 
-export default class KavrayskiyVIIProjection
-  implements GeodesicProjection<Radians, NumberLike>
-{
+export default class KavrayskiyVIIProjection implements GeodesicProjection<
+  Radians,
+  NumberLike
+> {
   public static min = degreesRadiansProjection.project(
     new LatLng(
       new Longitude(new Degrees(-180)),

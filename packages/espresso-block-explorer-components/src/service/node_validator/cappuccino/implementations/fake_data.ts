@@ -14,6 +14,7 @@ import {
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng';
 import { getStartingSeed } from '@/data_source/fake_data_source/seed';
 import { createCircularBuffer } from '@/data_structures/circular_buffer';
+import { mapIterable } from '@/functional/functional';
 import {
   CommissionPercent,
   StakeTableEntry,
@@ -103,9 +104,7 @@ function convertGeneratedNodeIdentity(
   );
 }
 
-export default class FakeDataCappuccinoNodeValidatorAPI
-  implements WebWorkerNodeValidatorAPI
-{
+export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNodeValidatorAPI {
   readonly responseStream: Channel<WebWorkerProxyResponse>;
   readonly requestStream: Channel<WebWorkerProxyRequest>;
 
@@ -165,7 +164,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI
       CappuccinoAPIBitVecOrder.lsb0,
       new CappuccinoAPIBitVecHead(16, 0),
       numberNodes,
-      Array.from(votesVector),
+      Array.from(mapIterable(votesVector, (value) => BigInt(value))),
     );
 
     return nextVoters;

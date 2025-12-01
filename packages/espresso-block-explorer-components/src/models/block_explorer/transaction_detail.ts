@@ -24,5 +24,7 @@ export interface TransactionDetailRequest {
   offset: number;
 }
 
-export interface TransactionDetailAsyncRetriever
-  extends AsyncRetriever<TransactionDetailRequest, TransactionDetailEntry> {}
+export interface TransactionDetailAsyncRetriever extends AsyncRetriever<
+  TransactionDetailRequest,
+  TransactionDetailEntry
+> {}

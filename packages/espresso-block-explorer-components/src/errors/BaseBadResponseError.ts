@@ -22,9 +22,7 @@ export default abstract class BaseBadResponseError extends BaseError {
   }
 }
 
-export class BaseBadResponseErrorEncoder
-  implements Converter<BaseBadResponseError>
-{
+export class BaseBadResponseErrorEncoder implements Converter<BaseBadResponseError> {
   convert(input: BaseBadResponseError) {
     assertInstanceOf(input, BaseBadResponseError);
     return {

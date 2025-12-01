@@ -24,8 +24,7 @@ export interface ESPTokenContractWriteable extends ERC20UpgradableWriteable {}
  * methods of an ESP token contract.
  */
 export interface ESPTokenContract
-  extends ESPTokenContractReadOnly,
-    ESPTokenContractWriteable {}
+  extends ESPTokenContractReadOnly, ESPTokenContractWriteable {}
 
 /**
  * ESPTokenContractGasEstimator defines the gas estimator type for the

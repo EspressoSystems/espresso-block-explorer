@@ -46,9 +46,7 @@ function createWorker(): Worker {
   return singletonWorker;
 }
 
-export class WebWorkerClientBasedNodeValidatorService
-  implements WebWorkerNodeValidatorAPI
-{
+export class WebWorkerClientBasedNodeValidatorService implements WebWorkerNodeValidatorAPI {
   private requestChannel: Channel<WebWorkerProxyRequest>;
   private responseChannel: Channel<WebWorkerProxyResponse>;
 

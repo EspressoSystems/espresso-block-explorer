@@ -21,13 +21,13 @@ describe('FullNodeSetSnapshot', () => {
             prng.fillBytes(32),
             new TaggedBase64('BLS_PUB_KEY', prng.fillBytes(48)),
             prng.nextRangeBigInt(1n, 1_000_000n),
-            new Ratio(prng.nextRange(0, 10000)),
+            Ratio.floatingPoint(prng.nextFloat()),
           ),
           new NodeSetEntry(
             prng.fillBytes(32),
             new TaggedBase64('BLS_PUB_KEY', prng.fillBytes(48)),
             prng.nextRangeBigInt(1n, 1_000_000n),
-            new Ratio(prng.nextRange(0, 10000)),
+            Ratio.floatingPoint(prng.nextFloat()),
           ),
         ],
       );

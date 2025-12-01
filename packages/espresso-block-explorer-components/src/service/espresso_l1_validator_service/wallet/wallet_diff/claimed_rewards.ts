@@ -19,9 +19,10 @@ export class WalletDiffClaimedRewards extends WalletDiff {
  * WalletDiffClaimedRewardsJSONDecoder decodes WalletDiffClaimedRewards
  * objects from a JSON object.
  */
-class WalletDiffClaimedRewardsJSONDecoder
-  implements Converter<unknown, WalletDiffClaimedRewards>
-{
+class WalletDiffClaimedRewardsJSONDecoder implements Converter<
+  unknown,
+  WalletDiffClaimedRewards
+> {
   convert(input: unknown): WalletDiffClaimedRewards {
     return new WalletDiffClaimedRewards(bigintCodec.decode(input));
   }
@@ -31,9 +32,10 @@ class WalletDiffClaimedRewardsJSONDecoder
  * WalletDiffClaimedRewardsJSONEncoder encodes WalletDiffClaimedRewards
  * objects to a JSON object.
  */
-class WalletDiffClaimedRewardsJSONEncoder
-  implements Converter<WalletDiffClaimedRewards, unknown>
-{
+class WalletDiffClaimedRewardsJSONEncoder implements Converter<
+  WalletDiffClaimedRewards,
+  unknown
+> {
   convert(input: WalletDiffClaimedRewards): unknown {
     return bigintCodec.encode(input.claimedRewards);
   }

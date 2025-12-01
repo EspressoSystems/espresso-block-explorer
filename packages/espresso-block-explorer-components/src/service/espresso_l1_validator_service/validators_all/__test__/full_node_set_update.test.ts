@@ -28,7 +28,7 @@ describe('FullNodeSetUpdate', () => {
               prng.fillBytes(32),
               new TaggedBase64('BLS_PUB_KEY', prng.fillBytes(48)),
               prng.nextRangeBigInt(1n, 1_000_000n),
-              new Ratio(prng.nextFloat()),
+              Ratio.floatingPoint(prng.nextFloat()),
             ),
           ),
         ],

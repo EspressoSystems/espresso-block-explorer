@@ -109,9 +109,10 @@ export class CappuccinoSummaryHistograms {
   }
 }
 
-class CappuccinoSummaryHistogramsDecoder
-  implements Converter<unknown, CappuccinoSummaryHistograms>
-{
+class CappuccinoSummaryHistogramsDecoder implements Converter<
+  unknown,
+  CappuccinoSummaryHistograms
+> {
   convert(input: unknown): CappuccinoSummaryHistograms {
     assertRecordWithKeys(
       input,
@@ -130,9 +131,7 @@ class CappuccinoSummaryHistogramsDecoder
   }
 }
 
-class CappuccinoSummaryHistogramsEncoder
-  implements Converter<CappuccinoSummaryHistograms>
-{
+class CappuccinoSummaryHistogramsEncoder implements Converter<CappuccinoSummaryHistograms> {
   convert(input: CappuccinoSummaryHistograms) {
     assertInstanceOf(input, CappuccinoSummaryHistograms);
 

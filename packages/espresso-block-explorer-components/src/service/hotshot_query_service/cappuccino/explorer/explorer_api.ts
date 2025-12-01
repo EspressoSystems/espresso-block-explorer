@@ -1,4 +1,3 @@
-import UnimplementedError from '@/errors/UnimplementedError';
 import { HotShotQueryServiceExplorerAPI } from '../../types';
 import { CappuccinoExplorerGetBlockDetailRequest } from './get_block_detail_request';
 import { CappuccinoExplorerGetBlockDetailResponse } from './get_block_detail_response';
@@ -34,33 +33,3 @@ export type CappuccinoHotShotQueryServiceExplorerAPI =
     CappuccinoExplorerGetSearchResultRequest,
     CappuccinoExplorerGetSearchResultResponse
   >;
-
-/**
- * UnimplementedCappuccinoHotShotQueryServiceExplorerAPI is a class that
- * implements the CappuccinoHotShotQueryServiceExplorerAPI interface, but
- * throws an UnimplementedError for all methods. This class is meant to be used
- * as a placeholder for the Explorer API, and should be replaced with a real
- * implementation.
- */
-export class UnimplementedCappuccinoHotShotQueryServiceExplorerAPI
-  implements CappuccinoHotShotQueryServiceExplorerAPI
-{
-  async getBlockDetail(): Promise<CappuccinoExplorerGetBlockDetailResponse> {
-    throw new UnimplementedError();
-  }
-  async getBlockSummaries(): Promise<CappuccinoExplorerGetBlockSummariesResponse> {
-    throw new UnimplementedError();
-  }
-  async getTransactionDetail(): Promise<CappuccinoExplorerGetTransactionDetailResponse> {
-    throw new UnimplementedError();
-  }
-  async getTransactionSummaries(): Promise<CappuccinoExplorerGetTransactionSummariesResponse> {
-    throw new UnimplementedError();
-  }
-  async getExplorerOverview(): Promise<CappuccinoExplorerGetExplorerSummaryResponse> {
-    throw new UnimplementedError();
-  }
-  async getSearchResult(): Promise<CappuccinoExplorerGetSearchResultResponse> {
-    throw new UnimplementedError();
-  }
-}

@@ -38,9 +38,10 @@ class WebSocketResponseEncoder implements Converter<WebSocketResponse> {
   }
 }
 
-class WebSocketResponseDecoder
-  implements Converter<unknown, WebSocketResponse>
-{
+class WebSocketResponseDecoder implements Converter<
+  unknown,
+  WebSocketResponse
+> {
   convert(input: unknown): WebSocketResponse {
     assertRecordWithKeys(input, kWebSocketResponseType);
 

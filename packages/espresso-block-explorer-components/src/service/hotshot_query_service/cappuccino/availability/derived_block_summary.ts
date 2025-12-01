@@ -43,9 +43,10 @@ export class CappuccinoDerivedBlockSummary {
   }
 }
 
-export class CappuccinoDerivedBlockSummaryDecoder
-  implements Converter<unknown, CappuccinoDerivedBlockSummary>
-{
+export class CappuccinoDerivedBlockSummaryDecoder implements Converter<
+  unknown,
+  CappuccinoDerivedBlockSummary
+> {
   convert(input: unknown): CappuccinoDerivedBlockSummary {
     assertRecordWithKeys(
       input,
@@ -66,9 +67,7 @@ export class CappuccinoDerivedBlockSummaryDecoder
   }
 }
 
-export class CappuccinoDerivedBlockSummaryEncoder
-  implements Converter<CappuccinoDerivedBlockSummary>
-{
+export class CappuccinoDerivedBlockSummaryEncoder implements Converter<CappuccinoDerivedBlockSummary> {
   convert(input: CappuccinoDerivedBlockSummary) {
     assertInstanceOf(input, CappuccinoDerivedBlockSummary);
 

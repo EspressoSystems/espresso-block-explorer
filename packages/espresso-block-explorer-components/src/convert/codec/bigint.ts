@@ -56,7 +56,7 @@ export const nullableBigintCodec = new NullCodec(
   new NullEncoder(bigintCodec),
 );
 
-export const BigintArrayCodec = new ArrayCodec(
+export const bigintArrayCodec = new ArrayCodec(
   new ArrayDecoder(bigintCodec),
   new ArrayEncoder(bigintCodec),
 );

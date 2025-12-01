@@ -22,9 +22,10 @@ export class WebSocketStatusConnectionConnecting extends WebSocketStatus {
   }
 }
 
-class WebSocketStatusConnectionConnectingDecoder
-  implements Converter<unknown, WebSocketStatusConnectionConnecting>
-{
+class WebSocketStatusConnectionConnectingDecoder implements Converter<
+  unknown,
+  WebSocketStatusConnectionConnecting
+> {
   convert(input: unknown): WebSocketStatusConnectionConnecting {
     if (typeof input !== 'string') {
       throw new InvalidTypeError(typeof input, 'string');
@@ -41,9 +42,7 @@ class WebSocketStatusConnectionConnectingDecoder
   }
 }
 
-class WebSocketStatusConnectionConnectingEncoder
-  implements Converter<WebSocketStatusConnectionConnecting>
-{
+class WebSocketStatusConnectionConnectingEncoder implements Converter<WebSocketStatusConnectionConnecting> {
   convert() {
     return kWebSocketStatusConnectionConnectingType;
   }

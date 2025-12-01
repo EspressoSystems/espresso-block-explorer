@@ -4,8 +4,10 @@ import './switch.css';
 /**
  * BaseSwitchProps defines the properties for the BaseSwitch component.
  */
-export interface BaseSwitchProps
-  extends Omit<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'value'> {
+export interface BaseSwitchProps extends Omit<
+  React.HTMLAttributes<HTMLInputElement>,
+  'onChange' | 'value'
+> {
   value?: boolean;
   onChange?: (checked: boolean) => void;
   disabled?: boolean;

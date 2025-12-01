@@ -1,5 +1,5 @@
 import { DataContext } from '@/components/contexts/DataProvider';
-import PromiseResolver from '@/components/data/async_data/PromiseResolver';
+import { PromiseResolver } from '@/components/data';
 import { neverPromise } from '@/functional/functional_async';
 import { L1MethodsContext } from '@/sites/delegation_ui/contexts/l1_methods_context';
 import { L1RefreshTimestampContext } from '@/sites/delegation_ui/contexts/l1_refresh_timestamp_context';

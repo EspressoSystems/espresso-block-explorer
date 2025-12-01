@@ -7,9 +7,10 @@ import { Converter, TypeCheckingCodec } from './convert';
  * doesn't presume to know how to decode it, as such it requires a Codec for
  * the other value.
  */
-export class UndefinedDecoder<T, U>
-  implements Converter<undefined | T, undefined | U>
-{
+export class UndefinedDecoder<T, U> implements Converter<
+  undefined | T,
+  undefined | U
+> {
   private readonly itemCodec: TypeCheckingCodec<U, T>;
   constructor(itemCodec: TypeCheckingCodec<U, T>) {
     this.itemCodec = itemCodec;
@@ -30,9 +31,10 @@ export class UndefinedDecoder<T, U>
  * doesn't presume to know how to encode it, as such it requires a Codec for
  * the other value.
  */
-export class UndefinedEncoder<T, U>
-  implements Converter<undefined | T, undefined | U>
-{
+export class UndefinedEncoder<T, U> implements Converter<
+  undefined | T,
+  undefined | U
+> {
   private readonly itemCodec: TypeCheckingCodec<T, U>;
   constructor(itemCodec: TypeCheckingCodec<T, U>) {
     this.itemCodec = itemCodec;

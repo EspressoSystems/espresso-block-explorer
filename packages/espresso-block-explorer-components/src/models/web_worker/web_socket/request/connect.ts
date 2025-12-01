@@ -14,17 +14,19 @@ export class WebSocketCommandConnect extends WebSocketCommand {
   }
 }
 
-class WebSocketCommandConnectEncoder
-  implements Converter<WebSocketCommandConnect, string>
-{
+class WebSocketCommandConnectEncoder implements Converter<
+  WebSocketCommandConnect,
+  string
+> {
   convert() {
     return kWebSocketCommandConnectType;
   }
 }
 
-class WebSocketCommandConnectDecoder
-  implements Converter<unknown, WebSocketCommandConnect>
-{
+class WebSocketCommandConnectDecoder implements Converter<
+  unknown,
+  WebSocketCommandConnect
+> {
   convert(input: unknown) {
     if (typeof input !== 'string') {
       throw new InvalidTypeError(typeof input, 'string');

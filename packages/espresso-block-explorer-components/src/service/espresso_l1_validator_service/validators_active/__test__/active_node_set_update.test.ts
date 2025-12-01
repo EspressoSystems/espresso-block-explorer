@@ -5,10 +5,7 @@ import {
   CappuccinoAPIBitVecOrder,
 } from '@/service/hotshot_query_service';
 import { describe, expect, it } from 'vitest';
-import { ActiveNodeSetEntry } from '../../common/active_node_set_entry';
 import { EpochAndBlock } from '../../common/epoch_and_block';
-import { ParticipationChange } from '../../common/participation_change';
-import { Ratio } from '../../common/ratio';
 import { ActiveNodeSetDiffNewBlock } from '../active_node_set_diff/new_block';
 import { NewEpoch } from '../active_node_set_diff/new_epoch';
 import {
@@ -21,26 +18,21 @@ describe('ActiveNodeSetUpdate', () => {
     it('should serialize and deserialize correctly', () => {
       const prng = new PseudoRandomNumberGenerator(Date.now());
       const block = prng.nextRangeBigInt(0n, 1_000_000n);
-      const epoch = block / 3000n;
+      const epoch = EpochAndBlock.determineEpoch(block, 3000n);
       const example = new ActiveNodeSetUpdate(
         new EpochAndBlock(epoch, block, new Date()),
         [
           new ActiveNodeSetDiffNewBlock(
-            [new ParticipationChange(1, new Ratio(1.5))],
+            prng.nextInt(),
+            [prng.nextInt()],
             new CappuccinoAPIBitVec(
               CappuccinoAPIBitVecOrder.lsb0,
               new CappuccinoAPIBitVecHead(8, 0),
               16,
-              Array.from(new Uint8Array(prng.fillBytes(2))),
+              Array.from(new BigUint64Array(prng.fillBytes(8))),
             ),
           ),
-          new NewEpoch([
-            new ActiveNodeSetEntry(
-              prng.fillBytes(32),
-              new Ratio(0.9),
-              new Ratio(0.8),
-            ),
-          ]),
+          new NewEpoch([prng.fillBytes(32)]),
         ],
       );
 

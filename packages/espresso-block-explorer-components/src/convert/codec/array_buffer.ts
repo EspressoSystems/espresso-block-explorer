@@ -15,9 +15,10 @@ export class HexArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
   }
 }
 
-export class HexArrayBufferEncoder
-  implements Converter<ArrayBuffer, `0x${string}`>
-{
+export class HexArrayBufferEncoder implements Converter<
+  ArrayBuffer,
+  `0x${string}`
+> {
   convert(input: ArrayBuffer): `0x${string}` {
     // try to avoid this array allocation if possible.
     return `0x${Array.from(
@@ -44,9 +45,10 @@ export const hexArrayBufferArrayCodec = new ArrayCodec(
   new ArrayEncoder(hexArrayBufferCodec),
 );
 
-class BackwardsCompatibleHexArrayBufferDecoder
-  implements Converter<unknown, ArrayBuffer[]>
-{
+class BackwardsCompatibleHexArrayBufferDecoder implements Converter<
+  unknown,
+  ArrayBuffer[]
+> {
   convert(input: unknown): ArrayBuffer[] {
     if (input instanceof Array) {
       // This is the new format.
@@ -58,9 +60,10 @@ class BackwardsCompatibleHexArrayBufferDecoder
   }
 }
 
-class BackwardsCompatibleHexArrayBufferEncoder
-  implements Converter<ArrayBuffer[], unknown>
-{
+class BackwardsCompatibleHexArrayBufferEncoder implements Converter<
+  ArrayBuffer[],
+  unknown
+> {
   convert(input: ArrayBuffer[]): unknown {
     return hexArrayBufferArrayCodec.encode(input);
   }
@@ -77,9 +80,10 @@ class BackwardsCompatibleHexArrayBufferCodec extends TypeCheckingCodec<
 export const backwardsCompatibleHexArrayBufferCodec =
   new BackwardsCompatibleHexArrayBufferCodec();
 
-export class Base64ArrayBufferDecoder
-  implements Converter<unknown, ArrayBuffer>
-{
+export class Base64ArrayBufferDecoder implements Converter<
+  unknown,
+  ArrayBuffer
+> {
   private encoding: base64.Encoding;
   constructor(encoding: base64.Encoding) {
     this.encoding = encoding;
@@ -94,9 +98,10 @@ export class Base64ArrayBufferDecoder
   }
 }
 
-export class Base64ArrayBufferEncoder
-  implements Converter<ArrayBuffer, string>
-{
+export class Base64ArrayBufferEncoder implements Converter<
+  ArrayBuffer,
+  string
+> {
   private encoding: base64.Encoding;
   constructor(encoding: base64.Encoding) {
     this.encoding = encoding;

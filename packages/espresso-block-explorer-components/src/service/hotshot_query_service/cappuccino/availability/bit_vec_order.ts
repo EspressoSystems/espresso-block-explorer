@@ -64,9 +64,10 @@ class CappuccinoAPIBitVecOrderMsb0 extends CappuccinoAPIBitVecOrder {
 
 const msb0 = new CappuccinoAPIBitVecOrderMsb0();
 
-class CappuccinoAPIBitVecOrderDecoder
-  implements Converter<unknown, CappuccinoAPIBitVecOrder>
-{
+class CappuccinoAPIBitVecOrderDecoder implements Converter<
+  unknown,
+  CappuccinoAPIBitVecOrder
+> {
   convert(input: unknown): CappuccinoAPIBitVecOrder {
     if (typeof input !== 'string') {
       throw new InvalidTypeError(typeof input, 'string');
@@ -84,9 +85,10 @@ class CappuccinoAPIBitVecOrderDecoder
   }
 }
 
-class CappuccinoAPIBitVecOrderEncoder
-  implements Converter<CappuccinoAPIBitVecOrder, string>
-{
+class CappuccinoAPIBitVecOrderEncoder implements Converter<
+  CappuccinoAPIBitVecOrder,
+  string
+> {
   convert(input: CappuccinoAPIBitVecOrder) {
     return input.toString();
   }

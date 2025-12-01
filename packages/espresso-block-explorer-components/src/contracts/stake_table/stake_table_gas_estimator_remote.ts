@@ -9,9 +9,7 @@ import { StakeTableContractGasEstimator } from './stake_table_interface';
  * for stake table contract methods. It is implemented via the Wagmi
  * estimateContractGas utility function.
  */
-export class StakeTableContractGasEstimatorRemote
-  implements StakeTableContractGasEstimator
-{
+export class StakeTableContractGasEstimatorRemote implements StakeTableContractGasEstimator {
   // Implementation of ESPTokenContract methods would go here
   constructor(
     protected readonly config: Config,

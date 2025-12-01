@@ -34,9 +34,10 @@ export default class InvalidStringValueError extends BaseError {
   }
 }
 
-class InvalidStringValueErrorDecoder
-  implements Converter<unknown, InvalidStringValueError>
-{
+class InvalidStringValueErrorDecoder implements Converter<
+  unknown,
+  InvalidStringValueError
+> {
   convert(input: unknown): InvalidStringValueError {
     assertRecordWithKeys(input, 'code', 'have', 'want', 'message');
     assertErrorCode(input, kInvalidStringValueErrorCode);
@@ -48,9 +49,7 @@ class InvalidStringValueErrorDecoder
   }
 }
 
-class InvalidStringValueErrorEncoder
-  implements Converter<InvalidStringValueError>
-{
+class InvalidStringValueErrorEncoder implements Converter<InvalidStringValueError> {
   convert(input: InvalidStringValueError) {
     assertInstanceOf(input, InvalidStringValueError);
     return {

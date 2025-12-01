@@ -4,18 +4,19 @@ import { FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI } from '../avail
 import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer/explorer_api';
 import { FetchBasedCappuccinoHotShotQueryServiceExplorerAPI } from '../explorer/implementations/remote_api';
 import { CappuccinoHotShotQueryService } from '../hot_shot_query_service_api';
+import { FetchBasedCappuccinoHotShotQueryServiceNodeAPI } from '../node/implementations/remote_api';
+import { CappuccinoHotShotQueryServiceNodeAPI } from '../node/node_api';
 import { FetchBasedCappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_state/implementations/remote_api';
 import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_state/reward_start_api';
 import { FetchBasedCappuccinoHotShotQueryServiceStatusAPI } from '../status/implementations/remote_api';
 import { CappuccinoHotShotQueryServiceStatusAPI } from '../status/status_api';
 
-export class FetchBasedCappuccinoHotShotQueryService
-  implements CappuccinoHotShotQueryService
-{
+export class FetchBasedCappuccinoHotShotQueryService implements CappuccinoHotShotQueryService {
   public readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI;
   public readonly status: CappuccinoHotShotQueryServiceStatusAPI;
   public readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;
   public readonly rewardState: CappuccinoHotShotQueryServiceRewardStateAPI;
+  public readonly node: CappuccinoHotShotQueryServiceNodeAPI;
 
   constructor(fetcher: typeof fetch, baseURL: URL) {
     this.availability =
@@ -36,6 +37,10 @@ export class FetchBasedCappuccinoHotShotQueryService
         fetcher,
         new URL('reward-state-v2/', baseURL),
       );
+    this.node = new FetchBasedCappuccinoHotShotQueryServiceNodeAPI(
+      fetcher,
+      new URL('node/', baseURL),
+    );
   }
 
   public async setURL(): Promise<boolean> {

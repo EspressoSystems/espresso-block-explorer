@@ -33,17 +33,19 @@ export class WebSocketCommandSetURL extends WebSocketCommand {
   }
 }
 
-class WebSocketCommandSetURLEncoder
-  implements Converter<WebSocketCommandSetURL, unknown>
-{
+class WebSocketCommandSetURLEncoder implements Converter<
+  WebSocketCommandSetURL,
+  unknown
+> {
   convert(input: WebSocketCommandSetURL) {
     return { [kWebSocketCommandSetURLType]: input.url };
   }
 }
 
-class WebSocketCommandSetURLDecoder
-  implements Converter<unknown, WebSocketCommandSetURL>
-{
+class WebSocketCommandSetURLDecoder implements Converter<
+  unknown,
+  WebSocketCommandSetURL
+> {
   convert(input: unknown) {
     assertRecordWithKeys(input, kWebSocketCommandSetURLType);
     const url = input[kWebSocketCommandSetURLType];

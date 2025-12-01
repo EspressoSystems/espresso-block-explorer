@@ -26,9 +26,10 @@ export default class MissingElementError extends BaseError {
   }
 }
 
-class MissingElementErrorDecoder
-  implements Converter<unknown, MissingElementError>
-{
+class MissingElementErrorDecoder implements Converter<
+  unknown,
+  MissingElementError
+> {
   convert(input: unknown): MissingElementError {
     assertRecordWithKeys(input, 'code', 'message');
     assertErrorCode(input, kMissingElementErrorCode);

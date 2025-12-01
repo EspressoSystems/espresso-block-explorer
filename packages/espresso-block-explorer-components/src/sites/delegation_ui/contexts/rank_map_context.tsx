@@ -24,13 +24,15 @@ export const RankMapContext = React.createContext<Map<`0x${string}`, number>>(
 function score(
   node: NodeSetEntry,
   active: undefined | null | ActiveNodeSetEntry,
-): number {
-  return (
-    Number(node.stake) *
-    (1 - node.commission.valueOf()) *
-    (2 - (active?.leaderParticipation?.valueOf() ?? 0.0)) *
-    (1 + (active?.voterParticipation?.valueOf() ?? 0.0))
-  );
+): number;
+function score(node: NodeSetEntry): number {
+  return Number(node.stake);
+  // return (
+  //   Number(node.stake) *
+  //   (1 - node.commission.valueOf()) *
+  //   (2 - (active?.leaderParticipation?.valueOf() ?? 0.0)) *
+  //   (1 + (active?.voterParticipation?.valueOf() ?? 0.0))
+  // );
 }
 
 /**

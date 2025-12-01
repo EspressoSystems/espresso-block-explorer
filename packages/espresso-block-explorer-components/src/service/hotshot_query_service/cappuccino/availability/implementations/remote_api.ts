@@ -27,9 +27,7 @@ import {
   convertCappuccinoLeafAndTransactionsToTransactionSummaries,
 } from '../transformers';
 
-export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI
-  implements CappuccinoHotShotQueryServiceAvailabilityAPI
-{
+export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements CappuccinoHotShotQueryServiceAvailabilityAPI {
   private readonly fetcher: typeof fetch;
   private readonly baseURL: URL;
 

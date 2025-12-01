@@ -12,7 +12,7 @@ describe('BitVec', () => {
             CappuccinoAPIBitVecOrder.lsb0,
             new CappuccinoAPIBitVecHead(8, 0),
             20,
-            [0b11111010, 0b11110000, 0b00000111],
+            [0b11111010n, 0b11110000n, 0b00000111n],
           );
 
           expect(Array.from(bitVec)).toStrictEqual([
@@ -48,7 +48,7 @@ describe('BitVec', () => {
             CappuccinoAPIBitVecOrder.msb0,
             new CappuccinoAPIBitVecHead(8, 0),
             20,
-            [0b11111010, 0b11110000, 0b00000111],
+            [0b11111010n, 0b11110000n, 0b00000111n],
           );
 
           expect(Array.from(bitVec)).toStrictEqual([
@@ -86,7 +86,7 @@ describe('BitVec', () => {
             CappuccinoAPIBitVecOrder.lsb0,
             new CappuccinoAPIBitVecHead(16, 0),
             20,
-            [0b11111010_11110000, 0b00000111_00000000],
+            [0b11111010_11110000n, 0b00000111_00000000n],
           );
 
           expect(Array.from(bitVec)).toStrictEqual([
@@ -122,7 +122,7 @@ describe('BitVec', () => {
             CappuccinoAPIBitVecOrder.msb0,
             new CappuccinoAPIBitVecHead(16, 0),
             20,
-            [0b11111010_11110000, 0b00000111_00000000],
+            [0b11111010_11110000n, 0b00000111_00000000n],
           );
 
           expect(Array.from(bitVec)).toStrictEqual([

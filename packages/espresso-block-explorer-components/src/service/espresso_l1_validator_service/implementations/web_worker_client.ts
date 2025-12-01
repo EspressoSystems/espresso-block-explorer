@@ -35,9 +35,7 @@ function createWorker(): Worker {
  * L1ValidatorService that uses a Web Worker to communicate with the
  * Validator Service API.
  */
-export class WebWorkerClientBasedL1ValidatorService
-  implements L1ValidatorService
-{
+export class WebWorkerClientBasedL1ValidatorService implements L1ValidatorService {
   public readonly l1Block: L1BlockAPI;
   public readonly validatorsAll: ValidatorsAllAPI;
   public readonly validatorsActive: ValidatorsActiveAPI;

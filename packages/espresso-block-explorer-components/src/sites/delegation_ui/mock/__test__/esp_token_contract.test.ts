@@ -3,12 +3,20 @@ import {
   MockESPTokenContractImpl,
   MockESPTokenContractState,
 } from '../esp_token_contract';
-import { MockL1MethodsImpl, MockL1State } from '../l1_methods';
+import { L1Transaction, MockL1MethodsImpl, MockL1State } from '../l1_methods';
 
 const ACCOUNT1: `0x${string}` = '0x1111111111111111111111111111111111111111';
 const ACCOUNT2: `0x${string}` = '0x2222222222222222222222222222222222222222';
 
-function createInitialL1MethodsState(): MockL1State {
+function createInitialL1MethodsState(): Omit<MockL1State, 'hashToBlockName'> {
+  const blockZero = {
+    hash: '0x0000000000000000000000000000000000000000',
+    parentHash: '0x',
+    height: 0n,
+    timestamp: 0n,
+    transactions: [] as L1Transaction[],
+  } as const;
+
   return {
     balances: new Map(),
     transactions: new Map(),
@@ -16,20 +24,17 @@ function createInitialL1MethodsState(): MockL1State {
     pendingBlockHeight: 1n,
     pendingTransactions: [],
     transactionToBlockMap: new Map(),
-    blocks: [
-      {
-        hash: `0x0000000000000000000000000000000000000000`,
-        height: 0n,
-        timestamp: 0n,
-        transactions: [],
-      },
-    ],
+    blocks: [blockZero],
+    hashToBlockMap: new Map([[blockZero.hash, blockZero]]),
 
     contractStorage: new Map(),
   };
 }
 
-function createInitialMockESPTokenContractState(): MockESPTokenContractState {
+function createInitialMockESPTokenContractState(): Omit<
+  MockESPTokenContractState,
+  'applyTransaction'
+> {
   return {
     contractAddress: '0x0000000000000000000000000000000000000000',
     version: [1, 0, 0],
@@ -47,10 +52,29 @@ function createInitialMockESPTokenContractState(): MockESPTokenContractState {
 }
 
 function setupInitialContractState(
-  state: MockESPTokenContractState = createInitialMockESPTokenContractState(),
+  l1Methods: MockL1MethodsImpl = new MockL1MethodsImpl(
+    createInitialL1MethodsState(),
+  ),
+  state: Partial<
+    Omit<MockESPTokenContractState, 'applyTransaction'>
+  > = createInitialMockESPTokenContractState(),
 ) {
-  const l1Methods = new MockL1MethodsImpl(createInitialL1MethodsState());
-  return new MockESPTokenContractImpl(l1Methods, state, null);
+  const defaultState = createInitialMockESPTokenContractState();
+  return new MockESPTokenContractImpl(
+    l1Methods,
+    new MockESPTokenContractState(
+      state.contractAddress ?? defaultState.contractAddress,
+      state.version ?? defaultState.version,
+      state.name ?? defaultState.name,
+      state.symbol ?? defaultState.symbol,
+      state.decimals ?? defaultState.decimals,
+      state.totalSupply ?? defaultState.totalSupply,
+      state.balances ?? defaultState.balances,
+      state.allowances ?? defaultState.allowances,
+      state.lastUpdate ?? defaultState.lastUpdate,
+    ),
+    null,
+  );
 }
 
 describe('MockESPTokenContractImpl', () => {
@@ -113,7 +137,7 @@ describe('MockESPTokenContractImpl', () => {
       const spender: `0x${string}` = ACCOUNT2;
       const allowanceValue = 100_000_000_000_000_000_000n;
 
-      const contract = setupInitialContractState({
+      const contract = setupInitialContractState(undefined, {
         ...createInitialMockESPTokenContractState(),
         allowances: new Map([[owner, new Map([[spender, allowanceValue]])]]),
       });
@@ -161,8 +185,11 @@ describe('MockESPTokenContractImpl', () => {
 
       it('should transfer tokens correctly', async () => {
         const ACTIVE_ACCOUNT: `0x${string}` = ACCOUNT1;
+        const l1Methods = new MockL1MethodsImpl(createInitialL1MethodsState());
         const contract =
-          setupInitialContractState().replaceAccountAddress(ACTIVE_ACCOUNT);
+          setupInitialContractState(l1Methods).replaceAccountAddress(
+            ACTIVE_ACCOUNT,
+          );
 
         const transferAmount = 200_000_000_000_000_000_000n;
         const initialSenderBalance = await contract.balanceOf(ACTIVE_ACCOUNT);
@@ -172,6 +199,7 @@ describe('MockESPTokenContractImpl', () => {
 
         // The State has been mutated, but the contract state inside the
         // contract is not mutated.
+        l1Methods.mockAdvanceBlock();
 
         const finalSenderBalance = await contract.balanceOf(ACTIVE_ACCOUNT);
         const finalRecipientBalance = await contract.balanceOf(ACCOUNT2);
@@ -194,12 +222,16 @@ describe('MockESPTokenContractImpl', () => {
 
       it('should set the allowance correctly', async () => {
         const ACTIVE_ACCOUNT: `0x${string}` = ACCOUNT1;
+        const l1Methods = new MockL1MethodsImpl(createInitialL1MethodsState());
         const contract =
-          setupInitialContractState().replaceAccountAddress(ACTIVE_ACCOUNT);
+          setupInitialContractState(l1Methods).replaceAccountAddress(
+            ACTIVE_ACCOUNT,
+          );
 
         const approveAmount = 150_000_000_000_000_000_000n;
 
         await contract.approve(ACCOUNT2, approveAmount);
+        l1Methods.mockAdvanceBlock();
 
         const allowance = await contract.allowance(ACTIVE_ACCOUNT, ACCOUNT2);
         expect(allowance).toBe(approveAmount);
@@ -207,14 +239,19 @@ describe('MockESPTokenContractImpl', () => {
 
       it('should overwrite an existing allowance', async () => {
         const ACTIVE_ACCOUNT: `0x${string}` = ACCOUNT1;
+        const l1Methods = new MockL1MethodsImpl(createInitialL1MethodsState());
         const contract =
-          setupInitialContractState().replaceAccountAddress(ACTIVE_ACCOUNT);
+          setupInitialContractState(l1Methods).replaceAccountAddress(
+            ACTIVE_ACCOUNT,
+          );
 
         const initialApproveAmount = 100_000_000_000_000_000_000n;
         await contract.approve(ACCOUNT2, initialApproveAmount);
+        l1Methods.mockAdvanceBlock();
 
         const newApproveAmount = 250_000_000_000_000_000_000n;
         await contract.approve(ACCOUNT2, newApproveAmount);
+        l1Methods.mockAdvanceBlock();
 
         const allowance = await contract.allowance(ACTIVE_ACCOUNT, ACCOUNT2);
         expect(allowance).toBe(newApproveAmount);
@@ -240,11 +277,15 @@ describe('MockESPTokenContractImpl', () => {
 
       it('should transfer tokens correctly', async () => {
         const ACTIVE_ACCOUNT: `0x${string}` = ACCOUNT1;
+        const l1Methods = new MockL1MethodsImpl(createInitialL1MethodsState());
         const contract =
-          setupInitialContractState().replaceAccountAddress(ACTIVE_ACCOUNT);
+          setupInitialContractState(l1Methods).replaceAccountAddress(
+            ACTIVE_ACCOUNT,
+          );
 
         const approveAmount = 200_000_000_000_000_000_000n;
         await contract.approve(ACCOUNT2, approveAmount);
+        l1Methods.mockAdvanceBlock();
         const contractAccount2 = contract.replaceAccountAddress(ACCOUNT2);
 
         const transferAmount = 150_000_000_000_000_000_000n;
@@ -253,6 +294,7 @@ describe('MockESPTokenContractImpl', () => {
           await contractAccount2.balanceOf(ACCOUNT2);
 
         await contractAccount2.transferFrom(ACCOUNT1, ACCOUNT2, transferAmount);
+        l1Methods.mockAdvanceBlock();
 
         const finalSenderBalance = await contractAccount2.balanceOf(ACCOUNT1);
         const finalRecipientBalance =

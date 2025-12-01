@@ -1,6 +1,6 @@
 .bcard.card-value {
   display: grid;
-  grid-template-areas: 'title action' 'value extra';
+  grid-template-areas: 'title action' 'value value';
   justify-content: space-between;
   align-content: space-between;
   align-items: flex-start;

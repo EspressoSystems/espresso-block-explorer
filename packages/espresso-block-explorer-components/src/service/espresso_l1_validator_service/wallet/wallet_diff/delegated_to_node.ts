@@ -19,9 +19,10 @@ export class WalletDiffDelegatedToNode extends WalletDiff {
  * WalletDiffDelegatedToNodeJSONDecoder decodes WalletDifDelegatedToNodef
  * objects from a JSON object.
  */
-class WalletDiffDelegatedToNodeJSONDecoder
-  implements Converter<unknown, WalletDiffDelegatedToNode>
-{
+class WalletDiffDelegatedToNodeJSONDecoder implements Converter<
+  unknown,
+  WalletDiffDelegatedToNode
+> {
   convert(input: unknown): WalletDiffDelegatedToNode {
     return new WalletDiffDelegatedToNode(delegationJSONCodec.decode(input));
   }
@@ -31,9 +32,10 @@ class WalletDiffDelegatedToNodeJSONDecoder
  * WalletDiffDelegatedToNodeJSONEncoder encodes WalletDifDelegatedToNodef
  * objects to a JSON object.
  */
-class WalletDiffDelegatedToNodeJSONEncoder
-  implements Converter<WalletDiffDelegatedToNode, unknown>
-{
+class WalletDiffDelegatedToNodeJSONEncoder implements Converter<
+  WalletDiffDelegatedToNode,
+  unknown
+> {
   convert(input: WalletDiffDelegatedToNode): unknown {
     return delegationJSONCodec.encode(input.delegation);
   }

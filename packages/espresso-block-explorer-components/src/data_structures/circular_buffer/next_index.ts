@@ -19,9 +19,7 @@ export type {
  * CircularBufferDetermineNextIndexBehavior interface which uses the modulo
  * operator to calculate the next index given a previous index.
  */
-export class SlowNextIndexBehavior
-  implements CircularBufferDetermineNextIndexBehavior
-{
+export class SlowNextIndexBehavior implements CircularBufferDetermineNextIndexBehavior {
   private maxSize: number;
 
   constructor(maxSize: number) {
@@ -42,9 +40,7 @@ export class SlowNextIndexBehavior
  * CircularBufferDetermineNextIndexBehavior interface when the size of the
  * buffer is a power of two.
  */
-export class PowerOfTwoBehavior
-  implements CircularBufferDetermineNextIndexBehavior
-{
+export class PowerOfTwoBehavior implements CircularBufferDetermineNextIndexBehavior {
   private preComputedSizeMinus1: number;
 
   constructor(maxSize: number) {

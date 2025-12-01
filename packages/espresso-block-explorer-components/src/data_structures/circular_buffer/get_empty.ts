@@ -20,9 +20,7 @@ export type {
  *
  * This seems like a reasonable default behavior.
  */
-class ReturnUndefinedOnEmptyBehavior
-  implements CircularBufferGetFromEmptyBehavior<unknown>
-{
+class ReturnUndefinedOnEmptyBehavior implements CircularBufferGetFromEmptyBehavior<unknown> {
   getFromEmpty(): undefined {}
 }
 
@@ -33,9 +31,7 @@ class ReturnUndefinedOnEmptyBehavior
  *
  * This seems like a reasonable default behavior.
  */
-class ReturnNullOnEmptyBehavior
-  implements CircularBufferGetFromEmptyBehavior<unknown>
-{
+class ReturnNullOnEmptyBehavior implements CircularBufferGetFromEmptyBehavior<unknown> {
   getFromEmpty(): null {
     return null;
   }
@@ -48,9 +44,7 @@ class ReturnNullOnEmptyBehavior
  *
  * This is an alternative to the default behavior.
  */
-class ThrowMissingElementOnEmptyBehavior
-  implements CircularBufferGetFromEmptyBehavior<unknown>
-{
+class ThrowMissingElementOnEmptyBehavior implements CircularBufferGetFromEmptyBehavior<unknown> {
   getFromEmpty(): never {
     throw new MissingElementError();
   }

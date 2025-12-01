@@ -12,7 +12,6 @@ import {
 } from '@/service/hotshot_query_service';
 import { describe, expect, it } from 'vitest';
 import { EpochAndBlock } from '../../../common/epoch_and_block';
-import { ParticipationChange } from '../../../common/participation_change';
 import { ActiveNodeSetDiffNewBlock } from '../../active_node_set_diff/new_block';
 import { NewEpoch } from '../../active_node_set_diff/new_epoch';
 import {
@@ -34,29 +33,29 @@ describe('FetchBasedValidatorsActiveAPI', () => {
       const prng = new PseudoRandomNumberGenerator(Date.now());
 
       const block = prng.nextRangeBigInt(0n, 1000n);
-      const epoch = block / 3000n;
+      const epoch = EpochAndBlock.determineEpoch(block, 3000n);
       const response = new ActiveNodeSetSnapshot(
         new EpochAndBlock(epoch, block, new Date()),
         [
           new ActiveNodeSetEntry(
             prng.fillBytes(32),
-            new Ratio(prng.nextFloat()),
-            new Ratio(prng.nextFloat()),
+            Ratio.floatingPoint(prng.nextFloat()),
+            Ratio.floatingPoint(prng.nextFloat()),
           ),
           new ActiveNodeSetEntry(
             prng.fillBytes(32),
-            new Ratio(prng.nextFloat()),
-            new Ratio(prng.nextFloat()),
+            Ratio.floatingPoint(prng.nextFloat()),
+            Ratio.floatingPoint(prng.nextFloat()),
           ),
           new ActiveNodeSetEntry(
             prng.fillBytes(32),
-            new Ratio(1.0),
-            new Ratio(0.5),
+            Ratio.floatingPoint(1.0),
+            Ratio.floatingPoint(0.5),
           ),
           new ActiveNodeSetEntry(
             prng.fillBytes(32),
-            new Ratio(0.75),
-            new Ratio(0.25),
+            Ratio.floatingPoint(0.75),
+            Ratio.floatingPoint(0.25),
           ),
         ],
       );
@@ -86,29 +85,29 @@ describe('FetchBasedValidatorsActiveAPI', () => {
       const prng = new PseudoRandomNumberGenerator(Date.now());
 
       const block = prng.nextRangeBigInt(0n, 1000n);
-      const epoch = block / 3000n;
+      const epoch = EpochAndBlock.determineEpoch(block, 3000n);
       const response = new ActiveNodeSetSnapshot(
         new EpochAndBlock(epoch, block, new Date()),
         [
           new ActiveNodeSetEntry(
             prng.fillBytes(32),
-            new Ratio(prng.nextFloat()),
-            new Ratio(prng.nextFloat()),
+            Ratio.floatingPoint(prng.nextFloat()),
+            Ratio.floatingPoint(prng.nextFloat()),
           ),
           new ActiveNodeSetEntry(
             prng.fillBytes(32),
-            new Ratio(prng.nextFloat()),
-            new Ratio(prng.nextFloat()),
+            Ratio.floatingPoint(prng.nextFloat()),
+            Ratio.floatingPoint(prng.nextFloat()),
           ),
           new ActiveNodeSetEntry(
             prng.fillBytes(32),
-            new Ratio(1.0),
-            new Ratio(0.5),
+            Ratio.floatingPoint(1.0),
+            Ratio.floatingPoint(0.5),
           ),
           new ActiveNodeSetEntry(
             prng.fillBytes(32),
-            new Ratio(0.75),
-            new Ratio(0.25),
+            Ratio.floatingPoint(0.75),
+            Ratio.floatingPoint(0.25),
           ),
         ],
       );
@@ -137,40 +136,25 @@ describe('FetchBasedValidatorsActiveAPI', () => {
     {
       const prng = new PseudoRandomNumberGenerator(Date.now());
       const block = prng.nextRangeBigInt(0n, 1000n);
-      const epoch = block / 3000n;
+      const epoch = EpochAndBlock.determineEpoch(block, 3000n);
       const response = new ActiveNodeSetUpdate(
         new EpochAndBlock(epoch, block, new Date()),
         [
           new ActiveNodeSetDiffNewBlock(
-            [new ParticipationChange(1, new Ratio(prng.nextFloat()))],
+            prng.nextInt(),
+            [prng.nextInt()],
             new CappuccinoAPIBitVec(
               CappuccinoAPIBitVecOrder.lsb0,
               new CappuccinoAPIBitVecHead(8, 0),
               16,
-              Array.from(new Uint8Array(prng.fillBytes(2))),
+              Array.from(new BigUint64Array(prng.fillBytes(8))),
             ),
           ),
           new NewEpoch([
-            new ActiveNodeSetEntry(
-              prng.fillBytes(32),
-              new Ratio(0.9),
-              new Ratio(0.8),
-            ),
-            new ActiveNodeSetEntry(
-              prng.fillBytes(32),
-              new Ratio(0.7),
-              new Ratio(0.6),
-            ),
-            new ActiveNodeSetEntry(
-              prng.fillBytes(32),
-              new Ratio(0.5),
-              new Ratio(0.4),
-            ),
-            new ActiveNodeSetEntry(
-              prng.fillBytes(32),
-              new Ratio(0.3),
-              new Ratio(0.2),
-            ),
+            prng.fillBytes(32),
+            prng.fillBytes(32),
+            prng.fillBytes(32),
+            prng.fillBytes(32),
           ]),
         ],
       );

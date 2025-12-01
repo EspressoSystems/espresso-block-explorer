@@ -30,9 +30,10 @@ export abstract class CappuccinoExplorerGetBlockSummariesRequest {
   }
 }
 
-class CappuccinoExplorerGetBlockSummariesRequestEncoder
-  implements Converter<CappuccinoExplorerGetBlockSummariesRequest, unknown>
-{
+class CappuccinoExplorerGetBlockSummariesRequestEncoder implements Converter<
+  CappuccinoExplorerGetBlockSummariesRequest,
+  unknown
+> {
   convert(input: CappuccinoExplorerGetBlockSummariesRequest) {
     assertInstanceOf(input, CappuccinoExplorerGetBlockSummariesRequest);
 
@@ -52,9 +53,10 @@ class CappuccinoExplorerGetBlockSummariesRequestEncoder
   }
 }
 
-class CappuccinoExplorerGetBlockSummariesRequestDecoder
-  implements Converter<unknown, CappuccinoExplorerGetBlockSummariesRequest>
-{
+class CappuccinoExplorerGetBlockSummariesRequestDecoder implements Converter<
+  unknown,
+  CappuccinoExplorerGetBlockSummariesRequest
+> {
   convert(input: unknown): CappuccinoExplorerGetBlockSummariesRequest {
     assertRecordWithKeys(input, 'from', 'limit');
 

@@ -1,3 +1,5 @@
+import { assert } from '@/assert/assert';
+import { breakpoint } from '@/assert/debugger';
 import {
   assertRecordWithKeys,
   bigintCodec,
@@ -23,6 +25,31 @@ export class EpochAndBlock {
     Object.freeze(this);
   }
 
+  static determineEpoch(block: bigint, blocksPerEpoch: bigint): bigint {
+    if (blocksPerEpoch === 0n) {
+      // This shouldn't happen
+      breakpoint();
+      return 0n;
+    }
+
+    return block / blocksPerEpoch + 1n;
+  }
+
+  get blocksPerEpoch(): bigint {
+    if (this.epoch === 0n) {
+      // This shouldn't happen
+      breakpoint();
+      return 0n;
+    }
+
+    const blocksPerEpoch = this.block / (this.epoch - 1n);
+    assert(
+      this.epoch === this.block / blocksPerEpoch + 1n,
+      'Inconsistent epoch and block numbers',
+    );
+    return blocksPerEpoch;
+  }
+
   toJSON() {
     return epochAndBlockNumberJSONCodec.encode(this);
   }
@@ -32,9 +59,10 @@ export class EpochAndBlock {
  * EpochAndBlockNumberJSONDecoder decodes EpochAndBlock objects from a JSON
  * object.
  */
-class EpochAndBlockNumberJSONDecoder
-  implements Converter<unknown, EpochAndBlock>
-{
+class EpochAndBlockNumberJSONDecoder implements Converter<
+  unknown,
+  EpochAndBlock
+> {
   convert(input: unknown): EpochAndBlock {
     assertRecordWithKeys(input, 'epoch', 'block', 'timestamp');
 
@@ -50,9 +78,10 @@ class EpochAndBlockNumberJSONDecoder
  * EpochAndBlockNumberJSONEncoder encodes EpochAndBlock objects to a JSON
  * object.
  */
-class EpochAndBlockNumberJSONEncoder
-  implements Converter<EpochAndBlock, unknown>
-{
+class EpochAndBlockNumberJSONEncoder implements Converter<
+  EpochAndBlock,
+  unknown
+> {
   convert(input: EpochAndBlock): unknown {
     return {
       epoch: bigintCodec.encode(input.epoch),

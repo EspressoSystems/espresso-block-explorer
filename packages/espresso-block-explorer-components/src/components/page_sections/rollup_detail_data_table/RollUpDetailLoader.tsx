@@ -27,8 +27,7 @@ export const RollUpDetailAsyncRetrieverContext =
     },
   });
 
-export interface RollUpDetailDataTableState
-  extends DataTableState<TransactionSummaryColumn> {
+export interface RollUpDetailDataTableState extends DataTableState<TransactionSummaryColumn> {
   height?: number;
   offset?: number;
 }

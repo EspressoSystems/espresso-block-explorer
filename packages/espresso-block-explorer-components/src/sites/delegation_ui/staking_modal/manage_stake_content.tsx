@@ -1,4 +1,5 @@
 import Text from '@/components/text/Text';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import {
@@ -47,7 +48,11 @@ const ManageStakeActionsArea: React.FC = () => {
     <div className="staking-modal-manage-stake-actions-area">
       <ButtonLarge
         onClick={() => {
-          historyControls.push(new ValidatorConfirmedStake(confirmedValidator));
+          historyControls.push(
+            new ValidatorConfirmedStake(
+              hexArrayBufferCodec.decode(confirmedValidator),
+            ),
+          );
         }}
       >
         <Text text="Delegate More" />
@@ -56,7 +61,9 @@ const ManageStakeActionsArea: React.FC = () => {
       <ButtonLarge
         onClick={() => {
           historyControls.push(
-            new ValidatorConfirmedUndelegate(confirmedValidator),
+            new ValidatorConfirmedUndelegate(
+              hexArrayBufferCodec.decode(confirmedValidator),
+            ),
           );
         }}
       >

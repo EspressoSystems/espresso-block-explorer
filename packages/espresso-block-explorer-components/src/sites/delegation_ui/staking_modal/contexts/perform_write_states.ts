@@ -74,18 +74,18 @@ export async function* performWriteTransaction(
   writeToContract: () => Promise<`0x${string}`>,
   setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>,
 ) {
-  // Indicate that we are waiting for the delegation to complete
-  yield new PerformWriteTransactionWaiting();
-
-  const transactionHash = await writeToContract();
-
-  yield new PerformWriteTransactionSucceeded(transactionHash);
-
-  // We wait for the transaction receipt
-  yield new PerformWriteTransactionReceiptWaiting(transactionHash);
-
-  // We'll try multiple times to retrieve the receipt
   try {
+    // Indicate that we are waiting for the delegation to complete
+    yield new PerformWriteTransactionWaiting();
+
+    const transactionHash = await writeToContract();
+
+    yield new PerformWriteTransactionSucceeded(transactionHash);
+
+    // We wait for the transaction receipt
+    yield new PerformWriteTransactionReceiptWaiting(transactionHash);
+
+    // We'll try multiple times to retrieve the receipt
     for (let i = 0; i < 24; i++) {
       try {
         const receipt = await l1Methods.getTransactionReceipt({
@@ -105,12 +105,17 @@ export async function* performWriteTransaction(
           );
           throw err;
         }
-        //  TODO: Inspect the errors before blindly retrying
+
+        /**
+         * @todo Handle Wagmi errors, and inspect them before blindly retrying.
+         */
 
         // Sleep for a second before retrying
         await sleep(1000);
       }
     }
+  } catch (err) {
+    console.error('<<<< HERE performDelegation caught error:', err);
   } finally {
     setL1Timestamp(new Date());
   }

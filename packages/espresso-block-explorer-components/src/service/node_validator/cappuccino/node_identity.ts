@@ -63,9 +63,7 @@ export default class CappuccinoNodeIdentity {
   }
 }
 
-class CappuccinoNodeIdentityEncoder
-  implements Converter<CappuccinoNodeIdentity>
-{
+class CappuccinoNodeIdentityEncoder implements Converter<CappuccinoNodeIdentity> {
   convert(input: CappuccinoNodeIdentity) {
     return {
       public_key: taggedBase64Codec.encode(input.publicKey),
@@ -81,9 +79,10 @@ class CappuccinoNodeIdentityEncoder
   }
 }
 
-class CappuccinoNodeIdentityDecoder
-  implements Converter<unknown, CappuccinoNodeIdentity>
-{
+class CappuccinoNodeIdentityDecoder implements Converter<
+  unknown,
+  CappuccinoNodeIdentity
+> {
   convert(input: unknown) {
     assertRecordWithKeys(
       input,

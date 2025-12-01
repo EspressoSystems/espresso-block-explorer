@@ -39,9 +39,10 @@ export class ActiveNodeSetSnapshot {
  * ActiveNodeSetSnapshotJSONDecoder decodes ActiveNodeSetSnapshot
  * objects from a JSON object.
  */
-class ActiveNodeSetSnapshotJSONDecoder
-  implements Converter<unknown, ActiveNodeSetSnapshot>
-{
+class ActiveNodeSetSnapshotJSONDecoder implements Converter<
+  unknown,
+  ActiveNodeSetSnapshot
+> {
   convert(input: unknown): ActiveNodeSetSnapshot {
     assertRecordWithKeys(input, 'espresso_block', 'nodes');
 
@@ -56,9 +57,10 @@ class ActiveNodeSetSnapshotJSONDecoder
  * ActiveNodeSetSnapshotJSONEncoder encodes ActiveNodeSetSnapshot
  * objects to a JSON object.
  */
-class ActiveNodeSetSnapshotJSONEncoder
-  implements Converter<ActiveNodeSetSnapshot, unknown>
-{
+class ActiveNodeSetSnapshotJSONEncoder implements Converter<
+  ActiveNodeSetSnapshot,
+  unknown
+> {
   convert(input: ActiveNodeSetSnapshot): unknown {
     return {
       espresso_block: epochAndBlockNumberJSONCodec.encode(input.espressoBlock),

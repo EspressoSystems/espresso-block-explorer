@@ -29,9 +29,10 @@ export class CappuccinoLatestBlock extends CappuccinoNodeValidatorResponse {
   }
 }
 
-class CappuccinoLatestBlockDecoder
-  implements Converter<unknown, CappuccinoLatestBlock>
-{
+class CappuccinoLatestBlockDecoder implements Converter<
+  unknown,
+  CappuccinoLatestBlock
+> {
   convert(input: unknown): CappuccinoLatestBlock {
     assertRecordWithKeys(input, kCappuccinoLatestBlockType);
 

@@ -1,8 +1,7 @@
 import { addClassToClassName } from '@/higher_order';
 import React from 'react';
 
-export interface EspressoLogoAndTitleProps
-  extends React.SVGProps<SVGSVGElement> {}
+export interface EspressoLogoAndTitleProps extends React.SVGProps<SVGSVGElement> {}
 
 /**
  * EspressoLogoAndTitle represents an SVG images of the Espresso Logo accompanied

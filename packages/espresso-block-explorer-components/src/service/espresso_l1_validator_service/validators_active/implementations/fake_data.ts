@@ -3,7 +3,6 @@ import {
   nodeList,
   PseudoRandomNumberGenerator,
 } from '@/data_source/fake_data_source';
-import UnimplementedError from '@/errors/UnimplementedError';
 import { mapIterable } from '@/functional/functional';
 import { lastAsyncIterable } from '@/functional/functional_async';
 import { ActiveNodeSetEntry } from '../../common/active_node_set_entry';
@@ -30,7 +29,7 @@ export class FakeDataValidatorsActiveAPI implements ValidatorsActiveAPI {
 
     return new ActiveNodeSetSnapshot(
       new EpochAndBlock(
-        BigInt(Math.floor(block.height / 100)),
+        EpochAndBlock.determineEpoch(BigInt(block.height), 100n),
         BigInt(block.height),
         new Date(block.time),
       ),
@@ -40,8 +39,8 @@ export class FakeDataValidatorsActiveAPI implements ValidatorsActiveAPI {
           (node) =>
             new ActiveNodeSetEntry(
               node.address,
-              new Ratio(prng.nextFloat()),
-              new Ratio(prng.nextFloat()),
+              Ratio.floatingPoint(prng.nextFloat()),
+              Ratio.floatingPoint(prng.nextFloat()),
             ),
         ),
       ),
@@ -53,6 +52,7 @@ export class FakeDataValidatorsActiveAPI implements ValidatorsActiveAPI {
   }
 
   async updatesSince(): Promise<ActiveNodeSetUpdate> {
-    throw new UnimplementedError();
+    const active = await this.active();
+    return new ActiveNodeSetUpdate(active.espressoBlock, []);
   }
 }

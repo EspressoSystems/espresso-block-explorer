@@ -19,9 +19,10 @@ export class StakeTableEntry {
   }
 }
 
-export class StakeTableEntryDecoder
-  implements Converter<unknown, StakeTableEntry>
-{
+export class StakeTableEntryDecoder implements Converter<
+  unknown,
+  StakeTableEntry
+> {
   convert(input: unknown): StakeTableEntry {
     assertRecordWithKeys(input, 'stake_key', 'stake_amount');
 
@@ -32,9 +33,10 @@ export class StakeTableEntryDecoder
   }
 }
 
-export class StakeTableEntryEncoder
-  implements Converter<StakeTableEntry, Record<string, unknown>>
-{
+export class StakeTableEntryEncoder implements Converter<
+  StakeTableEntry,
+  Record<string, unknown>
+> {
   convert(input: StakeTableEntry): Record<string, unknown> {
     assertInstanceOf(input, StakeTableEntry);
 

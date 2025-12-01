@@ -67,9 +67,10 @@ class GeoJSONMultiPolygonEncoder implements Converter<GeoJSONMultiPolygon> {
 /**
  * A converter that can decode a GeoJSON object into a GeoJSONMultiPolygon.
  */
-class GeoJSONMultiPolygonDecoder
-  implements Converter<unknown, GeoJSONMultiPolygon>
-{
+class GeoJSONMultiPolygonDecoder implements Converter<
+  unknown,
+  GeoJSONMultiPolygon
+> {
   readonly codec: Codec<LatLng<Degrees>[][][], unknown>;
   constructor(codec: Codec<LatLng<Degrees>[][][], unknown>) {
     this.codec = codec;

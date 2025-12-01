@@ -28,9 +28,10 @@ export default class WebWorkerErrorResponse extends BaseError {
   }
 }
 
-class WebWorkerErrorResponseDecoder
-  implements Converter<unknown, WebWorkerErrorResponse>
-{
+class WebWorkerErrorResponseDecoder implements Converter<
+  unknown,
+  WebWorkerErrorResponse
+> {
   convert(input: unknown): WebWorkerErrorResponse {
     assertRecordWithKeys(input, 'code', 'error', 'message');
     assertErrorCode(input, kWebWorkerErrorResponseCode);
@@ -41,9 +42,7 @@ class WebWorkerErrorResponseDecoder
   }
 }
 
-class WebWorkerErrorResponseEncoder
-  implements Converter<WebWorkerErrorResponse>
-{
+class WebWorkerErrorResponseEncoder implements Converter<WebWorkerErrorResponse> {
   convert(input: WebWorkerErrorResponse): unknown {
     return {
       ...baseErrorEncoder.convert(input),

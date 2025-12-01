@@ -36,9 +36,10 @@ export class FullNodeSetSnapshot {
  * FullNodeSetSnapshotJSONDecoder decodes FullNodeSetSnapshot objects
  * from a JSON object.
  */
-class FullNodeSetSnapshotJSONDecoder
-  implements Converter<unknown, FullNodeSetSnapshot>
-{
+class FullNodeSetSnapshotJSONDecoder implements Converter<
+  unknown,
+  FullNodeSetSnapshot
+> {
   convert(input: unknown): FullNodeSetSnapshot {
     assertRecordWithKeys(input, 'l1_block', 'nodes');
     return new FullNodeSetSnapshot(
@@ -52,9 +53,10 @@ class FullNodeSetSnapshotJSONDecoder
  * FullNodeSetSnapshotJSONEncoder encodes FullNodeSetSnapshot objects
  * to a JSON object.
  */
-class FullNodeSetSnapshotJSONEncoder
-  implements Converter<FullNodeSetSnapshot, unknown>
-{
+class FullNodeSetSnapshotJSONEncoder implements Converter<
+  FullNodeSetSnapshot,
+  unknown
+> {
   convert(input: FullNodeSetSnapshot): unknown {
     return {
       l1_block: l1BlockInfoJSONCodec.encode(input.l1Block),

@@ -98,8 +98,7 @@ export interface StakeTableContractWriteable {
  * for the Stake Table Contract.
  */
 export interface StakeTableContract
-  extends StakeTableContractReadOnly,
-    StakeTableContractWriteable {}
+  extends StakeTableContractReadOnly, StakeTableContractWriteable {}
 
 /**
  * StakeTableContractGasEstimator defines the gas estimator type for the

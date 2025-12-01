@@ -1,110 +1,193 @@
-import {
-  act,
-  findAllByText,
-  findByText,
-  waitFor,
-} from '@testing-library/react';
+import { act, getByText } from '@testing-library/react';
 import userEvent, { UserEvent } from '@testing-library/user-event';
 import { StepFunction } from 'storybook/internal/csf';
+import {
+  expect,
+  findAllByText,
+  findByRole,
+  findByText,
+  waitFor,
+} from 'storybook/test';
 
 async function newDelegationInteraction(
   canvasElement: HTMLElement,
   step: StepFunction,
   event: UserEvent,
 ) {
-  await step('Start', async () => {});
-  await waitFor(
-    async () => {
-      await findByText<HTMLDialogElement>(canvasElement, '', {
-        selector: 'dialog',
-      });
+  await waitFor(async () => {
+    expect(
+      await findByText(canvasElement, '', { selector: 'section' }),
+    ).toBeVisible();
+  });
 
-      await findByText<HTMLElement>(canvasElement, 'Rank', {
+  const delegationUI = await findByText<HTMLElement>(canvasElement, '', {
+    selector: 'main.delegation-ui',
+  });
+  expect(delegationUI).toBeInTheDocument();
+  expect(delegationUI).toBeVisible();
+
+  const sectionElement = await findByText<HTMLElement>(delegationUI, '', {
+    selector: 'section.delegation-ui-content',
+  });
+
+  await step('Wait For Page Load', async () => {
+    await waitFor(
+      async () => {
+        const tableElement = await findByRole<HTMLTableElement>(
+          sectionElement,
+          'table',
+        );
+        expect(tableElement).toBeInTheDocument();
+        expect(tableElement).toBeVisible();
+
+        const heading = await findByText<HTMLTableCellElement>(
+          tableElement,
+          'Total Stake',
+          {
+            selector: 'th',
+          },
+        );
+
+        expect(heading).toBeInTheDocument();
+        expect(heading).toBeVisible();
+      },
+      { timeout: 20_000 },
+    );
+  });
+
+  await step('Connect Account', async () => {
+    const connectWalletButton = await act(async () => {
+      return findByText<HTMLButtonElement>(delegationUI, 'Connect Wallet', {
+        selector: 'button',
+      });
+    });
+    await act(async () => event.click(connectWalletButton));
+  });
+
+  await step('Sort By Rank', async () => {
+    const rankHeader = await act(async () => {
+      return findByText<HTMLTableCellElement>(delegationUI, 'Total Stake', {
         selector: 'th',
       });
-    },
-    { timeout: 10000 },
-  );
-
-  await step('Connect Account', async () => {});
-  const connectWalletButton = await act(async () => {
-    return findByText<HTMLButtonElement>(canvasElement, 'Connect Wallet', {
-      selector: 'button',
     });
-  });
-  await act(async () => event.click(connectWalletButton));
-  await step('Sort By Rank', async () => {});
-
-  const rankHeader = await act(async () => {
-    return findByText<HTMLTableCellElement>(canvasElement, 'Rank', {
-      selector: 'th',
-    });
-  });
-  await act(async () => event.click(rankHeader));
-  // Click again to sort ascending
-  await act(async () => event.click(rankHeader));
-
-  await step('Spawn New Delegation Modal', async () => {});
-  const delegateButtons = await act(async () => {
-    return findAllByText<HTMLButtonElement>(canvasElement, 'Delegate', {
-      selector: 'td > button',
-    });
-  });
-  const [delegateButton0] = delegateButtons;
-  await act(async () => event.click(delegateButton0));
-
-  await step('Enter Delegation Amount', async () => {});
-  const amountInput = await act(async () => {
-    return findByText<HTMLInputElement>(canvasElement, '', {
-      selector: 'input.staking-modal-esp-focus-display',
-    });
+    await act(async () => event.click(rankHeader));
+    // Click again to sort ascending
+    await act(async () => event.click(rankHeader));
   });
 
-  // Select the Input Box and enter amount
-  await act(async () => userEvent.click(amountInput));
-  await act(async () => userEvent.clear(amountInput));
-  await act(async () => userEvent.type(amountInput, '100'));
-
-  await step('Approve Allowance', async () => {});
-  const approveButton = await act(async () => {
-    return findByText<HTMLButtonElement>(canvasElement, 'Approve', {
-      selector: 'button',
-    });
-  });
-  const delegateButton1 = await act(async () => {
-    return findByText<HTMLButtonElement>(canvasElement, 'Delegate', {
-      selector: 'button.btn-delegate',
-    });
-  });
-  await act(async () => event.click(approveButton));
-  // Wait for the approve button to be processed
-  await waitFor(
-    async () => {
-      await findByText(canvasElement, 'Confirm Delegation');
-    },
-    { timeout: 24_000 },
-  );
-
-  await step('Delegate Funds', async () => {});
-  await act(async () => event.click(delegateButton1));
-  await waitFor(
-    async () => {
-      await findByText(canvasElement, 'Delegation successful', {
-        selector: '.staking-modal-instructions-and-progress span',
+  await step('Spawn New Delegation Modal', async () => {
+    const delegateButtons = await act(async () => {
+      return findAllByText<HTMLButtonElement>(delegationUI, 'Delegate', {
+        selector: 'td > button',
       });
-      await findByText(canvasElement, 'Close', { selector: 'dialog button' });
-    },
-    { timeout: 24_000 },
-  );
+    });
+    const [delegateButton0] = delegateButtons;
+    await act(async () => event.click(delegateButton0));
 
-  await step('Close Modal', async () => {});
+    await waitFor(async () => {
+      // const dialog = await findByRole<HTMLDialogElement>(
+      //   delegationUI,
+      //   'dialog',
+      // );
+      const dialog = await findByText<HTMLDialogElement>(delegationUI, '', {
+        selector: 'dialog.staking-modal',
+      });
 
-  const closeButton = await act(async () => {
-    return findByText<HTMLButtonElement>(canvasElement, 'Close', {
-      selector: 'dialog button',
+      expect(dialog).toBeInTheDocument();
     });
   });
-  await act(async () => event.click(closeButton));
+
+  const modalDialog = await act(async () =>
+    // findByRole<HTMLDialogElement>(delegationUI, 'dialog'),
+    findByText<HTMLDialogElement>(delegationUI, '', {
+      selector: 'dialog.staking-modal',
+    }),
+  );
+
+  await step('Enter Delegation Amount', async () => {
+    const amountInput = await act(async () => {
+      return findByRole<HTMLInputElement>(modalDialog, 'textbox');
+      // return findByText<HTMLInputElement>(modalDialog, '', {
+      //   selector: 'input[type="text"]',
+      // });
+      // return findByPlaceholderText<HTMLInputElement>(modalDialog, 'ESP 0');
+      // return findByText(modalDialog, '', {
+      //   selector: '#staking-modal-esp-input',
+      // });
+    });
+
+    // Select the Input Box and enter amount
+    await act(async () => userEvent.click(amountInput));
+    await act(async () => userEvent.type(amountInput, '100'));
+
+    await waitFor(async () => {
+      expect(
+        await findByText(modalDialog, 'Approve', { selector: 'button' }),
+      ).toBeEnabled();
+    });
+  });
+
+  await step('Approve Allowance', async () => {
+    const approvedButton = await act(async () => {
+      try {
+        return getByText<HTMLButtonElement>(modalDialog, 'Approved', {
+          selector: 'button',
+        });
+      } catch {
+        return null;
+      }
+    });
+
+    if (approvedButton) {
+      // If the transaction is already approved, then there's no need to
+      // approve again.
+      return;
+    }
+
+    const approveButton = await act(async () => {
+      return findByText<HTMLButtonElement>(modalDialog, 'Approve', {
+        selector: 'button',
+      });
+    });
+
+    await act(async () => event.click(approveButton));
+    // Wait for the approve button to be processed
+    await waitFor(
+      async () => {
+        await findByText(modalDialog, 'Confirm Delegation');
+      },
+      { timeout: 24_000 },
+    );
+  });
+
+  await step('Delegate Funds', async () => {
+    const delegateButton1 = await act(async () => {
+      return findByText<HTMLButtonElement>(modalDialog, 'Delegate', {
+        selector: 'button',
+      });
+    });
+
+    await act(async () => event.click(delegateButton1));
+    await waitFor(
+      async () => {
+        await findByText(modalDialog, 'Delegation successful');
+        await findByText(modalDialog, 'Close', { selector: 'button' });
+      },
+      { timeout: 24_000 },
+    );
+  });
+
+  await step('Close Modal', async () => {
+    const closeButton = await act(async () => {
+      return findByText<HTMLButtonElement>(modalDialog, 'Close', {
+        selector: 'button',
+      });
+    });
+    await act(async () => event.click(closeButton));
+    await waitFor(async () => {
+      expect(modalDialog).not.toBeVisible();
+    });
+  });
 }
 
 export async function delegationUIInteractions(

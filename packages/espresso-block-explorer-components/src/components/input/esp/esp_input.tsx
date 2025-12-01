@@ -6,8 +6,10 @@ import React from 'react';
 import { TextEditing, TextEditingProps } from '../text/text';
 import { TextEditingValue, TextSelection } from '../text/types';
 
-export interface ESPInputProps
-  extends Omit<TextEditingProps, 'value' | 'onChange'> {
+export interface ESPInputProps extends Omit<
+  TextEditingProps,
+  'value' | 'onChange'
+> {
   value?: null | MonetaryValue;
   onChange?: (
     event:

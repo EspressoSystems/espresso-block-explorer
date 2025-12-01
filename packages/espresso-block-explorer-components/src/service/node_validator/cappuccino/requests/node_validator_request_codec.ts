@@ -25,17 +25,19 @@ import CappuccinoNodeValidatorRequest, {
   SubscribeVoters,
 } from './node_validator_request';
 
-class CappuccinoNodeValidatorRequestEncoder
-  implements Converter<CappuccinoNodeValidatorRequest, string>
-{
+class CappuccinoNodeValidatorRequestEncoder implements Converter<
+  CappuccinoNodeValidatorRequest,
+  string
+> {
   convert(input: CappuccinoNodeValidatorRequest): string {
     return input.valueOf();
   }
 }
 
-class CappuccinoNodeValidatorRequestDecoder
-  implements Converter<unknown, CappuccinoNodeValidatorRequest>
-{
+class CappuccinoNodeValidatorRequestDecoder implements Converter<
+  unknown,
+  CappuccinoNodeValidatorRequest
+> {
   convert(input: unknown): CappuccinoNodeValidatorRequest {
     if (typeof input !== 'string') {
       throw new InvalidTypeError(typeof input, 'string');

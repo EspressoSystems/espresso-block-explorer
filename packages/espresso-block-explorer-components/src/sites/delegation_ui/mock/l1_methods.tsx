@@ -1,7 +1,9 @@
+import { assertNotNull } from '@/assert/assert';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { createKeccakHash } from '@/crypto/keccak/family';
+import { foldRIterable } from '@/functional/functional';
 import { fakeData } from '@/models/config/storybook/wagmi';
 import React from 'react';
 import { BlockTag } from 'viem';
@@ -45,6 +47,7 @@ export interface L1Transaction {
 
 interface Block {
   hash: `0x${string}`;
+  parentHash: `0x${string}`;
   height: bigint;
   timestamp: bigint;
   transactions: L1Transaction[];
@@ -68,6 +71,10 @@ function hashFromBlockParts(
 
 export interface L1TransactionCallback {
   l1Transaction(action: UnderlyingTransaction): void;
+}
+
+export interface MockContractStorage {
+  applyTransaction(tx: UnderlyingTransaction): MockContractStorage;
 }
 
 export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
@@ -333,7 +340,7 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
       number: block.height,
       hash: block.hash,
       nonce: `0x`,
-      parentHash: `0x`,
+      parentHash: block.parentHash,
       receiptsRoot: `0x`,
       sealFields: [],
       sha3Uncles: `0x`,
@@ -395,11 +402,16 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     this.transactionCallBack = transactionCallBack;
   }
 
-  mockWriteContractStorage<T>(key: symbol, value: T) {
+  mockWriteContractStorage<T extends MockContractStorage>(
+    key: symbol,
+    value: T,
+  ) {
     this.storage.contractStorage.set(key, value);
   }
 
-  mockReadContractStorage<T>(key: symbol): T | undefined {
+  mockReadContractStorage<T extends MockContractStorage>(
+    key: symbol,
+  ): T | undefined {
     return this.storage.contractStorage.get(key) as T | undefined;
   }
 
@@ -419,6 +431,27 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     this.storage.pendingTransactions.push(txn);
   }
 
+  mockBlockByHeight(height: bigint): Block | null {
+    return this.storage.blocks[Number(height)] ?? null;
+  }
+
+  mockLatestBlock(): Block {
+    return this.storage.blocks[this.storage.blocks.length - 1];
+  }
+
+  mockBlockByHash(hash: `0x${string}`): Block | null {
+    return this.storage.hashToBlockMap.get(hash) ?? null;
+  }
+
+  mockTransactionsForBlockHash(hash: `0x${string}`): L1Transaction[] | null {
+    const block = this.storage.hashToBlockMap.get(hash);
+    if (!block) {
+      return null;
+    }
+
+    return block.transactions;
+  }
+
   mockAdvanceBlock() {
     const timestamp = BigInt(Math.floor(Date.now() / 1000));
     const height = this.storage.pendingBlockHeight;
@@ -431,15 +464,32 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     const pendingTransactions = this.storage.pendingTransactions;
     this.storage.pendingBlockHeight++;
     this.storage.pendingTransactions = [];
+    const lastBlock = this.storage.blocks[this.storage.blocks.length - 1];
 
     const newBlock: Block = {
       hash,
+      parentHash: lastBlock.hash,
       height,
       timestamp,
       transactions: pendingTransactions,
     };
 
     this.storage.blocks.push(newBlock);
+    this.storage.hashToBlockMap.set(hash, newBlock);
+
+    // Apply the transactions to the contract storage
+    for (const storageKey of this.storage.contractStorage.keys()) {
+      const contractState = this.storage.contractStorage.get(storageKey);
+      assertNotNull(contractState);
+
+      const nextContractState = foldRIterable(
+        (state, tx) => state.applyTransaction(tx.transaction),
+        contractState,
+        pendingTransactions,
+      );
+
+      this.storage.contractStorage.set(storageKey, nextContractState);
+    }
 
     for (const tx of newBlock.transactions) {
       this.storage.transactionToBlockMap.set(tx.hash, newBlock.height);
@@ -458,8 +508,9 @@ export interface MockL1State {
   pendingTransactions: L1Transaction[];
   transactionToBlockMap: Map<`0x${string}`, bigint>;
   blocks: Block[];
+  hashToBlockMap: Map<`0x${string}`, Block>;
 
-  contractStorage: Map<symbol, unknown>;
+  contractStorage: Map<symbol, MockContractStorage>;
 }
 
 /**
@@ -467,6 +518,14 @@ export interface MockL1State {
  * and returns the state for the MockESPTokenContract.
  */
 function useMockL1State(initialState: Partial<MockL1State> = {}) {
+  const zeroBlock: Block = {
+    hash: hashFromBlockParts(0n, 0n, []),
+    parentHash:
+      '0x0000000000000000000000000000000000000000000000000000000000000000',
+    height: 0n,
+    transactions: [],
+    timestamp: 0n,
+  };
   const [state] = React.useState<MockL1State>({
     balances: initialState.balances ?? new Map(),
     transactions: initialState.transactions ?? new Map(),
@@ -474,25 +533,22 @@ function useMockL1State(initialState: Partial<MockL1State> = {}) {
     pendingBlockHeight: initialState.pendingBlockHeight ?? 1n,
     pendingTransactions: initialState.pendingTransactions ?? [],
     transactionToBlockMap: initialState.transactionToBlockMap ?? new Map(),
-    blocks: initialState.blocks ?? [
-      {
-        hash: `0x0`,
-        height: 0n,
-        transactions: [],
-        timestamp: 0n,
-      },
-    ],
+    blocks: initialState.blocks ?? [zeroBlock],
+    hashToBlockMap:
+      initialState.hashToBlockMap ?? new Map([[zeroBlock.hash, zeroBlock]]),
     contractStorage: initialState.contractStorage ?? new Map(),
   });
   return state;
 }
 
-interface AutoAdvanceL1MethodsProps {
+interface AutoAdvanceL1MethodsProps extends React.PropsWithChildren {
   interval?: number;
 }
 
-const AutoAdvanceL1Methods: React.FC<AutoAdvanceL1MethodsProps> = (props) => {
-  const interval = props.interval ?? 12000;
+export const ProvideAutoAdvanceL1Methods: React.FC<
+  React.PropsWithChildren<AutoAdvanceL1MethodsProps>
+> = ({ interval: passedInterval, children }) => {
+  const interval = passedInterval ?? 12000;
   const l1Methods = React.useContext(L1MethodsContext);
   React.useEffect(() => {
     if (!(l1Methods instanceof MockL1MethodsImpl)) {
@@ -506,7 +562,7 @@ const AutoAdvanceL1Methods: React.FC<AutoAdvanceL1MethodsProps> = (props) => {
     return () => clearInterval(intervalHandle);
   }, [l1Methods, interval]);
 
-  return null;
+  return children;
 };
 
 /**
@@ -532,7 +588,6 @@ export const MockL1Methods: React.FC<React.PropsWithChildren> = ({
 
   return (
     <L1MethodsContext.Provider value={l1Methods}>
-      <AutoAdvanceL1Methods />
       {children}
     </L1MethodsContext.Provider>
   );
