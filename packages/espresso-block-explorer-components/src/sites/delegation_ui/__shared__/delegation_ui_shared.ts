@@ -163,7 +163,7 @@ async function newDelegationInteraction(
   await step('Delegate Funds', async () => {
     const delegateButton1 = await act(async () => {
       return findByText<HTMLButtonElement>(modalDialog, 'Delegate', {
-        selector: 'td button',
+        selector: 'button',
       });
     });
 
