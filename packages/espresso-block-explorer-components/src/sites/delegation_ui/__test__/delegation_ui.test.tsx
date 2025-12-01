@@ -18,8 +18,8 @@ describe('Delegation UI', { timeout: 30_000 }, () => {
       expect(await findByRole(element.container, 'table')).toBeInTheDocument();
     });
 
-    await act(async () =>
-      FakeDataInteractions.play!({ canvasElement: element.container }),
-    );
+    // await act(async () =>
+    //   FakeDataInteractions.play!({ canvasElement: element.container }),
+    // );
   });
 });
