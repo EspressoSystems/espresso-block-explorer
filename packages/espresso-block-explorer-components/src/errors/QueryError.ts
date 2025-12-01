@@ -128,18 +128,20 @@ export class QuerySubErrorWrapper {
   }
 }
 
-class QuerySubErrorWrapperDecoder
-  implements Converter<unknown, QuerySubErrorWrapper>
-{
+class QuerySubErrorWrapperDecoder implements Converter<
+  unknown,
+  QuerySubErrorWrapper
+> {
   convert(input: unknown): QuerySubErrorWrapper {
     assertRecordWithKeys(input, 'message');
     return new QuerySubErrorWrapper(stringCodec.decode(input.message));
   }
 }
 
-class QuerySubErrorWrapperEncoder
-  implements Converter<QuerySubErrorWrapper, unknown>
-{
+class QuerySubErrorWrapperEncoder implements Converter<
+  QuerySubErrorWrapper,
+  unknown
+> {
   convert(input: QuerySubErrorWrapper): unknown {
     return { message: stringCodec.encode(input.message) };
   }
@@ -154,9 +156,10 @@ class QuerySubErrorWrapperCodec extends TypeCheckingCodec<QuerySubErrorWrapper> 
 
 const querySubErrorWrapperCodec = new QuerySubErrorWrapperCodec();
 
-class QuerySubErrorErrorDecoder
-  implements Converter<unknown, QuerySubErrorError>
-{
+class QuerySubErrorErrorDecoder implements Converter<
+  unknown,
+  QuerySubErrorError
+> {
   convert(input: unknown): QuerySubErrorError {
     assertRecordWithKeys(input, 'Error');
     return new QuerySubErrorError(
@@ -165,9 +168,10 @@ class QuerySubErrorErrorDecoder
   }
 }
 
-class QuerySubErrorErrorEncoder
-  implements Converter<QuerySubErrorError, unknown>
-{
+class QuerySubErrorErrorEncoder implements Converter<
+  QuerySubErrorError,
+  unknown
+> {
   convert(input: QuerySubErrorError): unknown {
     return { Error: querySubErrorWrapperCodec.encode(input.error) };
   }

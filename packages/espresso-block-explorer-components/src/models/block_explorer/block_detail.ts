@@ -13,5 +13,7 @@ export interface BlockDetailEntry {
   readonly rewards: MonetaryValue[];
 }
 
-export interface BlockDetailAsyncRetriever
-  extends AsyncRetriever<number, BlockDetailEntry> {}
+export interface BlockDetailAsyncRetriever extends AsyncRetriever<
+  number,
+  BlockDetailEntry
+> {}

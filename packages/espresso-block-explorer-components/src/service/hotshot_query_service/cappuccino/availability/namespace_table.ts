@@ -20,9 +20,10 @@ export class CappuccinoNamespaceTable {
   }
 }
 
-class CappuccinoNamespaceTableDecoder
-  implements Converter<unknown, CappuccinoNamespaceTable>
-{
+class CappuccinoNamespaceTableDecoder implements Converter<
+  unknown,
+  CappuccinoNamespaceTable
+> {
   convert(input: unknown): CappuccinoNamespaceTable {
     assertRecordWithKeys(input, 'bytes');
 
@@ -32,9 +33,7 @@ class CappuccinoNamespaceTableDecoder
   }
 }
 
-class CappuccinoNamespaceTableEncoder
-  implements Converter<CappuccinoNamespaceTable>
-{
+class CappuccinoNamespaceTableEncoder implements Converter<CappuccinoNamespaceTable> {
   convert(input: CappuccinoNamespaceTable) {
     assertInstanceOf(input, CappuccinoNamespaceTable);
 

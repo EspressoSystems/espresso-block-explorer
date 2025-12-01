@@ -38,9 +38,10 @@ export class ActiveNodeSetEntry {
  * ActiveNodeSetEntryJSONDecoder decodes ActiveNodeSetEntry objects from a JSON
  * object.
  */
-class ActiveNodeSetEntryJSONDecoder
-  implements Converter<unknown, ActiveNodeSetEntry>
-{
+class ActiveNodeSetEntryJSONDecoder implements Converter<
+  unknown,
+  ActiveNodeSetEntry
+> {
   convert(input: unknown): ActiveNodeSetEntry {
     if (
       isRecordWithKeys(
@@ -84,9 +85,10 @@ class ActiveNodeSetEntryJSONDecoder
  * ActiveNodeSetEntryJSONEncoder encodes ActiveNodeSetEntry objects to a JSON
  * object.
  */
-class ActiveNodeSetEntryJSONEncoder
-  implements Converter<ActiveNodeSetEntry, unknown>
-{
+class ActiveNodeSetEntryJSONEncoder implements Converter<
+  ActiveNodeSetEntry,
+  unknown
+> {
   convert(input: ActiveNodeSetEntry): unknown {
     if (
       input.voterParticipation instanceof RatioRational &&

@@ -27,8 +27,7 @@ export interface BlockSummary {
   time: Date;
 }
 
-export interface BlockSummaryDataTableState
-  extends DataTableState<BlockSummaryColumn> {
+export interface BlockSummaryDataTableState extends DataTableState<BlockSummaryColumn> {
   startAtBlock?: number;
 }
 

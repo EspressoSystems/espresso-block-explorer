@@ -51,9 +51,7 @@ const RAPID_RECONNECT_PENALTY_MAX = 5000;
 //   wss://example.com/v0/
 //   ws://localhost:9000/v0/
 
-export default class WebSocketDataCappuccinoNodeValidatorAPI
-  implements WebWorkerNodeValidatorAPI
-{
+export default class WebSocketDataCappuccinoNodeValidatorAPI implements WebWorkerNodeValidatorAPI {
   readonly responseStream: Channel<WebWorkerProxyResponse>;
   readonly requestStream: Channel<WebWorkerProxyRequest>;
   readonly serviceBaseURL: URL;

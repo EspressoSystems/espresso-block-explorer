@@ -38,9 +38,10 @@ export class InvalidBase64AlphabetLengthError extends BaseError {
   }
 }
 
-class InvalidBase64AlphabetLengthErrorDecoder
-  implements Converter<unknown, InvalidBase64AlphabetLengthError>
-{
+class InvalidBase64AlphabetLengthErrorDecoder implements Converter<
+  unknown,
+  InvalidBase64AlphabetLengthError
+> {
   convert(input: unknown): InvalidBase64AlphabetLengthError {
     assertRecordWithKeys(input, 'code', 'length', 'message');
     assertErrorCode(input, kInvalidBase64AlphabetLengthErrorCode);
@@ -51,9 +52,7 @@ class InvalidBase64AlphabetLengthErrorDecoder
   }
 }
 
-class InvalidBase64AlphabetLengthErrorEncoder
-  implements Converter<InvalidBase64AlphabetLengthError>
-{
+class InvalidBase64AlphabetLengthErrorEncoder implements Converter<InvalidBase64AlphabetLengthError> {
   convert(input: InvalidBase64AlphabetLengthError) {
     assertInstanceOf(input, InvalidBase64AlphabetLengthError);
 

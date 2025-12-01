@@ -8,9 +8,7 @@ import { CappuccinoHotShotQueryServiceStatusAPI } from '../status_api';
  * as a placeholder for the Status API, and should be replaced with a real
  * implementation.
  */
-export class UnimplementedCappuccinoHotShotQueryServiceStatusAPI
-  implements CappuccinoHotShotQueryServiceStatusAPI
-{
+export class UnimplementedCappuccinoHotShotQueryServiceStatusAPI implements CappuccinoHotShotQueryServiceStatusAPI {
   async blockHeight(): Promise<number> {
     throw new UnimplementedError();
   }

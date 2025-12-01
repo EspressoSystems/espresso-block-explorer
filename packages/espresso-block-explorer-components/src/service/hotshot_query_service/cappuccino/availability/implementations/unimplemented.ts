@@ -13,9 +13,7 @@ import { CappuccinoAPITransactionResponse } from '../transaction_response';
  * as a placeholder for the Availability API, and should be replaced with a real
  * implementation.
  */
-export class UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI
-  implements CappuccinoHotShotQueryServiceAvailabilityAPI
-{
+export class UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI implements CappuccinoHotShotQueryServiceAvailabilityAPI {
   async getLeafFromHeight(): Promise<CappuccinoAPILeafResponse> {
     throw new UnimplementedError();
   }

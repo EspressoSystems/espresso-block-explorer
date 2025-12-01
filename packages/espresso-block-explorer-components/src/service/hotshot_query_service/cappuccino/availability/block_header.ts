@@ -67,9 +67,10 @@ export class CappuccinoAPIHeader {
   }
 }
 
-export class CappuccinoAPIHeaderDecoder
-  implements Converter<unknown, CappuccinoAPIHeader>
-{
+export class CappuccinoAPIHeaderDecoder implements Converter<
+  unknown,
+  CappuccinoAPIHeader
+> {
   convert(input: unknown): CappuccinoAPIHeader {
     assertRecordWithKeys(
       input,
@@ -100,9 +101,7 @@ export class CappuccinoAPIHeaderDecoder
   }
 }
 
-export class CappuccinoAPIHeaderEncoder
-  implements Converter<CappuccinoAPIHeader>
-{
+export class CappuccinoAPIHeaderEncoder implements Converter<CappuccinoAPIHeader> {
   convert(input: CappuccinoAPIHeader) {
     assertInstanceOf(input, CappuccinoAPIHeader);
 

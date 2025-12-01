@@ -9,9 +9,7 @@ import { ESPTokenContractGasEstimator } from './esp_token_interface';
  * for ESP token contract methods. It is implemented via the Wagmi
  * estimateContractGas utility function.
  */
-export class ESPTokenContractGasEstimatorRemote
-  implements ESPTokenContractGasEstimator
-{
+export class ESPTokenContractGasEstimatorRemote implements ESPTokenContractGasEstimator {
   // Implementation of ESPTokenContract methods would go here
   constructor(
     private readonly config: Config,

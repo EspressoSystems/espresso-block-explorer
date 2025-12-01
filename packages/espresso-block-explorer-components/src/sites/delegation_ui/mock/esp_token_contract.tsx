@@ -94,9 +94,7 @@ function applyActionToState(
  * representing an action that modifies the state of the
  * MockESPTokenContract.
  */
-export abstract class ESPTokenContractStateAction
-  implements UnderlyingTransaction
-{
+export abstract class ESPTokenContractStateAction implements UnderlyingTransaction {
   public readonly contractAddress: undefined | `0x${string}`;
   public abstract readonly from: `0x${string}`;
   public abstract readonly to: `0x${string}`;

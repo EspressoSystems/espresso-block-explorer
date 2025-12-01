@@ -27,9 +27,10 @@ export class CappuccinoAPILeafResponse {
   }
 }
 
-export class CappuccinoAPILeafResponseDecoder
-  implements Converter<unknown, CappuccinoAPILeafResponse>
-{
+export class CappuccinoAPILeafResponseDecoder implements Converter<
+  unknown,
+  CappuccinoAPILeafResponse
+> {
   convert(input: unknown): CappuccinoAPILeafResponse {
     assertRecordWithKeys(input, 'leaf', 'qc');
 
@@ -40,9 +41,7 @@ export class CappuccinoAPILeafResponseDecoder
   }
 }
 
-export class CappuccinoAPILeafResponseEncoder
-  implements Converter<CappuccinoAPILeafResponse>
-{
+export class CappuccinoAPILeafResponseEncoder implements Converter<CappuccinoAPILeafResponse> {
   convert(input: CappuccinoAPILeafResponse) {
     assertInstanceOf(input, CappuccinoAPILeafResponse);
 

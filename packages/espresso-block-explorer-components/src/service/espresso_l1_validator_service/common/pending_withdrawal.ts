@@ -34,9 +34,10 @@ export class PendingWithdrawal {
 /**
  * PendingWithdrawalEncoder encodes PendingWithdrawal objects to a JSON object.
  */
-class PendingWithdrawalEncoder
-  implements Converter<PendingWithdrawal, unknown>
-{
+class PendingWithdrawalEncoder implements Converter<
+  PendingWithdrawal,
+  unknown
+> {
   convert(input: PendingWithdrawal): unknown {
     return {
       delegator: hexArrayBufferCodec.encode(input.delegator),
@@ -50,9 +51,10 @@ class PendingWithdrawalEncoder
 /**
  * PendingWithdrawalDecoder decodes PendingWithdrawal objects from a JSON object.
  */
-class PendingWithdrawalDecoder
-  implements Converter<unknown, PendingWithdrawal>
-{
+class PendingWithdrawalDecoder implements Converter<
+  unknown,
+  PendingWithdrawal
+> {
   convert(input: unknown): PendingWithdrawal {
     assertRecordWithKeys(
       input,

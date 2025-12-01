@@ -3,9 +3,7 @@ import { ActiveValidators, activeValidatorsCodec } from '../active_validators';
 import { CappuccinoHotShotQueryServiceNodeAPI } from '../node_api';
 import { StakeTable, stakeTableCodec } from '../stake_table';
 
-export class FetchBasedCappuccinoHotShotQueryServiceNodeAPI
-  implements CappuccinoHotShotQueryServiceNodeAPI
-{
+export class FetchBasedCappuccinoHotShotQueryServiceNodeAPI implements CappuccinoHotShotQueryServiceNodeAPI {
   private readonly fetcher: typeof fetch;
   private readonly baseURL: URL;
   private readonly stakeTableURL: URL;

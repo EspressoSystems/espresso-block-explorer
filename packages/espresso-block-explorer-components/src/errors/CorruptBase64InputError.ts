@@ -36,9 +36,10 @@ export class CorruptBase64InputError extends BaseError {
   }
 }
 
-class CorruptBase64InputErrorDecoder
-  implements Converter<unknown, CorruptBase64InputError>
-{
+class CorruptBase64InputErrorDecoder implements Converter<
+  unknown,
+  CorruptBase64InputError
+> {
   convert(input: unknown): CorruptBase64InputError {
     assertRecordWithKeys(input, 'code', 'offset', 'message');
     assertErrorCode(input, kCorruptBase64InputErrorCode);
@@ -49,9 +50,7 @@ class CorruptBase64InputErrorDecoder
   }
 }
 
-class CorruptBase64InputErrorEncoder
-  implements Converter<CorruptBase64InputError>
-{
+class CorruptBase64InputErrorEncoder implements Converter<CorruptBase64InputError> {
   convert(input: CorruptBase64InputError) {
     assertInstanceOf(input, CorruptBase64InputError);
     return {

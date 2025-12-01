@@ -52,9 +52,10 @@ export class CommissionPercent {
   }
 }
 
-export class CommissionPercentDecoder
-  implements Converter<unknown, CommissionPercent>
-{
+export class CommissionPercentDecoder implements Converter<
+  unknown,
+  CommissionPercent
+> {
   convert(input: unknown): CommissionPercent {
     if (typeof input !== 'number') {
       throw new InvalidTypeError(typeof input, 'number');
@@ -64,9 +65,10 @@ export class CommissionPercentDecoder
   }
 }
 
-export class CommissionPercentEncoder
-  implements Converter<CommissionPercent, number>
-{
+export class CommissionPercentEncoder implements Converter<
+  CommissionPercent,
+  number
+> {
   convert(input: CommissionPercent): number {
     if (!(input instanceof CommissionPercent)) {
       throw new InvalidTypeError(input, 'CommissionPercent');

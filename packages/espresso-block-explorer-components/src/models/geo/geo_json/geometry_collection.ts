@@ -39,9 +39,7 @@ export default class GeoJSONGeometryCollection extends GeoJSONGeometry {
  * GeoJSONGeometryCollectionEncoder is a class that encodes a
  * GeoJSONGeometryCollection object into a JSON compatible object.
  */
-class GeoJSONGeometryCollectionEncoder
-  implements Converter<GeoJSONGeometryCollection>
-{
+class GeoJSONGeometryCollectionEncoder implements Converter<GeoJSONGeometryCollection> {
   readonly listGeometryCodec: Codec<GeoJSONGeometry[]>;
   constructor(listGeometryCodec: Codec<GeoJSONGeometry[]>) {
     this.listGeometryCodec = listGeometryCodec;
@@ -59,9 +57,10 @@ class GeoJSONGeometryCollectionEncoder
  * GeoJSONGeometryCollectionDecoder is a class that decodes a JSON compatible
  * object into a GeoJSONGeometryCollection object.
  */
-class GeoJSONGeometryCollectionDecoder
-  implements Converter<unknown, GeoJSONGeometryCollection>
-{
+class GeoJSONGeometryCollectionDecoder implements Converter<
+  unknown,
+  GeoJSONGeometryCollection
+> {
   readonly listGeometryCodec: Codec<GeoJSONGeometry[]>;
   constructor(listGeometryCodec: Codec<GeoJSONGeometry[]>) {
     this.listGeometryCodec = listGeometryCodec;

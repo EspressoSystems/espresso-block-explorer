@@ -144,9 +144,7 @@ export interface HARWebSocketMessage {
 //   replay:https://example.com/captured.har
 //   replay:/node-validator-recording-1.har
 
-export default class ReplayDataCappuccinoNodeValidatorAPI
-  implements WebWorkerNodeValidatorAPI
-{
+export default class ReplayDataCappuccinoNodeValidatorAPI implements WebWorkerNodeValidatorAPI {
   readonly responseStream: Channel<WebWorkerProxyRequest>;
   readonly requestStream: Channel<WebWorkerProxyResponse>;
   readonly capturedHAR: HARFormat;

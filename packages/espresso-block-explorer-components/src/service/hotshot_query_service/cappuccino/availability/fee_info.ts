@@ -23,9 +23,10 @@ export class CappuccinoFeeInfo {
   }
 }
 
-class CappuccinoFeeInfoDecoder
-  implements Converter<unknown, CappuccinoFeeInfo>
-{
+class CappuccinoFeeInfoDecoder implements Converter<
+  unknown,
+  CappuccinoFeeInfo
+> {
   convert(input: unknown): CappuccinoFeeInfo {
     assertRecordWithKeys(input, 'account', 'amount');
 

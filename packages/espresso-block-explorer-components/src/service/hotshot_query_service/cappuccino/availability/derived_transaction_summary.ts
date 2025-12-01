@@ -43,9 +43,10 @@ export class CappuccinoDerivedTransactionSummary {
   }
 }
 
-export class CappuccinoDerivedTransactionSummaryDecoder
-  implements Converter<unknown, CappuccinoDerivedTransactionSummary>
-{
+export class CappuccinoDerivedTransactionSummaryDecoder implements Converter<
+  unknown,
+  CappuccinoDerivedTransactionSummary
+> {
   convert(input: unknown): CappuccinoDerivedTransactionSummary {
     assertRecordWithKeys(input, 'hash', 'header', 'offset', 'transaction');
 
@@ -58,9 +59,7 @@ export class CappuccinoDerivedTransactionSummaryDecoder
   }
 }
 
-export class CappuccinoDerivedTransactionSummaryEncoder
-  implements Converter<CappuccinoDerivedTransactionSummary>
-{
+export class CappuccinoDerivedTransactionSummaryEncoder implements Converter<CappuccinoDerivedTransactionSummary> {
   convert(input: CappuccinoDerivedTransactionSummary) {
     assertInstanceOf(input, CappuccinoDerivedTransactionSummary);
 

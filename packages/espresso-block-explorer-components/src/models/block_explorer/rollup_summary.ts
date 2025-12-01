@@ -5,5 +5,7 @@ export interface RollUpSummaryEntry {
   readonly transactions: number;
 }
 
-export interface RollUpSummaryAsyncRetriever
-  extends AsyncRetriever<void, RollUpSummaryEntry[]> {}
+export interface RollUpSummaryAsyncRetriever extends AsyncRetriever<
+  void,
+  RollUpSummaryEntry[]
+> {}

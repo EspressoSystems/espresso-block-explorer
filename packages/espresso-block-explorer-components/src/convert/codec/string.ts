@@ -17,9 +17,10 @@ export const isStringArray = isArrayMemberFunction(isString);
  * is act as an assertion that a string is given where a string is
  * expected.
  */
-export class StringDecoder<S extends string = string>
-  implements Converter<unknown, S>
-{
+export class StringDecoder<S extends string = string> implements Converter<
+  unknown,
+  S
+> {
   convert(input: unknown): S {
     if (!isString(input)) {
       throw new InvalidTypeError(typeof input, 'string');
@@ -34,9 +35,10 @@ export class StringDecoder<S extends string = string>
  * This is an identity function, so no conversion actually takes
  * place.
  */
-export class StringEncoder<S extends string = string>
-  implements Converter<S, S>
-{
+export class StringEncoder<S extends string = string> implements Converter<
+  S,
+  S
+> {
   convert(input: S): S {
     assertType(input, 'string');
 

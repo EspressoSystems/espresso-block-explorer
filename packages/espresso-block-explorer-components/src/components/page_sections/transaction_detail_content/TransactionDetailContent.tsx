@@ -19,6 +19,7 @@ import {
 import { HexDumpAndCopyButtons } from './copy_as';
 import { InfiniteGardenDisplay } from './infinite_garden_display';
 import { NitroBatchDetectAndDisplay } from './nitro_batch_display';
+import { OptimismBatchDecodeAndDisplay } from './optimism_batch_display';
 import './transaction_detail_content.css';
 
 /**
@@ -163,6 +164,7 @@ export const TransactionDataContents: React.FC = () => {
         <HexDumpAndCopyButtons data={data.data} />
       </TableLabeledValue>
       <NitroBatchDetectAndDisplay />
+      <OptimismBatchDecodeAndDisplay />
       <InfiniteGardenDisplay />
     </>
   );

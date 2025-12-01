@@ -10,17 +10,19 @@ export class WebSocketCommandClose extends WebSocketCommand {
   }
 }
 
-class WebSocketCommandCloseEncoder
-  implements Converter<WebSocketCommandClose, string>
-{
+class WebSocketCommandCloseEncoder implements Converter<
+  WebSocketCommandClose,
+  string
+> {
   convert() {
     return kWebSocketCommandCloseType;
   }
 }
 
-class WebSocketCommandCloseDecoder
-  implements Converter<WebSocketCommandClose, unknown>
-{
+class WebSocketCommandCloseDecoder implements Converter<
+  WebSocketCommandClose,
+  unknown
+> {
   convert(input: unknown) {
     if (typeof input !== 'string') {
       throw new InvalidTypeError(typeof input, 'string');

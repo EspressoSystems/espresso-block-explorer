@@ -25,9 +25,10 @@ export default class ChannelClosedError extends BaseError {
   }
 }
 
-class ChannelClosedErrorDecoder
-  implements Converter<unknown, ChannelClosedError>
-{
+class ChannelClosedErrorDecoder implements Converter<
+  unknown,
+  ChannelClosedError
+> {
   convert(input: unknown): ChannelClosedError {
     assertRecordWithKeys(input, 'code', 'message');
     assertErrorCode(input, kChannelClosedErrorCode);

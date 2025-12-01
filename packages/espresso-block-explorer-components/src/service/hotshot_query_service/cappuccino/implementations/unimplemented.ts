@@ -13,9 +13,7 @@ import { UnimplementedCappuccinoHotShotQueryServiceStatusAPI } from '../status/i
  * Cappuccino HotShot Query Service, and should be replaced with a real
  * implementation.
  */
-export class UnimplementedCappuccinoHotShotQueryService
-  implements CappuccinoHotShotQueryService
-{
+export class UnimplementedCappuccinoHotShotQueryService implements CappuccinoHotShotQueryService {
   readonly availability =
     new UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI();
   readonly status = new UnimplementedCappuccinoHotShotQueryServiceStatusAPI();

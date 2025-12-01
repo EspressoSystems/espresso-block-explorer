@@ -30,8 +30,7 @@ function createDataRetrieverFromRetriever(
   };
 }
 
-export interface RollUpsSummaryDatatTableState
-  extends DataTableState<BlockSummaryColumn> {}
+export interface RollUpsSummaryDatatTableState extends DataTableState<BlockSummaryColumn> {}
 
 /**
  * RetrieverContext represents the retriever to be utilized for retrieving

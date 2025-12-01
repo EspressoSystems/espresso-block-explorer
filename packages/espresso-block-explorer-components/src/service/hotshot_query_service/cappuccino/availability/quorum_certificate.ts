@@ -52,9 +52,10 @@ export class CappuccinoAPIQuorumCertificate {
   }
 }
 
-export class CappuccinoAPIQuorumCertificateDecoder
-  implements Converter<unknown, CappuccinoAPIQuorumCertificate>
-{
+export class CappuccinoAPIQuorumCertificateDecoder implements Converter<
+  unknown,
+  CappuccinoAPIQuorumCertificate
+> {
   convert(input: unknown): CappuccinoAPIQuorumCertificate {
     assertRecordWithKeys(
       input,
@@ -79,9 +80,7 @@ export class CappuccinoAPIQuorumCertificateDecoder
   }
 }
 
-export class CappuccinoAPIQuorumCertificateEncoder
-  implements Converter<CappuccinoAPIQuorumCertificate>
-{
+export class CappuccinoAPIQuorumCertificateEncoder implements Converter<CappuccinoAPIQuorumCertificate> {
   convert(input: CappuccinoAPIQuorumCertificate) {
     assertInstanceOf(input, CappuccinoAPIQuorumCertificate);
 

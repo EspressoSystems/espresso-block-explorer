@@ -27,9 +27,7 @@ export class NodeValidatorServiceResponse extends WebWorkerProxyResponse {
   }
 }
 
-class NodeValidatorServiceResponseEncoder
-  implements Converter<NodeValidatorServiceResponse>
-{
+class NodeValidatorServiceResponseEncoder implements Converter<NodeValidatorServiceResponse> {
   convert(input: NodeValidatorServiceResponse) {
     return {
       [kNodeValidatorServiceResponseType]:
@@ -38,9 +36,10 @@ class NodeValidatorServiceResponseEncoder
   }
 }
 
-class NodeValidatorServiceResponseDecoder
-  implements Converter<unknown, NodeValidatorServiceResponse>
-{
+class NodeValidatorServiceResponseDecoder implements Converter<
+  unknown,
+  NodeValidatorServiceResponse
+> {
   convert(input: unknown): NodeValidatorServiceResponse {
     assertRecordWithKeys(input, kNodeValidatorServiceResponseType);
 
@@ -64,9 +63,10 @@ class NodeValidatorServiceResponseCodec extends TypeCheckingCodec<
 export const nodeValidatorServiceResponseCodec =
   new NodeValidatorServiceResponseCodec();
 
-class NodeValidatorResponseToWebWorkerProxyResponseConverter
-  implements Converter<CappuccinoNodeValidatorResponse, WebWorkerProxyResponse>
-{
+class NodeValidatorResponseToWebWorkerProxyResponseConverter implements Converter<
+  CappuccinoNodeValidatorResponse,
+  WebWorkerProxyResponse
+> {
   convert(input: CappuccinoNodeValidatorResponse): WebWorkerProxyResponse {
     return new NodeValidatorServiceResponse(input);
   }

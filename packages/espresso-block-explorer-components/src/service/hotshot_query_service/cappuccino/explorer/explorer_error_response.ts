@@ -22,9 +22,10 @@ export class CappuccinoExplorerErrorResponse {
   }
 }
 
-class CappuccinoExplorerErrorResponseDecoder
-  implements Converter<unknown, CappuccinoExplorerErrorResponse>
-{
+class CappuccinoExplorerErrorResponseDecoder implements Converter<
+  unknown,
+  CappuccinoExplorerErrorResponse
+> {
   convert(input: unknown): CappuccinoExplorerErrorResponse {
     assertRecordWithKeys(input, 'Explorer');
 
@@ -34,9 +35,7 @@ class CappuccinoExplorerErrorResponseDecoder
   }
 }
 
-class CappuccinoExplorerErrorResponseEncoder
-  implements Converter<CappuccinoExplorerErrorResponse>
-{
+class CappuccinoExplorerErrorResponseEncoder implements Converter<CappuccinoExplorerErrorResponse> {
   convert(input: CappuccinoExplorerErrorResponse) {
     assertInstanceOf(input, CappuccinoExplorerErrorResponse);
 
@@ -72,9 +71,10 @@ export class CappuccinoExplorerErrorWrapper {
   }
 }
 
-class CappuccinoExplorerErrorWrapperDecoder
-  implements Converter<unknown, CappuccinoExplorerErrorWrapper>
-{
+class CappuccinoExplorerErrorWrapperDecoder implements Converter<
+  unknown,
+  CappuccinoExplorerErrorWrapper
+> {
   convert(input: unknown): CappuccinoExplorerErrorWrapper {
     assertRecordWithKeys(input, 'error');
 
@@ -84,9 +84,7 @@ class CappuccinoExplorerErrorWrapperDecoder
   }
 }
 
-class CappuccinoExplorerErrorWrapperEncoder
-  implements Converter<CappuccinoExplorerErrorWrapper>
-{
+class CappuccinoExplorerErrorWrapperEncoder implements Converter<CappuccinoExplorerErrorWrapper> {
   convert(input: CappuccinoExplorerErrorWrapper) {
     assertInstanceOf(input, CappuccinoExplorerErrorWrapper);
 
@@ -112,9 +110,10 @@ export const cappuccinoExplorerErrorWrapperCodec =
 export const cappuccinoExplorerErrorResponseCodec =
   new CappuccinoExplorerErrorResponseCodec();
 
-class UnwrappedCappuccinoExplorerErrorResponseDecoder
-  implements Converter<unknown, EspressoError>
-{
+class UnwrappedCappuccinoExplorerErrorResponseDecoder implements Converter<
+  unknown,
+  EspressoError
+> {
   convert(input: unknown): EspressoError {
     return cappuccinoExplorerErrorResponseCodec.decode(input).explorer.error;
   }

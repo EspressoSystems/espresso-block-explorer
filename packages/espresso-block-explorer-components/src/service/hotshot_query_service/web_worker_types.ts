@@ -99,9 +99,10 @@ export class WebWorkerResponseSuccess extends WebWorkerResponse {
   }
 }
 
-class WebWorkerResponseSuccessDecoder
-  implements Converter<unknown, WebWorkerResponseSuccess>
-{
+class WebWorkerResponseSuccessDecoder implements Converter<
+  unknown,
+  WebWorkerResponseSuccess
+> {
   convert(input: unknown): WebWorkerResponseSuccess {
     assertRecordWithKeys(input, 'requestID', 'response');
 
@@ -112,9 +113,7 @@ class WebWorkerResponseSuccessDecoder
   }
 }
 
-class WebWorkerResponseSuccessEncoder
-  implements Converter<WebWorkerResponseSuccess>
-{
+class WebWorkerResponseSuccessEncoder implements Converter<WebWorkerResponseSuccess> {
   convert(input: WebWorkerResponseSuccess) {
     assertInstanceOf(input, WebWorkerResponseSuccess);
 
@@ -149,9 +148,10 @@ export class WebWorkerResponseError extends WebWorkerResponse {
   }
 }
 
-class WebWorkerResponseErrorDecoder
-  implements Converter<unknown, WebWorkerResponseError>
-{
+class WebWorkerResponseErrorDecoder implements Converter<
+  unknown,
+  WebWorkerResponseError
+> {
   convert(input: unknown): WebWorkerResponseError {
     assertRecordWithKeys(input, 'requestID', 'error');
 
@@ -162,9 +162,7 @@ class WebWorkerResponseErrorDecoder
   }
 }
 
-class WebWorkerResponseErrorEncoder
-  implements Converter<WebWorkerResponseError>
-{
+class WebWorkerResponseErrorEncoder implements Converter<WebWorkerResponseError> {
   convert(input: WebWorkerResponseError) {
     assertInstanceOf(input, WebWorkerResponseError);
 
@@ -185,9 +183,10 @@ class WebWorkerResponseErrorCodec extends TypeCheckingCodec<
 
 export const webWorkerResponseErrorCodec = new WebWorkerResponseErrorCodec();
 
-class WebWorkerResponseDecoder
-  implements Converter<unknown, WebWorkerResponse>
-{
+class WebWorkerResponseDecoder implements Converter<
+  unknown,
+  WebWorkerResponse
+> {
   convert(input: unknown): WebWorkerResponse {
     if (isRecord(input, 'response', isUnknown)) {
       return webWorkerResponseSuccessCodec.decode(input);

@@ -25,9 +25,10 @@ export default class InvalidHexStringError extends BaseError {
   }
 }
 
-class InvalidHexStringErrorDecoder
-  implements Converter<unknown, InvalidHexStringError>
-{
+class InvalidHexStringErrorDecoder implements Converter<
+  unknown,
+  InvalidHexStringError
+> {
   convert(input: unknown): InvalidHexStringError {
     assertRecordWithKeys(input, 'code', 'message');
     assertErrorCode(input, kInvalidHexStringErrorCode);

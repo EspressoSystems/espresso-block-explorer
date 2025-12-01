@@ -15,9 +15,10 @@ import { GenericLATLNG } from './latlng_interface';
  * `LatLng` is used instead of `LatitudeLongitude` for convenience and
  * quicker typing.
  */
-export default class LatLng<Unit extends NumberLike>
-  implements GenericLATLNG<Latitude<Unit>, Longitude<Unit>>
-{
+export default class LatLng<Unit extends NumberLike> implements GenericLATLNG<
+  Latitude<Unit>,
+  Longitude<Unit>
+> {
   constructor(
     public readonly lat: Latitude<Unit>,
     public readonly lng: Longitude<Unit>,
@@ -39,9 +40,10 @@ export default class LatLng<Unit extends NumberLike>
   }
 }
 
-export class LatLngEncoder<Unit extends NumberLike>
-  implements Converter<LatLng<Unit>, [number, number]>
-{
+export class LatLngEncoder<Unit extends NumberLike> implements Converter<
+  LatLng<Unit>,
+  [number, number]
+> {
   readonly unitCodec: Codec<Unit, number, unknown>;
   constructor(unitCodec: Codec<Unit, number, unknown>) {
     this.unitCodec = unitCodec;
@@ -54,9 +56,10 @@ export class LatLngEncoder<Unit extends NumberLike>
   }
 }
 
-export class LatLngDecoder<Unit extends NumberLike>
-  implements Converter<unknown, LatLng<Unit>>
-{
+export class LatLngDecoder<Unit extends NumberLike> implements Converter<
+  unknown,
+  LatLng<Unit>
+> {
   readonly unitCodec: Codec<Unit, number, unknown>;
   constructor(unitCodec: Codec<Unit, number, unknown>) {
     this.unitCodec = unitCodec;

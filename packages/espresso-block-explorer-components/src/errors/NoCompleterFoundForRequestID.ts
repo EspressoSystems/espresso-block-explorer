@@ -34,9 +34,10 @@ export default class NoCompleterFoundForRequestID<
   }
 }
 
-class NoCompleterFoundForRequestIDDecoder
-  implements Converter<unknown, NoCompleterFoundForRequestID>
-{
+class NoCompleterFoundForRequestIDDecoder implements Converter<
+  unknown,
+  NoCompleterFoundForRequestID
+> {
   convert(input: unknown): NoCompleterFoundForRequestID {
     assertRecordWithKeys(input, 'code', 'requestID', 'message');
     assertErrorCode(input, kNoCompleterFoundForRequestIDCode);
@@ -47,9 +48,7 @@ class NoCompleterFoundForRequestIDDecoder
   }
 }
 
-class NoCompleterFoundForRequestIDEncoder
-  implements Converter<NoCompleterFoundForRequestID>
-{
+class NoCompleterFoundForRequestIDEncoder implements Converter<NoCompleterFoundForRequestID> {
   convert(input: NoCompleterFoundForRequestID) {
     assertInstanceOf(input, NoCompleterFoundForRequestID);
     return {

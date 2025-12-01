@@ -10,8 +10,9 @@ export interface AsyncRetriever<Key, Value> {
  * An AsyncRetrieverBase is a base class that implements the AsyncRetriever
  * in order to serve as a potential base class for all AsyncRetrievers.
  */
-export abstract class AsyncRetrieverBase<Key, Value>
-  implements AsyncRetriever<Key, Value>
-{
+export abstract class AsyncRetrieverBase<Key, Value> implements AsyncRetriever<
+  Key,
+  Value
+> {
   abstract retrieve(key: Key): Promise<Value>;
 }

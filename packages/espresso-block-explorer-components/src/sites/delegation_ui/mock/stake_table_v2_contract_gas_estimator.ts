@@ -4,9 +4,7 @@ import { StakeTableV2ContractGasEstimator } from '@/contracts/stake_table_v2/sta
  * MockStakeTableV2ContractGasEstimatorImpl is a mock implementation of
  * StakeTableV2ContractGasEstimator for testing purposes.
  */
-export class MockStakeTableV2ContractGasEstimatorImpl
-  implements StakeTableV2ContractGasEstimator
-{
+export class MockStakeTableV2ContractGasEstimatorImpl implements StakeTableV2ContractGasEstimator {
   async deregisterValidator(): Promise<bigint> {
     return 100001n;
   }

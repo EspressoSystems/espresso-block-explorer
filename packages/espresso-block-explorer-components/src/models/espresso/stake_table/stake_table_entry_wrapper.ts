@@ -19,9 +19,10 @@ export class StakeTableEntryWrapper {
   }
 }
 
-export class StakeTableEntryWrapperDecoder
-  implements Converter<unknown, StakeTableEntryWrapper>
-{
+export class StakeTableEntryWrapperDecoder implements Converter<
+  unknown,
+  StakeTableEntryWrapper
+> {
   convert(input: unknown): StakeTableEntryWrapper {
     assertRecordWithKeys(input, 'stake_table_entry', 'state_ver_key');
 
@@ -32,9 +33,10 @@ export class StakeTableEntryWrapperDecoder
   }
 }
 
-export class StakeTableEntryWrapperEncoder
-  implements Converter<StakeTableEntryWrapper, Record<string, unknown>>
-{
+export class StakeTableEntryWrapperEncoder implements Converter<
+  StakeTableEntryWrapper,
+  Record<string, unknown>
+> {
   convert(input: StakeTableEntryWrapper): Record<string, unknown> {
     assertInstanceOf(input, StakeTableEntryWrapper);
 

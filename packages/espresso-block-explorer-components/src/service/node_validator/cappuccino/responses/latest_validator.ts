@@ -38,9 +38,10 @@ export class CappuccinoLatestValidator extends CappuccinoNodeValidatorResponse {
   }
 }
 
-class CappuccinoLatestValidatorDecoder
-  implements Converter<unknown, CappuccinoLatestValidator>
-{
+class CappuccinoLatestValidatorDecoder implements Converter<
+  unknown,
+  CappuccinoLatestValidator
+> {
   convert(input: unknown): CappuccinoLatestValidator {
     assertRecordWithKeys(input, kCappuccinoLatestValidatorType);
 
@@ -50,9 +51,7 @@ class CappuccinoLatestValidatorDecoder
   }
 }
 
-class CappuccinoLatestValidatorEncoder
-  implements Converter<CappuccinoLatestValidator>
-{
+class CappuccinoLatestValidatorEncoder implements Converter<CappuccinoLatestValidator> {
   convert(input: CappuccinoLatestValidator) {
     return {
       [kCappuccinoLatestValidatorType]: validatorCodec.encode(input.validator),

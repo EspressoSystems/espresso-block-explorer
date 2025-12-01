@@ -19,9 +19,10 @@ export class WalletDiffUndelegationWithdrawal extends WalletDiff {
  * WalletDiffUndelegationWithdrawalJSONDecoder decodes WalletDiffUndelegationWithdrawal
  * objects from a JSON object.
  */
-class WalletDiffUndelegationWithdrawalJSONDecoder
-  implements Converter<unknown, WalletDiffUndelegationWithdrawal>
-{
+class WalletDiffUndelegationWithdrawalJSONDecoder implements Converter<
+  unknown,
+  WalletDiffUndelegationWithdrawal
+> {
   convert(input: unknown): WalletDiffUndelegationWithdrawal {
     return new WalletDiffUndelegationWithdrawal(
       withdrawalJSONCodec.decode(input),
@@ -33,9 +34,10 @@ class WalletDiffUndelegationWithdrawalJSONDecoder
  * WalletDiffUndelegationWithdrawalJSONEncoder encodes WalletDiffUndelegationWithdrawal
  * objects to a JSON object.
  */
-class WalletDiffUndelegationWithdrawalJSONEncoder
-  implements Converter<WalletDiffUndelegationWithdrawal, unknown>
-{
+class WalletDiffUndelegationWithdrawalJSONEncoder implements Converter<
+  WalletDiffUndelegationWithdrawal,
+  unknown
+> {
   convert(input: WalletDiffUndelegationWithdrawal): unknown {
     return withdrawalJSONCodec.encode(input.withdrawal);
   }

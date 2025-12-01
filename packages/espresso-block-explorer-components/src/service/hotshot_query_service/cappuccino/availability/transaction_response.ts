@@ -48,9 +48,10 @@ export class CappuccinoAPITransactionResponse {
   }
 }
 
-export class CappuccinoAPITransactionResponseDecoder
-  implements Converter<unknown, CappuccinoAPITransactionResponse>
-{
+export class CappuccinoAPITransactionResponseDecoder implements Converter<
+  unknown,
+  CappuccinoAPITransactionResponse
+> {
   convert(input: unknown): CappuccinoAPITransactionResponse {
     assertRecordWithKeys(
       input,
@@ -71,9 +72,7 @@ export class CappuccinoAPITransactionResponseDecoder
   }
 }
 
-export class CappuccinoAPITransactionResponseEncoder
-  implements Converter<CappuccinoAPITransactionResponse>
-{
+export class CappuccinoAPITransactionResponseEncoder implements Converter<CappuccinoAPITransactionResponse> {
   convert(input: CappuccinoAPITransactionResponse) {
     assertInstanceOf(input, CappuccinoAPITransactionResponse);
 

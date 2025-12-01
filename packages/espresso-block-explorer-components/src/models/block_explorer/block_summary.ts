@@ -19,5 +19,7 @@ export interface BlockSummaryRequest {
   blocksPerPage?: number;
 }
 
-export interface BlockSummaryAsyncRetriever
-  extends AsyncRetriever<BlockSummaryRequest, BlockSummaryEntry[]> {}
+export interface BlockSummaryAsyncRetriever extends AsyncRetriever<
+  BlockSummaryRequest,
+  BlockSummaryEntry[]
+> {}

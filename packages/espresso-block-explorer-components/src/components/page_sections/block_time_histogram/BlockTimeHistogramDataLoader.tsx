@@ -22,8 +22,10 @@ export interface BlockTimeHistogramData {
  * retrieve the data that is expected to be displayed on the Block Time
  * Histogram.
  */
-export interface BlockTimeHistogramAsyncRetriever
-  extends AsyncRetriever<void, HistogramEntry> {}
+export interface BlockTimeHistogramAsyncRetriever extends AsyncRetriever<
+  void,
+  HistogramEntry
+> {}
 
 /**
  * The BlockTimeHistogramAsyncRetrieverContext is a React context that is

@@ -24,9 +24,7 @@ function createWorker(): Worker {
   return singletonWorker;
 }
 
-export class WebWorkerClientBasedCappuccinoHotShotQueryService
-  implements CappuccinoHotShotQueryService
-{
+export class WebWorkerClientBasedCappuccinoHotShotQueryService implements CappuccinoHotShotQueryService {
   public readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI;
   public readonly status: CappuccinoHotShotQueryServiceStatusAPI;
   public readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;

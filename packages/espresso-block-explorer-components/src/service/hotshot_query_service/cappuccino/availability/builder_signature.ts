@@ -27,9 +27,10 @@ export class CappuccinoBuilderSignature {
   }
 }
 
-class CappuccinoBuilderSignatureDecoder
-  implements Converter<unknown, CappuccinoBuilderSignature>
-{
+class CappuccinoBuilderSignatureDecoder implements Converter<
+  unknown,
+  CappuccinoBuilderSignature
+> {
   convert(input: unknown): CappuccinoBuilderSignature {
     assertRecordWithKeys(input, 'r', 's', 'v');
 
@@ -41,9 +42,7 @@ class CappuccinoBuilderSignatureDecoder
   }
 }
 
-class CappuccinoBuilderSignatureEncoder
-  implements Converter<CappuccinoBuilderSignature>
-{
+class CappuccinoBuilderSignatureEncoder implements Converter<CappuccinoBuilderSignature> {
   convert(input: CappuccinoBuilderSignature) {
     assertInstanceOf(input, CappuccinoBuilderSignature);
 

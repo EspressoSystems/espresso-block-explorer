@@ -23,9 +23,7 @@ export default class CappuccinoCompanyIdentity {
   }
 }
 
-class CappuccinoCompanyIdentityEncoder
-  implements Converter<CappuccinoCompanyIdentity>
-{
+class CappuccinoCompanyIdentityEncoder implements Converter<CappuccinoCompanyIdentity> {
   convert(input: CappuccinoCompanyIdentity) {
     return {
       name: stringCodec.encode(input.name),
@@ -34,9 +32,10 @@ class CappuccinoCompanyIdentityEncoder
   }
 }
 
-class CappuccinoCompanyIdentityDecoder
-  implements Converter<unknown, CappuccinoCompanyIdentity>
-{
+class CappuccinoCompanyIdentityDecoder implements Converter<
+  unknown,
+  CappuccinoCompanyIdentity
+> {
   convert(input: unknown) {
     assertRecordWithKeys(input, 'name', 'website');
 

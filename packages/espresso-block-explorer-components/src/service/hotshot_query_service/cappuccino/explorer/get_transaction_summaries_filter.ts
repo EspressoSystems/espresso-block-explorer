@@ -27,9 +27,10 @@ export abstract class CappuccinoExplorerGetTransactionSummariesFilter {
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesFilterDecoder
-  implements Converter<unknown, CappuccinoExplorerGetTransactionSummariesFilter>
-{
+class CappuccinoExplorerGetTransactionSummariesFilterDecoder implements Converter<
+  unknown,
+  CappuccinoExplorerGetTransactionSummariesFilter
+> {
   convert(input: unknown): CappuccinoExplorerGetTransactionSummariesFilter {
     if (isRecord(input, 'block', isUnknown)) {
       return new CappuccinoExplorerGetTransactionSummariesFilterBlock(
@@ -47,9 +48,10 @@ class CappuccinoExplorerGetTransactionSummariesFilterDecoder
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesFilterEncoder
-  implements Converter<CappuccinoExplorerGetTransactionSummariesFilter, unknown>
-{
+class CappuccinoExplorerGetTransactionSummariesFilterEncoder implements Converter<
+  CappuccinoExplorerGetTransactionSummariesFilter,
+  unknown
+> {
   convert(input: CappuccinoExplorerGetTransactionSummariesFilter) {
     assertInstanceOf(input, CappuccinoExplorerGetTransactionSummariesFilter);
 

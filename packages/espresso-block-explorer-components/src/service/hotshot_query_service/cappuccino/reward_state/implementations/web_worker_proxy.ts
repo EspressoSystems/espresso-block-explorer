@@ -7,8 +7,8 @@ import { nullableRewardClaimInputCodec } from '../reward_claim_input';
 import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_start_api';
 
 export type RewardStateRequest<
-  Method extends
-    keyof CappuccinoHotShotQueryServiceRewardStateAPI = keyof CappuccinoHotShotQueryServiceRewardStateAPI,
+  Method extends keyof CappuccinoHotShotQueryServiceRewardStateAPI =
+    keyof CappuccinoHotShotQueryServiceRewardStateAPI,
 > = WebWorkerRequest<
   'reward-state',
   Method,

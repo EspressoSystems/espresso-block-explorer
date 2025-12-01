@@ -5,11 +5,10 @@ import Copy from '@/visual/icons/Copy';
 import React from 'react';
 import './copy_button.css';
 
-export interface ButtonProps
-  extends React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  > {
+export interface ButtonProps extends React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+> {
   content: string;
 }
 

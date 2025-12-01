@@ -59,9 +59,10 @@ export class EpochAndBlock {
  * EpochAndBlockNumberJSONDecoder decodes EpochAndBlock objects from a JSON
  * object.
  */
-class EpochAndBlockNumberJSONDecoder
-  implements Converter<unknown, EpochAndBlock>
-{
+class EpochAndBlockNumberJSONDecoder implements Converter<
+  unknown,
+  EpochAndBlock
+> {
   convert(input: unknown): EpochAndBlock {
     assertRecordWithKeys(input, 'epoch', 'block', 'timestamp');
 
@@ -77,9 +78,10 @@ class EpochAndBlockNumberJSONDecoder
  * EpochAndBlockNumberJSONEncoder encodes EpochAndBlock objects to a JSON
  * object.
  */
-class EpochAndBlockNumberJSONEncoder
-  implements Converter<EpochAndBlock, unknown>
-{
+class EpochAndBlockNumberJSONEncoder implements Converter<
+  EpochAndBlock,
+  unknown
+> {
   convert(input: EpochAndBlock): unknown {
     return {
       epoch: bigintCodec.encode(input.epoch),

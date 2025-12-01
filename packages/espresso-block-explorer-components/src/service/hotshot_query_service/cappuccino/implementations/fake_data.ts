@@ -11,9 +11,7 @@ import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_state/rew
 import { FakeDataCappuccinoHotShotQueryServiceStatusAPI } from '../status/implementations/fake_api';
 import { CappuccinoHotShotQueryServiceStatusAPI } from '../status/status_api';
 
-export class FakeDataCappuccinoHotShotQueryService
-  implements CappuccinoHotShotQueryService
-{
+export class FakeDataCappuccinoHotShotQueryService implements CappuccinoHotShotQueryService {
   public readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI &
     CappuccinoHotShotQueryServiceAvailabilityAPI =
     new FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI();

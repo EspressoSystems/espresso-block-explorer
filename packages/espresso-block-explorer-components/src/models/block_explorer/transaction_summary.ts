@@ -19,8 +19,7 @@ export interface TransactionSummaryRequest {
   transactionsPerPage?: number;
 }
 
-export interface TransactionSummaryAsyncRetriever
-  extends AsyncRetriever<
-    TransactionSummaryRequest,
-    TransactionSummaryEntry[]
-  > {}
+export interface TransactionSummaryAsyncRetriever extends AsyncRetriever<
+  TransactionSummaryRequest,
+  TransactionSummaryEntry[]
+> {}

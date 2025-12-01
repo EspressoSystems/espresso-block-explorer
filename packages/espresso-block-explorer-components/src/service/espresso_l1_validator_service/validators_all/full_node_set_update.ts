@@ -34,9 +34,10 @@ export class FullNodeSetUpdate {
  * FullValidatorSetUpdateJSONDecoder decodes FullNodeSetUpdate objects
  * from a JSON object.
  */
-class FullNodeSetUpdateJSONDecoder
-  implements Converter<unknown, FullNodeSetUpdate>
-{
+class FullNodeSetUpdateJSONDecoder implements Converter<
+  unknown,
+  FullNodeSetUpdate
+> {
   convert(input: unknown): FullNodeSetUpdate {
     assertRecordWithKeys(input, 'l1_block', 'diff');
     return new FullNodeSetUpdate(
@@ -50,9 +51,10 @@ class FullNodeSetUpdateJSONDecoder
  * FullNodeSetUpdateJSONEncoder encodes FullNodeSetUpdate objects
  * to a JSON object.
  */
-class FullNodeSetUpdateJSONEncoder
-  implements Converter<FullNodeSetUpdate, unknown>
-{
+class FullNodeSetUpdateJSONEncoder implements Converter<
+  FullNodeSetUpdate,
+  unknown
+> {
   convert(input: FullNodeSetUpdate): unknown {
     return {
       l1_block: l1BlockInfoJSONCodec.encode(input.l1Block),

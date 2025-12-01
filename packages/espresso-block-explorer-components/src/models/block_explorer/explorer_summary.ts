@@ -27,5 +27,7 @@ export interface ExplorerSummaryEntry {
   readonly histograms: HistogramEntry;
 }
 
-export interface ExplorerSummaryAsyncRetriever
-  extends AsyncRetriever<void, ExplorerSummaryEntry> {}
+export interface ExplorerSummaryAsyncRetriever extends AsyncRetriever<
+  void,
+  ExplorerSummaryEntry
+> {}

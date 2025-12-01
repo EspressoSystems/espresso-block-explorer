@@ -3,11 +3,10 @@ import React from 'react';
 
 import './button.css';
 
-export interface ButtonProps
-  extends React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  > {}
+export interface ButtonProps extends React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+> {}
 
 /**
  * Button is a simple wrapper around a normal button element that adds the

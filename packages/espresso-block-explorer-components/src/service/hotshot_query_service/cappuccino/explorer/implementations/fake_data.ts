@@ -129,9 +129,7 @@ function createTransactionSummaryFromGeneratedBlockAndTransaction(
   );
 }
 
-export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI
-  implements CappuccinoHotShotQueryServiceExplorerAPI
-{
+export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements CappuccinoHotShotQueryServiceExplorerAPI {
   async getBlockDetail(
     request: CappuccinoExplorerGetBlockDetailRequest,
   ): Promise<CappuccinoExplorerGetBlockDetailResponse> {

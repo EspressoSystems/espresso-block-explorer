@@ -21,9 +21,10 @@ export default class NoURLProvidedError extends BaseError {
   }
 }
 
-class NoURLProvidedErrorDecoder
-  implements Converter<unknown, NoURLProvidedError>
-{
+class NoURLProvidedErrorDecoder implements Converter<
+  unknown,
+  NoURLProvidedError
+> {
   convert(input: unknown): NoURLProvidedError {
     assertRecordWithKeys(input, 'code', 'message');
     assertErrorCode(input, kNoURLProvidedErrorCode);

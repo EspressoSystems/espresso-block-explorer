@@ -25,8 +25,7 @@ export interface Source<Response> {
  * this definitions merely represents a bi-direction pipe / Stream.
  */
 export interface NodeValidatorAPI<Request, Response>
-  extends Source<Response>,
-    Sink<Request> {
+  extends Source<Response>, Sink<Request> {
   /**
    * stream is an AsyncIterator that will yield Responses from the NodeValidator
    * API. These responses are meant to be self identifying in such that they

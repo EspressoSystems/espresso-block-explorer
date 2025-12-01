@@ -114,9 +114,10 @@ export class CappuccinoAPIBitVec implements Iterable<boolean> {
   }
 }
 
-export class CappuccinoAPIBitVecDecoder
-  implements Converter<unknown, CappuccinoAPIBitVec>
-{
+export class CappuccinoAPIBitVecDecoder implements Converter<
+  unknown,
+  CappuccinoAPIBitVec
+> {
   convert(input: unknown): CappuccinoAPIBitVec {
     assertRecordWithKeys(input, 'order', 'head', 'bits', 'data');
 
@@ -129,9 +130,7 @@ export class CappuccinoAPIBitVecDecoder
   }
 }
 
-export class CappuccinoAPIBitVecEncoder
-  implements Converter<CappuccinoAPIBitVec>
-{
+export class CappuccinoAPIBitVecEncoder implements Converter<CappuccinoAPIBitVec> {
   convert(input: CappuccinoAPIBitVec) {
     assertInstanceOf(input, CappuccinoAPIBitVec);
 

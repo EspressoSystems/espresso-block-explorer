@@ -4,17 +4,15 @@ import { BlockHeightResponse } from '@/service/hotshot_query_service/types';
 import { CappuccinoHotShotQueryServiceStatusAPI } from '../status_api';
 
 export type StatusRequest<
-  Method extends
-    keyof CappuccinoHotShotQueryServiceStatusAPI = keyof CappuccinoHotShotQueryServiceStatusAPI,
+  Method extends keyof CappuccinoHotShotQueryServiceStatusAPI =
+    keyof CappuccinoHotShotQueryServiceStatusAPI,
 > = WebWorkerRequest<
   'status',
   Method,
   Parameters<CappuccinoHotShotQueryServiceStatusAPI[Method]>
 >;
 
-export class WebWorkerProxyStatusAPI
-  implements CappuccinoHotShotQueryServiceStatusAPI
-{
+export class WebWorkerProxyStatusAPI implements CappuccinoHotShotQueryServiceStatusAPI {
   private service: CappuccinoHotShotQueryServiceStatusAPI;
   constructor(service: CappuccinoHotShotQueryServiceStatusAPI) {
     this.service = service;

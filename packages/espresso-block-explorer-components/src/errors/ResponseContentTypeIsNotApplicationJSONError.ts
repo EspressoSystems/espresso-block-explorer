@@ -53,9 +53,10 @@ export default class ResponseContentTypeIsNotApplicationJSONError extends BaseBa
   }
 }
 
-class ResponseContentTypeIsNotApplicationJSONErrorDecoder
-  implements Converter<unknown, ResponseContentTypeIsNotApplicationJSONError>
-{
+class ResponseContentTypeIsNotApplicationJSONErrorDecoder implements Converter<
+  unknown,
+  ResponseContentTypeIsNotApplicationJSONError
+> {
   convert(input: unknown): ResponseContentTypeIsNotApplicationJSONError {
     assertRecordWithKeys(input, 'code', 'status', 'have', 'want', 'message');
     assertErrorCode(input, kResponseContentTypeIsNotApplicationJSONErrorCode);
@@ -69,9 +70,7 @@ class ResponseContentTypeIsNotApplicationJSONErrorDecoder
   }
 }
 
-class ResponseContentTypeIsNotApplicationJSONErrorEncoder
-  implements Converter<ResponseContentTypeIsNotApplicationJSONError>
-{
+class ResponseContentTypeIsNotApplicationJSONErrorEncoder implements Converter<ResponseContentTypeIsNotApplicationJSONError> {
   convert(input: ResponseContentTypeIsNotApplicationJSONError) {
     return {
       ...baseBadResponseErrorEncoder.convert(input),

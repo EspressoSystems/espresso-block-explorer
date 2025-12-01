@@ -33,9 +33,10 @@ export class FullNodeSetUpdateNodeUpdate extends FullNodeSetDiff {
  * ValidatorUpdateJSONDecoder decodes FullValidatorSetUpdateValidatorUpdate
  * objects from a JSON object.
  */
-class FullNodeSetNodeUpdateJSONDecoder
-  implements Converter<unknown, FullNodeSetUpdateNodeUpdate>
-{
+class FullNodeSetNodeUpdateJSONDecoder implements Converter<
+  unknown,
+  FullNodeSetUpdateNodeUpdate
+> {
   convert(input: unknown): FullNodeSetUpdateNodeUpdate {
     return new FullNodeSetUpdateNodeUpdate(nodeSetEntryJSONCodec.decode(input));
   }
@@ -45,9 +46,10 @@ class FullNodeSetNodeUpdateJSONDecoder
  * ValidatorUpdateJSONEncoder encodes FullValidatorSetUpdateValidatorUpdate
  * objects to a JSON object.
  */
-class FullNodeSetNodeUpdateJSONEncoder
-  implements Converter<FullNodeSetUpdateNodeUpdate, unknown>
-{
+class FullNodeSetNodeUpdateJSONEncoder implements Converter<
+  FullNodeSetUpdateNodeUpdate,
+  unknown
+> {
   convert(input: FullNodeSetUpdateNodeUpdate): unknown {
     return nodeSetEntryJSONCodec.encode(input.validatorInformation);
   }

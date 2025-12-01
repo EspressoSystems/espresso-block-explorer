@@ -22,9 +22,10 @@ import {
  * FullNodeSetDiffJSONDecoder decodes FullNodeSetDiff objects
  * from a JSON object.
  */
-class FullNodeSetDiffJSONDecoder
-  implements Converter<FullNodeSetDiff, unknown>
-{
+class FullNodeSetDiffJSONDecoder implements Converter<
+  FullNodeSetDiff,
+  unknown
+> {
   convert(input: unknown): FullNodeSetDiff {
     assertRecordWithKeys(input);
 
@@ -49,9 +50,10 @@ class FullNodeSetDiffJSONDecoder
  * FullNodeSetDiffJSONEncoder encodes FullNodeSetDiff objects
  * to a JSON object.
  */
-class FullNodeSetDiffJSONEncoder
-  implements Converter<FullNodeSetDiff, unknown>
-{
+class FullNodeSetDiffJSONEncoder implements Converter<
+  FullNodeSetDiff,
+  unknown
+> {
   convert(input: FullNodeSetDiff): unknown {
     if (input instanceof FullNodeSetUpdateNodeUpdate) {
       return { [NodeUpdateKey]: fullNodeSetNodeUpdateJSONCodec.encode(input) };

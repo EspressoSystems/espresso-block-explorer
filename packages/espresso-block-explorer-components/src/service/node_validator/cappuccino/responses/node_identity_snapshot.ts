@@ -38,9 +38,10 @@ export class CappuccinoNodeIdentitySnapshot extends CappuccinoNodeValidatorRespo
   }
 }
 
-class CappuccinoNodeIdentitySnapshotDecoder
-  implements Converter<unknown, CappuccinoNodeIdentitySnapshot>
-{
+class CappuccinoNodeIdentitySnapshotDecoder implements Converter<
+  unknown,
+  CappuccinoNodeIdentitySnapshot
+> {
   convert(input: unknown): CappuccinoNodeIdentitySnapshot {
     assertRecordWithKeys(input, kCappuccinoNodeIdentitySnapshotType);
 
@@ -51,9 +52,7 @@ class CappuccinoNodeIdentitySnapshotDecoder
   }
 }
 
-class CappuccinoNodeIdentitySnapshotEncoder
-  implements Converter<CappuccinoNodeIdentitySnapshot>
-{
+class CappuccinoNodeIdentitySnapshotEncoder implements Converter<CappuccinoNodeIdentitySnapshot> {
   convert(input: CappuccinoNodeIdentitySnapshot) {
     return {
       [kCappuccinoNodeIdentitySnapshotType]:

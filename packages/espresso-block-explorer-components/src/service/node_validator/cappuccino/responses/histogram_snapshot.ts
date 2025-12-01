@@ -37,9 +37,10 @@ export class CappuccinoHistogramSnapshot extends CappuccinoNodeValidatorResponse
   }
 }
 
-class CappuccinoHistogramSnapshotDecoder
-  implements Converter<unknown, CappuccinoHistogramSnapshot>
-{
+class CappuccinoHistogramSnapshotDecoder implements Converter<
+  unknown,
+  CappuccinoHistogramSnapshot
+> {
   convert(input: unknown): CappuccinoHistogramSnapshot {
     assertRecordWithKeys(input, kCappuccinoHistogramSnapshotType);
 
@@ -51,9 +52,7 @@ class CappuccinoHistogramSnapshotDecoder
   }
 }
 
-class CappuccinoHistogramSnapshotEncoder
-  implements Converter<CappuccinoHistogramSnapshot>
-{
+class CappuccinoHistogramSnapshotEncoder implements Converter<CappuccinoHistogramSnapshot> {
   convert(input: CappuccinoHistogramSnapshot) {
     return {
       [kCappuccinoHistogramSnapshotType]:

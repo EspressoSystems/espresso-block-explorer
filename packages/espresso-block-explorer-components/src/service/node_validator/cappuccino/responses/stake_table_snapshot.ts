@@ -37,9 +37,10 @@ export class CappuccinoStakeTableSnapshot extends CappuccinoNodeValidatorRespons
   }
 }
 
-class CappuccinoStakeTableSnapshotDecoder
-  implements Converter<unknown, CappuccinoStakeTableSnapshot>
-{
+class CappuccinoStakeTableSnapshotDecoder implements Converter<
+  unknown,
+  CappuccinoStakeTableSnapshot
+> {
   convert(input: unknown): CappuccinoStakeTableSnapshot {
     assertRecordWithKeys(input, kCappuccinoStakeTableSnapshotType);
 
@@ -50,9 +51,7 @@ class CappuccinoStakeTableSnapshotDecoder
   }
 }
 
-class CappuccinoStakeTableSnapshotEncoder
-  implements Converter<CappuccinoStakeTableSnapshot>
-{
+class CappuccinoStakeTableSnapshotEncoder implements Converter<CappuccinoStakeTableSnapshot> {
   convert(input: CappuccinoStakeTableSnapshot) {
     return {
       [kCappuccinoStakeTableSnapshotType]:

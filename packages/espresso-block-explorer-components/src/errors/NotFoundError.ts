@@ -30,9 +30,10 @@ export default class NotFoundError<Key = unknown> extends BaseError {
   }
 }
 
-export class NotFoundErrorDecoder<Key>
-  implements Converter<unknown, NotFoundError<Key>>
-{
+export class NotFoundErrorDecoder<Key> implements Converter<
+  unknown,
+  NotFoundError<Key>
+> {
   private readonly codec: Codec<Key>;
   constructor(codec: Codec<Key>) {
     this.codec = codec;
@@ -45,9 +46,9 @@ export class NotFoundErrorDecoder<Key>
   }
 }
 
-export class NotFoundErrorEncoder<Key, Encoded = unknown>
-  implements Converter<NotFoundError<Key>>
-{
+export class NotFoundErrorEncoder<Key, Encoded = unknown> implements Converter<
+  NotFoundError<Key>
+> {
   private readonly codec: Codec<Key, Encoded, unknown>;
   constructor(codec: Codec<Key, Encoded, unknown>) {
     this.codec = codec;

@@ -37,9 +37,10 @@ export class ActiveNodeSetUpdate {
  * ActiveNodeSetUpdateJSONDecoder decodes ActiveNodeSetUpdate
  * objects from a JSON object.
  */
-class ActiveNodeSetUpdateJSONDecoder
-  implements Converter<unknown, ActiveNodeSetUpdate>
-{
+class ActiveNodeSetUpdateJSONDecoder implements Converter<
+  unknown,
+  ActiveNodeSetUpdate
+> {
   convert(input: unknown): ActiveNodeSetUpdate {
     assertRecordWithKeys(input, 'espresso_block', 'diff');
 
@@ -54,9 +55,10 @@ class ActiveNodeSetUpdateJSONDecoder
  * ActiveNodeSetUpdateJSONEncoder encodes ActiveNodeSetUpdate
  * objects to a JSON object.
  */
-class ActiveNodeSetUpdateJSONEncoder
-  implements Converter<ActiveNodeSetUpdate, unknown>
-{
+class ActiveNodeSetUpdateJSONEncoder implements Converter<
+  ActiveNodeSetUpdate,
+  unknown
+> {
   convert(input: ActiveNodeSetUpdate): unknown {
     return {
       espresso_block: epochAndBlockNumberJSONCodec.encode(input.espressoBlock),

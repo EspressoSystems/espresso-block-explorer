@@ -7,9 +7,7 @@ import { RewardClaimInput } from '../reward_claim_input';
 import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_start_api';
 
 const prng = new PseudoRandomNumberGenerator(getStartingSeed());
-export class FakeDataCappuccinoHotShotQueryServiceRewardStateAPI
-  implements CappuccinoHotShotQueryServiceRewardStateAPI
-{
+export class FakeDataCappuccinoHotShotQueryServiceRewardStateAPI implements CappuccinoHotShotQueryServiceRewardStateAPI {
   async getLatestRewardBalance(): Promise<null | bigint> {
     return 123000000000000000000n;
   }

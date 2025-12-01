@@ -156,7 +156,10 @@ class MockStatefulWalletAPI implements WalletAPI, L1TransactionCallback {
           new WalletSnapshot(
             Array.from(
               mapIterable(
-                dropIterable(nodeList, nodeList.length - 2),
+                dropIterable(
+                  nodeList.toSorted((a, b) => Number(b.stake - a.stake)),
+                  nodeList.length - 2,
+                ),
                 (node) =>
                   new Delegation(
                     hexArrayBufferCodec.decode(MockAddress),
@@ -168,7 +171,10 @@ class MockStatefulWalletAPI implements WalletAPI, L1TransactionCallback {
             [],
             Array.from(
               mapIterable(
-                dropIterable(nodeList, nodeList.length - 2),
+                dropIterable(
+                  nodeList.toSorted((a, b) => Number(b.stake - a.stake)),
+                  nodeList.length - 2,
+                ),
                 (node) =>
                   new PendingWithdrawal(
                     hexArrayBufferCodec.decode(MockAddress),

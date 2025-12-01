@@ -1,11 +1,10 @@
 import React from 'react';
 import { TextEditingValue, TextSelection } from './types';
 
-export interface TextEditingProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    'value' | 'onChange' | 'defaultValue'
-  > {
+export interface TextEditingProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'onChange' | 'defaultValue'
+> {
   value?: TextEditingValue;
   onChange?: (
     event:

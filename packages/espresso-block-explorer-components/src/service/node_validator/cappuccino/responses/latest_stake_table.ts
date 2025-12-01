@@ -38,9 +38,10 @@ export class CappuccinoLatestStakeTable extends CappuccinoNodeValidatorResponse 
   }
 }
 
-class CappuccinoLatestStakeTableDecoder
-  implements Converter<unknown, CappuccinoLatestStakeTable>
-{
+class CappuccinoLatestStakeTableDecoder implements Converter<
+  unknown,
+  CappuccinoLatestStakeTable
+> {
   convert(input: unknown): CappuccinoLatestStakeTable {
     assertRecordWithKeys(input, kCappuccinoLatestStakeTableType);
 
@@ -52,9 +53,7 @@ class CappuccinoLatestStakeTableDecoder
   }
 }
 
-class CappuccinoLatestStakeTableEncoder
-  implements Converter<CappuccinoLatestStakeTable>
-{
+class CappuccinoLatestStakeTableEncoder implements Converter<CappuccinoLatestStakeTable> {
   convert(input: CappuccinoLatestStakeTable) {
     return {
       [kCappuccinoLatestStakeTableType]:

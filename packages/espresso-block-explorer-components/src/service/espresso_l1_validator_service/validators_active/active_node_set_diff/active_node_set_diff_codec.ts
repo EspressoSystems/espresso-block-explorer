@@ -20,9 +20,10 @@ import { currentEpochJSONCodec, CurrentEpochKey, NewEpoch } from './new_epoch';
  * ActiveNodeSetDiffJSONDecoder decodes ActiveNodeSetDiff objects
  * from a JSON object.
  */
-class ActiveNodeSetDiffJSONDecoder
-  implements Converter<unknown, ActiveNodeSetDiff>
-{
+class ActiveNodeSetDiffJSONDecoder implements Converter<
+  unknown,
+  ActiveNodeSetDiff
+> {
   convert(input: unknown): ActiveNodeSetDiff {
     assertRecordWithKeys(input);
 
@@ -50,9 +51,10 @@ class ActiveNodeSetDiffJSONDecoder
  * ActiveNodeSetDiffJSONEncoder encodes ActiveNodeSetDiff objects
  * to a JSON object.
  */
-class ActiveNodeSetDiffJSONEncoder
-  implements Converter<ActiveNodeSetDiff, unknown>
-{
+class ActiveNodeSetDiffJSONEncoder implements Converter<
+  ActiveNodeSetDiff,
+  unknown
+> {
   convert(input: ActiveNodeSetDiff): unknown {
     if (input instanceof NewEpoch) {
       return { [CurrentEpochKey]: currentEpochJSONCodec.encode(input) };

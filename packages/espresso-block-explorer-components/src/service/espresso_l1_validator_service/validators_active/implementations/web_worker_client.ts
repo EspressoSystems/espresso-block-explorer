@@ -16,9 +16,7 @@ import { ValidatorsActiveAPI } from '../validators_active_api';
  * ValidatorsActiveAPI that uses a Web Worker to communicate with the
  * `validators/active` endpoints for the Validator Service API.
  */
-export class WebWorkerClientBasedValidatorsActiveAPI
-  implements ValidatorsActiveAPI
-{
+export class WebWorkerClientBasedValidatorsActiveAPI implements ValidatorsActiveAPI {
   private helper: AsyncRequestHelper;
   constructor(helper: AsyncRequestHelper) {
     this.helper = helper;

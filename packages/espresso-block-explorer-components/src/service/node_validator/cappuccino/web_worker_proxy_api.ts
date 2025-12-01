@@ -10,8 +10,10 @@ import { NodeValidatorAPI } from '../types';
  * for multiple implementations of the Node Validator API.  This allows for
  * easy testing of the Node Validator API.
  */
-export interface WebWorkerNodeValidatorAPI
-  extends NodeValidatorAPI<WebWorkerProxyRequest, WebWorkerProxyResponse> {}
+export interface WebWorkerNodeValidatorAPI extends NodeValidatorAPI<
+  WebWorkerProxyRequest,
+  WebWorkerProxyResponse
+> {}
 
 /**
  * UnimplementedWebWorkerNodeValidatorAPI is a class that implements the
@@ -19,9 +21,7 @@ export interface WebWorkerNodeValidatorAPI
  * all methods. This class is meant to be used as a placeholder for the Node
  * Validator API, and should be replaced with a real implementation.
  */
-export class UnimplementedWebWorkerNodeValidatorAPI
-  implements WebWorkerNodeValidatorAPI
-{
+export class UnimplementedWebWorkerNodeValidatorAPI implements WebWorkerNodeValidatorAPI {
   get stream(): AsyncIterable<WebWorkerProxyResponse> {
     throw new UnimplementedError();
   }

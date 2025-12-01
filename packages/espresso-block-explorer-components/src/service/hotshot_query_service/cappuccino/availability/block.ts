@@ -41,9 +41,10 @@ export class CappuccinoAPIBlock {
   }
 }
 
-export class CappuccinoAPIBlockDecode
-  implements Converter<unknown, CappuccinoAPIBlock>
-{
+export class CappuccinoAPIBlockDecode implements Converter<
+  unknown,
+  CappuccinoAPIBlock
+> {
   convert(input: unknown): CappuccinoAPIBlock {
     assertRecordWithKeys(
       input,
@@ -64,9 +65,10 @@ export class CappuccinoAPIBlockDecode
   }
 }
 
-export class CappuccinoAPIBlockEncoder
-  implements Converter<CappuccinoAPIBlock, unknown>
-{
+export class CappuccinoAPIBlockEncoder implements Converter<
+  CappuccinoAPIBlock,
+  unknown
+> {
   convert(input: CappuccinoAPIBlock): unknown {
     assertInstanceOf(input, CappuccinoAPIBlock);
 

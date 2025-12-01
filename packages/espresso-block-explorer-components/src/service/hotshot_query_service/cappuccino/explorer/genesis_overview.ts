@@ -22,9 +22,10 @@ export class CappuccinoGenesisOverview {
   }
 }
 
-class CappuccinoGenesisOverviewDecoder
-  implements Converter<unknown, CappuccinoGenesisOverview>
-{
+class CappuccinoGenesisOverviewDecoder implements Converter<
+  unknown,
+  CappuccinoGenesisOverview
+> {
   convert(input: unknown): CappuccinoGenesisOverview {
     assertRecordWithKeys(input, 'rollups', 'transactions', 'blocks');
 
@@ -36,9 +37,7 @@ class CappuccinoGenesisOverviewDecoder
   }
 }
 
-class CappuccinoGenesisOverviewEncoder
-  implements Converter<CappuccinoGenesisOverview>
-{
+class CappuccinoGenesisOverviewEncoder implements Converter<CappuccinoGenesisOverview> {
   convert(input: CappuccinoGenesisOverview) {
     assertInstanceOf(input, CappuccinoGenesisOverview);
 

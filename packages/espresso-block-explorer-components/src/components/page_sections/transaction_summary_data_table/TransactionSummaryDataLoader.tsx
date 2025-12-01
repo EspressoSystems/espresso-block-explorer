@@ -38,8 +38,7 @@ export const TransactionSummaryAsyncRetrieverContext =
     },
   });
 
-export interface TransactionSummaryDataTableState
-  extends DataTableState<TransactionSummaryColumn> {
+export interface TransactionSummaryDataTableState extends DataTableState<TransactionSummaryColumn> {
   height?: number;
   offset?: number;
 }

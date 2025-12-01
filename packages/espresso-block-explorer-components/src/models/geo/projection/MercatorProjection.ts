@@ -37,9 +37,10 @@ const extremeLatitudePoint = 85.05133;
  * Projection.
  * https://en.wikipedia.org/wiki/Mercator_projection
  */
-export default class MercatorProjection
-  implements GeodesicProjection<Radians, NumberLike>
-{
+export default class MercatorProjection implements GeodesicProjection<
+  Radians,
+  NumberLike
+> {
   public static min = degreesRadiansProjection.project(
     new LatLng(
       new Latitude(new Degrees(-extremeLatitudePoint)),

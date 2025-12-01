@@ -28,8 +28,8 @@ import {
 import { cappuccinoExplorerGetTransactionSummariesResponseCodec } from '../get_transaction_summaries_response';
 
 export type ExplorerRequest<
-  Method extends
-    keyof CappuccinoHotShotQueryServiceExplorerAPI = keyof CappuccinoHotShotQueryServiceExplorerAPI,
+  Method extends keyof CappuccinoHotShotQueryServiceExplorerAPI =
+    keyof CappuccinoHotShotQueryServiceExplorerAPI,
 > = WebWorkerRequest<
   'explorer',
   Method,

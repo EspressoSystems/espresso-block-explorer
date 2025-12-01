@@ -59,9 +59,10 @@ class GeoJSONLineStringEncoder implements Converter<GeoJSONLineString> {
 /**
  * A converter that can decode a GeoJSON object into a GeoJSONLineString.
  */
-class GeoJSONLineStringDecoder
-  implements Converter<unknown, GeoJSONLineString>
-{
+class GeoJSONLineStringDecoder implements Converter<
+  unknown,
+  GeoJSONLineString
+> {
   readonly codec: Codec<LatLng<Degrees>[], unknown>;
   constructor(codec: Codec<LatLng<Degrees>[], unknown>) {
     this.codec = codec;

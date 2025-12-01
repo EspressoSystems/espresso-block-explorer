@@ -61,9 +61,10 @@ import {
   kCappuccinoVotersSnapshotType,
 } from './voters_snapshot';
 
-class CappuccinoNodeValidatorResponseDecoder
-  implements Converter<unknown, CappuccinoNodeValidatorResponse>
-{
+class CappuccinoNodeValidatorResponseDecoder implements Converter<
+  unknown,
+  CappuccinoNodeValidatorResponse
+> {
   convert(input: unknown): CappuccinoNodeValidatorResponse {
     if (isRecordWithKeys(input, kCappuccinoBlocksSnapshotType)) {
       return cappuccinoBlocksSnapshotCodec.decode(input);
@@ -103,9 +104,7 @@ class CappuccinoNodeValidatorResponseDecoder
   }
 }
 
-class CappuccinoNodeValidatorResponseEncoder
-  implements Converter<CappuccinoNodeValidatorResponse>
-{
+class CappuccinoNodeValidatorResponseEncoder implements Converter<CappuccinoNodeValidatorResponse> {
   convert(input: CappuccinoNodeValidatorResponse) {
     if (input instanceof CappuccinoBlocksSnapshot) {
       return cappuccinoBlocksSnapshotCodec.encode(input);

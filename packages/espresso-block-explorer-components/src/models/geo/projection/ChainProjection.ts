@@ -12,8 +12,7 @@ export default class ChainProjection<
   Input1 extends NumberLike,
   Output1 extends NumberLike,
   Output2 extends NumberLike,
-> implements GeodesicProjection<Input1, Output2>
-{
+> implements GeodesicProjection<Input1, Output2> {
   get minInput() {
     return this.projection1.minInput;
   }

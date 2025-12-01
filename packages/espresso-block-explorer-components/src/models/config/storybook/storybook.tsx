@@ -98,8 +98,7 @@ function resolveContractAddress(
   return walletAddressCodec.encode(walletAddress) as `0x${string}`;
 }
 
-export interface StoryBookSpecifyEnvironmentAndContractsProps
-  extends StoryBookSpecifyEnvironmentProps {
+export interface StoryBookSpecifyEnvironmentAndContractsProps extends StoryBookSpecifyEnvironmentProps {
   espTokenContractAddress?: string;
   stakeTableContractAddress?: string;
   rewardClaimContractAddress?: string;

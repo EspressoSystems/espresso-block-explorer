@@ -6,8 +6,8 @@ import { CappuccinoHotShotQueryServiceNodeAPI } from '../node_api';
 import { stakeTableCodec } from '../stake_table';
 
 export type NodeRequest<
-  Method extends
-    keyof CappuccinoHotShotQueryServiceNodeAPI = keyof CappuccinoHotShotQueryServiceNodeAPI,
+  Method extends keyof CappuccinoHotShotQueryServiceNodeAPI =
+    keyof CappuccinoHotShotQueryServiceNodeAPI,
 > = WebWorkerRequest<
   'node',
   Method,

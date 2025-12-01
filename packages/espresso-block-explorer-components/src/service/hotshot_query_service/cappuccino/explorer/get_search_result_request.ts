@@ -14,9 +14,10 @@ export class CappuccinoExplorerGetSearchResultRequest {
   }
 }
 
-class CappuccinoExplorerGetSearchResultRequestEncoder
-  implements Converter<CappuccinoExplorerGetSearchResultRequest, unknown>
-{
+class CappuccinoExplorerGetSearchResultRequestEncoder implements Converter<
+  CappuccinoExplorerGetSearchResultRequest,
+  unknown
+> {
   convert(input: CappuccinoExplorerGetSearchResultRequest) {
     assertInstanceOf(input, CappuccinoExplorerGetSearchResultRequest);
 
@@ -24,9 +25,10 @@ class CappuccinoExplorerGetSearchResultRequestEncoder
   }
 }
 
-class CappuccinoExplorerGetSearchResultRequestDecoder
-  implements Converter<unknown, CappuccinoExplorerGetSearchResultRequest>
-{
+class CappuccinoExplorerGetSearchResultRequestDecoder implements Converter<
+  unknown,
+  CappuccinoExplorerGetSearchResultRequest
+> {
   convert(input: unknown): CappuccinoExplorerGetSearchResultRequest {
     return new CappuccinoExplorerGetSearchResultRequest(
       stringCodec.decode(input),

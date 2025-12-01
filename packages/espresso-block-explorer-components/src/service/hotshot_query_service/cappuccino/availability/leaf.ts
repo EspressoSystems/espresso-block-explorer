@@ -55,9 +55,10 @@ export class CappuccinoAPILeaf {
   }
 }
 
-export class CappuccinoAPILeafDecoder
-  implements Converter<unknown, CappuccinoAPILeaf>
-{
+export class CappuccinoAPILeafDecoder implements Converter<
+  unknown,
+  CappuccinoAPILeaf
+> {
   convert(input: unknown): CappuccinoAPILeaf {
     assertRecordWithKeys(
       input,

@@ -11,8 +11,7 @@ import {
 } from './contexts/collapse_context';
 import ButtonLarge from './elements/buttons/button_large';
 
-export interface CollapsableSectionProps
-  extends React.HTMLAttributes<HTMLDetailsElement> {}
+export interface CollapsableSectionProps extends React.HTMLAttributes<HTMLDetailsElement> {}
 
 export const CollapsableSection: React.FC<CollapsableSectionProps> = ({
   children,
@@ -59,8 +58,7 @@ const CollapseContent: React.FC<CollapsableSectionProps> = ({
   );
 };
 
-export interface CollapsableHeaderProps
-  extends React.HTMLAttributes<HTMLElement> {}
+export interface CollapsableHeaderProps extends React.HTMLAttributes<HTMLElement> {}
 
 export const CollapsableHeader: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   children,

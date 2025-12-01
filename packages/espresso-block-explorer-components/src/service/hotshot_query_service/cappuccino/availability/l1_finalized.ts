@@ -27,9 +27,10 @@ export class CappuccinoL1Finalized {
   }
 }
 
-export class CappuccinoL1FinalizedDecoder
-  implements Converter<unknown, CappuccinoL1Finalized>
-{
+export class CappuccinoL1FinalizedDecoder implements Converter<
+  unknown,
+  CappuccinoL1Finalized
+> {
   convert(input: unknown): CappuccinoL1Finalized {
     assertRecordWithKeys(input, 'number', 'timestamp', 'hash');
 
@@ -41,9 +42,7 @@ export class CappuccinoL1FinalizedDecoder
   }
 }
 
-export class CappuccinoL1FinalizedEncoder
-  implements Converter<CappuccinoL1Finalized>
-{
+export class CappuccinoL1FinalizedEncoder implements Converter<CappuccinoL1Finalized> {
   convert(input: CappuccinoL1Finalized) {
     assertInstanceOf(input, CappuccinoL1Finalized);
 

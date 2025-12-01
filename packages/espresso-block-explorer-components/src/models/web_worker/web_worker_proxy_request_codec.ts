@@ -21,9 +21,10 @@ const registry = new Map<
 
 registry.set(kWebSocketRequestType, webSocketRequestCodec);
 
-class WebWorkerProxyRequestEncoder
-  implements Converter<WebWorkerProxyRequest, unknown>
-{
+class WebWorkerProxyRequestEncoder implements Converter<
+  WebWorkerProxyRequest,
+  unknown
+> {
   convert(input: WebWorkerProxyRequest) {
     const codec = registry.get(input.type);
     if (!codec) {
@@ -39,9 +40,10 @@ class WebWorkerProxyRequestEncoder
   }
 }
 
-class WebWorkerProxyRequestDecoder
-  implements Converter<unknown, WebWorkerProxyRequest>
-{
+class WebWorkerProxyRequestDecoder implements Converter<
+  unknown,
+  WebWorkerProxyRequest
+> {
   convert(input: unknown): WebWorkerProxyRequest {
     if (typeof input !== 'object' || input === null) {
       throw new InvalidTypeError(typeof input, 'object');
@@ -107,9 +109,10 @@ export const webWorkerProxyRequestCodec = new WebWorkerProxyRequestCodec();
 //   new WebSocketStatusToWebWorkerProxyResponseConverter();
 
 // WebSocketCommand to WebWorkerProxyRequest Converter
-class WebSocketCommandToWebWorkerProxyRequestConverter
-  implements Converter<WebSocketCommand, WebWorkerProxyRequest>
-{
+class WebSocketCommandToWebWorkerProxyRequestConverter implements Converter<
+  WebSocketCommand,
+  WebWorkerProxyRequest
+> {
   convert(input: WebSocketCommand): WebWorkerProxyRequest {
     return new WebSocketRequest(input);
   }

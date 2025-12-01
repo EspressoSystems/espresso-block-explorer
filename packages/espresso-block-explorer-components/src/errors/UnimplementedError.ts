@@ -27,9 +27,10 @@ export default class UnimplementedError extends BaseError {
   }
 }
 
-class UnimplementedErrorDecoder
-  implements Converter<unknown, UnimplementedError>
-{
+class UnimplementedErrorDecoder implements Converter<
+  unknown,
+  UnimplementedError
+> {
   convert(input: unknown): UnimplementedError {
     assertRecordWithKeys(input, 'code', 'message');
     assertErrorCode(input, kUnimplementedErrorCode);

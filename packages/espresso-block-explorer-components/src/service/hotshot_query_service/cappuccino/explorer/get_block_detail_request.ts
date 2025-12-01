@@ -26,9 +26,10 @@ export abstract class CappuccinoExplorerGetBlockDetailRequest {
   }
 }
 
-class CappuccinoExplorerGetBlockDetailRequestEncoder
-  implements Converter<CappuccinoExplorerGetBlockDetailRequest, unknown>
-{
+class CappuccinoExplorerGetBlockDetailRequestEncoder implements Converter<
+  CappuccinoExplorerGetBlockDetailRequest,
+  unknown
+> {
   convert(input: CappuccinoExplorerGetBlockDetailRequest) {
     assertInstanceOf(input, CappuccinoExplorerGetBlockDetailRequest);
 
@@ -42,9 +43,10 @@ class CappuccinoExplorerGetBlockDetailRequestEncoder
   }
 }
 
-class CappuccinoExplorerGetBlockDetailRequestDecoder
-  implements Converter<unknown, CappuccinoExplorerGetBlockDetailRequest>
-{
+class CappuccinoExplorerGetBlockDetailRequestDecoder implements Converter<
+  unknown,
+  CappuccinoExplorerGetBlockDetailRequest
+> {
   convert(input: unknown): CappuccinoExplorerGetBlockDetailRequest {
     if (input === latestConstant) {
       return new CappuccinoExplorerGetBlockDetailRequestLatest();

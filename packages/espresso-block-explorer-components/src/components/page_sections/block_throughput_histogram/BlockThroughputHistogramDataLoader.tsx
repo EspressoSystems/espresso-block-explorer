@@ -21,8 +21,10 @@ export interface BlockThroughputHistogramData {
  * retrieve the data that is expected to be displayed on the Block Throughput
  * Histogram. It is expected to be used to retrieve the data asynchronously.
  */
-export interface BlockThroughputHistogramAsyncRetriever
-  extends AsyncRetriever<void, BlockThroughputHistogramData> {}
+export interface BlockThroughputHistogramAsyncRetriever extends AsyncRetriever<
+  void,
+  BlockThroughputHistogramData
+> {}
 
 /**
  * The BlockThroughputHistogramAsyncRetrieverContext is a React context that is

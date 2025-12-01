@@ -27,8 +27,7 @@ export interface RewardClaimContractWriteable {
  * RewardClaimContract represents the entire Reward Claim Contract interface.
  */
 export interface RewardClaimContract
-  extends RewardClaimContractReadOnly,
-    RewardClaimContractWriteable {}
+  extends RewardClaimContractReadOnly, RewardClaimContractWriteable {}
 
 /**
  * RewardClaimContractGasEstimator defines the gas estimator type for the

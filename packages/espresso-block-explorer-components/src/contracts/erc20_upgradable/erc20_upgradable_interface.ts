@@ -30,5 +30,4 @@ export interface ERC20UpgradableWriteable {
  * methods of an ERC20 upgradable contract.
  */
 export interface ERC20UpgradableContract
-  extends ERC20UpgradableReadOnly,
-    ERC20UpgradableWriteable {}
+  extends ERC20UpgradableReadOnly, ERC20UpgradableWriteable {}

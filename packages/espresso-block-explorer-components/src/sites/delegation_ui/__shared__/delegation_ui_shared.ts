@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react';
+import { act, getByText } from '@testing-library/react';
 import userEvent, { UserEvent } from '@testing-library/user-event';
 import { StepFunction } from 'storybook/internal/csf';
 import {
@@ -20,7 +20,13 @@ async function newDelegationInteraction(
     ).toBeVisible();
   });
 
-  const sectionElement = await findByText<HTMLElement>(canvasElement, '', {
+  const delegationUI = await findByText<HTMLElement>(canvasElement, '', {
+    selector: 'main.delegation-ui',
+  });
+  expect(delegationUI).toBeInTheDocument();
+  expect(delegationUI).toBeVisible();
+
+  const sectionElement = await findByText<HTMLElement>(delegationUI, '', {
     selector: 'section.delegation-ui-content',
   });
 
@@ -51,7 +57,7 @@ async function newDelegationInteraction(
 
   await step('Connect Account', async () => {
     const connectWalletButton = await act(async () => {
-      return findByText<HTMLButtonElement>(canvasElement, 'Connect Wallet', {
+      return findByText<HTMLButtonElement>(delegationUI, 'Connect Wallet', {
         selector: 'button',
       });
     });
@@ -60,7 +66,7 @@ async function newDelegationInteraction(
 
   await step('Sort By Rank', async () => {
     const rankHeader = await act(async () => {
-      return findByText<HTMLTableCellElement>(canvasElement, 'Total Stake', {
+      return findByText<HTMLTableCellElement>(delegationUI, 'Total Stake', {
         selector: 'th',
       });
     });
@@ -71,7 +77,7 @@ async function newDelegationInteraction(
 
   await step('Spawn New Delegation Modal', async () => {
     const delegateButtons = await act(async () => {
-      return findAllByText<HTMLButtonElement>(canvasElement, 'Delegate', {
+      return findAllByText<HTMLButtonElement>(delegationUI, 'Delegate', {
         selector: 'td > button',
       });
     });
@@ -79,19 +85,35 @@ async function newDelegationInteraction(
     await act(async () => event.click(delegateButton0));
 
     await waitFor(async () => {
-      expect(
-        await findByRole<HTMLDialogElement>(canvasElement, 'dialog'),
-      ).toBeVisible();
+      // const dialog = await findByRole<HTMLDialogElement>(
+      //   delegationUI,
+      //   'dialog',
+      // );
+      const dialog = await findByText<HTMLDialogElement>(delegationUI, '', {
+        selector: 'dialog.staking-modal',
+      });
+
+      expect(dialog).toBeInTheDocument();
     });
   });
 
   const modalDialog = await act(async () =>
-    findByRole<HTMLDialogElement>(canvasElement, 'dialog'),
+    // findByRole<HTMLDialogElement>(delegationUI, 'dialog'),
+    findByText<HTMLDialogElement>(delegationUI, '', {
+      selector: 'dialog.staking-modal',
+    }),
   );
 
   await step('Enter Delegation Amount', async () => {
     const amountInput = await act(async () => {
       return findByRole<HTMLInputElement>(modalDialog, 'textbox');
+      // return findByText<HTMLInputElement>(modalDialog, '', {
+      //   selector: 'input[type="text"]',
+      // });
+      // return findByPlaceholderText<HTMLInputElement>(modalDialog, 'ESP 0');
+      // return findByText(modalDialog, '', {
+      //   selector: '#staking-modal-esp-input',
+      // });
     });
 
     // Select the Input Box and enter amount
@@ -106,6 +128,22 @@ async function newDelegationInteraction(
   });
 
   await step('Approve Allowance', async () => {
+    const approvedButton = await act(async () => {
+      try {
+        return getByText<HTMLButtonElement>(modalDialog, 'Approved', {
+          selector: 'button',
+        });
+      } catch {
+        return null;
+      }
+    });
+
+    if (approvedButton) {
+      // If the transaction is already approved, then there's no need to
+      // approve again.
+      return;
+    }
+
     const approveButton = await act(async () => {
       return findByText<HTMLButtonElement>(modalDialog, 'Approve', {
         selector: 'button',
@@ -125,7 +163,7 @@ async function newDelegationInteraction(
   await step('Delegate Funds', async () => {
     const delegateButton1 = await act(async () => {
       return findByText<HTMLButtonElement>(modalDialog, 'Delegate', {
-        selector: 'button',
+        selector: 'td button',
       });
     });
 

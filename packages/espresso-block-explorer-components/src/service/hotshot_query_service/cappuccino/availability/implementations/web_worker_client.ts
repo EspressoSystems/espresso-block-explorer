@@ -31,8 +31,8 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI
 
   private async sendRequest<
     T,
-    Method extends
-      keyof CappuccinoHotShotQueryServiceAvailabilityAPI = keyof CappuccinoHotShotQueryServiceAvailabilityAPI,
+    Method extends keyof CappuccinoHotShotQueryServiceAvailabilityAPI =
+      keyof CappuccinoHotShotQueryServiceAvailabilityAPI,
     Param = unknown,
   >(codec: Codec<T, unknown>, method: Method, ...args: Param[]): Promise<T> {
     return this.helper.submitRequest(codec, 'availability', method, args);

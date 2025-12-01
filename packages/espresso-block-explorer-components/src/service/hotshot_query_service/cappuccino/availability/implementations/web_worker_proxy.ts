@@ -9,8 +9,8 @@ import { cappuccinoAPILeafResponseCodec } from '../leaf_response';
 import { cappuccinoAPITransactionResponseCodec } from '../transaction_response';
 
 export type AvailabilityRequest<
-  Method extends
-    keyof CappuccinoHotShotQueryServiceAvailabilityAPI = keyof CappuccinoHotShotQueryServiceAvailabilityAPI,
+  Method extends keyof CappuccinoHotShotQueryServiceAvailabilityAPI =
+    keyof CappuccinoHotShotQueryServiceAvailabilityAPI,
 > = WebWorkerRequest<
   'availability',
   Method,

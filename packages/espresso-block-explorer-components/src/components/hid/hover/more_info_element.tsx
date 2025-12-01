@@ -5,8 +5,7 @@ import { InfoCircle } from '@/components/visual';
 import { HoverDialog } from './hover_dialog';
 import './more_info_element.css';
 
-export interface MoreInfoElementProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface MoreInfoElementProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   children?: React.ReactNode | React.ReactNode[];
   hoverWidth: number;
@@ -41,8 +40,10 @@ export const MoreInfoElement: React.FC<MoreInfoElementProps> = ({
   );
 };
 
-export interface PrefixMoreInfoElementProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+export interface PrefixMoreInfoElementProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'children'
+> {
   className?: string;
   children: [React.ReactNode, React.ReactNode];
   hoverWidth: number;

@@ -43,9 +43,7 @@ export default class GeoJSONMultiLineString extends GeoJSONGeometry {
 /**
  * A converter that can encode a GeoJSONMultiLineString into a GeoJSON object.
  */
-class GeoJSONMultiLineStringEncoder
-  implements Converter<GeoJSONMultiLineString>
-{
+class GeoJSONMultiLineStringEncoder implements Converter<GeoJSONMultiLineString> {
   readonly codec: Codec<LatLng<Degrees>[][], unknown>;
   constructor(codec: Codec<LatLng<Degrees>[][], unknown>) {
     this.codec = codec;
@@ -64,9 +62,10 @@ class GeoJSONMultiLineStringEncoder
 /**
  * A converter that can decode a GeoJSON object into a GeoJSONMultiLineString.
  */
-class GeoJSONMultiLineStringDecoder
-  implements Converter<unknown, GeoJSONMultiLineString>
-{
+class GeoJSONMultiLineStringDecoder implements Converter<
+  unknown,
+  GeoJSONMultiLineString
+> {
   readonly codec: Codec<LatLng<Degrees>[][], unknown>;
   constructor(codec: Codec<LatLng<Degrees>[][], unknown>) {
     this.codec = codec;

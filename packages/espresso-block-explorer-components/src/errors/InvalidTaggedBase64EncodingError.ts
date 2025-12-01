@@ -30,9 +30,10 @@ export default class InvalidTaggedBase64EncodingError extends BaseError {
   }
 }
 
-class InvalidTaggedBase64EncodingErrorDecoder
-  implements Converter<unknown, InvalidTaggedBase64EncodingError>
-{
+class InvalidTaggedBase64EncodingErrorDecoder implements Converter<
+  unknown,
+  InvalidTaggedBase64EncodingError
+> {
   convert(input: unknown): InvalidTaggedBase64EncodingError {
     assertRecordWithKeys(input, 'code', 'message');
     assertErrorCode(input, kInvalidTaggedBase64EncodingErrorCode);

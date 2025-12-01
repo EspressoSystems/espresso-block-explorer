@@ -9,9 +9,7 @@ import { StakeTableEntry } from '../stake_table_entry';
 import { StakeTableField } from '../stake_table_field';
 import { ValidatorEntry } from '../validator_entry';
 
-export class FakeDataCappuccinoHotShotQueryServiceNodeAPI
-  implements CappuccinoHotShotQueryServiceNodeAPI
-{
+export class FakeDataCappuccinoHotShotQueryServiceNodeAPI implements CappuccinoHotShotQueryServiceNodeAPI {
   async getStakeTableForEpoch(): Promise<StakeTable> {
     return new StakeTable(
       Array.from(

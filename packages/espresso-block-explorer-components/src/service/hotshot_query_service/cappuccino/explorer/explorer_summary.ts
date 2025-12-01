@@ -51,9 +51,10 @@ export class CappuccinoExplorerSummary {
   }
 }
 
-class CappuccinoExplorerSummaryDecoder
-  implements Converter<unknown, CappuccinoExplorerSummary>
-{
+class CappuccinoExplorerSummaryDecoder implements Converter<
+  unknown,
+  CappuccinoExplorerSummary
+> {
   convert(input: unknown): CappuccinoExplorerSummary {
     assertRecordWithKeys(
       input,
@@ -76,9 +77,7 @@ class CappuccinoExplorerSummaryDecoder
   }
 }
 
-class CappuccinoExplorerSummaryEncoder
-  implements Converter<CappuccinoExplorerSummary>
-{
+class CappuccinoExplorerSummaryEncoder implements Converter<CappuccinoExplorerSummary> {
   convert(input: CappuccinoExplorerSummary) {
     assertInstanceOf(input, CappuccinoExplorerSummary);
 

@@ -23,9 +23,10 @@ export default class InvalidInputError extends BaseError {
   }
 }
 
-class InvalidInputErrorDecoder
-  implements Converter<unknown, InvalidInputError>
-{
+class InvalidInputErrorDecoder implements Converter<
+  unknown,
+  InvalidInputError
+> {
   convert(input: unknown): InvalidInputError {
     assertRecordWithKeys(input, 'code', 'message');
     assertErrorCode(input, kInvalidInputErrorCode);

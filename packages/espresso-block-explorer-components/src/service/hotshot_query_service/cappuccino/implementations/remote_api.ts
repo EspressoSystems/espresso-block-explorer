@@ -11,9 +11,7 @@ import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_state/rew
 import { FetchBasedCappuccinoHotShotQueryServiceStatusAPI } from '../status/implementations/remote_api';
 import { CappuccinoHotShotQueryServiceStatusAPI } from '../status/status_api';
 
-export class FetchBasedCappuccinoHotShotQueryService
-  implements CappuccinoHotShotQueryService
-{
+export class FetchBasedCappuccinoHotShotQueryService implements CappuccinoHotShotQueryService {
   public readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI;
   public readonly status: CappuccinoHotShotQueryServiceStatusAPI;
   public readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI;

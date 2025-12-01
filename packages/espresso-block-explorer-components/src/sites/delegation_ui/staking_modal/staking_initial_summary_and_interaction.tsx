@@ -1,3 +1,4 @@
+import { CurrentNumberFormatters } from '@/components/contexts';
 import { addClassToClassName } from '@/components/higher_order';
 import { ESPInput } from '@/components/input/esp/esp_input';
 import MoneyText from '@/components/text/MoneyText';
@@ -27,6 +28,7 @@ const StakingESPInputArea: React.FC = () => {
   const stakingAmount = React.useContext(StakingAmountContext);
   const setStakingAmount = React.useContext(SetStakingAmountContext);
   const currentBalance = React.useContext(ESPBalanceContext);
+  const numberFormatters = React.useContext(CurrentNumberFormatters);
 
   const hasBalance = currentBalance >= stakingAmount.value;
   const insufficient = !hasBalance ? 'insufficient' : undefined;
@@ -43,6 +45,7 @@ const StakingESPInputArea: React.FC = () => {
           'staking-modal-esp-focus-display',
         )}
         value={stakingAmount}
+        placeholder={numberFormatters.ESP.format(0n)}
         onChange={(_event, amount) => setStakingAmount(amount)}
       />
       <StakingInputInfoArea />

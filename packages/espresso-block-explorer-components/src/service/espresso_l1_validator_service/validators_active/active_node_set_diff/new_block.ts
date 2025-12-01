@@ -33,9 +33,10 @@ export class ActiveNodeSetDiffNewBlock extends ActiveNodeSetDiff {
  * ActiveNodeSetDiffNewBlockJSONDecoder decodes ActiveNodeSetDiffNewBlock
  * objects from a JSON object.
  */
-class ActiveNodeSetDiffNewBlockJSONDecoder
-  implements Converter<unknown, ActiveNodeSetDiffNewBlock>
-{
+class ActiveNodeSetDiffNewBlockJSONDecoder implements Converter<
+  unknown,
+  ActiveNodeSetDiffNewBlock
+> {
   convert(input: unknown): ActiveNodeSetDiffNewBlock {
     assertRecordWithKeys(input, 'leader', 'failed_leaders', 'voters');
     return new ActiveNodeSetDiffNewBlock(
@@ -50,9 +51,10 @@ class ActiveNodeSetDiffNewBlockJSONDecoder
  * ActiveNodeSetDiffNewBlockJSONEncoder encodes ActiveNodeSetDiffNewBlock
  * objects to a JSON object.
  */
-class ActiveNodeSetDiffNewBlockJSONEncoder
-  implements Converter<ActiveNodeSetDiffNewBlock, unknown>
-{
+class ActiveNodeSetDiffNewBlockJSONEncoder implements Converter<
+  ActiveNodeSetDiffNewBlock,
+  unknown
+> {
   convert(input: ActiveNodeSetDiffNewBlock): unknown {
     return {
       leader: numberCodec.encode(input.leaderIndex),

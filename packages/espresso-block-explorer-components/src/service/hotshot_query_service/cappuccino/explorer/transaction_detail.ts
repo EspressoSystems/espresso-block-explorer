@@ -30,9 +30,10 @@ export class CappuccinoExplorerTransactionDetail {
   }
 }
 
-class CappuccinoExplorerTransactionDetailDecoder
-  implements Converter<unknown, CappuccinoExplorerTransactionDetail>
-{
+class CappuccinoExplorerTransactionDetailDecoder implements Converter<
+  unknown,
+  CappuccinoExplorerTransactionDetail
+> {
   convert(input: unknown): CappuccinoExplorerTransactionDetail {
     assertRecordWithKeys(input, 'details', 'data');
 
@@ -43,9 +44,7 @@ class CappuccinoExplorerTransactionDetailDecoder
   }
 }
 
-class CappuccinoExplorerTransactionDetailEncoder
-  implements Converter<CappuccinoExplorerTransactionDetail>
-{
+class CappuccinoExplorerTransactionDetailEncoder implements Converter<CappuccinoExplorerTransactionDetail> {
   convert(input: CappuccinoExplorerTransactionDetail) {
     assertInstanceOf(input, CappuccinoExplorerTransactionDetail);
 

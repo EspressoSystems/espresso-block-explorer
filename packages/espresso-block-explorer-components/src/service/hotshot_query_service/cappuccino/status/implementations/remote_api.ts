@@ -2,9 +2,7 @@ import { validateAndExpandResponse } from '@/async/fetch/response_validators';
 import { numberCodec } from '@/convert/codec/number';
 import { CappuccinoHotShotQueryServiceStatusAPI } from '../status_api';
 
-export class FetchBasedCappuccinoHotShotQueryServiceStatusAPI
-  implements CappuccinoHotShotQueryServiceStatusAPI
-{
+export class FetchBasedCappuccinoHotShotQueryServiceStatusAPI implements CappuccinoHotShotQueryServiceStatusAPI {
   private readonly fetcher: typeof fetch;
   private readonly baseURL: URL;
   private readonly blockHeightURL: URL;

@@ -9,9 +9,7 @@ import { RewardClaimContractGasEstimator } from './reward_claim_interface';
  * for reward claim contract methods. It is implemented via the Wagmi
  * estimateContractGas utility function.
  */
-export class RewardClaimContractGasEstimatorRemote
-  implements RewardClaimContractGasEstimator
-{
+export class RewardClaimContractGasEstimatorRemote implements RewardClaimContractGasEstimator {
   // Implementation of ESPTokenContract methods would go here
   constructor(
     private readonly config: Config,

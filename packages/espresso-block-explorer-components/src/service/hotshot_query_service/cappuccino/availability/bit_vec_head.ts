@@ -23,9 +23,10 @@ export class CappuccinoAPIBitVecHead {
   }
 }
 
-export class CappuccinoAPIBitVecHeadDecoder
-  implements Converter<unknown, CappuccinoAPIBitVecHead>
-{
+export class CappuccinoAPIBitVecHeadDecoder implements Converter<
+  unknown,
+  CappuccinoAPIBitVecHead
+> {
   convert(input: unknown): CappuccinoAPIBitVecHead {
     assertRecordWithKeys(input, 'width', 'index');
 
@@ -36,9 +37,7 @@ export class CappuccinoAPIBitVecHeadDecoder
   }
 }
 
-export class CappuccinoAPIBitVecHeadEncoder
-  implements Converter<CappuccinoAPIBitVecHead>
-{
+export class CappuccinoAPIBitVecHeadEncoder implements Converter<CappuccinoAPIBitVecHead> {
   convert(input: CappuccinoAPIBitVecHead) {
     assertInstanceOf(input, CappuccinoAPIBitVecHead);
 

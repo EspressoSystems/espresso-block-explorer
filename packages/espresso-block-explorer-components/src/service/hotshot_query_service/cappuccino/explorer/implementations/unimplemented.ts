@@ -14,9 +14,7 @@ import { CappuccinoExplorerGetTransactionSummariesResponse } from '../get_transa
  * as a placeholder for the Explorer API, and should be replaced with a real
  * implementation.
  */
-export class UnimplementedCappuccinoHotShotQueryServiceExplorerAPI
-  implements CappuccinoHotShotQueryServiceExplorerAPI
-{
+export class UnimplementedCappuccinoHotShotQueryServiceExplorerAPI implements CappuccinoHotShotQueryServiceExplorerAPI {
   async getBlockDetail(): Promise<CappuccinoExplorerGetBlockDetailResponse> {
     throw new UnimplementedError();
   }

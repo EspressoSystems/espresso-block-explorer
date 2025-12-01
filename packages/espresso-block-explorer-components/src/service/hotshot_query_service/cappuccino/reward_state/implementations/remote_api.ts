@@ -4,9 +4,7 @@ import { HeightAndAddress } from '../height_and_address';
 import { RewardClaimInput, rewardClaimInputCodec } from '../reward_claim_input';
 import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_start_api';
 
-export class FetchBasedCappuccinoHotShotQueryServiceRewardStateAPI
-  implements CappuccinoHotShotQueryServiceRewardStateAPI
-{
+export class FetchBasedCappuccinoHotShotQueryServiceRewardStateAPI implements CappuccinoHotShotQueryServiceRewardStateAPI {
   private readonly fetcher: typeof fetch;
   private readonly baseURL: URL;
   private readonly rewardBalanceResponseValidator = validateAndExpandResponse(

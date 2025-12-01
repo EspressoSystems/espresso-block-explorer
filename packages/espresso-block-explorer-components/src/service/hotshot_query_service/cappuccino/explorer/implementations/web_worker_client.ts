@@ -46,9 +46,7 @@ import {
   cappuccinoExplorerGetTransactionSummariesResponseCodec,
 } from '../get_transaction_summaries_response';
 
-export class WebWorkerClientBasedCappuccinoHotShotQueryServiceExplorerAPI
-  implements CappuccinoHotShotQueryServiceExplorerAPI
-{
+export class WebWorkerClientBasedCappuccinoHotShotQueryServiceExplorerAPI implements CappuccinoHotShotQueryServiceExplorerAPI {
   private helper: AsyncRequestHelper;
   constructor(helper: AsyncRequestHelper) {
     this.helper = helper;
@@ -56,8 +54,8 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceExplorerAPI
 
   private async sendRequest<
     T,
-    Method extends
-      keyof CappuccinoHotShotQueryServiceExplorerAPI = keyof CappuccinoHotShotQueryServiceExplorerAPI,
+    Method extends keyof CappuccinoHotShotQueryServiceExplorerAPI =
+      keyof CappuccinoHotShotQueryServiceExplorerAPI,
     Param = unknown,
   >(codec: Codec<T, unknown>, method: Method, ...param: Param[]): Promise<T> {
     return this.helper.submitRequest<T>(codec, 'explorer', method, param);

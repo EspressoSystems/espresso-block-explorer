@@ -104,9 +104,7 @@ function convertGeneratedNodeIdentity(
   );
 }
 
-export default class FakeDataCappuccinoNodeValidatorAPI
-  implements WebWorkerNodeValidatorAPI
-{
+export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNodeValidatorAPI {
   readonly responseStream: Channel<WebWorkerProxyResponse>;
   readonly requestStream: Channel<WebWorkerProxyRequest>;
 

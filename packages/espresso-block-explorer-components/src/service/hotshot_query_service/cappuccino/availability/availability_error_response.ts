@@ -22,9 +22,10 @@ export class CappuccinoAvailabilityErrorResponse {
   }
 }
 
-class CappuccinoAvailabilityErrorResponseDecoder
-  implements Converter<unknown, CappuccinoAvailabilityErrorResponse>
-{
+class CappuccinoAvailabilityErrorResponseDecoder implements Converter<
+  unknown,
+  CappuccinoAvailabilityErrorResponse
+> {
   convert(input: unknown): CappuccinoAvailabilityErrorResponse {
     assertRecordWithKeys(input, 'Availability');
 
@@ -34,9 +35,7 @@ class CappuccinoAvailabilityErrorResponseDecoder
   }
 }
 
-class CappuccinoAvailabilityErrorResponseEncoder
-  implements Converter<CappuccinoAvailabilityErrorResponse>
-{
+class CappuccinoAvailabilityErrorResponseEncoder implements Converter<CappuccinoAvailabilityErrorResponse> {
   convert(input: CappuccinoAvailabilityErrorResponse) {
     assertInstanceOf(input, CappuccinoAvailabilityErrorResponse);
 
@@ -61,9 +60,10 @@ class CappuccinoAvailabilityErrorResponseCodec extends TypeCheckingCodec<
 export const cappuccinoAvailabilityErrorResponseCodec =
   new CappuccinoAvailabilityErrorResponseCodec();
 
-class UnwrappedCappuccinoAvailabilityErrorResponseDecoder
-  implements Converter<unknown, EspressoError>
-{
+class UnwrappedCappuccinoAvailabilityErrorResponseDecoder implements Converter<
+  unknown,
+  EspressoError
+> {
   convert(input: unknown): EspressoError {
     return cappuccinoAvailabilityErrorResponseCodec.decode(input).availability;
   }

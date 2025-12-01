@@ -9,9 +9,7 @@ import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_start_api
  * as a placeholder for the Reward State API, and should be replaced with a real
  * implementation.
  */
-export class UnimplementedCappuccinoHotShotQueryServiceRewardStateAPI
-  implements CappuccinoHotShotQueryServiceRewardStateAPI
-{
+export class UnimplementedCappuccinoHotShotQueryServiceRewardStateAPI implements CappuccinoHotShotQueryServiceRewardStateAPI {
   async getLatestRewardBalance(): Promise<bigint> {
     throw new UnimplementedError();
   }

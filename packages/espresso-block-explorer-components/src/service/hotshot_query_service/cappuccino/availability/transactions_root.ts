@@ -22,9 +22,10 @@ export class CappuccinoTransactionsRoot {
   }
 }
 
-export class CappuccinoTransactionsRootDecoder
-  implements Converter<unknown, CappuccinoTransactionsRoot>
-{
+export class CappuccinoTransactionsRootDecoder implements Converter<
+  unknown,
+  CappuccinoTransactionsRoot
+> {
   convert(input: unknown): CappuccinoTransactionsRoot {
     assertRecordWithKeys(input, 'root');
 
@@ -32,9 +33,7 @@ export class CappuccinoTransactionsRootDecoder
   }
 }
 
-export class CappuccinoTransactionsRootEncoder
-  implements Converter<CappuccinoTransactionsRoot>
-{
+export class CappuccinoTransactionsRootEncoder implements Converter<CappuccinoTransactionsRoot> {
   convert(input: CappuccinoTransactionsRoot) {
     assertInstanceOf(input, CappuccinoTransactionsRoot);
 

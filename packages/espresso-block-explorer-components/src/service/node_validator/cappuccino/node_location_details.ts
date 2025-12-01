@@ -32,9 +32,7 @@ export default class CappuccinoLocationDetails {
   }
 }
 
-class CappuccinoLocationDetailsEncoder
-  implements Converter<CappuccinoLocationDetails>
-{
+class CappuccinoLocationDetailsEncoder implements Converter<CappuccinoLocationDetails> {
   convert(input: CappuccinoLocationDetails) {
     return {
       coords: nullableLatLngDegreesCodec.encode(input.coords),
@@ -43,9 +41,10 @@ class CappuccinoLocationDetailsEncoder
   }
 }
 
-class CappuccinoLocationDetailsDecoder
-  implements Converter<unknown, CappuccinoLocationDetails>
-{
+class CappuccinoLocationDetailsDecoder implements Converter<
+  unknown,
+  CappuccinoLocationDetails
+> {
   convert(input: unknown) {
     assertRecordWithKeys(input, 'coords', 'country');
     return new CappuccinoLocationDetails(

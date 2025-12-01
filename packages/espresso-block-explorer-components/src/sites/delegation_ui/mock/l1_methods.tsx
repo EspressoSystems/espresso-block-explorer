@@ -519,8 +519,9 @@ export interface MockL1State {
  */
 function useMockL1State(initialState: Partial<MockL1State> = {}) {
   const zeroBlock: Block = {
-    hash: '0x0',
-    parentHash: '0x',
+    hash: hashFromBlockParts(0n, 0n, []),
+    parentHash:
+      '0x0000000000000000000000000000000000000000000000000000000000000000',
     height: 0n,
     transactions: [],
     timestamp: 0n,

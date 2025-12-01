@@ -9,9 +9,7 @@ import {
 } from '../reward_claim_input';
 import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_start_api';
 
-export class WebWorkerClientBasedCappuccinoHotShotQueryServiceRewardStateAPI
-  implements CappuccinoHotShotQueryServiceRewardStateAPI
-{
+export class WebWorkerClientBasedCappuccinoHotShotQueryServiceRewardStateAPI implements CappuccinoHotShotQueryServiceRewardStateAPI {
   private helper: AsyncRequestHelper;
   constructor(helper: AsyncRequestHelper) {
     this.helper = helper;
@@ -19,8 +17,8 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceRewardStateAPI
 
   private async sendRequest<
     T,
-    Method extends
-      keyof CappuccinoHotShotQueryServiceRewardStateAPI = keyof CappuccinoHotShotQueryServiceRewardStateAPI,
+    Method extends keyof CappuccinoHotShotQueryServiceRewardStateAPI =
+      keyof CappuccinoHotShotQueryServiceRewardStateAPI,
     Param = unknown,
   >(codec: Codec<T, unknown>, method: Method, ...param: Param[]): Promise<T> {
     return this.helper.submitRequest<T>(codec, 'reward-state', method, param);

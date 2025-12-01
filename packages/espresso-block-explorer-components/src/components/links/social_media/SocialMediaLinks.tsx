@@ -4,11 +4,10 @@ import DiscordLink from './DiscordLink';
 import MediumLink from './MediumLink';
 import TwitterLink from './TwitterLink';
 
-interface SocialMediaLinksProps
-  extends React.DetailedHTMLProps<
-    React.AnchorHTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  > {}
+interface SocialMediaLinksProps extends React.DetailedHTMLProps<
+  React.AnchorHTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+> {}
 
 /**
  * SocialMediaLinks is a component that contains the quick icon link references

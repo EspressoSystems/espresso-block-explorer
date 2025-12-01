@@ -35,9 +35,10 @@ export default class BadResponseClientError extends BaseBadResponseError {
   }
 }
 
-class BadResponseClientErrorDecoder
-  implements Converter<unknown, BadResponseClientError>
-{
+class BadResponseClientErrorDecoder implements Converter<
+  unknown,
+  BadResponseClientError
+> {
   convert(input: unknown): BadResponseClientError {
     assertRecordWithKeys(input, 'code', 'message', 'status');
     assertErrorCode(input, kBadResponseClientErrorCode);
