@@ -25,6 +25,9 @@ jobs:
           node-version: 24
           cache: "npm"
 
+      - name: Build Block Explorer
+        run: npm run build --workspace=packages/block-explorer
+
       - name: Run Tests
         run: |
           npm ci --workspaces
