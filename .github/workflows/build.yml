@@ -33,6 +33,7 @@ jobs:
           cp packages/espresso-block-explorer-components/dist/*.js packages/block-explorer/public/.
           mkdir -p packages/block-explorer/public/assets
           cp packages/espresso-block-explorer-components/dist/assets/*.js packages/block-explorer/public/assets/.
+          npm run build --workspace=packages/block-explorer
           npm run lint --workspaces
           npm run test --workspaces
           npm run coverage --workspaces
