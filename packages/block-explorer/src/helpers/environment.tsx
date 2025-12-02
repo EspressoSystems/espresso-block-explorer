@@ -1,6 +1,5 @@
 'use client';
 
-import { QueryClient } from '@tanstack/react-query';
 import {
   Environment,
   EnvironmentContext,
@@ -10,21 +9,20 @@ import {
 import React from 'react';
 import { EnvironmentConfig } from './read_from_env';
 
-export interface DeriveEnvironmentFromEnvProps {
+export interface EnvironmentProviderProps {
   env: EnvironmentConfig;
   children: React.ReactNode | React.ReactNode[];
 }
 
-const queryClient = new QueryClient();
-
 /**
- * DeriveEnvironmentFromEnv is a React component that derives the
- * Environment from the provided EnvironmentConfig and provides it
- * to the EnvironmentContext.
+ * EnvironmentProvider is a client component that provides the
+ * environment configuration to the context providers.
+ * This component receives the environment config as props from the server.
  */
-export const DeriveEnvironmentFromEnv: React.FC<
-  DeriveEnvironmentFromEnvProps
-> = ({ env, children }) => {
+export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
+  env,
+  children,
+}) => {
   return (
     <EnvironmentContext.Provider value={env.environment as Environment}>
       <EspressoConfigContext.Provider

@@ -5,7 +5,13 @@ import Layout from '../layout';
 describe('Layout', () => {
   it('should not throw', () => {
     render(
-      <Layout>
+      <Layout
+        env={{
+          environment: 'fakeData',
+          contract_address_esp_token: null,
+          contract_address_stake_table: null,
+        }}
+      >
         <div />
       </Layout>,
     );

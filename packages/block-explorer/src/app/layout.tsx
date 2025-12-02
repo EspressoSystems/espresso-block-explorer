@@ -2,9 +2,16 @@ import 'espresso-block-explorer-components/dist/espresso-block-explorer-componen
 import React from 'react';
 
 import LayoutClientComponent from '@/client_components/layout';
-import { DeriveEnvironmentFromEnv } from '@/helpers/environment';
-import { readFromEnv } from '@/helpers/read_from_env';
+import {
+  determineEnvironmentFromVariable,
+  validateContractAddress,
+  type EnvironmentConfig,
+} from '@/helpers/read_from_env';
 import './globals.css';
+
+// Force dynamic rendering to ensure environment variables are read at runtime
+export const dynamic = 'force-dynamic';
+export const revalidate = 86400;
 
 /**
  * RootLayout is the default layout of the NextJS Application.  All Pages,
@@ -15,17 +22,23 @@ import './globals.css';
  */
 export default async function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
-  const env = readFromEnv();
+}: React.PropsWithChildren) {
+  // Read environment variables on the server at runtime
+  const env: EnvironmentConfig = {
+    environment: determineEnvironmentFromVariable(process.env.ENVIRONMENT_NAME),
+    contract_address_stake_table: validateContractAddress(
+      process.env.CONTRACT_ADDRESS_STAKE_TABLE,
+    ),
+    contract_address_esp_token: validateContractAddress(
+      process.env.CONTRACT_ADDRESS_ESP_TOKEN,
+    ),
+  };
+
   return (
-    <DeriveEnvironmentFromEnv env={env}>
-      <LayoutClientComponent>
-        <html lang="en">
-          <body>{children}</body>
-        </html>
-      </LayoutClientComponent>
-    </DeriveEnvironmentFromEnv>
+    <html lang="en">
+      <body>
+        <LayoutClientComponent env={env}>{children}</LayoutClientComponent>
+      </body>
+    </html>
   );
 }

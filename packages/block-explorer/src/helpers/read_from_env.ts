@@ -1,12 +1,14 @@
 /**
  * determineEnvironment determines the environment based on the
- * NEXT_PUBLIC_ENVIRONMENT_NAME environment variable.
+ * ENVIRONMENT_NAME environment variable.
  * It returns the appropriate Environment enum value.
  * If the environment variable is not set or does not match any known
  * environment, it defaults to Environment.mainnet.
  */
-function determineEnvironment(): string {
-  switch (process.env.ENVIRONMENT_NAME) {
+export function determineEnvironmentFromVariable(
+  environmentName?: string,
+): string {
+  switch (environmentName) {
     case 'decaf':
       return 'decaf';
     case 'water':
@@ -22,7 +24,7 @@ function determineEnvironment(): string {
   }
 }
 
-function validateContractAddress(
+export function validateContractAddress(
   address: null | undefined | string,
 ): null | `0x${string}` {
   if (address === null || address === undefined || address === '') {
@@ -48,12 +50,12 @@ export interface EnvironmentConfig {
  */
 export function readFromEnv() {
   return {
-    environment: determineEnvironment(),
+    environment: determineEnvironmentFromVariable(process.env.ENVIRONMENT_NAME),
     contract_address_stake_table: validateContractAddress(
       process.env.CONTRACT_ADDRESS_STAKE_TABLE,
     ),
     contract_address_esp_token: validateContractAddress(
       process.env.CONTRACT_ADDRESS_ESP_TOKEN,
     ),
-  } as const;
+  } as const satisfies EnvironmentConfig;
 }
