@@ -161,7 +161,7 @@ library with very little logic, beyond handling routing paths.
 
 ## Copyright
 
-**(c) 2025 Espresso Systems** `espresso-block-explorer` was developed by
+**(c) 2024 Espresso Systems** `espresso-block-explorer` was developed by
 Espresso Systems. While we plan to adopt an open source license, we have not
 yet selected one. As such, all rights are reserved for the time being. Please
 reach out to us if you have thoughts on licensing.
