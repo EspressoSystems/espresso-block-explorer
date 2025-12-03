@@ -25,15 +25,17 @@ export const ProvideTickEverySecond: React.FC<ProvideTickEverySecondProps> = (
   const [state, setState] = React.useState(new Date());
 
   React.useEffect(() => {
-    // mounted,
-    const int = setInterval(() => {
-      // Update the interval every state
+    let setTheDate = () => {
       setState(new Date());
-    }, 1000);
+    };
+
+    // mounted,
+    const int = setInterval(setTheDate, 1000);
 
     return () => {
       // Unmounted
       clearInterval(int);
+      setTheDate = () => {};
     };
   });
 
