@@ -151,7 +151,11 @@ async function fetchNextL1BlockID(
         continue;
       }
 
-      throw err;
+      console.error(
+        'encountered error attempting to retrieve l1 block id',
+        err,
+      );
+      await sleep(pollingInterval);
     }
   }
 }
@@ -593,9 +597,15 @@ async function* activeWalletStateStream(
 
   while (true) {
     const [nextL1BlockID, nextActiveAccount]: [
-      L1BlockID,
+      null | L1BlockID,
       null | `0x${string}`,
     ] = yield walletSnapshot;
+
+    if (nextL1BlockID === null) {
+      // We cannot progress without an l1 Block
+      await sleep(MINIMUM_SLEEP_TIME);
+      continue;
+    }
 
     // Did we receive the same input again?
     if (
