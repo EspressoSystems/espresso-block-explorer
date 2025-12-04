@@ -15,7 +15,8 @@ RUN npm run build --workspace=packages/espresso-block-explorer-components
 # Copy over public, and asset files, then install again, for the block-explorer-components
 RUN cp -r packages/espresso-block-explorer-components/public/* packages/block-explorer/public/. && \
     rm -rf packages/block-explorer/public/assets/* && \
-    cp -r packages/espresso-block-explorer-components/dist/assets/*.js packages/block-explorer/public/assets/.
+    cp -r packages/espresso-block-explorer-components/dist/assets/*.js packages/block-explorer/public/assets/. && \
+    rm packages/block-explorer/public/*.json
 RUN npm install --no-audit --save --workspace=packages/block-explorer packages/espresso-block-explorer-components/
 
 # Build the Next Application
