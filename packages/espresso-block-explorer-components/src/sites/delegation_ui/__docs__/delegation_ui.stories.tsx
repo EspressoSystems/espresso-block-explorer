@@ -5,10 +5,7 @@ import {
   environmentArgsDecafWithContracts,
   environmentArgsFakeDataWithContracts,
   environmentArgsLocalDevNetWithContracts,
-  environmentArgsMainnetWithContracts,
-  environmentArgsMilkWithContracts,
   environmentArgsTypesL1ValidatorService,
-  environmentArgsWaterWithContracts,
   environmentArgTypesWithContracts,
   extractURLWithEncodedFallback,
 } from '@/models/config/storybook/controls';
@@ -134,15 +131,15 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const Default: Story = {};
+// export const Default: Story = {};
 
-export const Milk: Story = {
-  args: environmentArgsMilkWithContracts,
-};
+// export const Milk: Story = {
+//   args: environmentArgsMilkWithContracts,
+// };
 
-export const Water: Story = {
-  args: environmentArgsWaterWithContracts,
-};
+// export const Water: Story = {
+//   args: environmentArgsWaterWithContracts,
+// };
 
 export const Decaf: Story = {
   args: {
@@ -152,9 +149,9 @@ export const Decaf: Story = {
   },
 };
 
-export const Mainnet: Story = {
-  args: environmentArgsMainnetWithContracts,
-};
+// export const Mainnet: Story = {
+//   args: environmentArgsMainnetWithContracts,
+// };
 
 export const FakeData: Story = {
   args: environmentArgsFakeDataWithContracts,
@@ -162,7 +159,7 @@ export const FakeData: Story = {
 
 export const FakeDataInteractions: Story = {
   args: environmentArgsFakeDataWithContracts,
-  play: async ({ canvasElement, step }) => {
+  async play({ canvasElement, step }) {
     await delegationUIInteractions(canvasElement, step);
   },
 };

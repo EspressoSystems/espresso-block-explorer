@@ -9,8 +9,9 @@
  * that can share the common functionality to make the component work in both
  * the Storybook and vitest environments.
  */
-import { act, waitFor } from '@testing-library/react';
-import { expect, userEvent, within } from 'storybook/test';
+import { act, findByRole, waitFor } from '@testing-library/react';
+import { UserEvent } from '@testing-library/user-event';
+import { expect, userEvent } from 'storybook/test';
 
 export type PartialLocationHref = Pick<Location, 'href'>;
 
@@ -21,7 +22,16 @@ export type PartialLocationHref = Pick<Location, 'href'>;
 export const getTextInput = async (
   canvasElement: HTMLElement,
 ): Promise<HTMLInputElement> => {
-  const input = await within(canvasElement).findByRole('textbox');
+  await waitFor(async () => {
+    await findByRole(canvasElement, 'textbox');
+  });
+
+  const input = await findByRole<HTMLInputElement>(canvasElement, 'textbox');
+
+  return input;
+};
+
+export async function performInputChecks(input: HTMLElement) {
   await expect(input).toBeTruthy();
   await expect(input).toBeInTheDocument();
   expect(input.tagName.toLowerCase()).toBe('input');
@@ -29,24 +39,24 @@ export const getTextInput = async (
   if (!(input instanceof HTMLInputElement)) {
     throw new Error('Input is not an HTMLInputElement');
   }
-
-  return input;
-};
+}
 
 /**
  *
  */
 export const interactionFocusInput = async (
   canvasElement: HTMLElement,
+  userEvent: UserEvent,
 ): Promise<HTMLInputElement> => {
   const input = await getTextInput(canvasElement);
-  const user = await act(() => userEvent.setup());
 
-  await act(async () => user.click(input));
+  await act(async () => userEvent.click(input));
 
   await waitFor(async () => {
     expect(input).toHaveFocus();
   });
+
+  expect(input).toHaveFocus();
 
   return input;
 };
@@ -56,11 +66,12 @@ export const interactionFocusInput = async (
  */
 export const interactionKeyInInput = async (
   canvasElement: HTMLElement,
+  userEvent: UserEvent,
   value: string,
 ) => {
-  const inputElement = await interactionFocusInput(canvasElement);
+  const inputElement = await getTextInput(canvasElement);
 
-  await act(async () => userEvent.keyboard(value));
+  await userEvent.keyboard(value);
   await waitFor(async () => {
     expect(inputElement.value).toBe(value);
   });
@@ -73,11 +84,12 @@ export const interactionKeyInInput = async (
  */
 export const selectTextInInput = async (
   canvasElement: HTMLElement,
+  userEvent: UserEvent,
   selectionStart: number,
   selectionEnd: number,
 ) => {
   await act(async () => {
-    const inputElement = await interactionFocusInput(canvasElement);
+    const inputElement = await getTextInput(canvasElement);
 
     await userEvent.pointer([
       // left click and hold at char selectionStart

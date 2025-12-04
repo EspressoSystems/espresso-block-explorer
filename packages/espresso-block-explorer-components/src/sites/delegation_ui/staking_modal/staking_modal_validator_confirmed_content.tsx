@@ -69,9 +69,7 @@ const ValidatorConfirmedSpecificContent: React.FC = () => {
     return <UndelegationContent />;
   }
 
-  if (!(selectedValidator instanceof ValidatorConfirmed)) {
-    assert(false);
-  }
+  assert(selectedValidator instanceof ValidatorConfirmed);
 
   // We have a confirmed Validator.
   // We need to know the context in which we are evaluating this

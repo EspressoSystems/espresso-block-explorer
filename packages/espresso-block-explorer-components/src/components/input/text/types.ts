@@ -66,6 +66,14 @@ export class TextRange {
     assert(this.isNormalized, 'TextRange must be normalized');
     return text.slice(this.start, this.end);
   }
+
+  /**
+   * isEquivalentTo determines whether this range is equivalent to another
+   * range.
+   */
+  isEquivalentTo(other: TextRange): boolean {
+    return this.start === other.start && this.end === other.end;
+  }
 }
 
 /**
@@ -155,6 +163,19 @@ export class TextSelection extends TextRange {
     return this.copyWith({
       extentOffset: position,
     });
+  }
+
+  /**
+   * isEquivalentTo determines whether this selection is equivalent to another
+   * selection.
+   */
+  isEquivalentTo(other: TextSelection): boolean {
+    return (
+      super.isEquivalentTo(other) &&
+      this.baseOffset === other.baseOffset &&
+      this.extentOffset === other.extentOffset &&
+      this.isDirectional === other.isDirectional
+    );
   }
 }
 

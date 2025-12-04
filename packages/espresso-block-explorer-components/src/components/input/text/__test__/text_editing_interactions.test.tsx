@@ -1,6 +1,7 @@
 import { composeStories } from '@storybook/react-vite';
 import '@testing-library/jest-dom';
 import { act, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, it } from 'vitest';
 import * as stories from '../__docs__/text_editing_interactions.stories';
 
@@ -20,7 +21,10 @@ describe('TextEditing', async () => {
           throw new Error('SelectTextInput.play is undefined');
         }
 
-        return SelectTextInput.play({ canvasElement: element.container });
+        await SelectTextInput.play({
+          canvasElement: element.container,
+          userEvent: userEvent.setup(),
+        });
       });
     });
   });

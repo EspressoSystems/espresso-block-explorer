@@ -1,3 +1,4 @@
+import { sleep } from '@/async/sleep';
 import LinkedList, {
   iterateLinkedList,
   pushLinkedList,
@@ -441,14 +442,8 @@ export async function* timerAsyncIterable(
   }
 
   while (true) {
-    const now = await new Promise((resolve: (value: Date) => void) => {
-      const handle = setTimeout(() => {
-        resolve(new Date());
-        clearTimeout(handle);
-      }, intervalMs);
-    });
-
-    yield now;
+    await sleep(intervalMs);
+    yield new Date();
   }
 }
 

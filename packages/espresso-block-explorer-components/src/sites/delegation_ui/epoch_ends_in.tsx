@@ -1,3 +1,4 @@
+import { CurrentNumberFormatters } from '@/components/contexts';
 import NumberText from '@/components/text/NumberText';
 import Text from '@/components/text/Text';
 import TimeLeftText from '@/components/text/TimeLeftText';
@@ -6,6 +7,7 @@ import React from 'react';
 import { NetworkStatValue } from './network_stat_value';
 
 export const EpochEndsIn: React.FC = () => {
+  const numberFormatters = React.useContext(CurrentNumberFormatters);
   const activeValidators = React.useContext(ActiveValidatorsContext);
   if (activeValidators === null || activeValidators === undefined) {
     return (
@@ -37,7 +39,10 @@ export const EpochEndsIn: React.FC = () => {
       <h2>
         <Text text="Epoch" />
         &nbsp;
-        <span className="accent">
+        <span
+          className="accent"
+          title={numberFormatters.default.format(epochAndBlock.block)}
+        >
           <NumberText number={activeValidators?.espressoBlock.epoch ?? 0n} />
         </span>
         &nbsp;

@@ -551,15 +551,19 @@ export const ProvideAutoAdvanceL1Methods: React.FC<
   const interval = passedInterval ?? 12000;
   const l1Methods = React.useContext(L1MethodsContext);
   React.useEffect(() => {
-    if (!(l1Methods instanceof MockL1MethodsImpl)) {
-      return;
-    }
-
-    const intervalHandle = setInterval(() => {
+    let advance = () => {
+      if (!(l1Methods instanceof MockL1MethodsImpl)) {
+        return;
+      }
       l1Methods.mockAdvanceBlock();
-    }, interval);
+    };
 
-    return () => clearInterval(intervalHandle);
+    const intervalHandle = setInterval(advance, interval);
+
+    return () => {
+      clearInterval(intervalHandle);
+      advance = () => {};
+    };
   }, [l1Methods, interval]);
 
   return children;
