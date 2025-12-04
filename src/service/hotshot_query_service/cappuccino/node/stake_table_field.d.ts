@@ -14,7 +14,7 @@ declare class StakeTableFieldEncoder implements Converter<StakeTableField> {
     convert(input: StakeTableField): {
         stake_table_entry: {
             stake_key: string;
-            stake_amount: unknown;
+            stake_amount: `0x${string}`;
         };
         state_ver_key: string;
     };
@@ -27,7 +27,7 @@ export declare const stakeTableFieldCodec: StakeTableFieldCodec;
 export declare const stakeTableFieldArrayCodec: ArrayCodec<StakeTableField, {
     stake_table_entry: {
         stake_key: string;
-        stake_amount: unknown;
+        stake_amount: `0x${string}`;
     };
     state_ver_key: string;
 }>;

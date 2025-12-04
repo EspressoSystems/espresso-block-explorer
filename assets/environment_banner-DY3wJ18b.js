@@ -1,0 +1,19 @@
+import{R as m,j as n}from"./iframe-D8Xp_xun.js";import{b as h,a as _}from"./higher_order-B-N0AM-V.js";import{g as v}from"./typography-BDqn6gU5.js";import{T as p}from"./Text-BU7JBOLk.js";var t=(e=>(e.mainnet="mainnet",e.decaf="decaf",e.milk="milk",e.water="water",e.fakeData="fakeData",e.localDevNet="localDevNet",e))(t||{});const a=m.createContext(t.fakeData);try{a.displayName="EnvironmentContext",a.__docgenInfo={description:`EnvironmentContext provides the current environment configuration for the
+entire application.
+
+Information about the environment can be used to derive various properties
+of the application.`,displayName:"EnvironmentContext",props:{}}}catch{}function f(e){return h(e,"edge-margin")}const r=v("p");try{r.displayName="ParagraphTextSmall",r.__docgenInfo={description:`ParagraphTextSmall represents the standard Paragraph element to be utilized
+within the Block Explorer.`,displayName:"ParagraphTextSmall",props:{className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}}}}}catch{}const y=f(r),i=e=>n.jsx("div",{...e,className:_(e.className,"fake-data-notice"),children:n.jsx(y,{children:"This Demo contains fake data and navigation that is not indicative of the final product."})});try{i.displayName="FakeDataNotice",i.__docgenInfo={description:"",displayName:"FakeDataNotice",props:{className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}}}}}catch{}const o=()=>n.jsx("div",{className:"environment-banner environment--testnet decaf",children:n.jsx("div",{className:"chip",children:n.jsx(p,{text:"Decaf Testnet"})})});try{o.displayName="EnvironmentBannerDecaf",o.__docgenInfo={description:`EnvironmentBannerDecaf is a React component that displays a banner to sit at
+the top of the page, to indicate the current environment is a DevNet,
+specifically the decaf testnet.`,displayName:"EnvironmentBannerDecaf",props:{}}}catch{}const s=()=>n.jsx(n.Fragment,{});try{s.displayName="EnvironmentBannerMainnet",s.__docgenInfo={description:`EnvironmentBannerWater is a React component that displays a banner to sit at
+the top of the page, to indicate the current environment is a DevNet,
+specifically the mainnet.
+
+NOTE: This banner is meant to be invisible, as it is the mainnet environment.
+    It is included for consistency with other environments.`,displayName:"EnvironmentBannerMainnet",props:{}}}catch{}const c=()=>n.jsx("div",{className:"environment-banner environment--devnet milk",children:n.jsx("div",{className:"chip",children:n.jsx(p,{text:"Milk Devnet"})})});try{c.displayName="EnvironmentBannerMilk",c.__docgenInfo={description:`EnvironmentBannerMilk is a React component that displays a banner to sit at
+the top of the page, to indicate the current environment is a DevNet,
+specifically the milk devnet.`,displayName:"EnvironmentBannerMilk",props:{}}}catch{}const d=()=>n.jsx("div",{className:"environment-banner environment--devnet water",children:n.jsx("div",{className:"chip",children:n.jsx(p,{text:"Water Devnet"})})});try{d.displayName="EnvironmentBannerWater",d.__docgenInfo={description:`EnvironmentBannerWater is a React component that displays a banner to sit at
+the top of the page, to indicate the current environment is a DevNet,
+specifically the water devnet.`,displayName:"EnvironmentBannerWater",props:{}}}catch{}const l=()=>{switch(m.useContext(a)){case t.fakeData:return n.jsx(i,{});case t.decaf:return n.jsx(o,{});case t.milk:return n.jsx(c,{});case t.water:return n.jsx(d,{});case t.mainnet:return n.jsx(s,{});default:return null}};try{l.displayName="EnvironmentBanner",l.__docgenInfo={description:`EnvironmentBanner is a React component that displays a banner to sit at
+the top of the page, to indicate the current environment being inspected
+/ used.`,displayName:"EnvironmentBanner",props:{}}}catch{}export{t as E,f as W,a,l as b};

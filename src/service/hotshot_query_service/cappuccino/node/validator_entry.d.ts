@@ -12,7 +12,7 @@ export declare class ValidatorEntry {
         account: `0x${string}`;
         stake_table_key: string;
         state_ver_key: string;
-        stake: unknown;
+        stake: `0x${string}`;
         commission: number;
         delegators: Record<string, unknown>;
     };
@@ -25,7 +25,7 @@ declare class ValidatorEntryEncoder implements Converter<ValidatorEntry> {
         account: `0x${string}`;
         stake_table_key: string;
         state_ver_key: string;
-        stake: unknown;
+        stake: `0x${string}`;
         commission: number;
         delegators: Record<string, unknown>;
     };

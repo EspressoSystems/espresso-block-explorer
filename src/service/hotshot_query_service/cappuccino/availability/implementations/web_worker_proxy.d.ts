@@ -20,7 +20,7 @@ export declare class WebWorkerProxyAvailabilityAPI {
                         index: number;
                     };
                     bits: number;
-                    data: unknown[];
+                    data: `0x${string}`[];
                 })[] | null;
                 is_genesis: boolean;
                 _pd: null;
@@ -74,7 +74,7 @@ export declare class WebWorkerProxyAvailabilityAPI {
                     index: number;
                 };
                 bits: number;
-                data: unknown[];
+                data: `0x${string}`[];
             })[] | null;
             is_genesis: boolean;
             _pd: null;

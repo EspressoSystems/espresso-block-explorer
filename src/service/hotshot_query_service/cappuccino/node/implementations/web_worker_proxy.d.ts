@@ -7,7 +7,7 @@ export declare class WebWorkerProxyNodeAPI {
     getStakeTableForEpoch(epoch: number): Promise<{
         stake_table_entry: {
             stake_key: string;
-            stake_amount: unknown;
+            stake_amount: `0x${string}`;
         };
         state_ver_key: string;
     }[]>;
@@ -15,7 +15,7 @@ export declare class WebWorkerProxyNodeAPI {
     handleRequest(request: NodeRequest): Promise<Record<string, unknown> | {
         stake_table_entry: {
             stake_key: string;
-            stake_amount: unknown;
+            stake_amount: `0x${string}`;
         };
         state_ver_key: string;
     }[]>;

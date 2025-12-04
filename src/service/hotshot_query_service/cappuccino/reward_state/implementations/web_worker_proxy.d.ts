@@ -5,14 +5,14 @@ export type RewardStateRequest<Method extends keyof CappuccinoHotShotQueryServic
 export declare class WebWorkerProxyRewardStateAPI {
     private service;
     constructor(service: CappuccinoHotShotQueryServiceRewardStateAPI);
-    getLatestRewardBalance(address: string): Promise<unknown>;
+    getLatestRewardBalance(address: string): Promise<`0x${string}` | null>;
     getLatestRewardClaimInput(address: string): Promise<{
-        lifetime_rewards: unknown;
+        lifetime_rewards: `0x${string}`;
         auth_data: `0x${string}`;
     } | null>;
-    getRewardBalance(request: HeightAndAddress): Promise<unknown>;
+    getRewardBalance(request: HeightAndAddress): Promise<`0x${string}` | null>;
     getRewardClaimInput(request: HeightAndAddress): Promise<{
-        lifetime_rewards: unknown;
+        lifetime_rewards: `0x${string}`;
         auth_data: `0x${string}`;
     } | null>;
     handleRequest(request: RewardStateRequest): Promise<unknown>;

@@ -12,7 +12,7 @@ import { default as React } from 'react';
  * @param locale the current language to create the default number formatters
  *   for.
  */
-declare function createDefaultNumberFormatters(locale: string): {
+export declare function createDefaultNumberFormatters(locale: string): {
     default: Intl.NumberFormat;
     percentage: Intl.NumberFormat;
     bytes: Intl.NumberFormat;

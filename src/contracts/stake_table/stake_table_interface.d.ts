@@ -14,14 +14,14 @@ export declare class Validator {
     readonly status: ValidatorStatus;
     constructor(stake: bigint, status: ValidatorStatus);
     static fromRaw(validator: RawValidator): Validator;
-    toJSON(): readonly [unknown, number];
+    toJSON(): readonly [`0x${string}`, number];
 }
 export declare class Undelegation {
     readonly amount: bigint;
     readonly timestamp: bigint;
     constructor(amount: bigint, timestamp: bigint);
     static fromRaw(undelegation: RawUndelegation): Undelegation;
-    toJSON(): readonly [unknown, unknown];
+    toJSON(): readonly [`0x${string}`, `0x${string}`];
 }
 /**
  * StakeTableContractReadOnly defines the read-only interface for the

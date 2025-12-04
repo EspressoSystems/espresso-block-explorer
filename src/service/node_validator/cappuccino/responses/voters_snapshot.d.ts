@@ -25,7 +25,7 @@ export declare class CappuccinoVotersSnapshot extends CappuccinoNodeValidatorRes
                 index: number;
             };
             bits: number;
-            data: unknown[];
+            data: `0x${string}`[];
         }[];
     };
 }
@@ -41,7 +41,7 @@ declare class CappuccinoVotersSnapshotEncoder implements Converter<CappuccinoVot
                 index: number;
             };
             bits: number;
-            data: unknown[];
+            data: `0x${string}`[];
         }[];
     };
 }

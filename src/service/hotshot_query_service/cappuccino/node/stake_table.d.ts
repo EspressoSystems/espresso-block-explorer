@@ -11,7 +11,7 @@ declare class StakeTableEncoder implements Converter<StakeTable> {
     convert(input: StakeTable): {
         stake_table_entry: {
             stake_key: string;
-            stake_amount: unknown;
+            stake_amount: `0x${string}`;
         };
         state_ver_key: string;
     }[];

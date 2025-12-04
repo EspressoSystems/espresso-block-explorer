@@ -23,7 +23,7 @@ export declare class CappuccinoLatestVoters extends CappuccinoNodeValidatorRespo
                 index: number;
             };
             bits: number;
-            data: unknown[];
+            data: `0x${string}`[];
         };
     };
 }
@@ -39,7 +39,7 @@ declare class CappuccinoLatestVotersEncoder implements Converter<CappuccinoLates
                 index: number;
             };
             bits: number;
-            data: unknown[];
+            data: `0x${string}`[];
         };
     };
 }

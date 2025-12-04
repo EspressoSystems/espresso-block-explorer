@@ -6,7 +6,7 @@ export declare class StakeTableEntry {
     constructor(stakeKey: TaggedBase64, stakeAmount: bigint);
     toJSON(): {
         stake_key: string;
-        stake_amount: unknown;
+        stake_amount: `0x${string}`;
     };
 }
 declare class StakeTableEntryDecoder implements Converter<unknown, StakeTableEntry> {
@@ -15,7 +15,7 @@ declare class StakeTableEntryDecoder implements Converter<unknown, StakeTableEnt
 declare class StakeTableEntryEncoder implements Converter<StakeTableEntry> {
     convert(input: StakeTableEntry): {
         stake_key: string;
-        stake_amount: unknown;
+        stake_amount: `0x${string}`;
     };
 }
 declare class StakeTableEntryCodec extends TypeCheckingCodec<StakeTableEntry, ReturnType<InstanceType<new () => StakeTableEntryEncoder>['convert']>> {

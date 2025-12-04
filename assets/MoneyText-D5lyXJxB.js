@@ -1,0 +1,6 @@
+import{j as r,R as a}from"./iframe-D8Xp_xun.js";import{C as s}from"./NumberFormattersProvider-C5Ud-AgN.js";/* empty css               */const c=t=>{const e=t.money;switch(e.currency.alpha3Code){case"ETH":return r.jsx(m,{value:e.toNumericLiteralString()});case"ESP":return r.jsx(l,{value:e.toNumericLiteralString()});default:return r.jsx(u,{money:e})}},u=t=>{const e=a.useContext(s),n=t.money,o=e[n.currency.alpha3Code];return o===null?r.jsx(i,{money:t.money}):o.format(n.toNumericLiteralString())},i=t=>{const e=a.useContext(s),n=t.money,o=Number(n.value)/Number(n.currency.significantDigitsMultiplier);return e.default.format(o)},m=t=>{const e=a.useContext(s);return r.jsx(r.Fragment,{children:e.ETH.format(t.value)})},l=t=>{const e=a.useContext(s);return r.jsx(r.Fragment,{children:e.ESP.format(t.value)})};try{c.displayName="MoneyText",c.__docgenInfo={description:`MoneyText is a component that will render a MonetaryValue in a localized
+manner for the given currency type.  It supports non-standard ISO 4217
+currency codes such as ETH and ESP.
+
+It achieves this by having specific implementations for the necessary
+currency types.`,displayName:"MoneyText",props:{money:{defaultValue:null,description:"",name:"money",required:!0,type:{name:"MonetaryValue"}}}}}catch{}export{c as M};

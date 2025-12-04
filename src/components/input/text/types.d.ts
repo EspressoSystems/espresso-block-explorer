@@ -35,6 +35,11 @@ export declare class TextRange {
      * The text within this range within the provided text.
      */
     textWithin(text: string): string;
+    /**
+     * isEquivalentTo determines whether this range is equivalent to another
+     * range.
+     */
+    isEquivalentTo(other: TextRange): boolean;
 }
 /**
  * TextSelection represents a selection of text within a string, defined by
@@ -51,6 +56,11 @@ export declare class TextSelection extends TextRange {
     copyWith({ baseOffset, extentOffset, isDirectional, }?: Partial<TextSelection>): TextSelection;
     expandTo(position: number, extentAtIndex?: boolean): TextSelection;
     extendTo(position: number): TextSelection;
+    /**
+     * isEquivalentTo determines whether this selection is equivalent to another
+     * selection.
+     */
+    isEquivalentTo(other: TextSelection): boolean;
 }
 /**
  * TextEditingValue represents the current value of a text input field,

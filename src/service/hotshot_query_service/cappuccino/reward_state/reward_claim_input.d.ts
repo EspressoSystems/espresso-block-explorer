@@ -9,7 +9,7 @@ export declare class RewardClaimInput {
     readonly authData: ArrayBuffer;
     constructor(lifetimeRewards: bigint, authData: ArrayBuffer);
     toJSON(): {
-        lifetime_rewards: unknown;
+        lifetime_rewards: `0x${string}`;
         auth_data: `0x${string}`;
     };
 }
@@ -18,7 +18,7 @@ declare class RewardClaimInputDecoder implements Converter<unknown, RewardClaimI
 }
 declare class RewardClaimInputEncoder implements Converter<RewardClaimInput> {
     convert(input: RewardClaimInput): {
-        lifetime_rewards: unknown;
+        lifetime_rewards: `0x${string}`;
         auth_data: `0x${string}`;
     };
 }
@@ -28,7 +28,7 @@ declare class RewardClaimInputCodec extends TypeCheckingCodec<RewardClaimInput, 
 }
 export declare const rewardClaimInputCodec: RewardClaimInputCodec;
 export declare const nullableRewardClaimInputCodec: NullCodec<RewardClaimInput, {
-    lifetime_rewards: unknown;
+    lifetime_rewards: `0x${string}`;
     auth_data: `0x${string}`;
 }>;
 export {};
