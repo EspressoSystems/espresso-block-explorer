@@ -36,15 +36,15 @@ export class BigintDecoder implements Converter<unknown, bigint> {
   }
 }
 
-export class BigintEncoder implements Converter<bigint, string> {
-  convert(input: bigint): string {
+export class BigintEncoder implements Converter<bigint, `0x${string}`> {
+  convert(input: bigint): `0x${string}` {
     assertType(input, 'bigint');
 
     return `0x${input.toString(16)}`;
   }
 }
 
-export class BigintCodec extends TypeCheckingCodec<bigint> {
+export class BigintCodec extends TypeCheckingCodec<bigint, `0x${string}`> {
   readonly encoder = new BigintEncoder();
   readonly decoder = new BigintDecoder();
 }

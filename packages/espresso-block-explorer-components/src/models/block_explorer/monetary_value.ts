@@ -1,5 +1,6 @@
 import { assertInstanceOf } from '@/assert/assert';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
+import { bigintCodec } from '@/convert/codec/bigint';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import InvalidInputError from '@/errors/InvalidInputError';
 import {
@@ -50,12 +51,51 @@ export default class MonetaryValue {
     return new MonetaryValue(BTC, BigInt(value));
   }
 
+  /**
+   * toString returns a string representation of the MonetaryValue for
+   * convenience.
+   *
+   * @see {toISOString} for more details on the format being utilized for this
+   * method call.
+   */
   toString() {
-    return monetaryValueCodec.encode(this);
+    return iso427MonetaryValueCodec.encode(this);
+  }
+
+  /**
+   * toISOString returns the ISO 4217 string representation of the
+   * MonetaryValue.
+   *
+   * @see {ISO4217MonetaryValueStringLiteralEncoder} for more details on the
+   * format being utilized for this method call.
+   */
+  toISOString() {
+    return this.toString();
+  }
+
+  /**
+   * toNumericLiteralString returns a string representation of the numeric
+   * value of the MonetaryValue, without the currency code.
+   *
+   * This is primarily useful for the purposes of formatting using the
+   * Intl.NumberFormat APIs which support string numeric literals. You
+   * can use this without the loss of precision that would occur if you
+   * converted the value to a floating point number.
+   */
+  toNumericLiteralString() {
+    return monetaryValueToNumericLiteralStringEncoder.convert(this);
+  }
+
+  /**
+   * toHexString returns the hexadecimal string representation of the
+   * MonetaryValue's value.
+   */
+  toHexString(): `0x${string}` {
+    return bigintCodec.encode(this.value);
   }
 
   toJSON() {
-    return monetaryValueCodec.encode(this);
+    return iso427MonetaryValueCodec.encode(this);
   }
 }
 
@@ -75,6 +115,18 @@ function lastIndexOf(s: string, pred: (a: string) => boolean): number {
   return lastIndex;
 }
 
+/**
+ * MonetaryValueDecoder is a decoder for decoding a string representation of
+ * a MonetaryValue into a MonetaryValue object.
+ *
+ * The expected value is meant to match that of the format produced by the
+ * ISO4217MonetaryValueStringLiteralEncoder.  However, for convenience, we
+ * also support the reverse order where the amount precedes the currency
+ * code, as well as support for different decimal separators (., space).
+ *
+ * NOTE: There is no guarantee that this decoder will properly decode all
+ * possible string representations of monetary values.
+ */
 export class MonetaryValueDecoder implements Converter<unknown, MonetaryValue> {
   parseCurrencyCode(currencyCodeString: string): CurrencyCode {
     const currencyCode = currencyCodeCodec.decode(currencyCodeString);
@@ -152,11 +204,22 @@ export class MonetaryValueDecoder implements Converter<unknown, MonetaryValue> {
   }
 }
 
-export class MonetaryValueEncoder implements Converter<MonetaryValue, string> {
-  public convert(input: MonetaryValue): string {
-    assertInstanceOf(input, MonetaryValue);
-
-    // Is it a negative value?
+/**
+ * MonetaryValueToNumericLiteralStringEncoder is a converter that converts
+ * a MonetaryValue into a numeric literal string representation of its value.
+ *
+ * The actual format of the amount values of the string are taken to be that
+ * of a standard US Programming language representation where we do not utilize
+ * a group separator, and we use a full-stop (.) as the decimal separator.
+ * This is done for convenience and familiarity within programming contexts
+ * and to be compatible with the Intl.NumberFormat's format methods where
+ * they support a String Numeric Literal.
+ */
+class MonetaryValueToNumericLiteralStringEncoder implements Converter<
+  MonetaryValue,
+  `${number}`
+> {
+  public convert(input: MonetaryValue): `${number}` {
     const sign = input.value < 0n ? '-' : '';
     const value = input.value < 0n ? -input.value : input.value;
     const fractions = value % input.currency.significantDigitsMultiplier;
@@ -165,23 +228,70 @@ export class MonetaryValueEncoder implements Converter<MonetaryValue, string> {
     const unitsString = String(units);
     const fractionalString = String(fractions);
     if (/^0+$/.test(fractionalString)) {
-      return `${currencyCodeCodec.encode(input.currency)}\u00A0${sign}${unitsString}`;
+      return `${sign}${unitsString}` as `${number}`;
     }
 
-    return `${currencyCodeCodec.encode(input.currency)}\u00A0${sign}${units}.${String(fractions).padStart(input.currency.significantDigits, '0')}`;
+    return `${sign}${units}.${String(fractions).padStart(input.currency.significantDigits, '0')}` as `${number}`;
   }
 }
 
-export class MonetaryValueCodec extends TypeCheckingCodec<
+const monetaryValueToNumericLiteralStringEncoder =
+  new MonetaryValueToNumericLiteralStringEncoder();
+
+/**
+ * ISO4217MonetaryValueStringLiteralEncoder is a codec for MonetaryValue
+ * objects to represent them in an ISO string format.  The format utilized here
+ * is described in the wikipedia article for ISO 4217 in a section entitled
+ * Code position in amount formatting:
+ * https://en.wikipedia.org/wiki/ISO_4217#Code_position_in_amount_formatting (2025-12-03)
+ *
+ * The article makes reference to an international standard and guideline
+ * made by the European Union In its Interinstitutional Style Guide (2008),
+ * section 7.3.3 Rules for expressing monetary units:
+ * https://style-guide.europa.eu/en/content/-/isg/topic?identifier=7.3.3-rules-for-expressing-monetary-units (2025-12-03)
+ *
+ * The format is described as follows:
+ * "When a monetary unit is accompanied by an amount, use the ISO code 'EUR'
+ * followed by a hard space and the amount in figures (compulsory in all legal
+ * texts)"
+ *
+ * NOTE: this Interinstutional Style Guide applies specifically to the Euro
+ * currency, but we are extending its usage here to all currencies for
+ * consistency within our application.
+ *
+ * @see {MonetaryValueToNumericLiteralStringEncoder} for more details on the
+ * formatting of the numeric literal string portion.
+ */
+export class ISO4217MonetaryValueStringLiteralEncoder implements Converter<
   MonetaryValue,
-  string
+  `${string}\u00A0${number}`
 > {
-  readonly decoder = new MonetaryValueDecoder();
-  readonly encoder = new MonetaryValueEncoder();
+  public convert(input: MonetaryValue): `${string}\u00A0${number}` {
+    assertInstanceOf(input, MonetaryValue);
+
+    const numericStringLiteral =
+      monetaryValueToNumericLiteralStringEncoder.convert(input);
+    return `${currencyCodeCodec.encode(input.currency)}\u00A0${numericStringLiteral}`;
+  }
 }
 
-export const monetaryValueCodec = new MonetaryValueCodec();
+/**
+ * ISO4217MonetaryValueCodec is a codec for encoding and decoding MonetaryValue
+ * objects to and from their ISO 4217 string representation.
+ *
+ * @see {ISO4217MonetaryValueStringLiteralEncoder} for specific details
+ * on the encoding format.
+ */
+export class ISO4217MonetaryValueCodec extends TypeCheckingCodec<
+  MonetaryValue,
+  `${string}\u00A0${number}`
+> {
+  readonly decoder = new MonetaryValueDecoder();
+  readonly encoder = new ISO4217MonetaryValueStringLiteralEncoder();
+}
+
+export const iso427MonetaryValueCodec = new ISO4217MonetaryValueCodec();
 export const monetaryValueArrayCodec = new ArrayCodec(
-  new ArrayDecoder(monetaryValueCodec),
-  new ArrayEncoder(monetaryValueCodec),
+  new ArrayDecoder(iso427MonetaryValueCodec),
+  new ArrayEncoder(iso427MonetaryValueCodec),
 );

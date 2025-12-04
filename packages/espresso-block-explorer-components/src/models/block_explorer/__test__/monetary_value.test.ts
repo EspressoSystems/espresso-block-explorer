@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { USD } from '../currency_code';
-import MonetaryValue, { monetaryValueCodec } from '../monetary_value';
+import MonetaryValue, { iso427MonetaryValueCodec } from '../monetary_value';
 
 describe('Monetary Value', () => {
   describe('codec', () => {
@@ -20,7 +20,7 @@ describe('Monetary Value', () => {
         const l = cases.length;
         for (let i = 0; i < l; i++) {
           const c = cases[i];
-          const decoded = monetaryValueCodec.decode(c);
+          const decoded = iso427MonetaryValueCodec.decode(c);
           expect(decoded.value).toEqual(BigInt(10000));
           expect(decoded.currency).toEqual(USD);
         }
@@ -38,7 +38,7 @@ describe('Monetary Value', () => {
         const l = cases.length;
         for (let i = 0; i < l; i++) {
           const c = cases[i];
-          const decoded = monetaryValueCodec.decode(c);
+          const decoded = iso427MonetaryValueCodec.decode(c);
           expect(decoded.value).toEqual(BigInt(10000000));
           expect(decoded.currency).toEqual(USD);
         }
@@ -61,7 +61,7 @@ describe('Monetary Value', () => {
         for (let i = 0; i < l; i++) {
           const c = cases[i];
           const [value, expected] = c;
-          const encoded = monetaryValueCodec.encode(value);
+          const encoded = iso427MonetaryValueCodec.encode(value);
           expect(encoded).toEqual(value.toString());
           expect(encoded).toEqual(value.toJSON());
           expect(encoded).toEqual(expected);
@@ -84,7 +84,7 @@ describe('Monetary Value', () => {
         const l = cases.length;
         for (let i = 0; i < l; i++) {
           const c = cases[i];
-          const decoded = monetaryValueCodec.decode(c[0]);
+          const decoded = iso427MonetaryValueCodec.decode(c[0]);
           expect(decoded.value).toEqual(c[1].value);
           expect(decoded.currency).toEqual(c[1].currency);
         }
@@ -92,11 +92,11 @@ describe('Monetary Value', () => {
     });
 
     it('should throw when an unsupported currency code is given', () => {
-      expect(() => monetaryValueCodec.decode('USD 1.00')).throws();
+      expect(() => iso427MonetaryValueCodec.decode('USD 1.00')).throws();
     });
 
     it('should throw when not given a string', () => {
-      expect(() => monetaryValueCodec.decode(1)).throws();
+      expect(() => iso427MonetaryValueCodec.decode(1)).throws();
     });
   });
 });
