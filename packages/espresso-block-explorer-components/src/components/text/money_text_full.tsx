@@ -7,24 +7,6 @@ export interface MoneyTextProps {
   money: MonetaryValue;
 }
 
-function padStart(str: string, length: number, padChar: string): string {
-  while (str.length < length) {
-    str = padChar + str;
-  }
-  return str;
-}
-
-function determineValue(money: MonetaryValue): Intl.StringNumericLiteral {
-  // We want the full value, and we want to be precise.
-  // So let's craft a simple basic string format for precision.
-
-  const wholeValue = money.value / money.currency.significantDigitsMultiplier;
-  const fractionalValue =
-    money.value % money.currency.significantDigitsMultiplier;
-
-  return `${wholeValue}.${padStart(String(fractionalValue), money.currency.significantDigits, '0')}` as Intl.StringNumericLiteral;
-}
-
 /**
  * MoneyText is a component that will render a MonetaryValue in a localized
  * manner for the given currency type.  It supports non-standard ISO 4217
@@ -35,14 +17,13 @@ function determineValue(money: MonetaryValue): Intl.StringNumericLiteral {
  */
 export const MoneyTextFull: React.FC<MoneyTextProps> = (props) => {
   const money = props.money;
-  const value = determineValue(money);
 
   switch (money.currency.alpha3Code) {
     case 'ETH':
-      return <ETHTextFull value={value} />;
+      return <ETHTextFull value={money.toNumericLiteralString()} />;
 
     case 'ESP':
-      return <ESPTextFull value={value} />;
+      return <ESPTextFull value={money.toNumericLiteralString()} />;
 
     default:
       return <DefaultMoneyTextFull money={money} />;
@@ -69,9 +50,7 @@ const DefaultMoneyTextFull: React.FC<DefaultMoneyTextProps> = (props) => {
     return <DefaultFormatterMoneyText money={props.money} />;
   }
 
-  const value =
-    Number(money.value) / Number(money.currency.significantDigitsMultiplier);
-  return formatter.format(value);
+  return formatter.format(money.toNumericLiteralString());
 };
 
 /**
