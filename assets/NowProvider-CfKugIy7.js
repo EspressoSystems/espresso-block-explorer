@@ -1,3 +1,0 @@
-import{R as t,j as i}from"./iframe-D8Xp_xun.js";const o=t.createContext(new Date),a=e=>{const[n,c]=t.useState(new Date);return t.useEffect(()=>{let r=()=>{c(new Date)};const s=setInterval(r,1e3);return()=>{clearInterval(s),r=()=>{}}}),i.jsx(o.Provider,{...e,value:n})};try{o.displayName="Now",o.__docgenInfo={description:`Now is a context that is meant to provide the current Date, or some
-reference for whatever 'now' is considered to be.`,displayName:"Now",props:{}}}catch{}try{a.displayName="ProvideTickEverySecond",a.__docgenInfo={description:`ProvideTickEverySecond is a component that will update the Now context
-every second.`,displayName:"ProvideTickEverySecond",props:{}}}catch{}export{o as N,a as P};
