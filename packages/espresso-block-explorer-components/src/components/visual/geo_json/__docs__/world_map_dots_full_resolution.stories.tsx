@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import WorldMapDotsFullResolutionComp from '../WorldMapDotsFullResolution';
+import WorldMapDotsFullResolutionComp from '../world_map_dots_full_resolution';
 
 interface ExampleProps {}
 const Example: React.FC<ExampleProps> = () => {

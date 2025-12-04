@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { compareArrayBuffer } from '@/functional/functional';
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';

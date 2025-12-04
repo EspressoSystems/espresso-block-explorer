@@ -5,7 +5,7 @@ import {
   CircularBufferGetFromEmptyBehaviors as GetEmpty,
   CircularBufferPutIntoFullBehaviors as PutFull,
   createCircularBuffer as create,
-} from '../CircularBuffer';
+} from '../circular_buffer';
 
 const SAMPLES = 10000;
 function run(buffer: CircularBuffer<number>) {

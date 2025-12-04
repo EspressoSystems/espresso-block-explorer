@@ -1,7 +1,7 @@
-import { CurrentSetNavDrawerStateContext } from '@/contexts/NavDrawerStateProvider';
-import Close from '@/visual/icons/Close';
+import { CurrentSetNavDrawerStateContext } from '@/contexts/nav_drawer_state_provider';
+import Close from '@/visual/icons/close';
 import React from 'react';
-import IconButton from '../../hid/buttons/icon_button/IconButton';
+import IconButton from '../../hid/buttons/icon_button/icon_button';
 
 interface CloseNavDrawerButtonProps {}
 

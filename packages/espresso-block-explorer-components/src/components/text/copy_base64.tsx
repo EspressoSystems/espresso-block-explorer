@@ -1,7 +1,7 @@
 import { stdEncoding } from '@/convert/base64/base64';
 import React from 'react';
-import CopyButton from '../hid/buttons/copy_button/CopyButton';
-import { CopyArrayBufferAsTextProps } from './CopyArrayBufferAsTextProps';
+import CopyButton from '../hid/buttons/copy_button/copy_button';
+import { CopyArrayBufferAsTextProps } from './copy_array_buffer_as_text_props';
 import './inline.css';
 
 /**

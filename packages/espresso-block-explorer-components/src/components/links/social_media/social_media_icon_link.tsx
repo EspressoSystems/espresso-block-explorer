@@ -1,5 +1,5 @@
 import React from 'react';
-import { EgressLink } from '../link/Link';
+import { EgressLink } from '../link/link';
 import './social_media_icon_link.css';
 
 export interface SocialMediaIconLinkProps {

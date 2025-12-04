@@ -1,5 +1,5 @@
 import { DataContext, ErrorCarry, ErrorJoiner } from '@/components/contexts';
-import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
+import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';
 import { TaggedBase64 } from '@/models/espresso';
 import React from 'react';

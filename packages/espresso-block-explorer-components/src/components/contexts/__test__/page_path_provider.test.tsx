@@ -8,7 +8,7 @@ import {
   OverridePagePath,
   PageType,
   ProvideDerivedPagePath,
-} from '../PagePathProvider';
+} from '../page_path_provider';
 
 let localPathResolver: null | string = null;
 const ConsumePagePathProvider: React.FC = () => {

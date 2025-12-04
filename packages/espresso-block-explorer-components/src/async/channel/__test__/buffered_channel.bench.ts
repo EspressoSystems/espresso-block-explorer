@@ -1,5 +1,5 @@
 import { bench, describe, expect } from 'vitest';
-import { createBufferedChannel } from '../BufferedChannel';
+import { createBufferedChannel } from '../buffered_channel';
 
 const SAMPLES: number = 100000;
 function runWithBufferedSize(bufferedSize: number) {

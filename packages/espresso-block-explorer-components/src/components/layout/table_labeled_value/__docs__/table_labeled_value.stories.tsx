@@ -1,7 +1,7 @@
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import TableLabeledValueComp from '../TableLabeledValue';
+import TableLabeledValueComp from '../table_labeled_value';
 
 interface ExampleProps {
   label: string;

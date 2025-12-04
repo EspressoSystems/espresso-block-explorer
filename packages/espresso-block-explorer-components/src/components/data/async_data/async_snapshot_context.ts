@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncSnapshot } from './AsyncSnapshot';
+import { AsyncSnapshot } from './async_snapshot';
 
 /**
  * AsyncSnapshotContext is a React Context that holds an AsyncSnapshot state.

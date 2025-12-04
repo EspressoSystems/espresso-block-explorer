@@ -3,7 +3,7 @@ import {
   RainbowKitAccountAddressContext,
   RainbowKitModalContext,
 } from '@/components/rainbowkit';
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 import Plus from '@/components/visual/icons/feather/plus';
 import {
   compareArrayBuffer,

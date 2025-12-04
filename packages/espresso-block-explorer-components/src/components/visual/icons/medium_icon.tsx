@@ -1,5 +1,5 @@
 import React from 'react';
-import SVGIconBase from './SVGIconBase';
+import SVGIconBase from './svg_icon_base';
 
 /**
  * MediumIcon is an icon representation of the Medium logo.

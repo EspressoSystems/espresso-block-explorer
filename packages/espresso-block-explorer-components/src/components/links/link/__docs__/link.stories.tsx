@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { InternalLink } from '../Link';
+import { InternalLink } from '../link';
 
 const meta: Meta<typeof InternalLink> = {
   title: 'Components/Links/InternalLink',

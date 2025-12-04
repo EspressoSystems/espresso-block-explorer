@@ -1,7 +1,7 @@
-import { ErrorContext } from '@/contexts/ErrorProvider';
-import { LoadingContext } from '@/contexts/LoadingProvider';
-import CircularProgressIndicator from '@/loading/CircularProgressIndicator';
-import Text from '@/text/Text';
+import { ErrorContext } from '@/contexts/error_provider';
+import { LoadingContext } from '@/contexts/loading_provider';
+import CircularProgressIndicator from '@/loading/circular_progress_indicator';
+import Text from '@/text/text';
 import React from 'react';
 
 export interface BasicAsyncDataHandlerProps {

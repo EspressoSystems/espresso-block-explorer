@@ -1,15 +1,15 @@
 import { SkeletonContent } from '@/components/loading';
 import React from 'react';
 import { useSVGSize } from '../../svg/hooks';
-import { AffineTransform } from './AffineTransform';
-import { DataStatistics } from './DataStatistics';
-import { HistogramBase } from './HistogramBase';
+import { AffineTransform } from './affine_transform';
+import { DataStatistics } from './data_statistics';
+import { HistogramBase } from './histogram_base';
 import {
   HistogramGuideLines,
   HistogramYAxisLabels,
   ProvideGuideLines,
-} from './HistogramGuideLines';
-import { HistogramPlot } from './HistogramPlot';
+} from './histogram_guide_lines';
+import { HistogramPlot } from './histogram_plot';
 import {
   HistogramDomain,
   HistogramDomainAffineTransform,

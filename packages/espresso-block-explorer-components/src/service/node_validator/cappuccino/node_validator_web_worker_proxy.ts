@@ -1,6 +1,6 @@
 import { Channel, createBufferedChannel } from '@/async/channel';
 import { Completer, createCompleter } from '@/data_structures/async';
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { WebSocketCommandSetURL } from '@/models/web_worker/web_socket/request/set_url';
 import { WebSocketRequest } from '@/models/web_worker/web_socket/web_socket_request';
 import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';

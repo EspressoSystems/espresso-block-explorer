@@ -5,7 +5,7 @@
  * be run in production builds.
  */
 
-import { FailedAssertion } from '@/assert/FailedAssertion';
+import { FailedAssertion } from '@/assert/failed_assertion';
 
 /**
  * AssertExecutor is an interface that defines the contract for the assert

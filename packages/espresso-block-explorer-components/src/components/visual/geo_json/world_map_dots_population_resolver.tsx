@@ -1,6 +1,6 @@
 import { ErrorCarry, ErrorJoiner } from '@/components/contexts';
-import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
-import { NodeSummaryData } from '@/components/page_sections/nodes_summary_data_table/NodesSummaryLoader';
+import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
+import { NodeSummaryData } from '@/components/page_sections/nodes_summary_data_table/nodes_summary_loader';
 import {
   filterIterable,
   inf,
@@ -13,9 +13,9 @@ import {
 } from '@/functional/functional_async';
 import { Latitude, Longitude } from '@/models/geo';
 import { generateBoundingBoxFromMinMaxes } from '@/models/geo/geo_json/bounding_box';
-import Degrees from '@/models/geo/units/Degrees';
-import DensityIndependentPoint from '@/models/geo/units/DensityIndependentPoint';
-import LatLng from '@/models/geo/units/LatLng';
+import Degrees from '@/models/geo/units/degrees';
+import DensityIndependentPoint from '@/models/geo/units/density_independent_point';
+import LatLng from '@/models/geo/units/lat_lng';
 import {
   degreesToCoordinateSpaceProjection,
   gridCellCoordinateSpaceCenters,

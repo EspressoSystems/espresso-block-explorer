@@ -1,6 +1,6 @@
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
-import CopyButton from '../hid/buttons/copy_button/CopyButton';
+import CopyButton from '../hid/buttons/copy_button/copy_button';
 import './inline.css';
 
 export interface CopyWalletAddressProps {

@@ -2,8 +2,8 @@ import { DataContext } from '@/components/contexts';
 import { dropIterator, inf, takeIterator } from '@/functional/functional';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { BlockSizeHistogram } from '../BlockSizeHistogram';
-import { BlockSizeHistogramData } from '../BlockSizeHistogramDataLoader';
+import { BlockSizeHistogram } from '../block_size_histogram';
+import { BlockSizeHistogramData } from '../block_size_histogram_data_loader';
 
 interface ExampleProps {
   data: BlockSizeHistogramData;

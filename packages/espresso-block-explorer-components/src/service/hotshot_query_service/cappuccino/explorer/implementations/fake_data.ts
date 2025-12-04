@@ -3,9 +3,9 @@ import {
   GeneratedEspressoBlock,
   GeneratedEspressoTransaction,
 } from '@/data_source/fake_data_source/espresso/blocks';
-import { createCircularBuffer } from '@/data_structures/circular_buffer/CircularBuffer';
-import NotFoundError from '@/errors/NotFoundError';
-import UnimplementedError from '@/errors/UnimplementedError';
+import { createCircularBuffer } from '@/data_structures/circular_buffer/circular_buffer';
+import NotFoundError from '@/errors/not_found_error';
+import UnimplementedError from '@/errors/unimplemented_error';
 import {
   collectAsyncIterable,
   collectAsyncIterator,

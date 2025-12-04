@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import InvalidTypeError, { invalidTypeErrorCodec } from '../InvalidTypeError';
+import InvalidTypeError, { invalidTypeErrorCodec } from '../invalid_type_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('InvalidTypeError', () => {

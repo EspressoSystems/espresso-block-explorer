@@ -1,5 +1,5 @@
-import MoneyText from '@/components/text/MoneyText';
-import Text from '@/components/text/Text';
+import MoneyText from '@/components/text/money_text';
+import Text from '@/components/text/text';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { CurrentPendingUndelegationFromValidatorContext } from './contexts/current_pending_undelegation_from_validator_context';

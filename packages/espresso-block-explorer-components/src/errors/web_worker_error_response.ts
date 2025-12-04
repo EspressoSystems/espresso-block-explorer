@@ -5,8 +5,8 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError, { baseErrorEncoder } from './BaseError';
-import { EspressoError } from './EspressoError';
+import BaseError, { baseErrorEncoder } from './base_error';
+import { EspressoError } from './espresso_error';
 import { espressoErrorCodec, registerCodec } from './registry';
 
 const kWebWorkerErrorResponseCode = 'WebWorkerErrorResponse';

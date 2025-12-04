@@ -1,7 +1,7 @@
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import CardComp from '../Card';
+import CardComp from '../card';
 
 interface ExampleProps {
   text: string;

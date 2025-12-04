@@ -1,9 +1,9 @@
-import Degrees from '../units/Degrees';
-import LatLng from '../units/LatLng';
-import Latitude from '../units/Latitude';
-import Longitude from '../units/Longitude';
-import Radians from '../units/Radians';
-import { GeodesicProjection } from './GeodesicProjection';
+import Degrees from '../units/degrees';
+import LatLng from '../units/lat_lng';
+import Latitude from '../units/latitude';
+import Longitude from '../units/longitude';
+import Radians from '../units/radians';
+import { GeodesicProjection } from './geodesic_projection';
 
 /**
  * DegreesRadiansProjection is a geodesic projection which converts between

@@ -1,5 +1,5 @@
 import { Divider } from '@/components/layout/divider/divider';
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import {
   WithParagraphBase,
   WithParagraphSmall,

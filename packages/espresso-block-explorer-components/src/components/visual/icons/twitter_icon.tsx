@@ -1,5 +1,5 @@
 import React from 'react';
-import SVGIconBase from './SVGIconBase';
+import SVGIconBase from './svg_icon_base';
 
 /**
  * TwitterIcon is an icon representation of the Twitter logo.

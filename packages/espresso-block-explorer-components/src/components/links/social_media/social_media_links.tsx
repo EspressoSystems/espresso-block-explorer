@@ -1,8 +1,8 @@
 import { addClassToClassName } from '@/higher_order';
 import React from 'react';
-import DiscordLink from './DiscordLink';
-import MediumLink from './MediumLink';
-import TwitterLink from './TwitterLink';
+import DiscordLink from './discord_link';
+import MediumLink from './medium_link';
+import TwitterLink from './twitter_link';
 
 interface SocialMediaLinksProps extends React.DetailedHTMLProps<
   React.AnchorHTMLAttributes<HTMLDivElement>,

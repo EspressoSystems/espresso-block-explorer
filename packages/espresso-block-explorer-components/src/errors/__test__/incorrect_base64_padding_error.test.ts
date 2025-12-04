@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   IncorrectBase64PaddingError,
   incorrectBase64PaddingErrorCodec,
-} from '../IncorrectBase64PaddingError';
+} from '../incorrect_base64_padding_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('IncorrectBase64PaddingError', () => {

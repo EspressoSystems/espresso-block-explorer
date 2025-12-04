@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/higher_order';
 import React from 'react';
-import SVGIconBase from './SVGIconBase';
+import SVGIconBase from './svg_icon_base';
 
 /**
  * SearchGlass represents an icon of a search glass angled up to the left.

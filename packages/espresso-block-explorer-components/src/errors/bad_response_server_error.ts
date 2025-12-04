@@ -7,7 +7,7 @@ import {
 import { stringCodec } from '@/convert/codec/string';
 import BaseBadResponseError, {
   BaseBadResponseErrorEncoder,
-} from './BaseBadResponseError';
+} from './base_bad_response_error';
 import { registerCodec } from './registry';
 
 /**

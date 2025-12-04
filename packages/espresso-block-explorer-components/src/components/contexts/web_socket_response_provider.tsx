@@ -3,7 +3,7 @@ import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/
 import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';
 import React, { createContext } from 'react';
 import { AsyncIterableResolver } from '../data';
-import { DataContext } from './DataProvider';
+import { DataContext } from './data_provider';
 
 /**
  * WebSocketResponseContext is a React Context that is used to store

@@ -1,4 +1,4 @@
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 import './active_consensus_chip.css';
 import { ConsensusChip } from './consensus_chip';
 

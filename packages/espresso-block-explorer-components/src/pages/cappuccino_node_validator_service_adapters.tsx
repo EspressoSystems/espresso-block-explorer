@@ -1,4 +1,4 @@
-import { createBufferedChannel } from '@/async/channel/BufferedChannel';
+import { createBufferedChannel } from '@/async/channel/buffered_channel';
 import { createSinkWithConverter } from '@/async/sink/converted_sink';
 import { Sink } from '@/async/sink/sink';
 import { sleep } from '@/async/sleep';
@@ -7,49 +7,49 @@ import {
   ErrorCarry,
   ErrorJoiner,
   ErrorStreamContext,
-} from '@/components/contexts/ErrorProvider';
-import { WebSocketResponseStreamContext } from '@/components/contexts/WebSocketResponseProvider';
+} from '@/components/contexts/error_provider';
+import { WebSocketResponseStreamContext } from '@/components/contexts/web_socket_response_provider';
 import {
   BlockSizeHistogramData,
   BlockSizeHistogramStreamContext,
-} from '@/components/page_sections/block_size_histogram/BlockSizeHistogramDataLoader';
+} from '@/components/page_sections/block_size_histogram/block_size_histogram_data_loader';
 import {
   BlockThroughputHistogramData,
   BlockThroughputHistogramStreamContext,
-} from '@/components/page_sections/block_throughput_histogram/BlockThroughputHistogramDataLoader';
+} from '@/components/page_sections/block_throughput_histogram/block_throughput_histogram_data_loader';
 import {
   BlockTimeHistogramData,
   BlockTimeHistogramStreamContext,
-} from '@/components/page_sections/block_time_histogram/BlockTimeHistogramDataLoader';
-import { CountriesPieChartStreamContext } from '@/components/page_sections/countries_pie_chart/CountriesPieChartLoader';
+} from '@/components/page_sections/block_time_histogram/block_time_histogram_data_loader';
+import { CountriesPieChartStreamContext } from '@/components/page_sections/countries_pie_chart/countries_pie_chart_loader';
 import {
   LatestBlockProducer,
   LatestBlockProducersStreamContext,
-} from '@/components/page_sections/latest_block_producers/LatestBlockProducersLoader';
+} from '@/components/page_sections/latest_block_producers/latest_block_producers_loader';
 import {
   LatestBlock,
   LatestBlockSummaryStreamContext,
-} from '@/components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
-import { NetworkTypesPieChartStreamContext } from '@/components/page_sections/network_types_pie_chart/NetworkTypesPieChartLoader';
-import { NodeTypesPieChartStreamContext } from '@/components/page_sections/node_types_pie_chart/NodeTypesPieChartLoader';
+} from '@/components/page_sections/latest_block_summary/latest_block_summary_loader';
+import { NetworkTypesPieChartStreamContext } from '@/components/page_sections/network_types_pie_chart/network_types_pie_chart_loader';
+import { NodeTypesPieChartStreamContext } from '@/components/page_sections/node_types_pie_chart/node_types_pie_chart_loader';
 import {
   NodeSummaryData,
   NodeSummaryStreamContext,
   NodeVoteParticipationStats,
   VoterParticipationStreamContext,
-} from '@/components/page_sections/nodes_summary_data_table/NodesSummaryLoader';
-import { OperatingSystemPieChartStreamContext } from '@/components/page_sections/operating_system_pie_chart/OperatingSystemPieChartLoader';
-import { NodeIdentityInformationStreamContext } from '@/components/visual/geo_json/WorldMapDotsPopulationResolver';
-import { PieChartEntry } from '@/components/visual/pie_chart/PieChart';
+} from '@/components/page_sections/nodes_summary_data_table/nodes_summary_loader';
+import { OperatingSystemPieChartStreamContext } from '@/components/page_sections/operating_system_pie_chart/operating_system_pie_chart_loader';
+import { NodeIdentityInformationStreamContext } from '@/components/visual/geo_json/world_map_dots_population_resolver';
+import { PieChartEntry } from '@/components/visual/pie_chart/pie_chart';
 import { preferNullOverEmptyString } from '@/convert/codec/string';
 import {
   Completer,
   createCompleter,
-} from '@/data_structures/async/completer/Completer';
+} from '@/data_structures/async/completer/completer';
 import {
   CircularBuffer,
   createCircularBuffer,
-} from '@/data_structures/circular_buffer/CircularBuffer';
+} from '@/data_structures/circular_buffer/circular_buffer';
 import { StakeTableEntryWrapper } from '@/models/espresso/stake_table/stake_table_entry_wrapper';
 import { Validator } from '@/models/espresso/stake_table/validator';
 import { ErrorResponse } from '@/models/web_worker/error_response';
@@ -101,7 +101,7 @@ import {
   zipWithIterable,
 } from '../functional';
 import { CappuccinoAPIBitVec, CappuccinoExplorerBlockDetail } from '../service';
-import { CappuccinoNodeValidatorServiceAPIContext } from './CappuccinoNodeValidatorServiceAPIContext';
+import { CappuccinoNodeValidatorServiceAPIContext } from './cappuccino_node_validator_service_api_context';
 
 /**
  * publishHistogramUpdates is a helper function that will publish the updates

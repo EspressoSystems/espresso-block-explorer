@@ -1,26 +1,26 @@
 import { Label } from '@/components/layout/label/label';
-import { PathResolverContext } from '@/contexts/PathResolverProvider';
-import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
-import SkeletonContent from '@/loading/SkeletonContent';
-import ByteSizeText from '@/text/ByteSizeText';
-import CopyTaggedBase64 from '@/text/CopyTaggedBase64';
-import DateTimeText from '@/text/DateTimeText';
-import FullTaggedBase64Text from '@/text/FullTaggedBase64Text';
-import NumberText from '@/text/NumberText';
-import Text from '@/text/Text';
+import { PathResolverContext } from '@/contexts/path_resolver_provider';
+import TableLabeledValue from '@/layout/table_labeled_value/table_labeled_value';
+import SkeletonContent from '@/loading/skeleton_content';
+import ByteSizeText from '@/text/byte_size_text';
+import CopyTaggedBase64 from '@/text/copy_tagged_base64';
+import DateTimeText from '@/text/date_time_text';
+import FullTaggedBase64Text from '@/text/full_tagged_base64_text';
+import NumberText from '@/text/number_text';
+import Text from '@/text/text';
 import React from 'react';
-import { InternalLink } from '../../links/link/Link';
-import { BlockNumberContext } from '../block_detail_content/BlockDetailContentLoader';
-import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
-import {
-  TransactionDetailContext,
-  TransactionOffsetContext,
-} from './TransactionDetailLoader';
+import { InternalLink } from '../../links/link/link';
+import { BlockNumberContext } from '../block_detail_content/block_detail_content_loader';
+import RollUpSimple from '../roll_up/roll_up_simple/roll_up_simple';
 import { HexDumpAndCopyButtons } from './copy_as';
 import { InfiniteGardenDisplay } from './infinite_garden_display';
 import { NitroBatchDetectAndDisplay } from './nitro_batch_display';
 import { OptimismBatchDecodeAndDisplay } from './optimism_batch_display';
 import './transaction_detail_content.css';
+import {
+  TransactionDetailContext,
+  TransactionOffsetContext,
+} from './transaction_detail_loader';
 
 /**
  * TransactionSubHeading represents a sub heading for the Transaction Detail

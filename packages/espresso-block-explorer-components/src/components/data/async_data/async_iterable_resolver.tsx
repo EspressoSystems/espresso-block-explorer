@@ -1,7 +1,7 @@
 import React from 'react';
-import { AsyncSnapshot, AsyncState } from './AsyncSnapshot';
-import { AsyncSnapshotContext } from './AsyncSnapshotContext';
-import ProvideAsyncStates from './ProvideAsyncStates';
+import { AsyncSnapshot, AsyncState } from './async_snapshot';
+import { AsyncSnapshotContext } from './async_snapshot_context';
+import ProvideAsyncStates from './provide_async_states';
 
 /**
  * AsyncIterableResolverProps represents the props that can be passed to the

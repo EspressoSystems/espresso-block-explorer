@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   CorruptBase64InputError,
   corruptBase64InputErrorCodec,
-} from '../CorruptBase64InputError';
+} from '../corrupt_base64_input_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('CorruptBase64InputError', () => {

@@ -1,6 +1,6 @@
-import MoneyText from '@/components/text/MoneyText';
-import PercentageText from '@/components/text/PercentageText';
-import Text from '@/components/text/Text';
+import MoneyText from '@/components/text/money_text';
+import PercentageText from '@/components/text/percentage_text';
+import Text from '@/components/text/text';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';

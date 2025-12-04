@@ -1,25 +1,25 @@
 import { Label } from '@/components/layout/label/label';
-import RelativeTimeSinceDateText from '@/components/text/RelativeTimeSinceDateText';
-import { DataContext } from '@/contexts/DataProvider';
-import { PathResolverContext } from '@/contexts/PathResolverProvider';
-import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
-import SkeletonContent from '@/loading/SkeletonContent';
+import RelativeTimeSinceDateText from '@/components/text/relative_time_since_date_text';
+import { DataContext } from '@/contexts/data_provider';
+import { PathResolverContext } from '@/contexts/path_resolver_provider';
+import TableLabeledValue from '@/layout/table_labeled_value/table_labeled_value';
+import SkeletonContent from '@/loading/skeleton_content';
 import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
-import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
-import ByteSizeText from '@/text/ByteSizeText';
-import CopyHex from '@/text/CopyHex';
-import DateTimeText from '@/text/DateTimeText';
-import FullHexText from '@/text/FullHexText';
-import NumberText from '@/text/NumberText';
-import Text from '@/text/Text';
-import ArrowLeft from '@/visual/icons/ArrowLeft';
-import ArrowRight from '@/visual/icons/ArrowRight';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
+import ByteSizeText from '@/text/byte_size_text';
+import CopyHex from '@/text/copy_hex';
+import DateTimeText from '@/text/date_time_text';
+import FullHexText from '@/text/full_hex_text';
+import NumberText from '@/text/number_text';
+import Text from '@/text/text';
+import ArrowLeft from '@/visual/icons/arrow_left';
+import ArrowRight from '@/visual/icons/arrow_right';
 import React from 'react';
 import { IconAnchorButton } from '../../hid/buttons';
-import { InternalLink } from '../../links/link/Link';
-import { BlockNumberContext } from './BlockDetailContentLoader';
+import { InternalLink } from '../../links/link/link';
 import './block_detail_content.css';
+import { BlockNumberContext } from './block_detail_content_loader';
 
 /**
  * BackABlock creates a navigation item that will point to the preceding

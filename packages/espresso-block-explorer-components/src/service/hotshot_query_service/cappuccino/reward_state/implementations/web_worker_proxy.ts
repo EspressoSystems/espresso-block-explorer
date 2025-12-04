@@ -1,6 +1,6 @@
 import { nullableBigintCodec } from '@/convert/codec/bigint';
 import { stringCodec } from '@/convert/codec/string';
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
 import { HeightAndAddress, heightAndAddressCodec } from '../height_and_address';
 import { nullableRewardClaimInputCodec } from '../reward_claim_input';

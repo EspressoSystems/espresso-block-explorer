@@ -1,11 +1,11 @@
+import Card from '@/components/layout/card/card';
 import { addClassToClassName } from '@/higher_order';
-import Card from '@/layout/card/Card';
-import ValueLabeled from '@/layout/value_labeled/ValueLabeled';
+import ValueLabeled from '@/layout/value_labeled/value_labeled';
 import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
-import NumberText from '@/text/NumberText';
-import Text from '@/text/Text';
+import NumberText from '@/text/number_text';
+import Text from '@/text/text';
 import React from 'react';
-import { EgressLink } from '../../../links/link/Link';
+import { EgressLink } from '../../../links/link/link';
 import './roll_up_info.css';
 
 export interface RollUpInfoProps {

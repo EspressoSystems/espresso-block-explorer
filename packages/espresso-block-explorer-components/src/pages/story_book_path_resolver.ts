@@ -1,4 +1,4 @@
-import { PathResolver } from '@/contexts/PathResolver';
+import { PathResolver } from '@/contexts/path_resolver';
 import { mapIterable } from '@/functional/functional';
 
 export class StoryBookPathResolver implements PathResolver {

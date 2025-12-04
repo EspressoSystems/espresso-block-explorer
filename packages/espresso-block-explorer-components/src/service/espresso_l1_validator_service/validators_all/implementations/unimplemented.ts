@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { FullNodeSetSnapshot } from '../full_node_set_snapshot';
 import { FullNodeSetUpdate } from '../full_node_set_update';
 import { ValidatorsAllAPI } from '../validators_all_api';

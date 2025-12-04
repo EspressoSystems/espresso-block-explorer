@@ -1,5 +1,5 @@
 import React from 'react';
-import { EgressLink } from '../link/Link';
+import { EgressLink } from '../link/link';
 import './external_link.css';
 
 export interface ExternalLinkProps {

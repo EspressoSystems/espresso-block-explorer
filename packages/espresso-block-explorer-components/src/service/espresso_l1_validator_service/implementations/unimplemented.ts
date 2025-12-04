@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { UnimplementedL1BlockAPI } from '../l1_block/implementations/unimplemented';
 import { L1BlockAPI } from '../l1_block/l1_block_api';
 import { L1ValidatorService } from '../l1_validator_service_api';

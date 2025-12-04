@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import BadResponseServerError, {
   badResponseServerErrorCodec,
-} from '../BadResponseServerError';
+} from '../bad_response_server_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('BadResponseServerError', () => {

@@ -1,5 +1,5 @@
 import { addClassToClassName } from '@/components/higher_order';
-import Heading2 from '@/layout/heading/Heading2';
+import Heading2 from '@/components/layout/heading/heading2';
 import React from 'react';
 import './histogram_section_title.css';
 

@@ -8,7 +8,7 @@ import { numberCodec } from '@/convert/codec/number';
 import { stringCodec } from '@/convert/codec/string';
 import BaseBadResponseError, {
   baseBadResponseErrorEncoder,
-} from './BaseBadResponseError';
+} from './base_bad_response_error';
 import { registerCodec } from './registry';
 
 const kResponseContentTypeIsNotApplicationJSONErrorCode =

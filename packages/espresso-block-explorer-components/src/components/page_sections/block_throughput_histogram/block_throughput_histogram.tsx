@@ -1,27 +1,27 @@
 import { ErrorContext } from '@/components/contexts';
-import { CardNoPadding } from '@/components/layout/card/Card';
-import { WithLoadingShimmer } from '@/components/loading/LoadingShimmer';
-import SkeletonContent from '@/components/loading/SkeletonContent';
-import { DataContext } from '@/contexts/DataProvider';
-import { LoadingContext } from '@/contexts/LoadingProvider';
-import ValueLabeled from '@/layout/value_labeled/ValueLabeled';
-import BytesPerSecondText from '@/text/BytesPerSecondText';
-import Text from '@/text/Text';
-import { HistogramLabelProps } from '@/visual/histogram/histogram_base/HistogramDefaultLabel';
-import {
-  ProvideDataStatistics,
-  SimpleHistogram,
-  SimpleHistogramPlaceholder,
-} from '@/visual/histogram/histogram_base/SimpleHistogram';
+import { CardNoPadding } from '@/components/layout/card/card';
+import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
+import SkeletonContent from '@/components/loading/skeleton_content';
+import { DataContext } from '@/contexts/data_provider';
+import { LoadingContext } from '@/contexts/loading_provider';
+import ValueLabeled from '@/layout/value_labeled/value_labeled';
+import BytesPerSecondText from '@/text/bytes_per_second_text';
+import Text from '@/text/text';
 import {
   HistogramDomain,
   HistogramRange,
   HistogramRangeStatistics,
   HistogramYAxisLabelComponent,
 } from '@/visual/histogram/histogram_base/contexts';
-import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_title/HistogramSectionTitle';
+import { HistogramLabelProps } from '@/visual/histogram/histogram_base/histogram_default_label';
+import {
+  ProvideDataStatistics,
+  SimpleHistogram,
+  SimpleHistogramPlaceholder,
+} from '@/visual/histogram/histogram_base/simple_histogram';
+import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_title/histogram_section_title';
 import React from 'react';
-import { BlockThroughputHistogramData } from './BlockThroughputHistogramDataLoader';
+import { BlockThroughputHistogramData } from './block_throughput_histogram_data_loader';
 
 const CardNoPaddingWithShimmer = WithLoadingShimmer(CardNoPadding);
 

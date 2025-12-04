@@ -1,23 +1,23 @@
-import { ErrorDisplay } from '@/components/error/ErrorDisplay';
-import Footer from '@/components/page_sections/footer/Footer';
-import Header from '@/components/page_sections/header/Header';
-import PageTitle from '@/components/page_sections/page_title/PageTitle';
-import RollUpInfo from '@/components/page_sections/roll_up/roll_up_info/RollUpInfo';
-import RollUpTitle from '@/components/page_sections/roll_up/roll_up_title/RollUpTitle';
+import { ErrorDisplay } from '@/components/error/error_display';
+import Card from '@/components/layout/card/card';
+import Heading1 from '@/components/layout/heading/heading1';
+import Footer from '@/components/page_sections/footer/footer';
+import Header from '@/components/page_sections/header/header';
+import PageTitle from '@/components/page_sections/page_title/page_title';
+import RollUpInfo from '@/components/page_sections/roll_up/roll_up_info/roll_up_info';
+import RollUpTitle from '@/components/page_sections/roll_up/roll_up_title/roll_up_title';
 import {
   RollUpDetailDataTable,
   RollUpDetailDataTablePlaceholder,
-} from '@/components/page_sections/rollup_detail_data_table/RollUpDetailDataTable';
+} from '@/components/page_sections/rollup_detail_data_table/roll_up_detail_data_table';
 import {
   NamespaceContext,
   RollUpDetailsDataLoader,
-} from '@/components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
-import { LoadingContext } from '@/contexts/LoadingProvider';
-import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
-import Card from '@/layout/card/Card';
-import Heading1 from '@/layout/heading/Heading1';
+} from '@/components/page_sections/rollup_detail_data_table/roll_up_detail_loader';
+import { LoadingContext } from '@/contexts/loading_provider';
+import { OverridePagePath, PageType } from '@/contexts/page_path_provider';
 import { WithEdgeMargin } from '@/layout/margin/margins';
-import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
+import { WithLoadingShimmer } from '@/loading/loading_shimmer';
 import React from 'react';
 import { ErrorContext } from '../components';
 

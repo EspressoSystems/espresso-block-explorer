@@ -1,5 +1,5 @@
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 import React from 'react';
 import { AvailableBalanceCard } from './elements/card/available_balance_card';
 import {

@@ -1,8 +1,8 @@
-import { AsyncRetriever } from '@/async/AsyncRetriever';
-import { DataContext } from '@/components/contexts/DataProvider';
-import UnimplementedError from '@/errors/UnimplementedError';
+import { AsyncRetriever } from '@/async/async_retriever';
+import { DataContext } from '@/components/contexts/data_provider';
+import UnimplementedError from '@/errors/unimplemented_error';
 import React from 'react';
-import { ExplorerSummaryProvider } from '../explorer_summary/ExplorerSummaryLoader';
+import { ExplorerSummaryProvider } from '../explorer_summary/explorer_summary_loader';
 
 export interface ExplorerOverview {
   rollups: number;

@@ -1,9 +1,9 @@
 import { mercatorProjection } from '@/models/geo';
-import { GeodesicProjection } from '@/models/geo/projection/GeodesicProjection';
-import Degrees from '@/models/geo/units/Degrees';
-import DensityIndependentPoint from '@/models/geo/units/DensityIndependentPoint';
-import LatLng from '@/models/geo/units/LatLng';
-import Radians from '@/models/geo/units/Radians';
+import { GeodesicProjection } from '@/models/geo/projection/geodesic_projection';
+import Degrees from '@/models/geo/units/degrees';
+import DensityIndependentPoint from '@/models/geo/units/density_independent_point';
+import LatLng from '@/models/geo/units/lat_lng';
+import Radians from '@/models/geo/units/radians';
 import {
   degreesToCoordinateSpaceProjection,
   gridCellCoordinateSpaceCenters,

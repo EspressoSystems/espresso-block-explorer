@@ -2,7 +2,7 @@ import { DataContext } from '@/components/contexts';
 import { iota, mapIterator } from '@/functional/functional';
 import { act, render } from '@testing-library/react';
 import { describe, it } from 'vitest';
-import { PieChartFromData } from '../PieChart';
+import { PieChartFromData } from '../pie_chart';
 import {
   getPieChart,
   interactionExitHoverAll,

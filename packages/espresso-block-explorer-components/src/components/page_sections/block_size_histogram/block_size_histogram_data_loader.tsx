@@ -1,10 +1,10 @@
-import { AsyncRetriever } from '@/async/AsyncRetriever';
+import { AsyncRetriever } from '@/async/async_retriever';
 import { DataContext, ErrorCarry, ErrorJoiner } from '@/components/contexts';
-import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
-import UnimplementedError from '@/errors/UnimplementedError';
+import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';
 import React from 'react';
-import { ExplorerSummaryProvider } from '../explorer_summary/ExplorerSummaryLoader';
+import { ExplorerSummaryProvider } from '../explorer_summary/explorer_summary_loader';
 
 /**
  * The BlockSizeHistogramData type is the data type that is expected to be

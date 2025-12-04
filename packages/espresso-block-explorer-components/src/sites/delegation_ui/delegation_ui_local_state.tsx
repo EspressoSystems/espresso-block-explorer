@@ -1,11 +1,11 @@
 import { breakpoint } from '@/assert/debugger';
 import { sleep } from '@/async/sleep';
-import { DataContext } from '@/components/contexts/DataProvider';
+import { DataContext } from '@/components/contexts/data_provider';
 import { AsyncIterableResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
-import BadResponseClientError from '@/errors/BadResponseClientError';
-import WebWorkerErrorResponse from '@/errors/WebWorkerErrorResponse';
+import BadResponseClientError from '@/errors/bad_response_client_error';
+import WebWorkerErrorResponse from '@/errors/web_worker_error_response';
 import { compareArrayBuffer } from '@/functional/functional';
 import { EpochAndBlock } from '@/service/espresso_l1_validator_service/common/epoch_and_block';
 import { L1BlockID } from '@/service/espresso_l1_validator_service/common/l1_block_id';

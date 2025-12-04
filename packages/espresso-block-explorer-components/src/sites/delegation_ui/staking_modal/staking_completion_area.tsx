@@ -1,5 +1,5 @@
-import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
-import Text from '@/components/text/Text';
+import { AsyncState } from '@/components/data/async_data/async_snapshot';
+import Text from '@/components/text/text';
 import React from 'react';
 import ButtonLarge from '../elements/buttons/button_large';
 import { DelegateAsyncSnapshotContext } from './contexts/perform_delegation_context';

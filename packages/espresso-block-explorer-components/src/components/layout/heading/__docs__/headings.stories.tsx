@@ -1,8 +1,8 @@
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import Heading1 from '../Heading1';
-import Heading2 from '../Heading2';
+import Heading1 from '../heading1';
+import Heading2 from '../heading2';
 
 interface ExampleProps {
   heading: 'h1' | 'h2';

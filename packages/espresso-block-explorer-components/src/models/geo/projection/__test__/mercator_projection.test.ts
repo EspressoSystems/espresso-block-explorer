@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import LatLng from '../../units/LatLng';
-import Latitude from '../../units/Latitude';
-import Longitude from '../../units/Longitude';
-import Radians from '../../units/Radians';
-import MercatorProjection, { mercatorProjection } from '../MercatorProjection';
+import LatLng from '../../units/lat_lng';
+import Latitude from '../../units/latitude';
+import Longitude from '../../units/longitude';
+import Radians from '../../units/radians';
+import MercatorProjection, { mercatorProjection } from '../mercator_projection';
 
 describe('Mercator Projection', () => {
   describe('project', () => {

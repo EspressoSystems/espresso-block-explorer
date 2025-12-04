@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import UnimplementedError from '../UnimplementedError';
+import UnimplementedError from '../unimplemented_error';
 import WebWorkerErrorResponse, {
   webWorkerErrorResponseCodec,
-} from '../WebWorkerErrorResponse';
+} from '../web_worker_error_response';
 import { espressoErrorCodec } from '../registry';
 
 describe('UnimplementedError', () => {

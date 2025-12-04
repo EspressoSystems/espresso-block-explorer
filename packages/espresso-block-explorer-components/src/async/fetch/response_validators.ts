@@ -1,9 +1,9 @@
 import { Converter } from '@/convert/codec/convert';
-import BadResponseClientError from '@/errors/BadResponseClientError';
-import BadResponseError from '@/errors/BadResponseError';
-import BadResponseServerError from '@/errors/BadResponseServerError';
-import BaseError from '@/errors/BaseError';
-import ResponseContentTypeIsNotApplicationJSONError from '@/errors/ResponseContentTypeIsNotApplicationJSONError';
+import BadResponseClientError from '@/errors/bad_response_client_error';
+import BadResponseError from '@/errors/bad_response_error';
+import BadResponseServerError from '@/errors/bad_response_server_error';
+import BaseError from '@/errors/base_error';
+import ResponseContentTypeIsNotApplicationJSONError from '@/errors/response_content_type_is_not_application_json_error';
 
 /**
  * validateAndExpandResponse is a function that takes a [Converter] and returns

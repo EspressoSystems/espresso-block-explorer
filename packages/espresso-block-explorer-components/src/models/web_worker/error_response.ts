@@ -3,7 +3,7 @@ import {
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
-import { EspressoError } from '@/errors/EspressoError';
+import { EspressoError } from '@/errors/espresso_error';
 import { espressoErrorCodec } from '@/errors/index';
 import { WebWorkerProxyResponse } from './web_worker_proxy_response';
 

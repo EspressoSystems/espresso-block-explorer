@@ -1,5 +1,5 @@
 import { numberCodec } from '@/convert/codec/number';
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/hotshot_query_service/web_worker_types';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { cappuccinoAPIBlockCodec } from '../block';

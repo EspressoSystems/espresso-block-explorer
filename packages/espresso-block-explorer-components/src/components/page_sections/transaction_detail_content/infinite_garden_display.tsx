@@ -1,13 +1,13 @@
-import FullHexText from '@/components/text/FullHexText';
-import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
+import FullHexText from '@/components/text/full_hex_text';
+import TableLabeledValue from '@/layout/table_labeled_value/table_labeled_value';
 import { kInfiniteGardenNamespace } from '@/models/block_explorer/rollup_entry/data';
 import InscriptionAndSignature, {
   inscriptionAndSignatureBincodeCodec,
 } from '@/models/inscription/inscription_and_signature';
-import DateTimeText from '@/text/DateTimeText';
-import Text from '@/text/Text';
+import DateTimeText from '@/text/date_time_text';
+import Text from '@/text/text';
 import React from 'react';
-import { TransactionDetailContext } from './TransactionDetailLoader';
+import { TransactionDetailContext } from './transaction_detail_loader';
 
 export const InfiniteGardenDisplay: React.FC = () => {
   const details = React.useContext(TransactionDetailContext);

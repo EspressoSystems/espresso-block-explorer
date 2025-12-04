@@ -1,4 +1,4 @@
-import ArrowRight from '@/visual/icons/ArrowRight';
+import ArrowRight from '@/visual/icons/arrow_right';
 import React, { useState } from 'react';
 import { IconButton } from '../../hid/buttons';
 import './news_letter_sign_up.css';

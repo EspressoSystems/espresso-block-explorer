@@ -1,6 +1,6 @@
 import { createBufferedChannel } from '@/async/channel';
 import { sleep } from '@/async/sleep';
-import { createCompleter } from '@/data_structures/async/completer/Completer';
+import { createCompleter } from '@/data_structures/async/completer/completer';
 import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
 import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
 import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';

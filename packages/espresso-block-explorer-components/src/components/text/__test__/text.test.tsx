@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, it } from 'vitest';
-import Text from '../Text';
+import Text from '../text';
 
 describe('Text Component', () => {
   it('Should display the text that has been passed to it', () => {

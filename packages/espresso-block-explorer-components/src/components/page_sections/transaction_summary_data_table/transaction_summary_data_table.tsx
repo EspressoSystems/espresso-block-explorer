@@ -1,20 +1,20 @@
-import { DataContext } from '@/contexts/DataProvider';
-import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import { DataContext } from '@/contexts/data_provider';
+import { PathResolverContext } from '@/contexts/path_resolver_provider';
 import { iota } from '@/functional/functional';
-import SkeletonContent from '@/loading/SkeletonContent';
+import SkeletonContent from '@/loading/skeleton_content';
 import { TransactionSummaryColumn } from '@/models/block_explorer/transaction_summary';
-import CopyTaggedBase64 from '@/text/CopyTaggedBase64';
-import DateTimeText from '@/text/DateTimeText';
-import NumberText from '@/text/NumberText';
-import TaggedBase64Text from '@/text/TaggedBase64Text';
-import Text from '@/text/Text';
+import CopyTaggedBase64 from '@/text/copy_tagged_base64';
+import DateTimeText from '@/text/date_time_text';
+import NumberText from '@/text/number_text';
+import TaggedBase64Text from '@/text/tagged_base64_text';
+import Text from '@/text/text';
 import React from 'react';
 import DataTable, {
   DataTableRowContext,
-} from '../../data/data_table/DataTable';
-import { InternalLink } from '../../links/link/Link';
-import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
-import { TransactionSummary } from './TransactionSummaryDataLoader';
+} from '../../data/data_table/data_table';
+import { InternalLink } from '../../links/link/link';
+import RollUpSimple from '../roll_up/roll_up_simple/roll_up_simple';
+import { TransactionSummary } from './transaction_summary_data_loader';
 
 /**
  * TransactionCells is a cell that displays the hash for the transaction,

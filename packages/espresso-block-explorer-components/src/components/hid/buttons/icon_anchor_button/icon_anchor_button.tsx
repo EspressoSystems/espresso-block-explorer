@@ -1,5 +1,5 @@
 import { addClassToClassName } from '@/higher_order';
-import AnchorButton, { AnchorButtonProps } from '../anchor_button/AnchorButton';
+import AnchorButton, { AnchorButtonProps } from '../anchor_button/anchor_button';
 
 const IconAnchorButton: React.FC<AnchorButtonProps> = (props) => (
   <AnchorButton

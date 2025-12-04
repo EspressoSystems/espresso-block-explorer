@@ -1,4 +1,4 @@
-import Heading2 from '@/layout/heading/Heading2';
+import Heading2 from '@/components/layout/heading/heading2';
 import React from 'react';
 import './pie_chart_section_title.css';
 

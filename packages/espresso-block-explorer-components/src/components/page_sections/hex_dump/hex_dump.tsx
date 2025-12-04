@@ -1,6 +1,6 @@
 import { mapIterable, yieldAll } from '@/functional/functional';
 import { addClassToClassName } from '@/higher_order';
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import React from 'react';
 import './hex_dump.css';
 

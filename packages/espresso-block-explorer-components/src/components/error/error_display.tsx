@@ -1,15 +1,15 @@
-import Text from '@/components/text/Text';
-import BaseError from '@/errors/BaseError';
-import FetchError from '@/errors/FetchError';
-import UnimplementedError from '@/errors/UnimplementedError';
-import WebSocketError from '@/errors/WebSocketError';
-import WebWorkerErrorResponse from '@/errors/WebWorkerErrorResponse';
+import Text from '@/components/text/text';
+import BaseError from '@/errors/base_error';
+import FetchError from '@/errors/fetch_error';
+import UnimplementedError from '@/errors/unimplemented_error';
+import WebSocketError from '@/errors/web_socket_error';
+import WebWorkerErrorResponse from '@/errors/web_worker_error_response';
 import React from 'react';
-import { ErrorContext } from '../contexts/ErrorProvider';
+import { ErrorContext } from '../contexts/error_provider';
 import { addClassToClassName } from '../higher_order';
 import './error_display.css';
-import { ErrorDescription } from './ErrorDescription';
-import { ErrorTitle } from './ErrorTitle';
+import { ErrorDescription } from './error_description';
+import { ErrorTitle } from './error_title';
 
 export interface ErrorDisplayProps {
   className?: string;

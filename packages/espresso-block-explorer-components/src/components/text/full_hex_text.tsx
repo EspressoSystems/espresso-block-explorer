@@ -1,6 +1,6 @@
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import React from 'react';
-import { HexTextProps } from './HexText';
+import { HexTextProps } from './hex_text';
 
 /**
  * FullHexText is a simple Text component that renders the given ArrayBuffer as

@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/components/higher_order';
-import Heading2 from '@/components/layout/heading/Heading2';
-import Text from '@/components/text/Text';
+import Heading2 from '@/components/layout/heading/heading2';
+import Text from '@/components/text/text';
 import React from 'react';
 import './cdn_status.css';
 

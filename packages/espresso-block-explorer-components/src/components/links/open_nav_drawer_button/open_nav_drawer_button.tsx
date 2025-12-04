@@ -1,7 +1,7 @@
-import { CurrentSetNavDrawerStateContext } from '@/contexts/NavDrawerStateProvider';
-import Menu from '@/visual/icons/Menu';
+import { CurrentSetNavDrawerStateContext } from '@/contexts/nav_drawer_state_provider';
+import Menu from '@/visual/icons/menu';
 import React from 'react';
-import IconButton from '../../hid/buttons/icon_button/IconButton';
+import IconButton from '../../hid/buttons/icon_button/icon_button';
 
 interface OpenNavDrawerButtonProps {}
 

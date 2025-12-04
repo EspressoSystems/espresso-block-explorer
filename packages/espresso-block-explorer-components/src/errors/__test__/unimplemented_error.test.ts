@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import UnimplementedError, { unimplementedCodec } from '../UnimplementedError';
+import UnimplementedError, { unimplementedCodec } from '../unimplemented_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('UnimplementedError', () => {

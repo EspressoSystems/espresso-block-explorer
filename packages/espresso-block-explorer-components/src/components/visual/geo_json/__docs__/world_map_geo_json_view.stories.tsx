@@ -1,15 +1,15 @@
-import { DataContext } from '@/components/contexts/DataProvider';
-import { LoadingContext } from '@/components/contexts/LoadingProvider';
-import PromiseResolver from '@/components/data/async_data/PromiseResolver';
-import CircularProgressIndicator from '@/components/loading/CircularProgressIndicator';
-import FetchError from '@/errors/FetchError';
+import { DataContext } from '@/components/contexts/data_provider';
+import { LoadingContext } from '@/components/contexts/loading_provider';
+import PromiseResolver from '@/components/data/async_data/promise_resolver';
+import CircularProgressIndicator from '@/components/loading/circular_progress_indicator';
+import FetchError from '@/errors/fetch_error';
 import GeoJSONFeatureCollection, {
   geoJSONFeatureCollectionCodec,
 } from '@/models/geo/geo_json/feature_collection';
 import { mapHeight, mapWidth } from '@/models/geo/world_map_grid/constants';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import GeoJSONView from '../GeoJSONView';
+import GeoJSONView from '../geo_json_view';
 
 /**
  * guardedFetch is a function that guards the errors thrown by fetch to ensure

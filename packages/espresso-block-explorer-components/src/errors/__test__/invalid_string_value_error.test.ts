@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import InvalidStringValueError, {
   invalidTypeErrorCodec,
-} from '../InvalidStringValueError';
+} from '../invalid_string_value_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('InvalidStringValueError', () => {

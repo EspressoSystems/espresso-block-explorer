@@ -1,7 +1,7 @@
-import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
+import { OverridePagePath, PageType } from '@/contexts/page_path_provider';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import NavBarComp from '../NavBar';
+import NavBarComp from '../nav_bar';
 
 interface ExampleProps {}
 

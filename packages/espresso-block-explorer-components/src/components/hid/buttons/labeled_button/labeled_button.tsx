@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/higher_order';
 import React from 'react';
-import Button, { ButtonProps } from '../button/Button';
+import Button, { ButtonProps } from '../button/button';
 
 /**
  * LabeledButton is an extension to a normal Button, but designed to hold

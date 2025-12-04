@@ -3,7 +3,7 @@ import {
   validateRequestMethodAndURL,
 } from '@/async/fetch/mock';
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
-import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { L1BlockInfo } from '@/service/espresso_l1_validator_service/common/l1_block_info';
 import { Ratio } from '@/service/espresso_l1_validator_service/common/ratio';
 import { describe, expect, it } from 'vitest';

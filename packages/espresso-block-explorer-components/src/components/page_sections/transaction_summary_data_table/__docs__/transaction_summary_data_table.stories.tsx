@@ -8,8 +8,8 @@ import { iota, mapIterable } from '@/functional/functional';
 import { TaggedBase64 } from '@/models/espresso';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { TransactionSummary } from '../TransactionSummaryDataLoader';
-import { TransactionsSummaryDataTable as TransactionsSummaryDataTableComponent } from '../TransactionSummaryDataTable';
+import { TransactionSummary } from '../transaction_summary_data_loader';
+import { TransactionsSummaryDataTable as TransactionsSummaryDataTableComponent } from '../transaction_summary_data_table';
 
 interface ExampleProps {
   transactionSummaries: TransactionSummary[];

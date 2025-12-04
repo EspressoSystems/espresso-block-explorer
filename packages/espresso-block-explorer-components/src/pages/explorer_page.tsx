@@ -1,38 +1,38 @@
-import { ErrorContext } from '@/components/contexts/ErrorProvider';
-import { ErrorDisplay } from '@/components/error/ErrorDisplay';
-import LabeledAnchorButton from '@/components/hid/buttons/labeled_anchor_button/LabeledAnchorButton';
+import { ErrorContext } from '@/components/contexts/error_provider';
+import { ErrorDisplay } from '@/components/error/error_display';
+import LabeledAnchorButton from '@/components/hid/buttons/labeled_anchor_button/labeled_anchor_button';
 import { addClassToClassName } from '@/components/higher_order';
-import { SearchInput } from '@/components/input/search/SearchInput';
-import { BlockSizeHistogram } from '@/components/page_sections/block_size_histogram/BlockSizeHistogram';
-import { BlockSummaryDataFromStreamLoader } from '@/components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
+import { SearchInput } from '@/components/input/search/search_input';
+import Card from '@/components/layout/card/card';
+import Heading1 from '@/components/layout/heading/heading1';
+import { BlockSizeHistogram } from '@/components/page_sections/block_size_histogram/block_size_histogram';
+import { BlockSummaryDataFromStreamLoader } from '@/components/page_sections/block_summary_data_table/block_summary_data_loader';
 import {
   BlockSummaryDataTable,
   BlockSummaryDataTablePlaceholder,
-} from '@/components/page_sections/block_summary_data_table/BlockSummaryDataTable';
-import { BlockThroughputHistogram } from '@/components/page_sections/block_throughput_histogram/BlockThroughputHistogram';
-import { BlockTimeHistogram } from '@/components/page_sections/block_time_histogram/BlockTimeHistogram';
-import { HistogramDataLoader } from '@/components/page_sections/block_time_histogram/BlockTimeHistogramDataLoader';
-import { ExplorerOverviewAsyncHandler } from '@/components/page_sections/explorer_overview/ExplorerOverview';
-import { ExplorerOverviewLoader } from '@/components/page_sections/explorer_overview/ExplorerOverviewLoader';
-import Footer from '@/components/page_sections/footer/Footer';
-import Header from '@/components/page_sections/header/Header';
-import { LatestBlockSummaryAsyncHandler } from '@/components/page_sections/latest_block_summary/LatestBlockSummary';
-import { LatestBlockSummaryDataLoader } from '@/components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
-import PageTitle from '@/components/page_sections/page_title/PageTitle';
-import { TransactionSummaryDataFromStreamLoader } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
+} from '@/components/page_sections/block_summary_data_table/block_summary_data_table';
+import { BlockThroughputHistogram } from '@/components/page_sections/block_throughput_histogram/block_throughput_histogram';
+import { BlockTimeHistogram } from '@/components/page_sections/block_time_histogram/block_time_histogram';
+import { HistogramDataLoader } from '@/components/page_sections/block_time_histogram/block_time_histogram_data_loader';
+import { ExplorerOverviewAsyncHandler } from '@/components/page_sections/explorer_overview/explorer_overview';
+import { ExplorerOverviewLoader } from '@/components/page_sections/explorer_overview/explorer_overview_loader';
+import Footer from '@/components/page_sections/footer/footer';
+import Header from '@/components/page_sections/header/header';
+import { LatestBlockSummaryAsyncHandler } from '@/components/page_sections/latest_block_summary/latest_block_summary';
+import { LatestBlockSummaryDataLoader } from '@/components/page_sections/latest_block_summary/latest_block_summary_loader';
+import PageTitle from '@/components/page_sections/page_title/page_title';
+import { TransactionSummaryDataFromStreamLoader } from '@/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
 import {
   TransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
-} from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataTable';
-import { LoadingContext } from '@/contexts/LoadingProvider';
-import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
-import { PathResolverContext } from '@/contexts/PathResolverProvider';
-import Card from '@/layout/card/Card';
-import Heading1 from '@/layout/heading/Heading1';
+} from '@/components/page_sections/transaction_summary_data_table/transaction_summary_data_table';
+import { LoadingContext } from '@/contexts/loading_provider';
+import { OverridePagePath, PageType } from '@/contexts/page_path_provider';
+import { PathResolverContext } from '@/contexts/path_resolver_provider';
 import { WithEdgeMargin } from '@/layout/margin/margins';
-import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/SummaryTableLabeledValue';
-import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
-import Text from '@/text/Text';
+import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/summary_table_labeled_value';
+import { WithLoadingShimmer } from '@/loading/loading_shimmer';
+import Text from '@/text/text';
 import { WithUiText300 } from '@/typography/typography';
 import React from 'react';
 import './explorer_page.css';

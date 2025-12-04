@@ -3,7 +3,7 @@ import {
   addClassToClassName,
   appendClassNameComponent,
 } from '@/higher_order';
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';

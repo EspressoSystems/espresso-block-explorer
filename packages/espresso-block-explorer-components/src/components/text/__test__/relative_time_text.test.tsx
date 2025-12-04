@@ -1,9 +1,9 @@
-import { CurrentLocale } from '@/contexts/LocaleProvider';
-import { Now } from '@/contexts/NowProvider';
+import { CurrentLocale } from '@/contexts/locale_provider';
+import { Now } from '@/contexts/now_provider';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import RelativeTimeSinceDateText from '../RelativeTimeSinceDateText';
+import RelativeTimeSinceDateText from '../relative_time_since_date_text';
 
 describe('Relative Time Text Component', () => {
   it('should format format', () => {

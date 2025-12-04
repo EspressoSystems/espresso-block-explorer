@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import HexText from '../HexText';
+import HexText from '../hex_text';
 
 describe('Hex Text Component', () => {
   it('should format the value as a hex string, with truncation if it is too long', () => {

@@ -1,4 +1,4 @@
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 import { ConsensusChip } from './consensus_chip';
 
 export const UndelegatingChip: React.FC = () => {

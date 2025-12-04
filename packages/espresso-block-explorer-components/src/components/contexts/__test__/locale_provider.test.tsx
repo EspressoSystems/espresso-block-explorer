@@ -6,7 +6,7 @@ import {
   CurrentLocale,
   OverrideLocale,
   ProvideNavigatorLanguage,
-} from '../LocaleProvider';
+} from '../locale_provider';
 
 let localLocale: null | string = null;
 const ConsumeLocaleComponent: React.FC = () => {

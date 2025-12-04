@@ -1,10 +1,10 @@
 import { NumberLike } from '../../numeric/numeric';
-import Degrees from '../units/Degrees';
-import LatLng from '../units/LatLng';
-import { default as Latitude, default as Longitude } from '../units/Latitude';
-import Radians from '../units/Radians';
-import { degreesRadiansProjection } from './DegreesRadiansProjection';
-import { GeodesicProjection } from './GeodesicProjection';
+import Degrees from '../units/degrees';
+import LatLng from '../units/lat_lng';
+import { default as Latitude, default as Longitude } from '../units/latitude';
+import Radians from '../units/radians';
+import { degreesRadiansProjection } from './degrees_radians_projection';
+import { GeodesicProjection } from './geodesic_projection';
 
 /**
  * This extreme Longitude point is defined in the wikipedia page for Mercator

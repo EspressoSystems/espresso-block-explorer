@@ -1,7 +1,7 @@
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import LabeledAnchorButtonComp from '../LabeledAnchorButton';
+import LabeledAnchorButtonComp from '../labeled_anchor_button';
 
 interface ExampleProps {
   label: string;

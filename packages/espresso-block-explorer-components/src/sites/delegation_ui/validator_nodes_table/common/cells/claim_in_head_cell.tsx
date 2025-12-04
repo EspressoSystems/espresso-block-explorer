@@ -1,4 +1,4 @@
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 
 /**
  * ClaimInHeadCell is the header cell for the Claim In column in the

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import ExpectedObjectWithKeyError from '../../convert/codec/ExpectedObjectWithKeyError';
+import ExpectedObjectWithKeyError from '../../convert/codec/expected_object_with_key_error';
 
 describe('ExpectedObjectWithKeyError', () => {
   describe('toJSON', () => {

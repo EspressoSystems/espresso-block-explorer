@@ -1,27 +1,27 @@
-import { ErrorContext } from '@/components/contexts/ErrorProvider';
-import { CardNoPadding } from '@/components/layout/card/Card';
-import { WithLoadingShimmer } from '@/components/loading/LoadingShimmer';
-import SkeletonContent from '@/components/loading/SkeletonContent';
-import { DataContext } from '@/contexts/DataProvider';
-import { LoadingContext } from '@/contexts/LoadingProvider';
-import ValueLabeled from '@/layout/value_labeled/ValueLabeled';
-import Text from '@/text/Text';
-import VariableByteSizeText from '@/text/VariableByteSizeText';
-import { HistogramLabelProps } from '@/visual/histogram/histogram_base/HistogramDefaultLabel';
-import {
-  ProvideDataStatistics,
-  SimpleHistogram,
-  SimpleHistogramPlaceholder,
-} from '@/visual/histogram/histogram_base/SimpleHistogram';
+import { ErrorContext } from '@/components/contexts/error_provider';
+import { CardNoPadding } from '@/components/layout/card/card';
+import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
+import SkeletonContent from '@/components/loading/skeleton_content';
+import { DataContext } from '@/contexts/data_provider';
+import { LoadingContext } from '@/contexts/loading_provider';
+import ValueLabeled from '@/layout/value_labeled/value_labeled';
+import Text from '@/text/text';
+import VariableByteSizeText from '@/text/variable_byte_size_text';
 import {
   HistogramDomain,
   HistogramRange,
   HistogramRangeStatistics,
   HistogramYAxisLabelComponent,
 } from '@/visual/histogram/histogram_base/contexts';
-import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_title/HistogramSectionTitle';
+import { HistogramLabelProps } from '@/visual/histogram/histogram_base/histogram_default_label';
+import {
+  ProvideDataStatistics,
+  SimpleHistogram,
+  SimpleHistogramPlaceholder,
+} from '@/visual/histogram/histogram_base/simple_histogram';
+import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_title/histogram_section_title';
 import React from 'react';
-import { BlockSizeHistogramData } from './BlockSizeHistogramDataLoader';
+import { BlockSizeHistogramData } from './block_size_histogram_data_loader';
 
 const CardNoPaddingWithShimmer = WithLoadingShimmer(CardNoPadding);
 

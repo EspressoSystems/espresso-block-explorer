@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import InvalidInputError, {
   invalidInputErrorCodec,
-} from '../InvalidInputError';
+} from '../invalid_input_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('InvalidInputError', () => {

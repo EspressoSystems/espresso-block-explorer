@@ -1,9 +1,9 @@
-import { OverrideLocale } from '@/contexts/LocaleProvider';
-import { ProvideDerivedNumberFormatters } from '@/contexts/NumberFormattersProvider';
+import { OverrideLocale } from '@/contexts/locale_provider';
+import { ProvideDerivedNumberFormatters } from '@/contexts/number_formatters_provider';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import NumberText from '../NumberText';
+import NumberText from '../number_text';
 
 describe('Number Text Component', () => {
   it('Should format the value passed to it an a Locale standard way', () => {

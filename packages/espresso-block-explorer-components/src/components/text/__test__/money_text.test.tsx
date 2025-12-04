@@ -11,7 +11,7 @@ import MonetaryValue from '@/models/block_explorer/monetary_value';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import MoneyText from '../MoneyText';
+import MoneyText from '../money_text';
 
 describe('Money Text Component', () => {
   it('should format with the correct string', () => {

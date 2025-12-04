@@ -1,9 +1,9 @@
-import { SetData } from '@/contexts/DataProvider';
-import { SetError } from '@/contexts/ErrorProvider';
-import { SetLoading } from '@/contexts/LoadingProvider';
+import { SetData } from '@/contexts/data_provider';
+import { SetError } from '@/contexts/error_provider';
+import { SetLoading } from '@/contexts/loading_provider';
 import React from 'react';
-import { AsyncState } from './AsyncSnapshot';
-import { AsyncSnapshotContext } from './AsyncSnapshotContext';
+import { AsyncState } from './async_snapshot';
+import { AsyncSnapshotContext } from './async_snapshot_context';
 
 export interface ProvideAsyncStatesProps {
   children?: React.ReactNode | React.ReactNode[];

@@ -8,7 +8,7 @@ import { composeStories } from '@storybook/react-vite';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import * as stories from '../__docs__/TransactionPage.stories';
+import * as stories from '../__docs__/transaction_page.stories';
 
 const { FakeData } = composeStories(stories);
 

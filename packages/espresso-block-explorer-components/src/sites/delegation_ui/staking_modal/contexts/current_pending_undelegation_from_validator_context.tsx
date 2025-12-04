@@ -1,5 +1,5 @@
-import { DataContext } from '@/components/contexts/DataProvider';
-import PromiseResolver from '@/components/data/async_data/PromiseResolver';
+import { DataContext } from '@/components/contexts/data_provider';
+import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import { Undelegation } from '@/contracts/stake_table/stake_table_interface';
 import { neverPromise } from '@/functional/functional_async';

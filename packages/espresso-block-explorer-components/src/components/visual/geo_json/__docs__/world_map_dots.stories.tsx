@@ -1,5 +1,5 @@
 import { sleep } from '@/async/sleep';
-import { NodeSummaryData } from '@/components/page_sections/nodes_summary_data_table/NodesSummaryLoader';
+import { NodeSummaryData } from '@/components/page_sections/nodes_summary_data_table/nodes_summary_loader';
 import {
   GeneratedNodeIdentityInformation,
   nodeList,
@@ -7,15 +7,15 @@ import {
 import { mapIterable } from '@/functional/functional';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { ProjectionProvider } from '../ProjectionProvider';
-import WorldMapAutoSizer from '../WorldMapAutoSizer';
-import WorldMapDotsFullResolution from '../WorldMapDotsFullResolution';
-import WorldMapDotsPopulationFullResolution from '../WorldMapDotsPopulationFullResolution';
+import { ProjectionProvider } from '../projection_provider';
+import WorldMapAutoSizer from '../world_map_auto_sizer';
+import WorldMapDotsFullResolution from '../world_map_dots_full_resolution';
+import WorldMapDotsPopulationFullResolution from '../world_map_dots_population_full_resolution';
 import {
   DotPopulationStreamConsumer,
   NodeIdentityInformationStreamContext,
   NodeInformationToDotPopulation,
-} from '../WorldMapDotsPopulationResolver';
+} from '../world_map_dots_population_resolver';
 
 interface ExampleProps {}
 

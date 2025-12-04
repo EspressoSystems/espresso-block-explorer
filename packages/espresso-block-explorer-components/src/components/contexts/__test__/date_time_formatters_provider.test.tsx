@@ -7,7 +7,7 @@ import {
   OverrideDateTimeFormatters,
   OverrideDateTimeFormattersProps,
   ProvideDerivedDateTimeFormatters,
-} from '../DateTimeFormattersProvider';
+} from '../date_time_formatters_provider';
 
 let localFormatters: null | OverrideDateTimeFormattersProps['formatters'] =
   null;

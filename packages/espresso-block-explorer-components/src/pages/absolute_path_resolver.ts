@@ -1,7 +1,7 @@
 import {
   DefaultPathResolver,
   PathResolver,
-} from '@/components/contexts/PathResolver';
+} from '@/components/contexts/path_resolver';
 
 /**
  * AbsolutePathResolver is a PathResolver that generates absolute paths.

@@ -1,7 +1,7 @@
 import { CurrentNumberFormatters } from '@/components/contexts';
-import NumberText from '@/components/text/NumberText';
-import Text from '@/components/text/Text';
-import TimeLeftText from '@/components/text/TimeLeftText';
+import NumberText from '@/components/text/number_text';
+import Text from '@/components/text/text';
+import TimeLeftText from '@/components/text/time_left_text';
 import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
 import React from 'react';
 import { NetworkStatValue } from './network_stat_value';

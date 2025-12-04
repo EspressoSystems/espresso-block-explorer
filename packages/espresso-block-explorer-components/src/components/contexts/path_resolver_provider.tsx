@@ -1,5 +1,5 @@
 import React from 'react';
-import { DefaultPathResolver, PathResolver } from './PathResolver';
+import { DefaultPathResolver, PathResolver } from './path_resolver';
 
 /**
  * PathResolverContext is a context that provides a utility for generating

@@ -1,5 +1,5 @@
-import { ProvideTickEverySecond } from '@/components/contexts/NowProvider';
-import { OverridePathResolver } from '@/contexts/PathResolverProvider';
+import { ProvideTickEverySecond } from '@/components/contexts/now_provider';
+import { OverridePathResolver } from '@/contexts/path_resolver_provider';
 import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
@@ -13,12 +13,12 @@ import {
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
+import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/cappuccino_hot_shot_query_service_api_context';
 import React from 'react';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
-import { ProvideCappuccinoRollUpsSummaryDataSource } from '../CappuccinoHotShotQueryServiceAdapters';
-import RollUpsPage from '../RollUpsPage';
-import { StoryBookPathResolver } from '../StoryBookPathResolver';
+import { ProvideCappuccinoRollUpsSummaryDataSource } from '../cappuccino_hot_shot_query_service_adapters';
+import RollUpsPage from '../roll_ups_page';
+import { StoryBookPathResolver } from '../story_book_path_resolver';
 
 interface ExampleProps {
   environment: Environment;

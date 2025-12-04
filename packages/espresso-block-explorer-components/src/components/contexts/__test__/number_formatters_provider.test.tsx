@@ -7,7 +7,7 @@ import {
   OverrideNumberFormatterProps,
   OverrideNumberFormatters,
   ProvideDerivedNumberFormatters,
-} from '../NumberFormattersProvider';
+} from '../number_formatters_provider';
 
 let localFormatters: null | OverrideNumberFormatterProps['formatters'] = null;
 const ConsumeNumberFormattersComponent: React.FC = () => {

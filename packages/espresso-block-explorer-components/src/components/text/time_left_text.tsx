@@ -1,5 +1,5 @@
-import Text from '@/components/text/Text';
-import { CurrentDateTimeFormatters } from '@/contexts/DateTimeFormattersProvider';
+import Text from '@/components/text/text';
+import { CurrentDateTimeFormatters } from '@/contexts/date_time_formatters_provider';
 import React, { useContext } from 'react';
 
 export interface RelativeTimeTextProps {

@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { describe, expect, it } from 'vitest';
 import { ValidatorsActiveAPI } from '../../validators_active_api';
 import { UnimplementedActiveValidatorsAPI } from '../unimplemented';

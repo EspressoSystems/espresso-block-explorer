@@ -1,5 +1,5 @@
-import { ErrorDisplay } from '@/components/error/ErrorDisplay';
-import { ErrorContext } from '@/contexts/ErrorProvider';
+import { ErrorDisplay } from '@/components/error/error_display';
+import { ErrorContext } from '@/contexts/error_provider';
 import React from 'react';
 
 export interface ErrorContextGuardProps {

@@ -1,5 +1,5 @@
 import { validateAndExpandResponse } from '@/async/fetch/response_validators';
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer_api';
 import { unwrappedCappuccinoExplorerErrorResponseDecoder } from '../explorer_error_response';
 import { CappuccinoExplorerGetBlockDetailRequest } from '../get_block_detail_request';

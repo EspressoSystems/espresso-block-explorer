@@ -1,12 +1,12 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
 import { RollUpSummaryAsyncRetriever } from '@/models/block_explorer/rollup_summary';
 import React from 'react';
-import PromiseResolver from '../../data/async_data/PromiseResolver';
+import PromiseResolver from '../../data/async_data/promise_resolver';
 import {
   DataTableState,
   DataTableStateContext,
-} from '../../data/data_table/DataTable';
+} from '../../data/data_table/data_table';
 import { SortDirection } from '../../data/types';
 
 export interface RollUpSummary {

@@ -1,7 +1,7 @@
 import { Channel, createBufferedChannel } from '@/async/channel';
-import { EspressoError } from '@/errors/EspressoError';
-import FetchError from '@/errors/FetchError';
-import UnimplementedError from '@/errors/UnimplementedError';
+import { EspressoError } from '@/errors/espresso_error';
+import FetchError from '@/errors/fetch_error';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { FakeDataL1ValidatorService } from './implementations/fake_data';
 import { FetchBasedL1ValidatorService } from './implementations/fetch_based';
 import {

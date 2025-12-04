@@ -1,8 +1,8 @@
 import { DataContext } from '@/components/contexts';
-import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
-import PromiseResolver from '@/components/data/async_data/PromiseResolver';
+import { AsyncState } from '@/components/data/async_data/async_snapshot';
+import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { neverPromise } from '@/functional/functional_async';
 import React from 'react';

@@ -1,4 +1,4 @@
-import NumberText from '@/components/text/NumberText';
+import NumberText from '@/components/text/number_text';
 import { RankMapContext } from '@/sites/delegation_ui/contexts/rank_map_context';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import React from 'react';

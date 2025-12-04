@@ -1,8 +1,8 @@
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import '@testing-library/jest-dom';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import Button from '../Button';
+import Button from '../button';
 
 describe('Button Component', () => {
   it('should be clickable successfully', async () => {

@@ -1,5 +1,5 @@
-import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
-import Text from '@/components/text/Text';
+import { AsyncState } from '@/components/data/async_data/async_snapshot';
+import Text from '@/components/text/text';
 import React from 'react';
 import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import ContainerLoading from '../ContainerLoading';
+import ContainerLoading from '../container_loading';
 
 const meta: Meta<typeof ContainerLoading> = {
   title: 'Components/Loading/Container',

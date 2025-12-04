@@ -1,8 +1,8 @@
-import { ProvideDerivedDateTimeFormatters } from '@/contexts/DateTimeFormattersProvider';
-import { OverrideLocale } from '@/contexts/LocaleProvider';
+import { ProvideDerivedDateTimeFormatters } from '@/contexts/date_time_formatters_provider';
+import { OverrideLocale } from '@/contexts/locale_provider';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import TimeText from '../TimeText';
+import TimeText from '../time_text';
 
 interface ExampleProps {
   locale: string;

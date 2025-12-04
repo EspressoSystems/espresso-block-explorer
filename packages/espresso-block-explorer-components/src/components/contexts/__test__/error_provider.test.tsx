@@ -7,7 +7,7 @@ import {
   ErrorContext,
   ErrorJoiner,
   SetError,
-} from '../ErrorProvider';
+} from '../error_provider';
 
 let localError: null | unknown = null;
 const ConsumeErrorComponent: React.FC = () => {

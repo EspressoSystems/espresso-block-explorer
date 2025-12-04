@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import BufferFullError, { bufferFullErrorCodec } from '../BufferFullError';
+import BufferFullError, { bufferFullErrorCodec } from '../buffer_full_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('BufferFullError', () => {

@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import * as stories from '../__docs__/IconButton.stories';
+import * as stories from '../__docs__/icon_button.stories';
 
 const { IconButton } = composeStories(stories);
 

@@ -5,9 +5,9 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError from './BaseError';
+import BaseError from './base_error';
 import { registerCodec } from './registry';
-import UnimplementedError from './UnimplementedError';
+import UnimplementedError from './unimplemented_error';
 
 const kQueryErrorCode = 'QUERY_ERROR';
 

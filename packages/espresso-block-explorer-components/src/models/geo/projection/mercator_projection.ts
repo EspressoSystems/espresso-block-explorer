@@ -1,11 +1,11 @@
 import { NumberLike, greaterThan, lessThan } from '../../numeric/numeric';
-import Degrees from '../units/Degrees';
-import LatLng from '../units/LatLng';
-import Latitude from '../units/Latitude';
-import Longitude from '../units/Longitude';
-import Radians from '../units/Radians';
-import { degreesRadiansProjection } from './DegreesRadiansProjection';
-import { GeodesicProjection } from './GeodesicProjection';
+import Degrees from '../units/degrees';
+import LatLng from '../units/lat_lng';
+import Latitude from '../units/latitude';
+import Longitude from '../units/longitude';
+import Radians from '../units/radians';
+import { degreesRadiansProjection } from './degrees_radians_projection';
+import { GeodesicProjection } from './geodesic_projection';
 
 /**
  * extremeLongitudePoint is the maximum value for the longitude in the

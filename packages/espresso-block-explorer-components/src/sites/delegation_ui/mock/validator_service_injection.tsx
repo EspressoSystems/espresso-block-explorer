@@ -1,8 +1,8 @@
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { nodeList } from '@/data_source/fake_data_source';
-import BadResponseClientError from '@/errors/BadResponseClientError';
-import UnimplementedError from '@/errors/UnimplementedError';
+import BadResponseClientError from '@/errors/bad_response_client_error';
+import UnimplementedError from '@/errors/unimplemented_error';
 import {
   appendIterables,
   compareArrayBuffer,

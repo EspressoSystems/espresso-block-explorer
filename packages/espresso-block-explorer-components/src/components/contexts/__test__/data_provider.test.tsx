@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { DataContext, SetData } from '../DataProvider';
+import { DataContext, SetData } from '../data_provider';
 
 let localData: null | unknown = null;
 const ConsumeDataComponent: React.FC = () => {

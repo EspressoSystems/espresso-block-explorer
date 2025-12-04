@@ -1,11 +1,11 @@
 import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec';
 import { Codec, Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import InvalidTypeError from '@/errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/invalid_type_error';
 import { NumberLike, max, min } from '../../numeric/numeric';
-import { degreesCodec } from './Degrees';
-import Latitude from './Latitude';
-import Longitude from './Longitude';
-import { radiansCodec } from './Radians';
+import { degreesCodec } from './degrees';
+import Latitude from './latitude';
+import Longitude from './longitude';
+import { radiansCodec } from './radians';
 import { GenericLATLNG } from './latlng_interface';
 
 /**

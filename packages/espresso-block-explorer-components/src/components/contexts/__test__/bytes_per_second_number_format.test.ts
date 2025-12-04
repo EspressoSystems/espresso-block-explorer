@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { describe, expect, it } from 'vitest';
-import BytesPerSecondNumberFormat from '../BytesPerSecondNumberFormat';
+import BytesPerSecondNumberFormat from '../bytes_per_second_number_format';
 
 describe('BytesPerSecondNumberFormat', () => {
   describe('Basic Usage', () => {

@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import CopyButton from '../CopyButton';
+import CopyButton from '../copy_button';
 
 describe('Copy Button Component', () => {
   it('should not copy when window is undefined', async () => {

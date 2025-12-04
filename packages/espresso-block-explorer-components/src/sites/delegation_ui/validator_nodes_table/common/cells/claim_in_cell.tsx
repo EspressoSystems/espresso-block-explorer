@@ -1,6 +1,6 @@
-import { Now } from '@/components/contexts/NowProvider';
-import Text from '@/components/text/Text';
-import TimeLeftText from '@/components/text/TimeLeftText';
+import { Now } from '@/components/contexts/now_provider';
+import Text from '@/components/text/text';
+import TimeLeftText from '@/components/text/time_left_text';
 import { PendingExitsContext } from '@/sites/delegation_ui/contexts/pending_exits_context';
 import { PendingUndelegationsContext } from '@/sites/delegation_ui/contexts/pending_undelegations_context';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';

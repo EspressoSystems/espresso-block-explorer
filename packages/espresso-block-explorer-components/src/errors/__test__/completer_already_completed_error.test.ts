@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   CompleterAlreadyCompletedError,
   completerAlreadyCompletedErrorCodec,
-} from '../CompleterAlreadyCompletedError';
+} from '../completer_already_completed_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('CompleterAlreadyCompletedError', () => {

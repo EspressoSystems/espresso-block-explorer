@@ -1,7 +1,7 @@
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import AnchorButtonComp from '../AnchorButton';
+import AnchorButtonComp from '../anchor_button';
 
 interface ExampleProps {
   href: string;

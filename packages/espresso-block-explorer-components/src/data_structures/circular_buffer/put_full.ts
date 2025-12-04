@@ -1,4 +1,4 @@
-import BufferFullError from '../../errors/BufferFullError';
+import BufferFullError from '../../errors/buffer_full_error';
 import { CircularBufferGetFromEmptyBehaviors } from './get_empty';
 import {
   CircularBuffer,

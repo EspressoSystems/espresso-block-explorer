@@ -1,5 +1,5 @@
-import { AsyncRetriever } from '@/async/AsyncRetriever';
-import { TaggedBase64 } from '../espresso/tagged_base64/TaggedBase64';
+import { AsyncRetriever } from '@/async/async_retriever';
+import { TaggedBase64 } from '../espresso/tagged_base64/tagged_base64';
 import MonetaryValue from './monetary_value';
 
 export interface BlockDetailEntry {

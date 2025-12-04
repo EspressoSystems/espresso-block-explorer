@@ -1,9 +1,9 @@
-import { DataContext } from '@/components/contexts/DataProvider';
-import NumberText from '@/components/text/NumberText';
+import { DataContext } from '@/components/contexts/data_provider';
+import NumberText from '@/components/text/number_text';
 import { WithUiText600 } from '@/components/typography/typography';
 import React from 'react';
-import Text from '../../text/Text';
-import SVGPathBuilder from '../svg/SVGPathBuilder';
+import Text from '../../text/text';
+import SVGPathBuilder from '../svg/svg_path_builder';
 import {
   SVGToolTipContentComponent,
   SVGToolTipDrawAreaHeight,
@@ -12,7 +12,7 @@ import {
   SVGToolTipPointY,
   SVGToolTipValueRatio,
   SVGTooltip,
-} from '../svg/SVGToolTip';
+} from '../svg/svg_tool_tip';
 import { useSVGSize } from '../svg/hooks';
 import './pie_chart.css';
 

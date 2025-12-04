@@ -1,12 +1,12 @@
-import { ErrorContext } from '@/components/contexts/ErrorProvider';
+import { ErrorContext } from '@/components/contexts/error_provider';
 import { PrefixMoreInfoElement } from '@/components/hid/hover/more_info_element';
-import { CardNoPadding } from '@/components/layout/card/Card';
+import { CardNoPadding } from '@/components/layout/card/card';
 import { Label } from '@/components/layout/label/label';
-import { WithLoadingShimmer } from '@/components/loading/LoadingShimmer';
-import SkeletonContent from '@/components/loading/SkeletonContent';
-import { DataStatistics } from '@/components/visual/histogram/histogram_base/DataStatistics';
-import { DataContext } from '@/contexts/DataProvider';
-import { LoadingContext } from '@/contexts/LoadingProvider';
+import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
+import SkeletonContent from '@/components/loading/skeleton_content';
+import { DataStatistics } from '@/components/visual/histogram/histogram_base/data_statistics';
+import { DataContext } from '@/contexts/data_provider';
+import { LoadingContext } from '@/contexts/loading_provider';
 import {
   dropIterable,
   filterIterable,
@@ -14,23 +14,23 @@ import {
   mapIterable,
   zipWithIterable,
 } from '@/functional/functional';
-import ValueLabeled from '@/layout/value_labeled/ValueLabeled';
+import ValueLabeled from '@/layout/value_labeled/value_labeled';
 import { HistogramEntry } from '@/models/block_explorer/explorer_summary';
-import SecondsText from '@/text/SecondsText';
-import Text from '@/text/Text';
-import { HistogramLabelProps } from '@/visual/histogram/histogram_base/HistogramDefaultLabel';
-import {
-  ProvideDataStatistics,
-  SimpleHistogram,
-  SimpleHistogramPlaceholder,
-} from '@/visual/histogram/histogram_base/SimpleHistogram';
+import SecondsText from '@/text/seconds_text';
+import Text from '@/text/text';
 import {
   HistogramDomain,
   HistogramRange,
   HistogramRangeStatistics,
   HistogramYAxisLabelComponent,
 } from '@/visual/histogram/histogram_base/contexts';
-import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_title/HistogramSectionTitle';
+import { HistogramLabelProps } from '@/visual/histogram/histogram_base/histogram_default_label';
+import {
+  ProvideDataStatistics,
+  SimpleHistogram,
+  SimpleHistogramPlaceholder,
+} from '@/visual/histogram/histogram_base/simple_histogram';
+import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_title/histogram_section_title';
 import React from 'react';
 
 const CardNoPaddingWithShimmer = WithLoadingShimmer(CardNoPadding);

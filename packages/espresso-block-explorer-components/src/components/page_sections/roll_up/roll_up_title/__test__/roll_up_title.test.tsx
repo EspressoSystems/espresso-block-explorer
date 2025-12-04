@@ -2,7 +2,7 @@ import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import RollUpTitle from '../RollUpTitle';
+import RollUpTitle from '../roll_up_title';
 
 describe('RollUpTitle Component', () => {
   it('should contain the name', () => {

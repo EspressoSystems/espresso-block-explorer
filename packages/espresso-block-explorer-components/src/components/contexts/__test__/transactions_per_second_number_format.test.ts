@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import TransactionsPerSecondNumberFormat from '../TransactionsPerSecondNumberFormat';
+import TransactionsPerSecondNumberFormat from '../transactions_per_second_number_format';
 
 describe('TransactionsPerSecondNumberFormat', () => {
   describe('Basic Functionality', () => {

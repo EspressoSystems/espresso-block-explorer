@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import {
   L1BlockAPIRequest,
   WebWorkerProxyL1API,

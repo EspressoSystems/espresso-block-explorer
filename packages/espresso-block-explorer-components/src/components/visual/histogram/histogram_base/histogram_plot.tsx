@@ -1,5 +1,5 @@
 import React from 'react';
-import { HistogramTooltip } from './HistogramTooltip';
+import { HistogramTooltip } from './histogram_tooltip';
 import {
   HistogramGraphValue,
   HistogramGraphValueIndex,

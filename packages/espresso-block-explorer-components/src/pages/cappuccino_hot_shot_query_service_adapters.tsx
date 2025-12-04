@@ -1,13 +1,13 @@
-import { ErrorJoiner } from '@/components/contexts/ErrorProvider';
-import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
-import { BlockDetailAsyncRetrieverContext } from '@/components/page_sections/block_detail_content/BlockDetailContentLoader';
-import { BlockSummaryAsyncRetrieverContext } from '@/components/page_sections/block_summary_data_table/BlockSummaryDataLoader';
-import { ExplorerSummaryLoaderContext } from '@/components/page_sections/explorer_summary/ExplorerSummaryLoader';
-import { LatestBlockSummaryLoaderContext } from '@/components/page_sections/latest_block_summary/LatestBlockSummaryLoader';
-import { RollUpDetailAsyncRetrieverContext } from '@/components/page_sections/rollup_detail_data_table/RollUpDetailLoader';
-import { RollUpSummaryAsyncRetrieverContext } from '@/components/page_sections/rollups_summary_data_table/RollUpsSummaryLoader';
-import { TransactionDetailAsyncRetrieverContext } from '@/components/page_sections/transaction_detail_content/TransactionDetailLoader';
-import { TransactionSummaryAsyncRetrieverContext } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
+import { ErrorJoiner } from '@/components/contexts/error_provider';
+import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
+import { BlockDetailAsyncRetrieverContext } from '@/components/page_sections/block_detail_content/block_detail_content_loader';
+import { BlockSummaryAsyncRetrieverContext } from '@/components/page_sections/block_summary_data_table/block_summary_data_loader';
+import { ExplorerSummaryLoaderContext } from '@/components/page_sections/explorer_summary/explorer_summary_loader';
+import { LatestBlockSummaryLoaderContext } from '@/components/page_sections/latest_block_summary/latest_block_summary_loader';
+import { RollUpDetailAsyncRetrieverContext } from '@/components/page_sections/rollup_detail_data_table/roll_up_detail_loader';
+import { RollUpSummaryAsyncRetrieverContext } from '@/components/page_sections/rollups_summary_data_table/roll_ups_summary_loader';
+import { TransactionDetailAsyncRetrieverContext } from '@/components/page_sections/transaction_detail_content/transaction_detail_loader';
+import { TransactionSummaryAsyncRetrieverContext } from '@/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
 import {
   mapAsyncIterable,
   timerAsyncIterable,
@@ -15,7 +15,7 @@ import {
 import { BlockSummaryEntry } from '@/models/block_explorer/block_summary';
 import { ExplorerSummaryEntry } from '@/models/block_explorer/explorer_summary';
 import { TransactionSummaryEntry } from '@/models/block_explorer/transaction_summary';
-import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { CappuccinoExplorerGetBlockDetailRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_block_detail_request';
 import { CappuccinoExplorerGetBlockSummariesRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_block_summaries_request';
 import { CappuccinoExplorerGetExplorerSummaryResponse } from '@/service/hotshot_query_service/cappuccino/explorer/get_explorer_summary_response';
@@ -24,7 +24,7 @@ import { CappuccinoExplorerGetTransactionSummariesFilter } from '@/service/hotsh
 import { CappuccinoExplorerGetTransactionSummariesRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_request';
 import { CappuccinoExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_target';
 import React from 'react';
-import { CappuccinoHotShotQueryServiceAPIContext } from './CappuccinoHotShotQueryServiceAPIContext';
+import { CappuccinoHotShotQueryServiceAPIContext } from './cappuccino_hot_shot_query_service_api_context';
 
 // We need to create adapters between the HotShotQueryService and the
 // components that ultimately wish to consume them.

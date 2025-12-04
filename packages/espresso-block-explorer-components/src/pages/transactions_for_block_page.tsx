@@ -1,28 +1,28 @@
-import { InternalLink } from '@/components/links/link/Link';
+import Card from '@/components/layout/card/card';
+import Heading1 from '@/components/layout/heading/heading1';
+import { InternalLink } from '@/components/links/link/link';
 import {
   BlockDetailsLoader,
   BlockNumberContext,
-} from '@/components/page_sections/block_detail_content/BlockDetailContentLoader';
-import Footer from '@/components/page_sections/footer/Footer';
-import Header from '@/components/page_sections/header/Header';
-import PageTitle from '@/components/page_sections/page_title/PageTitle';
-import { TransactionSummaryDataLoader } from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataLoader';
+} from '@/components/page_sections/block_detail_content/block_detail_content_loader';
+import Footer from '@/components/page_sections/footer/footer';
+import Header from '@/components/page_sections/header/header';
+import PageTitle from '@/components/page_sections/page_title/page_title';
+import { TransactionSummaryDataLoader } from '@/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
 import {
   TransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
-} from '@/components/page_sections/transaction_summary_data_table/TransactionSummaryDataTable';
-import { DataContext } from '@/contexts/DataProvider';
-import { ErrorContext } from '@/contexts/ErrorProvider';
-import { LoadingContext } from '@/contexts/LoadingProvider';
-import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
-import { PathResolverContext } from '@/contexts/PathResolverProvider';
-import Card from '@/layout/card/Card';
-import Heading1 from '@/layout/heading/Heading1';
+} from '@/components/page_sections/transaction_summary_data_table/transaction_summary_data_table';
+import { DataContext } from '@/contexts/data_provider';
+import { ErrorContext } from '@/contexts/error_provider';
+import { LoadingContext } from '@/contexts/loading_provider';
+import { OverridePagePath, PageType } from '@/contexts/page_path_provider';
+import { PathResolverContext } from '@/contexts/path_resolver_provider';
 import { WithEdgeMargin } from '@/layout/margin/margins';
-import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
+import { WithLoadingShimmer } from '@/loading/loading_shimmer';
 import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
-import NumberText from '@/text/NumberText';
-import Text from '@/text/Text';
+import NumberText from '@/text/number_text';
+import Text from '@/text/text';
 import React from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(Card);

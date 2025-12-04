@@ -1,5 +1,5 @@
-import { DataContext } from '@/components/contexts/DataProvider';
-import PromiseResolver from '@/components/data/async_data/PromiseResolver';
+import { DataContext } from '@/components/contexts/data_provider';
+import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { neverPromise } from '@/functional/functional_async';
 import { HeightAndAddress } from '@/service/hotshot_query_service/cappuccino/reward_state/height_and_address';

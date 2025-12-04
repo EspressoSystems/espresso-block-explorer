@@ -1,8 +1,8 @@
-import { PathResolverContext } from '@/components/contexts/PathResolverProvider';
-import { InternalLink } from '@/components/links/link/Link';
-import EspressoLogoAndTitle from '@/visual/icons/EspressoLogoAndTitle';
+import { PathResolverContext } from '@/components/contexts/path_resolver_provider';
+import { InternalLink } from '@/components/links/link/link';
+import EspressoLogoAndTitle from '@/visual/icons/espresso_logo_and_title';
 import React from 'react';
-import NavBar from '../../links/nav_bar/NavBar';
+import NavBar from '../../links/nav_bar/nav_bar';
 import './header.css';
 
 interface HeaderProps {}

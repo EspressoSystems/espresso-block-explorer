@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   InvalidHexValueError,
   invalidHexValueErrorCodec,
-} from '../InvalidHexValueError';
+} from '../invalid_hex_value_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('InvalidHexValueError', () => {

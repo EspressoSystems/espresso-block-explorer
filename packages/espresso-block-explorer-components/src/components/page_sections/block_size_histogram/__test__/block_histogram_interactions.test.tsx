@@ -2,7 +2,7 @@ import { DataContext } from '@/components/contexts';
 import { iota } from '@/functional/functional';
 import { act, render } from '@testing-library/react';
 import { describe, it } from 'vitest';
-import { BlockSizeHistogram } from '../BlockSizeHistogram';
+import { BlockSizeHistogram } from '../block_size_histogram';
 import {
   getHistogram,
   interactionHoverOverIthBar,

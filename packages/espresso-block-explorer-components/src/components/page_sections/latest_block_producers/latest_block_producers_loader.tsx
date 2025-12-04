@@ -1,10 +1,10 @@
-import { AsyncRetriever } from '@/async/AsyncRetriever';
+import { AsyncRetriever } from '@/async/async_retriever';
 import { ErrorCarry, ErrorJoiner } from '@/components/contexts';
-import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
-import UnimplementedError from '@/errors/UnimplementedError';
+import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';
 import React from 'react';
-import PromiseResolver from '../../data/async_data/PromiseResolver';
+import PromiseResolver from '../../data/async_data/promise_resolver';
 
 /**
  * The LatestBlockProducer type is the data type that is expected to be

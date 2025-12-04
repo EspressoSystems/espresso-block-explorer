@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { DensityIndependentPoint } from '../../units';
-import LatLng from '../../units/LatLng';
-import Latitude from '../../units/Latitude';
-import Longitude from '../../units/Longitude';
-import Radians from '../../units/Radians';
-import CoordinateSpaceProjection from '../CoordinateSpaceProjection';
+import LatLng from '../../units/lat_lng';
+import Latitude from '../../units/latitude';
+import Longitude from '../../units/longitude';
+import Radians from '../../units/radians';
+import CoordinateSpaceProjection from '../coordinate_space_projection';
 
 describe('Coordinate Space Projection', () => {
   const projection = new CoordinateSpaceProjection(

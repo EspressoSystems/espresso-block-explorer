@@ -3,8 +3,8 @@ import {
   mapIterable,
   zipWithIterable,
 } from '@/functional/functional';
-import DensityIndependentPoint from '@/models/geo/units/DensityIndependentPoint';
-import LatLng from '@/models/geo/units/LatLng';
+import DensityIndependentPoint from '@/models/geo/units/density_independent_point';
+import LatLng from '@/models/geo/units/lat_lng';
 import {
   degreesToCoordinateSpaceProjection,
   gridCellRadius,

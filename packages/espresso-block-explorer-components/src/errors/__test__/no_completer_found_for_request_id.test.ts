@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import NoCompleterFoundForRequestID, {
   noCompleterFoundForRequestIDCodec,
-} from '../NoCompleterFoundForRequestID';
+} from '../no_completer_found_for_request_id';
 import { espressoErrorCodec } from '../registry';
 
 describe('NoCompleterFoundForRequestID', () => {

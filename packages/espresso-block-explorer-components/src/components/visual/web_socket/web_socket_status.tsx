@@ -1,6 +1,6 @@
-import { WebSocketResponseContext } from '@/components/contexts/WebSocketResponseProvider';
+import { WebSocketResponseContext } from '@/components/contexts/web_socket_response_provider';
 import { addClassToClassName } from '@/components/higher_order';
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 import { WebSocketStatusConnectionConnecting } from '@/models/web_worker/web_socket/status/connecting';
 import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
 import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';

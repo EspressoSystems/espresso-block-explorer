@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import NoCodecFoundError from '../NoCodecFoundError';
+import NoCodecFoundError from '../no_codec_found_error';
 
 describe('NoCodecFoundError', () => {
   describe('toJSON', () => {

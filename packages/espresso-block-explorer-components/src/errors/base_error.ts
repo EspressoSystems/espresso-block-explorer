@@ -1,6 +1,6 @@
 import { assertInstanceOf } from '../assert';
 import { Converter } from '../convert';
-import { EspressoError } from './EspressoError';
+import { EspressoError } from './espresso_error';
 
 /**
  * BaseError is a base class for all custom errors that helps to automatically

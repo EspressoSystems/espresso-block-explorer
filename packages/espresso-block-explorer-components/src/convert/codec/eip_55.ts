@@ -1,7 +1,7 @@
 import { assertInstanceOf } from '@/assert/assert';
 import { createKeccakHash } from '@/crypto/keccak/family';
-import InvalidTypeError from '@/errors/InvalidTypeError';
-import UnimplementedError from '@/errors/UnimplementedError';
+import InvalidTypeError from '@/errors/invalid_type_error';
+import UnimplementedError from '@/errors/unimplemented_error';
 import {
   expandIterable,
   iota,

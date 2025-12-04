@@ -1,6 +1,6 @@
-import InvalidTypeError from '@/errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/invalid_type_error';
 import { describe, expect, it } from 'vitest';
-import Degrees, { degreesCodec } from '../Degrees';
+import Degrees, { degreesCodec } from '../degrees';
 
 describe('Degrees', () => {
   describe('numeric', () => {

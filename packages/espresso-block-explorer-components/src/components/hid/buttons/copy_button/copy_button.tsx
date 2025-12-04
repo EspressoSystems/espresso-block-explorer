@@ -1,7 +1,7 @@
-import { Now } from '@/contexts/NowProvider';
+import { Now } from '@/contexts/now_provider';
 import { addClassToClassName } from '@/higher_order';
-import CheckCircleFilled from '@/visual/icons/CheckCircleFilled';
-import Copy from '@/visual/icons/Copy';
+import CheckCircleFilled from '@/visual/icons/check_circle_filled';
+import Copy from '@/visual/icons/copy';
 import React from 'react';
 import './copy_button.css';
 

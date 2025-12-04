@@ -1,15 +1,15 @@
 import {
   Completer,
   createCompleter,
-} from '@/data_structures/async/completer/Completer';
+} from '@/data_structures/async/completer/completer';
 import {
   CircularBuffer,
   CircularBufferGetFromEmptyBehaviors,
   CircularBufferPutIntoFullBehaviors,
   createCircularBuffer,
-} from '@/data_structures/circular_buffer/CircularBuffer';
-import ChannelClosedError from '@/errors/ChannelClosedError';
-import { Channel } from './Channel';
+} from '@/data_structures/circular_buffer/circular_buffer';
+import ChannelClosedError from '@/errors/channel_closed_error';
+import { Channel } from './channel';
 
 /**
  * A BufferedChannel is an AsyncIterable that can be published to in a "hot"

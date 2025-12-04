@@ -1,15 +1,15 @@
-import NumberText from '@/text/NumberText';
-import Text from '@/text/Text';
+import NumberText from '@/text/number_text';
+import Text from '@/text/text';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import PromiseResolver from '../../async_data/PromiseResolver';
+import PromiseResolver from '../../async_data/promise_resolver';
 import { SortDirection, reverseSortDir } from '../../types';
 import DataTableComp, {
   DataTableRowContext,
   DataTableSetStateContext,
   DataTableState,
   DataTableStateContext,
-} from '../DataTable';
+} from '../data_table';
 
 enum ExampleColumns {
   one = 'one',

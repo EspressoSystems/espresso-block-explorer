@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/components/higher_order';
 import { WithEdgeMargin } from '@/layout/margin/margins';
-import ParagraphTextSmall from '@/layout/paragraph/ParagraphTextSmall';
+import ParagraphTextSmall from '@/layout/paragraph/paragraph_text_small';
 import React from 'react';
 import './fake_data_notice.css';
 

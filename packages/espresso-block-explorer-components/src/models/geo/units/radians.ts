@@ -3,7 +3,7 @@ import {
   TypeCheckingCodec,
   isNumber,
 } from '@/convert/codec/convert';
-import InvalidTypeError from '@/errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/invalid_type_error';
 import { BaseNumeric, NumberLike } from '../../numeric/numeric';
 
 /**

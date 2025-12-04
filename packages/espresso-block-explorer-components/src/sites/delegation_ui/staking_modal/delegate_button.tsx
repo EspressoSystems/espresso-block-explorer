@@ -1,5 +1,5 @@
-import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
-import Text from '@/components/text/Text';
+import { AsyncState } from '@/components/data/async_data/async_snapshot';
+import Text from '@/components/text/text';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';

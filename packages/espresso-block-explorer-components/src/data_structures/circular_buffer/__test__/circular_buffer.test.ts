@@ -5,7 +5,7 @@ import {
   CircularBufferPutIntoFullBehaviors,
   CircularBufferPutResult,
   createCircularBuffer,
-} from '../CircularBuffer';
+} from '../circular_buffer';
 
 function basicOperations(buffer: CircularBuffer<number>) {
   const numberOfIterations = 10;

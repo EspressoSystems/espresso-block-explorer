@@ -1,18 +1,18 @@
-import { DataContext } from '@/components/contexts/DataProvider';
-import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import { DataContext } from '@/components/contexts/data_provider';
+import { PathResolverContext } from '@/contexts/path_resolver_provider';
 import { iota } from '@/functional/functional';
-import SkeletonContent from '@/loading/SkeletonContent';
+import SkeletonContent from '@/loading/skeleton_content';
 import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
 import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
-import NumberText from '@/text/NumberText';
-import Text from '@/text/Text';
+import NumberText from '@/text/number_text';
+import Text from '@/text/text';
 import React from 'react';
 import DataTable, {
   DataTableRowContext,
-} from '../../data/data_table/DataTable';
-import { EgressLink, InternalLink } from '../../links/link/Link';
-import RollUpSimple from '../roll_up/roll_up_simple/RollUpSimple';
-import { RollUpSummary } from './RollUpsSummaryLoader';
+} from '../../data/data_table/data_table';
+import { EgressLink, InternalLink } from '../../links/link/link';
+import RollUpSimple from '../roll_up/roll_up_simple/roll_up_simple';
+import { RollUpSummary } from './roll_ups_summary_loader';
 
 /**
  * RollupCell is a cell that displays the rollup information for the RollUp

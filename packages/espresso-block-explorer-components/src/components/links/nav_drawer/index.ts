@@ -1,1 +1,1 @@
-export { default as NavDrawer } from './NavDrawer';
+export { default as NavDrawer } from './nav_drawer';

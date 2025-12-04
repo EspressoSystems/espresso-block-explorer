@@ -8,7 +8,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import * as stories from '../__docs__/DataTable.stories';
+import * as stories from '../__docs__/data_table.stories';
 
 const { DataTable } = composeStories(stories);
 

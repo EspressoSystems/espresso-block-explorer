@@ -1,6 +1,6 @@
 import { assertInstanceOf } from '@/assert/assert';
 import { Converter } from '@/convert/codec/convert';
-import BaseError, { baseErrorEncoder } from './BaseError';
+import BaseError, { baseErrorEncoder } from './base_error';
 
 /**
  * BaseBadResponseError is this base error of all failures due to handling the

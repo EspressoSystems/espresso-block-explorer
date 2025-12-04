@@ -1,5 +1,5 @@
-import { ProvideTickEverySecond } from '@/components/contexts/NowProvider';
-import { OverridePathResolver } from '@/contexts/PathResolverProvider';
+import { ProvideTickEverySecond } from '@/components/contexts/now_provider';
+import { OverridePathResolver } from '@/contexts/path_resolver_provider';
 import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
@@ -14,13 +14,13 @@ import {
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
-import { ProvideCappuccinoNodeValidatorStreams } from 'pages/CappuccinoNodeValidatorServiceAdapters';
-import { ProvideCappuccinoNodeValidatorServiceAPIContext } from 'pages/CappuccinoNodeValidatorServiceAPIContext';
+import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/cappuccino_hot_shot_query_service_api_context';
+import { ProvideCappuccinoNodeValidatorStreams } from 'pages/cappuccino_node_validator_service_adapters';
+import { ProvideCappuccinoNodeValidatorServiceAPIContext } from 'pages/cappuccino_node_validator_service_api_context';
 import React from 'react';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
-import NodesPage from '../NodesPage';
-import { StoryBookPathResolver } from '../StoryBookPathResolver';
+import NodesPage from '../nodes_page';
+import { StoryBookPathResolver } from '../story_book_path_resolver';
 
 interface ExampleProps {
   environment: Environment;

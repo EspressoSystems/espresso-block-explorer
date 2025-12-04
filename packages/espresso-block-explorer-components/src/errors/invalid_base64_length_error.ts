@@ -7,7 +7,7 @@ import {
 } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError, { baseErrorEncoder } from './BaseError';
+import BaseError, { baseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kInvalidBase64AlphabetLengthErrorCode =

@@ -1,6 +1,6 @@
 import { firstIterator } from '@/functional/functional';
 import { NumberLike, lessThan } from '../../numeric/numeric';
-import LatLng from '../units/LatLng';
+import LatLng from '../units/lat_lng';
 import { EdgeCrossing, EdgeFunction } from './edge_function';
 import { WindingNumber } from './winding_number';
 

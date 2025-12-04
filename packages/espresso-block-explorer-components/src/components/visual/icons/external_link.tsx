@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/components/higher_order';
 import React from 'react';
-import SVGIconBase from './SVGIconBase';
+import SVGIconBase from './svg_icon_base';
 
 /**
  * ExternalLink is an icon that represents an action goes to an external link

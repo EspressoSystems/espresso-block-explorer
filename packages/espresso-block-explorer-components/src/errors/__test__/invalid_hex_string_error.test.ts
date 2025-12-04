@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import InvalidHexStringError, {
   invalidHexStringErrorCodec,
-} from '../InvalidHexStringError';
+} from '../invalid_hex_string_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('InvalidHexStringError', () => {

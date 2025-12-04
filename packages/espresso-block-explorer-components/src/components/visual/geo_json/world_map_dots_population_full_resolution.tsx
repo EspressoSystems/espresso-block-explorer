@@ -1,5 +1,5 @@
-import { DataContext } from '@/components/contexts/DataProvider';
-import { LoadingContext } from '@/components/contexts/LoadingProvider';
+import { DataContext } from '@/components/contexts/data_provider';
+import { LoadingContext } from '@/components/contexts/loading_provider';
 import { WithUiText600 } from '@/components/typography/typography';
 import { foldRIterator } from '@/functional/functional';
 import {
@@ -8,7 +8,7 @@ import {
   mapWidth,
 } from '@/models/geo/world_map_grid/constants';
 import React from 'react';
-import Text from '../../text/Text';
+import Text from '../../text/text';
 import {
   SVGToolTipContentComponent,
   SVGToolTipDrawAreaHeight,
@@ -16,8 +16,8 @@ import {
   SVGToolTipPointY,
   SVGToolTipValueRatio,
   SVGTooltip,
-} from '../svg/SVGToolTip';
-import { DotPopulation } from './WorldMapDotsPopulationResolver';
+} from '../svg/svg_tool_tip';
+import { DotPopulation } from './world_map_dots_population_resolver';
 import {
   MapCoordinateGridSpaceCentersContext,
   MapCoordinateSpaceRectContext,

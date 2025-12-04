@@ -2,11 +2,11 @@ import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { PathResolver } from '../PathResolver';
+import type { PathResolver } from '../path_resolver';
 import {
   OverridePathResolver,
   PathResolverContext,
-} from '../PathResolverProvider';
+} from '../path_resolver_provider';
 
 let localPathResolver: null | PathResolver = null;
 const ConsumePagePathProvider: React.FC = () => {

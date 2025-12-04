@@ -1,7 +1,7 @@
 import React from 'react';
-import AsyncIterableResolver from '../data/async_data/AsyncIterableResolver';
-import { DataContext } from './DataProvider';
-import { ErrorContext, ErrorStreamContext } from './ErrorProvider';
+import AsyncIterableResolver from '../data/async_data/async_iterable_resolver';
+import { DataContext } from './data_provider';
+import { ErrorContext, ErrorStreamContext } from './error_provider';
 
 export interface ErrorStreamConsumerProps {
   children: React.ReactNode | React.ReactNode[];

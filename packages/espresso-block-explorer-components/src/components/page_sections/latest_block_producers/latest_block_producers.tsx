@@ -1,20 +1,20 @@
 import { ErrorContext } from '@/components/contexts';
-import FullHexText from '@/components/text/FullHexText';
-import { HistogramSectionTitle } from '@/components/visual/histogram/histogram_section_title/HistogramSectionTitle';
-import { DataContext } from '@/contexts/DataProvider';
-import { LoadingContext } from '@/contexts/LoadingProvider';
-import { CardNoPadding } from '@/layout/card/Card';
-import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/SummaryTableLabeledValue';
-import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
-import SkeletonContent from '@/loading/SkeletonContent';
-import NumberText from '@/text/NumberText';
-import Text from '@/text/Text';
+import { CardNoPadding } from '@/components/layout/card/card';
+import FullHexText from '@/components/text/full_hex_text';
+import { HistogramSectionTitle } from '@/components/visual/histogram/histogram_section_title/histogram_section_title';
+import { DataContext } from '@/contexts/data_provider';
+import { LoadingContext } from '@/contexts/loading_provider';
+import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/summary_table_labeled_value';
+import { WithLoadingShimmer } from '@/loading/loading_shimmer';
+import SkeletonContent from '@/loading/skeleton_content';
+import NumberText from '@/text/number_text';
+import Text from '@/text/text';
 import React from 'react';
 import './latest_block_producers.css';
 import {
   LatestBlockProducer,
   LatestBlockProducersProvider,
-} from './LatestBlockProducersLoader';
+} from './latest_block_producers_loader';
 
 export const LatestBlockProducersHeading: React.FC = () => {
   return (

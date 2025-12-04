@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import * as stories from '../__docs__/ExplorerPage.stories';
+import * as stories from '../__docs__/explorer_page.stories';
 
 const { FakeData } = composeStories(stories);
 

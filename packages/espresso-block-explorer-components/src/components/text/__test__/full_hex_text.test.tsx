@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, it } from 'vitest';
-import FullHexText from '../FullHexText';
+import FullHexText from '../full_hex_text';
 
 describe('Hex Text Component', () => {
   it('should format the value as a hex string, with truncation if it is too long', () => {

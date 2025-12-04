@@ -1,20 +1,20 @@
-import { ErrorContext } from '@/components/contexts/ErrorProvider';
-import { DataContext } from '@/contexts/DataProvider';
-import { LoadingContext } from '@/contexts/LoadingProvider';
-import { CardNoPadding } from '@/layout/card/Card';
-import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/SummaryTableLabeledValue';
-import SummaryValueLabeled from '@/layout/summary_value_labeled/SummaryValueLabeled';
-import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
-import SkeletonContent from '@/loading/SkeletonContent';
+import { ErrorContext } from '@/components/contexts/error_provider';
+import { CardNoPadding } from '@/components/layout/card/card';
+import { DataContext } from '@/contexts/data_provider';
+import { LoadingContext } from '@/contexts/loading_provider';
+import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/summary_table_labeled_value';
+import SummaryValueLabeled from '@/layout/summary_value_labeled/summary_value_labeled';
+import { WithLoadingShimmer } from '@/loading/loading_shimmer';
+import SkeletonContent from '@/loading/skeleton_content';
 import { curatedMainnetList } from '@/models/block_explorer/rollup_entry/data';
-import NumberText from '@/text/NumberText';
-import Text from '@/text/Text';
+import NumberText from '@/text/number_text';
+import Text from '@/text/text';
 import React from 'react';
+import './explorer_overview.css';
 import {
   ExplorerOverview,
   ExplorerOverviewProvider,
-} from './ExplorerOverviewLoader';
-import './explorer_overview.css';
+} from './explorer_overview_loader';
 
 export const ExplorerOverviewHeading: React.FC = () => {
   return (

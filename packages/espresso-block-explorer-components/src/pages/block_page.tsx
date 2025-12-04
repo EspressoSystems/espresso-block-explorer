@@ -1,21 +1,21 @@
-import { ErrorDisplay } from '@/components/error/ErrorDisplay';
+import { ErrorDisplay } from '@/components/error/error_display';
+import { CardNoPadding } from '@/components/layout/card/card';
+import Heading1 from '@/components/layout/heading/heading1';
 import {
   BlockDetailsContent,
   BlockDetailsContentPlaceholder,
   BlockNavigation,
   ProvideBlockDetails,
-} from '@/components/page_sections/block_detail_content/BlockDetailContent';
-import { BlockDetailsLoader } from '@/components/page_sections/block_detail_content/BlockDetailContentLoader';
-import Footer from '@/components/page_sections/footer/Footer';
-import Header from '@/components/page_sections/header/Header';
-import PageTitle from '@/components/page_sections/page_title/PageTitle';
-import { LoadingContext } from '@/contexts/LoadingProvider';
-import { OverridePagePath, PageType } from '@/contexts/PagePathProvider';
-import { CardNoPadding } from '@/layout/card/Card';
-import Heading1 from '@/layout/heading/Heading1';
+} from '@/components/page_sections/block_detail_content/block_detail_content';
+import { BlockDetailsLoader } from '@/components/page_sections/block_detail_content/block_detail_content_loader';
+import Footer from '@/components/page_sections/footer/footer';
+import Header from '@/components/page_sections/header/header';
+import PageTitle from '@/components/page_sections/page_title/page_title';
+import { LoadingContext } from '@/contexts/loading_provider';
+import { OverridePagePath, PageType } from '@/contexts/page_path_provider';
 import { WithEdgeMargin } from '@/layout/margin/margins';
-import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
-import Text from '@/text/Text';
+import { WithLoadingShimmer } from '@/loading/loading_shimmer';
+import Text from '@/text/text';
 import React from 'react';
 import { ErrorContext } from '../components';
 

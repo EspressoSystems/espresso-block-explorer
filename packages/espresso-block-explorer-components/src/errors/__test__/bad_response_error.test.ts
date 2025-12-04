@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import BadResponseError, { badResponseErrorCodec } from '../BadResponseError';
+import BadResponseError, { badResponseErrorCodec } from '../bad_response_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('BadResponseError', () => {

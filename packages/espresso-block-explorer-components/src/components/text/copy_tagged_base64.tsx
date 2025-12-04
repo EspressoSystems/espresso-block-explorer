@@ -1,6 +1,6 @@
-import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import React from 'react';
-import CopyButton from '../hid/buttons/copy_button/CopyButton';
+import CopyButton from '../hid/buttons/copy_button/copy_button';
 import './inline.css';
 
 export interface CopyTaggedBase64Props {

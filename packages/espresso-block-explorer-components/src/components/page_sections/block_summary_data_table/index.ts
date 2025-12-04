@@ -1,2 +1,2 @@
-export * from './BlockSummaryDataLoader';
-export * from './BlockSummaryDataTable';
+export * from './block_summary_data_loader';
+export * from './block_summary_data_table';

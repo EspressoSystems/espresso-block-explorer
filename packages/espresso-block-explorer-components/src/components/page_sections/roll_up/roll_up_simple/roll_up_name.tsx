@@ -1,5 +1,5 @@
 import { RollUpEntry } from '@/models/block_explorer/rollup_entry/types';
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import React from 'react';
 
 export interface RollUpNameProps {

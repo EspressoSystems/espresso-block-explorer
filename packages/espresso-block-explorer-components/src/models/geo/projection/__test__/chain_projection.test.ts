@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import LatLng from '../../units/LatLng';
-import Latitude from '../../units/Latitude';
-import Longitude from '../../units/Longitude';
-import ChainProjection from '../ChainProjection';
-import { GeodesicProjection } from '../GeodesicProjection';
+import LatLng from '../../units/lat_lng';
+import Latitude from '../../units/latitude';
+import Longitude from '../../units/longitude';
+import ChainProjection from '../chain_projection';
+import { GeodesicProjection } from '../geodesic_projection';
 
 class DoubleProjection implements GeodesicProjection<number, number> {
   project(point: LatLng<number>): LatLng<number> {

@@ -1,8 +1,8 @@
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import ParagraphTextSmall from '../ParagraphTextSmall';
+import ParagraphTextSmall from '../paragraph_text_small';
 
 describe('Paragraph Text Small Component', () => {
   it('should have the classes, tag, and text expected', async () => {

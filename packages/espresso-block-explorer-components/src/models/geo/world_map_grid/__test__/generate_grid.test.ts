@@ -28,9 +28,9 @@ import GeoJSONFeatureCollection, {
   geoJSONFeatureCollectionCodec,
 } from '../../geo_json/feature_collection';
 import GeoJSONMultiPolygon from '../../geo_json/multi_polygon';
-import Degrees from '../../units/Degrees';
-import LatLng from '../../units/LatLng';
-import Latitude from '../../units/Latitude';
+import Degrees from '../../units/degrees';
+import LatLng from '../../units/lat_lng';
+import Latitude from '../../units/latitude';
 import { createEdgeFunction } from '../../winding_number/edge_function';
 import { sundaysWindingAlgorithm } from '../../winding_number/sunday';
 import { compressIntoBitMap } from '../compress_into_bitmap';

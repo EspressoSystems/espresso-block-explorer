@@ -1,6 +1,6 @@
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import React from 'react';
-import ExternalLink from './ExternalLink';
+import ExternalLink from './external_link';
 
 /**
  * ExternalLinks is a helpful container for the list of External Links we'd

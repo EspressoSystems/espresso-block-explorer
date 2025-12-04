@@ -1,13 +1,13 @@
-import { ErrorContext } from '@/components/contexts/ErrorProvider';
-import BufferFullError from '@/errors/BufferFullError';
-import FetchError from '@/errors/FetchError';
-import UnimplementedError from '@/errors/UnimplementedError';
-import WebSocketError from '@/errors/WebSocketError';
-import WebWorkerErrorResponse from '@/errors/WebWorkerErrorResponse';
+import { ErrorContext } from '@/components/contexts/error_provider';
+import BufferFullError from '@/errors/buffer_full_error';
+import FetchError from '@/errors/fetch_error';
+import UnimplementedError from '@/errors/unimplemented_error';
+import WebSocketError from '@/errors/web_socket_error';
+import WebWorkerErrorResponse from '@/errors/web_worker_error_response';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { ErrorDisplay } from '../ErrorDisplay';
+import { ErrorDisplay } from '../error_display';
 
 describe('ErrorDisplay Component', () => {
   it('should not display anything without an active error', async () => {

@@ -1,18 +1,18 @@
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import { iota, mapIterable } from '@/functional/functional';
-import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { CappuccinoExplorerTransactionSummary } from '@/service/hotshot_query_service';
 import { CappuccinoExplorerBlockSummary } from '@/service/hotshot_query_service/cappuccino/explorer/block_summary';
 import { CappuccinoExplorerGetSearchResultResponse } from '@/service/hotshot_query_service/cappuccino/explorer/get_search_result_response';
 import { CappuccinoExplorerSearchResults } from '@/service/hotshot_query_service/cappuccino/explorer/search_results';
 import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
+import { CappuccinoHotShotQueryServiceAPIContext } from 'pages/cappuccino_hot_shot_query_service_api_context';
 import React from 'react';
 import {
   InitialSearchState,
   SearchInput as SearchInputComp,
-} from '../SearchInput';
+} from '../search_input';
 
 interface ExampleProps {
   initialState?: InitialSearchState;

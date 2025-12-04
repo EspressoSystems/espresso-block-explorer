@@ -11,7 +11,7 @@ import { numberCodec } from '@/convert/codec/number';
 import {
   TaggedBase64,
   taggedBase64Codec,
-} from '@/models/espresso/tagged_base64/TaggedBase64';
+} from '@/models/espresso/tagged_base64/tagged_base64';
 
 export class CappuccinoExplorerBlockSummary {
   readonly hash: TaggedBase64;

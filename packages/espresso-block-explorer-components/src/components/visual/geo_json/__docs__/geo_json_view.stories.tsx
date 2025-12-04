@@ -1,7 +1,7 @@
 import { geoJSONFeatureCollectionCodec } from '@/models/geo/geo_json/feature_collection';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import GeoJSONViewComp from '../GeoJSONView';
+import GeoJSONViewComp from '../geo_json_view';
 
 interface ExampleProps {
   offsetX?: number;

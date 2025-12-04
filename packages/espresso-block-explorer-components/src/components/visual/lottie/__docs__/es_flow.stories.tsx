@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import ESFlow from '../ESFlow';
+import ESFlow from '../es_flow';
 
 const Example: React.FC = () => (
   <div style={{ display: 'flex', flexDirection: 'column' }}>

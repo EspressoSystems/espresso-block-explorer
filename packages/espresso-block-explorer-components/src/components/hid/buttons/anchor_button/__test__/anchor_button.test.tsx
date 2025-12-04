@@ -1,8 +1,8 @@
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import '@testing-library/jest-dom';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import AnchorButton from '../AnchorButton';
+import AnchorButton from '../anchor_button';
 
 describe('Anchor Button Component', () => {
   it('should have a link specified', async () => {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import FooterComp from '../Footer';
+import FooterComp from '../footer';
 
 interface ExampleProps {}
 const Example: React.FC<ExampleProps> = (props) => <FooterComp {...props} />;

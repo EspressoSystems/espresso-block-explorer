@@ -1,8 +1,8 @@
-import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import TaggedBase64Text from '../TaggedBase64Text';
+import TaggedBase64Text from '../tagged_base64_text';
 
 describe('Tagged Base 64 Text Component', () => {
   it('should format with full value', () => {});

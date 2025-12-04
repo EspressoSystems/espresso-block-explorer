@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability/availability_api';
 import { FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability/implementations/fake_data';
 import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer/explorer_api';

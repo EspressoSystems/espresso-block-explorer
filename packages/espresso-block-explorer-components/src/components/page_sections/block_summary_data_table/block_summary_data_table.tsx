@@ -1,19 +1,19 @@
-import { DataContext } from '@/contexts/DataProvider';
-import { PathResolverContext } from '@/contexts/PathResolverProvider';
+import { DataContext } from '@/contexts/data_provider';
+import { PathResolverContext } from '@/contexts/path_resolver_provider';
 import { iota } from '@/functional/functional';
-import SkeletonContent from '@/loading/SkeletonContent';
+import SkeletonContent from '@/loading/skeleton_content';
 import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
-import ByteSizeText from '@/text/ByteSizeText';
-import CopyHex from '@/text/CopyHex';
-import DateTimeText from '@/text/DateTimeText';
-import HexText from '@/text/HexText';
-import NumberText from '@/text/NumberText';
+import ByteSizeText from '@/text/byte_size_text';
+import CopyHex from '@/text/copy_hex';
+import DateTimeText from '@/text/date_time_text';
+import HexText from '@/text/hex_text';
+import NumberText from '@/text/number_text';
 import React from 'react';
 import DataTable, {
   DataTableRowContext,
-} from '../../data/data_table/DataTable';
-import { InternalLink } from '../../links/link/Link';
-import { BlockSummary } from './BlockSummaryDataLoader';
+} from '../../data/data_table/data_table';
+import { InternalLink } from '../../links/link/link';
+import { BlockSummary } from './block_summary_data_loader';
 
 /**
  * BlockCell is a cell for containing reference information about the block

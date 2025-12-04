@@ -1,11 +1,11 @@
-import { createBufferedChannel } from '@/async/channel/BufferedChannel';
+import { createBufferedChannel } from '@/async/channel/buffered_channel';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, it } from 'vitest';
-import AsyncIterableResolver from '../AsyncIterableResolver';
-import { AsyncSnapshot, AsyncState } from '../AsyncSnapshot';
-import { AsyncSnapshotContext } from '../AsyncSnapshotContext';
+import AsyncIterableResolver from '../async_iterable_resolver';
+import { AsyncSnapshot, AsyncState } from '../async_snapshot';
+import { AsyncSnapshotContext } from '../async_snapshot_context';
 
 describe('Async Iterable Resolver Component', () => {
   it('It Consumes Events one at a Time Successfully', async () => {

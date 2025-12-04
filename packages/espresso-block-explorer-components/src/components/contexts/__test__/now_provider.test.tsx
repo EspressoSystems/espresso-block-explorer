@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { act, render } from '@testing-library/react';
 import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { Now, ProvideTickEverySecond } from '../NowProvider';
+import { Now, ProvideTickEverySecond } from '../now_provider';
 
 let localNow: null | Date = null;
 const ConsumeNowComponent: React.FC = () => {

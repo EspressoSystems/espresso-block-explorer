@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   InvalidBase64AlphabetLengthError,
   invalidBase64AlphabetLengthErrorCodec,
-} from '../InvalidBase64LengthError';
+} from '../invalid_base64_length_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('InvalidBase64LengthError', () => {

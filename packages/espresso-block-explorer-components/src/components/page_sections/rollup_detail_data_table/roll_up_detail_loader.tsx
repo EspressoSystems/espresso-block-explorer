@@ -1,14 +1,14 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { RollUpDetailAsyncRetriever } from '@/models/block_explorer/rollup_detail';
 import { TransactionSummaryColumn } from '@/models/block_explorer/transaction_summary';
 import React from 'react';
-import PromiseResolver from '../../data/async_data/PromiseResolver';
+import PromiseResolver from '../../data/async_data/promise_resolver';
 import {
   DataTableState,
   DataTableStateContext,
-} from '../../data/data_table/DataTable';
+} from '../../data/data_table/data_table';
 import { SortDirection } from '../../data/types';
-import { TransactionSummary } from '../transaction_summary_data_table/TransactionSummaryDataLoader';
+import { TransactionSummary } from '../transaction_summary_data_table/transaction_summary_data_loader';
 
 /**
  * NamespaceContext is a React Context that holds a reference to the

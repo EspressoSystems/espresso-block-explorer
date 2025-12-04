@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import SocialMediaLinks from '../SocialMediaLinks';
+import SocialMediaLinks from '../social_media_links';
 
 interface ExampleProps {}
 

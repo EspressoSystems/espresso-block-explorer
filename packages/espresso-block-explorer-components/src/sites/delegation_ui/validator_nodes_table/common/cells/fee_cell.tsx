@@ -1,4 +1,4 @@
-import PercentageText from '@/components/text/PercentageText';
+import PercentageText from '@/components/text/percentage_text';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import React from 'react';
 

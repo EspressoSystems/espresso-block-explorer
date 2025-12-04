@@ -1,14 +1,14 @@
-import NumberText from '@/components/text/NumberText';
+import NumberText from '@/components/text/number_text';
 import {
   PieChart,
   PieChartEntry,
   PieChartLabelContext,
   PieChartLabelProps,
-} from '@/components/visual/pie_chart/PieChart';
-import { PieChartSectionTitle } from '@/components/visual/pie_chart/pie_chart_section_title/PieChartSectionTitle';
-import { DataContext } from '@/contexts/DataProvider';
-import { LoadingContext } from '@/contexts/LoadingProvider';
-import Text from '@/text/Text';
+} from '@/components/visual/pie_chart/pie_chart';
+import { PieChartSectionTitle } from '@/components/visual/pie_chart/pie_chart_section_title/pie_chart_section_title';
+import { DataContext } from '@/contexts/data_provider';
+import { LoadingContext } from '@/contexts/loading_provider';
+import Text from '@/text/text';
 import React from 'react';
 
 const LabelValue: React.FC<PieChartLabelProps> = (props) => {

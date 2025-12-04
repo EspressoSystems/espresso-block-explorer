@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { LoadingContext, SetLoading } from '../LoadingProvider';
+import { LoadingContext, SetLoading } from '../loading_provider';
 
 let localLoading: null | boolean = null;
 const ConsumeLoadingComponent: React.FC = () => {

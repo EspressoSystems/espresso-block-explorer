@@ -11,7 +11,7 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { mapIterable } from '@/functional/functional';
 import {
   CappuccinoAPIBitVecHead,

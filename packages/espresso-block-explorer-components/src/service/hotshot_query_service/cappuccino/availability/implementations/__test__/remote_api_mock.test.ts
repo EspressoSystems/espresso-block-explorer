@@ -1,5 +1,5 @@
 import { Channel, createBufferedChannel } from '@/async/channel';
-import NotFoundError from '@/errors/NotFoundError';
+import NotFoundError from '@/errors/not_found_error';
 import { firstAsyncIterable } from '@/functional/functional_async';
 import { TaggedBase64 } from '@/models/espresso';
 import { ArgumentsType, describe, expect, it } from 'vitest';

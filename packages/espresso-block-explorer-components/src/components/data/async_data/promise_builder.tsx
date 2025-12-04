@@ -1,7 +1,7 @@
 import React from 'react';
-import { AsyncSnapshot } from './AsyncSnapshot';
-import { AsyncSnapshotContext } from './AsyncSnapshotContext';
-import PromiseResolver from './PromiseResolver';
+import { AsyncSnapshot } from './async_snapshot';
+import { AsyncSnapshotContext } from './async_snapshot_context';
+import PromiseResolver from './promise_resolver';
 
 /**
  * The Props of a Builder component passed to the builder of a PromiseBuilder.

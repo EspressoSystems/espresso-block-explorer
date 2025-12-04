@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import { CurrentLocale } from './LocaleProvider';
+import { CurrentLocale } from './locale_provider';
 
 /**
  * createDefaultDateTimeFormatters will create the desired DateTime Formatters

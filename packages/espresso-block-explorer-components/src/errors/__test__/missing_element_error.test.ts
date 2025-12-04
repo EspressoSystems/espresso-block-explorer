@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import MissingElementError, {
   missingElementErrorCodec,
-} from '../MissingElementError';
+} from '../missing_element_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('MissingElementError', () => {

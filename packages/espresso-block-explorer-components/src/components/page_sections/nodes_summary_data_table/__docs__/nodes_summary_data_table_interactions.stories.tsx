@@ -17,10 +17,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
   CurrentStakeTableContext,
   CurrentValidatorsContext,
-} from 'pages/CappuccinoNodeValidatorServiceAdapters';
+} from 'pages/cappuccino_node_validator_service_adapters';
 import React from 'react';
-import { NodesSummaryDataTable as NodesSummaryDataTableComponent } from '../NodesSummaryDataTable';
-import { NodeSummaryData } from '../NodesSummaryLoader';
+import { NodesSummaryDataTable as NodesSummaryDataTableComponent } from '../nodes_summary_data_table';
+import { NodeSummaryData } from '../nodes_summary_loader';
 
 interface ExampleProps {
   validatorData: NodeSummaryData[];

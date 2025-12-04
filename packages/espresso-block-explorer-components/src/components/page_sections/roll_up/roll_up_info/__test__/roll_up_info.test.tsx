@@ -2,7 +2,7 @@ import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import RollUpInfo from '../RollUpInfo';
+import RollUpInfo from '../roll_up_info';
 
 describe('RollUpInfo Component', () => {
   it('should contain the rollup information', () => {

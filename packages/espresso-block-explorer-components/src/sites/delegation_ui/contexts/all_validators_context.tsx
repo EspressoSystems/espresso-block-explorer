@@ -1,4 +1,4 @@
-import { DataContext } from '@/components/contexts/DataProvider';
+import { DataContext } from '@/components/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
 import { neverPromise } from '@/functional/functional_async';
 import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';

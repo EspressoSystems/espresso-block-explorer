@@ -1,5 +1,5 @@
-import PercentageText from '@/components/text/PercentageText';
-import Text from '@/components/text/Text';
+import PercentageText from '@/components/text/percentage_text';
+import Text from '@/components/text/text';
 import { NetworkStatValue } from './network_stat_value';
 
 /**

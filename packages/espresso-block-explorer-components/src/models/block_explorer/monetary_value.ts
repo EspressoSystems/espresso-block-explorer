@@ -2,7 +2,7 @@ import { assertInstanceOf } from '@/assert/assert';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import { bigintCodec } from '@/convert/codec/bigint';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import InvalidInputError from '@/errors/InvalidInputError';
+import InvalidInputError from '@/errors/invalid_input_error';
 import {
   BTC,
   CurrencyCode,

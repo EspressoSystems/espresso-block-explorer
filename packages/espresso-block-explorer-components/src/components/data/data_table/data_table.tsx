@@ -1,7 +1,7 @@
-import { DataContext } from '@/contexts/DataProvider';
-import Text from '@/text/Text';
+import { DataContext } from '@/contexts/data_provider';
+import Text from '@/text/text';
 import { WithUiSmall } from '@/typography/typography';
-import ChevronUp from '@/visual/icons/ChevronUp';
+import ChevronUp from '@/visual/icons/chevron_up';
 import React from 'react';
 import { SortDirection } from '../types';
 import './data_table.css';

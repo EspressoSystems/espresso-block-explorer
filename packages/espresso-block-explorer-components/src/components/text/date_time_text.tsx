@@ -1,4 +1,4 @@
-import { CurrentDateTimeFormatters } from '@/contexts/DateTimeFormattersProvider';
+import { CurrentDateTimeFormatters } from '@/contexts/date_time_formatters_provider';
 import React, { useContext } from 'react';
 
 export interface DateTimeTextProps {

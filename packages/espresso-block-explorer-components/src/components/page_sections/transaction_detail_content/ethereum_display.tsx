@@ -1,7 +1,7 @@
 import { TableLabeledValue } from '@/components/layout';
 import { CopyHex, DateTimeText, HexText, MoneyText } from '@/components/text';
-import NumberText from '@/components/text/NumberText';
-import Text from '@/components/text/Text';
+import NumberText from '@/components/text/number_text';
+import Text from '@/components/text/text';
 import { EthHeader } from '@/service/ethereum/header';
 import { EthTransaction } from '@/service/ethereum/transaction';
 import React from 'react';

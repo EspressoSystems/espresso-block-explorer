@@ -1,11 +1,11 @@
 import { expandIterable, iota, mapIterable } from '@/functional/functional';
-import ChainProjection from '@/models/geo/projection/ChainProjection';
-import CoordinateSpaceProjection from '@/models/geo/projection/CoordinateSpaceProjection';
-import { degreesRadiansProjection } from '@/models/geo/projection/DegreesRadiansProjection';
-import DensityIndependentPoint from '@/models/geo/units/DensityIndependentPoint';
-import LatLng from '@/models/geo/units/LatLng';
-import Latitude from '@/models/geo/units/Latitude';
-import Longitude from '@/models/geo/units/Longitude';
+import ChainProjection from '@/models/geo/projection/chain_projection';
+import CoordinateSpaceProjection from '@/models/geo/projection/coordinate_space_projection';
+import { degreesRadiansProjection } from '@/models/geo/projection/degrees_radians_projection';
+import DensityIndependentPoint from '@/models/geo/units/density_independent_point';
+import LatLng from '@/models/geo/units/lat_lng';
+import Latitude from '@/models/geo/units/latitude';
+import Longitude from '@/models/geo/units/longitude';
 import {
   gridCellSize,
   mapWidth,

@@ -1,11 +1,11 @@
-import { AffineTransform } from '@/components/visual/histogram/histogram_base/AffineTransform';
+import { AffineTransform } from '@/components/visual/histogram/histogram_base/affine_transform';
 import { NumberLike } from '../../numeric/numeric';
-import DensityIndependentPoint from '../units/DensityIndependentPoint';
-import LatLng from '../units/LatLng';
-import Latitude from '../units/Latitude';
-import Longitude from '../units/Longitude';
-import Radians from '../units/Radians';
-import { GeodesicProjection } from './GeodesicProjection';
+import DensityIndependentPoint from '../units/density_independent_point';
+import LatLng from '../units/lat_lng';
+import Latitude from '../units/latitude';
+import Longitude from '../units/longitude';
+import Radians from '../units/radians';
+import { GeodesicProjection } from './geodesic_projection';
 
 /**
  * CoordinateSpaceProjection is a geodesic projection which converts between

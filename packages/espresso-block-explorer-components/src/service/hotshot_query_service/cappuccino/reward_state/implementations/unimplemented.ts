@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { RewardClaimInput } from '../reward_claim_input';
 import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_start_api';
 

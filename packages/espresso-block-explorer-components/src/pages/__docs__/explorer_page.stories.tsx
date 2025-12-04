@@ -1,6 +1,6 @@
-import { ExplorerSummaryLoader } from '@/components/page_sections/explorer_summary/ExplorerSummaryLoader';
-import { ProvideTickEverySecond } from '@/contexts/NowProvider';
-import { OverridePathResolver } from '@/contexts/PathResolverProvider';
+import { ExplorerSummaryLoader } from '@/components/page_sections/explorer_summary/explorer_summary_loader';
+import { ProvideTickEverySecond } from '@/contexts/now_provider';
+import { OverridePathResolver } from '@/contexts/path_resolver_provider';
 import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
@@ -14,12 +14,12 @@ import {
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
+import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'pages/cappuccino_hot_shot_query_service_api_context';
 import React from 'react';
 import { EnvironmentBanner } from '../../components/layout/environment_banner/environment_banner';
-import { ProvideCappuccinoExplorerSummaryAsyncStream } from '../CappuccinoHotShotQueryServiceAdapters';
-import ExplorerPage from '../ExplorerPage';
-import { StoryBookPathResolver } from '../StoryBookPathResolver';
+import { ProvideCappuccinoExplorerSummaryAsyncStream } from '../cappuccino_hot_shot_query_service_adapters';
+import ExplorerPage from '../explorer_page';
+import { StoryBookPathResolver } from '../story_book_path_resolver';
 
 interface ExampleProps {
   environment: Environment;

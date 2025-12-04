@@ -1,6 +1,9 @@
-import { CurrentPagePathContext, PageType } from '@/contexts/PagePathProvider';
+import {
+  CurrentPagePathContext,
+  PageType,
+} from '@/contexts/page_path_provider';
 import React from 'react';
-import { InternalLink } from '../link/Link';
+import { InternalLink } from '../link/link';
 import './nav_link.css';
 
 export interface NavLinkProps {

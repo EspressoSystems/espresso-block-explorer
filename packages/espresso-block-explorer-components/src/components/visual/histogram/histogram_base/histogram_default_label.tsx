@@ -1,4 +1,4 @@
-import NumberText from '@/text/NumberText';
+import NumberText from '@/text/number_text';
 
 export interface HistogramLabelProps {
   value: number;

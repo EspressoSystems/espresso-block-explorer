@@ -1,7 +1,7 @@
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import ButtonComp from '../button/Button';
+import ButtonComp from '../button/button';
 
 interface ExampleProps {
   disabled: boolean;

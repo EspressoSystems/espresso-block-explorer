@@ -1,4 +1,4 @@
-import SVGIconBase from '@/components/visual/icons/SVGIconBase';
+import SVGIconBase from '@/components/visual/icons/svg_icon_base';
 import React from 'react';
 
 /**

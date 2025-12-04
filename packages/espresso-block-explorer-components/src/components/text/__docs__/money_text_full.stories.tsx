@@ -1,5 +1,5 @@
-import { OverrideLocale } from '@/contexts/LocaleProvider';
-import { ProvideDerivedNumberFormatters } from '@/contexts/NumberFormattersProvider';
+import { OverrideLocale } from '@/contexts/locale_provider';
+import { ProvideDerivedNumberFormatters } from '@/contexts/number_formatters_provider';
 import { bigintCodec } from '@/convert/codec/bigint';
 import { currencyCodeCodec } from '@/models/block_explorer/currency_code';
 import MonetaryValue from '@/models/block_explorer/monetary_value';

@@ -1,6 +1,6 @@
 import { assertInstanceOf } from '@/assert/assert';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import InvalidInputError from '@/errors/InvalidInputError';
+import InvalidInputError from '@/errors/invalid_input_error';
 
 /**
  * CurrencyCode is a class that represents a currency code.  Generally speaking

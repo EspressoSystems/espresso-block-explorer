@@ -2,8 +2,8 @@ import { DataContext } from '@/components/contexts';
 import { iota, mapIterable } from '@/functional/functional';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { RollUpsSummaryDataTable as RollUpsSummaryDataTableComponent } from '../RollUpsSummaryDataTable';
-import { RollUpSummary } from '../RollUpsSummaryLoader';
+import { RollUpsSummaryDataTable as RollUpsSummaryDataTableComponent } from '../roll_ups_summary_data_table';
+import { RollUpSummary } from '../roll_ups_summary_loader';
 
 interface ExampleProps {
   rollupSummaries: RollUpSummary[];

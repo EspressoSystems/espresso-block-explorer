@@ -5,7 +5,7 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError, { BaseErrorEncoder } from './BaseError';
+import BaseError, { BaseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kMissingElementErrorCode = 'MissingElementError';

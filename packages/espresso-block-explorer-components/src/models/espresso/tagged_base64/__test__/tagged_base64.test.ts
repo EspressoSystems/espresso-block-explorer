@@ -1,7 +1,7 @@
 import { rawURLEncoding } from '@/convert/base64/base64';
 import '@testing-library/jest-dom';
 import { describe, expect, it } from 'vitest';
-import { TaggedBase64 } from '../TaggedBase64';
+import { TaggedBase64 } from '../tagged_base64';
 
 describe('TaggedBase64', () => {
   describe('encoding', () => {

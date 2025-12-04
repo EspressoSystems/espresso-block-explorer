@@ -1,8 +1,8 @@
 import React, { createContext, useContext } from 'react';
-import BytesPerSecondNumberFormat from './BytesPerSecondNumberFormat';
-import { CurrentLocale } from './LocaleProvider';
-import TransactionPerSecondNumberFormat from './TransactionsPerSecondNumberFormat';
-import VariableBytesNumberFormat from './VariableBytesNumberFormat';
+import BytesPerSecondNumberFormat from './bytes_per_second_number_format';
+import { CurrentLocale } from './locale_provider';
+import TransactionPerSecondNumberFormat from './transactions_per_second_number_format';
+import VariableBytesNumberFormat from './variable_bytes_number_format';
 
 /**
  * createDefaultNumberFormatters will create the default Number formatting

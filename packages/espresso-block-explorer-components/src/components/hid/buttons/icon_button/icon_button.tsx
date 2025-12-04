@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/higher_order';
 import React from 'react';
-import Button, { ButtonProps } from '../button/Button';
+import Button, { ButtonProps } from '../button/button';
 
 /**
  * IconButton represents a Button with a simple icon within it.  It is styled

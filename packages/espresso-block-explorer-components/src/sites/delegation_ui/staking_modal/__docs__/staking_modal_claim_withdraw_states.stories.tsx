@@ -1,7 +1,7 @@
 import {
   AsyncSnapshot,
   AsyncState,
-} from '@/components/data/async_data/AsyncSnapshot';
+} from '@/components/data/async_data/async_snapshot';
 import { nodeList } from '@/data_source/fake_data_source';
 import { ValidatorConfirmedUndelegateWithdraw } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { Meta, StoryObj } from '@storybook/react-vite';

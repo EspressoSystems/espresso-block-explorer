@@ -1,24 +1,24 @@
 import { ErrorContext, LoadingContext } from '@/components/contexts';
-import { DataContext } from '@/components/contexts/DataProvider';
+import { DataContext } from '@/components/contexts/data_provider';
 import { SortDirection } from '@/components/data/types';
-import { ErrorDisplay } from '@/components/error/ErrorDisplay';
+import { ErrorDisplay } from '@/components/error/error_display';
 import { MoneyText, NumberText } from '@/components/text';
-import CopyTaggedBase64 from '@/components/text/CopyTaggedBase64';
-import CopyWalletAddress from '@/components/text/CopyWalletAddress';
-import PercentageText from '@/components/text/PercentageText';
-import TaggedBase64Text from '@/components/text/TaggedBase64Text';
-import WalletAddressText from '@/components/text/WalletAddressText';
+import CopyTaggedBase64 from '@/components/text/copy_tagged_base64';
+import CopyWalletAddress from '@/components/text/copy_wallet_address';
+import PercentageText from '@/components/text/percentage_text';
+import TaggedBase64Text from '@/components/text/tagged_base64_text';
+import WalletAddressText from '@/components/text/wallet_address_text';
 import {
   compareArrayBuffer,
   foldRIterator,
   iota,
 } from '@/functional/functional';
-import SkeletonContent from '@/loading/SkeletonContent';
+import SkeletonContent from '@/loading/skeleton_content';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { StakeTableEntryWrapper } from '@/models/espresso/stake_table/stake_table_entry_wrapper';
 import { Validator } from '@/models/espresso/stake_table/validator';
 import WalletAddress from '@/models/wallet_address/wallet_address';
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import { CurrentStakeTableContext, CurrentValidatorsContext } from 'pages';
 import React from 'react';
 import DataTable, {
@@ -27,14 +27,14 @@ import DataTable, {
   DataTableSetStateContext,
   DataTableState,
   DataTableStateContext,
-} from '../../data/data_table/DataTable';
-import { EgressLink } from '../../links/link/Link';
+} from '../../data/data_table/data_table';
+import { EgressLink } from '../../links/link/link';
 import {
   NodeSummaryColumn,
   NodeSummaryData,
   NodeVoteParticipationStats,
   VotersParticipationStatsContext,
-} from './NodesSummaryLoader';
+} from './nodes_summary_loader';
 
 /**
  * NodeSummaryDataTuple is a tuple that contains the data for a single

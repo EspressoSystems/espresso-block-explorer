@@ -1,25 +1,25 @@
 import { ErrorContext } from '@/components/contexts';
-import DurationInSecondsText from '@/components/text/DurationInSecondsText';
-import { DataContext } from '@/contexts/DataProvider';
-import { LoadingContext } from '@/contexts/LoadingProvider';
-import { PathResolverContext } from '@/contexts/PathResolverProvider';
-import { CardNoPadding } from '@/layout/card/Card';
-import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/SummaryTableLabeledValue';
-import SummaryValueLabeled from '@/layout/summary_value_labeled/SummaryValueLabeled';
-import { WithLoadingShimmer } from '@/loading/LoadingShimmer';
-import SkeletonContent from '@/loading/SkeletonContent';
+import { CardNoPadding } from '@/components/layout/card/card';
+import DurationInSecondsText from '@/components/text/duration_in_seconds_text';
+import { DataContext } from '@/contexts/data_provider';
+import { LoadingContext } from '@/contexts/loading_provider';
+import { PathResolverContext } from '@/contexts/path_resolver_provider';
+import SummaryTableLabeledValue from '@/layout/summary_table_labeled_value/summary_table_labeled_value';
+import SummaryValueLabeled from '@/layout/summary_value_labeled/summary_value_labeled';
+import { WithLoadingShimmer } from '@/loading/loading_shimmer';
+import SkeletonContent from '@/loading/skeleton_content';
 import { ExplorerSummaryEntry } from '@/models/block_explorer/explorer_summary';
-import ByteSizeText from '@/text/ByteSizeText';
-import NumberText from '@/text/NumberText';
-import Text from '@/text/Text';
+import ByteSizeText from '@/text/byte_size_text';
+import NumberText from '@/text/number_text';
+import Text from '@/text/text';
 import React from 'react';
-import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/LabeledAnchorButton';
+import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
 import { ExplorerSummaryProvider } from '../explorer_summary';
+import './latest_block_summary.css';
 import {
   LatestBlock,
   LatestBlockSummaryProvider,
-} from './LatestBlockSummaryLoader';
-import './latest_block_summary.css';
+} from './latest_block_summary_loader';
 
 export const LatestBlockSummaryHeading: React.FC = () => {
   const block = React.useContext(LatestBlockSummaryProvider);

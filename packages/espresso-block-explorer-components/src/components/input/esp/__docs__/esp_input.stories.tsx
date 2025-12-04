@@ -2,7 +2,7 @@ import { MoneyTextFull } from '@/components/text/money_text_full';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { InputContainer } from '../../container/Container';
+import { InputContainer } from '../../container/container';
 import { ESPInput as ESPInputComponent } from '../esp_input';
 
 interface ExampleProps {

@@ -1,4 +1,4 @@
-export * from './AsyncRetriever';
+export * from './async_retriever';
 export * from './channel';
 export * from './fetch';
 export * from './sink';

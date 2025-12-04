@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { compareArrayBuffer, foldRIterable } from '@/functional/functional';
 import { FullNodeSetDiff } from './full_node_set_diff/full_node_set_diff';
 import { FullNodeSetDiffNodeExit } from './full_node_set_diff/node_exit';

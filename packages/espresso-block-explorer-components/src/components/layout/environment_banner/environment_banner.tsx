@@ -1,7 +1,7 @@
 import { EnvironmentContext } from '@/components/config/environment';
 import { Environment } from '@/models/config/environment/environment';
 import React from 'react';
-import FakeDataNotice from '../../../pages/FakeDataNotice';
+import FakeDataNotice from '../../../pages/fake_data_notice';
 import './environment_banner.css';
 import { EnvironmentBannerDecaf } from './environment_banner_decaf';
 import { EnvironmentBannerMainnet } from './environment_banner_mainnet';
