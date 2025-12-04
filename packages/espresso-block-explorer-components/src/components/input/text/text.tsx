@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextEditingValue, TextSelection } from './types';
+import { TextEditingValue, TextRange, TextSelection } from './types';
 
 export interface TextEditingProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -15,6 +15,43 @@ export interface TextEditingProps extends Omit<
 }
 
 /**
+ * textSelectionFromInputElement is a helper function that will create
+ * a TextSelection from the selection state of the provided input element.
+ */
+function textSelectionFromInputElement(
+  inputElement: HTMLInputElement,
+): TextSelection {
+  const selectionStart = inputElement.selectionStart || 0;
+  const selectionEnd = inputElement.selectionEnd || 0;
+
+  if (inputElement.selectionDirection === 'backward') {
+    return new TextSelection(selectionEnd, selectionStart, true);
+  }
+
+  return new TextSelection(
+    selectionStart,
+    selectionEnd,
+    selectionStart !== selectionEnd &&
+      (inputElement.selectionDirection || 'none') !== 'none',
+  );
+}
+
+/**
+ * composingFromInputElement is a helper function that will create
+ * a TextRange from the selection state of the provided input element.
+ */
+function composingFromInputElement(inputElement: HTMLInputElement): TextRange {
+  const selectionStart = inputElement.selectionStart || 0;
+  const selectionEnd = inputElement.selectionEnd || 0;
+
+  if (selectionStart === selectionEnd) {
+    return TextRange.empty;
+  }
+
+  return new TextRange(selectionStart, selectionEnd);
+}
+
+/**
  * TextEditing is a ReactComponent that provides a text input field
  * with support for explicitly controlling the value and selection.
  * It uses the TextEditingValue and TextSelection types to manage
@@ -23,14 +60,72 @@ export interface TextEditingProps extends Omit<
  * It is modelled after the TextEditingController in Flutter,
  */
 export const TextEditing: React.FC<TextEditingProps> = (props) => {
-  const ref = React.createRef<HTMLInputElement>();
+  const ref = React.useRef<null | HTMLInputElement>(null);
   const { value, onChange, ...rest } = props;
+  const [state, setState] = React.useState(value ?? new TextEditingValue(''));
 
-  const currentValue =
-    value ?? new TextEditingValue('', TextSelection.collapsed(-1));
+  const resolvedValue = value ?? state;
 
-  if (ref.current && currentValue.selection.isValid) {
-    const sel = currentValue.selection;
+  React.useEffect(() => {
+    let setTheState = setState;
+
+    // Did the text value change?
+    if (resolvedValue && resolvedValue.text !== state.text) {
+      setTheState(resolvedValue);
+      return;
+    }
+
+    const element = ref.current;
+
+    // Do we have a valid ref to the input element?
+    if (element) {
+      // Did the selection change?
+
+      if (state.selection.isValid) {
+        if (!resolvedValue.selection.isEquivalentTo(state.selection)) {
+          setTheState(resolvedValue);
+          // Update the selection in the input element
+
+          if (
+            resolvedValue.selection.baseOffset ===
+            resolvedValue.selection.extentOffset
+          ) {
+            element.setSelectionRange(
+              resolvedValue.selection.start,
+              resolvedValue.selection.end,
+              'none',
+            );
+            return;
+          }
+
+          element.setSelectionRange(
+            resolvedValue.selection.start,
+            resolvedValue.selection.end,
+            resolvedValue.selection.baseOffset <=
+              resolvedValue.selection.extentOffset
+              ? 'forward'
+              : 'backward',
+          );
+          return;
+        }
+      }
+    }
+
+    return () => {
+      setTheState = () => {};
+    };
+  }, [
+    resolvedValue,
+    state.selection,
+    state.selection.end,
+    state.selection.isDirectional,
+    state.selection.isValid,
+    state.selection.start,
+    state.text,
+  ]);
+
+  if (ref.current && state.selection.isValid) {
+    const sel = state.selection;
     ref.current.setSelectionRange(
       sel.start,
       sel.end,
@@ -43,41 +138,53 @@ export const TextEditing: React.FC<TextEditingProps> = (props) => {
       ref={ref}
       type="text"
       {...rest}
-      value={currentValue.text}
+      value={resolvedValue.text}
       onChange={(event) => {
         const nextValue = new TextEditingValue(
           event.target.value,
-          new TextSelection(
-            event.target.selectionStart || 0,
-            event.target.selectionEnd || 0,
-            (event.target.selectionDirection || 'none') !== 'none',
-          ),
+          textSelectionFromInputElement(event.target),
         );
 
         if (onChange) {
           onChange(event, nextValue);
-          if (event.isDefaultPrevented()) {
-            return;
-          }
         }
+
+        if (event.isDefaultPrevented()) {
+          return;
+        }
+
+        setState(nextValue);
       }}
       onSelect={(event) => {
         if (!ref.current) {
           return;
         }
 
-        if (onChange) {
-          onChange(
-            event,
-            currentValue.copyWith({
-              selection: new TextSelection(
-                ref.current.selectionStart ?? 0,
-                ref.current.selectionEnd ?? 0,
-                (ref.current.selectionDirection || 'none') !== 'none',
-              ),
-            }),
-          );
+        const nextSelection = textSelectionFromInputElement(ref.current);
+        const nextComposing = composingFromInputElement(ref.current);
+
+        if (
+          nextSelection.isEquivalentTo(resolvedValue.selection) &&
+          nextComposing.isEquivalentTo(resolvedValue.composing)
+        ) {
+          // No Selection Change
+          return;
         }
+
+        const nextValue = resolvedValue.copyWith({
+          selection: nextSelection,
+          composing: nextComposing,
+        });
+        if (onChange) {
+          onChange(event, nextValue);
+        }
+
+        if (event.isDefaultPrevented()) {
+          return;
+        }
+
+        // Fire a state update
+        setState(nextValue);
       }}
     />
   );
