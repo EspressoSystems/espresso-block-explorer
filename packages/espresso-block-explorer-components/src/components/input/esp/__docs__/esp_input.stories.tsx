@@ -1,4 +1,4 @@
-import { MoneyText } from '@/components/text';
+import { MoneyTextFull } from '@/components/text/money_text_full';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
@@ -24,7 +24,7 @@ const Example: React.FC<ExampleProps> = (props) => {
         />
       </InputContainer>
       <br />
-      <MoneyText money={state ?? MonetaryValue.ESP(0n)} />
+      <MoneyTextFull money={state ?? MonetaryValue.ESP(0n)} />
     </>
   );
 };

@@ -17,7 +17,7 @@ import VariableBytesNumberFormat from './VariableBytesNumberFormat';
  * @param locale the current language to create the default number formatters
  *   for.
  */
-function createDefaultNumberFormatters(locale: string) {
+export function createDefaultNumberFormatters(locale: string) {
   return {
     default: new Intl.NumberFormat(locale),
     percentage: new Intl.NumberFormat(locale, {
