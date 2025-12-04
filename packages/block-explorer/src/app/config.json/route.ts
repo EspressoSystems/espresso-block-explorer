@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Force dynamic rendering to ensure environment variables are read at runtime
 export const dynamic = 'force-dynamic';
-// Will prevent the content from ever being cached by the nextjs service.
-export const revalidate = 0;
+// We allow for the contents to be cached for 24 hours.
+export const revalidate = 86400;
 
 interface ConfigFileResponse {
   hotshot_query_service_url: null | string;
