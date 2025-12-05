@@ -1,1 +1,0 @@
-import{j as o}from"./iframe-DIKNrIIb.js";const r=n=>o.jsx("div",{className:"container-loading",...n});try{containerloading.displayName="containerloading",containerloading.__docgenInfo={description:"",displayName:"containerloading",props:{}}}catch{}export{r as C};

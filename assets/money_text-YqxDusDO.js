@@ -1,6 +1,0 @@
-import{j as r,R as a}from"./iframe-DIKNrIIb.js";import{C as s}from"./number_formatters_provider-CoB2HbbC.js";/* empty css               */const f=t=>{const e=t.money;switch(e.currency.alpha3Code){case"ETH":return r.jsx(u,{value:e.toNumericLiteralString()});case"ESP":return r.jsx(i,{value:e.toNumericLiteralString()});default:return r.jsx(c,{money:e})}},c=t=>{const e=a.useContext(s),n=t.money,o=e[n.currency.alpha3Code];return o===null?r.jsx(m,{money:t.money}):o.format(n.toNumericLiteralString())},m=t=>{const e=a.useContext(s),n=t.money,o=Number(n.value)/Number(n.currency.significantDigitsMultiplier);return e.default.format(o)},u=t=>{const e=a.useContext(s);return r.jsx(r.Fragment,{children:e.ETH.format(t.value)})},i=t=>{const e=a.useContext(s);return r.jsx(r.Fragment,{children:e.ESP.format(t.value)})};try{moneytext.displayName="moneytext",moneytext.__docgenInfo={description:`MoneyText is a component that will render a MonetaryValue in a localized
-manner for the given currency type.  It supports non-standard ISO 4217
-currency codes such as ETH and ESP.
-
-It achieves this by having specific implementations for the necessary
-currency types.`,displayName:"moneytext",props:{money:{defaultValue:null,description:"",name:"money",required:!0,type:{name:"MonetaryValue"}}}}}catch{}export{f as M};

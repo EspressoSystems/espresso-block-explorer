@@ -1,3 +1,0 @@
-import{r as a,j as r}from"./iframe-DIKNrIIb.js";import{C as i}from"./date_time_formatters_provider-DhcWWpu8.js";const d=e=>{const t=a.useContext(i);return r.jsx("time",{title:t.utcFullDateTime.format(e.date),dateTime:e.date.toISOString(),children:t.default.format(e.date)})};try{datetimetext.displayName="datetimetext",datetimetext.__docgenInfo={description:`DateTimeText is a simple Element used to render the given date with
-the default DateTimeFormatters.  It also ensures that the timestamp
-is wrapped in a time element for accessibility reference.`,displayName:"datetimetext",props:{date:{defaultValue:null,description:"",name:"date",required:!0,type:{name:"Date"}}}}}catch{}export{d as D};
