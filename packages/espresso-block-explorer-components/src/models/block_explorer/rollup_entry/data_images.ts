@@ -17,43 +17,45 @@ import {
   t3rnNamespace,
 } from './data';
 import {
-  AltLayerAvatarLogo,
-  ApeChainLogo24,
-  ApeChainLogo32,
-  ApeChainLogo40,
-  AppChainLogo24,
-  AppChainLogo32,
-  AppChainLogo40,
-  ArbitrumAvatarLogo,
-  CalderaAvatarLogo,
-  EigenLayerAvatarLogo,
-  Huddle01Logo24,
-  Huddle01Logo32,
-  Huddle01Logo40,
-  LogXLogo24,
-  LogXLogo32,
-  LogXLogo40,
-  MoltenLogo24,
-  MoltenLogo32,
-  MoltenLogo40,
-  OpStackAvatarLogo,
-  PolygonAvatarLogo,
-  RariLogo24,
-  RariLogo32,
-  RariLogo40,
-  RufusLogo24,
-  RufusLogo32,
-  RufusLogo40,
-  SpireAvatarLogo,
-  T3rnLogo24,
-  T3rnLogo32,
-  T3rnLogo40,
-  VistaraAvatarLogo,
   With24PxSquare,
   With32PxSquare,
   With40PxSquare,
   WithCircleBorder,
-} from './images';
+} from './higher_order';
+import {
+  ApeChainLogo24,
+  ApeChainLogo32,
+  ApeChainLogo40,
+} from './rollups/apechain/apechain';
+import {
+  AppChainLogo24,
+  AppChainLogo32,
+  AppChainLogo40,
+} from './rollups/appchain/appchain';
+import {
+  AltLayerAvatarLogo,
+  ArbitrumAvatarLogo,
+  CalderaAvatarLogo,
+  EigenLayerAvatarLogo,
+  OpStackAvatarLogo,
+  PolygonAvatarLogo,
+  SpireAvatarLogo,
+  VistaraAvatarLogo,
+} from './rollups/fake_rollups/fake_rollups';
+import {
+  Huddle01Logo24,
+  Huddle01Logo32,
+  Huddle01Logo40,
+} from './rollups/huddle01/huddle01';
+import { LogXLogo24, LogXLogo32, LogXLogo40 } from './rollups/logx/logx';
+import {
+  MoltenLogo24,
+  MoltenLogo32,
+  MoltenLogo40,
+} from './rollups/molten/molten';
+import { RariLogo24, RariLogo32, RariLogo40 } from './rollups/rari/rari';
+import { RufusLogo24, RufusLogo32, RufusLogo40 } from './rollups/rufus/rufus';
+import { T3rnLogo24, T3rnLogo32, T3rnLogo40 } from './rollups/t3rn/t3rn';
 
 export class RollUpImages {
   public readonly namespace: number;

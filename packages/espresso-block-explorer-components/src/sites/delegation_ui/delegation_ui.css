@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 @font-face {
-  font-family: PPNeueMontreal;
-  src: url('../fonts/PPNeueMontreal-Regular.otf') format('opentype');
+  font-family: PPNeueMontrealRegular;
+  src:
+    local('PPNeueMontrealRegular'),
+    url('./fonts/PPNeueMontreal-Regular.otf') format('opentype');
 }
 
 main.delegation-ui {
