@@ -1,10 +1,10 @@
 import { kInfiniteGardenNamespace } from '@/models/block_explorer/rollup_entry/data';
 import { rollUpImagesMap } from '@/models/block_explorer/rollup_entry/data_images';
 import {
-  EspressoAvatarLogo,
   With24PxSquare,
   WithCircleBorder,
-} from '@/models/block_explorer/rollup_entry/images';
+} from '@/models/block_explorer/rollup_entry/higher_order';
+import { EspressoAvatarLogo } from '@/models/block_explorer/rollup_entry/rollups/espresso/espresso';
 import { RollUpEntry } from '@/models/block_explorer/rollup_entry/types';
 import React from 'react';
 
