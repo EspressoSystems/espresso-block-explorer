@@ -5,7 +5,7 @@ import {
   isRecordWithKeys,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
-import InvalidTypeError from '@/errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/invalid_type_error';
 import { FullNodeSetDiff } from './full_node_set_diff';
 import {
   FullNodeSetDiffNodeExit,

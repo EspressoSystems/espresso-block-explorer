@@ -7,7 +7,7 @@ import {
   isRecordWithKeys,
   TypeCheckingCodec,
 } from '@/convert/codec';
-import InvalidTypeError from '@/errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/invalid_type_error';
 import {
   ClaimedRewardsKey,
   WalletDiffClaimedRewards,

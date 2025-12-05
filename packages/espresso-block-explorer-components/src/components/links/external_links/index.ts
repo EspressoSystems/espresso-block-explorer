@@ -1,2 +1,2 @@
-export { default as ExternalLink } from './ExternalLink';
-export { default as ExternalLinks } from './ExternalLinks';
+export { default as ExternalLink } from './external_link';
+export { default as ExternalLinks } from './external_links';

@@ -1,5 +1,5 @@
 import { TextEditing } from '@/components/input/text/text';
-import SearchGlass from '@/components/visual/icons/SearchGlass';
+import SearchGlass from '@/components/visual/icons/search_glass';
 import React from 'react';
 import {
   SearchFilterContext,

@@ -1,4 +1,4 @@
-import { DataStatistics } from '@/components/visual/histogram/histogram_base/DataStatistics';
+import { DataStatistics } from '@/components/visual/histogram/histogram_base/data_statistics';
 import {
   dropIterable,
   filterIterable,

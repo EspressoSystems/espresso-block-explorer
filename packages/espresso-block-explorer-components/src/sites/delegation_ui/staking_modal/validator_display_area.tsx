@@ -1,6 +1,6 @@
-import PercentageText from '@/components/text/PercentageText';
-import Text from '@/components/text/Text';
-import WalletAddressText from '@/components/text/WalletAddressText';
+import PercentageText from '@/components/text/percentage_text';
+import Text from '@/components/text/text';
+import WalletAddressText from '@/components/text/wallet_address_text';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
 import { ConsensusMapContext } from '../contexts/consensus_map_context';

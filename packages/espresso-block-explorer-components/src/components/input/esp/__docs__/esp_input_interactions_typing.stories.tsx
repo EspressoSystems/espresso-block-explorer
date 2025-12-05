@@ -1,8 +1,8 @@
-import { CurrentLocale } from '@/components/contexts/LocaleProvider';
+import { CurrentLocale } from '@/components/contexts/locale_provider';
 import {
   createDefaultNumberFormatters,
   ProvideDerivedNumberFormatters,
-} from '@/components/contexts/NumberFormattersProvider';
+} from '@/components/contexts/number_formatters_provider';
 import { MoneyTextFull } from '@/components/text/money_text_full';
 import {
   getStartingSeed,
@@ -11,7 +11,7 @@ import {
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { InputContainer } from '../../container/Container';
+import { InputContainer } from '../../container/container';
 import { interactionsTypeValue } from '../__shared__/esp_input_shared';
 import { ESPInput as ESPInputComponent } from '../esp_input';
 

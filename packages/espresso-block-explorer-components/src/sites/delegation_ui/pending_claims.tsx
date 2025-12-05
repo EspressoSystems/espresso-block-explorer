@@ -1,5 +1,5 @@
-import { Now } from '@/components/contexts/NowProvider';
-import Text from '@/components/text/Text';
+import { Now } from '@/components/contexts/now_provider';
+import Text from '@/components/text/text';
 import Unlock from '@/components/visual/icons/feather/unlock';
 import { filterIterable } from '@/functional/functional';
 import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';

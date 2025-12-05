@@ -1,0 +1,22 @@
+import { composeStories } from '@storybook/react-vite';
+import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import * as stories from '../__docs__/time_text.stories';
+
+const { Time } = composeStories(stories);
+
+describe('Time Text Component', () => {
+  it('should format time', () => {
+    const date = '2024-01-01T17:10:12.123Z';
+    render(
+      <div data-testid="1">
+        <Time date={date} locale="en-US" />
+      </div>,
+    );
+
+    const text = screen.getByTestId('1');
+    expect(text).toBeInTheDocument();
+    expect(text).toHaveTextContent('5:10:12 PM UTC');
+  });
+});

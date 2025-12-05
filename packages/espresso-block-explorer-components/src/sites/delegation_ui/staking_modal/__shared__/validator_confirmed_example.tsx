@@ -1,4 +1,4 @@
-import { AsyncSnapshot } from '@/components/data/async_data/AsyncSnapshot';
+import { AsyncSnapshot } from '@/components/data/async_data/async_snapshot';
 import { Undelegation } from '@/contracts/stake_table/stake_table_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import MonetaryValue from '@/models/block_explorer/monetary_value';

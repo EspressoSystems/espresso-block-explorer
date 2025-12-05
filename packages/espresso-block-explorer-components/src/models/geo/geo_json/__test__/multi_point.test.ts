@@ -1,8 +1,8 @@
 import { describe, it } from 'vitest';
-import Degrees from '../../units/Degrees';
-import LatLng from '../../units/LatLng';
-import Latitude from '../../units/Latitude';
-import Longitude from '../../units/Longitude';
+import Degrees from '../../units/degrees';
+import LatLng from '../../units/lat_lng';
+import Latitude from '../../units/latitude';
+import Longitude from '../../units/longitude';
 import GeoJSONMultiPoint, { geoJSONMultiPointCodec } from '../multi_point';
 import GeoJSONPoint from '../point';
 

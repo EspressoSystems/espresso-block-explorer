@@ -2,7 +2,7 @@ import { DataContext } from '@/components/contexts';
 import { iota, mapIterator } from '@/functional/functional';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { PieChartEntry, PieChartFromData } from '../PieChart';
+import { PieChartEntry, PieChartFromData } from '../pie_chart';
 
 interface ExampleProps {
   data: PieChartEntry[];

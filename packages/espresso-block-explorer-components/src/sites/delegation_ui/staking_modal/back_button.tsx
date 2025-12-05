@@ -1,4 +1,4 @@
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 import React from 'react';
 import ButtonFlat from '../elements/buttons/button_flat';
 import './back_button.css';

@@ -1,4 +1,4 @@
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 import { ModalContext } from '@/sites/delegation_ui/contexts/modal_context';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import {

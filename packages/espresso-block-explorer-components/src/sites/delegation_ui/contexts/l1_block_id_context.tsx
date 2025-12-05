@@ -1,4 +1,4 @@
-import { DataContext } from '@/components/contexts/DataProvider';
+import { DataContext } from '@/components/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
 import { L1BlockID } from '@/service/espresso_l1_validator_service/common/l1_block_id';
 import React from 'react';

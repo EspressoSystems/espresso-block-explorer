@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { WalletAPI } from '../wallet_api';
 import { WalletSnapshot } from '../wallet_snapshot';
 import { WalletUpdate } from '../wallet_update';

@@ -8,8 +8,8 @@ import {
 } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 import { stringCodec } from '@/convert/codec/string';
-import { EspressoError } from '@/errors/EspressoError';
-import InvalidInputError from '@/errors/InvalidInputError';
+import { EspressoError } from '@/errors/espresso_error';
+import InvalidInputError from '@/errors/invalid_input_error';
 import { espressoErrorCodec } from '@/errors/registry';
 
 export type RequestID = number;

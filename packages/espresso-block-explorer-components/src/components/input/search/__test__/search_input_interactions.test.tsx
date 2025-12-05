@@ -1,8 +1,8 @@
 import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
 import { act, render } from '@testing-library/react';
-import { CappuccinoHotShotQueryServiceAPIContext } from 'pages/CappuccinoHotShotQueryServiceAPIContext';
+import { CappuccinoHotShotQueryServiceAPIContext } from 'pages/cappuccino_hot_shot_query_service_api_context';
 import { describe, it } from 'vitest';
-import { SearchInput } from '../SearchInput';
+import { SearchInput } from '../search_input';
 import {
   getBlockSearchResultElements,
   getSearchBar,

@@ -1,5 +1,5 @@
 import { Sink } from '../sink/sink';
-import { Channel } from './Channel';
+import { Channel } from './channel';
 
 /**
  * ChannelToSink is an implementation of Sink using a Channel.

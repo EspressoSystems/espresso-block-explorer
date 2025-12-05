@@ -1,5 +1,5 @@
-export { default as DiscordLink } from './DiscordLink';
-export { default as MediumLink } from './MediumLink';
-export { default as SocialMediaIconLink } from './SocialMediaIconLink';
-export { default as SocialMediaLinks } from './SocialMediaLinks';
-export { default as TwitterLink } from './TwitterLink';
+export { default as DiscordLink } from './discord_link';
+export { default as MediumLink } from './medium_link';
+export { default as SocialMediaIconLink } from './social_media_icon_link';
+export { default as SocialMediaLinks } from './social_media_links';
+export { default as TwitterLink } from './twitter_link';

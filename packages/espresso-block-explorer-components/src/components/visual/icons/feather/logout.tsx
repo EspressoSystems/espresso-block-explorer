@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/components/higher_order';
 import React from 'react';
-import SVGIconBase from '../SVGIconBase';
+import SVGIconBase from '../svg_icon_base';
 
 /**
  * LogOut represents a logout icon.

@@ -1,6 +1,6 @@
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { compareArrayBuffer } from '@/functional/functional';
-import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import { Ratio } from '@/service/espresso_l1_validator_service/common/ratio';
 import React from 'react';

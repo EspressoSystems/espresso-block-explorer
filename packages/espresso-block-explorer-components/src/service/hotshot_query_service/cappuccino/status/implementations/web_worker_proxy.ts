@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
 import { BlockHeightResponse } from '@/service/hotshot_query_service/types';
 import { CappuccinoHotShotQueryServiceStatusAPI } from '../status_api';

@@ -1,5 +1,5 @@
 import { numberCodec } from '@/convert/codec/number';
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
 import { activeValidatorsCodec } from '../active_validators';
 import { CappuccinoHotShotQueryServiceNodeAPI } from '../node_api';

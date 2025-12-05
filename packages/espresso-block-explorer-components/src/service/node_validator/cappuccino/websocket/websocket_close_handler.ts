@@ -1,6 +1,6 @@
 import { Sink } from '@/async/sink/sink';
-import { Completer } from '@/data_structures/async/completer/Completer';
-import WebSocketError from '@/errors/WebSocketError';
+import { Completer } from '@/data_structures/async/completer/completer';
+import WebSocketError from '@/errors/web_socket_error';
 import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
 import WebSocketStatus from '@/models/web_worker/web_socket/status/web_socket_status';
 import { WebSocketInterface } from './websocket_interface';

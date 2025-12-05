@@ -1,4 +1,4 @@
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 import React from 'react';
 import {
   CurrentSectionContext,

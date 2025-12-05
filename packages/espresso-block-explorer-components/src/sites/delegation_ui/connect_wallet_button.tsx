@@ -2,8 +2,8 @@ import {
   RainbowKitAccountAddressContext,
   RainbowKitModalContext,
 } from '@/components/rainbowkit/contexts/contexts';
-import Text from '@/components/text/Text';
-import WalletAddressText from '@/components/text/WalletAddressText';
+import Text from '@/components/text/text';
+import WalletAddressText from '@/components/text/wallet_address_text';
 import LogOut from '@/components/visual/icons/feather/logout';
 import Plus from '@/components/visual/icons/feather/plus';
 import { hexArrayBufferCodec } from '@/convert/codec';

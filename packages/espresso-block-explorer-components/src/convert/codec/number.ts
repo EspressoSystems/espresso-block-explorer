@@ -1,5 +1,5 @@
 import { assertType } from '@/assert/assert';
-import InvalidTypeError from '@/errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/invalid_type_error';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from './array';
 import {
   Converter,

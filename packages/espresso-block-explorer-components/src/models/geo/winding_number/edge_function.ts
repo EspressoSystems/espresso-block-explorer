@@ -1,5 +1,5 @@
 import { NumberLike } from '../../numeric/numeric';
-import LatLng from '../units/LatLng';
+import LatLng from '../units/lat_lng';
 
 /**
  * EdgeCrossing is a type that represents the possible relative positions of

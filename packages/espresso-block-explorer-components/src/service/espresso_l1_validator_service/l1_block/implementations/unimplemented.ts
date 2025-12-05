@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { L1BlockID } from '../../common/l1_block_id';
 import { L1BlockAPI } from '../l1_block_api';
 

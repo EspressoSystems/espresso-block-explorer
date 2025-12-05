@@ -1,4 +1,4 @@
-import Close from '@/components/visual/icons/Close';
+import Close from '@/components/visual/icons/close';
 import React from 'react';
 import ButtonFlat from '../elements/buttons/button_flat';
 import './close_staking_modal.css';

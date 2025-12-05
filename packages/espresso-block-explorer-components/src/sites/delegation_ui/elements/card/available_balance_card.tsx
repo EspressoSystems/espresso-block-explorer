@@ -1,5 +1,5 @@
-import MoneyText from '@/components/text/MoneyText';
-import Text from '@/components/text/Text';
+import MoneyText from '@/components/text/money_text';
+import Text from '@/components/text/text';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { ESPBalanceContext } from '@/sites/delegation_ui/contexts/esp_balance_context';
 import React from 'react';

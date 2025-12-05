@@ -1,6 +1,6 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import BaseError from '@/errors/BaseError';
-import InvalidTypeError from '@/errors/InvalidTypeError';
+import BaseError from '@/errors/base_error';
+import InvalidTypeError from '@/errors/invalid_type_error';
 
 const MAX: number = 10_000;
 const MIN: number = 0;

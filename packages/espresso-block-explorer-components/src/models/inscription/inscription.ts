@@ -16,7 +16,7 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import InvalidTypeError from '@/errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/invalid_type_error';
 import WalletAddress, {
   walletAddressCodec,
 } from '../wallet_address/wallet_address';

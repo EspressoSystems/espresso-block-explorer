@@ -1,4 +1,4 @@
-import WalletAddressText from '@/components/text/WalletAddressText';
+import WalletAddressText from '@/components/text/wallet_address_text';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import React from 'react';

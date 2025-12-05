@@ -1,6 +1,6 @@
-import { DataContext } from '@/components/contexts/DataProvider';
+import { DataContext } from '@/components/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
-import { AsyncSnapshot } from '@/components/data/async_data/AsyncSnapshot';
+import { AsyncSnapshot } from '@/components/data/async_data/async_snapshot';
 import { neverPromise } from '@/functional/functional_async';
 import React from 'react';
 import { ESPTokenContractContext } from './esp_token_contract_context';

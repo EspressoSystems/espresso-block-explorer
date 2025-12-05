@@ -1,6 +1,6 @@
-import { CorruptBase64InputError } from '@/errors/CorruptBase64InputError';
-import { IncorrectBase64PaddingError } from '@/errors/IncorrectBase64PaddingError';
-import { InvalidBase64AlphabetLengthError } from '@/errors/InvalidBase64LengthError';
+import { CorruptBase64InputError } from '@/errors/corrupt_base64_input_error';
+import { IncorrectBase64PaddingError } from '@/errors/incorrect_base64_padding_error';
+import { InvalidBase64AlphabetLengthError } from '@/errors/invalid_base64_length_error';
 import { uint8ArrayToArrayBufferCodec } from '../codec/uint8_array';
 
 const textEncoder = new TextEncoder();

@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { describe, expect, it } from 'vitest';
 import { L1BlockAPI } from '../../l1_block_api';
 import { UnimplementedL1BlockAPI } from '../unimplemented';

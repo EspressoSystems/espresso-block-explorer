@@ -1,10 +1,10 @@
 import React from 'react';
-import { AffineTransform } from './AffineTransform';
-import { DataStatistics } from './DataStatistics';
+import { AffineTransform } from './affine_transform';
+import { DataStatistics } from './data_statistics';
 import {
   HistogramDefaultLabel,
   HistogramLabelProps,
-} from './HistogramDefaultLabel';
+} from './histogram_default_label';
 
 export const HistogramGraphWidth = React.createContext<number>(417);
 export const HistogramGraphHeight = React.createContext<number>(152);

@@ -1,7 +1,7 @@
 import { assert } from '@/assert/assert';
 import { breakpoint } from '@/assert/debugger';
 import { CurrentNumberFormatters } from '@/components/contexts';
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { filterIterable, foldRIterable } from '@/functional/functional';
 import { ESP } from '@/models/block_explorer/currency_code';
 import MonetaryValue from '@/models/block_explorer/monetary_value';

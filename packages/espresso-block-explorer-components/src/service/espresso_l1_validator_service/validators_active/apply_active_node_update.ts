@@ -1,5 +1,5 @@
 import { breakpoint } from '@/assert/debugger';
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { foldRIterable, mapIterable } from '@/functional/functional';
 import { ActiveNodeSetEntry } from '../common/active_node_set_entry';
 import { EpochAndBlock } from '../common/epoch_and_block';

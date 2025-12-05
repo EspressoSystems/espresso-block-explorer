@@ -1,4 +1,4 @@
-import { createCompleter } from '@/data_structures/async/completer/Completer';
+import { createCompleter } from '@/data_structures/async/completer/completer';
 import { WebSocketCloseHandler } from './websocket_close_handler';
 import { WebSocketErrorHandler } from './websocket_error_handler';
 import { WebSocketInterface } from './websocket_interface';

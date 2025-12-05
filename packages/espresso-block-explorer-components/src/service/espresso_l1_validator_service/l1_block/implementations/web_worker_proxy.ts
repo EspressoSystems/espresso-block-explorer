@@ -1,5 +1,5 @@
 import { bigintCodec } from '@/convert/codec';
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { L1BlockID, l1BlockIDJSONCodec } from '../../common/l1_block_id';
 import { WebWorkerRequest } from '../../web_worker_types';
 import { L1BlockAPI } from '../l1_block_api';

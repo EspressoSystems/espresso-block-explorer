@@ -1,4 +1,4 @@
-import { CurrentNumberFormatters } from '@/components/contexts/NumberFormattersProvider';
+import { CurrentNumberFormatters } from '@/components/contexts/number_formatters_provider';
 import { PercentageText } from '@/components/text';
 import { RatioRational } from '@/service/espresso_l1_validator_service/common/ratio';
 import React from 'react';

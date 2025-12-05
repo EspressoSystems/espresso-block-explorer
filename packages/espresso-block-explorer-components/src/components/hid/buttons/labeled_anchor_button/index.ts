@@ -1,1 +1,1 @@
-export { default as LabeledAnchorButton } from './LabeledAnchorButton';
+export { default as LabeledAnchorButton } from './labeled_anchor_button';

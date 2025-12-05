@@ -1,19 +1,19 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import ArrowLeft from '../ArrowLeft';
-import ArrowRight from '../ArrowRight';
-import CheckCircleFilled from '../CheckCircleFilled';
-import ChevronDown from '../ChevronDown';
-import ChevronUp from '../ChevronUp';
-import DiscordIcon from '../DiscordIcon';
-import EspressoLogo from '../EspressoLogo';
-import EspressoLogoAndTitle from '../EspressoLogoAndTitle';
-import InfoCircle from '../InfoCircle';
-import MediumIcon from '../MediumIcon';
-import Menu from '../Menu';
-import SearchGlass from '../SearchGlass';
-import TwitterIcon from '../TwitterIcon';
+import ArrowLeft from '../arrow_left';
+import ArrowRight from '../arrow_right';
+import CheckCircleFilled from '../check_circle_filled';
+import ChevronDown from '../chevron_down';
+import ChevronUp from '../chevron_up';
+import DiscordIcon from '../discord_icon';
+import EspressoLogo from '../espresso_logo';
+import EspressoLogoAndTitle from '../espresso_logo_and_title';
+import InfoCircle from '../info_circle';
+import MediumIcon from '../medium_icon';
+import Menu from '../menu';
+import SearchGlass from '../search_glass';
+import TwitterIcon from '../twitter_icon';
 
 describe('Icons Test', () => {
   describe('ArrowLeft', () => {

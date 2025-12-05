@@ -1,13 +1,13 @@
-import { Now } from '@/components/contexts/NowProvider';
+import { Now } from '@/components/contexts/now_provider';
 import {
   hexArrayBufferCodec,
   stdBase64ArrayBufferCodec,
 } from '@/convert/codec/array_buffer';
 import { Converter } from '@/convert/codec/convert';
-import Text from '@/text/Text';
+import Text from '@/text/text';
 import React from 'react';
-import LabeledButton from '../../hid/buttons/labeled_button/LabeledButton';
-import HexDump from '../hex_dump/HexDump';
+import LabeledButton from '../../hid/buttons/labeled_button/labeled_button';
+import HexDump from '../hex_dump/hex_dump';
 import './transaction_detail_content.css';
 
 /**

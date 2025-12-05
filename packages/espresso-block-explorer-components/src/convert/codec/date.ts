@@ -1,5 +1,5 @@
 import { assertInstanceOf } from '@/assert/assert';
-import InvalidTypeError from '@/errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/invalid_type_error';
 import { Converter, TypeCheckingCodec, isString } from './convert';
 
 /**

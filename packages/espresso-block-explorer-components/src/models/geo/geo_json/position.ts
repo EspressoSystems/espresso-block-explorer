@@ -5,11 +5,11 @@ import {
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec';
-import InvalidTypeError from '@/errors/InvalidTypeError';
-import Degrees from '../units/Degrees';
-import LatLng from '../units/LatLng';
-import Latitude from '../units/Latitude';
-import Longitude from '../units/Longitude';
+import InvalidTypeError from '@/errors/invalid_type_error';
+import Degrees from '../units/degrees';
+import LatLng from '../units/lat_lng';
+import Latitude from '../units/latitude';
+import Longitude from '../units/longitude';
 
 /**
  * So it turns out that in the GeoJSON specification, their minimum unit of

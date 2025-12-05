@@ -1,6 +1,6 @@
 import { Sink } from '@/async/sink/sink';
-import { Completer } from '@/data_structures/async/completer/Completer';
-import WebSocketError from '@/errors/WebSocketError';
+import { Completer } from '@/data_structures/async/completer/completer';
+import WebSocketError from '@/errors/web_socket_error';
 import { WebSocketInterface } from './websocket_interface';
 
 export class WebSocketErrorHandler implements EventListenerObject {

@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import InvalidTypeError from '@/errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/invalid_type_error';
 import WebSocketCommand from './web_socket_command';
 
 export const kWebSocketCommandCloseType = 'Close' as const;

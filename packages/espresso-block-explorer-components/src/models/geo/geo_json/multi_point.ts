@@ -6,7 +6,7 @@ import {
   assertTypeCode,
 } from '@/convert/codec/convert';
 import { Degrees } from '../units';
-import LatLng from '../units/LatLng';
+import LatLng from '../units/lat_lng';
 import GeoJSONBoundingBox, {
   generateBoundingBoxFromBoundingBoxes,
 } from './bounding_box';

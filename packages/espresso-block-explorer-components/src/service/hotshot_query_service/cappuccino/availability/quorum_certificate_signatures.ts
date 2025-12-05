@@ -2,11 +2,11 @@ import { assertInstanceOf } from '@/assert/assert';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
 import { isUnknownArray } from '@/convert/codec/unknown';
-import InvalidTypeError from '@/errors/InvalidTypeError';
+import InvalidTypeError from '@/errors/invalid_type_error';
 import {
   TaggedBase64,
   taggedBase64Codec,
-} from '@/models/espresso/tagged_base64/TaggedBase64';
+} from '@/models/espresso/tagged_base64/tagged_base64';
 import { CappuccinoAPIBitVec, cappuccinoAPIBitVecCodec } from './bit_vec';
 
 /**

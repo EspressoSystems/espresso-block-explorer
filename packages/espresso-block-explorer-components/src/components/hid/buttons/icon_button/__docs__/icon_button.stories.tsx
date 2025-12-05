@@ -1,0 +1,73 @@
+import ArrowLeft from '@/visual/icons/arrow_left';
+import ArrowRight from '@/visual/icons/arrow_right';
+import CheckCircleFilled from '@/visual/icons/check_circle_filled';
+import ChevronDown from '@/visual/icons/chevron_down';
+import ChevronUp from '@/visual/icons/chevron_up';
+import DiscordIcon from '@/visual/icons/discord_icon';
+import InfoCircle from '@/visual/icons/info_circle';
+import MediumIcon from '@/visual/icons/medium_icon';
+import Menu from '@/visual/icons/menu';
+import SearchGlass from '@/visual/icons/search_glass';
+import TwitterIcon from '@/visual/icons/twitter_icon';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import React from 'react';
+import IconButtonComp from '../icon_button';
+
+interface ExampleProps {
+  title: string;
+  disabled: boolean;
+  onClick?: () => void;
+  children: React.ReactNode | React.ReactNode[];
+}
+
+const Example: React.FC<ExampleProps> = ({
+  title,
+  disabled,
+  children,
+  ...props
+}) => (
+  <IconButtonComp title={title} disabled={disabled} {...props}>
+    {children}
+  </IconButtonComp>
+);
+
+const Children = {
+  'Arrow Left': React.createElement(ArrowLeft),
+  'Arrow Right': React.createElement(ArrowRight),
+  'Check Circle': React.createElement(CheckCircleFilled),
+  'Chevron Down': React.createElement(ChevronDown),
+  'Chevron Up': React.createElement(ChevronUp),
+  'Discord Icon': React.createElement(DiscordIcon),
+  'Info Circle': React.createElement(InfoCircle),
+  'Medium Icon': React.createElement(MediumIcon),
+  Menu: React.createElement(Menu),
+  'Search Glass': React.createElement(SearchGlass),
+  'Twitter Icon': React.createElement(TwitterIcon),
+};
+
+const meta: Meta<typeof Example> = {
+  title: 'Components/HID/buttons/Icon Button',
+  component: Example,
+};
+
+export default meta;
+type Story = StoryObj<typeof Example>;
+
+export const IconButton: Story = {
+  args: {
+    title: 'Back',
+    disabled: false,
+    children: React.createElement(ArrowLeft),
+  },
+
+  argTypes: {
+    children: {
+      options: Object.keys(Children),
+      mapping: Children,
+      control: {
+        type: 'select',
+        labels: Object.keys(Children),
+      },
+    },
+  },
+};

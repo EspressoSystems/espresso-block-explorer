@@ -1,6 +1,6 @@
-import AsyncIterableResolver from '@/components/data/async_data/AsyncIterableResolver';
-import { AsyncSnapshot } from '@/components/data/async_data/AsyncSnapshot';
-import { AsyncSnapshotContext } from '@/components/data/async_data/AsyncSnapshotContext';
+import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
+import { AsyncSnapshot } from '@/components/data/async_data/async_snapshot';
+import { AsyncSnapshotContext } from '@/components/data/async_data/async_snapshot_context';
 import { ESPTokenContract } from '@/contracts/esp_token/esp_token_interface';
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { StakeTableContract } from '@/contracts/stake_table/stake_table_interface';

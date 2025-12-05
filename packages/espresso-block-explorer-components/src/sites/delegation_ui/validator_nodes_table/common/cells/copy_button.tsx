@@ -1,6 +1,6 @@
 import CheckCircle from '@/components/visual/icons/feather/check_circle';
 import Copy from '@/components/visual/icons/feather/copy';
-import { Now } from '@/contexts/NowProvider';
+import { Now } from '@/contexts/now_provider';
 import { addClassToClassName } from '@/higher_order';
 import React from 'react';
 import './copy_button.css';

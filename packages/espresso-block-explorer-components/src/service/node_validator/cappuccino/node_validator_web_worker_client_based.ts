@@ -1,5 +1,5 @@
 import { Channel, createBufferedChannel } from '@/async/channel';
-import WebSocketError from '@/errors/WebSocketError';
+import WebSocketError from '@/errors/web_socket_error';
 import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
 import {
   registerWebWorkerProxyRequestCodec,

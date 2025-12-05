@@ -1,4 +1,4 @@
-import { DataContext } from '@/components/contexts/DataProvider';
+import { DataContext } from '@/components/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
 import { neverPromise } from '@/functional/functional_async';
 import { L1MethodsContext } from '@/sites/delegation_ui/contexts/l1_methods_context';

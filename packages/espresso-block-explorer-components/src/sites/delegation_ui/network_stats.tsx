@@ -1,4 +1,4 @@
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 import { CurrentlyStaked } from './currently_staked';
 import { EpochEndsIn } from './epoch_ends_in';
 import { EstimatedAPR } from './estimated_apr';

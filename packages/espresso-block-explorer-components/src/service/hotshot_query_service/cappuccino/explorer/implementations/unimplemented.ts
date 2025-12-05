@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer_api';
 import { CappuccinoExplorerGetBlockDetailResponse } from '../get_block_detail_response';
 import { CappuccinoExplorerGetBlockSummariesResponse } from '../get_block_summaries_response';

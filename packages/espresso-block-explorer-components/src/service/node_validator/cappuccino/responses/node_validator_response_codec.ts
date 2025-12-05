@@ -3,7 +3,7 @@ import {
   TypeCheckingCodec,
   isRecordWithKeys,
 } from '@/convert/codec/convert';
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import {
   CappuccinoBlocksSnapshot,
   cappuccinoBlocksSnapshotCodec,

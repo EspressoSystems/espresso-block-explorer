@@ -1,5 +1,5 @@
-import InvalidTypeError from '@/errors/InvalidTypeError';
-import UnimplementedError from '@/errors/UnimplementedError';
+import InvalidTypeError from '@/errors/invalid_type_error';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { BufferedDataView } from '../data_view/buffered_data_view';
 import { Deserializer } from '../serialization/deserializer';
 

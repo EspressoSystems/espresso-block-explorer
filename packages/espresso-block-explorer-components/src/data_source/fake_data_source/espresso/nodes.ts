@@ -9,7 +9,7 @@
 //
 
 import { filterIterable, lastIterable } from '@/functional/functional';
-import { TaggedBase64 } from '@/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { networkTypes } from '../network_types';
 import { nodeTypes } from '../node_types';
 import { operatingSystems } from '../operating_systems';

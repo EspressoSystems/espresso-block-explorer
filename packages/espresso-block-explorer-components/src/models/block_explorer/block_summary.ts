@@ -1,4 +1,4 @@
-import { AsyncRetriever } from '@/async/AsyncRetriever';
+import { AsyncRetriever } from '@/async/async_retriever';
 import { BlockDetailEntry } from './block_detail';
 
 export type BlockSummaryEntry = Pick<

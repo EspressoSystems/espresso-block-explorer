@@ -1,5 +1,5 @@
-import PercentageText from '@/components/text/PercentageText';
-import Text from '@/components/text/Text';
+import PercentageText from '@/components/text/percentage_text';
+import Text from '@/components/text/text';
 import { RatioRational } from '@/service/espresso_l1_validator_service/common/ratio';
 import { ConsensusMapContext } from '@/sites/delegation_ui/contexts/consensus_map_context';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';

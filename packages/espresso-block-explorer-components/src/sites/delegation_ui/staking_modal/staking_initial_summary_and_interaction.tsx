@@ -1,8 +1,8 @@
 import { CurrentNumberFormatters } from '@/components/contexts';
 import { addClassToClassName } from '@/components/higher_order';
 import { ESPInput } from '@/components/input/esp/esp_input';
-import MoneyText from '@/components/text/MoneyText';
-import Text from '@/components/text/Text';
+import MoneyText from '@/components/text/money_text';
+import Text from '@/components/text/text';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ESPBalanceContext } from '../contexts/esp_balance_context';

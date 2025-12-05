@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { ActiveValidators } from '../active_validators';
 import { CappuccinoHotShotQueryServiceNodeAPI } from '../node_api';
 import { StakeTable } from '../stake_table';

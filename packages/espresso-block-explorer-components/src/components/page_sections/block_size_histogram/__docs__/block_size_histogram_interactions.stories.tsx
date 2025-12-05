@@ -2,8 +2,8 @@ import { DataContext } from '@/components/contexts';
 import { iota } from '@/functional/functional';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { BlockSizeHistogram } from '../BlockSizeHistogram';
-import { BlockSizeHistogramData } from '../BlockSizeHistogramDataLoader';
+import { BlockSizeHistogram } from '../block_size_histogram';
+import { BlockSizeHistogramData } from '../block_size_histogram_data_loader';
 import {
   interactionHoverOverIthBar,
   interactionUnhoverAll,

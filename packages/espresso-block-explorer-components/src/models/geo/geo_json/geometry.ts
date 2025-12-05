@@ -8,8 +8,8 @@ import {
   assertRecordWithKeys,
   isString,
 } from '@/convert/codec';
-import InvalidTypeError from '@/errors/InvalidTypeError';
-import NoCodecFoundError from '@/errors/NoCodecFoundError';
+import InvalidTypeError from '@/errors/invalid_type_error';
+import NoCodecFoundError from '@/errors/no_codec_found_error';
 import GeoJSONBoundingBox from './bounding_box';
 
 /**

@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 
 /**

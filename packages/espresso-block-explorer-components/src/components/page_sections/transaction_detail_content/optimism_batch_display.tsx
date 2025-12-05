@@ -1,10 +1,10 @@
 import { CopyHex, DateTimeText, MoneyText } from '@/components/text';
-import CopyWalletAddress from '@/components/text/CopyWalletAddress';
-import WalletAddressText from '@/components/text/WalletAddressText';
+import CopyWalletAddress from '@/components/text/copy_wallet_address';
+import WalletAddressText from '@/components/text/wallet_address_text';
 import { uint8ArrayToArrayBufferCodec } from '@/convert/codec';
 import { createBufferedDataView, Endianess } from '@/convert/data_view';
 import { createRLPDeserializer } from '@/convert/rlp';
-import TableLabeledValue from '@/layout/table_labeled_value/TableLabeledValue';
+import TableLabeledValue from '@/layout/table_labeled_value/table_labeled_value';
 import { decodeEthHeader, EthHeader } from '@/service/ethereum/header';
 import {
   decodeEthTransaction,
@@ -18,11 +18,11 @@ import {
   decodeOptimismSingularBatch,
   OptimismSingularBatch,
 } from '@/service/optimism/singular_batch';
-import HexText from '@/text/HexText';
-import NumberText from '@/text/NumberText';
-import Text from '@/text/Text';
+import HexText from '@/text/hex_text';
+import NumberText from '@/text/number_text';
+import Text from '@/text/text';
 import React from 'react';
-import { TransactionDetailContext } from './TransactionDetailLoader';
+import { TransactionDetailContext } from './transaction_detail_loader';
 import { HexDumpAndCopyButtons } from './copy_as';
 import {
   EthHeaderContext,

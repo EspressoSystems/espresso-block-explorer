@@ -1,4 +1,4 @@
-import { AsyncRetriever } from '@/async/AsyncRetriever';
+import { AsyncRetriever } from '@/async/async_retriever';
 import { TransactionDetailEntry } from './transaction_detail';
 
 export enum TransactionSummaryColumn {

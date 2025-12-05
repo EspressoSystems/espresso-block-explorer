@@ -1,8 +1,8 @@
-import { DataContext } from '@/components/contexts/DataProvider';
-import PromiseResolver from '@/components/data/async_data/PromiseResolver';
+import { DataContext } from '@/components/contexts/data_provider';
+import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
-import Text from '@/components/text/Text';
-import WalletAddressText from '@/components/text/WalletAddressText';
+import Text from '@/components/text/text';
+import WalletAddressText from '@/components/text/wallet_address_text';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { neverPromise } from '@/functional/functional_async';
 import WalletAddress from '@/models/wallet_address/wallet_address';

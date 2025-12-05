@@ -1,4 +1,4 @@
-import { DataContext } from '@/components/contexts/DataProvider';
+import { DataContext } from '@/components/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
 import { neverPromise } from '@/functional/functional_async';
 import { StakeTable } from '@/service/hotshot_query_service/cappuccino/node/stake_table';

@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/UnimplementedError';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { ActiveNodeSetSnapshot } from '../active_node_set_snapshot';
 import { ActiveNodeSetUpdate } from '../active_node_set_update';
 import { ValidatorsActiveAPI } from '../validators_active_api';

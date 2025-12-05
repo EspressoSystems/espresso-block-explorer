@@ -1,4 +1,4 @@
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 
 export const NoticeArea: React.FC = () => {
   return (

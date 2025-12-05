@@ -1,9 +1,9 @@
-import { Now } from '@/components/contexts/NowProvider';
+import { Now } from '@/components/contexts/now_provider';
 import {
   RainbowKitAccountAddressContext,
   RainbowKitModalContext,
 } from '@/components/rainbowkit';
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 import { CurrentDelegationsContext } from '@/sites/delegation_ui/contexts/current_delegations_context';
 import { ModalContext } from '@/sites/delegation_ui/contexts/modal_context';
 import { PendingExitsContext } from '@/sites/delegation_ui/contexts/pending_exits_context';

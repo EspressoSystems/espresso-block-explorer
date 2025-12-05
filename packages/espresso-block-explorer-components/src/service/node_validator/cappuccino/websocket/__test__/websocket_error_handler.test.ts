@@ -1,6 +1,6 @@
 import { createBufferedChannel, createChannelToSink } from '@/async/channel';
 import { createCompleter } from '@/data_structures/async';
-import WebSocketError from '@/errors/WebSocketError';
+import WebSocketError from '@/errors/web_socket_error';
 import { describe, it } from 'vitest';
 import { WebSocketErrorHandler } from '../websocket_error_handler';
 import { MockWebSocket } from './mock_web_socket.test';

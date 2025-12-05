@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import LatLng from '../../units/LatLng';
-import Latitude from '../../units/Latitude';
-import Longitude from '../../units/Longitude';
+import LatLng from '../../units/lat_lng';
+import Latitude from '../../units/latitude';
+import Longitude from '../../units/longitude';
 import { EdgeCrossing, createEdgeFunction } from '../edge_function';
 
 describe('Edge Function', () => {

@@ -1,1 +1,1 @@
-export * from './Completer';
+export * from './completer';

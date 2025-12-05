@@ -1,1 +1,1 @@
-export { default as IconAnchorButton } from './IconAnchorButton';
+export { default as IconAnchorButton } from './icon_anchor_button';

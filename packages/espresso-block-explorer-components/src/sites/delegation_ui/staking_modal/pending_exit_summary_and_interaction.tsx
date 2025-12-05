@@ -1,5 +1,5 @@
-import MoneyText from '@/components/text/MoneyText';
-import Text from '@/components/text/Text';
+import MoneyText from '@/components/text/money_text';
+import Text from '@/components/text/text';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';

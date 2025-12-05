@@ -1,8 +1,8 @@
-import { DataContext } from '@/components/contexts/DataProvider';
+import { DataContext } from '@/components/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
-import { AsyncState } from '@/components/data/async_data/AsyncSnapshot';
+import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
-import Text from '@/components/text/Text';
+import Text from '@/components/text/text';
 import { neverPromise } from '@/functional/functional_async';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';

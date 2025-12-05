@@ -10,8 +10,8 @@ import {
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
-import Degrees from '@/models/geo/units/Degrees';
-import LatLng, { nullableLatLngDegreesCodec } from '@/models/geo/units/LatLng';
+import Degrees from '@/models/geo/units/degrees';
+import LatLng, { nullableLatLngDegreesCodec } from '@/models/geo/units/lat_lng';
 
 /**
  * CappuccinoLocationDetails represents the location details of a Cappuccino

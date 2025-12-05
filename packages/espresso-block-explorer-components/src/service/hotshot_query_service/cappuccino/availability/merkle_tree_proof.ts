@@ -9,11 +9,11 @@ import {
   isString,
   isUnknown,
 } from '@/convert/codec/convert';
-import InvalidInputError from '@/errors/InvalidInputError';
+import InvalidInputError from '@/errors/invalid_input_error';
 import {
   TaggedBase64,
   taggedBase64Codec,
-} from '@/models/espresso/tagged_base64/TaggedBase64';
+} from '@/models/espresso/tagged_base64/tagged_base64';
 
 /**
  * CappuccinoAPIMerkleTreeProof represents a proof in the Merkle Tree.
