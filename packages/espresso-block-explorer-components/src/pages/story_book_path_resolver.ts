@@ -43,7 +43,7 @@ export class StoryBookPathResolver implements PathResolver {
   }
 
   private stringForParams(params: URLSearchParams): string {
-    return `/?${params.toString()}`;
+    return `./?${params.toString()}`;
   }
 
   explorer(): string {
