@@ -1,4 +1,4 @@
-import { AsyncSnapshot } from '../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot';
+import { AsyncSnapshot } from '../../../../../../../../../../../src/components/data/async_data/async_snapshot';
 import { default as React } from 'react';
 /**
  * TotalSupplyContext provides a React Context

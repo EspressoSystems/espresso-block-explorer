@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/tagged_base64';
 import { CappuccinoBuilderSignature } from './builder_signature';
 import { CappuccinoFeeInfo } from './fee_info';
 import { CappuccinoL1Finalized } from './l1_finalized';

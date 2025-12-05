@@ -1,5 +1,5 @@
-import { default as DensityIndependentPoint } from '../units/DensityIndependentPoint';
-import { default as LatLng } from '../units/LatLng';
+import { default as DensityIndependentPoint } from '../units/density_independent_point';
+import { default as LatLng } from '../units/lat_lng';
 export declare const hitMap: boolean[];
 /**
  * As a convenience, we also provide the coordinates that are hits only,

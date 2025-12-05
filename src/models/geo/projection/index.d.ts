@@ -1,5 +1,5 @@
-export { default as ChainProjection } from './ChainProjection';
-export { default as CoordinateSpaceProjection } from './CoordinateSpaceProjection';
-export { default as DegreesRadiansProjection, degreesRadiansProjection, } from './DegreesRadiansProjection';
-export type { GeodesicProjection } from './GeodesicProjection';
-export { default as MercatorProjection, mercatorProjection, } from './MercatorProjection';
+export { default as ChainProjection } from './chain_projection';
+export { default as CoordinateSpaceProjection } from './coordinate_space_projection';
+export { default as DegreesRadiansProjection, degreesRadiansProjection, } from './degrees_radians_projection';
+export type { GeodesicProjection } from './geodesic_projection';
+export { default as MercatorProjection, mercatorProjection, } from './mercator_projection';

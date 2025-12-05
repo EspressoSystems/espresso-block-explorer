@@ -1,2 +1,2 @@
-export * from './RollUpsSummaryDataTable';
-export * from './RollUpsSummaryLoader';
+export * from './roll_ups_summary_data_table';
+export * from './roll_ups_summary_loader';

@@ -1,1 +1,1 @@
-export * from './CDNStatus';
+export * from './cdn_status';

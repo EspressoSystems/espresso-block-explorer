@@ -1,0 +1,16 @@
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
+import { default as BaseError } from './base_error';
+/**
+ * CompleterAlreadyCompletedError is an error that is thrown when a completer
+ * has already been completed, and is attempted to be completed again.
+ */
+export declare class CompleterAlreadyCompletedError extends BaseError {
+    constructor(message?: string);
+    get code(): string;
+}
+declare class CompleterAlreadyCompletedErrorCodec extends TypeCheckingCodec<CompleterAlreadyCompletedError> {
+    readonly encoder: Converter<CompleterAlreadyCompletedError, unknown>;
+    readonly decoder: Converter<unknown, CompleterAlreadyCompletedError>;
+}
+export declare const completerAlreadyCompletedErrorCodec: CompleterAlreadyCompletedErrorCodec;
+export {};

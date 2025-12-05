@@ -1,4 +1,4 @@
-import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso/tagged_base64/tagged_base64';
 import { PseudoRandomNumberGenerator } from '../prng';
 export type GeneratedNodeIdentityInformation = {
     pubkey: TaggedBase64;

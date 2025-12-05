@@ -1,5 +1,5 @@
 import { NumberLike } from '../../numeric/numeric';
-import { default as LatLng } from '../units/LatLng';
+import { default as LatLng } from '../units/lat_lng';
 import { EdgeFunction } from './edge_function';
 import { WindingNumber } from './winding_number';
 /**

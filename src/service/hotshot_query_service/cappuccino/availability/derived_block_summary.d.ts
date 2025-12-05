@@ -1,6 +1,6 @@
 import { ArrayCodec } from '../../../../../../../../../../../../src/convert/codec/array';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/tagged_base64';
 import { CappuccinoAPIHeader } from './block_header';
 /**
  * CappuccinoDerivedBlockSummary represents a block summary in that is derived

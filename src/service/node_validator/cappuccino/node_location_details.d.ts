@@ -1,7 +1,7 @@
 import { NullCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
-import { default as Degrees } from '../../../../../../../../../../../src/models/geo/units/Degrees';
-import { default as LatLng } from '../../../../../../../../../../../src/models/geo/units/LatLng';
+import { default as Degrees } from '../../../../../../../../../../../src/models/geo/units/degrees';
+import { default as LatLng } from '../../../../../../../../../../../src/models/geo/units/lat_lng';
 /**
  * CappuccinoLocationDetails represents the location details of a Cappuccino
  * node.  It contains details that represents an Alpha-2 ISO3166 country code

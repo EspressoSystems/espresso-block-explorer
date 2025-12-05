@@ -1,1 +1,1 @@
-export * from './ExplorerSummaryLoader';
+export * from './explorer_summary_loader';

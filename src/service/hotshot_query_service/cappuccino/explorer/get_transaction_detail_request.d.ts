@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/tagged_base64';
 export declare abstract class CappuccinoExplorerGetTransactionDetailRequest {
     static heightAndOffset(height: number, offset: number): CappuccinoExplorerGetTransactionDetailRequestHeightAndOffset;
     static hash(hash: TaggedBase64): CappuccinoExplorerGetTransactionDetailRequestHash;

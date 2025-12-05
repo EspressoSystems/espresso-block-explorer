@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec';
-import { EspressoError } from '../../../../../../../../../../src/errors/EspressoError';
+import { EspressoError } from '../../../../../../../../../../src/errors/espresso_error';
 import { ErrorResponse } from './error_response';
 import { default as WebSocketStatus } from './web_socket/status/web_socket_status';
 import { WebSocketResponse } from './web_socket/web_socket_response';

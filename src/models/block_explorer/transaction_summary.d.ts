@@ -1,4 +1,4 @@
-import { AsyncRetriever } from '../../../../../../../../../../src/async/AsyncRetriever';
+import { AsyncRetriever } from '../../../../../../../../../../src/async/async_retriever';
 import { TransactionDetailEntry } from './transaction_detail';
 export declare enum TransactionSummaryColumn {
     hash = "hash",

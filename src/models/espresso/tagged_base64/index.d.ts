@@ -1,1 +1,1 @@
-export * from './TaggedBase64';
+export * from './tagged_base64';

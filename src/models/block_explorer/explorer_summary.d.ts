@@ -1,4 +1,4 @@
-import { AsyncRetriever } from '../../../../../../../../../../src/async/AsyncRetriever';
+import { AsyncRetriever } from '../../../../../../../../../../src/async/async_retriever';
 import { BlockDetailEntry } from './block_detail';
 import { BlockSummaryEntry } from './block_summary';
 import { TransactionSummaryEntry } from './transaction_summary';

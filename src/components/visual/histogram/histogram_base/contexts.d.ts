@@ -1,7 +1,7 @@
 import { default as React } from 'react';
-import { AffineTransform } from './AffineTransform';
-import { DataStatistics } from './DataStatistics';
-import { HistogramLabelProps } from './HistogramDefaultLabel';
+import { AffineTransform } from './affine_transform';
+import { DataStatistics } from './data_statistics';
+import { HistogramLabelProps } from './histogram_default_label';
 export declare const HistogramGraphWidth: React.Context<number>;
 export declare const HistogramGraphHeight: React.Context<number>;
 export declare const HistogramPlotWidth: React.Context<number>;

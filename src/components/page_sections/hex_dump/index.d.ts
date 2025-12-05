@@ -1,1 +1,1 @@
-export { default as HexDump } from './HexDump';
+export { default as HexDump } from './hex_dump';

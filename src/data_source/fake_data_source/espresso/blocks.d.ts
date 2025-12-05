@@ -1,5 +1,5 @@
 import { default as MonetaryValue } from '../../../../../../../../../../../src/models/block_explorer/monetary_value';
-import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso/tagged_base64/tagged_base64';
 import { PseudoRandomNumberGenerator } from '../prng';
 /**
  * createGenesisBlock will create the genesis block for the blockchain.  This

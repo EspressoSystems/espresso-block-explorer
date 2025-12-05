@@ -1,1 +1,1 @@
-export { default as CloseNavDrawerButton } from './CloseNavDrawerButton';
+export { default as CloseNavDrawerButton } from './close_nav_drawer_button';

@@ -1,4 +1,4 @@
-import { AsyncSnapshot } from '../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot';
+import { AsyncSnapshot } from '../../../../../../../../../../../../src/components/data/async_data/async_snapshot';
 import { Undelegation } from '../../../../contracts/stake_table/stake_table_interface';
 import { NodeSetEntry } from '../../../../../../../../../../../../src/service/espresso_l1_validator_service/common/node_set_entry';
 import { ValidatorSelectionEnum } from '../../contexts/validator_selection_context';
@@ -38,63 +38,63 @@ export declare const DefaultMeta: {
         readonly lifetimeRewardsClaimed: "0";
         readonly undelegation: Undelegation;
         readonly undelegationAsyncSnapshot: {
-            get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+            get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/async_snapshot').AsyncState;
             get data(): unknown;
             get error(): undefined | unknown;
             get hasData(): boolean;
             get hasError(): boolean;
             toJSON(): {
-                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/async_snapshot').AsyncState;
             };
         };
         readonly approvalAsyncSnapshot: {
-            get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+            get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/async_snapshot').AsyncState;
             get data(): unknown;
             get error(): undefined | unknown;
             get hasData(): boolean;
             get hasError(): boolean;
             toJSON(): {
-                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/async_snapshot').AsyncState;
             };
         };
         readonly delegationAsyncSnapshot: {
-            get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+            get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/async_snapshot').AsyncState;
             get data(): unknown;
             get error(): undefined | unknown;
             get hasData(): boolean;
             get hasError(): boolean;
             toJSON(): {
-                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/async_snapshot').AsyncState;
             };
         };
         readonly claimWithDrawalAsyncSnapshot: {
-            get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+            get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/async_snapshot').AsyncState;
             get data(): unknown;
             get error(): undefined | unknown;
             get hasData(): boolean;
             get hasError(): boolean;
             toJSON(): {
-                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/async_snapshot').AsyncState;
             };
         };
         readonly claimExitAsyncSnapshot: {
-            get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+            get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/async_snapshot').AsyncState;
             get data(): unknown;
             get error(): undefined | unknown;
             get hasData(): boolean;
             get hasError(): boolean;
             toJSON(): {
-                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/async_snapshot').AsyncState;
             };
         };
         readonly claimRewardsAsyncSnapshot: {
-            get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+            get asyncState(): import('../../../../../../../../../../../../src/components/data/async_data/async_snapshot').AsyncState;
             get data(): unknown;
             get error(): undefined | unknown;
             get hasData(): boolean;
             get hasError(): boolean;
             toJSON(): {
-                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot').AsyncState;
+                asyncState: import('../../../../../../../../../../../../src/components/data/async_data/async_snapshot').AsyncState;
             };
         };
     };

@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/tagged_base64';
 import { CappuccinoAPIBQuorumCertificateData } from './quorum_certificate_data';
 import { CappuccinoAPIQuorumCertificateSignatures } from './quorum_certificate_signatures';
 /**

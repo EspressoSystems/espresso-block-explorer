@@ -1,1 +1,1 @@
-export { default as OpenNavDrawerButton } from './OpenNavDrawerButton';
+export { default as OpenNavDrawerButton } from './open_nav_drawer_button';

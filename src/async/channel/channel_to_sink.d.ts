@@ -1,5 +1,5 @@
 import { Sink } from '../sink/sink';
-import { Channel } from './Channel';
+import { Channel } from './channel';
 /**
  * createChannelToSink creates a Sink that uses a Channel to send data.
  */

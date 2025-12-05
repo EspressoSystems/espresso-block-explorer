@@ -1,6 +1,6 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { NullCodec } from '../../../../../../../../../../../../src/convert/codec/null';
-import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/TaggedBase64';
+import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/tagged_base64';
 import { CappuccinoAPIBitVec } from './bit_vec';
 /**
  * CappuccinoAPIQuorumCertificateSignatures represents the signatures of a

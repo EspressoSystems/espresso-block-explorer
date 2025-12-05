@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
-import { EspressoError } from '../../../../../../../../../../src/errors/EspressoError';
+import { EspressoError } from '../../../../../../../../../../src/errors/espresso_error';
 import { WebWorkerProxyResponse } from './web_worker_proxy_response';
 export declare const kErrorResponseType: "Error";
 /**

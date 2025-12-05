@@ -1,0 +1,1 @@
+import{a as e}from"./typography-CaQwexFI.js";/* empty css                */const i=e("h2");try{heading2.displayName="heading2",heading2.__docgenInfo={description:"Heading2 represents a standard h2 with the appropriate text styles.",displayName:"heading2",props:{className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}}}}}catch{}export{i as H};

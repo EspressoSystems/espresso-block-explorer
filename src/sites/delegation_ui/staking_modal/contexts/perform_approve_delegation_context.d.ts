@@ -1,4 +1,4 @@
-import { AsyncSnapshot } from '../../../../../../../../../../../../src/components/data/async_data/AsyncSnapshot';
+import { AsyncSnapshot } from '../../../../../../../../../../../../src/components/data/async_data/async_snapshot';
 import { ESPTokenContract } from '../../../../contracts/esp_token/esp_token_interface';
 import { L1Methods } from '../../../../contracts/l1/l1_interface';
 import { StakeTableContract } from '../../../../contracts/stake_table/stake_table_interface';

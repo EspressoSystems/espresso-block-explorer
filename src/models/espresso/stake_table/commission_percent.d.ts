@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
-import { default as BaseError } from '../../../../../../../../../../../src/errors/BaseError';
+import { default as BaseError } from '../../../../../../../../../../../src/errors/base_error';
 export default class PercentageOutOfRangeError extends BaseError {
     value: number;
     constructor(value: number, message?: string);

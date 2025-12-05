@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
-import { EspressoError } from '../../../../../../../../../../src/errors/EspressoError';
+import { EspressoError } from '../../../../../../../../../../src/errors/espresso_error';
 export type RequestID = number;
 export declare class WebWorkerRequest<API extends string = string, Method extends string = string, Param = unknown> {
     requestID: RequestID;

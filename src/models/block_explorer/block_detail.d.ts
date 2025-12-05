@@ -1,5 +1,5 @@
-import { AsyncRetriever } from '../../../../../../../../../../src/async/AsyncRetriever';
-import { TaggedBase64 } from '../espresso/tagged_base64/TaggedBase64';
+import { AsyncRetriever } from '../../../../../../../../../../src/async/async_retriever';
+import { TaggedBase64 } from '../espresso/tagged_base64/tagged_base64';
 import { default as MonetaryValue } from './monetary_value';
 export interface BlockDetailEntry {
     readonly hash: TaggedBase64;

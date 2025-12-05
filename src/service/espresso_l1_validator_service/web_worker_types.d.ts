@@ -1,5 +1,5 @@
 import { Codec, Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
-import { EspressoError } from '../../../../../../../../../../src/errors/EspressoError';
+import { EspressoError } from '../../../../../../../../../../src/errors/espresso_error';
 /**
  * RequestID is a unique identifier for a request sent to a Web Worker.
  */

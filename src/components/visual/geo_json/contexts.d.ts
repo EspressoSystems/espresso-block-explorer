@@ -1,8 +1,8 @@
-import { GeodesicProjection } from '../../../../../../../../../../../src/models/geo/projection/GeodesicProjection';
-import { default as Degrees } from '../../../../../../../../../../../src/models/geo/units/Degrees';
-import { default as DensityIndependentPoint } from '../../../../../../../../../../../src/models/geo/units/DensityIndependentPoint';
-import { default as LatLng } from '../../../../../../../../../../../src/models/geo/units/LatLng';
-import { default as Radians } from '../../../../../../../../../../../src/models/geo/units/Radians';
+import { GeodesicProjection } from '../../../../../../../../../../../src/models/geo/projection/geodesic_projection';
+import { default as Degrees } from '../../../../../../../../../../../src/models/geo/units/degrees';
+import { default as DensityIndependentPoint } from '../../../../../../../../../../../src/models/geo/units/density_independent_point';
+import { default as LatLng } from '../../../../../../../../../../../src/models/geo/units/lat_lng';
+import { default as Radians } from '../../../../../../../../../../../src/models/geo/units/radians';
 import { NumberLike } from '../../../../../../../../../../../src/models/numeric/numeric';
 import { default as React } from 'react';
 /**
