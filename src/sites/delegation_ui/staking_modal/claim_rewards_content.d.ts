@@ -4,3 +4,4 @@ import { default as React } from 'react';
  * for claiming rewards in the staking modal.
  */
 export declare const ClaimRewardsContent: React.FC;
+export declare const ClaimRewardsModalContent: React.FC;
