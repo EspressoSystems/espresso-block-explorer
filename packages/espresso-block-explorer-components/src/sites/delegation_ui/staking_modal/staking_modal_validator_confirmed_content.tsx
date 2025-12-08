@@ -22,10 +22,14 @@ export const ValidatorConfirmedContent: React.FC = () => {
   return (
     <ProvideStakingAmountContexts>
       <ProvideCurrentStakingInformation>
-        <ValidatorConfirmedSpecificContent />
+        <ValidatorConfirmedModalContent />
       </ProvideCurrentStakingInformation>
     </ProvideStakingAmountContexts>
   );
+};
+
+export const ValidatorConfirmedModalContent: React.FC = () => {
+  return <ValidatorConfirmedSpecificContent />;
 };
 
 const ValidatorConfirmedSpecificContent: React.FC = () => {

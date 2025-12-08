@@ -24,7 +24,7 @@ import {
 import { WalletSnapshotContext } from '@/sites/delegation_ui/contexts/wallet_snapshot_context';
 import { FakeDataMockOverrides } from '@/sites/delegation_ui/mock/fake_data';
 import React from 'react';
-import { ClaimRewardsContent } from '../claim_rewards_content';
+import { ClaimRewardsModalContent } from '../claim_rewards_content';
 import { CurrentAllowanceToStakeTableContext } from '../contexts/current_allowance_context';
 import { CurrentPendingUndelegationFromValidatorContext } from '../contexts/current_pending_undelegation_from_validator_context';
 import { CurrentStakeToValidatorContext } from '../contexts/current_stake_to_validator_context';
@@ -38,8 +38,8 @@ import { UndelegateAsyncSnapshotContext } from '../contexts/perform_undelgation_
 import { PerformWriteTransactionState } from '../contexts/perform_write_states';
 import { StakingAmountContext } from '../contexts/staking_amount_context';
 import { ProvideStakingHistory } from '../contexts/staking_modal_history_context';
-import { ValidatorConfirmedContent } from '../staking_modal_validator_confirmed_content';
-import { WithdrawClaimContent } from '../withdraw_claim_content';
+import { ValidatorConfirmedModalContent } from '../staking_modal_validator_confirmed_content';
+import { WithDrawClaimModalContent } from '../withdraw_claim_content';
 import {
   activeValidatorSet,
   fullValidatorSet,
@@ -67,13 +67,14 @@ export interface ValidatorConfirmedExampleProps {
 const Content: React.FC = () => {
   const selectedValidator = React.useContext(ValidatorSelectionContext);
   if (selectedValidator instanceof ClaimRewards) {
-    return <ClaimRewardsContent />;
-  }
-  if (selectedValidator instanceof ValidatorConfirmedUndelegateWithdraw) {
-    return <WithdrawClaimContent />;
+    return <ClaimRewardsModalContent />;
   }
 
-  return <ValidatorConfirmedContent />;
+  if (selectedValidator instanceof ValidatorConfirmedUndelegateWithdraw) {
+    return <WithDrawClaimModalContent />;
+  }
+
+  return <ValidatorConfirmedModalContent />;
 };
 
 export const ValidatorConfirmedExample: React.FC<

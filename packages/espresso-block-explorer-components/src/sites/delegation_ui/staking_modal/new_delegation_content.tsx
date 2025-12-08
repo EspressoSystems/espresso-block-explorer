@@ -30,6 +30,18 @@ import { StakingModalTitle } from './staking_modal_title';
 import { StakingOverviewArea } from './staking_overview_area';
 
 export const NewDelegationContent: React.FC = () => {
+  return (
+    <ProvideCurrentAllowanceToStakeTable>
+      <ProvideCurrentCurrentEpochActiveValidators>
+        <ProvideEpochCurrentStakeToValidator>
+          <NewDelegationModalContent />
+        </ProvideEpochCurrentStakeToValidator>
+      </ProvideCurrentCurrentEpochActiveValidators>
+    </ProvideCurrentAllowanceToStakeTable>
+  );
+};
+
+export const NewDelegationModalContent: React.FC = () => {
   const confirmedValidator = React.useContext(ConfirmedValidatorContext);
 
   return (
@@ -49,18 +61,12 @@ export const NewDelegationContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <ProvideCurrentAllowanceToStakeTable>
-          <ProvideCurrentCurrentEpochActiveValidators>
-            <ProvideEpochCurrentStakeToValidator>
-              <ProvideDelegateContractGasEstimate>
-                <StakingInitialSummaryAndInteraction />
-                <StakingOverviewArea />
-                <StakingActionsArea />
-                <StakingCompletionArea />
-              </ProvideDelegateContractGasEstimate>
-            </ProvideEpochCurrentStakeToValidator>
-          </ProvideCurrentCurrentEpochActiveValidators>
-        </ProvideCurrentAllowanceToStakeTable>
+        <ProvideDelegateContractGasEstimate>
+          <StakingInitialSummaryAndInteraction />
+          <StakingOverviewArea />
+          <StakingActionsArea />
+          <StakingCompletionArea />
+        </ProvideDelegateContractGasEstimate>
       </StakingContent>
     </>
   );
