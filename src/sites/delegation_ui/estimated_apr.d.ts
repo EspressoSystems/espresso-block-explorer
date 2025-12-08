@@ -1,3 +1,4 @@
+import { default as React } from 'react';
 /**
  * EstimatedAPRCard displays the estimated annual percentage rate (APR).
  * The APR is currently hardcoded to 3.5%.

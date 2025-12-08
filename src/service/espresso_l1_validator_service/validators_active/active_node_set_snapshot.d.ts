@@ -1,6 +1,7 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec';
 import { ActiveNodeSetEntry } from '../common/active_node_set_entry';
 import { EpochAndBlock } from '../common/epoch_and_block';
+import { Ratio } from '../common/ratio';
 /**
  * ActiveNodeSetSnapshot represents a snapshot of the active Node
  * set at a specific Espresso block.
@@ -9,12 +10,13 @@ import { EpochAndBlock } from '../common/epoch_and_block';
  * in the Espresso L1 Validator Service API documentation.
  * https://www.notion.so/espressosys/Delegation-UI-Service-Specification-2942431b68e980968c28cc5099a4e8f2?source=copy_link#2962431b68e980418520dfbb5433ee3a
  * Defined in rust here:
- * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L43-L49
+ * https://github.com/EspressoSystems/staking-ui-service/blob/1118a4c6a953c5270e3bd001d281dc2a8b032a27/src/types/global.rs#L45-L56
  */
 export declare class ActiveNodeSetSnapshot {
     readonly espressoBlock: EpochAndBlock;
+    readonly apr: Ratio;
     readonly nodes: ActiveNodeSetEntry[];
-    constructor(espressoBlock: EpochAndBlock, nodes: ActiveNodeSetEntry[]);
+    constructor(espressoBlock: EpochAndBlock, apr: Ratio, nodes: ActiveNodeSetEntry[]);
     toJSON(): unknown;
 }
 /**
