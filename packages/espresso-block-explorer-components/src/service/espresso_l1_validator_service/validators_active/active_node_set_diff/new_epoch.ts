@@ -38,7 +38,7 @@ class CurrentEpochJSONDecoder implements Converter<unknown, NewEpoch> {
   convert(input: unknown): NewEpoch {
     assertRecordWithKeys(input, 'nodes', 'apr');
     return new NewEpoch(
-      hexArrayBufferArrayCodec.decode(input),
+      hexArrayBufferArrayCodec.decode(input.nodes),
       ratioCodec.decode(input.apr),
     );
   }
