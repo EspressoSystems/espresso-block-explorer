@@ -11,6 +11,7 @@ import {
   EpochAndBlock,
   epochAndBlockNumberJSONCodec,
 } from '../common/epoch_and_block';
+import { Ratio, ratioCodec } from '../common/ratio';
 
 /**
  * ActiveNodeSetSnapshot represents a snapshot of the active Node
@@ -20,11 +21,12 @@ import {
  * in the Espresso L1 Validator Service API documentation.
  * https://www.notion.so/espressosys/Delegation-UI-Service-Specification-2942431b68e980968c28cc5099a4e8f2?source=copy_link#2962431b68e980418520dfbb5433ee3a
  * Defined in rust here:
- * https://github.com/EspressoSystems/staking-ui-service/blob/8eb960a9a02d7806fddedfd44090608015d3b6b3/src/types/global.rs#L43-L49
+ * https://github.com/EspressoSystems/staking-ui-service/blob/1118a4c6a953c5270e3bd001d281dc2a8b032a27/src/types/global.rs#L45-L56
  */
 export class ActiveNodeSetSnapshot {
   constructor(
     public readonly espressoBlock: EpochAndBlock,
+    public readonly apr: Ratio,
     public readonly nodes: ActiveNodeSetEntry[],
   ) {
     Object.freeze(this);
@@ -44,10 +46,11 @@ class ActiveNodeSetSnapshotJSONDecoder implements Converter<
   ActiveNodeSetSnapshot
 > {
   convert(input: unknown): ActiveNodeSetSnapshot {
-    assertRecordWithKeys(input, 'espresso_block', 'nodes');
+    assertRecordWithKeys(input, 'espresso_block', 'apr', 'nodes');
 
     return new ActiveNodeSetSnapshot(
       epochAndBlockNumberJSONCodec.decode(input.espresso_block),
+      ratioCodec.decode(input.apr),
       activeNodeSetEntryArrayJSONCodec.decode(input.nodes),
     );
   }
@@ -64,6 +67,7 @@ class ActiveNodeSetSnapshotJSONEncoder implements Converter<
   convert(input: ActiveNodeSetSnapshot): unknown {
     return {
       espresso_block: epochAndBlockNumberJSONCodec.encode(input.espressoBlock),
+      apr: ratioCodec.encode(input.apr),
       nodes: activeNodeSetEntryArrayJSONCodec.encode(input.nodes),
     };
   }

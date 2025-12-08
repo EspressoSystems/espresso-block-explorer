@@ -36,6 +36,7 @@ describe('FetchBasedValidatorsActiveAPI', () => {
       const epoch = EpochAndBlock.determineEpoch(block, 3000n);
       const response = new ActiveNodeSetSnapshot(
         new EpochAndBlock(epoch, block, new Date()),
+        Ratio.floatingPoint(prng.nextFloat()),
         [
           new ActiveNodeSetEntry(
             prng.fillBytes(32),
@@ -88,6 +89,7 @@ describe('FetchBasedValidatorsActiveAPI', () => {
       const epoch = EpochAndBlock.determineEpoch(block, 3000n);
       const response = new ActiveNodeSetSnapshot(
         new EpochAndBlock(epoch, block, new Date()),
+        Ratio.floatingPoint(prng.nextFloat()),
         [
           new ActiveNodeSetEntry(
             prng.fillBytes(32),
@@ -150,12 +152,15 @@ describe('FetchBasedValidatorsActiveAPI', () => {
               Array.from(new BigUint64Array(prng.fillBytes(8))),
             ),
           ),
-          new NewEpoch([
-            prng.fillBytes(32),
-            prng.fillBytes(32),
-            prng.fillBytes(32),
-            prng.fillBytes(32),
-          ]),
+          new NewEpoch(
+            [
+              prng.fillBytes(32),
+              prng.fillBytes(32),
+              prng.fillBytes(32),
+              prng.fillBytes(32),
+            ],
+            Ratio.floatingPoint(prng.nextFloat()),
+          ),
         ],
       );
       const fetcher: typeof fetch = async (input) => {

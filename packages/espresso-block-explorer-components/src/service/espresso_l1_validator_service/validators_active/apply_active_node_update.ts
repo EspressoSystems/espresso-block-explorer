@@ -20,7 +20,11 @@ export function applyActiveNodesUpdate(
     update.diff,
   );
 
-  return new ActiveNodeSetSnapshot(update.espressoBlock, nextSnapshot.nodes);
+  return new ActiveNodeSetSnapshot(
+    update.espressoBlock,
+    snapshot.apr,
+    nextSnapshot.nodes,
+  );
 }
 
 function applyActiveNodeDiff(
@@ -187,7 +191,11 @@ function applyNewBlock(
     nextNodes[index] = nextEntry;
   }
 
-  return new ActiveNodeSetSnapshot(snapshot.espressoBlock, nextNodes);
+  return new ActiveNodeSetSnapshot(
+    snapshot.espressoBlock,
+    snapshot.apr,
+    nextNodes,
+  );
 }
 
 function applyNewEpoch(
@@ -196,9 +204,10 @@ function applyNewEpoch(
 ): ActiveNodeSetSnapshot {
   return new ActiveNodeSetSnapshot(
     snapshot.espressoBlock,
+    update.apr,
     Array.from(
       mapIterable(
-        update.entries,
+        update.nodes,
         (address) => new ActiveNodeSetEntry(address, null, null),
       ),
     ),

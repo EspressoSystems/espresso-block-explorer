@@ -25,6 +25,11 @@ export class FakeDataValidatorsActiveAPI implements ValidatorsActiveAPI {
       .sort((a, b) => Number(b.stake - a.stake))
       .slice(0, 100);
 
+    const totalStake = nodeList.reduce((acc, node) => acc + node.stake, 0n);
+    const totalSupply = 1_234_567_8900n * 10n ** 18n;
+    const stakedPct = Number(totalStake) / Number(totalSupply);
+    const apr = 0.03 / Math.sqrt(2 * Math.max(stakedPct, 0.01));
+
     const prng = new PseudoRandomNumberGenerator(block.genTime);
 
     return new ActiveNodeSetSnapshot(
@@ -33,6 +38,7 @@ export class FakeDataValidatorsActiveAPI implements ValidatorsActiveAPI {
         BigInt(block.height),
         new Date(block.time),
       ),
+      Ratio.floatingPoint(apr),
       Array.from(
         mapIterable(
           nodeListSorted,
