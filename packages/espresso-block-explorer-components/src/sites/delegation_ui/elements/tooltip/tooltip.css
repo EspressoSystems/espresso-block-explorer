@@ -1,0 +1,76 @@
+:root {
+  --btooltip--background-color: #333;
+  --btooltip--font-color: #fff;
+  --btooltip--border-radius: 8px;
+}
+
+.btooltip {
+  position: absolute;
+  padding: 8px;
+  text-align: start;
+  visibility: hidden;
+  text-transform: none;
+  white-space: wrap;
+
+  max-width: min(calc(100vw - 50px), 300px);
+  min-width: 300px;
+  bottom: 2.5em;
+  left: 0.75em;
+  transform: translateX(-50%);
+
+  background-color: var(--btooltip--background-color);
+  color: var(--btooltip--font-color);
+  border-radius: var(--btooltip--border-radius);
+  --text--background-color: var(--btooltip--background-color);
+  --text--color: var(--btooltip--font-color);
+}
+
+.btooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5em;
+  height: 1em;
+  width: 1em;
+  left: 50%;
+  background-color: var(--btooltip--background-color);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.btooltip p {
+  margin: 0;
+}
+
+.sm-end .btooltip {
+  transform: translateX(-90%);
+}
+
+.sm-end .btooltip::after {
+  left: 90%;
+}
+
+/* Small */
+@media screen and (min-width: 640px) {
+  .sm-end .btooltip {
+    transform: translateX(-50%);
+  }
+
+  .sm-end .btooltip::after {
+    left: 50%;
+  }
+}
+
+/* Medium */
+@media screen and (min-width: 768px) {
+}
+
+/* Large */
+@media screen and (min-width: 1024px) {
+}
+
+/* Extra Large */
+@media screen and (min-width: 1280px) {
+}
+
+/* 2 Extra Large */
+@media screen and (min-width: 1536px) {
+}

@@ -1,6 +1,5 @@
 import Text from '@/components/text/text';
-import ChevronDown from '@/components/visual/icons/feather/chevron_down';
-import VerticalScroll from '@/components/visual/icons/feather/vertical-scroll';
+import { MoreInfoElement } from '@/sites/delegation_ui/elements/tooltip/more_info';
 
 /**
  * HotShotConsensusHeadCell is the header cell for the HotShot Consensus
@@ -10,9 +9,9 @@ export const HotShotConsensusHeadCell: React.FC = () => {
   return (
     <>
       <Text text="Consensus" />
-      &nbsp;
-      <VerticalScroll />
-      <ChevronDown />
+      <MoreInfoElement>
+        <Text text="Espresso validators vote on each block and come to an agreement on the correct state of the blockchain in order to finalize it." />
+      </MoreInfoElement>
     </>
   );
 };

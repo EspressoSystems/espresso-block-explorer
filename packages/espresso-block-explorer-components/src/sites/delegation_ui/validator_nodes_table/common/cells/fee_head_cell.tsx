@@ -1,6 +1,5 @@
 import Text from '@/components/text/text';
-import ChevronDown from '@/components/visual/icons/feather/chevron_down';
-import VerticalScroll from '@/components/visual/icons/feather/vertical-scroll';
+import { MoreInfoElement } from '@/sites/delegation_ui/elements/tooltip/more_info';
 import React from 'react';
 
 /**
@@ -10,9 +9,9 @@ export const FeeHeadCell: React.FC = () => {
   return (
     <>
       <Text text="Commission Rate" />
-      &nbsp;
-      <VerticalScroll />
-      <ChevronDown />
+      <MoreInfoElement>
+        <Text text="This is a fee charged by the validator for their services.  It is deducted from your staking rewards and paid to the validator." />
+      </MoreInfoElement>
     </>
   );
 };

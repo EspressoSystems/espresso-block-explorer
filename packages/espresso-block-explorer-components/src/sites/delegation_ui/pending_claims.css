@@ -50,17 +50,16 @@
     margin-inline: 0;
   }
 
-  .pending-claims table.all-validators-table tbody tr td:nth-child(9)::before {
+  .pending-claims table.all-validators-table tbody tr td:nth-child(8)::before {
     content: '';
   }
 
-  .pending-claims table.all-validators-table tbody tr td:nth-child(9) {
+  .pending-claims table.all-validators-table tbody tr td:nth-child(8) {
     grid-column-start: 1;
     grid-column-end: 3;
-    border-radius: 0 0 8px 8px;
   }
 
-  .pending-claims table.all-validators-table tbody tr td:nth-child(9) .bbtn {
+  .pending-claims table.all-validators-table tbody tr td:nth-child(8) .bbtn {
     height: 100%;
   }
 }

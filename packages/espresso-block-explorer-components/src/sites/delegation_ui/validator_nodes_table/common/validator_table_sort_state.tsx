@@ -42,18 +42,33 @@ export interface TableControls<T> {
   sortBy(newSortBy: T): void;
 }
 
+/**
+ * TableSortControlsContext provides the controls to modify the table
+ * sorting state for a given sort by column.
+ */
 export const TableSortControlsContext = React.createContext<
   TableControls<unknown>
 >({
   sortBy: () => {},
 });
 
+/**
+ * TableSortStateContext provides the current sorting state of the table.
+ */
 export const TableSortStateContext = React.createContext<
   TableSortState<CellType>
 >({
   sortBy: CellType.totalStake,
   sortDirection: SortDirection.desc,
 });
+
+/**
+ * TableSortByContext provides the current column type that is being
+ * sorted.
+ */
+export const TableColumnSortByContext = React.createContext<CellType | null>(
+  null,
+);
 
 /**
  * useValidatorTableSortState is a custom hook that manages the sorting state

@@ -3,7 +3,6 @@ import { HotShotConsensusCell } from '../common/cells/hot_shot_consensus_cell';
 import { MissedSlotsCell } from '../common/cells/missed_slot_cell';
 import { NodeNameCell } from '../common/cells/node_name_cell';
 import { ParticipationRateCell } from '../common/cells/participation_rate_cell';
-import { RankCell } from '../common/cells/rank_cell';
 import { TotalStakeCell } from '../common/cells/total_stake_cell';
 import { GridCell } from './grid_cell';
 
@@ -14,9 +13,6 @@ import { GridCell } from './grid_cell';
 export const NodeValidatorGridRow: React.FC = () => {
   return (
     <>
-      <GridCell>
-        <RankCell />
-      </GridCell>
       <GridCell>
         <NodeNameCell />
       </GridCell>
