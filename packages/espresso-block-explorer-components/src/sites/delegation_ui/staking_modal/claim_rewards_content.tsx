@@ -38,22 +38,28 @@ import { StakingModalTitle } from './staking_modal_title';
  */
 export const ClaimRewardsContent: React.FC = () => {
   return (
+    <ProvideClaimRewardsAsyncIterableContext>
+      <ClaimRewardsModalContent />
+    </ProvideClaimRewardsAsyncIterableContext>
+  );
+};
+
+export const ClaimRewardsModalContent: React.FC = () => {
+  return (
     <ProvideEstimatedFeesPerGas>
-      <ProvideClaimRewardsAsyncIterableContext>
-        <StakingHeader>
-          <StakingModalTitle>
-            <Text text="Claim All" />
-          </StakingModalTitle>
-          <CloseStakingModalButton />
-        </StakingHeader>
-        <StakingContent>
-          <ProvideContractGasEstimate>
-            <ClaimableRewardsSummaryAndInteraction />
-            <ClaimableRewardsOverviewArea />
-            <ClaimRewardsActionsArea />
-          </ProvideContractGasEstimate>
-        </StakingContent>
-      </ProvideClaimRewardsAsyncIterableContext>
+      <StakingHeader>
+        <StakingModalTitle>
+          <Text text="Claim All" />
+        </StakingModalTitle>
+        <CloseStakingModalButton />
+      </StakingHeader>
+      <StakingContent>
+        <ProvideContractGasEstimate>
+          <ClaimableRewardsSummaryAndInteraction />
+          <ClaimableRewardsOverviewArea />
+          <ClaimRewardsActionsArea />
+        </ProvideContractGasEstimate>
+      </StakingContent>
     </ProvideEstimatedFeesPerGas>
   );
 };

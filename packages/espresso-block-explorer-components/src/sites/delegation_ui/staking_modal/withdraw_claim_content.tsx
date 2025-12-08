@@ -36,6 +36,14 @@ import { StakingHeader } from './staking_header';
 import { StakingModalTitle } from './staking_modal_title';
 
 export const WithdrawClaimContent: React.FC = () => {
+  return (
+    <ProvideCurrentPendingUndelegationToValidator>
+      <WithDrawClaimModalContent />
+    </ProvideCurrentPendingUndelegationToValidator>
+  );
+};
+
+export const WithDrawClaimModalContent: React.FC = () => {
   const confirmedValidator = React.useContext(ConfirmedValidatorContext);
 
   return (
@@ -53,13 +61,11 @@ export const WithdrawClaimContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <ProvideCurrentPendingUndelegationToValidator>
-          <ProvideContractGasEstimate>
-            <PendingClaimSummaryAndInteraction />
-            <PendingClaimOverviewArea />
-            <WithdrawClaimActionsArea />
-          </ProvideContractGasEstimate>
-        </ProvideCurrentPendingUndelegationToValidator>
+        <ProvideContractGasEstimate>
+          <PendingClaimSummaryAndInteraction />
+          <PendingClaimOverviewArea />
+          <WithdrawClaimActionsArea />
+        </ProvideContractGasEstimate>
       </StakingContent>
     </>
   );
