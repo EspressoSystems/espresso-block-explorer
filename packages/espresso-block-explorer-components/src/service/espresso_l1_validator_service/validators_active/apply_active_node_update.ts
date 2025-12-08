@@ -22,7 +22,7 @@ export function applyActiveNodesUpdate(
 
   return new ActiveNodeSetSnapshot(
     update.espressoBlock,
-    snapshot.apr,
+    nextSnapshot.apr,
     nextSnapshot.nodes,
   );
 }
