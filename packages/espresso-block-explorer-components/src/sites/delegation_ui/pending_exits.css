@@ -55,16 +55,16 @@
     margin-inline: 0;
   }
 
-  .pending-exits table.all-validators-table tbody tr td:nth-child(9)::before {
+  .pending-exits table.all-validators-table tbody tr td:nth-child(8)::before {
     content: '';
   }
 
-  .pending-exits table.all-validators-table tbody tr td:nth-child(9) {
+  .pending-exits table.all-validators-table tbody tr td:nth-child(8) {
     grid-column-start: 1;
     grid-column-end: 3;
   }
 
-  .pending-exits table.all-validators-table tbody tr td:nth-child(9) .bbtn {
+  .pending-exits table.all-validators-table tbody tr td:nth-child(8) .bbtn {
     height: 100%;
   }
 }

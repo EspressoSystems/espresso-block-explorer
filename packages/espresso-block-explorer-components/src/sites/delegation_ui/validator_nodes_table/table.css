@@ -46,20 +46,24 @@ table.all-validators-table {
     );
 }
 
-table.all-validators-table th:nth-child(1) {
+table.all-validators-table thead th:nth-child(1) {
   border-radius: 8px 0 0 0;
 }
 
-table.all-validators-table th:nth-last-child(1) {
+table.all-validators-table thead th:nth-last-child(1) {
   border-radius: 0 8px 0 0;
 }
 
-table.all-validators-table tr:nth-last-child(1) td:nth-child(1) {
+table.all-validators-table tr:nth-last-child(1) td:nth-child(2) {
   border-radius: 0 0 0 8px;
 }
 
 table.all-validators-table tr:nth-last-child(1) td:nth-last-child(1) {
   border-radius: 0 0 8px 0;
+}
+
+table.all-validators-table tbody tr:nth-last-child(1) {
+  border-radius: 0 8px 8px 0;
 }
 
 table.all-validators-table {
@@ -73,15 +77,7 @@ table.all-validators-table th svg.icon:nth-child(1) {
   height: 12px;
 }
 
-table.all-validators-table th[data-sort-column] svg.icon:nth-child(1) {
-  display: none;
-}
-
-table.all-validators-table th:not([data-sort-column]) svg.icon:nth-child(2) {
-  display: none;
-}
-
-table.all-validators-table th svg.icon:nth-child(2) {
+table.all-validators-table th svg.icon {
   vertical-align: text-top;
   width: 16px;
   height: 16px;
@@ -89,7 +85,7 @@ table.all-validators-table th svg.icon:nth-child(2) {
   will-change: transform;
 }
 
-table.all-validators-table th[data-sort-column='1'] svg.icon:nth-child(2) {
+table.all-validators-table th.sortable[data-sort-column='1'] > div > svg.icon {
   transform: rotate(180deg);
 }
 
@@ -99,11 +95,23 @@ table.all-validators-table th {
   padding: 0 16px;
 }
 
+table.all-validators-table th > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+table.all-validators-table th > div .bmore-info-element {
+  width: 20px;
+  height: 20px;
+}
+
 table.all-validators-table th.sortable {
   cursor: pointer;
 }
 
 table.all-validators-table thead tr {
+  border-radius: 8px 0 0 8px;
   background: var(--validator-node-table--header--background-color);
 }
 
@@ -283,66 +291,66 @@ table.all-validators-table {
     order: 5;
   }
 
+  table.all-validators-table tbody tr td:nth-child(1) {
+    display: none;
+  }
+
   table.all-validators-table tbody tr td:nth-child(2) {
     display: none;
   }
 
-  table.all-validators-table tbody tr td:nth-child(3) {
+  table.all-validators-table tbody tr td:nth-child(7) {
     display: none;
   }
 
-  table.all-validators-table tbody tr td:nth-child(8) {
-    display: none;
-  }
-
-  table.all-validators-table tbody tr td:nth-child(4)::before {
+  table.all-validators-table tbody tr td:nth-child(3)::before {
     content: 'Total Stake';
   }
 
-  table.all-validators-table tbody tr td:nth-child(4) {
+  table.all-validators-table tbody tr td:nth-child(3) {
     order: 4;
   }
 
-  table.all-validators-table tbody tr td:nth-child(5)::before {
+  table.all-validators-table tbody tr td:nth-child(4)::before {
     content: 'Commission';
   }
 
-  table.all-validators-table tbody tr td:nth-child(5) {
+  table.all-validators-table tbody tr td:nth-child(4) {
     order: 5;
     border-inline-start: 1px solid var(--validator-node-table--border-color);
   }
 
-  table.all-validators-table tbody tr td:nth-child(6)::before {
+  table.all-validators-table tbody tr td:nth-child(5)::before {
     content: 'Missed Slots';
   }
-  table.all-validators-table tbody tr td:nth-child(6) {
+  table.all-validators-table tbody tr td:nth-child(5) {
     order: 6;
   }
 
-  table.all-validators-table tbody tr td:nth-child(7)::before {
+  table.all-validators-table tbody tr td:nth-child(6)::before {
     content: 'Participation';
   }
-  table.all-validators-table tbody tr td:nth-child(7) {
+  table.all-validators-table tbody tr td:nth-child(6) {
     order: 7;
     border-inline-start: 1px solid var(--validator-node-table--border-color);
   }
 
-  table.all-validators-table tbody tr td:nth-child(9)::before {
+  table.all-validators-table tbody tr td:nth-child(8)::before {
     content: 'Claim In';
   }
-  table.all-validators-table tbody tr td:nth-child(9) {
+  table.all-validators-table tbody tr td:nth-child(8) {
     order: 8;
     padding-block: 16px;
     border-radius: 0 0 0 8px;
   }
 
-  table.all-validators-table tbody tr td:nth-child(10) {
+  table.all-validators-table tbody tr td:nth-child(9) {
     order: 9;
     padding-block: 16px;
     border-radius: 0 0 8px 0;
   }
 
-  table.all-validators-table tbody tr td:nth-child(10) .bbtn {
+  table.all-validators-table tbody tr td:nth-child(9) .bbtn {
     height: 100%;
   }
 }

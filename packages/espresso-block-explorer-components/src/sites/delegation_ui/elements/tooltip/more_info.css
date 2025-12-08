@@ -1,0 +1,21 @@
+.bmore-info-element {
+  display: inline-block;
+  position: relative;
+}
+
+.bmore-info-element:hover .btooltip,
+.bmore-info-element[data-toggle='true'] .btooltip {
+  visibility: visible;
+}
+
+.bmore-info-element .icon {
+  opacity: 50%;
+
+  transition: opacity 0.2s ease-in-out;
+  will-change: opacity;
+}
+
+.bmore-info-element:hover .icon,
+.bmore-info-element[data-toggle='true'] .icon {
+  opacity: 100%;
+}

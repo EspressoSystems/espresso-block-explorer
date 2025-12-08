@@ -26,13 +26,9 @@ function score(
   active: undefined | null | ActiveNodeSetEntry,
 ): number;
 function score(node: NodeSetEntry): number {
+  // The rank is calculated entirely based on the amount of stake a
+  // validator has delegated to it.
   return Number(node.stake);
-  // return (
-  //   Number(node.stake) *
-  //   (1 - node.commission.valueOf()) *
-  //   (2 - (active?.leaderParticipation?.valueOf() ?? 0.0)) *
-  //   (1 + (active?.voterParticipation?.valueOf() ?? 0.0))
-  // );
 }
 
 /**

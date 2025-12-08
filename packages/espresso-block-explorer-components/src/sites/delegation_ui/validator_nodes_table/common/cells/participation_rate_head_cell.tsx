@@ -1,6 +1,5 @@
 import Text from '@/components/text/text';
-import ChevronDown from '@/components/visual/icons/feather/chevron_down';
-import VerticalScroll from '@/components/visual/icons/feather/vertical-scroll';
+import { MoreInfoElement } from '@/sites/delegation_ui/elements/tooltip/more_info';
 
 /**
  * ParticipationRateHeadCell is the header cell for the Participation Rate
@@ -10,9 +9,9 @@ export const ParticipationRateHeadCell: React.FC = () => {
   return (
     <>
       <Text text="Participation" />
-      &nbsp;
-      <VerticalScroll />
-      <ChevronDown />
+      <MoreInfoElement>
+        <Text text="The percentage of blocks a validator has voted.  Espresso requires at least 66% of stake to participate to finalize a block." />
+      </MoreInfoElement>
     </>
   );
 };

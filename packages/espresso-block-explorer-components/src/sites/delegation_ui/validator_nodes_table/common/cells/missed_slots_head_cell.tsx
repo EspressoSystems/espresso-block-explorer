@@ -1,6 +1,5 @@
 import Text from '@/components/text/text';
-import ChevronDown from '@/components/visual/icons/feather/chevron_down';
-import VerticalScroll from '@/components/visual/icons/feather/vertical-scroll';
+import { MoreInfoElement } from '@/sites/delegation_ui/elements/tooltip/more_info';
 import React from 'react';
 
 /**
@@ -11,9 +10,9 @@ export const MissedSlotsHeadCell: React.FC = () => {
   return (
     <>
       <Text text="Missed Slots" />
-      &nbsp;
-      <VerticalScroll />
-      <ChevronDown />
+      <MoreInfoElement>
+        <Text text="The amount of times a validator fails to propose a block when it's their turn (e.g. by being offline). A higher % of missed slots means the validator is not performing well." />
+      </MoreInfoElement>
     </>
   );
 };
