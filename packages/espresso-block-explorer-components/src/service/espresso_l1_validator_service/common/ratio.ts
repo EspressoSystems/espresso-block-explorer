@@ -1,3 +1,4 @@
+import { bigintCodec } from '@/convert/codec/bigint';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
 import { numberCodec } from '@/convert/codec/number';
@@ -79,6 +80,13 @@ export class RatioRational extends Ratio {
 
 class RatioEncoder implements Converter<Ratio, unknown> {
   convert(input: Ratio): unknown {
+    if (input instanceof RatioRational) {
+      return {
+        numerator: bigintCodec.encode(input.numerator),
+        denominator: bigintCodec.encode(input.denominator),
+      };
+    }
+
     return numberCodec.encode(input.ratio);
   }
 }

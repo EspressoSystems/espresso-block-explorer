@@ -16,6 +16,7 @@ describe('ActiveNodeSetSnapshot', () => {
       const epoch = EpochAndBlock.determineEpoch(block, 3000n);
       const example = new ActiveNodeSetSnapshot(
         new EpochAndBlock(epoch, block, new Date()),
+        Ratio.floatingPoint(prng.nextFloat()),
         [
           new ActiveNodeSetEntry(
             prng.fillBytes(32),

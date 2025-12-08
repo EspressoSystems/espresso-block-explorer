@@ -47,6 +47,7 @@ export const fullValidatorSet = new FullNodeSetSnapshot(
 
 export const activeValidatorSet = new ActiveNodeSetSnapshot(
   new EpochAndBlock(EpochAndBlock.determineEpoch(0n, 100n), 0n, new Date(0)),
+  Ratio.rational(50n, 100n),
   activeNodes,
 );
 

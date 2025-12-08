@@ -1,5 +1,10 @@
 import { hexArrayBufferArrayCodec } from '@/convert/codec';
-import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
+import {
+  assertRecordWithKeys,
+  Converter,
+  TypeCheckingCodec,
+} from '@/convert/codec/convert';
+import { Ratio, ratioCodec } from '../../common/ratio';
 import { ActiveNodeSetDiff } from './active_node_set_diff';
 
 /**
@@ -10,10 +15,13 @@ import { ActiveNodeSetDiff } from './active_node_set_diff';
  * in the Espresso L1 Validator Service API documentation.
  * https://www.notion.so/espressosys/Delegation-UI-Service-Specification-2942431b68e980968c28cc5099a4e8f2?source=copy_link#2962431b68e9804d9c99ea7b6a2c87ca
  * Defined in rust here:
- * https://github.com/EspressoSystems/staking-ui-service/blob/c0df4fb15586b521272087967ae4e1faf7a4994b/src/types/global.rs#L94
+ * https://github.com/EspressoSystems/staking-ui-service/blob/1118a4c6a953c5270e3bd001d281dc2a8b032a27/src/types/global.rs#L101-L107
  */
 export class NewEpoch extends ActiveNodeSetDiff {
-  constructor(public readonly entries: ArrayBuffer[]) {
+  constructor(
+    public readonly nodes: ArrayBuffer[],
+    public readonly apr: Ratio,
+  ) {
     super();
     Object.freeze(this);
   }
@@ -28,7 +36,11 @@ export class NewEpoch extends ActiveNodeSetDiff {
  */
 class CurrentEpochJSONDecoder implements Converter<unknown, NewEpoch> {
   convert(input: unknown): NewEpoch {
-    return new NewEpoch(hexArrayBufferArrayCodec.decode(input));
+    assertRecordWithKeys(input, 'nodes', 'apr');
+    return new NewEpoch(
+      hexArrayBufferArrayCodec.decode(input.nodes),
+      ratioCodec.decode(input.apr),
+    );
   }
 }
 
@@ -37,7 +49,10 @@ class CurrentEpochJSONDecoder implements Converter<unknown, NewEpoch> {
  */
 class CurrentEpochJSONEncoder implements Converter<NewEpoch, unknown> {
   convert(input: NewEpoch): unknown {
-    return hexArrayBufferArrayCodec.encode(input.entries);
+    return {
+      nodes: hexArrayBufferArrayCodec.encode(input.nodes),
+      apr: ratioCodec.encode(input.apr),
+    };
   }
 }
 

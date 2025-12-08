@@ -6,6 +6,7 @@ import {
 } from '@/service/hotshot_query_service';
 import { describe, expect, it } from 'vitest';
 import { EpochAndBlock } from '../../common/epoch_and_block';
+import { Ratio } from '../../common/ratio';
 import { ActiveNodeSetDiffNewBlock } from '../active_node_set_diff/new_block';
 import { NewEpoch } from '../active_node_set_diff/new_epoch';
 import {
@@ -32,7 +33,10 @@ describe('ActiveNodeSetUpdate', () => {
               Array.from(new BigUint64Array(prng.fillBytes(8))),
             ),
           ),
-          new NewEpoch([prng.fillBytes(32)]),
+          new NewEpoch(
+            [prng.fillBytes(32)],
+            Ratio.floatingPoint(prng.nextFloat()),
+          ),
         ],
       );
 
