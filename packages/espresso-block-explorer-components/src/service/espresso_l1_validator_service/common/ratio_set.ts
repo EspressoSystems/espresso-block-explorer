@@ -4,7 +4,7 @@ import {
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
-import { nullableURLCodec } from '@/convert/codec/url';
+import { nullableURLCodec, optionalURLCodec } from '@/convert/codec/url';
 
 /**
  * RatioSet represents a set of URLs for different device pixel ratios.
@@ -28,9 +28,9 @@ class RatioSetJSONDecoder implements Converter<unknown, RatioSet> {
     assertRecordWithKeys(input, '@1x', '@2x', '@3x');
 
     return new RatioSet(
-      nullableURLCodec.decode(input['@1x']),
-      nullableURLCodec.decode(input['@2x']),
-      nullableURLCodec.decode(input['@3x']),
+      optionalURLCodec.decode(input['@1x']) ?? null,
+      optionalURLCodec.decode(input['@2x']) ?? null,
+      optionalURLCodec.decode(input['@3x']) ?? null,
     );
   }
 }

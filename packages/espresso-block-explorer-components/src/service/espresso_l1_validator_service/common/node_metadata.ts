@@ -1,4 +1,11 @@
-import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec';
+import {
+  NullCodec,
+  NullDecoder,
+  NullEncoder,
+  OptionalCodec,
+  OptionalDecoder,
+  OptionalEncoder,
+} from '@/convert/codec';
 import {
   assertRecordWithKeys,
   Converter,
@@ -8,6 +15,7 @@ import { urlCodec } from '@/convert/codec/url';
 import {
   NodeMetadataContent,
   nullableNodeMetadataContentJSONCodec,
+  optionalNodeMetadataContentJSONCodec,
 } from './node_metadata_content';
 
 /**
@@ -25,11 +33,11 @@ export class NodeMetadata {
 
 class NodeMetadataJSONDecoder implements Converter<unknown, NodeMetadata> {
   convert(input: unknown): NodeMetadata {
-    assertRecordWithKeys(input, 'uri', 'content');
+    assertRecordWithKeys(input);
 
     return new NodeMetadata(
       urlCodec.decode(input.uri),
-      nullableNodeMetadataContentJSONCodec.decode(input.content),
+      optionalNodeMetadataContentJSONCodec.decode(input.content) ?? null,
     );
   }
 }
@@ -38,7 +46,8 @@ class NodeMetadataJSONEncoder implements Converter<NodeMetadata, unknown> {
   convert(input: NodeMetadata): unknown {
     return {
       uri: urlCodec.encode(input.uri),
-      content: nullableNodeMetadataContentJSONCodec.encode(input.content),
+      content:
+        nullableNodeMetadataContentJSONCodec.encode(input.content) ?? undefined,
     };
   }
 }
@@ -52,4 +61,8 @@ export const nodeMetadataJSONCodec = new NodeMetadataJSONCodec();
 export const nullableNodeMetadataJSONCodec = new NullCodec(
   new NullDecoder(nodeMetadataJSONCodec),
   new NullEncoder(nodeMetadataJSONCodec),
+);
+export const optionalNodeMetadataJSONCodec = new OptionalCodec(
+  new OptionalDecoder(nodeMetadataJSONCodec),
+  new OptionalEncoder(nodeMetadataJSONCodec),
 );
