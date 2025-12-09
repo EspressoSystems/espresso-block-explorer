@@ -8,6 +8,7 @@ import {
   isString,
 } from './convert';
 import { NullCodec, NullDecoder, NullEncoder } from './null';
+import { OptionalCodec, OptionalDecoder, OptionalEncoder } from './optional';
 
 export const isStringArray = isArrayMemberFunction(isString);
 
@@ -66,6 +67,10 @@ export const stringArrayCodec = new ArrayCodec(
 export const nullableStringCodec = new NullCodec(
   new NullDecoder(stringCodec),
   new NullEncoder(stringCodec),
+);
+export const optionalStringCodec = new OptionalCodec(
+  new OptionalDecoder(stringCodec),
+  new OptionalEncoder(stringCodec),
 );
 
 /**

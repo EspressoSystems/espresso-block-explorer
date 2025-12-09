@@ -1,6 +1,7 @@
 import InvalidTypeError from '@/errors/invalid_type_error';
 import { Converter, TypeCheckingCodec, isString } from './convert';
 import { NullCodec, NullDecoder, NullEncoder } from './null';
+import { OptionalCodec, OptionalDecoder, OptionalEncoder } from './optional';
 
 /**
  * URLDecoder is a Converter that converts a string to a URL.
@@ -36,4 +37,8 @@ export const urlCodec = new URLCodec();
 export const nullableURLCodec = new NullCodec(
   new NullDecoder(urlCodec),
   new NullEncoder(urlCodec),
+);
+export const optionalURLCodec = new OptionalCodec(
+  new OptionalDecoder(urlCodec),
+  new OptionalEncoder(urlCodec),
 );

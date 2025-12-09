@@ -1,15 +1,19 @@
 import {
-  nullableStringCodec,
-  nullableURLCodec,
-  NullCodec,
-  NullDecoder,
-  NullEncoder,
-} from '@/convert/codec';
-import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
+import {
+  OptionalCodec,
+  OptionalDecoder,
+  OptionalEncoder,
+} from '@/convert/codec/optional';
+import {
+  nullableStringCodec,
+  optionalStringCodec,
+} from '@/convert/codec/string';
+import { nullableURLCodec, optionalURLCodec } from '@/convert/codec/url';
 import { ImageSet, nullableImageSetJSONCodec } from './image_set';
 
 /**
@@ -33,22 +37,14 @@ class NodeMetadataContentJSONDecoder implements Converter<
   NodeMetadataContent
 > {
   convert(input: unknown): NodeMetadataContent {
-    assertRecordWithKeys(
-      input,
-      'name',
-      'description',
-      'company_name',
-      'company_website',
-      'client_version',
-      'icon',
-    );
+    assertRecordWithKeys(input);
 
     return new NodeMetadataContent(
-      nullableStringCodec.decode(input.name),
-      nullableStringCodec.decode(input.description),
-      nullableStringCodec.decode(input.company_name),
-      nullableURLCodec.decode(input.company_website),
-      nullableStringCodec.decode(input.client_version),
+      optionalStringCodec.decode(input.name) ?? null,
+      optionalStringCodec.decode(input.description) ?? null,
+      optionalStringCodec.decode(input.company_name) ?? null,
+      optionalURLCodec.decode(input.company_website) ?? null,
+      optionalStringCodec.decode(input.client_version) ?? null,
       nullableImageSetJSONCodec.decode(input.icon),
     );
   }
@@ -60,12 +56,14 @@ class NodeMetadataContentJSONEncoder implements Converter<
 > {
   convert(input: NodeMetadataContent): unknown {
     return {
-      name: nullableStringCodec.encode(input.name),
-      description: nullableStringCodec.encode(input.description),
-      company_name: nullableStringCodec.encode(input.companyName),
-      company_website: nullableURLCodec.encode(input.companyWebsite),
-      client_version: nullableStringCodec.encode(input.clientVersion),
-      icon: nullableImageSetJSONCodec.encode(input.icon),
+      name: nullableStringCodec.encode(input.name) ?? undefined,
+      description: nullableStringCodec.encode(input.description) ?? undefined,
+      company_name: nullableStringCodec.encode(input.companyName) ?? undefined,
+      company_website:
+        nullableURLCodec.encode(input.companyWebsite) ?? undefined,
+      client_version:
+        nullableStringCodec.encode(input.clientVersion) ?? undefined,
+      icon: nullableImageSetJSONCodec.encode(input.icon) ?? undefined,
     };
   }
 }
@@ -82,4 +80,8 @@ export const nodeMetadataContentJSONCodec = new NodeMetadataContentJSONCodec();
 export const nullableNodeMetadataContentJSONCodec = new NullCodec(
   new NullDecoder(nodeMetadataContentJSONCodec),
   new NullEncoder(nodeMetadataContentJSONCodec),
+);
+export const optionalNodeMetadataContentJSONCodec = new OptionalCodec(
+  new OptionalDecoder(nodeMetadataContentJSONCodec),
+  new OptionalEncoder(nodeMetadataContentJSONCodec),
 );

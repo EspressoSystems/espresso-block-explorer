@@ -7,6 +7,7 @@ import {
   isRecordWithKeys,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
 import { nullableRatioCodec, Ratio, RatioRational } from './ratio';
 
 /**
@@ -22,8 +23,8 @@ export class ActiveNodeSetEntry {
   public readonly addressText: `0x${string}`;
   constructor(
     public readonly address: ArrayBuffer,
-    public readonly voterParticipation: null | Ratio,
-    public readonly leaderParticipation: null | Ratio,
+    public readonly voterParticipation: Ratio,
+    public readonly leaderParticipation: Ratio,
   ) {
     this.addressText = hexArrayBufferCodec.encode(address);
     Object.freeze(this);
@@ -53,8 +54,8 @@ class ActiveNodeSetEntryJSONDecoder implements Converter<
     ) {
       return new ActiveNodeSetEntry(
         hexArrayBufferCodec.decode(input.address),
-        nullableRatioCodec.decode(input.voter_participation),
-        nullableRatioCodec.decode(input.leader_participation),
+        Ratio.floatingPoint(numberCodec.decode(input.voter_participation)),
+        Ratio.floatingPoint(numberCodec.decode(input.leader_participation)),
       );
     }
 
