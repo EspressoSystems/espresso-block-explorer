@@ -14,7 +14,11 @@ import {
   optionalStringCodec,
 } from '@/convert/codec/string';
 import { nullableURLCodec, optionalURLCodec } from '@/convert/codec/url';
-import { ImageSet, nullableImageSetJSONCodec } from './image_set';
+import {
+  ImageSet,
+  nullableImageSetJSONCodec,
+  optionalImageSetJSONCodec,
+} from './image_set';
 
 /**
  * NodeMetadataContent contains metadata about a node.
@@ -45,7 +49,7 @@ class NodeMetadataContentJSONDecoder implements Converter<
       optionalStringCodec.decode(input.company_name) ?? null,
       optionalURLCodec.decode(input.company_website) ?? null,
       optionalStringCodec.decode(input.client_version) ?? null,
-      nullableImageSetJSONCodec.decode(input.icon),
+      optionalImageSetJSONCodec.decode(input.icon) ?? null,
     );
   }
 }
