@@ -1,0 +1,17 @@
+.validator-image {
+  border-style: solid;
+  border-color: var(--color--brown--4);
+  border-width: 1px;
+}
+
+.validator-image.i24x24 {
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+}
+
+.validator-image.i14x14 {
+  border-radius: 1.75px;
+  width: 14px;
+  height: 14px;
+}

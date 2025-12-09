@@ -1,6 +1,8 @@
+import { ValidatorImage24x24 } from '@/sites/delegation_ui/elements/validator/validator_image';
+import { ValidatorName } from '@/sites/delegation_ui/elements/validator/validator_name';
 import React from 'react';
+import './combined_details_cell.css';
 import { HotShotConsensusCell } from './hot_shot_consensus_cell';
-import { NodeNameCell } from './node_name_cell';
 import { RankCell } from './rank_cell';
 
 /**
@@ -11,7 +13,10 @@ export const CombinedDetailsCell: React.FC = () => {
   return (
     <>
       #<RankCell />
-      <NodeNameCell />
+      <ValidatorImage24x24 />
+      <div className="validator-name-shrinkable">
+        <ValidatorName />
+      </div>
       <HotShotConsensusCell />
     </>
   );

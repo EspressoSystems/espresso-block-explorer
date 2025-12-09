@@ -17,4 +17,7 @@ dialog.staking-modal .staking-modal-header {
   box-sizing: border-box;
   justify-content: space-between;
   gap: 16px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
 }

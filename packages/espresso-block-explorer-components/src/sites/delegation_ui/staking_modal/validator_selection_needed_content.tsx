@@ -4,6 +4,7 @@ import PercentageText from '@/components/text/percentage_text';
 import Text from '@/components/text/text';
 import WalletAddressText from '@/components/text/wallet_address_text';
 import { Check } from '@/components/visual';
+import ExternalLink from '@/components/visual/icons/feather/external_link';
 import { compareArrayBuffer, filterIterable } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import WalletAddress from '@/models/wallet_address/wallet_address';
@@ -159,15 +160,17 @@ const NodeRow: React.FC = () => {
 const ValidatorSelectionDetails: React.FC = () => {
   return (
     <ProvideSelectedNode>
-      <div className="selection-details">
-        <EmptySelectionGuard>
-          <div className="node-summary-area">
-            <ValidatorDisplayArea />
-          </div>
-          <ValidatorDetailsArea />
-          <div className="flex" />
-          <ValidatorConfirmArea />
-        </EmptySelectionGuard>
+      <div className="validator-selection-split-end">
+        <div className="selection-details">
+          <EmptySelectionGuard>
+            <div className="node-summary-area">
+              <ValidatorDisplayArea />
+            </div>
+            <ValidatorDetailsArea />
+            <div className="flex" />
+            <ValidatorConfirmArea />
+          </EmptySelectionGuard>
+        </div>
       </div>
     </ProvideSelectedNode>
   );
@@ -275,11 +278,32 @@ const Address: React.FC = () => {
   );
 };
 
+interface WebsiteLinkProps {
+  href: null | URL;
+}
+
+const WebsiteLink: React.FC<WebsiteLinkProps> = ({ href }) => {
+  if (!href) {
+    return <Text text="-" />;
+  }
+
+  return (
+    <a href={href.toString()} target="_blank" rel="noopener noreferrer">
+      <Text text="Visit URL" />
+      &nbsp;
+      <ExternalLink />
+    </a>
+  );
+};
+
 const Website: React.FC = () => {
+  const validator = React.useContext(ValidatorNodeContext);
+  const website = validator.metadata?.content?.companyWebsite ?? null;
+
   return (
     <LabelValueSplit>
       <Text text="Website" />
-      <Text text="-" />
+      <WebsiteLink href={website} />
     </LabelValueSplit>
   );
 };

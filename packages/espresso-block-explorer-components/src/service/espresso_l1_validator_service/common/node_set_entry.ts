@@ -7,6 +7,7 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import { TaggedBase64, taggedBase64Codec } from '@/models/espresso';
+import { NodeMetadata, nullableNodeMetadataJSONCodec } from './node_metadata';
 import { Ratio, ratioCodec } from './ratio';
 
 /**
@@ -26,6 +27,7 @@ export class NodeSetEntry {
     public readonly stakingKey: TaggedBase64,
     public readonly stake: bigint,
     public readonly commission: Ratio,
+    public readonly metadata: null | NodeMetadata,
   ) {
     this.addressText = hexArrayBufferCodec.encode(address);
     Object.freeze(this);
@@ -48,6 +50,7 @@ class NodeSetEntryJSONDecoder implements Converter<unknown, NodeSetEntry> {
       'staking_key',
       'stake',
       'commission',
+      'metadata',
     );
 
     return new NodeSetEntry(
@@ -55,6 +58,7 @@ class NodeSetEntryJSONDecoder implements Converter<unknown, NodeSetEntry> {
       taggedBase64Codec.decode(input.staking_key),
       bigintCodec.decode(input.stake),
       ratioCodec.decode(input.commission),
+      nullableNodeMetadataJSONCodec.decode(input.metadata),
     );
   }
 }
@@ -70,6 +74,7 @@ class NodeSetEntryJSONEncoder implements Converter<NodeSetEntry, unknown> {
       staking_key: taggedBase64Codec.encode(input.stakingKey),
       stake: bigintCodec.encode(input.stake),
       commission: ratioCodec.encode(input.commission),
+      metadata: nullableNodeMetadataJSONCodec.encode(input.metadata),
     };
   }
 }

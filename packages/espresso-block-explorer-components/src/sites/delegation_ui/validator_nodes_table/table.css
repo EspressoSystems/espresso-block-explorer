@@ -176,7 +176,7 @@ table.all-validators-table {
   --button-base--default--padding-inline: 10px;
   --button-base--default--padding-block: 8px;
   --button-base--default--height: 24px;
-  --button-base--default--font-family: IBM Plex Mono, monospace;
+  --button-base--default--font-family: 'IBM Plex Mono', monospace;
   --button-base--default--border-width: 1px;
   --button-base--default--border-style: solid;
 }

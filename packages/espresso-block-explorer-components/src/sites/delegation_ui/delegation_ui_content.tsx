@@ -182,7 +182,7 @@ function applySectionFilter(
 
   const allStakes = Array.from(
     mapIterable(allValidators.nodes, (node) => node.stake),
-  ).toSorted();
+  ).toSorted((a, b) => Number(a - b));
 
   const targetStake =
     allStakes.length < 100

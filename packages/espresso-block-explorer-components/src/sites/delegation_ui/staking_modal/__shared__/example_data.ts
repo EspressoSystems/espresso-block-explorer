@@ -1,3 +1,4 @@
+import { nullableURLCodec } from '@/convert/codec/url';
 import { nodeList } from '@/data_source/fake_data_source/espresso/nodes';
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng';
 import { getStartingSeed } from '@/data_source/fake_data_source/seed';
@@ -5,6 +6,8 @@ import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/comm
 import { Delegation } from '@/service/espresso_l1_validator_service/common/delegation';
 import { EpochAndBlock } from '@/service/espresso_l1_validator_service/common/epoch_and_block';
 import { L1BlockInfo } from '@/service/espresso_l1_validator_service/common/l1_block_info';
+import { NodeMetadata } from '@/service/espresso_l1_validator_service/common/node_metadata';
+import { NodeMetadataContent } from '@/service/espresso_l1_validator_service/common/node_metadata_content';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
 import { Ratio } from '@/service/espresso_l1_validator_service/common/ratio';
@@ -20,6 +23,17 @@ const sampleNodeData = nodeList.map(
       node.pubkey,
       node.stake,
       Ratio.floatingPoint(node.commission / 10_000),
+      new NodeMetadata(
+        new URL(node.company.website),
+        new NodeMetadataContent(
+          node.name,
+          null,
+          node.company.name,
+          nullableURLCodec.decode(node.company.website),
+          'v1.0.0',
+          null,
+        ),
+      ),
     ),
 );
 
