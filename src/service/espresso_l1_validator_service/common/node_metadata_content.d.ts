@@ -1,5 +1,6 @@
-import { NullCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
+import { NullCodec } from '../../../../../../../../../../../src/convert/codec/null';
+import { OptionalCodec } from '../../../../../../../../../../../src/convert/codec/optional';
 import { ImageSet } from './image_set';
 /**
  * NodeMetadataContent contains metadata about a node.
@@ -25,4 +26,5 @@ declare class NodeMetadataContentJSONCodec extends TypeCheckingCodec<NodeMetadat
 }
 export declare const nodeMetadataContentJSONCodec: NodeMetadataContentJSONCodec;
 export declare const nullableNodeMetadataContentJSONCodec: NullCodec<NodeMetadataContent, unknown>;
+export declare const optionalNodeMetadataContentJSONCodec: OptionalCodec<NodeMetadataContent, unknown>;
 export {};

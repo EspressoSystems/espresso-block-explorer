@@ -12,10 +12,10 @@ import { Ratio } from './ratio';
  */
 export declare class ActiveNodeSetEntry {
     readonly address: ArrayBuffer;
-    readonly voterParticipation: null | Ratio;
-    readonly leaderParticipation: null | Ratio;
+    readonly voterParticipation: Ratio;
+    readonly leaderParticipation: Ratio;
     readonly addressText: `0x${string}`;
-    constructor(address: ArrayBuffer, voterParticipation: null | Ratio, leaderParticipation: null | Ratio);
+    constructor(address: ArrayBuffer, voterParticipation: Ratio, leaderParticipation: Ratio);
     toJSON(): unknown;
 }
 /**

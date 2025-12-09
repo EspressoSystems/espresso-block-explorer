@@ -1,4 +1,4 @@
-import { NullCodec } from '../../../../../../../../../../../src/convert/codec';
+import { NullCodec, OptionalCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { NodeMetadataContent } from './node_metadata_content';
 /**
@@ -22,4 +22,5 @@ declare class NodeMetadataJSONCodec extends TypeCheckingCodec<NodeMetadata, unkn
 }
 export declare const nodeMetadataJSONCodec: NodeMetadataJSONCodec;
 export declare const nullableNodeMetadataJSONCodec: NullCodec<NodeMetadata, unknown>;
+export declare const optionalNodeMetadataJSONCodec: OptionalCodec<NodeMetadata, unknown>;
 export {};

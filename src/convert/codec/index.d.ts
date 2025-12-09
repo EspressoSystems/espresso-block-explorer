@@ -8,6 +8,7 @@ export * from './eip_55';
 export * from './map';
 export * from './null';
 export * from './number';
+export * from './optional';
 export * from './string';
 export * from './uint8_array';
 export * from './undefined';

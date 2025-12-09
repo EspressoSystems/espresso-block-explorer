@@ -1,5 +1,6 @@
 import { Converter, TypeCheckingCodec } from './convert';
 import { NullCodec } from './null';
+import { OptionalCodec } from './optional';
 /**
  * URLDecoder is a Converter that converts a string to a URL.
  */
@@ -21,3 +22,4 @@ export declare class URLCodec extends TypeCheckingCodec<URL, string> {
 }
 export declare const urlCodec: URLCodec;
 export declare const nullableURLCodec: NullCodec<URL, string>;
+export declare const optionalURLCodec: OptionalCodec<URL, string>;

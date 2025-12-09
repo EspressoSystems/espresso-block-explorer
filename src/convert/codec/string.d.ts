@@ -1,6 +1,7 @@
 import { ArrayCodec } from './array';
 import { Converter, TypeCheckingCodec } from './convert';
 import { NullCodec } from './null';
+import { OptionalCodec } from './optional';
 export declare const isStringArray: (input: unknown) => input is string[];
 /**
  * StringDecoder is a Converter that converts a string to a string.
@@ -30,6 +31,7 @@ export declare class StringCodec<S extends string = string> extends TypeChecking
 export declare const stringCodec: StringCodec<string>;
 export declare const stringArrayCodec: ArrayCodec<string, string>;
 export declare const nullableStringCodec: NullCodec<string, string>;
+export declare const optionalStringCodec: OptionalCodec<string, string>;
 /**
  * preferNullOverEmptyString is a function that is used to ensure that strings
  * that have no meaningful content, and where a `null` value is allowable, will
