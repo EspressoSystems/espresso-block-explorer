@@ -1,0 +1,1 @@
+import{N as o,h as c,j as s,T as d,g as l,I as a}from"./string-DO2hqbbz.js";class t{convert(e){if(!l(e))throw new a(typeof e,"string");return new URL(e)}}class w{convert(e){return e.toString()}}class i extends d{encoder=new w;decoder=new t}const r=new i,C=new o(new c(r),new s(r));export{C as n,r as u};

@@ -2,6 +2,7 @@ import { default as WalletAddress } from '../../../../../../../../../../src/mode
 import { default as React } from 'react';
 export interface CopyWalletAddressProps {
     value: WalletAddress;
+    className?: string;
     children: React.ReactNode | React.ReactNode[];
 }
 /**

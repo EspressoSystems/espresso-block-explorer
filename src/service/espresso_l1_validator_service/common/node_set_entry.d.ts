@@ -1,6 +1,7 @@
 import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso';
+import { NodeMetadata } from './node_metadata';
 import { Ratio } from './ratio';
 /**
  * NodeSetEntry represents a single entry in the node set.
@@ -16,8 +17,9 @@ export declare class NodeSetEntry {
     readonly stakingKey: TaggedBase64;
     readonly stake: bigint;
     readonly commission: Ratio;
+    readonly metadata: null | NodeMetadata;
     readonly addressText: `0x${string}`;
-    constructor(address: ArrayBuffer, stakingKey: TaggedBase64, stake: bigint, commission: Ratio);
+    constructor(address: ArrayBuffer, stakingKey: TaggedBase64, stake: bigint, commission: Ratio, metadata: null | NodeMetadata);
     toJSON(): unknown;
 }
 /**
