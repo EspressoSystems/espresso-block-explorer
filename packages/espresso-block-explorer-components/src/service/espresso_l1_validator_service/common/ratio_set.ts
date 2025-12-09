@@ -25,7 +25,7 @@ export class RatioSet {
 
 class RatioSetJSONDecoder implements Converter<unknown, RatioSet> {
   convert(input: unknown): RatioSet {
-    assertRecordWithKeys(input, '@1x', '@2x', '@3x');
+    assertRecordWithKeys(input);
 
     return new RatioSet(
       optionalURLCodec.decode(input['@1x']) ?? null,
@@ -38,9 +38,9 @@ class RatioSetJSONDecoder implements Converter<unknown, RatioSet> {
 class RatioSetJSONEncoder implements Converter<RatioSet, unknown> {
   convert(input: RatioSet): unknown {
     return {
-      '@1x': nullableURLCodec.encode(input.ratio1),
-      '@2x': nullableURLCodec.encode(input.ratio2),
-      '@3x': nullableURLCodec.encode(input.ratio3),
+      '@1x': nullableURLCodec.encode(input.ratio1) ?? undefined,
+      '@2x': nullableURLCodec.encode(input.ratio2) ?? undefined,
+      '@3x': nullableURLCodec.encode(input.ratio3) ?? undefined,
     };
   }
 }

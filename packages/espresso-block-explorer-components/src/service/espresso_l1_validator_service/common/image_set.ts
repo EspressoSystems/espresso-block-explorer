@@ -4,6 +4,11 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
+import {
+  OptionalCodec,
+  OptionalDecoder,
+  OptionalEncoder,
+} from '@/convert/codec/optional';
 import { RatioSet, ratioSetJSONCodec } from './ratio_set';
 
 /**
@@ -24,7 +29,7 @@ export class ImageSet {
 
 class ImageSetJSONDecoder implements Converter<unknown, ImageSet> {
   convert(input: unknown): ImageSet {
-    assertRecordWithKeys(input, '14x14', '24x24');
+    assertRecordWithKeys(input);
 
     return new ImageSet(
       ratioSetJSONCodec.decode(input['14x14']),
@@ -51,4 +56,8 @@ export const imageSetJSONCodec = new ImageSetJSONCodec();
 export const nullableImageSetJSONCodec = new NullCodec(
   new NullDecoder(imageSetJSONCodec),
   new NullEncoder(imageSetJSONCodec),
+);
+export const optionalImageSetJSONCodec = new OptionalCodec(
+  new OptionalDecoder(imageSetJSONCodec),
+  new OptionalEncoder(imageSetJSONCodec),
 );
