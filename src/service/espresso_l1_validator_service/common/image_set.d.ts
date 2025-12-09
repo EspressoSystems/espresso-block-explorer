@@ -1,5 +1,6 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { NullCodec } from '../../../../../../../../../../../src/convert/codec/null';
+import { OptionalCodec } from '../../../../../../../../../../../src/convert/codec/optional';
 import { RatioSet } from './ratio_set';
 /**
  * ImageSet represents the same image represented in different sizes.
@@ -22,4 +23,5 @@ declare class ImageSetJSONCodec extends TypeCheckingCodec<ImageSet, unknown> {
 }
 export declare const imageSetJSONCodec: ImageSetJSONCodec;
 export declare const nullableImageSetJSONCodec: NullCodec<ImageSet, unknown>;
+export declare const optionalImageSetJSONCodec: OptionalCodec<ImageSet, unknown>;
 export {};

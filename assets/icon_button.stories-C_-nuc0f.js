@@ -1,0 +1,17 @@
+import{j as m,R as e}from"./iframe-B8eqWRN6.js";import{A as n,T as l,I as i,C as p}from"./twitter_icon-I-hkT6Ai.js";import{A as d}from"./arrow_right-DvUMkSfS.js";import{C as h}from"./check_circle_filled-BVVX_n5V.js";import{C}from"./chevron_up-BTggqdTf.js";import{M as f,D as E}from"./medium_icon-Dmae-m0V.js";import{M as I}from"./menu-FgIHQ5aZ.js";import{S as u}from"./search_glass-C47ShPuY.js";import{I as b}from"./icon_button-DbpGEp0r.js";import"./preload-helper-PPVm8Dsz.js";import"./svg_icon_base-CoeGQ4lo.js";import"./higher_order-r1uOk2qL.js";import"./button-BH4nqAVu.js";const g=({title:o,disabled:a,children:c,...s})=>m.jsx(b,{title:o,disabled:a,...s,children:c}),r={"Arrow Left":e.createElement(n),"Arrow Right":e.createElement(d),"Check Circle":e.createElement(h),"Chevron Down":e.createElement(p),"Chevron Up":e.createElement(C),"Discord Icon":e.createElement(E),"Info Circle":e.createElement(i),"Medium Icon":e.createElement(f),Menu:e.createElement(I),"Search Glass":e.createElement(u),"Twitter Icon":e.createElement(l)},S={title:"Components/HID/buttons/Icon Button",component:g},t={args:{title:"Back",disabled:!1,children:e.createElement(n)},argTypes:{children:{options:Object.keys(r),mapping:r,control:{type:"select",labels:Object.keys(r)}}}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
+  args: {
+    title: 'Back',
+    disabled: false,
+    children: React.createElement(ArrowLeft)
+  },
+  argTypes: {
+    children: {
+      options: Object.keys(Children),
+      mapping: Children,
+      control: {
+        type: 'select',
+        labels: Object.keys(Children)
+      }
+    }
+  }
+}`,...t.parameters?.docs?.source}}};const L=["IconButton"];export{t as IconButton,L as __namedExportsOrder,S as default};

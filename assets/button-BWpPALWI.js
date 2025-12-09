@@ -1,2 +1,0 @@
-import{j as a}from"./iframe-BbF3Syj1.js";import{a as o}from"./higher_order-P_eSrgQE.js";const e=t=>a.jsx("button",{...t,className:o(t.className,"btn")});try{button.displayName="button",button.__docgenInfo={description:`Button is a simple wrapper around a normal button element that adds the
-class 'btn' to the button in order to change it's styling.`,displayName:"button",props:{}}}catch{}export{e as B};
