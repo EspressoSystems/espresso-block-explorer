@@ -1,0 +1,4 @@
+.node-name-cell {
+  display: flex;
+  gap: 8px;
+}

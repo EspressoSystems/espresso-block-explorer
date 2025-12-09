@@ -3,6 +3,7 @@ import { TaggedBase64 } from '@/models/espresso';
 import { describe, expect, it } from 'vitest';
 import { L1BlockInfo } from '../../common/l1_block_info';
 import { NodeExit } from '../../common/node_exit';
+import { NodeMetadata } from '../../common/node_metadata';
 import { NodeSetEntry } from '../../common/node_set_entry';
 import { Ratio } from '../../common/ratio';
 import { FullNodeSetDiffNodeExit } from '../full_node_set_diff/node_exit';
@@ -29,6 +30,7 @@ describe('FullNodeSetUpdate', () => {
               new TaggedBase64('BLS_PUB_KEY', prng.fillBytes(48)),
               prng.nextRangeBigInt(1n, 1_000_000n),
               Ratio.floatingPoint(prng.nextFloat()),
+              new NodeMetadata(new URL('https://example.com'), null),
             ),
           ),
         ],

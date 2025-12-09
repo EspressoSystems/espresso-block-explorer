@@ -77,5 +77,9 @@
   },
   "type": "module",
   "types": "dist/src/index.d.ts",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "dependencies": {
+    "@types/ethereum-blockies": "^0.1.2",
+    "ethereum-blockies": "^0.1.1"
+  }
 }

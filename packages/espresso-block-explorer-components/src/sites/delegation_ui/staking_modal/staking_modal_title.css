@@ -1,7 +1,8 @@
 .staking-modal-header .staking-modal-title {
   grid-area: title;
   text-align: center;
-  font-family: 'Inter', sans-serif;
+  font-family: 'IBM Mono Plex', monospace;
+  text-transform: uppercase;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -10,4 +11,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.staking-modal-header .staking-modal-title .accent {
+  color: var(--color--brown--4--alpha-60);
 }

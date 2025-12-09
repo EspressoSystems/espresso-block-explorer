@@ -10,6 +10,10 @@
 
 .staking-modal-validator-display-area {
   grid-area: validator;
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .staking-modal-notice-area {
@@ -96,6 +100,36 @@
   display: flex;
   text-transform: uppercase;
   justify-self: center;
+}
+
+.validator-display-group {
+  display: grid;
+  grid-template-areas: 'image name' 'image address';
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 8px;
+  row-gap: 4px;
+  align-items: center;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.validator-display-group > picture {
+  grid-area: image;
+}
+
+.validator-display-group > .node-name {
+  grid-area: name;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.validator-display-group > .address {
+  grid-area: address;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--color--brown--3--mix-80);
 }
 
 .staking-modal-current-balance-label {

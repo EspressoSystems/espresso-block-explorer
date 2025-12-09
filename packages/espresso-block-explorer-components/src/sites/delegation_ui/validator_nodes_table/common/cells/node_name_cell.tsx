@@ -1,8 +1,7 @@
-import WalletAddressText from '@/components/text/wallet_address_text';
-import WalletAddress from '@/models/wallet_address/wallet_address';
-import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
+import { ValidatorImage14x14 } from '@/sites/delegation_ui/elements/validator/validator_image';
+import { ValidatorName } from '@/sites/delegation_ui/elements/validator/validator_name';
 import React from 'react';
-import CopyWalletAddress from './copy_wallet_address';
+import './node_name_cell.css';
 
 /**
  * NameNodeCell displays the wallet address of a validator node. It is
@@ -10,12 +9,12 @@ import CopyWalletAddress from './copy_wallet_address';
  * but it's currently unclear how we would source this information.
  */
 export const NodeNameCell: React.FC = () => {
-  const validator = React.useContext(ValidatorNodeContext);
-  const walletAddress = new WalletAddress(validator.address);
-
   return (
-    <CopyWalletAddress value={walletAddress}>
-      <WalletAddressText value={walletAddress} />
-    </CopyWalletAddress>
+    <div className="node-name-cell">
+      <ValidatorImage14x14 />
+      <div className="validator-name-shrinkable">
+        <ValidatorName />
+      </div>
+    </div>
   );
 };

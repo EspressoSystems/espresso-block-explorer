@@ -1,10 +1,12 @@
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
 import CopyButton from '../hid/buttons/copy_button/copy_button';
+import { addClassToClassName } from '../higher_order';
 import './inline.css';
 
 export interface CopyWalletAddressProps {
   value: WalletAddress;
+  className?: string;
   children: React.ReactNode | React.ReactNode[];
 }
 
@@ -14,7 +16,12 @@ export interface CopyWalletAddressProps {
  */
 const CopyWalletAddress: React.FC<CopyWalletAddressProps> = (props) => {
   return (
-    <span className="inline">
+    <span
+      className={addClassToClassName(
+        props.className,
+        'inline copy-wallet-address',
+      )}
+    >
       {props.children}
       <CopyButton content={props.value.toString()} />
     </span>

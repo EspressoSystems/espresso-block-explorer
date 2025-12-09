@@ -38,6 +38,7 @@ describe('FetchBasedValidatorsAllAPI', () => {
             new TaggedBase64('BLS_PUB_KEY', prng.fillBytes(48)),
             prng.nextRangeBigInt(1n, 1_000_000n),
             Ratio.floatingPoint(prng.nextFloat()),
+            null,
           ),
 
           new NodeSetEntry(
@@ -45,6 +46,7 @@ describe('FetchBasedValidatorsAllAPI', () => {
             new TaggedBase64('BLS_PUB_KEY', prng.fillBytes(48)),
             prng.nextRangeBigInt(1n, 1_000_000n),
             Ratio.floatingPoint(prng.nextFloat()),
+            null,
           ),
         ],
       );
@@ -84,6 +86,7 @@ describe('FetchBasedValidatorsAllAPI', () => {
               new TaggedBase64('BLS_PUB_KEY', prng.fillBytes(48)),
               prng.nextRangeBigInt(1n, 1_000_000n),
               Ratio.floatingPoint(prng.nextFloat()),
+              null,
             ),
           ),
 

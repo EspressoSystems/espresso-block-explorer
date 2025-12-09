@@ -1,3 +1,4 @@
+import { assert } from '@/assert/assert';
 import { breakpoint } from '@/assert/debugger';
 import { sleep } from '@/async/sleep';
 import { DataContext } from '@/components/contexts/data_provider';
@@ -90,9 +91,11 @@ function isL1ReorgDetected(
   previousBlock: null | L1BlockID,
   newBlock: L1BlockID,
 ): boolean {
-  if (previousBlock === null) {
+  if (!previousBlock) {
     return false;
   }
+
+  assert(newBlock !== null);
 
   if (newBlock.number === previousBlock.number) {
     // This is odd, we really shouldn't get here.

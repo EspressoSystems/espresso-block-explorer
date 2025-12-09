@@ -42,6 +42,18 @@
   line-height: 16px;
   letter-spacing: 0;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.network-stat-value .bmore-info-element {
+  width: 20px;
+  height: 20px;
+}
+
+.network-stat-value .bmore-info-element > svg {
+  width: 20px;
+  height: 20px;
 }
 
 @media screen and (max-width: 1280px) {

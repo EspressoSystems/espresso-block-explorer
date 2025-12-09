@@ -2,14 +2,12 @@ import { DataContext } from '@/components/contexts/data_provider';
 import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/text';
-import WalletAddressText from '@/components/text/wallet_address_text';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { neverPromise } from '@/functional/functional_async';
-import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { StakeTableContractGasEstimatorContext } from '../contexts/stake_table_contract_context';
+import { ValidatorName } from '../elements/validator/validator_name';
 import { ApproveButton } from './approve_button';
 import { CloseStakingModalButton } from './close_staking_modal';
 import {
@@ -42,21 +40,17 @@ export const NewDelegationContent: React.FC = () => {
 };
 
 export const NewDelegationModalContent: React.FC = () => {
-  const confirmedValidator = React.useContext(ConfirmedValidatorContext);
-
   return (
     <>
       <StakingHeader>
         <StakingModalTitle>
-          <Text text="Delegate" />
-          &nbsp;
-          <Text text="/" />
-          &nbsp;
-          <WalletAddressText
-            value={
-              new WalletAddress(hexArrayBufferCodec.decode(confirmedValidator))
-            }
-          />
+          <span className="accent">
+            <Text text="Delegate" />
+            &nbsp;
+            <Text text="/" />
+            &nbsp;
+          </span>
+          <ValidatorName />
         </StakingModalTitle>
         <CloseStakingModalButton />
       </StakingHeader>
