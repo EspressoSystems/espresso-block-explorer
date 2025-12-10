@@ -5,7 +5,6 @@ import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
 import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
-import { AllValidatorsContext } from '@/sites/delegation_ui/contexts/all_validators_context';
 import { LifetimeClaimedRewardsContext } from '@/sites/delegation_ui/contexts/claimed_rewards_context';
 import { ConfirmedValidatorContext } from '@/sites/delegation_ui/contexts/confirmed_valdiator_context';
 import { DeriveConsensusSet } from '@/sites/delegation_ui/contexts/consensus_map_context';
@@ -24,6 +23,8 @@ import {
 import { WalletSnapshotContext } from '@/sites/delegation_ui/contexts/wallet_snapshot_context';
 import { FakeDataMockOverrides } from '@/sites/delegation_ui/mock/fake_data';
 import React from 'react';
+import { DeriveNodeSetFromFullNodeSetSnapshot } from '../../contexts/all_validators_context';
+import { FullNodeSetSnapshotContext } from '../../contexts/full_node_set_snapshot_context';
 import { ClaimRewardsModalContent } from '../claim_rewards_content';
 import { CurrentAllowanceToStakeTableContext } from '../contexts/current_allowance_context';
 import { CurrentPendingUndelegationFromValidatorContext } from '../contexts/current_pending_undelegation_from_validator_context';
@@ -106,79 +107,85 @@ export const ValidatorConfirmedExample: React.FC<
                       <ValidatorSelectionContext.Provider
                         value={props.selection}
                       >
-                        <AllValidatorsContext.Provider value={fullValidatorSet}>
-                          <ActiveValidatorsContext.Provider
-                            value={activeValidatorSet}
-                          >
-                            <DeriveRank>
-                              <DeriveConsensusSet>
-                                <ConfirmedValidatorContext.Provider
-                                  value={hexArrayBufferCodec.encode(
-                                    props.selection.validatorAddress,
-                                  )}
-                                >
-                                  <DialogModal className="staking-modal" open>
-                                    <ProvideStakingHistory>
-                                      <CurrentStakeToValidatorContext.Provider
-                                        value={BigInt(props.currentStakeToNode)}
-                                      >
-                                        <ValidatorNodeContext.Provider
-                                          value={props.validator}
+                        <FullNodeSetSnapshotContext.Provider
+                          value={fullValidatorSet}
+                        >
+                          <DeriveNodeSetFromFullNodeSetSnapshot>
+                            <ActiveValidatorsContext.Provider
+                              value={activeValidatorSet}
+                            >
+                              <DeriveRank>
+                                <DeriveConsensusSet>
+                                  <ConfirmedValidatorContext.Provider
+                                    value={hexArrayBufferCodec.encode(
+                                      props.selection.validatorAddress,
+                                    )}
+                                  >
+                                    <DialogModal className="staking-modal" open>
+                                      <ProvideStakingHistory>
+                                        <CurrentStakeToValidatorContext.Provider
+                                          value={BigInt(
+                                            props.currentStakeToNode,
+                                          )}
                                         >
-                                          <StakingAmountContext.Provider
-                                            value={MonetaryValue.ESP(
-                                              BigInt(props.amount),
-                                            )}
+                                          <ValidatorNodeContext.Provider
+                                            value={props.validator}
                                           >
-                                            <ProvideEstimatedFeesPerGas>
-                                              <UndelegateAsyncSnapshotContext.Provider
-                                                value={
-                                                  props.undelegationAsyncSnapshot
-                                                }
-                                              >
-                                                <ApproveAsyncSnapshotContext.Provider
+                                            <StakingAmountContext.Provider
+                                              value={MonetaryValue.ESP(
+                                                BigInt(props.amount),
+                                              )}
+                                            >
+                                              <ProvideEstimatedFeesPerGas>
+                                                <UndelegateAsyncSnapshotContext.Provider
                                                   value={
-                                                    props.approvalAsyncSnapshot
+                                                    props.undelegationAsyncSnapshot
                                                   }
                                                 >
-                                                  <DelegateAsyncSnapshotContext.Provider
+                                                  <ApproveAsyncSnapshotContext.Provider
                                                     value={
-                                                      props.delegationAsyncSnapshot
+                                                      props.approvalAsyncSnapshot
                                                     }
                                                   >
-                                                    <ClaimWithdrawalAsyncSnapshotContext.Provider
+                                                    <DelegateAsyncSnapshotContext.Provider
                                                       value={
-                                                        props.claimWithDrawalAsyncSnapshot
+                                                        props.delegationAsyncSnapshot
                                                       }
                                                     >
-                                                      <ClaimValidatorExitAsyncSnapshotContext.Provider
+                                                      <ClaimWithdrawalAsyncSnapshotContext.Provider
                                                         value={
-                                                          props.claimExitAsyncSnapshot
+                                                          props.claimWithDrawalAsyncSnapshot
                                                         }
                                                       >
-                                                        <ClaimRewardsAsyncSnapshotContext.Provider
+                                                        <ClaimValidatorExitAsyncSnapshotContext.Provider
                                                           value={
-                                                            props.claimRewardsAsyncSnapshot
+                                                            props.claimExitAsyncSnapshot
                                                           }
                                                         >
-                                                          <Content />
-                                                        </ClaimRewardsAsyncSnapshotContext.Provider>
-                                                      </ClaimValidatorExitAsyncSnapshotContext.Provider>
-                                                    </ClaimWithdrawalAsyncSnapshotContext.Provider>
-                                                  </DelegateAsyncSnapshotContext.Provider>
-                                                </ApproveAsyncSnapshotContext.Provider>
-                                              </UndelegateAsyncSnapshotContext.Provider>
-                                            </ProvideEstimatedFeesPerGas>
-                                          </StakingAmountContext.Provider>
-                                        </ValidatorNodeContext.Provider>
-                                      </CurrentStakeToValidatorContext.Provider>
-                                    </ProvideStakingHistory>
-                                  </DialogModal>
-                                </ConfirmedValidatorContext.Provider>
-                              </DeriveConsensusSet>
-                            </DeriveRank>
-                          </ActiveValidatorsContext.Provider>
-                        </AllValidatorsContext.Provider>
+                                                          <ClaimRewardsAsyncSnapshotContext.Provider
+                                                            value={
+                                                              props.claimRewardsAsyncSnapshot
+                                                            }
+                                                          >
+                                                            <Content />
+                                                          </ClaimRewardsAsyncSnapshotContext.Provider>
+                                                        </ClaimValidatorExitAsyncSnapshotContext.Provider>
+                                                      </ClaimWithdrawalAsyncSnapshotContext.Provider>
+                                                    </DelegateAsyncSnapshotContext.Provider>
+                                                  </ApproveAsyncSnapshotContext.Provider>
+                                                </UndelegateAsyncSnapshotContext.Provider>
+                                              </ProvideEstimatedFeesPerGas>
+                                            </StakingAmountContext.Provider>
+                                          </ValidatorNodeContext.Provider>
+                                        </CurrentStakeToValidatorContext.Provider>
+                                      </ProvideStakingHistory>
+                                    </DialogModal>
+                                  </ConfirmedValidatorContext.Provider>
+                                </DeriveConsensusSet>
+                              </DeriveRank>
+                            </ActiveValidatorsContext.Provider>
+                          </DeriveNodeSetFromFullNodeSetSnapshot>
+                        </FullNodeSetSnapshotContext.Provider>
                       </ValidatorSelectionContext.Provider>
                     </ProvideValidatorSelection>
                   </LifetimeClaimedRewardsContext.Provider>

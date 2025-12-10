@@ -1,9 +1,11 @@
 import UnimplementedError from '@/errors/unimplemented_error';
-import { compareArrayBuffer } from '@/functional/functional';
+import { compareArrayBuffer, mapIterable } from '@/functional/functional';
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
-import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
-import { AllValidatorsContext } from '@/sites/delegation_ui/contexts/all_validators_context';
+import {
+  AllValidatorsContext,
+  NodeAddressListContext,
+} from '@/sites/delegation_ui/contexts/all_validators_context';
 import { ConsensusMapContext } from '@/sites/delegation_ui/contexts/consensus_map_context';
 import { RankMapContext } from '@/sites/delegation_ui/contexts/rank_map_context';
 import React from 'react';
@@ -118,7 +120,11 @@ export const useValidatorTableSortState = () => {
 /**
  * ValidatorSortTuple is a tuple type used for sorting validators.
  */
-type ValidatorSortTuple = [NodeSetEntry, number, null | ActiveNodeSetEntry];
+type ValidatorSortTuple = readonly [
+  NodeSetEntry,
+  number,
+  null | ActiveNodeSetEntry,
+];
 
 /**
  * sortByRank sorts validators by their rank.
@@ -229,33 +235,29 @@ function getSortDirection(
  * rank map, and consensus set.
  */
 function sortWithState(
-  allValidators: null | FullNodeSetSnapshot,
+  nodeAddressList: `0x${string}`[],
+  allValidators: Map<`0x${string}`, NodeSetEntry>,
   tableState: TableSortState<CellType>,
   rankMap: Map<`0x${string}`, number>,
   consensusSet: Map<`0x${string}`, ActiveNodeSetEntry>,
-): null | FullNodeSetSnapshot {
-  if (!allValidators) {
-    return allValidators;
-  }
-
+): `0x${string}`[] {
   const { sortBy, sortDirection } = tableState;
   const sortDirectionFunction = getSortDirection(sortDirection);
   const sortFunction = sortDirectionFunction(getSortFunction(sortBy));
 
-  return new FullNodeSetSnapshot(
-    allValidators.l1Block,
-    allValidators.nodes
-      .map((node) => {
-        const key = node.addressText;
-        return [
-          node,
-          rankMap.get(key) ?? Number.MAX_SAFE_INTEGER,
-          consensusSet.get(key) ?? null,
-        ] as ValidatorSortTuple;
-      })
-      .sort(sortFunction)
-      .map((tuple) => tuple[0]),
-  );
+  const sortedAddresses = Array.from(
+    mapIterable(nodeAddressList, (address) => {
+      return [
+        allValidators.get(address)!,
+        rankMap.get(address) ?? Number.MAX_SAFE_INTEGER,
+        consensusSet.get(address) ?? null,
+      ] as const;
+    }),
+  )
+    .sort(sortFunction)
+    .map((tuple) => tuple[0].addressText);
+
+  return sortedAddresses;
 }
 
 /**
@@ -267,12 +269,14 @@ export const ValidatorTableSortStateProvider: React.FC<
   React.PropsWithChildren
 > = (props) => {
   const { tableState, tableControls } = useValidatorTableSortState();
+  const nodeAddressList = React.useContext(NodeAddressListContext);
   const allValidators = React.useContext(AllValidatorsContext);
   const rankMap = React.useContext(RankMapContext);
   const consensusMap = React.useContext(ConsensusMapContext);
 
   // We need to sort the Validators according to the Table State
   const sortedValues = sortWithState(
+    nodeAddressList,
     allValidators,
     tableState,
     rankMap,
@@ -280,12 +284,12 @@ export const ValidatorTableSortStateProvider: React.FC<
   );
 
   return (
-    <AllValidatorsContext.Provider value={sortedValues}>
+    <NodeAddressListContext.Provider value={sortedValues}>
       <TableSortStateContext.Provider value={tableState}>
         <TableSortControlsContext.Provider value={tableControls}>
           {props.children}
         </TableSortControlsContext.Provider>
       </TableSortStateContext.Provider>
-    </AllValidatorsContext.Provider>
+    </NodeAddressListContext.Provider>
   );
 };

@@ -2,15 +2,13 @@ import { Now } from '@/components/contexts/now_provider';
 import Text from '@/components/text/text';
 import Unlock from '@/components/visual/icons/feather/unlock';
 import { filterIterable } from '@/functional/functional';
-import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
-import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
 import React from 'react';
 import {
   CollapsableHeader,
   CollapsableSection,
   CollapseGuard,
 } from './collapsable_section';
-import { AllValidatorsContext } from './contexts/all_validators_context';
+import { NodeAddressListContext } from './contexts/all_validators_context';
 import { PendingExitsContext } from './contexts/pending_exits_context';
 import './pending_exits.css';
 import { ValidatorTableSortStateProvider } from './validator_nodes_table/common/validator_table_sort_state';
@@ -79,36 +77,20 @@ const PendingExitsSection: React.FC = () => {
   );
 };
 
-function filterAllValidators(
-  allValidators: null | FullNodeSetSnapshot,
-  pendingExits: Map<`0x${string}`, PendingWithdrawal>,
-): null | FullNodeSetSnapshot {
-  if (!allValidators) {
-    return null;
-  }
-
-  return new FullNodeSetSnapshot(
-    allValidators.l1Block,
-    Array.from(
-      filterIterable(allValidators.nodes, (node) =>
-        pendingExits.has(node.addressText),
-      ),
-    ),
-  );
-}
-
 const PendingExitsContent: React.FC = () => {
   const pendingExits = React.useContext(PendingExitsContext);
-  const allValidators = React.useContext(AllValidatorsContext);
+  const nodeList = React.useContext(NodeAddressListContext);
+  const pending = new Set(pendingExits.keys());
+  const addressList = new Set(nodeList);
+  const intersection = Array.from(
+    filterIterable(pending, (x) => addressList.has(x)),
+  );
 
-  // Implementation for the content of pending claims goes here
   return (
-    <AllValidatorsContext.Provider
-      value={filterAllValidators(allValidators, pendingExits)}
-    >
+    <NodeAddressListContext.Provider value={intersection}>
       <ValidatorTableSortStateProvider>
         <PendingExitsDelegationTable />
       </ValidatorTableSortStateProvider>
-    </AllValidatorsContext.Provider>
+    </NodeAddressListContext.Provider>
   );
 };

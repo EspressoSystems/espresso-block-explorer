@@ -19,9 +19,10 @@ import { applyWalletSnapshotUpdates } from '@/service/espresso_l1_validator_serv
 import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
 import React from 'react';
 import { ActiveValidatorsContext } from './contexts/active_validators_context';
-import { AllValidatorsContext } from './contexts/all_validators_context';
+import { DeriveNodeSetFromFullNodeSetSnapshot } from './contexts/all_validators_context';
 import { EspressoBlockHeightContext } from './contexts/espresso_block_height_context';
 import { EspressoCurrentEpochContext } from './contexts/espresso_current_epoch_context';
+import { FullNodeSetSnapshotContext } from './contexts/full_node_set_snapshot_context';
 import { L1BlockIDContext } from './contexts/l1_block_id_context';
 import { L1ValidatorServiceContext } from './contexts/l1_validator_api_context';
 import { WalletSnapshotContext } from './contexts/wallet_snapshot_context';
@@ -373,9 +374,11 @@ const TransformDataToAllValidators: React.FC<React.PropsWithChildren> = ({
   const data = (React.useContext(DataContext) ??
     null) as null | FullNodeSetSnapshot;
   return (
-    <AllValidatorsContext.Provider value={data}>
-      {children}
-    </AllValidatorsContext.Provider>
+    <FullNodeSetSnapshotContext.Provider value={data}>
+      <DeriveNodeSetFromFullNodeSetSnapshot>
+        {children}
+      </DeriveNodeSetFromFullNodeSetSnapshot>
+    </FullNodeSetSnapshotContext.Provider>
   );
 };
 

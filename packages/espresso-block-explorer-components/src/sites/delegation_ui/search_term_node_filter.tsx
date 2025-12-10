@@ -1,21 +1,33 @@
 import { TextEditingValue } from '@/components/input/text/types';
+import { filterIterable, mapIterable } from '@/functional/functional';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 
 /**
  * applySearchTermNodeFilter creates a filter function based on the search term.
  */
-export function applySearchTermNodeFilter(searchTerm: TextEditingValue) {
+export function applySearchTermNodeFilter(
+  searchTerm: TextEditingValue,
+  allValidators: Map<`0x${string}`, NodeSetEntry>,
+) {
   if (searchTerm.text.trim() === '') {
     return () => true;
   }
 
   const regex = buildRegExpFromString(searchTerm.text);
+  const filteredSet = new Set(
+    mapIterable(
+      filterIterable(allValidators, ([, node]) => {
+        return (
+          node.addressText.indexOf(searchTerm.text.toLowerCase()) >= 0 ||
+          regex.test(node.metadata?.content?.name ?? '')
+        );
+      }),
+      ([address]) => address,
+    ),
+  );
 
-  return (node: NodeSetEntry) => {
-    return (
-      node.addressText.indexOf(searchTerm.text.toLowerCase()) >= 0 ||
-      regex.test(node.metadata?.content?.name ?? '')
-    );
+  return (address: `0x${string}`) => {
+    return filteredSet.has(address);
   };
 }
 

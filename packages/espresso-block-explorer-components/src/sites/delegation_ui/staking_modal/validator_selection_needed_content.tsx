@@ -5,18 +5,24 @@ import Text from '@/components/text/text';
 import WalletAddressText from '@/components/text/wallet_address_text';
 import { Check } from '@/components/visual';
 import ExternalLink from '@/components/visual/icons/feather/external_link';
-import { compareArrayBuffer, filterIterable } from '@/functional/functional';
+import { filterIterable } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import WalletAddress from '@/models/wallet_address/wallet_address';
-import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import React from 'react';
-import { AllValidatorsContext } from '../contexts/all_validators_context';
+import {
+  AllValidatorsContext,
+  NodeAddressListContext,
+} from '../contexts/all_validators_context';
+import { NodeAddressContext } from '../contexts/node_address_context';
 import { RankMapContext } from '../contexts/rank_map_context';
 import {
   ProvideSearchFilter,
   SearchFilterContext,
 } from '../contexts/search_filter_context';
-import { ValidatorNodeContext } from '../contexts/validator_node_context';
+import {
+  ProvideValidatorNodeContext,
+  ValidatorNodeContext,
+} from '../contexts/validator_node_context';
 import {
   ValidatorConfirmed,
   ValidatorSelected,
@@ -68,16 +74,21 @@ const ValidatorSelection: React.FC = () => {
   );
 };
 
-const NodeListContext = React.createContext<NodeSetEntry[]>([]);
-
 const ProvideNodeList: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const nodeList = React.useContext(NodeAddressListContext);
   const allValidators = React.useContext(AllValidatorsContext);
-  const nodes = allValidators?.nodes ?? [];
+  // Make sure that the validators are sorted by stake
+
+  const sortedList = Array.from(nodeList).sort((a, b) => {
+    const stakeA = allValidators.get(a)?.stake ?? 0n;
+    const stakeB = allValidators.get(b)?.stake ?? 0n;
+    return Number(stakeB - stakeA);
+  });
 
   return (
-    <NodeListContext.Provider value={nodes}>
+    <NodeAddressListContext.Provider value={sortedList}>
       {children}
-    </NodeListContext.Provider>
+    </NodeAddressListContext.Provider>
   );
 };
 
@@ -94,35 +105,42 @@ const ValidatorSelectionList: React.FC = () => {
 const FilteredValidatorList: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const nodes = React.useContext(NodeListContext);
+  const nodeAddresses = React.useContext(NodeAddressListContext);
+  const allValidators = React.useContext(AllValidatorsContext);
   const searchFilter = React.useContext(SearchFilterContext);
   const rankMap = React.useContext(RankMapContext);
 
   const filteredNodes = Array.from(
-    filterIterable(nodes, applySearchTermNodeFilter(searchFilter)),
+    filterIterable(
+      nodeAddresses,
+      applySearchTermNodeFilter(searchFilter, allValidators),
+    ),
   ).sort((a, b) => {
-    const rankA = rankMap.get(a.addressText) ?? Number.MAX_SAFE_INTEGER;
-    const rankB = rankMap.get(b.addressText) ?? Number.MAX_SAFE_INTEGER;
+    const rankA = rankMap.get(a) ?? Number.MAX_SAFE_INTEGER;
+    const rankB = rankMap.get(b) ?? Number.MAX_SAFE_INTEGER;
     return rankA - rankB;
   });
 
   return (
-    <NodeListContext.Provider value={filteredNodes}>
+    <NodeAddressListContext.Provider value={filteredNodes}>
       {children}
-    </NodeListContext.Provider>
+    </NodeAddressListContext.Provider>
   );
 };
 
 const ValidatorList: React.FC = () => {
-  const nodeList = React.useContext(NodeListContext);
+  // const nodeList = React.useContext(NodeListContext);
+  const nodeListAddresses = React.useContext(NodeAddressListContext);
 
   return (
     <table className="validator-list">
       <tbody>
-        {nodeList.map((entry, index) => (
-          <ValidatorNodeContext.Provider key={index} value={entry}>
-            <NodeRow />
-          </ValidatorNodeContext.Provider>
+        {nodeListAddresses.map((entry, index) => (
+          <NodeAddressContext.Provider key={index} value={entry}>
+            <ProvideValidatorNodeContext>
+              <NodeRow />
+            </ProvideValidatorNodeContext>
+          </NodeAddressContext.Provider>
         ))}
       </tbody>
     </table>
@@ -136,10 +154,10 @@ const NodeRow: React.FC = () => {
 
   const isSelected =
     selection instanceof ValidatorSelected &&
-    compareArrayBuffer(selection.validatorAddress, node.address) === 0;
+    selection.validatorAddress === node.addressText;
 
   const select = () => {
-    historyControls.replace(new ValidatorSelected(node.address));
+    historyControls.replace(new ValidatorSelected(node.addressText));
   };
 
   return (
@@ -180,24 +198,15 @@ const ProvideSelectedNode: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const selection = React.useContext(ValidatorSelectionContext);
-  const allValidators = React.useContext(AllValidatorsContext);
 
-  const selectedNode =
-    !(selection instanceof ValidatorSelected) || !allValidators
-      ? null
-      : (allValidators.nodes.find(
-          (node) =>
-            compareArrayBuffer(node.address, selection.validatorAddress) === 0,
-        ) ?? null);
-
-  if (!selectedNode) {
+  if (!(selection instanceof ValidatorSelected)) {
     return children;
   }
 
   return (
-    <ValidatorNodeContext.Provider value={selectedNode}>
-      {children}
-    </ValidatorNodeContext.Provider>
+    <NodeAddressContext.Provider value={selection.validatorAddress}>
+      <ProvideValidatorNodeContext>{children}</ProvideValidatorNodeContext>
+    </NodeAddressContext.Provider>
   );
 };
 

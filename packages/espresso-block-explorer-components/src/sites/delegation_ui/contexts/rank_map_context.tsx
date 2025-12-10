@@ -6,8 +6,8 @@ import {
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import React from 'react';
-import { AllValidatorsContext } from './all_validators_context';
 import { ConsensusMapContext } from './consensus_map_context';
+import { FullNodeSetSnapshotContext } from './full_node_set_snapshot_context';
 
 /**
  * RankMapContext provides a React Context
@@ -37,18 +37,17 @@ function score(node: NodeSetEntry): number {
  * and provides it via the RankMapContext to its children.
  */
 export const DeriveRank: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const allValidators = React.useContext(AllValidatorsContext);
+  const fullNodeSet = React.useContext(FullNodeSetSnapshotContext);
   const consensusSet = React.useContext(ConsensusMapContext);
 
   const validatorsAndScore = Array.from(
     zipWithIterable(
       mapIterable(
-        allValidators?.nodes ?? emptyIterator<NodeSetEntry>(),
+        fullNodeSet?.nodes ?? emptyIterator<NodeSetEntry>(),
         (a) => a.addressText,
       ),
-      mapIterable(
-        allValidators?.nodes ?? emptyIterator<NodeSetEntry>(),
-        (node) => score(node, consensusSet.get(node.addressText)),
+      mapIterable(fullNodeSet?.nodes ?? emptyIterator<NodeSetEntry>(), (node) =>
+        score(node, consensusSet.get(node.addressText)),
       ),
       (a, b) => [a, b] as const,
     ),

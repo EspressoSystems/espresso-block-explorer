@@ -1,6 +1,7 @@
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { nodeList } from '@/data_source/fake_data_source';
 import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
-import { AllValidatorsContext } from '@/sites/delegation_ui/contexts/all_validators_context';
+import { DeriveNodeSetFromFullNodeSetSnapshot } from '@/sites/delegation_ui/contexts/all_validators_context';
 import { DeriveConsensusSet } from '@/sites/delegation_ui/contexts/consensus_map_context';
 import { ESPBalanceContext } from '@/sites/delegation_ui/contexts/esp_balance_context';
 import { DialogModal } from '@/sites/delegation_ui/contexts/modal_context';
@@ -14,6 +15,7 @@ import {
 } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
+import { FullNodeSetSnapshotContext } from '../../contexts/full_node_set_snapshot_context';
 import {
   activeValidatorSet,
   fullValidatorSet,
@@ -31,19 +33,21 @@ const Example: React.FC<ExampleProps> = (props) => {
       <ESPBalanceContext.Provider value={5_000_000_000_000_000_000_000_000n}>
         <ProvideValidatorSelection>
           <ValidatorSelectionContext.Provider value={props.selection}>
-            <AllValidatorsContext.Provider value={fullValidatorSet}>
-              <ActiveValidatorsContext.Provider value={activeValidatorSet}>
-                <DeriveRank>
-                  <DeriveConsensusSet>
-                    <DialogModal className="staking-modal" open>
-                      <ProvideStakingHistory>
-                        <StakingModalContent />
-                      </ProvideStakingHistory>
-                    </DialogModal>
-                  </DeriveConsensusSet>
-                </DeriveRank>
-              </ActiveValidatorsContext.Provider>
-            </AllValidatorsContext.Provider>
+            <FullNodeSetSnapshotContext.Provider value={fullValidatorSet}>
+              <DeriveNodeSetFromFullNodeSetSnapshot>
+                <ActiveValidatorsContext.Provider value={activeValidatorSet}>
+                  <DeriveRank>
+                    <DeriveConsensusSet>
+                      <DialogModal className="staking-modal" open>
+                        <ProvideStakingHistory>
+                          <StakingModalContent />
+                        </ProvideStakingHistory>
+                      </DialogModal>
+                    </DeriveConsensusSet>
+                  </DeriveRank>
+                </ActiveValidatorsContext.Provider>
+              </DeriveNodeSetFromFullNodeSetSnapshot>
+            </FullNodeSetSnapshotContext.Provider>
           </ValidatorSelectionContext.Provider>
         </ProvideValidatorSelection>
       </ESPBalanceContext.Provider>
@@ -88,6 +92,8 @@ const INDEX_SELECTION = 3;
 
 export const NodeSelectionNodeSelected: Story = {
   args: {
-    selection: new ValidatorSelected(nodeList[INDEX_SELECTION].address),
+    selection: new ValidatorSelected(
+      hexArrayBufferCodec.encode(nodeList[INDEX_SELECTION].address),
+    ),
   },
 };

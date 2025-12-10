@@ -2,15 +2,13 @@ import { Now } from '@/components/contexts/now_provider';
 import Text from '@/components/text/text';
 import Unlock from '@/components/visual/icons/feather/unlock';
 import { filterIterable } from '@/functional/functional';
-import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
-import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
 import React from 'react';
 import {
   CollapsableHeader,
   CollapsableSection,
   CollapseGuard,
 } from './collapsable_section';
-import { AllValidatorsContext } from './contexts/all_validators_context';
+import { NodeAddressListContext } from './contexts/all_validators_context';
 import { ProvideCollapseState } from './contexts/collapse_context';
 import { PendingUndelegationsContext } from './contexts/pending_undelegations_context';
 import './pending_claims.css';
@@ -82,36 +80,21 @@ const PendingClaimsSection: React.FC = () => {
   );
 };
 
-function filterAllValidators(
-  allValidators: null | FullNodeSetSnapshot,
-  pendingUndelegations: Map<`0x${string}`, PendingWithdrawal>,
-): null | FullNodeSetSnapshot {
-  if (!allValidators) {
-    return null;
-  }
-
-  return new FullNodeSetSnapshot(
-    allValidators.l1Block,
-    Array.from(
-      filterIterable(allValidators.nodes, (node) =>
-        pendingUndelegations.has(node.addressText),
-      ),
-    ),
-  );
-}
-
 const PendingClaimsContent: React.FC = () => {
   const pendingUndelegations = React.useContext(PendingUndelegationsContext);
-  const allValidators = React.useContext(AllValidatorsContext);
+  const nodeAddressList = React.useContext(NodeAddressListContext);
 
-  // Implementation for the content of pending claims goes here
+  const pending = new Set(pendingUndelegations.keys());
+  const addressList = new Set(nodeAddressList);
+  const intersection = Array.from(
+    filterIterable(pending, (x) => addressList.has(x)),
+  );
+
   return (
-    <AllValidatorsContext.Provider
-      value={filterAllValidators(allValidators, pendingUndelegations)}
-    >
+    <NodeAddressListContext.Provider value={intersection}>
       <ValidatorTableSortStateProvider>
         <PendingClaimsDelegationTable />
       </ValidatorTableSortStateProvider>
-    </AllValidatorsContext.Provider>
+    </NodeAddressListContext.Provider>
   );
 };
