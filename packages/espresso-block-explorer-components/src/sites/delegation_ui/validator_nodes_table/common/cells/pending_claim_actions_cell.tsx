@@ -18,7 +18,7 @@ export const PendingClaimActionsCell: React.FC = () => {
       className="action"
       onClick={() => {
         setSelection(
-          new ValidatorConfirmedUndelegateWithdraw(validator.address),
+          new ValidatorConfirmedUndelegateWithdraw(validator.addressText),
         );
         modalControls.open();
       }}

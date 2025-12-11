@@ -17,7 +17,7 @@ export const PendingExitActionsCell: React.FC = () => {
     <ButtonLarge
       className="action"
       onClick={() => {
-        setSelection(new ValidatorConfirmedExitWithdraw(validator.address));
+        setSelection(new ValidatorConfirmedExitWithdraw(validator.addressText));
         modalControls.open();
       }}
     >
