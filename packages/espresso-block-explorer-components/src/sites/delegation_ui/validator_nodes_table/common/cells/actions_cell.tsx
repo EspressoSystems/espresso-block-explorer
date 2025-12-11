@@ -73,7 +73,7 @@ export const ActionsCell: React.FC = () => {
       <ButtonLarge
         className="action"
         onClick={() => {
-          setSelection(new ValidatorConfirmed(validator.address));
+          setSelection(new ValidatorConfirmed(validator.addressText));
           modalControls.open();
         }}
       >
@@ -86,7 +86,7 @@ export const ActionsCell: React.FC = () => {
     <ButtonLarge
       className="action"
       onClick={() => {
-        setSelection(new ValidatorConfirmed(validator.address));
+        setSelection(new ValidatorConfirmed(validator.addressText));
         modalControls.open();
       }}
     >

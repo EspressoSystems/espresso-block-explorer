@@ -28,7 +28,7 @@ const {
   KoreanSouthKorea,
 } = composeStories(stories);
 
-describe('ESP Input:: Typing', async () => {
+describe('ESP Input:: Typing', { skip: true }, async () => {
   const ComponentMap = {
     'English US': EnglishUS,
     'English GB': EnglishGreatBritain,

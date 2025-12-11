@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { addClassToClassName } from '@/components/higher_order';
-import Info from '@/components/visual/icons/feather/info';
+import HelpQuestion1 from '@/components/visual/icons/sharp_line/help_question_1';
 import './more_info.css';
 import { Tooltip } from './tooltip';
 
@@ -29,7 +29,7 @@ export const MoreInfoElement: React.FC<MoreInfoElementProps> = ({
       className={addClassToClassName(className, 'bmore-info-element')}
     >
       <Tooltip>{children}</Tooltip>
-      <Info
+      <HelpQuestion1
         onClick={(event) => {
           event.stopPropagation();
           event.preventDefault();

@@ -1,5 +1,5 @@
-import CheckCircle from '@/components/visual/icons/feather/check_circle';
-import Copy from '@/components/visual/icons/feather/copy';
+import CheckCircle from '@/components/visual/icons/sharp_line/check_circle';
+import PathfinderTrim from '@/components/visual/icons/sharp_line/pathfinder_trim';
 import { Now } from '@/contexts/now_provider';
 import { addClassToClassName } from '@/higher_order';
 import React from 'react';
@@ -67,7 +67,7 @@ const CopyButton: React.FC<ButtonProps> = (props) => {
       }}
       title="Copy Contents"
     >
-      <Copy />
+      <PathfinderTrim />
     </button>
   );
 };

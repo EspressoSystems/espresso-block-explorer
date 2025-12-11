@@ -1,6 +1,7 @@
-import { AllValidatorsContext } from '@/sites/delegation_ui/contexts/all_validators_context';
-import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
+import { NodeAddressListContext } from '@/sites/delegation_ui/contexts/all_validators_context';
+import { ProvideValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import React from 'react';
+import { NodeAddressContext } from '../../contexts/node_address_context';
 import '../table.css';
 import { ClaimsDelegationTableHeader } from './claims_table_header';
 import { PendingClaimsNodeValidatorTableRow } from './pending_claims_table_row';
@@ -10,9 +11,9 @@ import { PendingClaimsNodeValidatorTableRow } from './pending_claims_table_row';
  * the table of validator nodes in the delegation UI for Pending Claims
  */
 export const PendingClaimsDelegationTable: React.FC = () => {
-  const allValidators = React.useContext(AllValidatorsContext);
+  const nodeAddressList = React.useContext(NodeAddressListContext);
 
-  if (!allValidators) {
+  if (nodeAddressList.length <= 0) {
     return <></>;
   }
 
@@ -20,11 +21,13 @@ export const PendingClaimsDelegationTable: React.FC = () => {
     <table className="all-validators-table pending-claims">
       <ClaimsDelegationTableHeader />
       <tbody>
-        {allValidators.nodes.map((node, index) => {
+        {nodeAddressList.map((address, index) => {
           return (
-            <ValidatorNodeContext.Provider key={index} value={node}>
-              <PendingClaimsNodeValidatorTableRow />
-            </ValidatorNodeContext.Provider>
+            <NodeAddressContext.Provider key={index} value={address}>
+              <ProvideValidatorNodeContext>
+                <PendingClaimsNodeValidatorTableRow />
+              </ProvideValidatorNodeContext>
+            </NodeAddressContext.Provider>
           );
         })}
       </tbody>

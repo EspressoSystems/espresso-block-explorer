@@ -1,4 +1,3 @@
-import CopyWalletAddress from '@/components/text/copy_wallet_address';
 import WalletAddressText from '@/components/text/wallet_address_text';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
@@ -8,6 +7,7 @@ import { ActiveConsensusChip } from '../elements/chips/active_consensus_chip';
 import { InactiveConsensusChip } from '../elements/chips/inactive_consensus_chip';
 import { ValidatorImage24x24 } from '../elements/validator/validator_image';
 import { ValidatorName } from '../elements/validator/validator_name';
+import CopyWalletAddress from '../validator_nodes_table/common/cells/copy_wallet_address';
 
 /**
  * ActiveStatusChip is a component that displays whether the validator is active

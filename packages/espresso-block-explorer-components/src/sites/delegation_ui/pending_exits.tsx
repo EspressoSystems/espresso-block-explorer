@@ -1,73 +1,101 @@
 import { Now } from '@/components/contexts/now_provider';
 import Text from '@/components/text/text';
-import Unlock from '@/components/visual/icons/feather/unlock';
-import { filterIterable } from '@/functional/functional';
-import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
-import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
+import PadlockSquare2 from '@/components/visual/icons/sharp_line/padlock_square_2';
+import {
+  compareIterables,
+  filterIterable,
+  mapIterable,
+} from '@/functional/functional';
 import React from 'react';
 import {
   CollapsableHeader,
   CollapsableSection,
   CollapseGuard,
 } from './collapsable_section';
-import { AllValidatorsContext } from './contexts/all_validators_context';
+import { NodeAddressListContext } from './contexts/all_validators_context';
 import { PendingExitsContext } from './contexts/pending_exits_context';
 import './pending_exits.css';
 import { ValidatorTableSortStateProvider } from './validator_nodes_table/common/validator_table_sort_state';
 import { PendingExitsDelegationTable } from './validator_nodes_table/table/pending_exits_delegation_table';
 
+/**
+ * PendingExits is a React component that displays the current wallet's
+ * available pending exits.
+ *
+ * If there are no pending exits available, then nothing should be displayed,
+ * otherwise a collapsable section with the pending exits table is shown.
+ */
 export const PendingExits: React.FC = () => {
   return (
-    <EnsureOnlyPendingExits>
+    <FilterToAvailablePendingExits>
       <PendingExitsSection />
-    </EnsureOnlyPendingExits>
+    </FilterToAvailablePendingExits>
   );
 };
 
-const EnsureOnlyPendingExits: React.FC<React.PropsWithChildren> = ({
+/**
+ * FilterToAvailablePendingExits is a component that filters the pending exits
+ * to only include those that are available to be claimed.
+ */
+const FilterToAvailablePendingExits: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const pendingExits = React.useContext(PendingExitsContext);
+  const nodeAddressList = React.useContext(NodeAddressListContext);
+  const now = React.useContext(Now);
 
-  if (pendingExits.size <= 0) {
-    return null;
-  }
+  const [pendingExitsList, setPendingExitsList] = React.useState<
+    `0x${string}`[]
+  >([]);
+
+  React.useEffect(() => {
+    const nodeAddressSet = new Set(nodeAddressList);
+    let setNextPendingExitsList = setPendingExitsList;
+    const eligiblePendingExits = mapIterable(
+      filterIterable(
+        pendingExits,
+        ([, pending]) => pending.availableTime.valueOf() <= now.valueOf(),
+      ),
+      ([address]) => address,
+    );
+
+    const pendingExitsSet = new Set(eligiblePendingExits);
+
+    const nextPendingExitsList = Array.from(
+      filterIterable(nodeAddressSet, (address) => pendingExitsSet.has(address)),
+    );
+
+    if (compareIterables(pendingExitsList, nextPendingExitsList) !== 0) {
+      setNextPendingExitsList(nextPendingExitsList);
+    }
+
+    return () => {
+      setNextPendingExitsList = () => {};
+    };
+  }, [nodeAddressList, now, pendingExits, pendingExitsList]);
 
   return (
-    <ExpensiveEnsureOnlyPendingExits>
+    <NodeAddressListContext.Provider value={pendingExitsList}>
       {children}
-    </ExpensiveEnsureOnlyPendingExits>
+    </NodeAddressListContext.Provider>
   );
 };
 
-const ExpensiveEnsureOnlyPendingExits: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  // Somewhat expensive to evaluate this every second?
-  const now = React.useContext(Now);
-  const pendingExits = React.useContext(PendingExitsContext);
+/**
+ * PendingExitsSection is a component that displays the pending exits
+ * section including the header and the content table.
+ */
+const PendingExitsSection: React.FC = () => {
+  const pendingExitAddresses = React.useContext(NodeAddressListContext);
 
-  // We only want to consider undelegations that are ready
-  // We don't want to display anything that is not yet claimable.
-
-  const claimableUndelegations = filterIterable(
-    pendingExits.values(),
-    (pending) => pending.availableTime <= now,
-  );
-
-  if (claimableUndelegations.next().done) {
-    // This iterable doesn't contain anything
+  if (pendingExitAddresses.length <= 0) {
     return null;
   }
 
-  return children;
-};
-
-const PendingExitsSection: React.FC = () => {
   return (
     <CollapsableSection className="pending-exits">
       <CollapsableHeader>
-        <Unlock />
+        <PadlockSquare2 />
         <h2>
           <Text text="Validators you have delegated to have exited the Staking Table.  You can claim back your delegation now." />
         </h2>
@@ -79,36 +107,13 @@ const PendingExitsSection: React.FC = () => {
   );
 };
 
-function filterAllValidators(
-  allValidators: null | FullNodeSetSnapshot,
-  pendingExits: Map<`0x${string}`, PendingWithdrawal>,
-): null | FullNodeSetSnapshot {
-  if (!allValidators) {
-    return null;
-  }
-
-  return new FullNodeSetSnapshot(
-    allValidators.l1Block,
-    Array.from(
-      filterIterable(allValidators.nodes, (node) =>
-        pendingExits.has(node.addressText),
-      ),
-    ),
-  );
-}
-
+/**
+ * PendingExitsContent is a component that renders the table of pending exits.
+ */
 const PendingExitsContent: React.FC = () => {
-  const pendingExits = React.useContext(PendingExitsContext);
-  const allValidators = React.useContext(AllValidatorsContext);
-
-  // Implementation for the content of pending claims goes here
   return (
-    <AllValidatorsContext.Provider
-      value={filterAllValidators(allValidators, pendingExits)}
-    >
-      <ValidatorTableSortStateProvider>
-        <PendingExitsDelegationTable />
-      </ValidatorTableSortStateProvider>
-    </AllValidatorsContext.Provider>
+    <ValidatorTableSortStateProvider>
+      <PendingExitsDelegationTable />
+    </ValidatorTableSortStateProvider>
   );
 };

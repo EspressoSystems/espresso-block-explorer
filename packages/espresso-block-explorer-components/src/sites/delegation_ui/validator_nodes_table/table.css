@@ -70,22 +70,16 @@ table.all-validators-table {
   border-spacing: 0;
 }
 
-table.all-validators-table th svg.icon:nth-child(1) {
+table.all-validators-table th svg.sharp-icon {
   vertical-align: text-top;
-  padding-inline: 2px;
-  width: 12px;
-  height: 12px;
-}
-
-table.all-validators-table th svg.icon {
-  vertical-align: text-top;
-  width: 16px;
-  height: 16px;
   transition: transform 240ms ease-in-out;
   will-change: transform;
 }
 
-table.all-validators-table th.sortable[data-sort-column='1'] > div > svg.icon {
+table.all-validators-table
+  th.sortable[data-sort-column='1']
+  > div
+  > svg.sharp-icon {
   transform: rotate(180deg);
 }
 

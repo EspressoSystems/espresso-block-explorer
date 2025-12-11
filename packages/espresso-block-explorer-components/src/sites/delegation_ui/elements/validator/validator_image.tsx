@@ -1,8 +1,9 @@
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { filterIterable, lastIterable } from '@/functional/functional';
+import { walletAddressCodec } from '@/models/wallet_address';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
-import blockies from 'ethereum-blockies';
+import ethereumBlockiesBase64 from 'ethereum-blockies-base64';
 import React from 'react';
+import { NodeAddressContext } from '../../contexts/node_address_context';
 import { ValidatorNodeContext } from '../../contexts/validator_node_context';
 import './validator_image.css';
 
@@ -113,13 +114,11 @@ const ValidatorSources24x24: React.FC = () => {
  */
 export const ValidatorImage14x14: React.FC = () => {
   return (
-    <picture>
+    <picture className="validator-image i14x14">
       <ValidatorSources14x14 />
       <FallbackImageSource />
 
-      <ProvideValidatorAddress>
-        <FallbackBlockiesImage14x14 />
-      </ProvideValidatorAddress>
+      <FallbackBlockiesImage />
     </picture>
   );
 };
@@ -131,104 +130,42 @@ export const ValidatorImage14x14: React.FC = () => {
  */
 export const ValidatorImage24x24: React.FC = () => {
   return (
-    <picture>
+    <picture className="validator-image i24x24">
       <ValidatorSources24x24 />
       <FallbackImageSource />
-      <ProvideValidatorAddress>
-        <FallbackBlockiesImage24x24 />
-      </ProvideValidatorAddress>
+      <FallbackBlockiesImage />
     </picture>
   );
 };
 
-const Blockies14x14CacheContext = React.createContext<
-  Map<`0x${string}`, string>
->(new Map<`0x${string}`, string>());
-
-const Blockies24x24CacheContext = React.createContext<
-  Map<`0x${string}`, string>
->(new Map<`0x${string}`, string>());
-
-const ValidatorAddressContext = React.createContext<`0x${string}`>('0x');
-
-const ProvideValidatorAddress: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const validator = React.useContext(ValidatorNodeContext);
-  const addressText = hexArrayBufferCodec.encode(validator.address);
-
-  return (
-    <ValidatorAddressContext.Provider value={addressText}>
-      {children}
-    </ValidatorAddressContext.Provider>
-  );
-};
+const BlockiesCacheContext = React.createContext<Map<`0x${string}`, string>>(
+  new Map<`0x${string}`, string>(),
+);
 
 /**
- * FallbackBlockiesImage14x14 displays a blockies image as a fallback for
- * the 14x14 validator image.
+ * FallbackBlockiesImage displays a blockies image as a fallback for
+ * the validator image.
  */
-const FallbackBlockiesImage14x14: React.FC = () => {
-  const cache = React.useContext(Blockies14x14CacheContext);
-  const addressText = React.useContext(ValidatorAddressContext);
+const FallbackBlockiesImage: React.FC = () => {
+  const cache = React.useContext(BlockiesCacheContext);
+  const addressText = React.useContext(NodeAddressContext);
+  const lCaseAddressText = addressText.toLowerCase() as `0x${string}`;
 
   const dataURL = React.useMemo(() => {
-    if (!cache.has(addressText)) {
+    if (!cache.has(lCaseAddressText)) {
       cache.set(
-        addressText,
-        blockies
-          .create({
-            seed: addressText,
-            size: 14,
-            scale: window.devicePixelRatio,
-          })
-          .toDataURL(),
+        lCaseAddressText,
+        ethereumBlockiesBase64(lCaseAddressText.toLowerCase()),
       );
     }
 
-    return cache.get(addressText)!;
-  }, [addressText, cache]);
+    return cache.get(lCaseAddressText)!;
+  }, [lCaseAddressText, cache]);
 
   return (
     <img
-      className="validator-image i14x14"
       src={dataURL}
-      alt={addressText}
-      loading="lazy"
-    />
-  );
-};
-
-/**
- * FallbackBlockiesImage24x24 displays a blockies image as a fallback for
- * the 24x24 validator image.
- */
-const FallbackBlockiesImage24x24: React.FC = () => {
-  const cache = React.useContext(Blockies24x24CacheContext);
-  const addressText = React.useContext(ValidatorAddressContext);
-
-  const dataURL = React.useMemo(() => {
-    if (!cache.has(addressText)) {
-      cache.set(
-        addressText,
-        blockies
-          .create({
-            seed: addressText,
-            size: 24,
-            scale: window.devicePixelRatio,
-          })
-          .toDataURL(),
-      );
-    }
-
-    return cache.get(addressText)!;
-  }, [addressText, cache]);
-
-  return (
-    <img
-      className="validator-image i24x24"
-      src={dataURL}
-      alt={addressText}
+      alt={walletAddressCodec.decode(addressText).toString()}
       loading="lazy"
     />
   );

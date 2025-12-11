@@ -1,53 +1,43 @@
-import { DataContext } from '@/components/contexts/data_provider';
-import { PromiseResolver } from '@/components/data';
-import { neverPromise } from '@/functional/functional_async';
-import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
+import { mapIterable } from '@/functional/functional';
+import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import React from 'react';
-import { L1BlockIDContext } from './l1_block_id_context';
-import { L1ValidatorServiceContext } from './l1_validator_api_context';
+import { FullNodeSetSnapshotContext } from './full_node_set_snapshot_context';
 
 /**
  * AllValidatorsContext provides a React Context
  * for the current full validator set snapshot.
  */
-export const AllValidatorsContext =
-  React.createContext<null | FullNodeSetSnapshot>(null);
+export const AllValidatorsContext = React.createContext<
+  Map<`0x${string}`, NodeSetEntry>
+>(new Map());
 
 /**
- * RetrieveAllValidators is a React Component that retrieves
- * the current full validator set and provides it
- * via the AllValidatorsContext to its children.
+ * NodeAddressListContext provides a React Context for a list of validator
+ * addresses.
  */
-export const RetrieveAllValidators: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const l1DelegationAPI = React.useContext(L1ValidatorServiceContext);
-  const l1BlockID = React.useContext(L1BlockIDContext);
+export const NodeAddressListContext = React.createContext<`0x${string}`[]>([]);
 
-  const fullValidatorListPromise = !l1BlockID
-    ? neverPromise
-    : l1DelegationAPI.validatorsAll.snapshot(l1BlockID.hash);
+/**
+ * DeriveNodeSetFromFullNodeSetSnapshot is a React Component that
+ * derives the NodeAddressListContext and AllValidatorsContext
+ * from the FullNodeSetSnapshotContext and provides them to its descendants.
+ */
+export const DeriveNodeSetFromFullNodeSetSnapshot: React.FC<
+  React.PropsWithChildren
+> = ({ children }) => {
+  const snapshot = React.useContext(FullNodeSetSnapshotContext);
 
-  return (
-    <PromiseResolver promise={fullValidatorListPromise}>
-      <ResolveAllValidators>{children}</ResolveAllValidators>
-    </PromiseResolver>
+  const nodes = snapshot?.nodes ?? [];
+  const allValidators = new Map(
+    mapIterable(nodes, (node) => [node.addressText, node] as const),
   );
-};
+  const nodeAddressList = nodes.map((node) => node.addressText).toSorted();
 
-/**
- * ResolveAllValidators is a React Component that
- * resolves the full validator set snapshot from the DataContext
- * and provides it via the AllValidatorsContext to its children.
- */
-const ResolveAllValidators: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const data = (React.useContext(DataContext) ??
-    null) as null | FullNodeSetSnapshot;
   return (
-    <AllValidatorsContext.Provider value={data}>
-      {children}
-    </AllValidatorsContext.Provider>
+    <NodeAddressListContext.Provider value={nodeAddressList}>
+      <AllValidatorsContext.Provider value={allValidators}>
+        {children}
+      </AllValidatorsContext.Provider>
+    </NodeAddressListContext.Provider>
   );
 };

@@ -208,7 +208,12 @@ function applyNewEpoch(
     Array.from(
       mapIterable(
         update.nodes,
-        (address) => new ActiveNodeSetEntry(address, null, null),
+        (address) =>
+          new ActiveNodeSetEntry(
+            address,
+            Ratio.rational(0n, 0n),
+            Ratio.rational(0n, 0n),
+          ),
       ),
     ),
   );

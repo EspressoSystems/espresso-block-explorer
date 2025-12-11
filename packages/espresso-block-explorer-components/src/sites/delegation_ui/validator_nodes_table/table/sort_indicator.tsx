@@ -1,5 +1,5 @@
-import { ChevronDown } from '@/components/visual';
-import VerticalScroll from '@/components/visual/icons/feather/vertical-scroll';
+import ChevronDown from '@/components/visual/icons/sharp_line/chevron_down';
+import VerticalScroll from '@/components/visual/icons/sharp_line/vertical_scroll';
 import React from 'react';
 import {
   TableColumnSortByContext,
