@@ -60,6 +60,19 @@ export default [
     stateMutability: 'pure',
   },
   {
+    type: 'function',
+    name: 'totalClaimed',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
     type: 'event',
     name: 'RewardsClaimed',
     inputs: [

@@ -1,3 +1,4 @@
+import { breakpoint } from '@/assert/debugger';
 import { Config } from 'wagmi';
 import { estimateContractGas } from '../l1/estimate_contract_gas';
 import ClaimRewardsAbi from './reward_claim_abi';
@@ -22,13 +23,18 @@ export class RewardClaimContractGasEstimatorRemote implements RewardClaimContrac
     lifetimeRewards: bigint,
     authData: `0x${string}`,
   ): Promise<bigint> {
-    return estimateContractGas(this.config, {
-      account,
-      abi: ClaimRewardsAbi,
-      address: this.address,
-      chainId: this.chainID,
-      functionName: 'claimRewards',
-      args: [lifetimeRewards, authData],
-    });
+    try {
+      return await estimateContractGas(this.config, {
+        account,
+        abi: ClaimRewardsAbi,
+        address: this.address,
+        chainId: this.chainID,
+        functionName: 'claimRewards',
+        args: [lifetimeRewards, authData],
+      });
+    } catch (error) {
+      breakpoint();
+      throw error;
+    }
   }
 }

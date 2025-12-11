@@ -6,6 +6,7 @@ import { DeriveCurrentDelegations } from './contexts/current_delegations_context
 import { ProvideESPBalance } from './contexts/esp_balance_context';
 import { ProvideEspressoRefreshTimestampContext } from './contexts/espresso_refresh_timestamp_context';
 import { ProvideL1RefreshTimestampContext } from './contexts/l1_refresh_timestamp_context';
+import { RetrieveLightClientFinalizedState } from './contexts/light_client_finalized_state_context';
 import { DerivePendingExits } from './contexts/pending_exits_context';
 import { DerivePendingUndelegations } from './contexts/pending_undelegations_context';
 import { DeriveRank } from './contexts/rank_map_context';
@@ -46,23 +47,25 @@ const ProvideContexts: React.FC<React.PropsWithChildren> = ({ children }) => {
           <ProvideESPBalance>
             <ProvideDelegationUILocalState>
               <RetrieveLifetimeClaimedRewards>
-                <RetrieveEspressoRewardClaimInput>
-                  <DeriveTotalStake>
-                    <DeriveConsensusSet>
-                      <DeriveRank>
-                        <DeriveCurrentDelegations>
-                          <DerivePendingUndelegations>
-                            <DerivePendingExits>
-                              <ProvideValidatorSelection>
-                                {children}
-                              </ProvideValidatorSelection>
-                            </DerivePendingExits>
-                          </DerivePendingUndelegations>
-                        </DeriveCurrentDelegations>
-                      </DeriveRank>
-                    </DeriveConsensusSet>
-                  </DeriveTotalStake>
-                </RetrieveEspressoRewardClaimInput>
+                <RetrieveLightClientFinalizedState>
+                  <RetrieveEspressoRewardClaimInput>
+                    <DeriveTotalStake>
+                      <DeriveConsensusSet>
+                        <DeriveRank>
+                          <DeriveCurrentDelegations>
+                            <DerivePendingUndelegations>
+                              <DerivePendingExits>
+                                <ProvideValidatorSelection>
+                                  {children}
+                                </ProvideValidatorSelection>
+                              </DerivePendingExits>
+                            </DerivePendingUndelegations>
+                          </DeriveCurrentDelegations>
+                        </DeriveRank>
+                      </DeriveConsensusSet>
+                    </DeriveTotalStake>
+                  </RetrieveEspressoRewardClaimInput>
+                </RetrieveLightClientFinalizedState>
               </RetrieveLifetimeClaimedRewards>
             </ProvideDelegationUILocalState>
           </ProvideESPBalance>

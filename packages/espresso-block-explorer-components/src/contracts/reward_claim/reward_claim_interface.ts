@@ -8,6 +8,7 @@ export interface RewardClaimContractReadOnly {
   readonly address: `0x${string}`;
   // Contract Addresses
 
+  totalClaimed(): Promise<bigint>;
   claimedRewards(address: `0x${string}`): Promise<bigint>;
   getVersion(): Promise<readonly [number, number, number]>;
 }

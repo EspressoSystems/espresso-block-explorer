@@ -6,8 +6,8 @@ import { HeightAndAddress } from '@/service/hotshot_query_service/cappuccino/rew
 import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
 import { CappuccinoHotShotQueryServiceAPIContext } from 'pages';
 import React from 'react';
-import { EspressoBlockHeightContext } from './espresso_block_height_context';
 import { EspressoRefreshTimestampContext } from './espresso_refresh_timestamp_context';
+import { LightClientFinalizedStateContext } from './light_client_finalized_state_context';
 
 /**
  * EspressoRewardClaimInputContext provides a React Context
@@ -25,25 +25,33 @@ export const RetrieveEspressoRewardClaimInput: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   // We'll refresh every time this timestamp updates
+  const lightClientFinalizedState = React.useContext(
+    LightClientFinalizedStateContext,
+  );
   const refreshTimestamp = React.useContext(EspressoRefreshTimestampContext);
-  const espressoHeight = React.useContext(EspressoBlockHeightContext);
   const accountAddress = React.useContext(RainbowKitAccountAddressContext);
   const hotShotQueryService = React.useContext(
     CappuccinoHotShotQueryServiceAPIContext,
   );
 
+  const finalizedStateBlockHeight =
+    lightClientFinalizedState?.blockHeight ?? 0n;
+
   const promise = React.useMemo(
     () =>
-      !espressoHeight || !accountAddress || !hotShotQueryService
+      !lightClientFinalizedState || !accountAddress || !hotShotQueryService
         ? neverPromise
         : hotShotQueryService.rewardState.getRewardClaimInput(
-            new HeightAndAddress(Number(espressoHeight), accountAddress),
+            new HeightAndAddress(
+              Number(lightClientFinalizedState.blockHeight),
+              accountAddress,
+            ),
           ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       refreshTimestamp,
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      !!espressoHeight && espressoHeight > 0n,
+      !!finalizedStateBlockHeight && finalizedStateBlockHeight > 0n,
       accountAddress,
       hotShotQueryService,
     ],

@@ -6,6 +6,7 @@ import { Environment } from '@/models/config/environment/environment';
 import React from 'react';
 import { MockESPTokenContract } from './esp_token_contract';
 import { MockL1Methods, ProvideAutoAdvanceL1Methods } from './l1_methods';
+import { MockLightClientV2Contract } from './light_client_contract';
 import { MockRainbowKit } from './rainbow_kit';
 import { MockRewardClaimContract } from './reward_claim_contract';
 import { MockStakeTableV2Contract } from './stake_table_v2_contract';
@@ -43,7 +44,9 @@ const OtherMocks: React.FC<React.PropsWithChildren> = ({ children }) => {
       <ProvideAutoAdvanceL1Methods>
         <MockESPTokenContract>
           <MockStakeTableV2Contract>
-            <MockRewardClaimContract>{children}</MockRewardClaimContract>
+            <MockRewardClaimContract>
+              <MockLightClientV2Contract>{children}</MockLightClientV2Contract>
+            </MockRewardClaimContract>
           </MockStakeTableV2Contract>
         </MockESPTokenContract>
       </ProvideAutoAdvanceL1Methods>
