@@ -80,9 +80,9 @@
   --icon--fill-color: var(--color--brown--3);
 }
 
-.search-node-container svg.icon {
+.search-node-container svg.sharp-icon {
   position: absolute;
-  top: 4px;
+  top: 8px;
   left: 8px;
   width: 14px;
   pointer-events: none;

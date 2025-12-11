@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/components/higher_order';
 import Text from '@/components/text/text';
-import ChevronDown from '@/components/visual/icons/feather/chevron_down';
+import ChevronDown from '@/components/visual/icons/sharp_line/chevron_down';
 import React from 'react';
 import './collapsable_section.css';
 import {

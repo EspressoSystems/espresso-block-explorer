@@ -20,16 +20,21 @@
   color: var(--color--brown--3);
 }
 
+.bbtn.connect-wallet svg.sharp-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.bbtn.connect-wallet svg.sharp-icon.rotate-90 {
+  transform: rotateZ(-90deg);
+}
+
 @media screen and (max-width: 1280px) {
 }
 
 @media screen and (max-width: 834px) {
   .bbtn.connect-wallet .disconnect-label {
     display: none;
-  }
-  .bbtn.connect-wallet svg.icon {
-    width: 14px;
-    height: 14px;
   }
 }
 

@@ -4,7 +4,7 @@ import PercentageText from '@/components/text/percentage_text';
 import Text from '@/components/text/text';
 import WalletAddressText from '@/components/text/wallet_address_text';
 import { Check } from '@/components/visual';
-import ExternalLink from '@/components/visual/icons/feather/external_link';
+import LinkShare2 from '@/components/visual/icons/sharp_line/link_share_2';
 import { filterIterable } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import WalletAddress from '@/models/wallet_address/wallet_address';
@@ -300,7 +300,7 @@ const WebsiteLink: React.FC<WebsiteLinkProps> = ({ href }) => {
     <a href={href.toString()} target="_blank" rel="noopener noreferrer">
       <Text text="Visit URL" />
       &nbsp;
-      <ExternalLink />
+      <LinkShare2 />
     </a>
   );
 };

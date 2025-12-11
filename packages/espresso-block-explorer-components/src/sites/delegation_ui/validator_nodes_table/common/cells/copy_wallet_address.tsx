@@ -1,8 +1,10 @@
+import { addClassToClassName } from '@/components/higher_order';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
 import CopyButton from './copy_button';
 
 export interface CopyWalletAddressProps {
+  className?: string;
   value: WalletAddress;
   children: React.ReactNode | React.ReactNode[];
 }
@@ -13,7 +15,9 @@ export interface CopyWalletAddressProps {
  */
 const CopyWalletAddress: React.FC<CopyWalletAddressProps> = (props) => {
   return (
-    <span>
+    <span
+      className={addClassToClassName(props.className, 'copy-wallet-address')}
+    >
       {props.children}
       <CopyButton content={props.value.toString()} />
     </span>

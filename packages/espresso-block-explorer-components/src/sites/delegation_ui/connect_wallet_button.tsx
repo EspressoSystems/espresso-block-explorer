@@ -4,8 +4,8 @@ import {
 } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/text';
 import WalletAddressText from '@/components/text/wallet_address_text';
-import LogOut from '@/components/visual/icons/feather/logout';
-import Plus from '@/components/visual/icons/feather/plus';
+import Add1 from '@/components/visual/icons/sharp_line/add_1';
+import DownloadTray from '@/components/visual/icons/sharp_line/download_tray';
 import { hexArrayBufferCodec } from '@/convert/codec';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
@@ -36,7 +36,7 @@ export const ConnectWalletButton: React.FC = () => {
           <span className="disconnect-label">
             <Text text="Disconnect" />
           </span>
-          <LogOut />
+          <DownloadTray className="rotate-90" />
         </ButtonLarge>
       </span>
     );
@@ -44,7 +44,7 @@ export const ConnectWalletButton: React.FC = () => {
 
   return (
     <ButtonLarge className="connect-wallet" onClick={modals.openConnectModal}>
-      <Plus />
+      <Add1 />
       <Text text="Connect Wallet" />
     </ButtonLarge>
   );

@@ -27,6 +27,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^6.1.1",
     "eslint-plugin-storybook": "^10.1.2",
+    "ethereum-blockies-base64": "^1.0.2",
     "globals": "^16",
     "jsdom": "^27.0.0",
     "prettier": "^3.1.1",

@@ -1,5 +1,5 @@
 import { TextEditing } from '@/components/input/text/text';
-import SearchGlass from '@/components/visual/icons/search_glass';
+import MagnifyingGlass from '@/components/visual/icons/sharp_line/magnifying_glass';
 import React from 'react';
 import {
   SearchFilterContext,
@@ -22,7 +22,7 @@ export const SearchValidator: React.FC = () => {
         onChange={(_event, searchTerm) => setSearchTerm(searchTerm)}
         placeholder="Search Validator"
       />
-      <SearchGlass />
+      <MagnifyingGlass />
     </div>
   );
 };
