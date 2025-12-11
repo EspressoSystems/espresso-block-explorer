@@ -3,4 +3,4 @@ import { NodeSetEntry } from '../../../../../../../../../../src/service/espresso
 /**
  * applySearchTermNodeFilter creates a filter function based on the search term.
  */
-export declare function applySearchTermNodeFilter(searchTerm: TextEditingValue): (node: NodeSetEntry) => boolean;
+export declare function applySearchTermNodeFilter(searchTerm: TextEditingValue, allValidators: Map<`0x${string}`, NodeSetEntry>): (address: `0x${string}`) => boolean;

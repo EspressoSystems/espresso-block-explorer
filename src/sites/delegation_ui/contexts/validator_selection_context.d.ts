@@ -6,8 +6,8 @@ export declare class NoValidatorSelected extends ValidatorSelectionEnum {
     toJSON(): string;
 }
 export declare class ValidatorSelected extends ValidatorSelectionEnum {
-    readonly validatorAddress: ArrayBuffer;
-    constructor(validatorAddress: ArrayBuffer);
+    readonly validatorAddress: `0x${string}`;
+    constructor(validatorAddress: `0x${string}`);
     toJSON(): {
         ValidatorSelected: `0x${string}`;
     };
@@ -17,36 +17,36 @@ export declare class ClaimRewards extends ValidatorSelectionEnum {
     toJSON(): string;
 }
 export declare class ValidatorConfirmed extends ValidatorSelectionEnum {
-    readonly validatorAddress: ArrayBuffer;
-    constructor(validatorAddress: ArrayBuffer);
+    readonly validatorAddress: `0x${string}`;
+    constructor(validatorAddress: `0x${string}`);
     toJSON(): {
         ValidatorConfirmed: `0x${string}`;
     };
 }
 export declare class ValidatorConfirmedStake extends ValidatorSelectionEnum {
-    readonly validatorAddress: ArrayBuffer;
-    constructor(validatorAddress: ArrayBuffer);
+    readonly validatorAddress: `0x${string}`;
+    constructor(validatorAddress: `0x${string}`);
     toJSON(): {
         ValidatorConfirmedStake: `0x${string}`;
     };
 }
 export declare class ValidatorConfirmedUndelegate extends ValidatorSelectionEnum {
-    readonly validatorAddress: ArrayBuffer;
-    constructor(validatorAddress: ArrayBuffer);
+    readonly validatorAddress: `0x${string}`;
+    constructor(validatorAddress: `0x${string}`);
     toJSON(): {
         ValidatorConfirmedUndelegate: `0x${string}`;
     };
 }
 export declare class ValidatorConfirmedUndelegateWithdraw extends ValidatorSelectionEnum {
-    readonly validatorAddress: ArrayBuffer;
-    constructor(validatorAddress: ArrayBuffer);
+    readonly validatorAddress: `0x${string}`;
+    constructor(validatorAddress: `0x${string}`);
     toJSON(): {
         ValidatorConfirmedUndelegateWithdraw: `0x${string}`;
     };
 }
 export declare class ValidatorConfirmedExitWithdraw extends ValidatorSelectionEnum {
-    readonly validatorAddress: ArrayBuffer;
-    constructor(validatorAddress: ArrayBuffer);
+    readonly validatorAddress: `0x${string}`;
+    constructor(validatorAddress: `0x${string}`);
     toJSON(): {
         ValidatorConfirmedExitWithdraw: `0x${string}`;
     };

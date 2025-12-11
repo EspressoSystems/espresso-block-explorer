@@ -5,3 +5,9 @@ import { default as React } from 'react';
  * for a single validator node entry.
  */
 export declare const ValidatorNodeContext: React.Context<NodeSetEntry>;
+/**
+ * ProvideValidatorNodeContext is a React Component that
+ * provides the ValidatorNodeContext for its children
+ * by looking up the node address in the AllValidatorsContext.
+ */
+export declare const ProvideValidatorNodeContext: React.FC<React.PropsWithChildren>;

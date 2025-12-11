@@ -1,6 +1,7 @@
 import { default as WalletAddress } from '../../../../../../../../../../../../../src/models/wallet_address/wallet_address';
 import { default as React } from 'react';
 export interface CopyWalletAddressProps {
+    className?: string;
     value: WalletAddress;
     children: React.ReactNode | React.ReactNode[];
 }
