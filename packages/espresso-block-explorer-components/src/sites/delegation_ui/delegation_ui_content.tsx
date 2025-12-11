@@ -4,8 +4,9 @@ import {
   RainbowKitModalContext,
 } from '@/components/rainbowkit';
 import Text from '@/components/text/text';
-import Plus from '@/components/visual/icons/feather/plus';
+import Add1 from '@/components/visual/icons/sharp_line/add_1';
 import {
+  compareIterables,
   filterIterable,
   mapIterable,
   takeIterable,
@@ -222,19 +223,43 @@ const ApplyFiltersToSnapshot: React.FC<React.PropsWithChildren> = ({
   const section = React.useContext(CurrentSectionContext);
   const searchTerm = React.useContext(SearchFilterContext);
   const showTop100 = React.useContext(OnlyShowTop100Context);
+  const [filteredList, setFilteredList] = React.useState<`0x${string}`[]>([]);
 
-  const filteredList = React.useMemo(
-    () =>
-      applySectionFilter(
-        nodeList,
-        allValidators,
-        walletSnapshot,
-        section,
-        showTop100,
-        searchTerm,
-      ),
-    [nodeList, allValidators, walletSnapshot, section, showTop100, searchTerm],
-  );
+  // The process of filtering the list computes a new array every time, which
+  // is expected.  If we were to pass this naively into a context, the
+  // downstream consumers of the context would be revaluated causing a lot
+  // of unnecessary component re-evaluations.
+  //
+  // To avoid this, we compare the filtered state of the List to the previous
+  // filtered state, and only update the state if it has changed.
+  React.useEffect(() => {
+    let setNextFilteredList = setFilteredList;
+    const nextFilteredList = applySectionFilter(
+      nodeList,
+      allValidators,
+      walletSnapshot,
+      section,
+      showTop100,
+      searchTerm,
+    );
+
+    // We only want to update the filtered list if it has changed
+    if (compareIterables(filteredList, nextFilteredList) !== 0) {
+      setNextFilteredList(nextFilteredList);
+    }
+
+    return () => {
+      setNextFilteredList = () => {};
+    };
+  }, [
+    nodeList,
+    allValidators,
+    walletSnapshot,
+    section,
+    showTop100,
+    searchTerm,
+    filteredList,
+  ]);
 
   return (
     <NodeAddressListContext.Provider value={filteredList}>
@@ -273,7 +298,7 @@ const DelegateButton: React.FC = () => {
   if (!address || rainbowKtiModalControls.connectModalOpen) {
     return (
       <ButtonLarge onClick={rainbowKtiModalControls.openConnectModal}>
-        <Plus />
+        <Add1 />
         <Text text="Delegate" />
       </ButtonLarge>
     );
@@ -281,7 +306,7 @@ const DelegateButton: React.FC = () => {
 
   return (
     <ButtonLarge onClick={modalControls.open}>
-      <Plus />
+      <Add1 />
       <Text text="Delegate" />
     </ButtonLarge>
   );

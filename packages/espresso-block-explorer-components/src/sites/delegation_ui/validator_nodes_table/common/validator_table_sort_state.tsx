@@ -1,5 +1,9 @@
 import UnimplementedError from '@/errors/unimplemented_error';
-import { compareArrayBuffer, mapIterable } from '@/functional/functional';
+import {
+  compareArrayBuffer,
+  compareIterables,
+  mapIterable,
+} from '@/functional/functional';
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import {
@@ -274,15 +278,49 @@ export const ValidatorTableSortStateProvider: React.FC<
   const rankMap = React.useContext(RankMapContext);
   const consensusMap = React.useContext(ConsensusMapContext);
 
-  // We need to sort the Validators according to the Table State
-  const sortedValues = sortWithState(
-    nodeAddressList,
+  const [sortedValues, setSortedValues] = React.useState<`0x${string}`[]>([]);
+
+  // The process of sorting the list computes a new array every time, which
+  // is expected.  If we were to pass this naively into a context, the
+  // downstream consumers of the context would be revaluated causing a lot
+  // of unnecessary component re-evaluations.
+  //
+  // To avoid this, we compare the sorted state of the List to the previous
+  // sorted state, and only update the state if it has changed.
+  React.useEffect(() => {
+    let setNextSortedValues = setSortedValues;
+    const nextSortedValues = sortWithState(
+      nodeAddressList,
+      allValidators,
+      tableState,
+      rankMap,
+      consensusMap,
+    );
+
+    // Compare the new sorted values with the current ones, if they are not
+    // different, do not update the state to avoid unnecessary re-evaluations.
+
+    if (
+      compareIterables(nextSortedValues, sortedValues, (a, b) =>
+        a.localeCompare(b),
+      ) !== 0
+    ) {
+      setNextSortedValues(nextSortedValues);
+    }
+
+    return () => {
+      setNextSortedValues = () => {};
+    };
+  }, [
     allValidators,
     tableState,
     rankMap,
     consensusMap,
-  );
+    nodeAddressList,
+    sortedValues,
+  ]);
 
+  // We need to sort the Validators according to the Table State
   return (
     <NodeAddressListContext.Provider value={sortedValues}>
       <TableSortStateContext.Provider value={tableState}>
