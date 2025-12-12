@@ -159,7 +159,7 @@ declare const _default: readonly [{
         readonly type: "uint256";
         readonly internalType: "uint256";
     }, {
-        readonly name: "_initialOwner";
+        readonly name: "_timelock";
         readonly type: "address";
         readonly internalType: "address";
     }];
@@ -182,7 +182,7 @@ declare const _default: readonly [{
     readonly outputs: readonly [{
         readonly name: "";
         readonly type: "address";
-        readonly internalType: "contract LightClientV2";
+        readonly internalType: "contract ILightClient";
     }];
     readonly stateMutability: "view";
 }, {
@@ -536,16 +536,6 @@ declare const _default: readonly [{
     readonly anonymous: false;
 }, {
     readonly type: "event";
-    readonly name: "Upgrade";
-    readonly inputs: readonly [{
-        readonly name: "implementation";
-        readonly type: "address";
-        readonly indexed: false;
-        readonly internalType: "address";
-    }];
-    readonly anonymous: false;
-}, {
-    readonly type: "event";
     readonly name: "Upgraded";
     readonly inputs: readonly [{
         readonly name: "implementation";
@@ -644,6 +634,10 @@ declare const _default: readonly [{
     readonly inputs: readonly [];
 }, {
     readonly type: "error";
+    readonly name: "BN254PairingProdFailed";
+    readonly inputs: readonly [];
+}, {
+    readonly type: "error";
     readonly name: "BlsKeyAlreadyUsed";
     readonly inputs: readonly [];
 }, {
@@ -657,6 +651,10 @@ declare const _default: readonly [{
 }, {
     readonly type: "error";
     readonly name: "ERC1967NonPayable";
+    readonly inputs: readonly [];
+}, {
+    readonly type: "error";
+    readonly name: "ExitEscrowPeriodInvalid";
     readonly inputs: readonly [];
 }, {
     readonly type: "error";
@@ -685,6 +683,10 @@ declare const _default: readonly [{
 }, {
     readonly type: "error";
     readonly name: "InvalidCommission";
+    readonly inputs: readonly [];
+}, {
+    readonly type: "error";
+    readonly name: "InvalidG1";
     readonly inputs: readonly [];
 }, {
     readonly type: "error";
@@ -718,6 +720,14 @@ declare const _default: readonly [{
         readonly type: "address";
         readonly internalType: "address";
     }];
+}, {
+    readonly type: "error";
+    readonly name: "OwnershipCannotBeRenounced";
+    readonly inputs: readonly [];
+}, {
+    readonly type: "error";
+    readonly name: "PowPrecompileFailed";
+    readonly inputs: readonly [];
 }, {
     readonly type: "error";
     readonly name: "PrematureWithdrawal";

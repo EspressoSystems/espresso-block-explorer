@@ -56,6 +56,7 @@ export declare class MockRewardClaimContractImpl implements RewardClaimContract 
     claimedRewards(address: `0x${string}`): Promise<bigint>;
     getVersion(): Promise<readonly [number, number, number]>;
     claimRewards(lifetimeRewards: bigint, authData: `0x${string}`): Promise<`0x${string}`>;
+    totalClaimed(): Promise<bigint>;
 }
 /**
  * MockRewardClaimContract is a React component that provides

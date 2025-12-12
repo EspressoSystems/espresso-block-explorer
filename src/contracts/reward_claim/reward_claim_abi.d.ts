@@ -45,6 +45,16 @@ declare const _default: readonly [{
     }];
     readonly stateMutability: "pure";
 }, {
+    readonly type: "function";
+    readonly name: "totalClaimed";
+    readonly inputs: readonly [];
+    readonly outputs: readonly [{
+        readonly name: "";
+        readonly type: "uint256";
+        readonly internalType: "uint256";
+    }];
+    readonly stateMutability: "view";
+}, {
     readonly type: "event";
     readonly name: "RewardsClaimed";
     readonly inputs: readonly [{

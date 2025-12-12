@@ -9,4 +9,5 @@ export interface EspressoAddresses {
     espTokenContractAddress: `0x${string}` | null;
     stakeTableContractAddress: `0x${string}` | null;
     rewardClaimContractAddress: `0x${string}` | null;
+    lightClientContractAddress: `0x${string}` | null;
 }

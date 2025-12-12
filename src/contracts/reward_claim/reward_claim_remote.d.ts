@@ -5,7 +5,10 @@ export declare class RewardClaimRemote implements RewardClaimContract {
     private readonly chainID;
     readonly address: `0x${string}`;
     constructor(config: Config, chainID: number, address: `0x${string}`);
+    private readContract;
+    totalClaimed(): Promise<bigint>;
     claimedRewards(address: `0x${string}`): Promise<bigint>;
     getVersion(): Promise<readonly [number, number, number]>;
+    private writeContract;
     claimRewards(lifetimeRewards: bigint, authData: `0x${string}`): Promise<`0x${string}`>;
 }

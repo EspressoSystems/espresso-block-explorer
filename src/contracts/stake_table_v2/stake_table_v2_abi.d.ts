@@ -14,6 +14,46 @@ declare const _default: readonly [{
     readonly stateMutability: "view";
 }, {
     readonly type: "function";
+    readonly name: "MAX_COMMISSION_BPS";
+    readonly inputs: readonly [];
+    readonly outputs: readonly [{
+        readonly name: "";
+        readonly type: "uint16";
+        readonly internalType: "uint16";
+    }];
+    readonly stateMutability: "view";
+}, {
+    readonly type: "function";
+    readonly name: "MAX_EXIT_ESCROW_PERIOD";
+    readonly inputs: readonly [];
+    readonly outputs: readonly [{
+        readonly name: "";
+        readonly type: "uint64";
+        readonly internalType: "uint64";
+    }];
+    readonly stateMutability: "view";
+}, {
+    readonly type: "function";
+    readonly name: "MAX_METADATA_URI_LENGTH";
+    readonly inputs: readonly [];
+    readonly outputs: readonly [{
+        readonly name: "";
+        readonly type: "uint256";
+        readonly internalType: "uint256";
+    }];
+    readonly stateMutability: "view";
+}, {
+    readonly type: "function";
+    readonly name: "MIN_EXIT_ESCROW_PERIOD";
+    readonly inputs: readonly [];
+    readonly outputs: readonly [{
+        readonly name: "";
+        readonly type: "uint64";
+        readonly internalType: "uint64";
+    }];
+    readonly stateMutability: "view";
+}, {
+    readonly type: "function";
     readonly name: "PAUSER_ROLE";
     readonly inputs: readonly [];
     readonly outputs: readonly [{
@@ -189,6 +229,32 @@ declare const _default: readonly [{
     readonly stateMutability: "view";
 }, {
     readonly type: "function";
+    readonly name: "getUndelegation";
+    readonly inputs: readonly [{
+        readonly name: "validator";
+        readonly type: "address";
+        readonly internalType: "address";
+    }, {
+        readonly name: "delegator";
+        readonly type: "address";
+        readonly internalType: "address";
+    }];
+    readonly outputs: readonly [{
+        readonly name: "id";
+        readonly type: "uint64";
+        readonly internalType: "uint64";
+    }, {
+        readonly name: "amount";
+        readonly type: "uint256";
+        readonly internalType: "uint256";
+    }, {
+        readonly name: "unlocksAt";
+        readonly type: "uint256";
+        readonly internalType: "uint256";
+    }];
+    readonly stateMutability: "view";
+}, {
+    readonly type: "function";
     readonly name: "getVersion";
     readonly inputs: readonly [];
     readonly outputs: readonly [{
@@ -323,6 +389,16 @@ declare const _default: readonly [{
 }, {
     readonly type: "function";
     readonly name: "minCommissionIncreaseInterval";
+    readonly inputs: readonly [];
+    readonly outputs: readonly [{
+        readonly name: "";
+        readonly type: "uint256";
+        readonly internalType: "uint256";
+    }];
+    readonly stateMutability: "view";
+}, {
+    readonly type: "function";
+    readonly name: "minDelegateAmount";
     readonly inputs: readonly [];
     readonly outputs: readonly [{
         readonly name: "";
@@ -481,6 +557,10 @@ declare const _default: readonly [{
         readonly name: "commission";
         readonly type: "uint16";
         readonly internalType: "uint16";
+    }, {
+        readonly name: "metadataUri";
+        readonly type: "string";
+        readonly internalType: "string";
     }];
     readonly outputs: readonly [];
     readonly stateMutability: "nonpayable";
@@ -547,6 +627,16 @@ declare const _default: readonly [{
     readonly name: "setMinCommissionUpdateInterval";
     readonly inputs: readonly [{
         readonly name: "newInterval";
+        readonly type: "uint256";
+        readonly internalType: "uint256";
+    }];
+    readonly outputs: readonly [];
+    readonly stateMutability: "nonpayable";
+}, {
+    readonly type: "function";
+    readonly name: "setMinDelegateAmount";
+    readonly inputs: readonly [{
+        readonly name: "newMinDelegateAmount";
         readonly type: "uint256";
         readonly internalType: "uint256";
     }];
@@ -760,6 +850,16 @@ declare const _default: readonly [{
     readonly stateMutability: "nonpayable";
 }, {
     readonly type: "function";
+    readonly name: "updateMetadataUri";
+    readonly inputs: readonly [{
+        readonly name: "metadataUri";
+        readonly type: "string";
+        readonly internalType: "string";
+    }];
+    readonly outputs: readonly [];
+    readonly stateMutability: "nonpayable";
+}, {
+    readonly type: "function";
     readonly name: "upgradeToAndCall";
     readonly inputs: readonly [{
         readonly name: "newImplementation";
@@ -772,6 +872,16 @@ declare const _default: readonly [{
     }];
     readonly outputs: readonly [];
     readonly stateMutability: "payable";
+}, {
+    readonly type: "function";
+    readonly name: "validateMetadataUri";
+    readonly inputs: readonly [{
+        readonly name: "metadataUri";
+        readonly type: "string";
+        readonly internalType: "string";
+    }];
+    readonly outputs: readonly [];
+    readonly stateMutability: "pure";
 }, {
     readonly type: "function";
     readonly name: "validatorExits";
@@ -992,9 +1102,34 @@ declare const _default: readonly [{
     readonly anonymous: false;
 }, {
     readonly type: "event";
+    readonly name: "MetadataUriUpdated";
+    readonly inputs: readonly [{
+        readonly name: "validator";
+        readonly type: "address";
+        readonly indexed: true;
+        readonly internalType: "address";
+    }, {
+        readonly name: "metadataUri";
+        readonly type: "string";
+        readonly indexed: false;
+        readonly internalType: "string";
+    }];
+    readonly anonymous: false;
+}, {
+    readonly type: "event";
     readonly name: "MinCommissionUpdateIntervalUpdated";
     readonly inputs: readonly [{
         readonly name: "newInterval";
+        readonly type: "uint256";
+        readonly indexed: false;
+        readonly internalType: "uint256";
+    }];
+    readonly anonymous: false;
+}, {
+    readonly type: "event";
+    readonly name: "MinDelegateAmountUpdated";
+    readonly inputs: readonly [{
+        readonly name: "newMinDelegateAmount";
         readonly type: "uint256";
         readonly indexed: false;
         readonly internalType: "uint256";
@@ -1107,6 +1242,36 @@ declare const _default: readonly [{
     readonly anonymous: false;
 }, {
     readonly type: "event";
+    readonly name: "UndelegatedV2";
+    readonly inputs: readonly [{
+        readonly name: "delegator";
+        readonly type: "address";
+        readonly indexed: true;
+        readonly internalType: "address";
+    }, {
+        readonly name: "validator";
+        readonly type: "address";
+        readonly indexed: true;
+        readonly internalType: "address";
+    }, {
+        readonly name: "undelegationId";
+        readonly type: "uint64";
+        readonly indexed: true;
+        readonly internalType: "uint64";
+    }, {
+        readonly name: "amount";
+        readonly type: "uint256";
+        readonly indexed: false;
+        readonly internalType: "uint256";
+    }, {
+        readonly name: "unlocksAt";
+        readonly type: "uint256";
+        readonly indexed: false;
+        readonly internalType: "uint256";
+    }];
+    readonly anonymous: false;
+}, {
+    readonly type: "event";
     readonly name: "Unpaused";
     readonly inputs: readonly [{
         readonly name: "account";
@@ -1133,6 +1298,41 @@ declare const _default: readonly [{
         readonly type: "address";
         readonly indexed: true;
         readonly internalType: "address";
+    }];
+    readonly anonymous: false;
+}, {
+    readonly type: "event";
+    readonly name: "ValidatorExitClaimed";
+    readonly inputs: readonly [{
+        readonly name: "delegator";
+        readonly type: "address";
+        readonly indexed: true;
+        readonly internalType: "address";
+    }, {
+        readonly name: "validator";
+        readonly type: "address";
+        readonly indexed: true;
+        readonly internalType: "address";
+    }, {
+        readonly name: "amount";
+        readonly type: "uint256";
+        readonly indexed: false;
+        readonly internalType: "uint256";
+    }];
+    readonly anonymous: false;
+}, {
+    readonly type: "event";
+    readonly name: "ValidatorExitV2";
+    readonly inputs: readonly [{
+        readonly name: "validator";
+        readonly type: "address";
+        readonly indexed: true;
+        readonly internalType: "address";
+    }, {
+        readonly name: "unlocksAt";
+        readonly type: "uint256";
+        readonly indexed: false;
+        readonly internalType: "uint256";
     }];
     readonly anonymous: false;
 }, {
@@ -1254,6 +1454,11 @@ declare const _default: readonly [{
         readonly type: "bytes";
         readonly indexed: false;
         readonly internalType: "bytes";
+    }, {
+        readonly name: "metadataUri";
+        readonly type: "string";
+        readonly indexed: false;
+        readonly internalType: "string";
     }];
     readonly anonymous: false;
 }, {
@@ -1264,6 +1469,31 @@ declare const _default: readonly [{
         readonly type: "address";
         readonly indexed: true;
         readonly internalType: "address";
+    }, {
+        readonly name: "amount";
+        readonly type: "uint256";
+        readonly indexed: false;
+        readonly internalType: "uint256";
+    }];
+    readonly anonymous: false;
+}, {
+    readonly type: "event";
+    readonly name: "WithdrawalClaimed";
+    readonly inputs: readonly [{
+        readonly name: "delegator";
+        readonly type: "address";
+        readonly indexed: true;
+        readonly internalType: "address";
+    }, {
+        readonly name: "validator";
+        readonly type: "address";
+        readonly indexed: true;
+        readonly internalType: "address";
+    }, {
+        readonly name: "undelegationId";
+        readonly type: "uint64";
+        readonly indexed: true;
+        readonly internalType: "uint64";
     }, {
         readonly name: "amount";
         readonly type: "uint256";
@@ -1326,6 +1556,18 @@ declare const _default: readonly [{
 }, {
     readonly type: "error";
     readonly name: "CommissionUpdateTooSoon";
+    readonly inputs: readonly [];
+}, {
+    readonly type: "error";
+    readonly name: "DefaultAdminCannotBeRenounced";
+    readonly inputs: readonly [];
+}, {
+    readonly type: "error";
+    readonly name: "DefaultAdminCannotBeRevoked";
+    readonly inputs: readonly [];
+}, {
+    readonly type: "error";
+    readonly name: "DelegateAmountTooSmall";
     readonly inputs: readonly [];
 }, {
     readonly type: "error";
@@ -1397,6 +1639,10 @@ declare const _default: readonly [{
     readonly inputs: readonly [];
 }, {
     readonly type: "error";
+    readonly name: "InvalidMetadataUriLength";
+    readonly inputs: readonly [];
+}, {
+    readonly type: "error";
     readonly name: "InvalidRateLimitParameters";
     readonly inputs: readonly [];
 }, {
@@ -1406,6 +1652,10 @@ declare const _default: readonly [{
 }, {
     readonly type: "error";
     readonly name: "InvalidSchnorrVK";
+    readonly inputs: readonly [];
+}, {
+    readonly type: "error";
+    readonly name: "NoUndelegationFound";
     readonly inputs: readonly [];
 }, {
     readonly type: "error";
@@ -1431,6 +1681,10 @@ declare const _default: readonly [{
         readonly type: "address";
         readonly internalType: "address";
     }];
+}, {
+    readonly type: "error";
+    readonly name: "OwnershipCannotBeRenounced";
+    readonly inputs: readonly [];
 }, {
     readonly type: "error";
     readonly name: "PowPrecompileFailed";

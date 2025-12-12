@@ -1,6 +1,6 @@
 import { ESPTokenContract } from '../../../contracts/esp_token/esp_token_interface';
 import { RawUndelegation, RawValidator, Undelegation, Validator } from '../../../contracts/stake_table/stake_table_interface';
-import { CommissionTracking, StakeTableV2Contract } from '../../../contracts/stake_table_v2/stake_table_v2_interface';
+import { CommissionTracking, StakeTableV2Contract, UndelegationInfo } from '../../../contracts/stake_table_v2/stake_table_v2_interface';
 import { default as React } from 'react';
 import { MockContractStorage, MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
 /**
@@ -158,6 +158,10 @@ export declare class MockStakeTableV2ContractImpl implements StakeTableV2Contrac
     undelegate(validator: `0x${string}`, amount: bigint): Promise<`0x${string}`>;
     claimWithdrawal(validator: `0x${string}`): Promise<`0x${string}`>;
     claimValidatorExit(validator: `0x${string}`): Promise<`0x${string}`>;
+    getUndelegation(): Promise<UndelegationInfo>;
+    minDelegateAmount(): Promise<bigint>;
+    validateMetadataUri(): Promise<void>;
+    registerValidatorV2(): Promise<`0x${string}`>;
 }
 /**
  * MockStakeTableV2Contract is a React component that provides

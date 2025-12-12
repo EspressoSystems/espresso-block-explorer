@@ -5,6 +5,7 @@ import { GasEstimatorForContract } from '../l1/l1_interface';
  */
 export interface RewardClaimContractReadOnly {
     readonly address: `0x${string}`;
+    totalClaimed(): Promise<bigint>;
     claimedRewards(address: `0x${string}`): Promise<bigint>;
     getVersion(): Promise<readonly [number, number, number]>;
 }

@@ -24,6 +24,12 @@ export declare const rewardClaimContractAddressControlArgType: {
     };
     readonly description: "Reward Claim Contract Address";
 };
+export declare const lightClientContractAddressControlArgType: {
+    readonly control: {
+        readonly type: "text";
+    };
+    readonly description: "Light client Contract Address";
+};
 export declare const queryServiceNodeURLControlArgType: {
     readonly control: {
         readonly type: "text";
@@ -96,6 +102,12 @@ export declare const environmentArgTypesWithContracts: {
         };
         readonly description: "Reward Claim Contract Address";
     };
+    readonly lightClientContractAddress: {
+        readonly control: {
+            readonly type: "text";
+        };
+        readonly description: "Light client Contract Address";
+    };
     readonly environment: {
         readonly options: readonly [Environment.water, Environment.milk, Environment.mainnet, Environment.decaf, Environment.fakeData, Environment.localDevNet];
         readonly control: {
@@ -125,6 +137,7 @@ export interface EnvironmentWithContractsArgs extends EnvironmentArgs {
     stakeTableContractAddress?: `0x${string}`;
     espTokenContractAddress?: `0x${string}`;
     rewardClaimContractAddress?: `0x${string}`;
+    lightClientContractAddress?: `0x${string}`;
 }
 export declare const environmentArgsMilk: EnvironmentArgs;
 export declare const environmentArgsMilkWithContracts: EnvironmentWithContractsArgs;

@@ -12,5 +12,6 @@ export interface StoryBookSpecifyEnvironmentAndContractsProps extends StoryBookS
     espTokenContractAddress?: string;
     stakeTableContractAddress?: string;
     rewardClaimContractAddress?: string;
+    lightClientContractAddress?: string;
 }
 export declare const StoryBookSpecifyEnvironmentAndContracts: React.FC<StoryBookSpecifyEnvironmentAndContractsProps>;

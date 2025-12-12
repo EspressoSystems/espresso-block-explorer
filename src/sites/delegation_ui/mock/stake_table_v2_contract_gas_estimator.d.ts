@@ -10,4 +10,5 @@ export declare class MockStakeTableV2ContractGasEstimatorImpl implements StakeTa
     claimWithdrawal(): Promise<bigint>;
     claimValidatorExit(): Promise<bigint>;
     updateConsensusKeysV2(): Promise<bigint>;
+    registerValidatorV2(): Promise<bigint>;
 }

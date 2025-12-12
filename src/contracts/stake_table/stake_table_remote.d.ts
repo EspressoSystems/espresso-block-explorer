@@ -5,6 +5,7 @@ export declare class StakeTableRemote implements StakeTableContract {
     protected readonly chainID: number;
     readonly address: `0x${string}`;
     constructor(config: Config, chainID: number, address: `0x${string}`);
+    private readContract;
     lightClient(): Promise<`0x${string}`>;
     token(): Promise<`0x${string}`>;
     validator(account: `0x${string}`): Promise<Validator>;
@@ -14,6 +15,7 @@ export declare class StakeTableRemote implements StakeTableContract {
     undelegation(validator: `0x${string}`, delegator: `0x${string}`): Promise<Undelegation>;
     exitEscrowPeriod(): Promise<bigint>;
     getVersion(): Promise<readonly [number, number, number]>;
+    private writeContract;
     deregisterValidator(): Promise<`0x${string}`>;
     delegate(validator: `0x${string}`, amount: bigint): Promise<`0x${string}`>;
     undelegate(validator: `0x${string}`, amount: bigint): Promise<`0x${string}`>;

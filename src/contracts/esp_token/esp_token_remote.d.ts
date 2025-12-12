@@ -5,6 +5,7 @@ export declare class ESPTokenRemote implements ESPTokenContract {
     private readonly chainID;
     readonly address: `0x${string}`;
     constructor(config: Config, chainID: number, address: `0x${string}`);
+    private readContract;
     getVersion(): Promise<readonly [number, number, number]>;
     name(): Promise<string>;
     symbol(): Promise<string>;
@@ -12,6 +13,7 @@ export declare class ESPTokenRemote implements ESPTokenContract {
     totalSupply(): Promise<bigint>;
     balanceOf(account: `0x${string}`): Promise<bigint>;
     allowance(owner: `0x${string}`, spender: `0x${string}`): Promise<bigint>;
+    private writeContract;
     transfer(to: `0x${string}`, value: bigint): Promise<`0x${string}`>;
     approve(spender: `0x${string}`, value: bigint): Promise<`0x${string}`>;
     transferFrom(from: `0x${string}`, to: `0x${string}`, value: bigint): Promise<`0x${string}`>;
