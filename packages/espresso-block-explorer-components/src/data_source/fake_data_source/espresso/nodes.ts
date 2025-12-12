@@ -100,7 +100,7 @@ function generateNodeIdentityInformationData(
     stake: prng.nextRangeBigInt(0n, 1000n) * 1000000000000000000n,
     commission: prng.nextRange(0, 5000),
     name: `${companyName} Node ${country} ${prng.nextRange(0, 100)}`,
-    address: prng.fillBytes(32),
+    address: prng.fillBytes(20),
     company: {
       name: companyName,
       website: companyWebsite,

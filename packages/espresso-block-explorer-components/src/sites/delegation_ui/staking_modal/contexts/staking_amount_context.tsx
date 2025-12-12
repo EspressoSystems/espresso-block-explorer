@@ -1,18 +1,16 @@
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 
-export const StakingAmountContext = React.createContext<MonetaryValue>(
-  MonetaryValue.ESP(0n),
+export const StakingAmountContext = React.createContext<null | MonetaryValue>(
+  null,
 );
 
 export const SetStakingAmountContext = React.createContext<
-  React.Dispatch<React.SetStateAction<MonetaryValue>>
+  React.Dispatch<React.SetStateAction<null | MonetaryValue>>
 >(() => {});
 
-function useSpecifyStakingAmount(
-  initialAmount: MonetaryValue = MonetaryValue.ESP(0n),
-) {
-  return React.useState<MonetaryValue>(initialAmount);
+function useSpecifyStakingAmount(initialAmount: null | MonetaryValue = null) {
+  return React.useState<null | MonetaryValue>(initialAmount);
 }
 export const ProvideStakingAmountContexts: React.FC<
   React.PropsWithChildren

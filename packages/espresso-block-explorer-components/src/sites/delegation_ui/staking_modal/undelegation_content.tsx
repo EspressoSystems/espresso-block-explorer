@@ -136,6 +136,7 @@ const UnstakingActionsArea: React.FC = () => {
   const setUndelegationAsyncIterable = React.useContext(
     SetUndelegationAsyncIterableContext,
   );
+  const stakingAmountValue = stakingAmount?.value ?? 0n;
 
   if (
     // If the Contracts are not set
@@ -158,7 +159,7 @@ const UnstakingActionsArea: React.FC = () => {
         l1Methods,
         stakeTableContract,
         validatorAddress,
-        stakingAmount.value,
+        stakingAmountValue,
         (date) => {
           setStakingAmount(MonetaryValue.ESP(0n));
           setL1Timestamp(date);
@@ -220,9 +221,9 @@ const UnstakingActionsArea: React.FC = () => {
 
   if (
     // We have no staking amount
-    stakingAmount.value <= 0n ||
+    stakingAmountValue <= 0n ||
     // We don't have the balance to cover the staking amount
-    stakingAmount.value > currentStake
+    stakingAmountValue > currentStake
   ) {
     return (
       <div className="staking-modal-unstaking-actions-area">

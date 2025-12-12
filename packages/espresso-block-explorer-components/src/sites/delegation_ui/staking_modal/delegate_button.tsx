@@ -46,6 +46,8 @@ export const DelegateButton: React.FC = () => {
     );
   }
 
+  const stakingAmountValue = stakingAmount?.value ?? 0n;
+
   const validatorAddress = confirmedValidator;
   const handleDelegateClick = () => {
     setDelegationAsyncIterable(
@@ -53,7 +55,7 @@ export const DelegateButton: React.FC = () => {
         l1Methods,
         stakeTableContract,
         validatorAddress,
-        stakingAmount.value,
+        stakingAmountValue,
         (date) => {
           setStakingAmount(MonetaryValue.ESP(0n));
           setL1Timestamp(date);
@@ -98,11 +100,11 @@ export const DelegateButton: React.FC = () => {
 
   if (
     // We have no staking amount
-    stakingAmount.value <= 0n ||
+    stakingAmountValue <= 0n ||
     // We don't have the balance to cover the staking amount
-    stakingAmount.value > balance ||
+    stakingAmountValue > balance ||
     // We don't have enough allowance to cover the staking amount
-    stakingAmount.value > allowance
+    stakingAmountValue > allowance
   ) {
     // Disable the button
     return (

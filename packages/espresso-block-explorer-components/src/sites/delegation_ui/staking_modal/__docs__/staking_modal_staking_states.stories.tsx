@@ -2,6 +2,7 @@ import {
   AsyncSnapshot,
   AsyncState,
 } from '@/components/data/async_data/async_snapshot';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { nodeList } from '@/data_source/fake_data_source';
 import { ValidatorConfirmedStake } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { Meta, StoryObj } from '@storybook/react-vite';
@@ -28,7 +29,9 @@ const meta: Meta = {
   ...DefaultMeta,
   args: {
     ...DefaultMeta.args,
-    selection: new ValidatorConfirmedStake(nodeList[INDEX_STAKED].address),
+    selection: new ValidatorConfirmedStake(
+      hexArrayBufferCodec.encode(nodeList[INDEX_STAKED].address),
+    ),
     validator: fullValidatorSet.nodes[INDEX_STAKED],
   },
 };
@@ -38,7 +41,7 @@ type Story = StoryObj<typeof ValidatorConfirmedExample>;
 
 export const None: Story = {
   args: {
-    amount: '0',
+    amount: '',
   },
 };
 

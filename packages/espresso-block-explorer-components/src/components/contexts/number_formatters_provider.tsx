@@ -20,6 +20,12 @@ import VariableBytesNumberFormat from './variable_bytes_number_format';
 export function createDefaultNumberFormatters(locale: string) {
   return {
     default: new Intl.NumberFormat(locale),
+    defaultFinance: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
+      maximumSignificantDigits: 21,
+      maximumFractionDigits: 18,
+      minimumFractionDigits: 2,
+    }),
     percentage: new Intl.NumberFormat(locale, {
       style: 'percent',
       minimumFractionDigits: 0,
@@ -46,6 +52,7 @@ export function createDefaultNumberFormatters(locale: string) {
     }) as unknown as Intl.NumberFormat,
 
     wei: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
       style: 'currency',
       currency: 'WEI',
       currencyDisplay: 'code',
@@ -53,6 +60,7 @@ export function createDefaultNumberFormatters(locale: string) {
       maximumFractionDigits: 0,
     }),
     gwei: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
       style: 'currency',
       currency: 'XXX',
       minimumFractionDigits: 2,
@@ -61,30 +69,35 @@ export function createDefaultNumberFormatters(locale: string) {
     }),
 
     USD: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
       style: 'currency',
       currency: 'USD',
       currencyDisplay: 'symbol',
       maximumFractionDigits: 2,
     }),
     JPY: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
       style: 'currency',
       currency: 'JPY',
       currencyDisplay: 'symbol',
       maximumFractionDigits: 0,
     }),
     EUR: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
       style: 'currency',
       currency: 'EUR',
       currencyDisplay: 'symbol',
       maximumFractionDigits: 2,
     }),
     GBP: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
       style: 'currency',
       currency: 'GBP',
       currencyDisplay: 'symbol',
       maximumFractionDigits: 2,
     }),
     ETHFull: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
       style: 'currency',
       currencyDisplay: 'code',
       currency: 'ETH',
@@ -94,6 +107,7 @@ export function createDefaultNumberFormatters(locale: string) {
       maximumFractionDigits: 18,
     }),
     ETH: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
       style: 'currency',
       currencyDisplay: 'code',
       currency: 'ETH',
@@ -103,6 +117,7 @@ export function createDefaultNumberFormatters(locale: string) {
       maximumFractionDigits: 18,
     }),
     ESPFull: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
       style: 'currency',
       currencyDisplay: 'code',
       currency: 'ESP',
@@ -112,6 +127,7 @@ export function createDefaultNumberFormatters(locale: string) {
       maximumFractionDigits: 18,
     }),
     ESP: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
       style: 'currency',
       currencyDisplay: 'code',
       currency: 'ESP',
@@ -121,6 +137,7 @@ export function createDefaultNumberFormatters(locale: string) {
       maximumFractionDigits: 18,
     }),
     XBTFull: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
       style: 'currency',
       currencyDisplay: 'code',
       currency: 'BTC',
@@ -130,6 +147,7 @@ export function createDefaultNumberFormatters(locale: string) {
       maximumFractionDigits: 8,
     }),
     XBT: new Intl.NumberFormat(locale, {
+      numberingSystem: 'finance',
       style: 'currency',
       currencyDisplay: 'code',
       currency: 'BTC',

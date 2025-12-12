@@ -1,12 +1,19 @@
-import { assert } from '@/assert/assert';
-import { breakpoint } from '@/assert/debugger';
 import { CurrentNumberFormatters } from '@/components/contexts';
 import UnimplementedError from '@/errors/unimplemented_error';
-import { filterIterable, foldRIterable } from '@/functional/functional';
+import {
+  expandIterable,
+  filterIterable,
+  mapIterable,
+} from '@/functional/functional';
 import { ESP } from '@/models/block_explorer/currency_code';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
-import { TextEditing, TextEditingProps } from '../text/text';
+import {
+  isArabicNumeralKey,
+  shouldIgnoreKeyDownEventForEditing,
+  TextEditing,
+  TextEditingProps,
+} from '../text/text';
 import { TextEditingValue, TextSelection } from '../text/types';
 
 export interface ESPInputProps extends Omit<
@@ -33,8 +40,20 @@ function isChangeEvent(
 function parseESPValue(
   decimalSeparator: string,
   _groupSeparator: string,
+  numberMap: NumberMap,
   value: string,
 ): MonetaryValue {
+  for (let i = 0; i < numberMap.length; i++) {
+    const fromValue = numberMap[i];
+    const toValue = LATN_DIGIT_MAP[i];
+    if (fromValue === toValue) {
+      // No need to replace the mapping
+      continue;
+    }
+
+    value = value.replaceAll(fromValue, toValue);
+  }
+
   // Get rid of any non numeric values at the start of the string.
   value = value.replace(/^[^\d]+/g, '');
 
@@ -83,144 +102,110 @@ interface ESPInputState {
   money: MonetaryValue;
 }
 
-/**
- *
- */
-function determineNewValue(
-  decimalSeparator: string,
-  groupSeparator: string,
-  espFormatter: Intl.NumberFormat,
-  prevState: ESPInputState,
-  newTextEdit: TextEditingValue,
-): [TextEditingValue, MonetaryValue] {
-  // This needs to support various editing operation types while the user is
-  // actively performing editing operations.
-  //
-  // We do not want to clobber the start of a potentially new value if the user
-  // is editing in the middle of the value.
-  //
-  // We do need to be cognizant of the user typing in new characters that
-  // truncate the value further up, such as removing leading zeroes.
-  //
-  // We also need to be cognizant of the user typing in new characters that
-  // don't change the value of the input, such as typing in group separators, or
-  // decimal separators.
+const EXAMPLE_NUMBER_TEMPLATE = '1234567890.5';
+type NumberMap = [
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+];
+const LATN_DIGIT_MAP = '0123456789'.split('') as NumberMap;
 
-  const nextValue = parseESPValue(
-    decimalSeparator,
-    groupSeparator,
-    newTextEdit.text,
-  );
-
-  if (
-    nextValue.value === prevState.money.value &&
-    newTextEdit.text === prevState.transformed.text
-  ) {
-    // This is just a selection change.  There's nothing for us to do here
-    // We also shouldn't be able to get here.
-    breakpoint();
-    return [newTextEdit, nextValue];
-  }
-
-  // We have our nextValue, and we have our previous value.  We need to
-  // determine whether the next TextEditingValue needs to be transformed
-  // to reflect the correct formatting of the nextValue.
-  const nextFormatted = espFormatter.format(nextValue.toNumericLiteralString());
-  const nextFormattedParts = espFormatter.formatToParts(
-    nextValue.toNumericLiteralString(),
-  );
-
-  // The criteria for the determining the new cursor position seems like it
-  // should be very complex, but we can simplify it tremendously by just
-  // considering the changes between the lengths of the formatted values,
-  // and the changes between the lengths of the raw text values.
-
-  // There are some edge cases that require consideration, such as when the
-  // currency symbol is at the start of the formatted value, and the user
-  // is typing in a value that doesn't change the numeric value, but does
-  // change the formatting, such as typing in grouping characters or
-  // decimal separators.
-
-  const isCurrencyPrefix = nextFormattedParts[0].type === 'currency';
-  const currencyFormatLength = foldRIterable(
-    (len, part) => len + part.value.length,
-    0,
-    filterIterable(
-      nextFormattedParts,
-      (part) => part.type === 'currency' || part.type === 'literal',
-    ),
-  );
-
-  // We also can compare our input to the idealized cursor position, which
-  // should be at the tail end of the numeric value entry.
-  const idealNextCursorPosition = isCurrencyPrefix
-    ? nextFormatted.length
-    : nextFormatted.length - currencyFormatLength;
-
-  if (
-    nextValue.value === prevState.money.value &&
-    nextFormatted === prevState.transformed.text &&
-    newTextEdit.text.length > prevState.transformed.text.length
-  ) {
-    // The value hasn't actually changed, and the formatting hasn't changed.
-    // This could be the user just typing in grouping characters or decimal
-    // separators that don't actually change the value.
-    return [newTextEdit, nextValue];
-  }
-
-  assert(
-    newTextEdit.selection.end - newTextEdit.selection.start === 0,
-    'newTextEdit is a modification on top of a previous selection, as such the resulting selection is guaranteed to be collapsed and 0 length',
-  );
-
-  const naiveCursorAdjustment = nextFormatted.length - newTextEdit.text.length;
-
-  const proposedPosition = newTextEdit.selection.start + naiveCursorAdjustment;
-  if (proposedPosition < currencyFormatLength && isCurrencyPrefix) {
-    // We don't want to place the cursor inside the currency code.
-    // Let's try to keep the relative offset from the end of the string intact.
-
-    return [
-      new TextEditingValue(
-        nextFormatted,
-        TextSelection.collapsed(idealNextCursorPosition),
-      ),
-      nextValue,
-    ];
-  }
-
-  if (proposedPosition > idealNextCursorPosition && !isCurrencyPrefix) {
-    // We don't want to place the cursor inside the currency code.
-    return [
-      new TextEditingValue(
-        nextFormatted,
-        TextSelection.collapsed(idealNextCursorPosition),
-      ),
-      nextValue,
-    ];
-  }
-
-  return [
-    new TextEditingValue(
-      nextFormatted,
-      TextSelection.collapsed(proposedPosition),
-    ),
-    nextValue,
-  ];
+enum CurrencyCodeSide {
+  prefix = -1,
+  suffix = 1,
 }
 
-const EXAMPLE_NUMBER_TEMPLATE = '1234567890.5';
+function previewEdit(value: TextEditingValue, incoming: string): string {
+  return [
+    value.selection.textBefore(value.text),
+    incoming,
+    value.selection.textAfter(value.text),
+  ].join('');
+}
+
+function previewValidFormat(
+  formatter: Intl.NumberFormat,
+  decimalSeparator: string,
+  groupSeparator: string,
+  numberMap: NumberMap,
+  value: string,
+): string {
+  const parsedValue = parseESPValue(
+    decimalSeparator,
+    groupSeparator,
+    numberMap,
+    value,
+  );
+
+  return Array.from(
+    mapIterable(
+      filterIterable(
+        formatter.formatToParts(parsedValue.toNumericLiteralString()),
+        (part) => part.type !== 'group',
+      ),
+      (part) => part.value,
+    ),
+  ).join('');
+}
+
+function shouldAllowEventEdit(
+  formatter: Intl.NumberFormat,
+  decimalSeparator: string,
+  groupSeparator: string,
+  numberMap: NumberMap,
+  expectedResult: string,
+) {
+  const resultingFormat = previewValidFormat(
+    formatter,
+    decimalSeparator,
+    groupSeparator,
+    numberMap,
+    expectedResult,
+  );
+
+  if (expectedResult === resultingFormat) {
+    // The resulting format is valid, so we can allow it.
+    return true;
+  }
+
+  if (
+    expectedResult.startsWith(resultingFormat) &&
+    expectedResult.substring(resultingFormat.length) === decimalSeparator &&
+    resultingFormat.indexOf(decimalSeparator) === -1
+  ) {
+    // This is a special case where the user is trying to enter a
+    // fractional value by typing the decimal separator at the end
+    // of the value.  We want to allow this.
+    return true;
+  }
+
+  // At this point, we know that the resulting format is invalid.
+  // We need to block this input.
+  return false;
+}
 
 export const ESPInput: React.FC<ESPInputProps> = (props) => {
   const { value: rawInitialValue, onChange, ...rest } = props;
   const numberFormatters = React.useContext(CurrentNumberFormatters);
-  const espFormatter = numberFormatters.ESPFull;
-  const initialValue = rawInitialValue ?? MonetaryValue.ESP(0n);
-  const value = initialValue.toNumericLiteralString();
-  const initial = new TextEditingValue(espFormatter.format(value));
+  const initialValue = rawInitialValue;
+  const value = rawInitialValue ?? MonetaryValue.ESP(0n);
+  const initial = new TextEditingValue(
+    !initialValue
+      ? ''
+      : numberFormatters.defaultFinance.format(
+          initialValue.toNumericLiteralString(),
+        ),
+  );
 
   const exampleNumberFormat = React.useMemo(
-    () => numberFormatters.default.formatToParts(EXAMPLE_NUMBER_TEMPLATE),
+    () => numberFormatters.ESPFull.formatToParts(EXAMPLE_NUMBER_TEMPLATE),
     [numberFormatters],
   );
 
@@ -238,17 +223,49 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
       exampleNumberFormat.find((part) => part.type === 'group')?.value ?? ',',
     [exampleNumberFormat],
   );
+  const currencyPart =
+    exampleNumberFormat.find((part) => part.type === 'currency')?.value ??
+    'ESP';
+  const currencyCodeSide = React.useMemo(
+    () =>
+      exampleNumberFormat.findIndex((part) => part.type === 'currency') <
+      exampleNumberFormat.length / 2
+        ? CurrencyCodeSide.prefix
+        : CurrencyCodeSide.suffix,
+    [exampleNumberFormat],
+  );
+
+  // This is a number map of the digits '0-9' in order according to the
+  // current locale.  We may use this later for validation.
+  const numberMap = React.useMemo(() => {
+    const digits = Array.from(
+      expandIterable(
+        mapIterable(
+          filterIterable(
+            exampleNumberFormat,
+            (part) => part.type === 'integer',
+          ),
+          (part) => part.value,
+        ),
+        (part) => part.split(''),
+      ),
+    );
+
+    // Rotate the digits so that '0' is at the start.
+    const zero = digits.pop()!;
+    return [zero, ...digits] as NumberMap;
+  }, [exampleNumberFormat]);
 
   // Let's track the editing value of the input.
   const [state, setState] = React.useState<ESPInputState>({
     rawValue: initial,
     transformed: initial,
-    money: initialValue,
+    money: value,
   });
 
   React.useEffect(() => {
     let setTheState = setState;
-    if (state.money.value !== initialValue.value) {
+    if (initialValue && state.money.value !== initialValue.value) {
       // If the initial value has changed, we need to update the state.
       // This is useful for when the value is updated externally.
       setTheState((currentState) => {
@@ -257,8 +274,16 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
         }
 
         return {
-          rawValue: new TextEditingValue(espFormatter.format(value)),
-          transformed: new TextEditingValue(espFormatter.format(value)),
+          rawValue: new TextEditingValue(
+            numberFormatters.defaultFinance.format(
+              initialValue.toNumericLiteralString(),
+            ),
+          ),
+          transformed: new TextEditingValue(
+            numberFormatters.defaultFinance.format(
+              initialValue.toNumericLiteralString(),
+            ),
+          ),
           money: initialValue,
         };
       });
@@ -267,49 +292,98 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
     return () => {
       setTheState = () => {};
     };
-  }, [numberFormatters, state, initialValue, espFormatter, value]);
+  }, [numberFormatters, state, initialValue]);
 
-  return (
+  const inputComponent = (
     <TextEditing
       {...rest}
       value={state.transformed}
-      onKeyDown={() => {
-        // Do we want to prevent the user from typing certain characters?
-        // We only want valid values to come out of this input.
-        // We can store the "raw" value, and use InputFormatters to format it
-        // into a valid value by ignoring all of the invalid characters.
-        //
-        // If the key is not a number, or a valid separator / grouping character,
-        // we don't want it to be input.
-        //
-        // We want to accept numeric characters, their separators, and grouping
-        // characters. We also don't want to interfere with editing or navigation
-        // keys like Backspace, Delete, Arrow keys, etc.
+      onBeforeInput={(event) => {
+        if (event.data === '. ') {
+          // MacOS auto full stop insertion detected.  We want to block this
+          // here as it bypasses all other input checks.
+          // Thanks Apple
+          event.stopPropagation();
+          event.preventDefault();
+        }
+      }}
+      onKeyDown={(event) => {
+        if (shouldIgnoreKeyDownEventForEditing(event)) {
+          return;
+        }
+
+        // Let's add Tab and Escape to the ignored keys.
+        if (event.key === 'Tab' || event.key === 'Escape') {
+          return;
+        }
+
+        // Stop all non-arabic numeral keys, except for the decimal separator.
+        if (
+          !isArabicNumeralKey(event) &&
+          numberMap.indexOf(event.key) < 0 &&
+          event.key !== decimalSeparator
+        ) {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+
+        // Let's inspect the anticipated edit result to see if this is a valid
+        // representation.
+        const expectedResult = previewEdit(state.rawValue, event.key);
+        if (
+          shouldAllowEventEdit(
+            numberFormatters.defaultFinance,
+            decimalSeparator,
+            groupSeparator,
+            numberMap,
+            expectedResult,
+          )
+        ) {
+          return;
+        }
+
+        // At this point, we know that the resulting format is invalid.
+        // We need to block this input.
+        event.stopPropagation();
+        event.preventDefault();
+      }}
+      onPaste={(event) => {
+        // Pasting generally allows the user to ignore our previous safety
+        // checks. We want to enforce our formatting.  As a result, we will
+        // allow the paste to occur only if the resulting value is valid.
+
+        const textContent = event.clipboardData.getData('text');
+        const expectedResult = previewEdit(state.rawValue, textContent);
+        if (
+          shouldAllowEventEdit(
+            numberFormatters.defaultFinance,
+            decimalSeparator,
+            groupSeparator,
+            numberMap,
+            expectedResult,
+          )
+        ) {
+          return;
+        }
+
+        event.stopPropagation();
+        event.preventDefault();
       }}
       onChange={(event, newTextEdit) => {
         if (isChangeEvent(event)) {
           // We need to try and parse the value from the input.
-          const [nextTextEdit, nextValue] = determineNewValue(
+          const nextValue = parseESPValue(
             decimalSeparator,
             groupSeparator,
-            espFormatter,
-            state,
-            newTextEdit,
+            numberMap,
+            newTextEdit.text,
           );
           const nextState = {
             rawValue: newTextEdit,
-            transformed: nextTextEdit,
+            transformed: newTextEdit,
             money: nextValue,
           };
-
-          if (
-            nextTextEdit.text !== newTextEdit.text ||
-            !nextTextEdit.selection.isEquivalentTo(newTextEdit.selection) ||
-            !nextTextEdit.composing.isEquivalentTo(newTextEdit.composing)
-          ) {
-            // We're making adjustments not accounted for.
-            event.preventDefault();
-          }
 
           setState(nextState);
           if (onChange) {
@@ -339,10 +413,27 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
           money: parseESPValue(
             decimalSeparator,
             groupSeparator,
+            numberMap,
             nextTextEditingValue.text,
           ),
         });
       }}
     />
+  );
+
+  if (currencyCodeSide === CurrencyCodeSide.suffix) {
+    return (
+      <div className="esp-input-container currency-suffix">
+        {inputComponent}
+        <span className="currency-code">{currencyPart}</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="esp-input-container currency-prefix">
+      <span className="currency-code">{currencyPart}</span>
+      {inputComponent}
+    </div>
   );
 };

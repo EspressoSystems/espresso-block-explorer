@@ -3,40 +3,27 @@ import {
   createDefaultNumberFormatters,
   ProvideDerivedNumberFormatters,
 } from '@/components/contexts/number_formatters_provider';
-import { MoneyTextFull } from '@/components/text/money_text_full';
 import {
   getStartingSeed,
   PseudoRandomNumberGenerator,
 } from '@/data_source/fake_data_source';
+import { filterIterable, mapIterable } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { InputContainer } from '../../container/container';
 import { interactionsTypeValue } from '../__shared__/esp_input_shared';
-import { ESPInput as ESPInputComponent } from '../esp_input';
+import { Example as ESPInputComponent } from '../__shared__/example';
 
 interface ExampleProps {
-  initialValue?: null | MonetaryValue;
   locale: string;
 }
 
 const Example: React.FC<ExampleProps> = (props) => {
-  const { initialValue = null, locale } = props;
-  const [state, setState] = React.useState(initialValue);
+  const { locale } = props;
   return (
     <CurrentLocale.Provider value={locale}>
       <ProvideDerivedNumberFormatters>
-        <InputContainer>
-          <ESPInputComponent
-            id="stake-amount"
-            value={state}
-            onChange={(_, value) => {
-              setState(value);
-            }}
-          />
-        </InputContainer>
-        <br />
-        <MoneyTextFull money={state ?? MonetaryValue.ESP(0n)} />
+        <ESPInputComponent initialValue={null} />
       </ProvideDerivedNumberFormatters>
     </CurrentLocale.Provider>
   );
@@ -94,9 +81,17 @@ const meta: Meta<typeof Example> = {
     )
       .replace(/ESP/gi, '')
       .replace(/\u00A0/gi, '');
-    const expectedValue = numberFormatters.ESPFull.format(
-      monetaryValue.toNumericLiteralString(),
-    );
+    const expectedValue = Array.from(
+      mapIterable(
+        filterIterable(
+          numberFormatters.defaultFinance.formatToParts(
+            monetaryValue.toNumericLiteralString(),
+          ),
+          (part) => part.type !== 'group',
+        ),
+        (part) => part.value,
+      ),
+    ).join('');
     const parts = numberFormatters.ESPFull.formatToParts(
       monetaryValue.toNumericLiteralString(),
     );
@@ -238,8 +233,8 @@ export const KoreanSouthKorea: Story = {
   },
 };
 
-// export const ArabicEgypt: Story = {
-//   args: {
-//     locale: 'ar-EG',
-//   },
-// };
+export const ArabicEgypt: Story = {
+  args: {
+    locale: 'ar-EG',
+  },
+};

@@ -1,6 +1,5 @@
 import { AsyncSnapshot } from '@/components/data/async_data/async_snapshot';
 import { Undelegation } from '@/contracts/stake_table/stake_table_interface';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
@@ -48,7 +47,7 @@ import {
 } from './example_data';
 
 export interface ValidatorConfirmedExampleProps {
-  selection: ValidatorSelectionEnum & { validatorAddress: ArrayBuffer };
+  selection: ValidatorSelectionEnum & { validatorAddress: `0x${string}` };
   validator: NodeSetEntry;
   balance: string;
   allowance: string;
@@ -117,9 +116,7 @@ export const ValidatorConfirmedExample: React.FC<
                               <DeriveRank>
                                 <DeriveConsensusSet>
                                   <ConfirmedValidatorContext.Provider
-                                    value={hexArrayBufferCodec.encode(
-                                      props.selection.validatorAddress,
-                                    )}
+                                    value={props.selection.validatorAddress}
                                   >
                                     <DialogModal className="staking-modal" open>
                                       <ProvideStakingHistory>
@@ -132,9 +129,13 @@ export const ValidatorConfirmedExample: React.FC<
                                             value={props.validator}
                                           >
                                             <StakingAmountContext.Provider
-                                              value={MonetaryValue.ESP(
-                                                BigInt(props.amount),
-                                              )}
+                                              value={
+                                                props.amount.trim() === ''
+                                                  ? null
+                                                  : MonetaryValue.ESP(
+                                                      BigInt(props.amount),
+                                                    )
+                                              }
                                             >
                                               <ProvideEstimatedFeesPerGas>
                                                 <UndelegateAsyncSnapshotContext.Provider
@@ -206,7 +207,7 @@ export const DefaultMeta = {
   },
   args: {
     balance: '5000000000000000000000000',
-    amount: '0',
+    amount: '',
     allowance: '0',
     currentStakeToNode: '5000000000000000000000',
     claimableRewards: '5000000000000000000000',

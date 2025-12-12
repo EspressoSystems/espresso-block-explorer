@@ -2,6 +2,7 @@ import {
   AsyncSnapshot,
   AsyncState,
 } from '@/components/data/async_data/async_snapshot';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { nodeList } from '@/data_source/fake_data_source';
 import { ValidatorConfirmedUndelegateWithdraw } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { Meta, StoryObj } from '@storybook/react-vite';
@@ -29,7 +30,7 @@ const meta: Meta = {
   args: {
     ...DefaultMeta.args,
     selection: new ValidatorConfirmedUndelegateWithdraw(
-      nodeList[INDEX_UNDELEGATE].address,
+      hexArrayBufferCodec.encode(nodeList[INDEX_UNDELEGATE].address),
     ),
     validator: fullValidatorSet.nodes[INDEX_UNDELEGATE],
   },

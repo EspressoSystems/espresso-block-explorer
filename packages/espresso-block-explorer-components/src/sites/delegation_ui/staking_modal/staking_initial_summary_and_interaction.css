@@ -43,7 +43,8 @@
   top: 16px;
 }
 
-.staking-modal-esp-focus-display {
+.esp-input-container,
+.staking-modal-esp-display {
   width: 100%;
   border-width: 1px;
   border-style: solid;
@@ -51,25 +52,71 @@
   background: var(--color--brown--1--alpha-50);
   border-radius: 16px;
   border-width: 1px;
-  padding: 24px;
-  padding-top: 48px;
+  /* padding: 24px;
+  padding-top: 48px; */
   font-size: 32px;
   line-height: 40px;
   text-align: center;
   box-sizing: border-box;
 }
 
-.staking-modal-esp-focus-display.insufficient {
+.staking-modal-esp-input-area.error {
   color: var(--color--undesign--red--1);
 }
 
-/* .staking-modal-esp-input-area input {
-} */
+.staking-modal-esp-input-area .esp-input-container input {
+  background: transparent;
+  border: none;
+}
 
-.staking-modal-esp-input-area input:focus,
-.staking-modal-esp-input-area input:focus-visible {
+.esp-input-container .currency-code,
+.esp-input-container input,
+.staking-modal-esp-display {
+  padding-top: 48px;
+  padding-bottom: 24px;
+  padding-inline: 24px;
+  font-size: inherit;
+  color: inherit;
+}
+
+.staking-modal-esp-display {
+  font-size: 32px;
+  text-align: center;
+}
+
+.staking-modal-esp-input-area .esp-input-container:focus-within,
+.staking-modal-esp-input-area .esp-input-container:focus-visible {
   border-color: var(--color--brown--3);
+}
+
+.staking-modal-esp-input-area .esp-input-container input:focus,
+.staking-modal-esp-input-area .esp-input-container input:focus-visible {
   outline: none;
+}
+
+.esp-input-container {
+  display: grid;
+  align-items: stretch;
+}
+
+.esp-input-container.currency-prefix {
+  grid-template-columns: auto 1fr;
+}
+
+.esp-input-container.currency-suffix {
+  grid-template-columns: auto auto;
+}
+
+.esp-input-container.currency-prefix > .currency-code {
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: var(--color--brown--3--alpha-24);
+}
+
+.esp-input-container.currency-suffix > .currency-code {
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: var(--color--brown--3--alpha-24);
 }
 
 .staking-modal-input-info-area {

@@ -99,10 +99,11 @@ export const NewStakeInstructionsAndProgress: React.FC = () => {
 
   // Everything from this point on is trying to determine what the intermediate
   // state should be.
+  const stakingAmountValue = stakingAmount?.value ?? 0n;
 
   // If the staking amount is zero, or we don't have the balance we don't want
   // to indicate any status / progress.
-  if (stakingAmount.value <= 0n) {
+  if (stakingAmountValue <= 0n) {
     return (
       <div className="staking-modal-instructions-and-progress">
         <span>&nbsp;</span>
@@ -112,7 +113,7 @@ export const NewStakeInstructionsAndProgress: React.FC = () => {
   }
 
   // If we have don't have sufficient allowance
-  if (stakingAmount.value > allowance) {
+  if (stakingAmountValue > allowance) {
     return (
       <div className="staking-modal-instructions-and-progress">
         <span>
