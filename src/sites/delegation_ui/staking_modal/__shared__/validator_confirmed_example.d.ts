@@ -6,7 +6,7 @@ import { default as React } from 'react';
 import { PerformWriteTransactionState } from '../contexts/perform_write_states';
 export interface ValidatorConfirmedExampleProps {
     selection: ValidatorSelectionEnum & {
-        validatorAddress: ArrayBuffer;
+        validatorAddress: `0x${string}`;
     };
     validator: NodeSetEntry;
     balance: string;
@@ -31,7 +31,7 @@ export declare const DefaultMeta: {
     };
     readonly args: {
         readonly balance: "5000000000000000000000000";
-        readonly amount: "0";
+        readonly amount: "";
         readonly allowance: "0";
         readonly currentStakeToNode: "5000000000000000000000";
         readonly claimableRewards: "5000000000000000000000";

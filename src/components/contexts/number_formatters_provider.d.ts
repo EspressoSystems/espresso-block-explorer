@@ -14,6 +14,7 @@ import { default as React } from 'react';
  */
 export declare function createDefaultNumberFormatters(locale: string): {
     default: Intl.NumberFormat;
+    defaultFinance: Intl.NumberFormat;
     percentage: Intl.NumberFormat;
     bytes: Intl.NumberFormat;
     variableBytes: Intl.NumberFormat;
@@ -39,6 +40,7 @@ export declare function createDefaultNumberFormatters(locale: string): {
  */
 declare const CurrentNumberFormatters: React.Context<{
     default: Intl.NumberFormat;
+    defaultFinance: Intl.NumberFormat;
     percentage: Intl.NumberFormat;
     bytes: Intl.NumberFormat;
     variableBytes: Intl.NumberFormat;
