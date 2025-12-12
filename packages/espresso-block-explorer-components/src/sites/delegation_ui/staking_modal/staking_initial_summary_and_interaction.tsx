@@ -1,4 +1,3 @@
-import { CurrentNumberFormatters } from '@/components/contexts';
 import { addClassToClassName } from '@/components/higher_order';
 import { ESPInput } from '@/components/input/esp/esp_input';
 import MoneyText from '@/components/text/money_text';
@@ -28,24 +27,26 @@ const StakingESPInputArea: React.FC = () => {
   const stakingAmount = React.useContext(StakingAmountContext);
   const setStakingAmount = React.useContext(SetStakingAmountContext);
   const currentBalance = React.useContext(ESPBalanceContext);
-  const numberFormatters = React.useContext(CurrentNumberFormatters);
 
-  const hasBalance = currentBalance >= stakingAmount.value;
-  const insufficient = !hasBalance ? 'insufficient' : undefined;
+  const hasBalance = currentBalance >= (stakingAmount?.value ?? 0n);
+  const isInsufficientBalance = !hasBalance;
+  const errorClass = isInsufficientBalance ? 'error' : undefined;
 
   return (
-    <div className="staking-modal-esp-input-area">
+    <div
+      className={addClassToClassName(
+        errorClass,
+        'staking-modal-esp-input-area',
+      )}
+    >
       <label htmlFor="staking-modal-esp-input">
         <Text text="Amount to Stake" />
       </label>
       <ESPInput
         id="staking-modal-esp-input"
-        className={addClassToClassName(
-          insufficient,
-          'staking-modal-esp-focus-display',
-        )}
+        className="staking-modal-esp-focus-display"
+        placeholder="Stake amount"
         value={stakingAmount}
-        placeholder={numberFormatters.ESP.format(0n)}
         onChange={(_event, amount) => setStakingAmount(amount)}
       />
       <StakingInputInfoArea />
@@ -66,13 +67,13 @@ const InsufficientBalanceWarning: React.FC = () => {
   const stakingAmount = React.useContext(StakingAmountContext);
   const currentBalance = React.useContext(ESPBalanceContext);
 
-  if (currentBalance >= stakingAmount.value) {
+  if (currentBalance >= (stakingAmount?.value ?? 0n)) {
     return null;
   }
 
   return (
     <div className="staking-modal-insufficient-balance-warning">
-      <Text text="Insufficient Balance" />
+      <Text text="Amount is bigger than balance" />
     </div>
   );
 };

@@ -25,7 +25,7 @@ const ClaimableESPArea: React.FC = () => {
       <label htmlFor="staking-modal-esp-input">
         <Text text="To Withdraw" />
       </label>
-      <div className="staking-modal-esp-focus-display">
+      <div className="staking-modal-esp-display">
         <MoneyText money={MonetaryValue.ESP(currentStakeToValidator)} />
       </div>
     </div>

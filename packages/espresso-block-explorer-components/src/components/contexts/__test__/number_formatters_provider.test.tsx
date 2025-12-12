@@ -49,6 +49,7 @@ describe('Number Formatters Provider', () => {
           <OverrideNumberFormatters
             formatters={{
               default: new Intl.NumberFormat('en-US', {}),
+              defaultFinance: new Intl.NumberFormat('en-US', {}),
               percentage: new Intl.NumberFormat('en-US', {}),
               bytes: new Intl.NumberFormat('en-US', {}),
               bytesPerSecond: new Intl.NumberFormat('en-US', {}),
@@ -80,6 +81,7 @@ describe('Number Formatters Provider', () => {
           <OverrideNumberFormatters
             formatters={{
               default: new Intl.NumberFormat('de-DE', {}),
+              defaultFinance: new Intl.NumberFormat('de-DE', {}),
               percentage: new Intl.NumberFormat('en-US', {}),
               bytes: new Intl.NumberFormat('en-US', {}),
               bytesPerSecond: new Intl.NumberFormat('en-US', {}),

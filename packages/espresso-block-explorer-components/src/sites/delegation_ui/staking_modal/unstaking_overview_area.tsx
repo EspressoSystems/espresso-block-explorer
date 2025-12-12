@@ -38,6 +38,7 @@ const CurrentBalance: React.FC = () => {
 const NewBalance: React.FC = () => {
   const balance = React.useContext(ESPBalanceContext);
   const stakingAmount = React.useContext(StakingAmountContext);
+  const stakingAmountValue = stakingAmount?.value ?? 0n;
 
   return (
     <LabelValueSplit>
@@ -45,7 +46,7 @@ const NewBalance: React.FC = () => {
         <Text text="Balance after Escrow" />
       </span>
       <span>
-        <MoneyText money={MonetaryValue.ESP(balance + stakingAmount.value)} />
+        <MoneyText money={MonetaryValue.ESP(balance + stakingAmountValue)} />
       </span>
     </LabelValueSplit>
   );

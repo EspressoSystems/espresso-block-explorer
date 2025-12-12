@@ -32,7 +32,9 @@ const UnstakingESPInputArea: React.FC = () => {
   const stakingAmount = React.useContext(StakingAmountContext);
   const setStakingAmount = React.useContext(SetStakingAmountContext);
 
-  const hasBalance = currentStakeToValidator >= stakingAmount.value;
+  const stakingAmountValue = stakingAmount?.value ?? 0n;
+
+  const hasBalance = currentStakeToValidator >= stakingAmountValue;
   const insufficient = !hasBalance ? 'insufficient' : undefined;
 
   return (
@@ -67,8 +69,9 @@ const InsufficientBalanceWarning: React.FC = () => {
   const currentStakeToValidator =
     React.useContext(CurrentStakeToValidatorContext) ?? 0n;
   const stakingAmount = React.useContext(StakingAmountContext);
+  const stakingAmountValue = stakingAmount?.value ?? 0n;
 
-  if (currentStakeToValidator >= stakingAmount.value) {
+  if (currentStakeToValidator >= stakingAmountValue) {
     return null;
   }
 
@@ -104,29 +107,30 @@ const UnstakingOptionsArea: React.FC = () => {
   const quarterStake = currentStakeToValidator / 4n;
   const halfStake = currentStakeToValidator / 2n;
   const threeQuarterStake = (currentStakeToValidator * 3n) / 4n;
+  const stakingAmountValue = stakingAmount?.value ?? 0n;
 
   return (
     <div className="staking-modal-unstaking-options-area">
       <ButtonLarge
-        data-selected={stakingAmount.value === quarterStake}
+        data-selected={stakingAmountValue === quarterStake}
         onClick={() => setStakingAmount(MonetaryValue.ESP(quarterStake))}
       >
         <PercentageText percentage={0.25} />
       </ButtonLarge>
       <ButtonLarge
-        data-selected={stakingAmount.value === halfStake}
+        data-selected={stakingAmountValue === halfStake}
         onClick={() => setStakingAmount(MonetaryValue.ESP(halfStake))}
       >
         <PercentageText percentage={0.5} />
       </ButtonLarge>
       <ButtonLarge
-        data-selected={stakingAmount.value === threeQuarterStake}
+        data-selected={stakingAmountValue === threeQuarterStake}
         onClick={() => setStakingAmount(MonetaryValue.ESP(threeQuarterStake))}
       >
         <PercentageText percentage={0.75} />
       </ButtonLarge>
       <ButtonLarge
-        data-selected={stakingAmount.value === currentStakeToValidator}
+        data-selected={stakingAmountValue === currentStakeToValidator}
         onClick={() =>
           setStakingAmount(MonetaryValue.ESP(currentStakeToValidator))
         }

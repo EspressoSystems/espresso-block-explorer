@@ -36,8 +36,9 @@ export const ApproveButton: React.FC = () => {
 
   // Sanity Checks
   // Do we already have an approval that is high enough?
+  const stakingAmountValue = stakingAmount?.value ?? 0n;
 
-  const needAllowanceIncrease = stakingAmount.value > (allowance ?? 0n);
+  const needAllowanceIncrease = stakingAmountValue > (allowance ?? 0n);
 
   if (!l1Methods || !espContract || !stakeTableContract) {
     return (
@@ -97,7 +98,7 @@ export const ApproveButton: React.FC = () => {
     );
   }
 
-  if (stakingAmount.value <= 0n) {
+  if (stakingAmountValue <= 0n) {
     // We have no staking amount
     return (
       <ButtonLarge className="btn-approve" disabled>

@@ -1,3 +1,4 @@
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { nodeList } from '@/data_source/fake_data_source';
 import { ValidatorConfirmed } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { Meta, StoryObj } from '@storybook/react-vite';
@@ -14,7 +15,9 @@ const meta: Meta = {
   ...DefaultMeta,
   args: {
     ...DefaultMeta.args,
-    selection: new ValidatorConfirmed(nodeList[INDEX_STAKED].address),
+    selection: new ValidatorConfirmed(
+      hexArrayBufferCodec.encode(nodeList[INDEX_STAKED].address),
+    ),
     validator: fullValidatorSet.nodes[INDEX_STAKED],
     amount: '0',
   },

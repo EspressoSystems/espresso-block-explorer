@@ -3,10 +3,7 @@ import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/text';
-import WalletAddressText from '@/components/text/wallet_address_text';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { neverPromise } from '@/functional/functional_async';
-import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
@@ -16,6 +13,7 @@ import {
   StakeTableContractGasEstimatorContext,
 } from '../contexts/stake_table_contract_context';
 import ButtonLarge from '../elements/buttons/button_large';
+import { ValidatorName } from '../elements/validator/validator_name';
 import { CloseStakingModalButton } from './close_staking_modal';
 import {
   CurrentPendingUndelegationFromValidatorContext,
@@ -44,19 +42,17 @@ export const WithdrawClaimContent: React.FC = () => {
 };
 
 export const WithDrawClaimModalContent: React.FC = () => {
-  const confirmedValidator = React.useContext(ConfirmedValidatorContext);
-
   return (
     <>
       <StakingHeader>
         <StakingModalTitle>
-          <Text text="Claim" />
-          <Text text=" / " />
-          <WalletAddressText
-            value={
-              new WalletAddress(hexArrayBufferCodec.decode(confirmedValidator))
-            }
-          />
+          <span className="accent">
+            <Text text="Claim" />
+            &nbsp;
+            <Text text="/" />
+            &nbsp;
+          </span>
+          <ValidatorName />
         </StakingModalTitle>
         <CloseStakingModalButton />
       </StakingHeader>

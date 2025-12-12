@@ -52,6 +52,74 @@ function composingFromInputElement(inputElement: HTMLInputElement): TextRange {
 }
 
 /**
+ * shouldIgnoreKeyDownEventForEditing is a helper function that determines
+ * whether a keydown event should be ignored for editing purposes.
+ *
+ * You provide it the Keyboard event, and it will make the determination.
+ * The goal here is to filter out keys that we do not want to interfere
+ * with standard editing operations, such as navigation keys, control
+ * keys, and other non-character input keys.
+ */
+export function shouldIgnoreKeyDownEventForEditing(event: React.KeyboardEvent) {
+  // Do we want to prevent the user from typing certain characters?
+  // We only want valid values to come out of this input.
+  // We can store the "raw" value, and use InputFormatters to format it
+  // into a valid value by ignoring all of the invalid characters.
+  //
+  // If the key is not a number, or a valid separator / grouping character,
+  // we don't want it to be input.
+  //
+  // We want to accept numeric characters, their separators, and grouping
+  // characters. We also don't want to interfere with editing or navigation
+  // keys like Backspace, Delete, Arrow keys, etc.
+
+  // Ignore all control keys, in order to prevent us from interfering
+  // with standard editing operations.
+  if (event.ctrlKey || event.metaKey || event.altKey) {
+    return true;
+  }
+
+  // Ignore all Events generated during IME Composition
+  if (event.nativeEvent.isComposing) {
+    return true;
+  }
+
+  // Ignore Shift Key by in isolation, as we do not wish to interfere
+  // with capitalization options.
+  if (event.key === 'Shift') {
+    return true;
+  }
+
+  // Ignore Editing Keys
+  if (event.key === 'Backspace' || event.key === 'Delete') {
+    return true;
+  }
+
+  // Ignore Navigation Keys
+  if (
+    event.key === 'ArrowLeft' ||
+    event.key === 'ArrowRight' ||
+    event.key === 'ArrowUp' ||
+    event.key === 'ArrowDown' ||
+    event.key === 'Home' ||
+    event.key === 'End'
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * isArabicNumeralKey is a helper function that determines
+ * whether the provided keyboard event corresponds to
+ * an Arabic numeral key (0-9).
+ */
+export function isArabicNumeralKey(event: React.KeyboardEvent) {
+  return event.key >= '0' && event.key <= '9';
+}
+
+/**
  * TextEditing is a ReactComponent that provides a text input field
  * with support for explicitly controlling the value and selection.
  * It uses the TextEditingValue and TextSelection types to manage
@@ -123,15 +191,6 @@ export const TextEditing: React.FC<TextEditingProps> = (props) => {
     state.selection.start,
     state.text,
   ]);
-
-  if (ref.current && state.selection.isValid) {
-    const sel = state.selection;
-    ref.current.setSelectionRange(
-      sel.start,
-      sel.end,
-      sel.start <= sel.end ? 'forward' : 'backward',
-    );
-  }
 
   return (
     <input
