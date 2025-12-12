@@ -4,6 +4,7 @@ import { RewardClaimContract } from '@/contracts/reward_claim/reward_claim_inter
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { bigintCodec } from '@/convert/codec/bigint';
 import { createKeccakHash } from '@/crypto/keccak/family';
+import UnimplementedError from '@/errors/unimplemented_error';
 import React from 'react';
 import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
@@ -223,6 +224,10 @@ export class MockRewardClaimContractImpl implements RewardClaimContract {
 
     applyActionToState(this.l1Methods, action);
     return action.hash();
+  }
+
+  async totalClaimed(): Promise<bigint> {
+    throw new UnimplementedError();
   }
 }
 

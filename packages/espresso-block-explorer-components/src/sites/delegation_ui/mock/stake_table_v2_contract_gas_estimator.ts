@@ -18,7 +18,7 @@ export class MockStakeTableV2ContractGasEstimatorImpl implements StakeTableV2Con
   }
 
   async claimWithdrawal(): Promise<bigint> {
-    return 100002n;
+    return 67848n;
   }
 
   async claimValidatorExit(): Promise<bigint> {
@@ -27,5 +27,9 @@ export class MockStakeTableV2ContractGasEstimatorImpl implements StakeTableV2Con
 
   async updateConsensusKeysV2(): Promise<bigint> {
     return 100004n;
+  }
+
+  async registerValidatorV2(): Promise<bigint> {
+    return 100005n;
   }
 }

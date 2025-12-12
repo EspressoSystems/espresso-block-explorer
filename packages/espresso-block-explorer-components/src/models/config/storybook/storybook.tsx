@@ -5,6 +5,7 @@ import { RainbowKitContextInjector } from '@/components/rainbowkit/components/pr
 import { walletAddressCodec } from '@/models/wallet_address/wallet_address';
 import { ProvideESPTokenContract } from '@/sites/delegation_ui/contexts/esp_token_contract_context';
 import { ProvideL1Methods } from '@/sites/delegation_ui/contexts/l1_methods_context';
+import { ProvideLightClientV2Contract } from '@/sites/delegation_ui/contexts/light_client_contract_v2_context';
 import { ProvideRewardClaimContract } from '@/sites/delegation_ui/contexts/reward_claim_contract_context';
 import { ProvideStakeTableV2Contract } from '@/sites/delegation_ui/contexts/stake_table_v2_contract_context';
 import { FakeDataMockOverrides } from '@/sites/delegation_ui/mock/fake_data';
@@ -102,6 +103,7 @@ export interface StoryBookSpecifyEnvironmentAndContractsProps extends StoryBookS
   espTokenContractAddress?: string;
   stakeTableContractAddress?: string;
   rewardClaimContractAddress?: string;
+  lightClientContractAddress?: string;
 }
 
 export const StoryBookSpecifyEnvironmentAndContracts: React.FC<
@@ -113,6 +115,7 @@ export const StoryBookSpecifyEnvironmentAndContracts: React.FC<
   espTokenContractAddress,
   stakeTableContractAddress,
   rewardClaimContractAddress,
+  lightClientContractAddress,
   l1ValidatorServiceURL,
   children,
 }) => {
@@ -121,6 +124,7 @@ export const StoryBookSpecifyEnvironmentAndContracts: React.FC<
     resolveContractAddress(espTokenContractAddress),
     resolveContractAddress(stakeTableContractAddress),
     resolveContractAddress(rewardClaimContractAddress),
+    resolveContractAddress(lightClientContractAddress),
   );
 
   return (
@@ -139,9 +143,11 @@ export const StoryBookSpecifyEnvironmentAndContracts: React.FC<
                   <ProvideESPTokenContract>
                     <ProvideStakeTableV2Contract>
                       <ProvideRewardClaimContract>
-                        <FakeDataMockOverrides>
-                          {children}
-                        </FakeDataMockOverrides>
+                        <ProvideLightClientV2Contract>
+                          <FakeDataMockOverrides>
+                            {children}
+                          </FakeDataMockOverrides>
+                        </ProvideLightClientV2Contract>
                       </ProvideRewardClaimContract>
                     </ProvideStakeTableV2Contract>
                   </ProvideESPTokenContract>

@@ -208,7 +208,7 @@ export default [
         internalType: 'uint256',
       },
       {
-        name: '_initialOwner',
+        name: '_timelock',
         type: 'address',
         internalType: 'address',
       },
@@ -237,7 +237,7 @@ export default [
       {
         name: '',
         type: 'address',
-        internalType: 'contract LightClientV2',
+        internalType: 'contract ILightClient',
       },
     ],
     stateMutability: 'view',
@@ -695,19 +695,6 @@ export default [
   },
   {
     type: 'event',
-    name: 'Upgrade',
-    inputs: [
-      {
-        name: 'implementation',
-        type: 'address',
-        indexed: false,
-        internalType: 'address',
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: 'event',
     name: 'Upgraded',
     inputs: [
       {
@@ -834,6 +821,11 @@ export default [
   },
   {
     type: 'error',
+    name: 'BN254PairingProdFailed',
+    inputs: [],
+  },
+  {
+    type: 'error',
     name: 'BlsKeyAlreadyUsed',
     inputs: [],
   },
@@ -851,6 +843,11 @@ export default [
   {
     type: 'error',
     name: 'ERC1967NonPayable',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'ExitEscrowPeriodInvalid',
     inputs: [],
   },
   {
@@ -888,6 +885,11 @@ export default [
   {
     type: 'error',
     name: 'InvalidCommission',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'InvalidG1',
     inputs: [],
   },
   {
@@ -931,6 +933,16 @@ export default [
         internalType: 'address',
       },
     ],
+  },
+  {
+    type: 'error',
+    name: 'OwnershipCannotBeRenounced',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'PowPrecompileFailed',
+    inputs: [],
   },
   {
     type: 'error',

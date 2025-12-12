@@ -11,10 +11,12 @@ import {
 import {
   CommissionTracking,
   StakeTableV2Contract,
+  UndelegationInfo,
 } from '@/contracts/stake_table_v2/stake_table_v2_interface';
 import { bigintCodec, hexArrayBufferCodec } from '@/convert/codec';
 import { createKeccakHash } from '@/crypto/keccak';
 import { nodeList } from '@/data_source/fake_data_source';
+import UnimplementedError from '@/errors/unimplemented_error';
 import {
   appendIterables,
   dropIterable,
@@ -578,7 +580,7 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
   }
 
   async blsKey(): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    throw new UnimplementedError();
   }
 
   async validatorExit(validator: `0x${string}`): Promise<bigint> {
@@ -612,7 +614,7 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
   }
 
   async updateConsensusKeysV2(): Promise<`0x${string}`> {
-    throw new Error('Method not implemented.');
+    throw new UnimplementedError();
   }
 
   async deregisterValidator(): Promise<`0x${string}`> {
@@ -777,6 +779,22 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
     );
     applyActionToState(this.l1Methods, action);
     return action.hash();
+  }
+
+  async getUndelegation(): Promise<UndelegationInfo> {
+    throw new UnimplementedError();
+  }
+
+  async minDelegateAmount(): Promise<bigint> {
+    return 1_000_000_000_000_000_000n;
+  }
+
+  async validateMetadataUri(): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+
+  async registerValidatorV2(): Promise<`0x${string}`> {
+    throw new UnimplementedError();
   }
 }
 

@@ -34,18 +34,18 @@ export const ProvideStakeTableV2Contract: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   return (
-    <ProvideStakeTableContractUtilizingWagmi>
+    <ProvideStakeTableV2ContractUtilizingWagmi>
       {children}
-    </ProvideStakeTableContractUtilizingWagmi>
+    </ProvideStakeTableV2ContractUtilizingWagmi>
   );
 };
 
 /**
- * ProvideStakeTableContractUtilizingWagmi is a React component that provides
+ * ProvideStakeTableV2ContractUtilizingWagmi is a React component that provides
  * the Stake Table V2 contract via StakeTableV2ContractContext.  It is created
  * and configured to use Wagmi for blockchain interactions.
  */
-const ProvideStakeTableContractUtilizingWagmi: React.FC<
+const ProvideStakeTableV2ContractUtilizingWagmi: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const config = useConfig();

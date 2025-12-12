@@ -19,6 +19,58 @@ export default [
   },
   {
     type: 'function',
+    name: 'MAX_COMMISSION_BPS',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint16',
+        internalType: 'uint16',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'MAX_EXIT_ESCROW_PERIOD',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint64',
+        internalType: 'uint64',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'MAX_METADATA_URI_LENGTH',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'MIN_EXIT_ESCROW_PERIOD',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint64',
+        internalType: 'uint64',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'PAUSER_ROLE',
     inputs: [],
     outputs: [
@@ -249,6 +301,40 @@ export default [
   },
   {
     type: 'function',
+    name: 'getUndelegation',
+    inputs: [
+      {
+        name: 'validator',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'delegator',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [
+      {
+        name: 'id',
+        type: 'uint64',
+        internalType: 'uint64',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'unlocksAt',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'getVersion',
     inputs: [],
     outputs: [
@@ -422,6 +508,19 @@ export default [
   {
     type: 'function',
     name: 'minCommissionIncreaseInterval',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'minDelegateAmount',
     inputs: [],
     outputs: [
       {
@@ -627,6 +726,11 @@ export default [
         type: 'uint16',
         internalType: 'uint16',
       },
+      {
+        name: 'metadataUri',
+        type: 'string',
+        internalType: 'string',
+      },
     ],
     outputs: [],
     stateMutability: 'nonpayable',
@@ -712,6 +816,19 @@ export default [
     inputs: [
       {
         name: 'newInterval',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setMinDelegateAmount',
+    inputs: [
+      {
+        name: 'newMinDelegateAmount',
         type: 'uint256',
         internalType: 'uint256',
       },
@@ -989,6 +1106,19 @@ export default [
   },
   {
     type: 'function',
+    name: 'updateMetadataUri',
+    inputs: [
+      {
+        name: 'metadataUri',
+        type: 'string',
+        internalType: 'string',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     name: 'upgradeToAndCall',
     inputs: [
       {
@@ -1004,6 +1134,19 @@ export default [
     ],
     outputs: [],
     stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'validateMetadataUri',
+    inputs: [
+      {
+        name: 'metadataUri',
+        type: 'string',
+        internalType: 'string',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'pure',
   },
   {
     type: 'function',
@@ -1287,10 +1430,42 @@ export default [
   },
   {
     type: 'event',
+    name: 'MetadataUriUpdated',
+    inputs: [
+      {
+        name: 'validator',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'metadataUri',
+        type: 'string',
+        indexed: false,
+        internalType: 'string',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
     name: 'MinCommissionUpdateIntervalUpdated',
     inputs: [
       {
         name: 'newInterval',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'MinDelegateAmountUpdated',
+    inputs: [
+      {
+        name: 'newMinDelegateAmount',
         type: 'uint256',
         indexed: false,
         internalType: 'uint256',
@@ -1432,6 +1607,43 @@ export default [
   },
   {
     type: 'event',
+    name: 'UndelegatedV2',
+    inputs: [
+      {
+        name: 'delegator',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'validator',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'undelegationId',
+        type: 'uint64',
+        indexed: true,
+        internalType: 'uint64',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'unlocksAt',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
     name: 'Unpaused',
     inputs: [
       {
@@ -1465,6 +1677,50 @@ export default [
         type: 'address',
         indexed: true,
         internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'ValidatorExitClaimed',
+    inputs: [
+      {
+        name: 'delegator',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'validator',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'ValidatorExitV2',
+    inputs: [
+      {
+        name: 'validator',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'unlocksAt',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
       },
     ],
     anonymous: false,
@@ -1620,6 +1876,12 @@ export default [
         indexed: false,
         internalType: 'bytes',
       },
+      {
+        name: 'metadataUri',
+        type: 'string',
+        indexed: false,
+        internalType: 'string',
+      },
     ],
     anonymous: false,
   },
@@ -1632,6 +1894,37 @@ export default [
         type: 'address',
         indexed: true,
         internalType: 'address',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'WithdrawalClaimed',
+    inputs: [
+      {
+        name: 'delegator',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'validator',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'undelegationId',
+        type: 'uint64',
+        indexed: true,
+        internalType: 'uint64',
       },
       {
         name: 'amount',
@@ -1713,6 +2006,21 @@ export default [
   {
     type: 'error',
     name: 'CommissionUpdateTooSoon',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'DefaultAdminCannotBeRenounced',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'DefaultAdminCannotBeRevoked',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'DelegateAmountTooSmall',
     inputs: [],
   },
   {
@@ -1805,6 +2113,11 @@ export default [
   },
   {
     type: 'error',
+    name: 'InvalidMetadataUriLength',
+    inputs: [],
+  },
+  {
+    type: 'error',
     name: 'InvalidRateLimitParameters',
     inputs: [],
   },
@@ -1816,6 +2129,11 @@ export default [
   {
     type: 'error',
     name: 'InvalidSchnorrVK',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'NoUndelegationFound',
     inputs: [],
   },
   {
@@ -1849,6 +2167,11 @@ export default [
         internalType: 'address',
       },
     ],
+  },
+  {
+    type: 'error',
+    name: 'OwnershipCannotBeRenounced',
+    inputs: [],
   },
   {
     type: 'error',

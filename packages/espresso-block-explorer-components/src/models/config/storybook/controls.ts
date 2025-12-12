@@ -34,6 +34,11 @@ export const rewardClaimContractAddressControlArgType = {
   description: 'Reward Claim Contract Address',
 } as const;
 
+export const lightClientContractAddressControlArgType = {
+  control: { type: 'text' },
+  description: 'Light client Contract Address',
+} as const;
+
 export const queryServiceNodeURLControlArgType = {
   control: { type: 'text' },
   description:
@@ -72,6 +77,7 @@ export const environmentArgTypesWithContracts = {
   stakeTableContractAddress: stakeTableContractAddressControlArgType,
   espTokenContractAddress: espTokenContractAddressControlArgType,
   rewardClaimContractAddress: rewardClaimContractAddressControlArgType,
+  lightClientContractAddress: lightClientContractAddressControlArgType,
 } as const;
 
 export interface EnvironmentArgs {
@@ -84,6 +90,7 @@ export interface EnvironmentWithContractsArgs extends EnvironmentArgs {
   stakeTableContractAddress?: `0x${string}`;
   espTokenContractAddress?: `0x${string}`;
   rewardClaimContractAddress?: `0x${string}`;
+  lightClientContractAddress?: `0x${string}`;
 }
 
 export const environmentArgsMilk: EnvironmentArgs = {
@@ -96,6 +103,8 @@ export const environmentArgsMilkWithContracts: EnvironmentWithContractsArgs = {
   ...environmentArgsMilk,
   stakeTableContractAddress: '0xed1db453c3156ff3155a97ad217b3087d5dc5f6e',
   espTokenContractAddress: '0xe1aa25618fa0c7a1cfdab5d6b456af611873b629',
+  rewardClaimContractAddress: undefined,
+  lightClientContractAddress: '0x76ca03a67c049477ffb09694dfef00416db69746',
 };
 
 export const environmentArgsWater: EnvironmentArgs = {
@@ -108,6 +117,8 @@ export const environmentArgsWaterWithContracts: EnvironmentWithContractsArgs = {
   ...environmentArgsWater,
   stakeTableContractAddress: '0xed1db453c3156ff3155a97ad217b3087d5dc5f6e',
   espTokenContractAddress: '0xe1aa25618fa0c7a1cfdab5d6b456af611873b629',
+  rewardClaimContractAddress: undefined,
+  lightClientContractAddress: '0x76ca03a67c049477ffb09694dfef00416db69746',
 };
 
 export const environmentArgsDecaf: EnvironmentArgs = {
@@ -120,6 +131,8 @@ export const environmentArgsDecafWithContracts: EnvironmentWithContractsArgs = {
   ...environmentArgsDecaf,
   stakeTableContractAddress: '0x40304fbe94d5e7d1492dd90c53a2d63e8506a037',
   espTokenContractAddress: '0xb3e655a030e2e34a18b72757b40be086a8f43f3b',
+  rewardClaimContractAddress: '0xe81908E34dBb4BA01f27F8769264199727Be50c8',
+  lightClientContractAddress: '0x303872bb82a191771321d4828888920100d0b3e4',
 };
 
 export const environmentArgsMainnet: EnvironmentArgs = {
@@ -133,6 +146,8 @@ export const environmentArgsMainnetWithContracts: EnvironmentWithContractsArgs =
     ...environmentArgsMainnet,
     stakeTableContractAddress: undefined,
     espTokenContractAddress: undefined,
+    rewardClaimContractAddress: undefined,
+    lightClientContractAddress: '0x95ca91cea73239b15e5d2e5a74d02d6b5e0ae458',
   };
 
 export const environmentArgsFakeData: EnvironmentArgs = {
@@ -146,6 +161,8 @@ export const environmentArgsFakeDataWithContracts: EnvironmentWithContractsArgs 
     ...environmentArgsFakeData,
     stakeTableContractAddress: undefined,
     espTokenContractAddress: undefined,
+    rewardClaimContractAddress: undefined,
+    lightClientContractAddress: undefined,
   };
 
 export const environmentArgsLocalDevNet: EnvironmentArgs = {
@@ -160,6 +177,7 @@ export const environmentArgsLocalDevNetWithContracts: EnvironmentWithContractsAr
     stakeTableContractAddress: '0xefdc2a236dba7a8f60726b49abc79ee6b22ed445',
     espTokenContractAddress: '0x80f43505d8d1a739504eb4237eb15b2e0048da8d',
     rewardClaimContractAddress: undefined,
+    lightClientContractAddress: undefined,
   };
 
 /**

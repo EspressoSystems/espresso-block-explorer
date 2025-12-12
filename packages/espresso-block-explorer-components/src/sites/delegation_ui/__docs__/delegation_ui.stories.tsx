@@ -24,6 +24,8 @@ interface ExampleProps {
   environment: Environment;
   stakeTableContractAddress?: string;
   espTokenContractAddress?: string;
+  rewardClaimContractAddress?: string;
+  lightClientContractAddress?: string;
   hotshotQueryServiceURL?: string;
   nodeValidatorWebSocketURL?: string;
   l1ValidatorServiceURL?: string;
@@ -34,6 +36,8 @@ const Example: React.FC<ExampleProps> = ({
   environment,
   stakeTableContractAddress,
   espTokenContractAddress,
+  rewardClaimContractAddress,
+  lightClientContractAddress,
   hotshotQueryServiceURL,
   nodeValidatorWebSocketURL,
   l1ValidatorServiceURL,
@@ -46,6 +50,8 @@ const Example: React.FC<ExampleProps> = ({
         environment={environment}
         stakeTableContractAddress={stakeTableContractAddress}
         espTokenContractAddress={espTokenContractAddress}
+        rewardClaimContractAddress={rewardClaimContractAddress}
+        lightClientContractAddress={lightClientContractAddress}
         hotshotQueryServiceURL={extractURLWithEncodedFallback(
           hotshotQueryServiceURL,
         )}
@@ -100,6 +106,7 @@ const meta: Meta = {
     stakeTableContractAddress: undefined,
     espTokenContractAddress: undefined,
     rewardClaimContractAddress: undefined,
+    lightClientContractAddress: undefined,
     hotshotQueryServiceURL: undefined,
     nodeValidatorWebSocketURL: undefined,
     l1ValidatorServiceURL: undefined,

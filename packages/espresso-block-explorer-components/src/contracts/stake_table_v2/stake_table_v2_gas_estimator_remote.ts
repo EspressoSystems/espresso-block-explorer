@@ -34,4 +34,23 @@ export class StakeTableV2ContractGasEstimatorRemote
       args: [blsVk, schnorrVk, blsSig, schnorrSig],
     });
   }
+
+  async registerValidatorV2(
+    account: `0x${string}`,
+    blsVk: { x0: bigint; x1: bigint; y0: bigint; y1: bigint },
+    schnorrVk: { x: bigint; y: bigint },
+    blsSig: { x: bigint; y: bigint },
+    schnorrSig: `0x${string}`,
+    commission: number,
+    metadataUri: string,
+  ): Promise<bigint> {
+    return estimateContractGas(this.config, {
+      account,
+      abi: StakeTableV2Abi,
+      address: this.address,
+      chainId: this.chainID,
+      functionName: 'registerValidatorV2',
+      args: [blsVk, schnorrVk, blsSig, schnorrSig, commission, metadataUri],
+    });
+  }
 }
