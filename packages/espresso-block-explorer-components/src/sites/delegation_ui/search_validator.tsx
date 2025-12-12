@@ -21,6 +21,7 @@ export const SearchValidator: React.FC = () => {
         value={searchTerm}
         onChange={(_event, searchTerm) => setSearchTerm(searchTerm)}
         placeholder="Search Validator"
+        type="search"
       />
       <MagnifyingGlass />
     </div>
