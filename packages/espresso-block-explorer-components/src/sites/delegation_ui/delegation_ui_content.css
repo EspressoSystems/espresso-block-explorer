@@ -90,6 +90,7 @@
 }
 
 input.search-node {
+  font-family: inherit;
   background:
     linear-gradient(
       270deg,
