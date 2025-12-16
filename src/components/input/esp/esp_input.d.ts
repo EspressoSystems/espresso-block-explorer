@@ -5,4 +5,7 @@ export interface ESPInputProps extends Omit<TextEditingProps, 'value' | 'onChang
     value?: null | MonetaryValue;
     onChange?: (event: React.ChangeEvent<HTMLInputElement> | React.SyntheticEvent<HTMLInputElement, Event>, value: MonetaryValue) => void;
 }
+/**
+ * ESPInput is a React component that renders an input for ESP monetary values.
+ */
 export declare const ESPInput: React.FC<ESPInputProps>;
