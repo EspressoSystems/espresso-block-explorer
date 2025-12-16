@@ -1,0 +1,17 @@
+span.epoch-countdown {
+  min-width: 150px;
+  justify-self: end;
+  text-align: right;
+}
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  span.epoch-countdown {
+    min-width: 122px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+}
