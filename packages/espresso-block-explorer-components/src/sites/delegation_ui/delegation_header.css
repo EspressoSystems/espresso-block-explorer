@@ -3,16 +3,36 @@
 }
 
 header.delegation {
-  display: flex;
+  display: grid;
   justify-content: space-between;
   align-items: center;
-  height: 40px;
+
+  grid-template-areas: 'logo wrong wallet';
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto;
+  row-gap: 16px;
+
+  min-height: 40px;
   box-sizing: content-box;
   margin-inline: 32px;
   margin-block: 40px;
 
   color: var(--delegation-header--text--color);
   --icon--fill-color: var(--delegation-header--text--color);
+}
+
+header.delegation > svg.icon--logo {
+  grid-area: logo;
+  justify-self: start;
+}
+
+header.delegation > .wallet-container {
+  grid-area: wallet;
+  justify-self: end;
+}
+
+header.delegation > .delegation-header-wrong-network-warning {
+  grid-area: wrong;
 }
 
 @media screen and (max-width: 1280px) {
@@ -22,6 +42,10 @@ header.delegation {
   header.delegation {
     margin-inline: 20px;
     margin-block: 20px;
+
+    grid-template-areas: 'logo wallet' 'wrong wrong';
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
   }
 }
 
