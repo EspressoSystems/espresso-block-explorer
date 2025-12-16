@@ -36,6 +36,11 @@ import {
   ProvideSearchFilter,
   SearchFilterContext,
 } from './contexts/search_filter_context';
+import {
+  NoValidatorSelected,
+  SetValidatorSelectionContext,
+  ValidatorSelected,
+} from './contexts/validator_selection_context';
 import { WalletSnapshotContext } from './contexts/wallet_snapshot_context';
 import './delegation_ui_content.css';
 import ButtonLarge from './elements/buttons/button_large';
@@ -291,6 +296,9 @@ const TableControls: React.FC = () => {
  * modal.
  */
 const DelegateButton: React.FC = () => {
+  const allValidators = React.useContext(AllValidatorsContext);
+  const nodeAddressList = React.useContext(NodeAddressListContext);
+  const setValidatorSelection = React.useContext(SetValidatorSelectionContext);
   const address = React.useContext(RainbowKitAccountAddressContext);
   const rainbowKtiModalControls = React.useContext(RainbowKitModalContext);
   const modalControls = React.useContext(ModalContext);
@@ -304,8 +312,25 @@ const DelegateButton: React.FC = () => {
     );
   }
 
+  const sortedAddressList = nodeAddressList.toSorted((a, b) => {
+    const stakeA = allValidators.get(a)?.stake ?? 0n;
+    const stakeB = allValidators.get(b)?.stake ?? 0n;
+    return Number(stakeB - stakeA);
+  });
+
   return (
-    <ButtonLarge onClick={modalControls.open}>
+    <ButtonLarge
+      onClick={() => {
+        const [firstAddress = null] = sortedAddressList;
+        if (firstAddress) {
+          setValidatorSelection(new ValidatorSelected(firstAddress));
+        } else {
+          setValidatorSelection(new NoValidatorSelected());
+        }
+
+        modalControls.open();
+      }}
+    >
       <Add1 />
       <Text text="Delegate" />
     </ButtonLarge>
