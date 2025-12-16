@@ -6,6 +6,7 @@ import { neverPromise } from '@/functional/functional_async';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { ESPBalanceContext } from '../contexts/esp_balance_context';
+import { RetrieveMinimumDelegationAmount } from '../contexts/minimum_delegation_amount_context';
 import { StakeTableContractGasEstimatorContext } from '../contexts/stake_table_contract_context';
 import { ValidatorName } from '../elements/validator/validator_name';
 import { ApproveButton } from './approve_button';
@@ -27,18 +28,28 @@ import { StakingInitialSummaryAndInteraction } from './staking_initial_summary_a
 import { StakingModalTitle } from './staking_modal_title';
 import { StakingOverviewArea } from './staking_overview_area';
 
+/**
+ * NewDelegationContent is the main component for new delegations
+ * in the staking modal.
+ */
 export const NewDelegationContent: React.FC = () => {
   return (
-    <ProvideCurrentAllowanceToStakeTable>
-      <ProvideCurrentCurrentEpochActiveValidators>
-        <ProvideEpochCurrentStakeToValidator>
-          <NewDelegationModalContent />
-        </ProvideEpochCurrentStakeToValidator>
-      </ProvideCurrentCurrentEpochActiveValidators>
-    </ProvideCurrentAllowanceToStakeTable>
+    <RetrieveMinimumDelegationAmount>
+      <ProvideCurrentAllowanceToStakeTable>
+        <ProvideCurrentCurrentEpochActiveValidators>
+          <ProvideEpochCurrentStakeToValidator>
+            <NewDelegationModalContent />
+          </ProvideEpochCurrentStakeToValidator>
+        </ProvideCurrentCurrentEpochActiveValidators>
+      </ProvideCurrentAllowanceToStakeTable>
+    </RetrieveMinimumDelegationAmount>
   );
 };
 
+/**
+ * NewDelegationModalContent is the content for new delegations
+ * in the staking modal.
+ */
 export const NewDelegationModalContent: React.FC = () => {
   return (
     <>

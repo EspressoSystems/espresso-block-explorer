@@ -1,6 +1,7 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import Text from '@/components/text/text';
 import React from 'react';
+import { MinimumDelegationAmountContext } from '../contexts/minimum_delegation_amount_context';
 import { CurrentAllowanceToStakeTableContext } from './contexts/current_allowance_context';
 import { ApproveAsyncSnapshotContext } from './contexts/perform_approve_delegation_context';
 import { DelegateAsyncSnapshotContext } from './contexts/perform_delegation_context';
@@ -9,11 +10,18 @@ import { StakingAmountContext } from './contexts/staking_amount_context';
 import './new_stake_instructions_and_progress.css';
 import { ProgressIndicatorArea } from './progress_indicator_area';
 
+/**
+ * NewStakeInstructionsAndProgress is the instructions and progress area
+ * for staking modal when delegating to a validator.
+ */
 export const NewStakeInstructionsAndProgress: React.FC = () => {
   const stakingAmount = React.useContext(StakingAmountContext);
   const allowance = React.useContext(CurrentAllowanceToStakeTableContext) ?? 0n;
   const delegateAsyncSnapshot = React.useContext(DelegateAsyncSnapshotContext);
   const approveAsyncSnapshot = React.useContext(ApproveAsyncSnapshotContext);
+  const minimumDelegationAmount = React.useContext(
+    MinimumDelegationAmountContext,
+  );
 
   // Let's handle the AsyncSnapshotStates in descending order
 
@@ -119,6 +127,18 @@ export const NewStakeInstructionsAndProgress: React.FC = () => {
         <span>
           <Text text="Approve transaction first" />
         </span>
+        <ProgressIndicatorArea />
+      </div>
+    );
+  }
+
+  if (
+    stakingAmountValue !== 0n &&
+    stakingAmountValue < minimumDelegationAmount
+  ) {
+    return (
+      <div className="staking-modal-instructions-and-progress">
+        <span>&nbsp;</span>
         <ProgressIndicatorArea />
       </div>
     );

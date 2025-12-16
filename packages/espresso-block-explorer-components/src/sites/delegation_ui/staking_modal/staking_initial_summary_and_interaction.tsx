@@ -5,6 +5,8 @@ import Text from '@/components/text/text';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ESPBalanceContext } from '../contexts/esp_balance_context';
+import { MinimumDelegationAmountContext } from '../contexts/minimum_delegation_amount_context';
+import ButtonLarge from '../elements/buttons/button_large';
 import {
   SetStakingAmountContext,
   StakingAmountContext,
@@ -13,6 +15,10 @@ import { NoticeArea } from './notice_area';
 import './staking_initial_summary_and_interaction.css';
 import { ValidatorDisplayArea } from './validator_display_area';
 
+/**
+ * StakingInitialSummaryAndInteraction is the initial summary and
+ * interaction area for staking modal when delegating to a validator.
+ */
 export const StakingInitialSummaryAndInteraction: React.FC = () => {
   return (
     <div className="staking-modal-initial-summary-and-interaction">
@@ -23,29 +29,46 @@ export const StakingInitialSummaryAndInteraction: React.FC = () => {
   );
 };
 
+/**
+ * StakingESPInputArea is the input area for staking ESP amount
+ */
 const StakingESPInputArea: React.FC = () => {
   const stakingAmount = React.useContext(StakingAmountContext);
   const setStakingAmount = React.useContext(SetStakingAmountContext);
   const currentBalance = React.useContext(ESPBalanceContext);
+  const minimumAmount = React.useContext(MinimumDelegationAmountContext);
 
   const hasBalance = currentBalance >= (stakingAmount?.value ?? 0n);
   const isInsufficientBalance = !hasBalance;
-  const errorClass = isInsufficientBalance ? 'error' : undefined;
+  const isLessThanMinimum =
+    stakingAmount !== null &&
+    stakingAmount.value !== 0n &&
+    stakingAmount.value < minimumAmount;
+  const errorClass =
+    isInsufficientBalance || isLessThanMinimum ? 'error' : undefined;
 
   return (
     <div
       className={addClassToClassName(
         errorClass,
-        'staking-modal-esp-input-area',
+        'staking-modal-esp-input-area new-delegation',
       )}
     >
       <label htmlFor="staking-modal-esp-input">
         <Text text="Amount to Stake" />
       </label>
+      <ButtonLarge
+        className="bbtn-max"
+        onClick={() => {
+          setStakingAmount(MonetaryValue.ESP(currentBalance));
+        }}
+      >
+        <Text text="Max" />
+      </ButtonLarge>
       <ESPInput
         id="staking-modal-esp-input"
         className="staking-modal-esp-focus-display"
-        placeholder="Stake amount"
+        placeholder="0"
         value={stakingAmount}
         onChange={(_event, amount) => setStakingAmount(amount)}
       />
@@ -54,20 +77,47 @@ const StakingESPInputArea: React.FC = () => {
   );
 };
 
+/**
+ * StakingInputInfoArea is the info area below the staking input field
+ * that displays minimum amount, insufficient balance warning, and
+ * current balance.
+ */
 const StakingInputInfoArea: React.FC = () => {
   return (
     <div className="staking-modal-input-info-area">
+      <MinimumAmount />
       <InsufficientBalanceWarning />
       <CurrentBalanceArea />
     </div>
   );
 };
 
+/**
+ * InsufficientBalanceWarning is a React component that displays a warning
+ * if the staking amount exceeds the current balance.
+ */
 const InsufficientBalanceWarning: React.FC = () => {
   const stakingAmount = React.useContext(StakingAmountContext);
   const currentBalance = React.useContext(ESPBalanceContext);
+  const minimumAmount = React.useContext(MinimumDelegationAmountContext);
 
-  if (currentBalance >= (stakingAmount?.value ?? 0n)) {
+  if (stakingAmount === null) {
+    return null;
+  }
+
+  if (stakingAmount.value === 0n) {
+    return null;
+  }
+
+  if (stakingAmount.value < minimumAmount) {
+    return (
+      <div className="staking-modal-insufficient-balance-warning">
+        <Text text="Amount is lower than minimum" />
+      </div>
+    );
+  }
+
+  if (currentBalance >= stakingAmount.value) {
     return null;
   }
 
@@ -78,10 +128,45 @@ const InsufficientBalanceWarning: React.FC = () => {
   );
 };
 
+/**
+ * MinimumAmount is a React component that displays the minimum
+ * delegation amount.
+ */
+const MinimumAmount: React.FC = () => {
+  const setStakingAmount = React.useContext(SetStakingAmountContext);
+  const minimumAmount = React.useContext(MinimumDelegationAmountContext);
+  return (
+    <div
+      className="staking-modal-minimum-amount-area"
+      onClick={() => {
+        setStakingAmount(MonetaryValue.ESP(minimumAmount));
+      }}
+    >
+      <span className="staking-modal-current-balance-label">
+        <Text text="Minimum" />
+      </span>
+
+      <span className="staking-modal-current-balance-value">
+        <MoneyText money={MonetaryValue.ESP(minimumAmount)} />
+      </span>
+    </div>
+  );
+};
+
+/**
+ * CurrentBalanceArea is a React component that displays the current
+ * ESP balance of the user.
+ */
 const CurrentBalanceArea: React.FC = () => {
   const balance = React.useContext(ESPBalanceContext);
+  const setStakingAmount = React.useContext(SetStakingAmountContext);
   return (
-    <div className="staking-modal-current-balance-area">
+    <div
+      className="staking-modal-current-balance-area"
+      onClick={() => {
+        setStakingAmount(MonetaryValue.ESP(balance));
+      }}
+    >
       <span className="staking-modal-current-balance-label">
         <Text text="Balance" />
       </span>

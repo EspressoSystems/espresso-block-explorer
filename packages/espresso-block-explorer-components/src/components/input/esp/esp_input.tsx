@@ -1,4 +1,5 @@
 import { CurrentNumberFormatters } from '@/components/contexts';
+import { ESPSymbol } from '@/components/visual/currency/esp_symbol';
 import UnimplementedError from '@/errors/unimplemented_error';
 import {
   expandIterable,
@@ -29,6 +30,9 @@ export interface ESPInputProps extends Omit<
   ) => void;
 }
 
+/**
+ * isChangeEvent determines whether the given event is a ChangeEvent.
+ */
 function isChangeEvent(
   event: React.SyntheticEvent<HTMLInputElement, Event>,
 ): event is React.ChangeEvent<HTMLInputElement> {
@@ -102,6 +106,10 @@ interface ESPInputState {
   money: MonetaryValue;
 }
 
+/**
+ * EXAMPLE_NUMBER_TEMPLATE is a template number used to determine locale
+ * specific formatting.
+ */
 const EXAMPLE_NUMBER_TEMPLATE = '1234567890.5';
 type NumberMap = [
   string,
@@ -117,11 +125,18 @@ type NumberMap = [
 ];
 const LATN_DIGIT_MAP = '0123456789'.split('') as NumberMap;
 
+/**
+ * CurrencyCodeSide indicates whether the currency code is a prefix or suffix.
+ */
 enum CurrencyCodeSide {
   prefix = -1,
   suffix = 1,
 }
 
+/**
+ * previewEdit previews the result of applying the incoming edit to the
+ * given TextEditingValue.
+ */
 function previewEdit(value: TextEditingValue, incoming: string): string {
   return [
     value.selection.textBefore(value.text),
@@ -130,6 +145,10 @@ function previewEdit(value: TextEditingValue, incoming: string): string {
   ].join('');
 }
 
+/**
+ * previewValidFormat previews the formatted value of the given input
+ * value according to the given formatter and locale settings.
+ */
 function previewValidFormat(
   formatter: Intl.NumberFormat,
   decimalSeparator: string,
@@ -155,6 +174,10 @@ function previewValidFormat(
   ).join('');
 }
 
+/**
+ * shouldAllowEventEdit determines whether the given edit event should be
+ * allowed based on whether it would result in a valid formatted value.
+ */
 function shouldAllowEventEdit(
   formatter: Intl.NumberFormat,
   decimalSeparator: string,
@@ -186,23 +209,38 @@ function shouldAllowEventEdit(
     return true;
   }
 
+  if (
+    expectedResult.length > resultingFormat.length &&
+    expectedResult.startsWith(resultingFormat) &&
+    ((expectedResult[resultingFormat.length] === decimalSeparator &&
+      expectedResult
+        .substring(resultingFormat.length + 1)
+        .split('')
+        .every((char) => numberMap.indexOf(char) >= 0)) ||
+      (resultingFormat.indexOf(decimalSeparator) > 0 &&
+        expectedResult
+          .substring(resultingFormat.length)
+          .split('')
+          .every((char) => numberMap.indexOf(char) >= 0)))
+  ) {
+    // This is a special case where the user is adding `0`s after the decimal
+    // separator.  We want to allow this as long as it doesn't exceed the
+    // significant digits.
+    return true;
+  }
+
   // At this point, we know that the resulting format is invalid.
   // We need to block this input.
   return false;
 }
 
+/**
+ * ESPInput is a React component that renders an input for ESP monetary values.
+ */
 export const ESPInput: React.FC<ESPInputProps> = (props) => {
   const { value: rawInitialValue, onChange, ...rest } = props;
   const numberFormatters = React.useContext(CurrentNumberFormatters);
   const initialValue = rawInitialValue;
-  const value = rawInitialValue ?? MonetaryValue.ESP(0n);
-  const initial = new TextEditingValue(
-    !initialValue
-      ? ''
-      : numberFormatters.defaultFinance.format(
-          initialValue.toNumericLiteralString(),
-        ),
-  );
 
   const exampleNumberFormat = React.useMemo(
     () => numberFormatters.ESPFull.formatToParts(EXAMPLE_NUMBER_TEMPLATE),
@@ -223,9 +261,6 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
       exampleNumberFormat.find((part) => part.type === 'group')?.value ?? ',',
     [exampleNumberFormat],
   );
-  const currencyPart =
-    exampleNumberFormat.find((part) => part.type === 'currency')?.value ??
-    'ESP';
   const currencyCodeSide = React.useMemo(
     () =>
       exampleNumberFormat.findIndex((part) => part.type === 'currency') <
@@ -233,6 +268,15 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
         ? CurrencyCodeSide.prefix
         : CurrencyCodeSide.suffix,
     [exampleNumberFormat],
+  );
+
+  const value = rawInitialValue ?? MonetaryValue.ESP(0n);
+  const initial = new TextEditingValue(
+    !initialValue
+      ? ''
+      : numberFormatters.defaultFinance
+          .format(initialValue.toNumericLiteralString())
+          .replaceAll(groupSeparator, ''),
   );
 
   // This is a number map of the digits '0-9' in order according to the
@@ -275,14 +319,14 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
 
         return {
           rawValue: new TextEditingValue(
-            numberFormatters.defaultFinance.format(
-              initialValue.toNumericLiteralString(),
-            ),
+            numberFormatters.defaultFinance
+              .format(initialValue.toNumericLiteralString())
+              .replaceAll(groupSeparator, ''),
           ),
           transformed: new TextEditingValue(
-            numberFormatters.defaultFinance.format(
-              initialValue.toNumericLiteralString(),
-            ),
+            numberFormatters.defaultFinance
+              .format(initialValue.toNumericLiteralString())
+              .replaceAll(groupSeparator, ''),
           ),
           money: initialValue,
         };
@@ -292,7 +336,7 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
     return () => {
       setTheState = () => {};
     };
-  }, [numberFormatters, state, initialValue]);
+  }, [numberFormatters, state, initialValue, groupSeparator]);
 
   const inputComponent = (
     <TextEditing
@@ -425,14 +469,18 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
     return (
       <div className="esp-input-container currency-suffix">
         {inputComponent}
-        <span className="currency-code">{currencyPart}</span>
+        <span className="currency-code">
+          <ESPSymbol />
+        </span>
       </div>
     );
   }
 
   return (
     <div className="esp-input-container currency-prefix">
-      <span className="currency-code">{currencyPart}</span>
+      <span className="currency-code">
+        <ESPSymbol />
+      </span>
       {inputComponent}
     </div>
   );

@@ -38,9 +38,10 @@
   line-height: 16px;
   text-transform: uppercase;
   position: absolute;
-  text-align: center;
   width: 100%;
-  top: 16px;
+  top: 24px;
+  padding-inline: 24px;
+  z-index: 1;
 }
 
 .esp-input-container,
@@ -56,7 +57,6 @@
   padding-top: 48px; */
   font-size: 32px;
   line-height: 40px;
-  text-align: center;
   box-sizing: border-box;
 }
 
@@ -67,9 +67,33 @@
 .staking-modal-esp-input-area .esp-input-container input {
   background: transparent;
   border: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
-.esp-input-container .currency-code,
+.staking-modal-esp-input-area .esp-input-container.currency-prefix input {
+  padding-inline-start: 64px;
+  padding-inline-end: 85px;
+}
+
+.staking-modal-esp-input-area .esp-input-container.currency-suffix input {
+  padding-inline-start: 24px;
+  padding-inline-end: 85px;
+}
+
+.staking-modal-esp-input-area.new-delegation
+  .esp-input-container.currency-suffix
+  input {
+  padding-inline-end: 125px;
+}
+
+.esp-input-container {
+  height: 103px;
+}
+
 .esp-input-container input,
 .staking-modal-esp-display {
   padding-top: 48px;
@@ -77,11 +101,11 @@
   padding-inline: 24px;
   font-size: inherit;
   color: inherit;
+  box-sizing: border-box;
 }
 
 .staking-modal-esp-display {
-  font-size: 32px;
-  text-align: center;
+  font-size: 40px;
 }
 
 .staking-modal-esp-input-area .esp-input-container:focus-within,
@@ -94,48 +118,63 @@
   outline: none;
 }
 
+.staking-modal-esp-input-area .bbtn-max {
+  position: absolute;
+  top: 48px;
+  right: 24px;
+  font-size: 16px;
+  z-index: 1;
+}
+
 .esp-input-container {
-  display: grid;
-  align-items: stretch;
+  position: relative;
 }
 
-.esp-input-container.currency-prefix {
-  grid-template-columns: auto 1fr;
+.esp-input-container .currency-code {
+  position: absolute;
+  top: 48px;
 }
 
-.esp-input-container.currency-suffix {
-  grid-template-columns: auto auto;
+.esp-input-container.currency-prefix .currency-code {
+  left: 24px;
 }
 
-.esp-input-container.currency-prefix > .currency-code {
-  border-right-width: 1px;
-  border-right-style: solid;
-  border-right-color: var(--color--brown--3--alpha-24);
+.esp-input-container.currency-suffix .currency-code {
+  right: 24px;
 }
 
-.esp-input-container.currency-suffix > .currency-code {
-  border-left-width: 1px;
-  border-left-style: solid;
-  border-left-color: var(--color--brown--3--alpha-24);
+.new-delegation .esp-input-container.currency-suffix .currency-code {
+  right: 85px;
 }
 
 .staking-modal-input-info-area {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto;
-  grid-template-areas: 'nothing warning balance';
+  grid-template-areas: 'minimum warning balance';
   margin-top: 16px;
 }
 
+.staking-modal-minimum-amount-area,
 .staking-modal-current-balance-area {
-  grid-area: balance;
   font-size: 10px;
   line-height: 16px;
   color: var(--color--brown--3);
   display: flex;
   gap: 8px;
   text-transform: uppercase;
-  text-align: right;
+  cursor: pointer;
+}
+
+.staking-modal-minimum-amount-area {
+  grid-area: minimum;
+  text-align: start;
+  justify-self: start;
+}
+
+.staking-modal-current-balance-area {
+  grid-area: balance;
+  text-align: end;
   justify-self: end;
 }
 
