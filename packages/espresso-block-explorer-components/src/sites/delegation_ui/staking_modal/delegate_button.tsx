@@ -6,6 +6,7 @@ import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_conte
 import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { L1MethodsContext } from '../contexts/l1_methods_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
+import { MinimumDelegationAmountContext } from '../contexts/minimum_delegation_amount_context';
 import { StakeTableContractContext } from '../contexts/stake_table_contract_context';
 import ButtonLarge from '../elements/buttons/button_large';
 import { CurrentAllowanceToStakeTableContext } from './contexts/current_allowance_context';
@@ -20,6 +21,13 @@ import {
   StakingAmountContext,
 } from './contexts/staking_amount_context';
 
+/**
+ * DelegateButton is the button to delegate stake to a validator.
+ *
+ * It attempts to ensure that the button is only enabled when all
+ * preconditions for delegation are met, and handles various states
+ * of the delegation process (e.g., waiting, success, error).
+ */
 export const DelegateButton: React.FC = () => {
   const setL1Timestamp = React.useContext(SetL1RefreshTimestampContext);
   const l1Methods = React.useContext(L1MethodsContext);
@@ -29,6 +37,9 @@ export const DelegateButton: React.FC = () => {
   const stakeTableContract = React.useContext(StakeTableContractContext);
   const allowance = React.useContext(CurrentAllowanceToStakeTableContext) ?? 0n;
   const asyncSnapshot = React.useContext(DelegateAsyncSnapshotContext);
+  const minimumDelegationAmount = React.useContext(
+    MinimumDelegationAmountContext,
+  );
   const setDelegationAsyncIterable = React.useContext(
     SetDelegationAsyncIterableContext,
   );
@@ -104,7 +115,9 @@ export const DelegateButton: React.FC = () => {
     // We don't have the balance to cover the staking amount
     stakingAmountValue > balance ||
     // We don't have enough allowance to cover the staking amount
-    stakingAmountValue > allowance
+    stakingAmountValue > allowance ||
+    // The staking amount is less than the minimum delegation amount
+    stakingAmountValue < minimumDelegationAmount
   ) {
     // Disable the button
     return (
