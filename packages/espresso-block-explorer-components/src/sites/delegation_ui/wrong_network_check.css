@@ -1,0 +1,38 @@
+.delegation-header-wrong-network-warning {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  gap: 24px;
+  background: #ff792e;
+  color: #ffffff;
+  border-radius: 12px;
+  padding-block: 4px;
+  padding-inline-end: 8px;
+  padding-inline-start: 18px;
+  text-transform: uppercase;
+  box-sizing: border-box;
+}
+
+.delegation-header-wrong-network-warning .bbtn.btn-large {
+  --button-base--default--background-color: #ffffff;
+  --button-base--default--foreground-color: #ff792e;
+  --button-base--default--height: 31px;
+
+  --button-base--hovered--background-color: #ffffffcc;
+  --button-base--hovered--foreground-color: #ff792ecc;
+}
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .delegation-header-wrong-network-warning {
+    font-size: 12px;
+    padding-inline-end: 8px;
+    padding-inline-start: 16px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+}
