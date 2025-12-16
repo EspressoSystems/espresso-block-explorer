@@ -1,29 +1,83 @@
 import { CurrentNumberFormatters } from '@/components/contexts';
+import { addClassToClassName } from '@/components/higher_order';
 import NumberText from '@/components/text/number_text';
 import Text from '@/components/text/text';
 import TimeLeftText from '@/components/text/time_left_text';
 import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
 import React from 'react';
+import { MoreInfoElement } from './elements/tooltip/more_info';
+import './epoch_ends_in.css';
 import { NetworkStatValue } from './network_stat_value';
 
+/**
+ * EpochEndsIn displays the current epoch number and the estimated time
+ * remaining until the end of the current epoch.
+ */
 export const EpochEndsIn: React.FC = () => {
-  const numberFormatters = React.useContext(CurrentNumberFormatters);
+  return (
+    <NetworkStatValue>
+      <h2>
+        <Text text="Epoch" />
+        &nbsp;
+        <CurrentEpochNumber className="accent" />
+        &nbsp;
+        <Text text="ends in" />
+        <MoreInfoElement>
+          <p>
+            <Text text="The estimated amount of time remaining until the start of the next epoch, which will determine the next set of active nodes." />
+          </p>
+        </MoreInfoElement>
+      </h2>
+      <span className="epoch-countdown">
+        <EpochEndsInCountDown />
+      </span>
+    </NetworkStatValue>
+  );
+};
+
+interface CurrentEpochNumberProps {
+  className?: string;
+}
+
+/**
+ * CurrentEpochNumber displays the current epoch number.
+ */
+const CurrentEpochNumber: React.FC<CurrentEpochNumberProps> = ({
+  className,
+}) => {
   const activeValidators = React.useContext(ActiveValidatorsContext);
-  if (activeValidators === null || activeValidators === undefined) {
-    return (
-      <NetworkStatValue>
-        <h2>
-          <Text text="Epoch" />
-          &nbsp;
-          <span className="accent">
-            <Text text="-" />
-          </span>
-          &nbsp;
-          <Text text="ends in" />
-        </h2>
-        <Text text="-" />
-      </NetworkStatValue>
+  const numberFormatters = React.useContext(CurrentNumberFormatters);
+
+  const textContent =
+    !activeValidators || !activeValidators ? (
+      <Text text="-" />
+    ) : (
+      <NumberText number={activeValidators.espressoBlock.epoch} />
     );
+
+  const titleContent = !activeValidators
+    ? undefined
+    : numberFormatters.default.format(activeValidators.espressoBlock.epoch);
+
+  return (
+    <span
+      className={addClassToClassName(className, 'epoch-number')}
+      title={titleContent}
+    >
+      {textContent}
+    </span>
+  );
+};
+
+/**
+ * EpochEndsInCountDown displays the estimated time remaining until the end
+ * of the current epoch.
+ */
+const EpochEndsInCountDown: React.FC = () => {
+  const activeValidators = React.useContext(ActiveValidatorsContext);
+
+  if (!activeValidators) {
+    return <Text text="-" />;
   }
 
   const epochAndBlock = activeValidators.espressoBlock;
@@ -33,22 +87,5 @@ export const EpochEndsIn: React.FC = () => {
   const blocksLeft = blocksPerEpoch - blockInEpoch;
 
   const timeLeft = Number(blocksLeft) * 6 * 1000;
-
-  return (
-    <NetworkStatValue>
-      <h2>
-        <Text text="Epoch" />
-        &nbsp;
-        <span
-          className="accent"
-          title={numberFormatters.default.format(epochAndBlock.block)}
-        >
-          <NumberText number={activeValidators?.espressoBlock.epoch ?? 0n} />
-        </span>
-        &nbsp;
-        <Text text="ends in" />
-      </h2>
-      <TimeLeftText durationInMilliseconds={timeLeft} />
-    </NetworkStatValue>
-  );
+  return <TimeLeftText durationInMilliseconds={timeLeft} />;
 };

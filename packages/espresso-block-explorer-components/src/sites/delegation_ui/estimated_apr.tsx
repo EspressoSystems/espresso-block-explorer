@@ -2,6 +2,7 @@ import PercentageText from '@/components/text/percentage_text';
 import Text from '@/components/text/text';
 import React from 'react';
 import { ActiveValidatorsContext } from './contexts/active_validators_context';
+import { MoreInfoElement } from './elements/tooltip/more_info';
 import { NetworkStatValue } from './network_stat_value';
 
 /**
@@ -11,23 +12,26 @@ import { NetworkStatValue } from './network_stat_value';
 export const EstimatedAPR: React.FC = () => {
   const activeNodesSnapshot = React.useContext(ActiveValidatorsContext);
 
-  if (!activeNodesSnapshot) {
-    return (
-      <NetworkStatValue>
-        <h2>
-          <Text text="Estimated APR" />
-        </h2>
-        <Text text="-" />
-      </NetworkStatValue>
-    );
-  }
+  const percentageText = activeNodesSnapshot ? (
+    <PercentageText percentage={activeNodesSnapshot.apr.ratio} />
+  ) : (
+    <Text text="-" />
+  );
 
   return (
     <NetworkStatValue>
       <h2>
         <Text text="Estimated APR" />
+        <MoreInfoElement>
+          <p>
+            <Text text="Informational, and not a guarantee of returns." />
+            <br />
+            <br />
+            <Text text="The estimated yearly return on staked tokens." />
+          </p>
+        </MoreInfoElement>
       </h2>
-      <PercentageText percentage={activeNodesSnapshot.apr.ratio} />
+      {percentageText}
     </NetworkStatValue>
   );
 };
