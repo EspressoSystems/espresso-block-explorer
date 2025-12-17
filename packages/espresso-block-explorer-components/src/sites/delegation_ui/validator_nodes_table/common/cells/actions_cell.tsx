@@ -71,7 +71,7 @@ export const ActionsCell: React.FC = () => {
     // We have an existing Delegation
     return (
       <ButtonLarge
-        className="action"
+        className="action manage"
         onClick={() => {
           setSelection(new ValidatorConfirmed(validator.addressText));
           modalControls.open();
