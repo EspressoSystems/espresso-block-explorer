@@ -3,7 +3,7 @@ import { ProvideValidatorNodeContext } from '@/sites/delegation_ui/contexts/vali
 import React from 'react';
 import { NodeAddressContext } from '../../contexts/node_address_context';
 import '../table.css';
-import { ClaimsDelegationTableHeader } from './claims_table_header';
+import { PendingExitsDelegationTableHeader } from './pending_exits_table_header';
 import { PendingExitsNodeValidatorTableRow } from './pending_exits_table_row';
 
 /**
@@ -19,7 +19,7 @@ export const PendingExitsDelegationTable: React.FC = () => {
 
   return (
     <table className="all-validators-table pending-claims">
-      <ClaimsDelegationTableHeader />
+      <PendingExitsDelegationTableHeader />
       <tbody>
         {nodeAddressList.map((address, index) => {
           return (

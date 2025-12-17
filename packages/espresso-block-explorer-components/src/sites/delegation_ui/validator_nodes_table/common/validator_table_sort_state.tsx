@@ -6,6 +6,7 @@ import {
 } from '@/functional/functional';
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
+import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
 import {
   AllValidatorsContext,
   NodeAddressListContext,
@@ -13,6 +14,8 @@ import {
 import { ConsensusMapContext } from '@/sites/delegation_ui/contexts/consensus_map_context';
 import { RankMapContext } from '@/sites/delegation_ui/contexts/rank_map_context';
 import React from 'react';
+import { PendingExitsContext } from '../../contexts/pending_exits_context';
+import { PendingUndelegationsContext } from '../../contexts/pending_undelegations_context';
 
 /**
  * CellType enumerates the different types of columns that can be
@@ -26,6 +29,10 @@ export enum CellType {
   missedSlots,
   participationRate,
   hotShotConsensus,
+
+  // Extra Types for specific Tables
+  pendingExit,
+  pendingClaim,
 }
 
 /**
@@ -81,10 +88,13 @@ export const TableColumnSortByContext = React.createContext<CellType | null>(
  * for the validator table, providing the current state and controls to modify
  * it.
  */
-export const useValidatorTableSortState = () => {
+export const useValidatorTableSortState = (
+  sortByCell: CellType = CellType.totalStake,
+  sortDirection: SortDirection = SortDirection.desc,
+) => {
   const [tableState, setTableState] = React.useState<TableSortState<CellType>>({
-    sortBy: CellType.totalStake,
-    sortDirection: SortDirection.desc,
+    sortBy: sortByCell,
+    sortDirection,
   });
 
   const sortBy = (newSortBy: CellType) => {
@@ -128,35 +138,49 @@ type ValidatorSortTuple = readonly [
   NodeSetEntry,
   number,
   null | ActiveNodeSetEntry,
+  null | PendingWithdrawal,
+  null | PendingWithdrawal,
 ];
+
+const TUPLE_INDEX_NODE_SET_ENTRY = 0;
+const TUPLE_INDEX_RANK = 1;
+const TUPLE_INDEX_ACTIVE_NODE = 2;
+const TUPLE_INDEX_PENDING_EXIT = 3;
+const TUPLE_INDEX_PENDING_CLAIM = 4;
 
 /**
  * sortByRank sorts validators by their rank.
  */
 function sortByRank(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  return a[1] - b[1];
+  return a[TUPLE_INDEX_RANK] - b[TUPLE_INDEX_RANK];
 }
 
 /**
  * sortByValidator sorts validators by their address.
  */
 function sortByValidator(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  return compareArrayBuffer(a[0].address, b[0].address);
+  return compareArrayBuffer(
+    a[TUPLE_INDEX_NODE_SET_ENTRY].address,
+    b[TUPLE_INDEX_NODE_SET_ENTRY].address,
+  );
 }
 
 /**
  * sortByFee sorts validators by their fee (commission).
  */
 function sortByFee(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  return Number(a[0].commission.valueOf() - b[0].commission.valueOf());
+  return Number(
+    a[TUPLE_INDEX_NODE_SET_ENTRY].commission.valueOf() -
+      b[TUPLE_INDEX_NODE_SET_ENTRY].commission.valueOf(),
+  );
 }
 
 /**
  * sortByMissedSlots sorts validators by their missed slots.
  */
 function sortByMissedSlots(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  const aMissed = a[2]?.leaderParticipation?.ratio ?? -1;
-  const bMissed = b[2]?.leaderParticipation?.ratio ?? -1;
+  const aMissed = a[TUPLE_INDEX_ACTIVE_NODE]?.leaderParticipation?.ratio ?? -1;
+  const bMissed = b[TUPLE_INDEX_ACTIVE_NODE]?.leaderParticipation?.ratio ?? -1;
   return aMissed - bMissed;
 }
 
@@ -164,8 +188,8 @@ function sortByMissedSlots(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  * sortByParticipationRate sorts validators by their participation rate.
  */
 function sortByParticipationRate(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  const aRate = a[2]?.voterParticipation?.ratio ?? -1;
-  const bRate = b[2]?.voterParticipation?.ratio ?? -1;
+  const aRate = a[TUPLE_INDEX_ACTIVE_NODE]?.voterParticipation?.ratio ?? -1;
+  const bRate = b[TUPLE_INDEX_ACTIVE_NODE]?.voterParticipation?.ratio ?? -1;
   return aRate - bRate;
 }
 
@@ -173,14 +197,37 @@ function sortByParticipationRate(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  * sortByHotShotConsensus sorts validators by their HotShot consensus status.
  */
 function sortByHotShotConsensus(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  return Number(Boolean(a[2])) - Number(Boolean(b[2]));
+  return (
+    Number(Boolean(a[TUPLE_INDEX_ACTIVE_NODE])) -
+    Number(Boolean(b[TUPLE_INDEX_ACTIVE_NODE]))
+  );
 }
 
 /**
  * sortByStake sorts validators by their total stake.
  */
 function sortByStake(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  return Number(a[0].stake - b[0].stake);
+  return Number(
+    a[TUPLE_INDEX_NODE_SET_ENTRY].stake - b[TUPLE_INDEX_NODE_SET_ENTRY].stake,
+  );
+}
+
+/**
+ * sortByPendingExit sorts validators by their pending exit amount.
+ */
+function sortByPendingExit(a: ValidatorSortTuple, b: ValidatorSortTuple) {
+  const aExit = a[TUPLE_INDEX_PENDING_EXIT]?.amount.valueOf() ?? 0n;
+  const bExit = b[TUPLE_INDEX_PENDING_EXIT]?.amount.valueOf() ?? 0n;
+  return Number(aExit - bExit);
+}
+
+/**
+ * sortByPendingClaim sorts validators by their pending claim amount.
+ */
+function sortByPendingClaim(a: ValidatorSortTuple, b: ValidatorSortTuple) {
+  const aClaim = a[TUPLE_INDEX_PENDING_CLAIM]?.amount.valueOf() ?? 0n;
+  const bClaim = b[TUPLE_INDEX_PENDING_CLAIM]?.amount.valueOf() ?? 0n;
+  return Number(aClaim - bClaim);
 }
 
 /**
@@ -211,6 +258,12 @@ function getSortFunction(
 
     case CellType.hotShotConsensus:
       return sortByHotShotConsensus;
+
+    case CellType.pendingExit:
+      return sortByPendingExit;
+
+    case CellType.pendingClaim:
+      return sortByPendingClaim;
 
     default:
       throw new UnimplementedError();
@@ -244,6 +297,8 @@ function sortWithState(
   tableState: TableSortState<CellType>,
   rankMap: Map<`0x${string}`, number>,
   consensusSet: Map<`0x${string}`, ActiveNodeSetEntry>,
+  pendingExits: Map<`0x${string}`, PendingWithdrawal>,
+  pendingClaims: Map<`0x${string}`, PendingWithdrawal>,
 ): `0x${string}`[] {
   const { sortBy, sortDirection } = tableState;
   const sortDirectionFunction = getSortDirection(sortDirection);
@@ -255,13 +310,21 @@ function sortWithState(
         allValidators.get(address)!,
         rankMap.get(address) ?? Number.MAX_SAFE_INTEGER,
         consensusSet.get(address) ?? null,
+        pendingExits.get(address) ?? null,
+        pendingClaims.get(address) ?? null,
       ] as const;
     }),
   )
     .sort(sortFunction)
-    .map((tuple) => tuple[0].addressText);
+    .map((tuple) => tuple[TUPLE_INDEX_NODE_SET_ENTRY].addressText);
 
   return sortedAddresses;
+}
+
+export interface ValidatorTableSortStateProviderProps
+  extends React.PropsWithChildren {
+  sortBy?: CellType;
+  sortDirection?: SortDirection;
 }
 
 /**
@@ -270,13 +333,18 @@ function sortWithState(
  * data to its children.
  */
 export const ValidatorTableSortStateProvider: React.FC<
-  React.PropsWithChildren
+  ValidatorTableSortStateProviderProps
 > = (props) => {
-  const { tableState, tableControls } = useValidatorTableSortState();
+  const { tableState, tableControls } = useValidatorTableSortState(
+    props.sortBy,
+    props.sortDirection,
+  );
   const nodeAddressList = React.useContext(NodeAddressListContext);
   const allValidators = React.useContext(AllValidatorsContext);
   const rankMap = React.useContext(RankMapContext);
   const consensusMap = React.useContext(ConsensusMapContext);
+  const pendingExits = React.useContext(PendingExitsContext);
+  const pendingClaims = React.useContext(PendingUndelegationsContext);
 
   const [sortedValues, setSortedValues] = React.useState<`0x${string}`[]>([]);
 
@@ -295,6 +363,8 @@ export const ValidatorTableSortStateProvider: React.FC<
       tableState,
       rankMap,
       consensusMap,
+      pendingExits,
+      pendingClaims,
     );
 
     // Compare the new sorted values with the current ones, if they are not
@@ -318,6 +388,8 @@ export const ValidatorTableSortStateProvider: React.FC<
     consensusMap,
     nodeAddressList,
     sortedValues,
+    pendingExits,
+    pendingClaims,
   ]);
 
   // We need to sort the Validators according to the Table State
