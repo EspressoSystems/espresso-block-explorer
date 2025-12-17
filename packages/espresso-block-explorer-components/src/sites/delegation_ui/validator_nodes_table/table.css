@@ -175,6 +175,11 @@ table.all-validators-table {
   --button-base--default--border-style: solid;
 }
 
+table.all-validators-table .bbtn.manage {
+  --button-base--default--background-color: var(--color--brown--4);
+  --button-base--default--border-color: var(--color--brown--4);
+}
+
 @media screen and (max-width: 1280px) {
 }
 
