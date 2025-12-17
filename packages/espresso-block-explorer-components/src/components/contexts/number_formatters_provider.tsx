@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import BytesPerSecondNumberFormat from './bytes_per_second_number_format';
+import CustomCurrencyCodeNumberFormat from './custom_currency_code_currency_format';
 import { CurrentLocale } from './locale_provider';
 import TransactionPerSecondNumberFormat from './transactions_per_second_number_format';
 import VariableBytesNumberFormat from './variable_bytes_number_format';
@@ -59,14 +60,12 @@ export function createDefaultNumberFormatters(locale: string) {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }),
-    gwei: new Intl.NumberFormat(locale, {
-      numberingSystem: 'finance',
-      style: 'currency',
-      currency: 'XXX',
+    gwei: new CustomCurrencyCodeNumberFormat(locale, {
+      currency: 'Gwei',
       minimumFractionDigits: 2,
       maximumSignificantDigits: 9,
       maximumFractionDigits: 9,
-    }),
+    }) as Intl.NumberFormat,
 
     USD: new Intl.NumberFormat(locale, {
       numberingSystem: 'finance',

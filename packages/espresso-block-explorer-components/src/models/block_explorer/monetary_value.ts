@@ -8,8 +8,10 @@ import {
   CurrencyCode,
   ESP,
   ETH,
+  GWEI,
   JPY,
   USD,
+  WEI,
   currencyCodeCodec,
 } from './currency_code';
 
@@ -49,6 +51,12 @@ export default class MonetaryValue {
   }
   static BTC(value: bigint): MonetaryValue {
     return new MonetaryValue(BTC, BigInt(value));
+  }
+  static WEI(value: bigint): MonetaryValue {
+    return new MonetaryValue(WEI, BigInt(value));
+  }
+  static GWEI(value: bigint): MonetaryValue {
+    return new MonetaryValue(GWEI, BigInt(value));
   }
 
   /**

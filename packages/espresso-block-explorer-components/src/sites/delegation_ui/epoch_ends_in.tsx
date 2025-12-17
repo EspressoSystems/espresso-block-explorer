@@ -3,6 +3,7 @@ import { addClassToClassName } from '@/components/higher_order';
 import NumberText from '@/components/text/number_text';
 import Text from '@/components/text/text';
 import TimeLeftText from '@/components/text/time_left_text';
+import { filterIterable } from '@/functional/functional';
 import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
 import React from 'react';
 import { MoreInfoElement } from './elements/tooltip/more_info';
@@ -19,7 +20,9 @@ export const EpochEndsIn: React.FC = () => {
       <h2>
         <Text text="Epoch" />
         &nbsp;
-        <CurrentEpochNumber className="accent" />
+        <CurrentEpochWrapper className="accent">
+          <CurrentEpochNumber />
+        </CurrentEpochWrapper>
         &nbsp;
         <Text text="ends in" />
         <MoreInfoElement>
@@ -35,38 +38,62 @@ export const EpochEndsIn: React.FC = () => {
   );
 };
 
-interface CurrentEpochNumberProps {
+interface CurrentEpochWrapperProps extends React.PropsWithChildren {
   className?: string;
 }
 
 /**
- * CurrentEpochNumber displays the current epoch number.
+ * CurrentEpochWrapper wraps the current epoch number with additional
+ * information in a tooltip.
  */
-const CurrentEpochNumber: React.FC<CurrentEpochNumberProps> = ({
+const CurrentEpochWrapper: React.FC<CurrentEpochWrapperProps> = ({
   className,
+  children,
 }) => {
   const activeValidators = React.useContext(ActiveValidatorsContext);
   const numberFormatters = React.useContext(CurrentNumberFormatters);
 
-  const textContent =
-    !activeValidators || !activeValidators ? (
-      <Text text="-" />
-    ) : (
-      <NumberText number={activeValidators.espressoBlock.epoch} />
-    );
+  const blocksPerEpoch = !activeValidators
+    ? null
+    : activeValidators.espressoBlock.blocksPerEpoch;
 
-  const titleContent = !activeValidators
-    ? undefined
-    : numberFormatters.default.format(activeValidators.espressoBlock.epoch);
+  const titleParts = [
+    !activeValidators
+      ? null
+      : `Block: ${numberFormatters.default.format(activeValidators.espressoBlock.block)}`,
+    !blocksPerEpoch
+      ? null
+      : `Blocks per Epoch: ${numberFormatters.default.format(blocksPerEpoch)}`,
+    !blocksPerEpoch || !activeValidators
+      ? null
+      : `Blocks Remaining: ${numberFormatters.default.format(blocksPerEpoch - (activeValidators.espressoBlock.block % blocksPerEpoch))}`,
+  ];
+
+  const titleContent = Array.from(
+    filterIterable(titleParts, (part) => part !== null),
+  ).join('\n');
 
   return (
     <span
       className={addClassToClassName(className, 'epoch-number')}
       title={titleContent}
     >
-      {textContent}
+      {children}
     </span>
   );
+};
+
+/**
+ * CurrentEpochNumber displays the current epoch number.
+ */
+const CurrentEpochNumber: React.FC = () => {
+  const activeValidators = React.useContext(ActiveValidatorsContext);
+
+  if (!activeValidators || !activeValidators) {
+    return <Text text="-" />;
+  }
+
+  return <NumberText number={activeValidators.espressoBlock.epoch} />;
 };
 
 /**

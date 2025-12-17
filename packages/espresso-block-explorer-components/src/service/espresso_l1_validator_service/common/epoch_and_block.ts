@@ -9,6 +9,50 @@ import {
 } from '@/convert/codec';
 
 /**
+ * computeBlocksPerEpoch computes the number of blocks per epoch given a block
+ * number and an epoch number.
+ *
+ * NOTE: this function does not handle the case where epoch is 0, or 1.
+ * In those cases, the number of blocks per epoch cannot be determined
+ * uniquely.
+ */
+function computeBlocksPerEpoch(block: bigint, epoch: bigint): bigint {
+  if (block % epoch === 0n) {
+    // epoch = blockNum / blocksPerEpoch
+    return block / epoch;
+  }
+
+  // epoch = blockNum / blocksPerEpoch + 1
+
+  return block / (epoch - 1n);
+}
+
+/**
+ * computeEpochByBlockAndBlocksPerEpoch computes the epoch number given a
+ * block number and the number of blocks per epoch.
+ */
+function computeEpochByBlockAndBlocksPerEpoch(
+  blockNum: bigint,
+  blocksPerEpoch: bigint,
+): bigint {
+  if (blocksPerEpoch === 0n) {
+    // this case is unreachable in our context since we reject zero-valued blocksPerEpoch
+    // at init time
+    return 0n;
+  }
+
+  if (blockNum === 0n) {
+    return 1n;
+  }
+
+  if (blockNum % blocksPerEpoch === 0n) {
+    return blockNum / blocksPerEpoch;
+  }
+
+  return blockNum / blocksPerEpoch + 1n;
+}
+
+/**
  * EpochAndBlock represents an epoch and block number pair with a timestamp.
  *
  * The EpochAndBlock type is defined by the Espresso L1 Validator Service API.
@@ -35,18 +79,44 @@ export class EpochAndBlock {
     return block / blocksPerEpoch + 1n;
   }
 
+  /**
+   * blocksPerEpoch computes the number of blocks per epoch based on the
+   * epoch and block numbers
+   */
   get blocksPerEpoch(): bigint {
-    if (this.epoch === 0n) {
-      // This shouldn't happen
+    const epoch = this.epoch;
+    const block = this.block;
+
+    if (epoch === 0n) {
+      // This shouldn't happen, and indicates 0 blocks per epoch
       breakpoint();
       return 0n;
     }
 
-    const blocksPerEpoch = this.block / (this.epoch - 1n);
+    if (epoch === 1n) {
+      // We cannot tell how many blocks per epoch there are if we  do not
+      // have an epoch larger than 1.
+      return block;
+    }
+
+    // For any other block, unless the block number is directly divisible by
+    // the blocks per epoch, the epoch is increased by 1.
+
+    if (block % epoch === 0n) {
+      // epoch = blockNum / blocksPerEpoch
+      const blocksPerEpoch = block / epoch;
+      return blocksPerEpoch;
+    }
+
+    // epoch = blockNum / blocksPerEpoch + 1
+    const blocksPerEpoch = computeBlocksPerEpoch(block, epoch);
+
     assert(
-      this.epoch === this.block / blocksPerEpoch + 1n,
+      computeEpochByBlockAndBlocksPerEpoch(this.block, blocksPerEpoch) ===
+        epoch,
       'Inconsistent epoch and block numbers',
     );
+
     return blocksPerEpoch;
   }
 

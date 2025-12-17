@@ -1,3 +1,4 @@
+import { CurrentNumberFormatters } from '@/components/contexts';
 import MoneyText from '@/components/text/money_text';
 import Text from '@/components/text/text';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
@@ -6,36 +7,112 @@ import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_co
 import { EstimatedFeesPerGasContext } from './contexts/estimated_fees_per_gas_context';
 import { LabelValueSplit } from './label_value_split';
 
+/**
+ * TxFeeEstimate displays an estimate of the transaction fee for a staking
+ * operation.
+ */
 export const TxFeeEstimate: React.FC = () => {
-  const estimatedContractGas =
-    React.useContext(EstimatedContractGasContext) ?? null;
-  const estimatedFeesPerGas =
-    React.useContext(EstimatedFeesPerGasContext) ?? null;
-
-  let feeComponent = <Text text="-" />;
-
-  if (estimatedContractGas === null || estimatedFeesPerGas === null) {
-    //
-  } else if (typeof estimatedFeesPerGas.maxFeePerGas !== 'undefined') {
-    const feeEstimate =
-      estimatedContractGas *
-      (estimatedFeesPerGas.maxFeePerGas +
-        estimatedFeesPerGas.maxPriorityFeePerGas);
-    feeComponent = <MoneyText money={MonetaryValue.ETH(feeEstimate)} />;
-  } else if (typeof estimatedFeesPerGas.gasPrice !== 'undefined') {
-    const feeEstimate = estimatedContractGas * estimatedFeesPerGas.gasPrice;
-    feeComponent = <MoneyText money={MonetaryValue.ETH(feeEstimate)} />;
-  } else {
-    const feeEstimate = estimatedContractGas * 1n;
-    feeComponent = <MoneyText money={MonetaryValue.ETH(feeEstimate)} />;
-  }
-
   return (
     <LabelValueSplit>
       <span>
         <Text text="Tx Fee" />
       </span>
-      <span>{feeComponent}</span>
+      <FeeBreakdown>
+        <FeeDisplay />
+      </FeeBreakdown>
     </LabelValueSplit>
   );
+};
+
+/**
+ * isNotNull is a type guard that filters out null values.
+ */
+function isNotNull<T>(value: T | null): value is T {
+  return value !== null;
+}
+
+/**
+ * FeeBreakdown displays a breakdown of the fee estimate in a tooltip.
+ */
+const FeeBreakdown: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const estimatedContractGas =
+    React.useContext(EstimatedContractGasContext) ?? null;
+  const estimatedFeesPerGas =
+    React.useContext(EstimatedFeesPerGasContext) ?? null;
+  const numberFormatters = React.useContext(CurrentNumberFormatters);
+
+  if (estimatedContractGas === null || estimatedFeesPerGas === null) {
+    // No ability to display fee information
+    return <span>{children}</span>;
+  }
+
+  const maxFeesPerGas = estimatedFeesPerGas.maxFeePerGas ?? null;
+  const gasPrice = estimatedFeesPerGas.gasPrice ?? null;
+  const maxPriorityFeePerGas = estimatedFeesPerGas.maxPriorityFeePerGas ?? null;
+  const contractGasDisplay =
+    numberFormatters.defaultFinance.format(estimatedContractGas);
+
+  const gasPriceDisplay = !gasPrice
+    ? null
+    : numberFormatters.gwei.format(
+        MonetaryValue.GWEI(gasPrice).toNumericLiteralString(),
+      );
+  const maxPriorityFeePerGasDisplay = !maxPriorityFeePerGas
+    ? null
+    : numberFormatters.gwei.format(
+        MonetaryValue.GWEI(maxPriorityFeePerGas).toNumericLiteralString(),
+      );
+  const maxFeesPerGasDisplay = !maxFeesPerGas
+    ? null
+    : numberFormatters.gwei.format(
+        MonetaryValue.GWEI(maxFeesPerGas).toNumericLiteralString(),
+      );
+
+  const priceComponents = [
+    `Estimated Gas: ${contractGasDisplay}`,
+    !gasPriceDisplay
+      ? null
+      : `Gas Price: ${gasPriceDisplay} * ${contractGasDisplay} = ${numberFormatters.ETHFull.format(MonetaryValue.ETH(estimatedContractGas * gasPrice!).toNumericLiteralString())}`,
+    !maxPriorityFeePerGasDisplay || !maxFeesPerGasDisplay
+      ? null
+      : `Max Priority Fee Per Gas: ${maxPriorityFeePerGasDisplay}`,
+    !maxFeesPerGasDisplay
+      ? null
+      : `Max Fee Per Gas: ${maxFeesPerGasDisplay} * ${contractGasDisplay} = ${numberFormatters.ETHFull.format(MonetaryValue.ETH(estimatedContractGas * maxFeesPerGas!).toNumericLiteralString())}`,
+  ];
+
+  const title = priceComponents.filter(isNotNull).join('\n');
+
+  return <span title={title}>{children}</span>;
+};
+
+/**
+ * FeeDisplay displays the estimated transaction fee.
+ */
+const FeeDisplay: React.FC = () => {
+  const estimatedContractGas =
+    React.useContext(EstimatedContractGasContext) ?? null;
+  const estimatedFeesPerGas =
+    React.useContext(EstimatedFeesPerGasContext) ?? null;
+
+  if (estimatedContractGas === null || estimatedFeesPerGas === null) {
+    // No ability to display fee information
+    return <Text text="-" />;
+  }
+
+  if (typeof estimatedFeesPerGas.maxFeePerGas !== 'undefined') {
+    const feeEstimate =
+      estimatedContractGas *
+      (estimatedFeesPerGas.maxFeePerGas +
+        estimatedFeesPerGas.maxPriorityFeePerGas);
+    return <MoneyText money={MonetaryValue.ETH(feeEstimate)} />;
+  }
+
+  if (typeof estimatedFeesPerGas.gasPrice !== 'undefined') {
+    const feeEstimate = estimatedContractGas * estimatedFeesPerGas.gasPrice;
+    return <MoneyText money={MonetaryValue.ETH(feeEstimate)} />;
+  }
+
+  const feeEstimate = estimatedContractGas * 1n;
+  return <MoneyText money={MonetaryValue.ETH(feeEstimate)} />;
 };
