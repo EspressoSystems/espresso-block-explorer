@@ -4,7 +4,7 @@ import { FeeHeadCell } from '../common/cells/fee_head_cell';
 import { HotShotConsensusHeadCell } from '../common/cells/hot_shot_consensus_head_cell';
 import { MissedSlotsHeadCell } from '../common/cells/missed_slots_head_cell';
 import { ParticipationRateHeadCell } from '../common/cells/participation_rate_head_cell';
-import { TotalStakeHeadCell } from '../common/cells/total_stake_head_cell';
+import { StakedHeadCell } from '../common/cells/staked_head_cell';
 import { ValidatorHeadCell } from '../common/cells/validator_head_cell';
 import {
   CellType,
@@ -13,10 +13,10 @@ import {
 import { TableHeading } from './delegation_table_header';
 
 /**
- * ClaimsDelegationTableHeader is a component that renders
+ * PendingExitsDelegationTableHeader is a component that renders
  * the header row of the delegation table with sortable columns.
  */
-export const ClaimsDelegationTableHeader: React.FC = () => {
+export const PendingExitsDelegationTableHeader: React.FC = () => {
   return (
     <thead>
       <tr>
@@ -25,9 +25,9 @@ export const ClaimsDelegationTableHeader: React.FC = () => {
             <ValidatorHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>
-        <TableColumnSortByContext.Provider value={CellType.totalStake}>
+        <TableColumnSortByContext.Provider value={CellType.pendingClaim}>
           <TableHeading sortable>
-            <TotalStakeHeadCell />
+            <StakedHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.fee}>

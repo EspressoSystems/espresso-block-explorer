@@ -15,7 +15,10 @@ import {
 import { NodeAddressListContext } from './contexts/all_validators_context';
 import { PendingUndelegationsContext } from './contexts/pending_undelegations_context';
 import './pending_claims.css';
-import { ValidatorTableSortStateProvider } from './validator_nodes_table/common/validator_table_sort_state';
+import {
+  CellType,
+  ValidatorTableSortStateProvider,
+} from './validator_nodes_table/common/validator_table_sort_state';
 import { PendingClaimsDelegationTable } from './validator_nodes_table/table/pending_claims_delegation_table';
 
 /**
@@ -112,7 +115,7 @@ const PendingClaimsSection: React.FC = () => {
  */
 const PendingClaimsContent: React.FC = () => {
   return (
-    <ValidatorTableSortStateProvider>
+    <ValidatorTableSortStateProvider sortBy={CellType.pendingClaim}>
       <PendingClaimsDelegationTable />
     </ValidatorTableSortStateProvider>
   );

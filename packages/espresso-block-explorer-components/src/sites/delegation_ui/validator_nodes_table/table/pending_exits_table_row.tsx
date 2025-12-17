@@ -5,7 +5,7 @@ import { MissedSlotsCell } from '../common/cells/missed_slot_cell';
 import { NodeNameCell } from '../common/cells/node_name_cell';
 import { ParticipationRateCell } from '../common/cells/participation_rate_cell';
 import { PendingExitActionsCell } from '../common/cells/pending_exit_actions_cell';
-import { TotalStakeCell } from '../common/cells/total_stake_cell';
+import { StakedPendingExitCell } from '../common/cells/staked_pending_exit_cell';
 
 /**
  * PendingExitsNodeValidatorTableRow is a component that represents a single
@@ -21,7 +21,7 @@ export const PendingExitsNodeValidatorTableRow: React.FC = () => {
         <NodeNameCell />
       </td>
       <td>
-        <TotalStakeCell />
+        <StakedPendingExitCell />
       </td>
       <td>
         <FeeCell />

@@ -15,7 +15,10 @@ import {
 import { NodeAddressListContext } from './contexts/all_validators_context';
 import { PendingExitsContext } from './contexts/pending_exits_context';
 import './pending_exits.css';
-import { ValidatorTableSortStateProvider } from './validator_nodes_table/common/validator_table_sort_state';
+import {
+  CellType,
+  ValidatorTableSortStateProvider,
+} from './validator_nodes_table/common/validator_table_sort_state';
 import { PendingExitsDelegationTable } from './validator_nodes_table/table/pending_exits_delegation_table';
 
 /**
@@ -112,7 +115,7 @@ const PendingExitsSection: React.FC = () => {
  */
 const PendingExitsContent: React.FC = () => {
   return (
-    <ValidatorTableSortStateProvider>
+    <ValidatorTableSortStateProvider sortBy={CellType.pendingExit}>
       <PendingExitsDelegationTable />
     </ValidatorTableSortStateProvider>
   );
