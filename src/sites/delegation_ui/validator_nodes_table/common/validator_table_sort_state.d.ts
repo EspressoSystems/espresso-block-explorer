@@ -10,7 +10,9 @@ export declare enum CellType {
     fee = 3,
     missedSlots = 4,
     participationRate = 5,
-    hotShotConsensus = 6
+    hotShotConsensus = 6,
+    pendingExit = 7,
+    pendingClaim = 8
 }
 /**
  * SortDirection enumerates the possible directions for sorting the table.
@@ -48,15 +50,19 @@ export declare const TableColumnSortByContext: React.Context<CellType | null>;
  * for the validator table, providing the current state and controls to modify
  * it.
  */
-export declare const useValidatorTableSortState: () => {
+export declare const useValidatorTableSortState: (sortByCell?: CellType, sortDirection?: SortDirection) => {
     tableState: TableSortState<CellType>;
     tableControls: {
         sortBy: (newSortBy: CellType) => void;
     };
 };
+export interface ValidatorTableSortStateProviderProps extends React.PropsWithChildren {
+    sortBy?: CellType;
+    sortDirection?: SortDirection;
+}
 /**
  * ValidatorTableSortStateProvider is a context provider that manages
  * the sorting state for the validator table and provides sorted validator
  * data to its children.
  */
-export declare const ValidatorTableSortStateProvider: React.FC<React.PropsWithChildren>;
+export declare const ValidatorTableSortStateProvider: React.FC<ValidatorTableSortStateProviderProps>;
