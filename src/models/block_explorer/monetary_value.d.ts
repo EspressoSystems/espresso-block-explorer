@@ -23,6 +23,8 @@ export default class MonetaryValue {
     static ESP(value: bigint): MonetaryValue;
     static JPY(value: bigint): MonetaryValue;
     static BTC(value: bigint): MonetaryValue;
+    static WEI(value: bigint): MonetaryValue;
+    static GWEI(value: bigint): MonetaryValue;
     /**
      * toString returns a string representation of the MonetaryValue for
      * convenience.

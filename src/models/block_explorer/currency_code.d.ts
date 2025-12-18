@@ -36,6 +36,8 @@ export declare const XXX: CurrencyCode<"XXX", 999>;
 export declare const ETH: CurrencyCode<"ETH", 1001>;
 export declare const BTC: CurrencyCode<"XBT", 1002>;
 export declare const ESP: CurrencyCode<"ESP", 10001>;
+export declare const WEI: CurrencyCode<"WEI", 99999>;
+export declare const GWEI: CurrencyCode<"GWEI", 99999>;
 declare class CurrencyCodeDecoder implements Converter<unknown, CurrencyCode> {
     convert(input: unknown): CurrencyCode;
 }

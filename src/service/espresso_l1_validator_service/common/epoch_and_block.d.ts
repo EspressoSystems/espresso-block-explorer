@@ -13,6 +13,10 @@ export declare class EpochAndBlock {
     readonly timestamp: Date;
     constructor(epoch: bigint, block: bigint, timestamp: Date);
     static determineEpoch(block: bigint, blocksPerEpoch: bigint): bigint;
+    /**
+     * blocksPerEpoch computes the number of blocks per epoch based on the
+     * epoch and block numbers
+     */
     get blocksPerEpoch(): bigint;
     toJSON(): unknown;
 }
