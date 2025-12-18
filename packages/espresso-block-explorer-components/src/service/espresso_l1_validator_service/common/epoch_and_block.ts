@@ -70,13 +70,7 @@ export class EpochAndBlock {
   }
 
   static determineEpoch(block: bigint, blocksPerEpoch: bigint): bigint {
-    if (blocksPerEpoch === 0n) {
-      // This shouldn't happen
-      breakpoint();
-      return 0n;
-    }
-
-    return block / blocksPerEpoch + 1n;
+    return computeEpochByBlockAndBlocksPerEpoch(block, blocksPerEpoch);
   }
 
   /**
@@ -102,13 +96,6 @@ export class EpochAndBlock {
     // For any other block, unless the block number is directly divisible by
     // the blocks per epoch, the epoch is increased by 1.
 
-    if (block % epoch === 0n) {
-      // epoch = blockNum / blocksPerEpoch
-      const blocksPerEpoch = block / epoch;
-      return blocksPerEpoch;
-    }
-
-    // epoch = blockNum / blocksPerEpoch + 1
     const blocksPerEpoch = computeBlocksPerEpoch(block, epoch);
 
     assert(
