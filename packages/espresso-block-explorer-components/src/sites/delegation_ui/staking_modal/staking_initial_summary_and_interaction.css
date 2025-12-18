@@ -58,6 +58,7 @@
   font-size: 32px;
   line-height: 40px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .staking-modal-esp-input-area.error {
@@ -133,6 +134,7 @@
 .esp-input-container .currency-code {
   position: absolute;
   top: 48px;
+  z-index: 1;
 }
 
 .esp-input-container.currency-prefix .currency-code {

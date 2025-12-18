@@ -45,6 +45,12 @@ export const None: Story = {
   },
 };
 
+export const AmountTooLow: Story = {
+  args: {
+    amount: '500000000000000000',
+  },
+};
+
 export const InsufficientBalance: Story = {
   args: {
     amount: '500000000000000000000000000',

@@ -56,6 +56,8 @@ export const ETH = new CurrencyCode('ETH', 1001, 18);
 export const BTC = new CurrencyCode('XBT', 1002, 8);
 
 export const ESP = new CurrencyCode('ESP', 10001, 18);
+export const WEI = new CurrencyCode('WEI', 99999, 0);
+export const GWEI = new CurrencyCode('GWEI', 99999, 9);
 
 const currencies = [
   // FiatCurrencyStart
