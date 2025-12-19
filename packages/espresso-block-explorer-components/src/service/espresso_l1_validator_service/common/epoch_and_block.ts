@@ -24,14 +24,26 @@ function computeBlocksPerEpoch(block: bigint, epoch: bigint): bigint {
 
   // epoch = blockNum / blocksPerEpoch + 1
 
-  return block / (epoch - 1n);
+  const blocksPerEpoch = block / (epoch - 1n);
+
+  // There is an edge-case here where the resulting blocksPerEpoch is exactly
+  // divisible by the block number. In this case we will be incorrectly off by
+  // at least one.
+  // Example:
+  // block = 4848, blocksPerEpoch = 100, epoch = 49
+
+  if (block % blocksPerEpoch === 0n) {
+    return blocksPerEpoch - 1n;
+  }
+
+  return blocksPerEpoch;
 }
 
 /**
  * computeEpochByBlockAndBlocksPerEpoch computes the epoch number given a
  * block number and the number of blocks per epoch.
  */
-function computeEpochByBlockAndBlocksPerEpoch(
+export function computeEpochByBlockAndBlocksPerEpoch(
   blockNum: bigint,
   blocksPerEpoch: bigint,
 ): bigint {
@@ -75,7 +87,24 @@ export class EpochAndBlock {
 
   /**
    * blocksPerEpoch computes the number of blocks per epoch based on the
-   * epoch and block numbers
+   * epoch and block numbers.
+   *
+   * NOTE: This is a best effort solution, as there are a few factors that
+   * make this impossible to determine the "blocksPerEpoch" uniquely. These
+   * scenarios have to do with the conversion using truncation to determine
+   * a resulting integer number of epochs.  Due to this, we may not achieve
+   * a 1:1 mapping between epoch/block and blocksPerEpoch in some edge cases.
+   *
+   * Examples of such edge cases include:
+   * - Epoch 0: This is an invalid state, and indicates 0 blocks per epoch.
+   * - Epoch 1: We cannot determine blocks per epoch uniquely from a single
+   *  block number in epoch 1, as all blocks from 0 to blocksPerEpoch - 1
+   * belong to epoch 1.
+   * - Cases where the block number is exactly divisible by the epoch, which
+   * can lead to ambiguity in determining the correct blocks per epoch.
+   *
+   * @deprecated In general this function is meant to serve as a helper for quick
+   * calculations, but should ultimately not be utilized.
    */
   get blocksPerEpoch(): bigint {
     const epoch = this.epoch;

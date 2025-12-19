@@ -1,5 +1,6 @@
 import React from 'react';
 import './colors.css';
+import { RetrieveBlocksPerEpoch } from './contexts/blocks_per_epoch_context';
 import { RetrieveLifetimeClaimedRewards } from './contexts/claimed_rewards_context';
 import { DeriveConsensusSet } from './contexts/consensus_map_context';
 import { DeriveCurrentDelegations } from './contexts/current_delegations_context';
@@ -49,21 +50,23 @@ const ProvideContexts: React.FC<React.PropsWithChildren> = ({ children }) => {
               <RetrieveLifetimeClaimedRewards>
                 <RetrieveLightClientFinalizedState>
                   <RetrieveEspressoRewardClaimInput>
-                    <DeriveTotalStake>
-                      <DeriveConsensusSet>
-                        <DeriveRank>
-                          <DeriveCurrentDelegations>
-                            <DerivePendingUndelegations>
-                              <DerivePendingExits>
-                                <ProvideValidatorSelection>
-                                  {children}
-                                </ProvideValidatorSelection>
-                              </DerivePendingExits>
-                            </DerivePendingUndelegations>
-                          </DeriveCurrentDelegations>
-                        </DeriveRank>
-                      </DeriveConsensusSet>
-                    </DeriveTotalStake>
+                    <RetrieveBlocksPerEpoch>
+                      <DeriveTotalStake>
+                        <DeriveConsensusSet>
+                          <DeriveRank>
+                            <DeriveCurrentDelegations>
+                              <DerivePendingUndelegations>
+                                <DerivePendingExits>
+                                  <ProvideValidatorSelection>
+                                    {children}
+                                  </ProvideValidatorSelection>
+                                </DerivePendingExits>
+                              </DerivePendingUndelegations>
+                            </DeriveCurrentDelegations>
+                          </DeriveRank>
+                        </DeriveConsensusSet>
+                      </DeriveTotalStake>
+                    </RetrieveBlocksPerEpoch>
                   </RetrieveEspressoRewardClaimInput>
                 </RetrieveLightClientFinalizedState>
               </RetrieveLifetimeClaimedRewards>
