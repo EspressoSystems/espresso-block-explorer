@@ -124,7 +124,7 @@ export class MockLightClientV2ContractImpl implements LightClientV2Contract {
   }
 
   async blocksPerEpoch(): Promise<bigint> {
-    return 300n;
+    return 100n;
   }
 
   async epochStartBlock(): Promise<bigint> {
