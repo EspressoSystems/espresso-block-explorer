@@ -6,6 +6,7 @@ import TimeLeftText from '@/components/text/time_left_text';
 import { filterIterable } from '@/functional/functional';
 import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
 import React from 'react';
+import { BlocksPerEpochContext } from './contexts/blocks_per_epoch_context';
 import { MoreInfoElement } from './elements/tooltip/more_info';
 import './epoch_ends_in.css';
 import { NetworkStatValue } from './network_stat_value';
@@ -50,12 +51,9 @@ const CurrentEpochWrapper: React.FC<CurrentEpochWrapperProps> = ({
   className,
   children,
 }) => {
+  const blocksPerEpoch = React.useContext(BlocksPerEpochContext);
   const activeValidators = React.useContext(ActiveValidatorsContext);
   const numberFormatters = React.useContext(CurrentNumberFormatters);
-
-  const blocksPerEpoch = !activeValidators
-    ? null
-    : activeValidators.espressoBlock.blocksPerEpoch;
 
   const titleParts = [
     !activeValidators
@@ -101,6 +99,7 @@ const CurrentEpochNumber: React.FC = () => {
  * of the current epoch.
  */
 const EpochEndsInCountDown: React.FC = () => {
+  const blocksPerEpoch = React.useContext(BlocksPerEpochContext);
   const activeValidators = React.useContext(ActiveValidatorsContext);
 
   if (!activeValidators) {
@@ -109,7 +108,6 @@ const EpochEndsInCountDown: React.FC = () => {
 
   const epochAndBlock = activeValidators.espressoBlock;
   const block = epochAndBlock.block;
-  const blocksPerEpoch = epochAndBlock.blocksPerEpoch;
   const blockInEpoch = block % blocksPerEpoch;
   const blocksLeft = blocksPerEpoch - blockInEpoch;
 
