@@ -1,5 +1,0 @@
-import{j as p}from"./iframe-CMnlNZVY.js";import{c as s}from"./data-QnfQTY7I.js";import{R as r}from"./roll_up_simple-CvWkxo0i.js";import"./preload-helper-PPVm8Dsz.js";import"./higher_order-CwufDn_N.js";import"./number_text-D6vdtiOW.js";import"./number_formatters_provider-fXsUJ3gc.js";import"./functional-aFFbciHe.js";import"./missing_element_error-BkHusKs0.js";import"./string-BQNQEiqR.js";import"./assert-B11BgmXM.js";import"./locale_provider-BdMkMFD6.js";import"./text-CEhLEmI-.js";import"./espresso_logo-DEnUOJwi.js";const a=o=>p.jsx(r,{namespace:o.namespace});function*m(){for(const o of s)yield[o[1].name,o[0]]}const e={...Object.fromEntries(m()),"Unregistered Rollup (1)":1},S={title:"Components/Page Sections/Roll Up Simple",component:a,argTypes:{namespace:{options:Object.keys(e),mapping:e,control:{type:"select",labels:Object.keys(e)}}}},t={args:{namespace:e[Object.keys(e)[0]]}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
-  args: {
-    namespace: namespaces[Object.keys(namespaces)[0]]
-  }
-}`,...t.parameters?.docs?.source}}};const E=["RollUpSimple"];export{t as RollUpSimple,E as __namedExportsOrder,S as default};
