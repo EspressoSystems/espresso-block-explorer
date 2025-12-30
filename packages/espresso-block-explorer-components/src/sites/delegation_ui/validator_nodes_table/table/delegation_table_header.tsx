@@ -1,6 +1,5 @@
 import React from 'react';
 import { ActionsHeadCell } from '../common/cells/actions_head_cell';
-import { ClaimInHeadCell } from '../common/cells/claim_in_head_cell';
 import { FeeHeadCell } from '../common/cells/fee_head_cell';
 import { HotShotConsensusHeadCell } from '../common/cells/hot_shot_consensus_head_cell';
 import { MissedSlotsHeadCell } from '../common/cells/missed_slots_head_cell';
@@ -91,9 +90,6 @@ export const DelegationTableHeader: React.FC = () => {
             <HotShotConsensusHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>
-        <TableHeading>
-          <ClaimInHeadCell />
-        </TableHeading>
         <TableHeading>
           <ActionsHeadCell />
         </TableHeading>

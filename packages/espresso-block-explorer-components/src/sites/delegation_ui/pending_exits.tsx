@@ -1,11 +1,7 @@
 import { Now } from '@/components/contexts/now_provider';
 import Text from '@/components/text/text';
 import PadlockSquare2 from '@/components/visual/icons/sharp_line/padlock_square_2';
-import {
-  compareIterables,
-  filterIterable,
-  mapIterable,
-} from '@/functional/functional';
+import { compareIterables } from '@/functional/functional';
 import React from 'react';
 import {
   CollapsableHeader,
@@ -52,21 +48,8 @@ const FilterToAvailablePendingExits: React.FC<React.PropsWithChildren> = ({
   >([]);
 
   React.useEffect(() => {
-    const nodeAddressSet = new Set(nodeAddressList);
     let setNextPendingExitsList = setPendingExitsList;
-    const eligiblePendingExits = mapIterable(
-      filterIterable(
-        pendingExits,
-        ([, pending]) => pending.availableTime.valueOf() <= now.valueOf(),
-      ),
-      ([address]) => address,
-    );
-
-    const pendingExitsSet = new Set(eligiblePendingExits);
-
-    const nextPendingExitsList = Array.from(
-      filterIterable(nodeAddressSet, (address) => pendingExitsSet.has(address)),
-    );
+    const nextPendingExitsList = Array.from(pendingExits.keys());
 
     if (compareIterables(pendingExitsList, nextPendingExitsList) !== 0) {
       setNextPendingExitsList(nextPendingExitsList);
