@@ -1,5 +1,4 @@
 import { ActionsCell } from '../common/cells/actions_cell';
-import { ClaimInCell } from '../common/cells/claim_in_cell';
 import { CombinedDetailsCell } from '../common/cells/combined_details_cell';
 import { FeeCell } from '../common/cells/fee_cell';
 import { HotShotConsensusCell } from '../common/cells/hot_shot_consensus_cell';
@@ -35,9 +34,6 @@ export const NodeValidatorTableRow: React.FC = () => {
       </td>
       <td>
         <HotShotConsensusCell />
-      </td>
-      <td>
-        <ClaimInCell />
       </td>
       <td>
         <ActionsCell />

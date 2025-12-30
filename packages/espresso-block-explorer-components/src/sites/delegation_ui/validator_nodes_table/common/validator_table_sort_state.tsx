@@ -155,13 +155,16 @@ function sortByRank(a: ValidatorSortTuple, b: ValidatorSortTuple) {
   return a[TUPLE_INDEX_RANK] - b[TUPLE_INDEX_RANK];
 }
 
+// An empty ArrayBuffer for comparison purposes
+const emptyArrayBuffer = new ArrayBuffer(0);
+
 /**
  * sortByValidator sorts validators by their address.
  */
 function sortByValidator(a: ValidatorSortTuple, b: ValidatorSortTuple) {
   return compareArrayBuffer(
-    a[TUPLE_INDEX_NODE_SET_ENTRY].address,
-    b[TUPLE_INDEX_NODE_SET_ENTRY].address,
+    a[TUPLE_INDEX_NODE_SET_ENTRY]?.address ?? emptyArrayBuffer,
+    b[TUPLE_INDEX_NODE_SET_ENTRY]?.address ?? emptyArrayBuffer,
   );
 }
 
@@ -170,8 +173,8 @@ function sortByValidator(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  */
 function sortByFee(a: ValidatorSortTuple, b: ValidatorSortTuple) {
   return Number(
-    a[TUPLE_INDEX_NODE_SET_ENTRY].commission.valueOf() -
-      b[TUPLE_INDEX_NODE_SET_ENTRY].commission.valueOf(),
+    (a[TUPLE_INDEX_NODE_SET_ENTRY]?.commission.valueOf() ?? -1) -
+      (b[TUPLE_INDEX_NODE_SET_ENTRY]?.commission.valueOf() ?? -1),
   );
 }
 
@@ -208,7 +211,8 @@ function sortByHotShotConsensus(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  */
 function sortByStake(a: ValidatorSortTuple, b: ValidatorSortTuple) {
   return Number(
-    a[TUPLE_INDEX_NODE_SET_ENTRY].stake - b[TUPLE_INDEX_NODE_SET_ENTRY].stake,
+    (a[TUPLE_INDEX_NODE_SET_ENTRY]?.stake ?? 0n) -
+      (b[TUPLE_INDEX_NODE_SET_ENTRY]?.stake ?? 0n),
   );
 }
 
@@ -316,7 +320,7 @@ function sortWithState(
     }),
   )
     .sort(sortFunction)
-    .map((tuple) => tuple[TUPLE_INDEX_NODE_SET_ENTRY].addressText);
+    .map((tuple) => tuple[TUPLE_INDEX_NODE_SET_ENTRY]?.addressText ?? '');
 
   return sortedAddresses;
 }
