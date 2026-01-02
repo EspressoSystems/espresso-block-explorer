@@ -8,6 +8,7 @@ import { ProvideESPBalance } from './contexts/esp_balance_context';
 import { ProvideEspressoRefreshTimestampContext } from './contexts/espresso_refresh_timestamp_context';
 import { ProvideL1RefreshTimestampContext } from './contexts/l1_refresh_timestamp_context';
 import { RetrieveLightClientFinalizedState } from './contexts/light_client_finalized_state_context';
+import { ComputeMillisecondsPerBlock } from './contexts/milliseconds_per_block_context';
 import { DerivePendingExits } from './contexts/pending_exits_context';
 import { DerivePendingUndelegations } from './contexts/pending_undelegations_context';
 import { DeriveRank } from './contexts/rank_map_context';
@@ -58,7 +59,9 @@ const ProvideContexts: React.FC<React.PropsWithChildren> = ({ children }) => {
                               <DerivePendingUndelegations>
                                 <DerivePendingExits>
                                   <ProvideValidatorSelection>
-                                    {children}
+                                    <ComputeMillisecondsPerBlock>
+                                      {children}
+                                    </ComputeMillisecondsPerBlock>
                                   </ProvideValidatorSelection>
                                 </DerivePendingExits>
                               </DerivePendingUndelegations>

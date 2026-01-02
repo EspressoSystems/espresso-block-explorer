@@ -7,6 +7,7 @@ import { filterIterable } from '@/functional/functional';
 import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
 import React from 'react';
 import { BlocksPerEpochContext } from './contexts/blocks_per_epoch_context';
+import { MillisecondsPerBlockContext } from './contexts/milliseconds_per_block_context';
 import { MoreInfoElement } from './elements/tooltip/more_info';
 import './epoch_ends_in.css';
 import { NetworkStatValue } from './network_stat_value';
@@ -99,6 +100,7 @@ const CurrentEpochNumber: React.FC = () => {
  * of the current epoch.
  */
 const EpochEndsInCountDown: React.FC = () => {
+  const millisecondsPerBlock = React.useContext(MillisecondsPerBlockContext);
   const blocksPerEpoch = React.useContext(BlocksPerEpochContext);
   const activeValidators = React.useContext(ActiveValidatorsContext);
 
@@ -111,6 +113,6 @@ const EpochEndsInCountDown: React.FC = () => {
   const blockInEpoch = block % blocksPerEpoch;
   const blocksLeft = blocksPerEpoch - blockInEpoch;
 
-  const timeLeft = Number(blocksLeft) * 6 * 1000;
+  const timeLeft = Number(blocksLeft) * millisecondsPerBlock;
   return <TimeLeftText durationInMilliseconds={timeLeft} />;
 };

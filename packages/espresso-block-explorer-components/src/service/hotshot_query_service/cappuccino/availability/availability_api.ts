@@ -1,5 +1,6 @@
 import { HotShotQueryServiceAvailabilityAPI } from '../../types';
 import { CappuccinoAPIBlock } from './block';
+import { CappuccinoAPIHeader } from './block_header';
 import { CappuccinoDerivedBlockSummary } from './derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from './derived_transaction_summary';
 import { CappuccinoAPILeafResponse } from './leaf_response';
@@ -14,6 +15,7 @@ import { CappuccinoAPITransactionResponse } from './transaction_response';
  */
 export interface CappuccinoHotShotQueryServiceAvailabilityAPI extends HotShotQueryServiceAvailabilityAPI<
   CappuccinoAPILeafResponse,
+  CappuccinoAPIHeader,
   CappuccinoAPIBlock,
   CappuccinoAPITransactionResponse
 > {
@@ -36,4 +38,6 @@ export interface CappuccinoHotShotQueryServiceAvailabilityAPI extends HotShotQue
     offset: number,
     limit: number,
   ): Promise<CappuccinoDerivedTransactionSummary[]>;
+
+  getHeader(height: number): Promise<CappuccinoAPIHeader>;
 }
