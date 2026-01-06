@@ -3,6 +3,7 @@ import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/hotshot_query_service/web_worker_types';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { cappuccinoAPIBlockCodec } from '../block';
+import { cappuccinoAPIHeaderCodec } from '../block_header';
 import { listCappuccinoDerivedBlockSummaryCodec } from '../derived_block_summary';
 import { listCappuccinoDerivedTransactionSummaryCodec } from '../derived_transaction_summary';
 import { cappuccinoAPILeafResponseCodec } from '../leaf_response';
@@ -73,6 +74,12 @@ export class WebWorkerProxyAvailabilityAPI {
     );
   }
 
+  async getHeader(height: number) {
+    return cappuccinoAPIHeaderCodec.encode(
+      await this.service.getHeader(height),
+    );
+  }
+
   async handleRequest(request: AvailabilityRequest) {
     switch (request.method) {
       case 'getLeafFromHeight': {
@@ -111,6 +118,9 @@ export class WebWorkerProxyAvailabilityAPI {
           numberCodec.decode(request.param[2]),
           numberCodec.decode(request.param[3]),
         );
+      }
+      case 'getHeader': {
+        return await this.getHeader(numberCodec.decode(request.param[0]));
       }
       default:
         throw new UnimplementedError();

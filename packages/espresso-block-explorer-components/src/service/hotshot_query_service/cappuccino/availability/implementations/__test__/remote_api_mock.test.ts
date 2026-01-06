@@ -2,16 +2,18 @@ import { Channel, createBufferedChannel } from '@/async/channel';
 import NotFoundError from '@/errors/not_found_error';
 import { firstAsyncIterable } from '@/functional/functional_async';
 import { TaggedBase64 } from '@/models/espresso';
-import { ArgumentsType, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { FetchBasedCappuccinoHotShotQueryService } from '../../../implementations/remote_api';
 import { CappuccinoAvailabilityErrorResponse } from '../../availability_error_response';
 import { CappuccinoAPIBlock } from '../../block';
-import { CappuccinoAPIHeader } from '../../block_header';
+import { CappuccinoAPIHeaderImpl } from '../../block_header';
+import { CappuccinoAPIV0HeaderFieldsImpl } from '../../block_header_v0';
 import { CappuccinoBuilderSignature } from '../../builder_signature';
 import { CappuccinoFeeInfo } from '../../fee_info';
 import { CappuccinoNamespaceTable } from '../../namespace_table';
 import { CappuccinoAPIPayload } from '../../payload';
 import { CappuccinoAPITransactionNMTEntry } from '../../transaction_nmt_entry';
+import { CappuccinoVersion, WrappedVersion } from '../../version';
 
 /**
  * createFetcherWithResponse is a utility function used for testing that will
@@ -23,7 +25,7 @@ import { CappuccinoAPITransactionNMTEntry } from '../../transaction_nmt_entry';
  * This function is used to mock fetch requests.
  */
 function createFetcherWithResponse(
-  requestSink: Channel<ArgumentsType<typeof fetch>>,
+  requestSink: Channel<Parameters<typeof fetch>>,
   statusCode: number,
   headers: Record<string, string>,
   body: string,
@@ -43,7 +45,7 @@ function createFetcherWithResponse(
  * `value` as the JSON encoded body contents of the response.
  */
 function createFetcherWithJSONResponse<V>(
-  requestSink: Channel<ArgumentsType<typeof fetch>>,
+  requestSink: Channel<Parameters<typeof fetch>>,
   statusCode: number,
   value: V,
 ): typeof fetch {
@@ -62,31 +64,41 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
     describe('getBlockFromHeight', () => {
       it('should receive the request as expected', async () => {
         const returnedValue = new CappuccinoAPIBlock(
-          new CappuccinoAPIHeader(
-            10,
-            11,
-            12,
-            null,
-            [13, 14, 15, 16],
-            new CappuccinoNamespaceTable(
-              new Uint8Array([17, 18, 19, 20]).buffer,
-            ),
-            new TaggedBase64(
-              'BLOCK_MERKLE_ROOT',
-              new Uint8Array([21, 22, 23, 24]).buffer,
-            ),
-            new TaggedBase64(
-              'FEE_MERKLE_ROOT',
-              new Uint8Array([25, 26, 27, 28]).buffer,
-            ),
-            new CappuccinoBuilderSignature(
-              new Uint8Array([29, 30, 31, 32]).buffer,
-              new Uint8Array([33, 34, 35, 36]).buffer,
-              2,
-            ),
-            new CappuccinoFeeInfo(
-              new Uint8Array([37, 38, 39, 40]).buffer,
-              new Uint8Array([41, 42, 43, 44]).buffer,
+          new CappuccinoAPIHeaderImpl(
+            new WrappedVersion(new CappuccinoVersion(0, 1)),
+            new CappuccinoAPIV0HeaderFieldsImpl(
+              10,
+              11,
+              12,
+              null,
+              new TaggedBase64(
+                'PAYLOAD',
+                new Uint8Array([13, 14, 15, 16]).buffer,
+              ),
+              new TaggedBase64(
+                'BUILDER',
+                new Uint8Array([13, 14, 15, 16]).buffer,
+              ),
+              new CappuccinoNamespaceTable(
+                new Uint8Array([17, 18, 19, 20]).buffer,
+              ),
+              new TaggedBase64(
+                'BLOCK',
+                new Uint8Array([21, 22, 23, 24]).buffer,
+              ),
+              new TaggedBase64(
+                'FEE',
+                new Uint8Array([25, 26, 27, 28]).buffer,
+              ),
+              new CappuccinoFeeInfo(
+                new Uint8Array([37, 38, 39, 40]).buffer,
+                new Uint8Array([41, 42, 43, 44]).buffer,
+              ),
+              new CappuccinoBuilderSignature(
+                new Uint8Array([29, 30, 31, 32]).buffer,
+                new Uint8Array([33, 34, 35, 36]).buffer,
+                2,
+              ),
             ),
           ),
           new CappuccinoAPIPayload([
@@ -101,7 +113,7 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
         );
 
         const requestChannel =
-          createBufferedChannel<ArgumentsType<typeof fetch>>(4);
+          createBufferedChannel<Parameters<typeof fetch>>(4);
         const client = new FetchBasedCappuccinoHotShotQueryService(
           createFetcherWithJSONResponse(requestChannel, 200, returnedValue),
           new URL('https://example.com/v0/'),
@@ -133,7 +145,7 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
       );
 
       const requestChannel =
-        createBufferedChannel<ArgumentsType<typeof fetch>>(4);
+        createBufferedChannel<Parameters<typeof fetch>>(4);
       const client = new FetchBasedCappuccinoHotShotQueryService(
         createFetcherWithJSONResponse(requestChannel, 500, returnedValue),
         new URL('https://example.com/v0/'),

@@ -1,135 +1,103 @@
-import { assertInstanceOf } from '@/assert/assert';
-import {
-  Converter,
-  TypeCheckingCodec,
-  assertRecordWithKeys,
-} from '@/convert/codec/convert';
-import { numberArrayCodec, numberCodec } from '@/convert/codec/number';
-import {
-  TaggedBase64,
-  taggedBase64Codec,
-} from '@/models/espresso/tagged_base64/tagged_base64';
-import {
-  CappuccinoBuilderSignature,
-  cappuccinoBuilderSignatureCodec,
-} from './builder_signature';
-import { CappuccinoFeeInfo, cappuccinoFeeInfoCodec } from './fee_info';
-import {
-  CappuccinoL1Finalized,
-  nullableCappuccinoL1FinalizedCodec,
-} from './l1_finalized';
-import {
-  CappuccinoNamespaceTable,
-  cappuccinoNamespaceTableCodec,
-} from './namespace_table';
+import { assertRecordWithKeys, Converter, TypeCheckingCodec } from '@/convert/codec/convert';
+import { cappuccinoAPIV0HeaderCodec, type CappuccinoAPIV0HeaderFields } from './block_header_v0';
+import { WrappedVersion, wrappedVersionCodec } from './version';
+import { AbstractCappuccinoAPIV2HeaderFields, cappuccinoAPIV2HeaderFieldsCodec } from './block_header_v2';
+import { AbstractCappuccinoAPIV4Header, cappuccinoAPIV4HeaderCodec } from './block_header_v4';
 
-/**
- * CappuccinoAPIHeader represents the header of a block in the Cappuccino API.
- */
-export class CappuccinoAPIHeader {
-  readonly height: number;
-  readonly timestamp: number;
-  readonly l1_head: number;
-  readonly l1_finalized: null | CappuccinoL1Finalized;
-  readonly payload_commitment: number[];
-  readonly ns_table: CappuccinoNamespaceTable;
-  readonly block_merkle_root: TaggedBase64;
-  readonly fee_merkle_root: TaggedBase64;
-  readonly builder_signature: CappuccinoBuilderSignature;
-  readonly fee_info: CappuccinoFeeInfo;
+export interface CappuccinoAPIHeaderFields extends CappuccinoAPIV0HeaderFields { }
 
+export interface CappuccinoAPIHeader<F extends CappuccinoAPIHeaderFields = CappuccinoAPIHeaderFields> {
+  readonly fields: F;
+  readonly version: WrappedVersion;
+}
+
+export class AbstractCappuccinoAPIHeader<F extends CappuccinoAPIHeaderFields> implements CappuccinoAPIHeader<F> {
   constructor(
-    height: number,
-    timestamp: number,
-    l1_head: number,
-    l1_finalized: null | CappuccinoL1Finalized,
-    payload_commitment: number[],
-    ns_table: CappuccinoNamespaceTable,
-    block_merkle_root: TaggedBase64,
-    fee_merkle_root: TaggedBase64,
-    builder_signature: CappuccinoBuilderSignature,
-    fee_info: CappuccinoFeeInfo,
-  ) {
-    this.height = height;
-    this.timestamp = timestamp;
-    this.l1_head = l1_head;
-    this.l1_finalized = l1_finalized;
-    this.payload_commitment = payload_commitment;
-    this.ns_table = ns_table;
-    this.block_merkle_root = block_merkle_root;
-    this.fee_merkle_root = fee_merkle_root;
-    this.builder_signature = builder_signature;
-    this.fee_info = fee_info;
-  }
+    public readonly version: WrappedVersion,
+    public readonly fields: F,
+  ) { }
+}
 
-  toJSON() {
-    return cappuccinoAPIHeaderCodec.encode(this);
+export class CappuccinoAPIHeaderImpl<F extends CappuccinoAPIHeaderFields> extends AbstractCappuccinoAPIHeader<F> {
+  constructor(
+    version: WrappedVersion,
+    fields: F,
+  ) {
+    super(version, fields);
+    Object.freeze(this);
   }
 }
 
-export class CappuccinoAPIHeaderDecoder implements Converter<
+
+class CappuccinoAPIHeaderDecoder implements Converter<
   unknown,
-  CappuccinoAPIHeader
+  CappuccinoAPIHeader<CappuccinoAPIHeaderFields>
 > {
-  convert(input: unknown): CappuccinoAPIHeader {
+  convert(input: unknown): CappuccinoAPIHeader<CappuccinoAPIHeaderFields> {
     assertRecordWithKeys(
       input,
-      'height',
-      'timestamp',
-      'l1_head',
-      'l1_finalized',
-      'payload_commitment',
-      'ns_table',
-      'block_merkle_root',
-      'fee_merkle_root',
-      'builder_signature',
-      'fee_info',
+      'version',
+      'fields',
     );
 
-    return new CappuccinoAPIHeader(
-      numberCodec.decode(input.height),
-      numberCodec.decode(input.timestamp),
-      numberCodec.decode(input.l1_head),
-      nullableCappuccinoL1FinalizedCodec.decode(input.l1_finalized),
-      numberArrayCodec.decode(input.payload_commitment),
-      cappuccinoNamespaceTableCodec.decode(input.ns_table),
-      taggedBase64Codec.decode(input.block_merkle_root),
-      taggedBase64Codec.decode(input.fee_merkle_root),
-      cappuccinoBuilderSignatureCodec.decode(input.builder_signature),
-      cappuccinoFeeInfoCodec.decode(input.fee_info),
+    // Decode the version to determine how to decode the header
+    const version = wrappedVersionCodec.decode(input.version);
+
+    if (version.version.major === 0 && version.version.minor >= 4) {
+      return new CappuccinoAPIHeaderImpl(
+        version,
+        cappuccinoAPIV4HeaderCodec.decode(input.fields),
+      );
+
+    }
+
+    if (version.version.major === 0 && version.version.minor >= 2) {
+      return new CappuccinoAPIHeaderImpl(
+        version,
+        cappuccinoAPIV2HeaderFieldsCodec.decode(input.fields),
+      );
+    }
+
+    return new CappuccinoAPIHeaderImpl(
+      version,
+      cappuccinoAPIV0HeaderCodec.decode(input.fields),
     );
   }
 }
 
-export class CappuccinoAPIHeaderEncoder implements Converter<CappuccinoAPIHeader> {
-  convert(input: CappuccinoAPIHeader) {
-    assertInstanceOf(input, CappuccinoAPIHeader);
+class CappuccinoAPIHeaderEncoder implements Converter<
+  CappuccinoAPIHeader<CappuccinoAPIHeaderFields>,
+  unknown
+> {
+  convert(input: CappuccinoAPIHeader<CappuccinoAPIHeaderFields>): unknown {
+    if (input.fields instanceof AbstractCappuccinoAPIV4Header) {
+      return {
+        version: wrappedVersionCodec.encode(input.version),
+        fields: cappuccinoAPIV4HeaderCodec.encode(input.fields),
+      };
+    }
+
+    if (input.fields instanceof AbstractCappuccinoAPIV2HeaderFields) {
+      return {
+        version: wrappedVersionCodec.encode(input.version),
+        fields: cappuccinoAPIV2HeaderFieldsCodec.encode(input.fields),
+      };
+    }
 
     return {
-      height: numberCodec.encode(input.height),
-      timestamp: numberCodec.encode(input.timestamp),
-      l1_head: numberCodec.encode(input.l1_head),
-      l1_finalized: nullableCappuccinoL1FinalizedCodec.encode(
-        input.l1_finalized,
-      ),
-      payload_commitment: numberArrayCodec.encode(input.payload_commitment),
-      ns_table: cappuccinoNamespaceTableCodec.encode(input.ns_table),
-      block_merkle_root: taggedBase64Codec.encode(input.block_merkle_root),
-      fee_merkle_root: taggedBase64Codec.encode(input.fee_merkle_root),
-      builder_signature: cappuccinoBuilderSignatureCodec.encode(
-        input.builder_signature,
-      ),
-      fee_info: cappuccinoFeeInfoCodec.encode(input.fee_info),
-    } as const;
+      version: wrappedVersionCodec.encode(input.version),
+      fields: cappuccinoAPIV0HeaderCodec.encode(input.fields),
+    };
   }
 }
 
-export class CappuccinoAPIHeaderCodec extends TypeCheckingCodec<
-  CappuccinoAPIHeader,
-  ReturnType<InstanceType<new () => CappuccinoAPIHeaderEncoder>['convert']>
+class CappuccinoAPIHeaderCodec extends TypeCheckingCodec<
+  CappuccinoAPIHeader<CappuccinoAPIHeaderFields>,
+  unknown
 > {
-  readonly encoder = new CappuccinoAPIHeaderEncoder();
-  readonly decoder = new CappuccinoAPIHeaderDecoder();
+  public readonly encoder = new CappuccinoAPIHeaderEncoder();
+  public readonly decoder = new CappuccinoAPIHeaderDecoder();
 }
 
 export const cappuccinoAPIHeaderCodec = new CappuccinoAPIHeaderCodec();
+

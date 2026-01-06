@@ -17,7 +17,7 @@ import {
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { CappuccinoAPIBlock } from '../block';
-import { CappuccinoAPIHeader } from '../block_header';
+import { CappuccinoAPIHeader, CappuccinoAPIHeaderFields, CappuccinoAPIHeaderImpl } from '../block_header';
 import { CappuccinoBuilderSignature } from '../builder_signature';
 import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
@@ -33,6 +33,8 @@ import { CappuccinoAPIBQuorumCertificateData } from '../quorum_certificate_data'
 import { CappuccinoAPITransactionNMTEntry } from '../transaction_nmt_entry';
 import { CappuccinoAPITransactionProof } from '../transaction_proof';
 import { CappuccinoAPITransactionResponse } from '../transaction_response';
+import { CappuccinoAPIV0HeaderFieldsImpl } from '../block_header_v0';
+import { WrappedVersion, CappuccinoVersion } from '../version';
 
 // type Generated<T> = T extends Generator<infer A> ? A : never;
 type AsyncGenerated<T> = T extends AsyncGenerator<infer A> ? A : never;
@@ -41,18 +43,22 @@ type GeneratedBlock = AsyncGenerated<
   ReturnType<typeof generateAllEspressoBlocks>
 >;
 
-function headerFromBlock(block: GeneratedBlock): CappuccinoAPIHeader {
-  return new CappuccinoAPIHeader(
-    block.height,
-    block.time.valueOf() / 1000,
-    0,
-    new CappuccinoL1Finalized(0, '00', '00'),
-    [],
-    new CappuccinoNamespaceTable(new ArrayBuffer(0)),
-    new TaggedBase64('MERKLE_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
-    new TaggedBase64('MERKLE_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
-    new CappuccinoBuilderSignature(new ArrayBuffer(0), new ArrayBuffer(0), 0),
-    new CappuccinoFeeInfo(new ArrayBuffer(0), new ArrayBuffer(0)),
+function headerFromBlock(block: GeneratedBlock): CappuccinoAPIHeader<CappuccinoAPIHeaderFields> {
+  return new CappuccinoAPIHeaderImpl(
+    new WrappedVersion(new CappuccinoVersion(0, 1)),
+    new CappuccinoAPIV0HeaderFieldsImpl(
+      block.height,
+      block.time.valueOf() / 1000,
+      0,
+      new CappuccinoL1Finalized(0, '00', '00'),
+      new TaggedBase64('PAYLOAD_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
+      new TaggedBase64('BUILDER_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
+      new CappuccinoNamespaceTable(new ArrayBuffer(0)),
+      new TaggedBase64('MERKLE_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
+      new TaggedBase64('MERKLE_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
+      new CappuccinoFeeInfo(new ArrayBuffer(0), new ArrayBuffer(0)),
+      new CappuccinoBuilderSignature(new ArrayBuffer(0), new ArrayBuffer(0), 0),
+    ),
   );
 }
 
@@ -134,7 +140,7 @@ async function* convertBlockToCappuccinoAPITransactionResponse(
           ),
         ],
       ),
-      header.height,
+      header.fields.height,
       new TaggedBase64('COMMIT', txn.tree.data.slice(0, 32)),
     );
   });
@@ -161,8 +167,8 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements Cap
         block.header,
         block.payload,
         [],
-        block.header.timestamp,
-        block.header.fee_info.account,
+        block.header.fields.timestamp,
+        block.header.fields.fee_info.account,
       ),
       new CappuccinoAPIQuorumCertificate(
         new CappuccinoAPIBQuorumCertificateData(
@@ -253,5 +259,10 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements Cap
     const step5 = dropAsyncIterator(step4, offset);
     const step6 = takeAsyncIterator(step5, limit);
     return await collectAsyncIterator(step6);
+  }
+
+  async getHeader(height: number): Promise<CappuccinoAPIHeader> {
+    const block = await this.getBlockFromHeight(height);
+    return block.header;
   }
 }

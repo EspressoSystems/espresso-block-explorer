@@ -25,7 +25,12 @@ export interface Leaf {}
 //
 // That being said, what we **need* might change over time.
 
-export interface HotShotQueryServiceAvailabilityAPI<Leaf, Block, Transaction> {
+export interface HotShotQueryServiceAvailabilityAPI<
+  Leaf,
+  Header,
+  Block,
+  Transaction,
+> {
   getLeafFromHeight(height: number): Promise<Leaf>;
 
   getTransactionFromHeightAndOffset(
@@ -38,7 +43,7 @@ export interface HotShotQueryServiceAvailabilityAPI<Leaf, Block, Transaction> {
 
   // getBlockSummaries(from: number, until: number): Promise<BlockSummary[]>;
 
-  // getHeader(height: number): Promise<Header>;
+  getHeader(height: number): Promise<Header>;
   // getHeader(hash: TaggedBase64): Promise<Header>;
 }
 

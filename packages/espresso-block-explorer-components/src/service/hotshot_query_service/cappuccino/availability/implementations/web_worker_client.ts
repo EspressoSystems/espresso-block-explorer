@@ -2,6 +2,7 @@ import { Codec } from '@/convert/codec/convert';
 import { AsyncRequestHelper } from '@/service/espresso_l1_validator_service/web_worker_types';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { CappuccinoAPIBlock, cappuccinoAPIBlockCodec } from '../block';
+import { CappuccinoAPIHeader, cappuccinoAPIHeaderCodec } from '../block_header';
 import {
   CappuccinoDerivedBlockSummary,
   listCappuccinoDerivedBlockSummaryCodec,
@@ -105,6 +106,14 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI
       height,
       offset,
       limit,
+    );
+  }
+
+  async getHeader(height: number): Promise<CappuccinoAPIHeader> {
+    return await this.sendRequest(
+      cappuccinoAPIHeaderCodec,
+      'getHeader',
+      height,
     );
   }
 }

@@ -1,6 +1,7 @@
 import UnimplementedError from '@/errors/unimplemented_error';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { CappuccinoAPIBlock } from '../block';
+import { CappuccinoAPIHeader } from '../block_header';
 import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
 import { CappuccinoAPILeafResponse } from '../leaf_response';
@@ -39,6 +40,10 @@ export class UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI implement
   async getTransactionSummaryRangeForRollup(): Promise<
     CappuccinoDerivedTransactionSummary[]
   > {
+    throw new UnimplementedError();
+  }
+
+  async getHeader(): Promise<CappuccinoAPIHeader> {
     throw new UnimplementedError();
   }
 }

@@ -12,6 +12,7 @@ import {
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { unwrappedCappuccinoAvailabilityErrorResponseDecoder } from '../availability_error_response';
 import { CappuccinoAPIBlock, cappuccinoAPIBlockCodec } from '../block';
+import { CappuccinoAPIHeader, cappuccinoAPIHeaderCodec } from '../block_header';
 import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
 import {
@@ -108,7 +109,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
             iotaAsync(leaf.leaf.block_payload.transaction_nmt.length),
             (index) =>
               this.getTransactionFromHeightAndOffset(
-                leaf.leaf.block_header.height,
+                leaf.leaf.block_header.fields.height,
                 index,
               ),
           ),
@@ -155,5 +156,15 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
     const step5 = dropAsyncIterator(step4, offset);
     const step6 = takeAsyncIterator(step5, limit);
     return await collectAsyncIterator(step6);
+  }
+
+  async getHeader(height: number): Promise<CappuccinoAPIHeader> {
+    const url = new URL(`header/${height}`, this.baseURL);
+    return this.fetcher(url).then(
+      validateAndExpandResponse(
+        cappuccinoAPIHeaderCodec.decoder,
+        unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+      ),
+    );
   }
 }
