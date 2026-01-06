@@ -1,5 +1,6 @@
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { CappuccinoAPIBlock } from '../block';
+import { CappuccinoAPIHeader } from '../block_header';
 import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
 import { CappuccinoAPILeafResponse } from '../leaf_response';
@@ -12,4 +13,5 @@ export declare class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implem
     private streamTransactionSummaries;
     getTransactionSummaryRange(height: number, offset: number, limit: number): Promise<CappuccinoDerivedTransactionSummary[]>;
     getTransactionSummaryRangeForRollup(namespace: number, height: number, offset: number, limit: number): Promise<CappuccinoDerivedTransactionSummary[]>;
+    getHeader(height: number): Promise<CappuccinoAPIHeader>;
 }

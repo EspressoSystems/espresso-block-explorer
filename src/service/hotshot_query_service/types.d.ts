@@ -1,10 +1,11 @@
 import { HeightAndAddress } from './cappuccino/reward_state/height_and_address';
 export interface Leaf {
 }
-export interface HotShotQueryServiceAvailabilityAPI<Leaf, Block, Transaction> {
+export interface HotShotQueryServiceAvailabilityAPI<Leaf, Header, Block, Transaction> {
     getLeafFromHeight(height: number): Promise<Leaf>;
     getTransactionFromHeightAndOffset(height: number, index: number): Promise<Transaction>;
     getBlockFromHeight(height: number): Promise<Block>;
+    getHeader(height: number): Promise<Header>;
 }
 export type BlockHeightResponse = number;
 export interface HotShotQueryServiceStatusAPI {

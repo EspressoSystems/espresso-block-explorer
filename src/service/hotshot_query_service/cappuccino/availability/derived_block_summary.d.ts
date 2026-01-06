@@ -14,31 +14,7 @@ export declare class CappuccinoDerivedBlockSummary {
     readonly proposer_id: ArrayBuffer[];
     constructor(header: CappuccinoAPIHeader, hash: TaggedBase64, size: number, num_transactions: number, proposer_id: ArrayBuffer[]);
     toJSON(): {
-        header: {
-            readonly height: number;
-            readonly timestamp: number;
-            readonly l1_head: number;
-            readonly l1_finalized: {
-                number: number;
-                timestamp: string;
-                hash: string;
-            } | null;
-            readonly payload_commitment: number[];
-            readonly ns_table: {
-                bytes: string;
-            };
-            readonly block_merkle_root: string;
-            readonly fee_merkle_root: string;
-            readonly builder_signature: {
-                r: `0x${string}`;
-                s: `0x${string}`;
-                v: number;
-            };
-            readonly fee_info: {
-                account: `0x${string}`;
-                amount: `0x${string}`;
-            };
-        };
+        header: unknown;
         hash: string;
         size: number;
         num_transactions: number;
@@ -50,31 +26,7 @@ export declare class CappuccinoDerivedBlockSummaryDecoder implements Converter<u
 }
 export declare class CappuccinoDerivedBlockSummaryEncoder implements Converter<CappuccinoDerivedBlockSummary> {
     convert(input: CappuccinoDerivedBlockSummary): {
-        header: {
-            readonly height: number;
-            readonly timestamp: number;
-            readonly l1_head: number;
-            readonly l1_finalized: {
-                number: number;
-                timestamp: string;
-                hash: string;
-            } | null;
-            readonly payload_commitment: number[];
-            readonly ns_table: {
-                bytes: string;
-            };
-            readonly block_merkle_root: string;
-            readonly fee_merkle_root: string;
-            readonly builder_signature: {
-                r: `0x${string}`;
-                s: `0x${string}`;
-                v: number;
-            };
-            readonly fee_info: {
-                account: `0x${string}`;
-                amount: `0x${string}`;
-            };
-        };
+        header: unknown;
         hash: string;
         size: number;
         num_transactions: number;
@@ -87,31 +39,7 @@ export declare class CappuccinoDerivedBlockSummaryCodec extends TypeCheckingCode
 }
 export declare const cappuccinoDerivedBlockSummaryCodec: CappuccinoDerivedBlockSummaryCodec;
 export declare const listCappuccinoDerivedBlockSummaryCodec: ArrayCodec<CappuccinoDerivedBlockSummary, {
-    header: {
-        readonly height: number;
-        readonly timestamp: number;
-        readonly l1_head: number;
-        readonly l1_finalized: {
-            number: number;
-            timestamp: string;
-            hash: string;
-        } | null;
-        readonly payload_commitment: number[];
-        readonly ns_table: {
-            bytes: string;
-        };
-        readonly block_merkle_root: string;
-        readonly fee_merkle_root: string;
-        readonly builder_signature: {
-            r: `0x${string}`;
-            s: `0x${string}`;
-            v: number;
-        };
-        readonly fee_info: {
-            account: `0x${string}`;
-            amount: `0x${string}`;
-        };
-    };
+    header: unknown;
     hash: string;
     size: number;
     num_transactions: number;

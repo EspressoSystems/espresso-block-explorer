@@ -15,31 +15,7 @@ export declare class CappuccinoDerivedTransactionSummary {
     constructor(hash: TaggedBase64, header: CappuccinoAPIHeader, offset: number, transaction: CappuccinoAPITransactionNMTEntry);
     toJSON(): {
         hash: string;
-        header: {
-            readonly height: number;
-            readonly timestamp: number;
-            readonly l1_head: number;
-            readonly l1_finalized: {
-                number: number;
-                timestamp: string;
-                hash: string;
-            } | null;
-            readonly payload_commitment: number[];
-            readonly ns_table: {
-                bytes: string;
-            };
-            readonly block_merkle_root: string;
-            readonly fee_merkle_root: string;
-            readonly builder_signature: {
-                r: `0x${string}`;
-                s: `0x${string}`;
-                v: number;
-            };
-            readonly fee_info: {
-                account: `0x${string}`;
-                amount: `0x${string}`;
-            };
-        };
+        header: unknown;
         offset: number;
         transaction: {
             vm: number;
@@ -53,31 +29,7 @@ export declare class CappuccinoDerivedTransactionSummaryDecoder implements Conve
 export declare class CappuccinoDerivedTransactionSummaryEncoder implements Converter<CappuccinoDerivedTransactionSummary> {
     convert(input: CappuccinoDerivedTransactionSummary): {
         hash: string;
-        header: {
-            readonly height: number;
-            readonly timestamp: number;
-            readonly l1_head: number;
-            readonly l1_finalized: {
-                number: number;
-                timestamp: string;
-                hash: string;
-            } | null;
-            readonly payload_commitment: number[];
-            readonly ns_table: {
-                bytes: string;
-            };
-            readonly block_merkle_root: string;
-            readonly fee_merkle_root: string;
-            readonly builder_signature: {
-                r: `0x${string}`;
-                s: `0x${string}`;
-                v: number;
-            };
-            readonly fee_info: {
-                account: `0x${string}`;
-                amount: `0x${string}`;
-            };
-        };
+        header: unknown;
         offset: number;
         transaction: {
             vm: number;
@@ -92,31 +44,7 @@ export declare class CappuccinoDerivedTransactionSummaryCodec extends TypeChecki
 export declare const cappuccinoDerivedTransactionSummaryCodec: CappuccinoDerivedTransactionSummaryCodec;
 export declare const listCappuccinoDerivedTransactionSummaryCodec: ArrayCodec<CappuccinoDerivedTransactionSummary, {
     hash: string;
-    header: {
-        readonly height: number;
-        readonly timestamp: number;
-        readonly l1_head: number;
-        readonly l1_finalized: {
-            number: number;
-            timestamp: string;
-            hash: string;
-        } | null;
-        readonly payload_commitment: number[];
-        readonly ns_table: {
-            bytes: string;
-        };
-        readonly block_merkle_root: string;
-        readonly fee_merkle_root: string;
-        readonly builder_signature: {
-            r: `0x${string}`;
-            s: `0x${string}`;
-            v: number;
-        };
-        readonly fee_info: {
-            account: `0x${string}`;
-            amount: `0x${string}`;
-        };
-    };
+    header: unknown;
     offset: number;
     transaction: {
         vm: number;

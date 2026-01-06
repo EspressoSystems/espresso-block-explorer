@@ -1,4 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
+import { NullCodec } from '../../../../../../../../../../../src/convert/codec/null';
 /**
  * TaggedBase64 is an implementation of the server side type of TaggedBase64.
  * It separates the tag portion from the data portion so that they can be
@@ -26,3 +27,4 @@ export declare class TaggedBase64Codec extends TypeCheckingCodec<TaggedBase64, s
     decoder: TaggedBase64Decoder;
 }
 export declare const taggedBase64Codec: TaggedBase64Codec;
+export declare const nullableTaggedBase64Codec: NullCodec<TaggedBase64, string>;

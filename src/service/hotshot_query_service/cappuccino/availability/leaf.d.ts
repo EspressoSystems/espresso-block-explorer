@@ -37,31 +37,7 @@ export declare class CappuccinoAPILeaf {
             _pd: null;
         };
         parent_commitment: string;
-        block_header: {
-            readonly height: number;
-            readonly timestamp: number;
-            readonly l1_head: number;
-            readonly l1_finalized: {
-                number: number;
-                timestamp: string;
-                hash: string;
-            } | null;
-            readonly payload_commitment: number[];
-            readonly ns_table: {
-                bytes: string;
-            };
-            readonly block_merkle_root: string;
-            readonly fee_merkle_root: string;
-            readonly builder_signature: {
-                r: `0x${string}`;
-                s: `0x${string}`;
-                v: number;
-            };
-            readonly fee_info: {
-                account: `0x${string}`;
-                amount: `0x${string}`;
-            };
-        };
+        block_header: unknown;
         block_payload: {
             transaction_nmt: {
                 vm: number;
@@ -98,31 +74,7 @@ export declare class CappuccinoAPILeafEncoder implements Converter<CappuccinoAPI
             _pd: null;
         };
         parent_commitment: string;
-        block_header: {
-            readonly height: number;
-            readonly timestamp: number;
-            readonly l1_head: number;
-            readonly l1_finalized: {
-                number: number;
-                timestamp: string;
-                hash: string;
-            } | null;
-            readonly payload_commitment: number[];
-            readonly ns_table: {
-                bytes: string;
-            };
-            readonly block_merkle_root: string;
-            readonly fee_merkle_root: string;
-            readonly builder_signature: {
-                r: `0x${string}`;
-                s: `0x${string}`;
-                v: number;
-            };
-            readonly fee_info: {
-                account: `0x${string}`;
-                amount: `0x${string}`;
-            };
-        };
+        block_header: unknown;
         block_payload: {
             transaction_nmt: {
                 vm: number;

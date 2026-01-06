@@ -1,5 +1,6 @@
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { CappuccinoAPIBlock } from '../block';
+import { CappuccinoAPIHeader } from '../block_header';
 import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
 import { CappuccinoAPILeafResponse } from '../leaf_response';
@@ -18,4 +19,5 @@ export declare class UnimplementedCappuccinoHotShotQueryServiceAvailabilityAPI i
     getBlockSummaries(): Promise<CappuccinoDerivedBlockSummary[]>;
     getTransactionSummaryRange(): Promise<CappuccinoDerivedTransactionSummary[]>;
     getTransactionSummaryRangeForRollup(): Promise<CappuccinoDerivedTransactionSummary[]>;
+    getHeader(): Promise<CappuccinoAPIHeader>;
 }

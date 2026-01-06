@@ -26,31 +26,7 @@ export declare class WebWorkerProxyAvailabilityAPI {
                 _pd: null;
             };
             parent_commitment: string;
-            block_header: {
-                readonly height: number;
-                readonly timestamp: number;
-                readonly l1_head: number;
-                readonly l1_finalized: {
-                    number: number;
-                    timestamp: string;
-                    hash: string;
-                } | null;
-                readonly payload_commitment: number[];
-                readonly ns_table: {
-                    bytes: string;
-                };
-                readonly block_merkle_root: string;
-                readonly fee_merkle_root: string;
-                readonly builder_signature: {
-                    r: `0x${string}`;
-                    s: `0x${string}`;
-                    v: number;
-                };
-                readonly fee_info: {
-                    account: `0x${string}`;
-                    amount: `0x${string}`;
-                };
-            };
+            block_header: unknown;
             block_payload: {
                 transaction_nmt: {
                     vm: number;
@@ -110,31 +86,7 @@ export declare class WebWorkerProxyAvailabilityAPI {
     }>;
     getBlockFromHeight(height: number): Promise<unknown>;
     getBlockSummaries(from: number, until: number): Promise<{
-        header: {
-            readonly height: number;
-            readonly timestamp: number;
-            readonly l1_head: number;
-            readonly l1_finalized: {
-                number: number;
-                timestamp: string;
-                hash: string;
-            } | null;
-            readonly payload_commitment: number[];
-            readonly ns_table: {
-                bytes: string;
-            };
-            readonly block_merkle_root: string;
-            readonly fee_merkle_root: string;
-            readonly builder_signature: {
-                r: `0x${string}`;
-                s: `0x${string}`;
-                v: number;
-            };
-            readonly fee_info: {
-                account: `0x${string}`;
-                amount: `0x${string}`;
-            };
-        };
+        header: unknown;
         hash: string;
         size: number;
         num_transactions: number;
@@ -142,31 +94,7 @@ export declare class WebWorkerProxyAvailabilityAPI {
     }[]>;
     getTransactionSummaryRange(height: number, offset: number, limit: number): Promise<{
         hash: string;
-        header: {
-            readonly height: number;
-            readonly timestamp: number;
-            readonly l1_head: number;
-            readonly l1_finalized: {
-                number: number;
-                timestamp: string;
-                hash: string;
-            } | null;
-            readonly payload_commitment: number[];
-            readonly ns_table: {
-                bytes: string;
-            };
-            readonly block_merkle_root: string;
-            readonly fee_merkle_root: string;
-            readonly builder_signature: {
-                r: `0x${string}`;
-                s: `0x${string}`;
-                v: number;
-            };
-            readonly fee_info: {
-                account: `0x${string}`;
-                amount: `0x${string}`;
-            };
-        };
+        header: unknown;
         offset: number;
         transaction: {
             vm: number;
@@ -175,36 +103,13 @@ export declare class WebWorkerProxyAvailabilityAPI {
     }[]>;
     getTransactionSummaryRangeForRollup(namespace: number, height: number, offset: number, limit: number): Promise<{
         hash: string;
-        header: {
-            readonly height: number;
-            readonly timestamp: number;
-            readonly l1_head: number;
-            readonly l1_finalized: {
-                number: number;
-                timestamp: string;
-                hash: string;
-            } | null;
-            readonly payload_commitment: number[];
-            readonly ns_table: {
-                bytes: string;
-            };
-            readonly block_merkle_root: string;
-            readonly fee_merkle_root: string;
-            readonly builder_signature: {
-                r: `0x${string}`;
-                s: `0x${string}`;
-                v: number;
-            };
-            readonly fee_info: {
-                account: `0x${string}`;
-                amount: `0x${string}`;
-            };
-        };
+        header: unknown;
         offset: number;
         transaction: {
             vm: number;
             payload: number[];
         };
     }[]>;
+    getHeader(height: number): Promise<unknown>;
     handleRequest(request: AvailabilityRequest): Promise<unknown>;
 }
