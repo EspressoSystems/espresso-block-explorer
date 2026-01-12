@@ -1,4 +1,4 @@
-import { addClassToClassName } from '@/components/higher_order';
+import { addClassToClassName } from '@/higher_order';
 import { Chip, ChipProps } from './chip';
 
 export const ConsensusChip: React.FC<ChipProps> = ({ className, children }) => {

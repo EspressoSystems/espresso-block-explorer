@@ -1,7 +1,7 @@
-import { DataContext } from '@/components/contexts/data_provider';
-import { LoadingContext } from '@/components/contexts/loading_provider';
+import CircularProgressIndicator from '@/block_explorer/components/loading/circular_progress_indicator';
 import PromiseResolver from '@/components/data/async_data/promise_resolver';
-import CircularProgressIndicator from '@/components/loading/circular_progress_indicator';
+import { DataContext } from '@/contexts/data_provider';
+import { LoadingContext } from '@/contexts/loading_provider';
 import FetchError from '@/errors/fetch_error';
 import GeoJSONFeatureCollection, {
   geoJSONFeatureCollectionCodec,
@@ -78,7 +78,7 @@ const Example: React.FC = () => {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'Components/visual/WorldMapGeoJSONView',
+  title: 'Block Explorer/Components/Visual/WorldMapGeoJSONView',
   component: Example,
 };
 

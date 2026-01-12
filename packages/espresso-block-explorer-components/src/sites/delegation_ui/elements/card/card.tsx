@@ -1,4 +1,4 @@
-import { addClassToClassName } from '@/components/higher_order';
+import { addClassToClassName } from '@/higher_order';
 import './card.css';
 
 export interface CardProps extends React.PropsWithChildren {

@@ -1,8 +1,8 @@
-import { DataContext } from '@/components/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
+import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
+import { DataContext } from '@/contexts/data_provider';
 import { neverPromise } from '@/functional/functional_async';
 import { StakeTable } from '@/service/hotshot_query_service/cappuccino/node/stake_table';
-import { CappuccinoHotShotQueryServiceAPIContext } from 'pages';
 import React from 'react';
 import { ActiveValidatorsContext } from '../../contexts/active_validators_context';
 

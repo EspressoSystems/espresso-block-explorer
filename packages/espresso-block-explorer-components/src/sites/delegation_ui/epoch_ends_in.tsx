@@ -1,8 +1,8 @@
-import { CurrentNumberFormatters } from '@/components/contexts';
-import { addClassToClassName } from '@/components/higher_order';
+import { addClassToClassName } from '@/higher_order';
 import NumberText from '@/components/text/number_text';
 import Text from '@/components/text/text';
 import TimeLeftText from '@/components/text/time_left_text';
+import { CurrentNumberFormatters } from '@/contexts/number_formatters_provider';
 import { filterIterable } from '@/functional/functional';
 import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
 import React from 'react';

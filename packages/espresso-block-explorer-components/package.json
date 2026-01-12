@@ -50,7 +50,20 @@
   "keywords": [],
   "license": "ISC",
   "main": "dist/index.es.js",
-  "module": "dist/index.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/espresso_block_explorer_components.es.js",
+      "types": "./dist/src/espresso_block_explorer_components.d.ts"
+    },
+    "./block_explorer": {
+      "import": "./dist/block_explorer.es.js",
+      "types": "./dist/src/block_explorer.d.ts"
+    },
+    "./delegation_ui": {
+      "import": "./dist/delegation_ui.es.js",
+      "types": "./dist/src/delegation_ui.d.ts"
+    }
+  },
   "name": "espresso-block-explorer-components",
   "peerDependencies": {
     "@rainbow-me/rainbowkit": "^2.2.5",

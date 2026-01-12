@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { describe, it } from 'vitest';
 import Layout from '../layout';
 
-describe('Layout', () => {
+describe('Block Explorer/Components/Links/Layout', () => {
   it('should not throw', () => {
     render(
       <Layout

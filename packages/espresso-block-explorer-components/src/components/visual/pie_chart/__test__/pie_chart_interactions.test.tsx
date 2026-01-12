@@ -1,13 +1,13 @@
-import { DataContext } from '@/components/contexts';
+import { DataContext } from '@/contexts/data_provider';
 import { iota, mapIterator } from '@/functional/functional';
 import { act, render } from '@testing-library/react';
 import { describe, it } from 'vitest';
-import { PieChartFromData } from '../pie_chart';
 import {
   getPieChart,
   interactionExitHoverAll,
   interactionHoverOverIthSlice,
 } from '../__shared__/pie_chart_shared';
+import { PieChartFromData } from '../pie_chart';
 
 describe('Block Size Histogram Interactions', () => {
   it('should get the histogram', async () => {

@@ -1,8 +1,9 @@
-import { DataContext } from '@/components/contexts/data_provider';
+import { WithUiText600 } from '@/block_explorer/components/typography/typography';
 import NumberText from '@/components/text/number_text';
-import { WithUiText600 } from '@/components/typography/typography';
+import { DataContext } from '@/contexts/data_provider';
 import React from 'react';
 import Text from '../../text/text';
+import { useSVGSize } from '../svg/hooks';
 import SVGPathBuilder from '../svg/svg_path_builder';
 import {
   SVGToolTipContentComponent,
@@ -13,7 +14,6 @@ import {
   SVGToolTipValueRatio,
   SVGTooltip,
 } from '../svg/svg_tool_tip';
-import { useSVGSize } from '../svg/hooks';
 import './pie_chart.css';
 
 const UiText600 = WithUiText600('text') as React.FC<

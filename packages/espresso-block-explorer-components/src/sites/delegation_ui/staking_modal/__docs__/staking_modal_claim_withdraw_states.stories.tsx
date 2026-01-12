@@ -25,7 +25,7 @@ import {
 import '../staking_modal.css';
 
 const meta: Meta = {
-  title: 'Sites/Delegation UI/Staking Modal/States/Withdraw Claim',
+  title: 'Delegation UI/Staking Modal/States/Withdraw Claim',
   ...DefaultMeta,
   args: {
     ...DefaultMeta.args,

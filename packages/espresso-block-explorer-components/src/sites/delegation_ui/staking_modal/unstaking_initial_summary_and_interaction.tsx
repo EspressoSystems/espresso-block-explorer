@@ -1,4 +1,4 @@
-import { addClassToClassName } from '@/components/higher_order';
+import { addClassToClassName } from '@/higher_order';
 import { ESPInput } from '@/components/input/esp/esp_input';
 import { PercentageText } from '@/components/text';
 import MoneyText from '@/components/text/money_text';

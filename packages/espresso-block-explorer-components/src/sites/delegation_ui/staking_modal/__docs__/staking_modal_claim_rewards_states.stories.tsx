@@ -23,7 +23,7 @@ import {
 import '../staking_modal.css';
 
 const meta: Meta = {
-  title: 'Sites/Delegation UI/Staking Modal/States/Claim Rewards',
+  title: 'Delegation UI/Staking Modal/States/Claim Rewards',
   ...DefaultMeta,
   args: {
     ...DefaultMeta.args,

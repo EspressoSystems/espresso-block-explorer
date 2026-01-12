@@ -1,4 +1,4 @@
-import { WithUiSmall } from '@/typography/typography';
+import { WithUiSmall } from '@/block_explorer/components/typography/typography';
 import React from 'react';
 import {
   HistogramGraphWidth,

@@ -1,4 +1,3 @@
-@import url(../../../styles/main.css);
 :root {
   --world-map--continent-color: var(--color--slate-300);
   --world-map--node-color: var(--color--slate-950);

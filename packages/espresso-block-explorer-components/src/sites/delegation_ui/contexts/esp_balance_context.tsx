@@ -1,4 +1,4 @@
-import { DataContext } from '@/components/contexts/data_provider';
+import { DataContext } from '@/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
 import { AsyncSnapshot } from '@/components/data/async_data/async_snapshot';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
@@ -13,26 +13,25 @@ export const ESPBalanceAsyncSnapshotContext = React.createContext<
 >(AsyncSnapshot.nothing());
 
 /**
- * ProvideTotalSupply is a React component that fetches
- * the total supply of the ESP token from the blockchain
- * and provides it via TotalSupplyContext.
+ * ProvideESPBalance is a React component that fetches the current wallet's
+ * ESP balance and provides it via TotalSupplyContext.
  */
 export const ProvideESPBalance: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   return (
-    <ProvideTotalSupplyFromContractCall>
+    <ProvideESPBalanceFromContractCall>
       {children}
-    </ProvideTotalSupplyFromContractCall>
+    </ProvideESPBalanceFromContractCall>
   );
 };
 
 /**
- * ProvideTotalSupplyFromAPICall is a React component that fetches
- * the total supply of the ESP token from the local ESPTokenContract
- * and provides it via TotalSupplyContext.
+ * ProvideESPBalanceFromAPICall is a React component that fetches
+ * the current balance for the active wallet from the ESPTokenContract
+ * and provides it via ESPBalanceContext.
  */
-export const ProvideTotalSupplyFromContractCall: React.FC<
+export const ProvideESPBalanceFromContractCall: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   React.useContext(L1RefreshTimestampContext);
@@ -52,6 +51,8 @@ export const ProvideTotalSupplyFromContractCall: React.FC<
 };
 
 /**
+ * ConvertDataToESPBalance is a React component that converts the data
+ * from the DataContext and provides it via ESPBalanceContext.
  */
 const ConvertDataToESPBalance: React.FC<React.PropsWithChildren> = ({
   children,

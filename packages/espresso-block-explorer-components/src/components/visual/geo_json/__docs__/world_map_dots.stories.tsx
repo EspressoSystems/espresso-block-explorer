@@ -1,5 +1,5 @@
 import { sleep } from '@/async/sleep';
-import { NodeSummaryData } from '@/components/page_sections/nodes_summary_data_table/nodes_summary_loader';
+import { NodeSummaryData } from '@/block_explorer/components/page_sections/nodes_summary_data_table/nodes_summary_loader';
 import {
   GeneratedNodeIdentityInformation,
   nodeList,
@@ -24,7 +24,7 @@ function convertGeneratedNodeToNodeInformation(
 ): NodeSummaryData {
   return {
     name: node.name,
-    address: node.address,
+    publicKey: node.pubkey,
     companyDetails: {
       name: node.company.name,
       website: node.company.website,
@@ -67,7 +67,7 @@ const Example: React.FC<ExampleProps> = () => {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'Components/Page Sections/World Map Dots',
+  title: 'Block Explorer/Components/Page Sections/World Map Dots',
   component: Example,
 };
 

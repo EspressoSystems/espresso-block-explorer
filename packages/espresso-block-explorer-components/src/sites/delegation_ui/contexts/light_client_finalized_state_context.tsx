@@ -1,4 +1,4 @@
-import { DataContext } from '@/components/contexts/data_provider';
+import { DataContext } from '@/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
 import { LightClientState } from '@/contracts/light_client/light_client_interface';
 import { neverPromise } from '@/functional/functional_async';

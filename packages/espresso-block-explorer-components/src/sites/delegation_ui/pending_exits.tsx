@@ -1,4 +1,4 @@
-import { Now } from '@/components/contexts/now_provider';
+import { Now } from '@/contexts/now_provider';
 import Text from '@/components/text/text';
 import PadlockSquare2 from '@/components/visual/icons/sharp_line/padlock_square_2';
 import { compareIterables } from '@/functional/functional';
@@ -56,7 +56,7 @@ const FilterToAvailablePendingExits: React.FC<React.PropsWithChildren> = ({
     }
 
     return () => {
-      setNextPendingExitsList = () => {};
+      setNextPendingExitsList = () => { };
     };
   }, [nodeAddressList, now, pendingExits, pendingExitsList]);
 
@@ -83,7 +83,7 @@ const PendingExitsSection: React.FC = () => {
       <CollapsableHeader>
         <PadlockSquare2 />
         <h2>
-          <Text text="Validators you have delegated to have exited the Staking Table.  You can claim back your delegation now." />
+          <Text text="Validators you have delegated to have exited the Staking Table.  You can manage your pending withdraws here." />
         </h2>
       </CollapsableHeader>
       <CollapseGuard>

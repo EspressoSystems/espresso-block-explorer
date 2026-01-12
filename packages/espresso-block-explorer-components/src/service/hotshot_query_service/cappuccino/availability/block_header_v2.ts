@@ -27,11 +27,12 @@ import {
   cappuccinoNamespaceTableCodec,
 } from './namespace_table';
 
-export interface CappuccinoAPIV2HeaderFields extends CappuccinoAPIV0HeaderFields { }
+export interface CappuccinoAPIV2HeaderFields extends CappuccinoAPIV0HeaderFields {}
 
 export class AbstractCappuccinoAPIV2HeaderFields
   extends AbstractCappuccinoAPIV0HeaderFields
-  implements CappuccinoAPIV2HeaderFields {
+  implements CappuccinoAPIV2HeaderFields
+{
   toJSON() {
     return cappuccinoAPIV2HeaderFieldsCodec.encode(this);
   }
@@ -121,8 +122,12 @@ export class CappuccinoAPIV2HeaderFieldsEncoder implements Converter<CappuccinoA
       payload_commitment: taggedBase64Codec.encode(input.payload_commitment),
       builder_commitment: taggedBase64Codec.encode(input.builder_commitment),
       ns_table: cappuccinoNamespaceTableCodec.encode(input.ns_table),
-      block_merkle_tree_root: taggedBase64Codec.encode(input.block_merkle_tree_root),
-      fee_merkle_tree_root: taggedBase64Codec.encode(input.fee_merkle_tree_root),
+      block_merkle_tree_root: taggedBase64Codec.encode(
+        input.block_merkle_tree_root,
+      ),
+      fee_merkle_tree_root: taggedBase64Codec.encode(
+        input.fee_merkle_tree_root,
+      ),
       builder_signature: cappuccinoBuilderSignatureCodec.encode(
         input.builder_signature,
       ),
@@ -133,10 +138,13 @@ export class CappuccinoAPIV2HeaderFieldsEncoder implements Converter<CappuccinoA
 
 export class CappuccinoAPIV2HeaderFieldsCodec extends TypeCheckingCodec<
   CappuccinoAPIV2HeaderFields,
-  ReturnType<InstanceType<new () => CappuccinoAPIV2HeaderFieldsEncoder>['convert']>
+  ReturnType<
+    InstanceType<new () => CappuccinoAPIV2HeaderFieldsEncoder>['convert']
+  >
 > {
   readonly encoder = new CappuccinoAPIV2HeaderFieldsEncoder();
   readonly decoder = new CappuccinoAPIV2HeaderFieldsDecoder();
 }
 
-export const cappuccinoAPIV2HeaderFieldsCodec = new CappuccinoAPIV2HeaderFieldsCodec();
+export const cappuccinoAPIV2HeaderFieldsCodec =
+  new CappuccinoAPIV2HeaderFieldsCodec();

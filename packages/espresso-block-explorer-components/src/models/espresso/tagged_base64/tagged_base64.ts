@@ -80,4 +80,3 @@ export const nullableTaggedBase64Codec = new NullCodec(
   new NullDecoder(taggedBase64Codec),
   new NullEncoder(taggedBase64Codec),
 );
-

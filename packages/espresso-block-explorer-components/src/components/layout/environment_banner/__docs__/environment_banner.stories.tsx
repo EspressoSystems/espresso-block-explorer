@@ -18,7 +18,7 @@ const Example: React.FC<ExampleProps> = (props) => {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'Page Components/Environment Banner/States',
+  title: 'Components/Layout/Environment Banner/States',
   component: Example,
   argTypes: {
     environment: environmentControlArgType,

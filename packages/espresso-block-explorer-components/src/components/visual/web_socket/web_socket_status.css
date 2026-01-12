@@ -1,4 +1,3 @@
-@import url(../../../styles/main.css);
 :root {
   --web-socket-status--connecting--color: var(--color--amber-300);
   --web-socket-status--connecting--on-color: var(--on-color--amber-300);

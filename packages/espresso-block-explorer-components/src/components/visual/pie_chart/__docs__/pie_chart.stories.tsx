@@ -1,4 +1,4 @@
-import { DataContext } from '@/components/contexts';
+import { DataContext } from '@/contexts/data_provider';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { PieChartEntry, PieChartFromData } from '../pie_chart';
@@ -16,7 +16,7 @@ const Example: React.FC<ExampleProps> = (props) => {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'Components/Page Sections/Pie Chart',
+  title: 'Block Explorer/Components/Page Sections/Pie Chart',
   component: Example,
 };
 

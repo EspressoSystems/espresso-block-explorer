@@ -12,7 +12,7 @@ vi.mock('next/navigation', () => {
   };
 });
 
-describe('Layout', () => {
+describe('Block Explorer/Components/Links/Layout', () => {
   it('should not throw', () => {
     render(
       <Layout>

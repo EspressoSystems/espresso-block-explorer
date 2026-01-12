@@ -56,7 +56,7 @@ const Example: React.FC<ExampleProps> = (props) => {
 };
 
 const meta: Meta = {
-  title: 'Sites/Delegation UI/Staking Modal/States',
+  title: 'Delegation UI/Staking Modal/States',
   component: Example,
   parameters: {
     layout: 'fullscreen',

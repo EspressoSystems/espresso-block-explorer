@@ -1,4 +1,4 @@
-import { addClassToClassName } from '@/components/higher_order';
+import { addClassToClassName } from '@/higher_order';
 import './chip.css';
 
 export interface ChipProps extends React.PropsWithChildren {

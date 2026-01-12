@@ -1,8 +1,5 @@
 export { default as ByteSizeText } from './byte_size_text';
 export { default as BytesPerSecondText } from './bytes_per_second_text';
-export { type CopyArrayBufferAsTextProps } from './copy_array_buffer_as_text_props';
-export { default as CopyBase64 } from './copy_base64';
-export { default as CopyHex } from './copy_hex';
 export { default as DateTimeText } from './date_time_text';
 export { default as DurationInSecondsText } from './duration_in_seconds_text';
 export { default as FriendlyDateTimeText } from './friendly_date_time_text';

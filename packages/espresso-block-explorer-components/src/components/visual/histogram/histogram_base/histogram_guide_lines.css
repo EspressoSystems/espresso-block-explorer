@@ -1,5 +1,3 @@
-@import url(../../../../styles/main.css);
-
 :root {
   --histogram-y-guide-lines--fill-color: var(--color--slate-200);
 }

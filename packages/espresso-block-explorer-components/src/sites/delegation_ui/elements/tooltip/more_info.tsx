@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { addClassToClassName } from '@/components/higher_order';
+import { addClassToClassName } from '@/higher_order';
 import HelpQuestion1 from '@/components/visual/icons/sharp_line/help_question_1';
 import './more_info.css';
 import { Tooltip } from './tooltip';

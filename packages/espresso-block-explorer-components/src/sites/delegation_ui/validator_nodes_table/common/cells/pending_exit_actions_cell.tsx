@@ -1,4 +1,4 @@
-import { Now } from '@/components/contexts/now_provider';
+import { Now } from '@/contexts/now_provider';
 import Text from '@/components/text/text';
 import TimeLeftText from '@/components/text/time_left_text';
 import { ModalContext } from '@/sites/delegation_ui/contexts/modal_context';

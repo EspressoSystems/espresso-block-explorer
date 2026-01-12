@@ -1,6 +1,9 @@
+import {
+  WithUiSmall,
+  WithUiText600,
+} from '@/block_explorer/components/typography/typography';
 import { NumberText } from '@/components/text';
 import Text from '@/components/text/text';
-import { WithUiSmall, WithUiText600 } from '@/components/typography/typography';
 import React from 'react';
 import {
   SVGIndicatorComponent,

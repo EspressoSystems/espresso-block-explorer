@@ -1,4 +1,4 @@
-import { DataContext } from '@/components/contexts/data_provider';
+import { DataContext } from '@/contexts/data_provider';
 import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/text';

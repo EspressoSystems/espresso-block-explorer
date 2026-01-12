@@ -1,6 +1,5 @@
-import { DataContext } from '@/components/contexts/data_provider';
-import { LoadingContext } from '@/components/contexts/loading_provider';
-import { WithUiText600 } from '@/components/typography/typography';
+import { DataContext } from '@/contexts/data_provider';
+import { LoadingContext } from '@/contexts/loading_provider';
 import { foldRIterator } from '@/functional/functional';
 import {
   degreesToCoordinateSpaceProjection,
@@ -23,6 +22,7 @@ import {
   MapCoordinateSpaceRectContext,
 } from './contexts';
 import './world_map_dots.css';
+import { WithUiText600 } from '@/block_explorer/components/typography/typography';
 
 const UiText600 = WithUiText600('text') as React.FC<
   React.SVGTextElementAttributes<SVGTextElement>

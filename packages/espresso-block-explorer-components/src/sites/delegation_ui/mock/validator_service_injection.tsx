@@ -1,3 +1,4 @@
+import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { nodeList } from '@/data_source/fake_data_source';
@@ -37,7 +38,6 @@ import { WalletDiff } from '@/service/espresso_l1_validator_service/wallet/walle
 import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
 import { WalletUpdate } from '@/service/espresso_l1_validator_service/wallet/wallet_update';
 import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
-import { CappuccinoHotShotQueryServiceAPIContext } from 'pages';
 import React from 'react';
 import { Config } from 'wagmi';
 import { L1MethodsContext } from '../contexts/l1_methods_context';

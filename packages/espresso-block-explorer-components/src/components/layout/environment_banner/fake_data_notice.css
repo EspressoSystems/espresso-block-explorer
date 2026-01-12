@@ -1,0 +1,6 @@
+.fake-data-notice {
+  background-color: var(--color--red-600);
+  color: var(--on-color--red-600);
+
+  padding: 0.5em 0;
+}

@@ -1,4 +1,4 @@
-import { DataContext } from '@/components/contexts/data_provider';
+import { DataContext } from '@/contexts/data_provider';
 import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { neverPromise } from '@/functional/functional_async';
 import React from 'react';

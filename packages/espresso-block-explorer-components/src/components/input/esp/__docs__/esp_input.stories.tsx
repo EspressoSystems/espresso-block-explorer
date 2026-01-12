@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { Example } from '../__shared__/example';
 
 const meta: Meta<typeof Example> = {
-  title: 'Components/HID/Inputs/ESPInput',
+  title: 'Block Explorer/Components/HID/Inputs/ESPInput',
   component: Example,
 };
 

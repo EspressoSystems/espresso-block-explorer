@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { addClassToClassName } from '@/components/higher_order';
+import { addClassToClassName } from '@/higher_order';
 import './tooltip.css';
 
 export interface TooltipProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -1,4 +1,4 @@
-import { ErrorContext } from '@/components/contexts/error_provider';
+import { ErrorContext } from '@/contexts/error_provider';
 import BufferFullError from '@/errors/buffer_full_error';
 import FetchError from '@/errors/fetch_error';
 import UnimplementedError from '@/errors/unimplemented_error';

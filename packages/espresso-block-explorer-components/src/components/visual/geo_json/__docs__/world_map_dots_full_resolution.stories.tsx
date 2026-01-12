@@ -8,7 +8,7 @@ const Example: React.FC<ExampleProps> = () => {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'Components/visual/WorldMapDotsFullResolution',
+  title: 'Block Explorer/Components/Visual/WorldMapDotsFullResolution',
   component: Example,
 };
 

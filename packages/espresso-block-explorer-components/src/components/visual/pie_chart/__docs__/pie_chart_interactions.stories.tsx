@@ -1,12 +1,12 @@
-import { DataContext } from '@/components/contexts';
+import { DataContext } from '@/contexts/data_provider';
 import { iota, mapIterator } from '@/functional/functional';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { PieChartFromData } from '../pie_chart';
 import {
   interactionExitHoverAll,
   interactionHoverOverIthSlice,
 } from '../__shared__/pie_chart_shared';
+import { PieChartFromData } from '../pie_chart';
 
 interface ExampleProps {}
 
@@ -23,7 +23,7 @@ const Example: React.FC<ExampleProps> = () => {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'Components/Page Sections/Pie Chart/Interactions',
+  title: 'Block Explorer/Components/Page Sections/Pie Chart/Interactions',
   component: Example,
 };
 
