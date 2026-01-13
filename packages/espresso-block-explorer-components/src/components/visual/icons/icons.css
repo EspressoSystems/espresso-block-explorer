@@ -1,26 +1,3 @@
-:root {
-  --icon--fill-color: var(--color--slate-950);
-  --icon--stroke-color: var(--color--transparent);
-
-  --icon--transition-duration: 240ms;
-}
-
-[data-theme='light'] {
-  --icon--fill-color: var(--color--slate-950);
-  --icon--stroke-color: var(--color--transparent);
-}
-
-[data-theme='dark'] {
-  --icon--fill-color: var(--color--white);
-  --icon--stroke-color: var(--color--transparent);
-}
-
-@media screen and (prefers-color-scheme: dark) {
-  :root {
-    --icon--fill-color: var(--color--white);
-    --icon--stroke-color: var(--color--transparent);
-  }
-}
 
 svg.icon {
   fill: var(--icon--fill-color);
@@ -36,7 +13,7 @@ svg.icon {
 }
 
 svg.icon.stroked {
-  fill: var(--color--transparent);
+  fill: var(--icon--transparent-color);
   stroke: var(--icon--fill-color);
   stroke-width: 2;
   stroke-linecap: round;

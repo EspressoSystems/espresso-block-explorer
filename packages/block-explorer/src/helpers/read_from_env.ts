@@ -40,8 +40,6 @@ export function validateContractAddress(
 
 export interface EnvironmentConfig {
   environment: string;
-  contract_address_stake_table: null | `0x${string}`;
-  contract_address_esp_token: null | `0x${string}`;
 }
 
 /**
@@ -51,11 +49,5 @@ export interface EnvironmentConfig {
 export function readFromEnv() {
   return {
     environment: determineEnvironmentFromVariable(process.env.ENVIRONMENT_NAME),
-    contract_address_stake_table: validateContractAddress(
-      process.env.CONTRACT_ADDRESS_STAKE_TABLE,
-    ),
-    contract_address_esp_token: validateContractAddress(
-      process.env.CONTRACT_ADDRESS_ESP_TOKEN,
-    ),
   } as const satisfies EnvironmentConfig;
 }

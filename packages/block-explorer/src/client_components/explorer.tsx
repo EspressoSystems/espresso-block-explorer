@@ -1,11 +1,13 @@
 'use client';
 
 import {
+  ProvideCappuccinoHotShotQueryServiceAPIContext,
+} from 'espresso-block-explorer-components';
+import {
   ExplorerPage,
   ExplorerSummaryLoader,
   ProvideCappuccinoExplorerSummaryAsyncStream,
-  ProvideCappuccinoHotShotQueryServiceAPIContext,
-} from 'espresso-block-explorer-components';
+} from 'espresso-block-explorer-components/block-explorer';
 
 export default function ExplorerClientComponent() {
   return (

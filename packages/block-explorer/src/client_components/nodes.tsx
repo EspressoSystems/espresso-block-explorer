@@ -3,19 +3,18 @@
 import {
   EnvironmentContext,
   EspressoConfigContext,
-  NodesPage,
   ProvideCappuccinoHotShotQueryServiceAPIContext,
   ProvideCappuccinoNodeValidatorServiceAPIContext,
-  ProvideCappuccinoNodeValidatorStreams,
 } from 'espresso-block-explorer-components';
+import {
+  NodesPage,
+  ProvideCappuccinoNodeValidatorStreams,
+} from 'espresso-block-explorer-components/block-explorer';
 import React from 'react';
 
-export interface NodesClientComponentProps {}
+export interface NodesClientComponentProps { }
 
-export default function NodesClientComponent(props: NodesClientComponentProps) {
-  const environment = React.useContext(EnvironmentContext);
-  const espresso = React.useContext(EspressoConfigContext);
-
+export default function NodesClientComponent() {
   return (
     <ProvideCappuccinoNodeValidatorServiceAPIContext>
       <ProvideCappuccinoHotShotQueryServiceAPIContext>

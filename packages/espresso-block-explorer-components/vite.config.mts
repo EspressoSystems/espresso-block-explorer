@@ -10,9 +10,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
-        espresso_block_explorer_components: './src/espresso_block_explorer_components.ts', // Specifies the entry point for building the library.
-        block_explorer: './src/block_explorer.ts',
-        delegation_ui: './src/delegation_ui.ts',
+        'espresso-block-explorer-components': './src/espresso-block-explorer-components.ts', // Specifies the entry point for building the library.
+        'block-explorer': './src/block-explorer.ts',
+        'delegation-ui': './src/delegation-ui.ts',
       },
       name: 'espresso-block-explorer-components', // Sets the name of the generated library.
       fileName: (format, entryName) => `${entryName}.${format}.js`, // Generates the output file name based on the format.

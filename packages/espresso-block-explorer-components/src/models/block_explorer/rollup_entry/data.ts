@@ -263,11 +263,35 @@ const infiniteGarden = new RollUpEntry(
   new URL('https://explorer.main.net.espressosys.com/'),
 );
 
-const kTimeBoostDecafNamespace = 10_101;
+const kTimeBoostLocalTestingDecafNamespace = 10_101;
 
-const timeBoostDecaf = new RollUpEntry(
-  kTimeBoostDecafNamespace,
-  'Timeboost Decaf',
+const timeBoostLocalTestingDecaf = new RollUpEntry(
+  kTimeBoostLocalTestingDecafNamespace,
+  'Timeboost Decaf (Local Testing)',
+  new URL('https://espressosys.com/'),
+  new URL('https://explorer.decaf.testnet.espresso.network/'),
+);
+
+const kTimeboostSepoliaTestingDecaf1Namespace = 13_429_355;
+const timeBoostSepoliaTesting1Decaf = new RollUpEntry(
+  kTimeboostSepoliaTestingDecaf1Namespace,
+  'Timeboost Decaf (Sepolia Testing)',
+  new URL('https://espressosys.com/'),
+  new URL('https://explorer.decaf.testnet.espresso.network/'),
+);
+
+const kTimeboostSepoliaTestingDecaf2Namespace = 2_225_552_221;
+const timeBoostSepoliaTesting2Decaf = new RollUpEntry(
+  kTimeboostSepoliaTestingDecaf2Namespace,
+  'Timeboost Decaf (Sepolia Testing)',
+  new URL('https://espressosys.com/'),
+  new URL('https://explorer.decaf.testnet.espresso.network/'),
+);
+
+const kCeloDecafNamespace = 22_266_222;
+const celoDecaf = new RollUpEntry(
+  kCeloDecafNamespace,
+  'Celo',
   new URL('https://espressosys.com/'),
   new URL('https://explorer.decaf.testnet.espresso.network/'),
 );
@@ -294,7 +318,10 @@ export const curatedDecafList = [
   t3rnDecaf,
   rufusDecaf,
   huddle01Decaf,
-  timeBoostDecaf,
+  timeBoostLocalTestingDecaf,
+  timeBoostSepoliaTesting1Decaf,
+  timeBoostSepoliaTesting2Decaf,
+  celoDecaf,
   // Add more Decaf rollups here
 ];
 
@@ -341,4 +368,8 @@ export function isNitroIntegrationNamespace(namespace: number): boolean {
     namespace === kHuddle01DecafNamespace ||
     false // keep a trailing or false to make additions make nicer diffs
   );
+}
+
+export function isOptimismIntegrationNamespace(namespace: number): boolean {
+  return namespace === kCeloDecafNamespace || false;
 }

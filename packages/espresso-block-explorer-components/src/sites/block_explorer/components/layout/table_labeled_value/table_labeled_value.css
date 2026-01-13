@@ -1,3 +1,5 @@
+@import '@/block_explorer/styles/main.css';
+
 :root {
   --table-labeled-value--border-color: var(--color--slate-100);
 }

@@ -20,7 +20,7 @@ export const InternalLinkAnchorComponentContext =
 export interface LinkProps extends React.DetailedHTMLProps<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,
   HTMLAnchorElement
-> {}
+> { }
 
 /**
  * InternalLink component represents a simple Anchor tag link. This link is

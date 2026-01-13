@@ -4,12 +4,14 @@ import { EnvironmentProvider } from '@/helpers/environment';
 import { EnvironmentConfig } from '@/helpers/read_from_env';
 import {
   EnvironmentBanner,
-  InternalLinkAnchorComponentContext,
   ProvideDerivedDateTimeFormatters,
   ProvideDerivedNumberFormatters,
   ProvideNavigatorLanguage,
   ProvideTickEverySecond,
 } from 'espresso-block-explorer-components';
+import {
+  InternalLinkAnchorComponentContext,
+} from 'espresso-block-explorer-components/block-explorer';
 import Link from 'next/link';
 
 export interface LayoutClientComponentProps {

@@ -52,17 +52,23 @@
   "main": "dist/index.es.js",
   "exports": {
     ".": {
-      "import": "./dist/espresso_block_explorer_components.es.js",
-      "types": "./dist/src/espresso_block_explorer_components.d.ts"
+      "import": "./dist/espresso-block-explorer-components.es.js",
+      "types": "./dist/src/espresso-block-explorer-components.d.ts"
     },
-    "./block_explorer": {
-      "import": "./dist/block_explorer.es.js",
-      "types": "./dist/src/block_explorer.d.ts"
+    "./block-explorer": {
+      "import": "./dist/block-explorer.es.js",
+      "types": "./dist/src/block-explorer.d.ts"
     },
-    "./delegation_ui": {
-      "import": "./dist/delegation_ui.es.js",
-      "types": "./dist/src/delegation_ui.d.ts"
-    }
+    "./delegation-ui": {
+      "import": "./dist/delegation-ui.es.js",
+      "types": "./dist/src/delegation-ui.d.ts"
+    },
+    "./espresso-block-explorer-components.css": "./dist/espresso-block-explorer-components.css",
+    "./block-explorer.css": "./dist/block-explorer.css",
+    "./delegation-ui.css": "./dist/delegation-ui.css",
+    "./inscription_and_signature.css": "./dist/inscription_and_signature.css",
+    "./cappuccino_hot_shot_query_service_api_context.css": "./dist/cappuccino_hot_shot_query_service_api_context.css",
+    "./check.css": "./dist/check.css"
   },
   "name": "espresso-block-explorer-components",
   "peerDependencies": {

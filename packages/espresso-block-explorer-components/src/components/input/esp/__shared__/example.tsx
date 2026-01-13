@@ -1,3 +1,4 @@
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { MoneyTextFull } from '@/components/text/money_text_full';
 import { bigintCodec } from '@/convert/codec/bigint';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
@@ -18,18 +19,20 @@ export const Example: React.FC<ExampleProps> = (props) => {
       <div>
         <style>
           {`
-        .currency-code{
-          padding: 8px;
-        }
         .esp-input-container {
+          display: grid;
+          grid-template-columns: auto 1fr;
           border: 1px solid #ccc;
           border-radius: 8px;
           font-size: 32px;
-          display: grid;
           align-items: center;
           padding: 0;
           margin: 0;
           overflow: hidden;
+        }
+        .esp-input-container .currency-code{
+          position: unset !important;
+          padding: 8px;
         }
         .esp-input-container.currency-prefix {
           grid-template-columns: auto 1fr;
@@ -41,6 +44,7 @@ export const Example: React.FC<ExampleProps> = (props) => {
           font-size: inherit;
           border: 0;
           border-radius: 8px;
+          box-sizing: border-box;
         }
         `}
         </style>
@@ -59,3 +63,15 @@ export const Example: React.FC<ExampleProps> = (props) => {
     </>
   );
 };
+
+export const exampleMeta: Meta<typeof Example> = {
+  component: Example,
+  args: {
+  },
+  argTypes: {
+    initialValue: {
+      type: 'string',
+    },
+  },
+};
+

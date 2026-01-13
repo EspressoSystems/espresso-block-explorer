@@ -1,3 +1,5 @@
+@import '@/block_explorer/styles/main.css';
+
 .rollup-info {
   display: grid;
   margin-block-end: 40px;

@@ -1,3 +1,5 @@
+@import '@/block_explorer/styles/main.css';
+
 :root {
   --skeleton-content--background-color: var(--color--slate-100);
 }

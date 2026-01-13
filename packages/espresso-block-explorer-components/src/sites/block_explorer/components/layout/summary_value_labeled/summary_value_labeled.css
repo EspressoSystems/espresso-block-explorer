@@ -1,3 +1,5 @@
+@import '@/block_explorer/styles/main.css';
+
 .summary-value-labeled {
   display: grid;
   grid-template-rows: auto auto;

@@ -37,7 +37,7 @@ picture.avatar.avatar-circle {
 
 picture.avatar.avatar-circle > img,
 picture.avatar.avatar-circle > svg {
-  border: 1px solid var(--color--slate-300);
+  border: 1px solid var(--rollup-entry--image--border-color);
   border-radius: 100%;
 }
 

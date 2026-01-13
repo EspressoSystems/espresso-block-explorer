@@ -1,6 +1,11 @@
 :root {
-  --environment-banner--devnet--color: var(--color--coffee);
-  --environment-banner--testnet--color: var(--color--blueberry);
+  --envbcolor--coffee: #451f17ff;
+  --envbcolor--blueberry: #0c81b4ff;
+  --envbcolor--cookie: #b67237ff;
+  --envbcolor--azure: #1eb6f8ff;
+
+  --environment-banner--devnet--color: var(--envbcolor--coffee);
+  --environment-banner--testnet--color: var(--envbcolor--blueberry);
   --environment-banner--color: var(--environment-banner--testnet--color);
 
   --environment-banner--padding-vertical: 8px;
@@ -9,19 +14,19 @@
 }
 
 [data-theme='light'] {
-  --environment-banner--devnet--color: var(--color--coffee);
-  --environment-banner--testnet--color: var(--color--blueberry);
+  --environment-banner--devnet--color: var(--envbcolor--coffee);
+  --environment-banner--testnet--color: var(--envbcolor--blueberry);
 }
 
 [data-theme='dark'] {
-  --environment-banner--devnet--color: var(--color--cookie);
-  --environment-banner--testnet--color: var(--color--azure);
+  --environment-banner--devnet--color: var(--envbcolor--cookie);
+  --environment-banner--testnet--color: var(--envbcolor--azure);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --environment-banner--devnet--color: var(--color--cookie);
-    --environment-banner--testnet--color: var(--color--azure);
+    --environment-banner--devnet--color: var(--envbcolor--cookie);
+    --environment-banner--testnet--color: var(--envbcolor--azure);
   }
 }
 

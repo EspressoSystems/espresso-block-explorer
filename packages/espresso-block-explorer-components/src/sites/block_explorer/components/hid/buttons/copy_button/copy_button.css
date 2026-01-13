@@ -1,4 +1,5 @@
-@import url(../../../../styles/main.css);
+@import '@/block_explorer/styles/main.css';
+
 button.btn--copy {
   appearance: none;
   box-sizing: border-box;
