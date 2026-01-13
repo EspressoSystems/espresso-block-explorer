@@ -8,8 +8,6 @@ describe('Block Explorer/Components/Links/Layout', () => {
       <Layout
         env={{
           environment: 'fakeData',
-          contract_address_esp_token: null,
-          contract_address_stake_table: null,
         }}
       >
         <div />

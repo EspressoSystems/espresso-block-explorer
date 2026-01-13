@@ -1,3 +1,4 @@
+import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import { iota, mapIterable } from '@/functional/functional';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
@@ -7,7 +8,6 @@ import { CappuccinoExplorerGetSearchResultResponse } from '@/service/hotshot_que
 import { CappuccinoExplorerSearchResults } from '@/service/hotshot_query_service/cappuccino/explorer/search_results';
 import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CappuccinoHotShotQueryServiceAPIContext } from 'pages/cappuccino_hot_shot_query_service_api_context';
 import React from 'react';
 import {
   InitialSearchState,

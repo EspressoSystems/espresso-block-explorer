@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
+import { Meta } from '@storybook/react-vite';
 import { MoneyTextFull } from '@/components/text/money_text_full';
 import { bigintCodec } from '@/convert/codec/bigint';
 import MonetaryValue from '@/models/block_explorer/monetary_value';

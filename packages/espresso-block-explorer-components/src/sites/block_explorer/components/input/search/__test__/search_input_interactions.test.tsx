@@ -1,8 +1,7 @@
+import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
 import { act, render } from '@testing-library/react';
-import { CappuccinoHotShotQueryServiceAPIContext } from 'pages/cappuccino_hot_shot_query_service_api_context';
 import { describe, it } from 'vitest';
-import { SearchInput } from '../search_input';
 import {
   getBlockSearchResultElements,
   getSearchBar,
@@ -21,6 +20,7 @@ import {
   interactiveSelectAllDelete,
   MockLocation,
 } from '../__shared__/search_input_shared';
+import { SearchInput } from '../search_input';
 
 describe('Search Input Interactions', () => {
   it('should select the search bar', async () => {

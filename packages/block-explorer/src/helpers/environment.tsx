@@ -2,9 +2,7 @@
 
 import {
   Environment,
-  EnvironmentContext,
-  EspressoAddresses,
-  EspressoConfigContext,
+  EnvironmentContext
 } from 'espresso-block-explorer-components';
 import React from 'react';
 import { EnvironmentConfig } from './read_from_env';
@@ -25,16 +23,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
 }) => {
   return (
     <EnvironmentContext.Provider value={env.environment as Environment}>
-      <EspressoConfigContext.Provider
-        value={
-          {
-            stakeTableContractAddress: env.contract_address_stake_table,
-            espTokenContractAddress: env.contract_address_esp_token,
-          } as EspressoAddresses
-        }
-      >
-        {children}
-      </EspressoConfigContext.Provider>
+      {children}
     </EnvironmentContext.Provider>
   );
 };

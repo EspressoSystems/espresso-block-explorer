@@ -1,6 +1,6 @@
+import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CappuccinoHotShotQueryServiceAPIContext } from 'pages/cappuccino_hot_shot_query_service_api_context';
 import React from 'react';
 import {
   InitialSearchState,
