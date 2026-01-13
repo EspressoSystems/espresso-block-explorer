@@ -25,3 +25,4 @@ export declare const curatedRollupMap: Map<number, RollUpEntry>;
  * display should be shown.
  */
 export declare function isNitroIntegrationNamespace(namespace: number): boolean;
+export declare function isOptimismIntegrationNamespace(namespace: number): boolean;

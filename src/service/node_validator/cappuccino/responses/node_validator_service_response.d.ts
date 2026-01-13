@@ -19,11 +19,7 @@ export declare class NodeValidatorServiceResponse extends WebWorkerProxyResponse
         } | {
             LatestBlock: unknown;
         } | {
-            LatestNodeIdentity: unknown;
-        } | {
             LatestStakeTable: unknown[];
-        } | {
-            LatestValidator: unknown;
         } | {
             LatestVoters: {
                 order: string;
@@ -36,6 +32,10 @@ export declare class NodeValidatorServiceResponse extends WebWorkerProxyResponse
             };
         } | {
             NodeIdentitySnapshot: unknown[];
+        } | {
+            LatestNodeIdentity: unknown;
+        } | {
+            LatestValidator: unknown;
         } | {
             StakeTableSnapshot: unknown[];
         } | {
@@ -67,11 +67,7 @@ declare class NodeValidatorServiceResponseEncoder implements Converter<NodeValid
         } | {
             LatestBlock: unknown;
         } | {
-            LatestNodeIdentity: unknown;
-        } | {
             LatestStakeTable: unknown[];
-        } | {
-            LatestValidator: unknown;
         } | {
             LatestVoters: {
                 order: string;
@@ -84,6 +80,10 @@ declare class NodeValidatorServiceResponseEncoder implements Converter<NodeValid
             };
         } | {
             NodeIdentitySnapshot: unknown[];
+        } | {
+            LatestNodeIdentity: unknown;
+        } | {
+            LatestValidator: unknown;
         } | {
             StakeTableSnapshot: unknown[];
         } | {

@@ -16,11 +16,7 @@ declare class CappuccinoNodeValidatorResponseEncoder implements Converter<Cappuc
     } | {
         LatestBlock: unknown;
     } | {
-        LatestNodeIdentity: unknown;
-    } | {
         LatestStakeTable: unknown[];
-    } | {
-        LatestValidator: unknown;
     } | {
         LatestVoters: {
             order: string;
@@ -33,6 +29,10 @@ declare class CappuccinoNodeValidatorResponseEncoder implements Converter<Cappuc
         };
     } | {
         NodeIdentitySnapshot: unknown[];
+    } | {
+        LatestNodeIdentity: unknown;
+    } | {
+        LatestValidator: unknown;
     } | {
         StakeTableSnapshot: unknown[];
     } | {

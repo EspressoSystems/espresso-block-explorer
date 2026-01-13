@@ -1,4 +1,4 @@
-import { NodeSummaryData } from '../../../../../../../../../../../src/components/page_sections/nodes_summary_data_table/nodes_summary_loader';
+import { NodeSummaryData } from '../../../../../../../../../../../src/sites/block_explorer/components/page_sections/nodes_summary_data_table/nodes_summary_loader';
 import { default as React } from 'react';
 export declare const NodeIdentityInformationStreamContext: React.Context<AsyncIterable<NodeSummaryData[]>>;
 export interface DotPopulation {

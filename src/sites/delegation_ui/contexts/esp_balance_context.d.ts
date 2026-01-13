@@ -3,14 +3,13 @@ import { default as React } from 'react';
 export declare const ESPBalanceContext: React.Context<bigint>;
 export declare const ESPBalanceAsyncSnapshotContext: React.Context<AsyncSnapshot<bigint>>;
 /**
- * ProvideTotalSupply is a React component that fetches
- * the total supply of the ESP token from the blockchain
- * and provides it via TotalSupplyContext.
+ * ProvideESPBalance is a React component that fetches the current wallet's
+ * ESP balance and provides it via TotalSupplyContext.
  */
 export declare const ProvideESPBalance: React.FC<React.PropsWithChildren>;
 /**
- * ProvideTotalSupplyFromAPICall is a React component that fetches
- * the total supply of the ESP token from the local ESPTokenContract
- * and provides it via TotalSupplyContext.
+ * ProvideESPBalanceFromAPICall is a React component that fetches
+ * the current balance for the active wallet from the ESPTokenContract
+ * and provides it via ESPBalanceContext.
  */
-export declare const ProvideTotalSupplyFromContractCall: React.FC<React.PropsWithChildren>;
+export declare const ProvideESPBalanceFromContractCall: React.FC<React.PropsWithChildren>;
