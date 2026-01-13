@@ -1,4 +1,4 @@
-import { addClassToClassName } from '@/components/higher_order';
+import { addClassToClassName } from '@/higher_order';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
 import CopyButton from './copy_button';

@@ -86,10 +86,7 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
                 'BLOCK',
                 new Uint8Array([21, 22, 23, 24]).buffer,
               ),
-              new TaggedBase64(
-                'FEE',
-                new Uint8Array([25, 26, 27, 28]).buffer,
-              ),
+              new TaggedBase64('FEE', new Uint8Array([25, 26, 27, 28]).buffer),
               new CappuccinoFeeInfo(
                 new Uint8Array([37, 38, 39, 40]).buffer,
                 new Uint8Array([41, 42, 43, 44]).buffer,
@@ -144,8 +141,7 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
         new NotFoundError('Block not found'),
       );
 
-      const requestChannel =
-        createBufferedChannel<Parameters<typeof fetch>>(4);
+      const requestChannel = createBufferedChannel<Parameters<typeof fetch>>(4);
       const client = new FetchBasedCappuccinoHotShotQueryService(
         createFetcherWithJSONResponse(requestChannel, 500, returnedValue),
         new URL('https://example.com/v0/'),

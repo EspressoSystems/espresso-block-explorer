@@ -1,6 +1,6 @@
 import NotFoundError from '@/errors/not_found_error';
 import { neverPromise } from '@/functional/functional_async';
-import CircularProgressIndicator from '@/loading/circular_progress_indicator';
+import CircularProgressIndicator from '@/block_explorer/components/loading/circular_progress_indicator';
 import Text from '@/text/text';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';

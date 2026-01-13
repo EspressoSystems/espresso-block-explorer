@@ -1,5 +1,5 @@
-import { CurrentNumberFormatters } from '@/components/contexts';
 import { ESPSymbol } from '@/components/visual/currency/esp_symbol';
+import { CurrentNumberFormatters } from '@/contexts/number_formatters_provider';
 import UnimplementedError from '@/errors/unimplemented_error';
 import {
   expandIterable,
@@ -264,7 +264,7 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
   const currencyCodeSide = React.useMemo(
     () =>
       exampleNumberFormat.findIndex((part) => part.type === 'currency') <
-      exampleNumberFormat.length / 2
+        exampleNumberFormat.length / 2
         ? CurrencyCodeSide.prefix
         : CurrencyCodeSide.suffix,
     [exampleNumberFormat],
@@ -275,8 +275,8 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
     !initialValue
       ? ''
       : numberFormatters.defaultFinance
-          .format(initialValue.toNumericLiteralString())
-          .replaceAll(groupSeparator, ''),
+        .format(initialValue.toNumericLiteralString())
+        .replaceAll(groupSeparator, ''),
   );
 
   // This is a number map of the digits '0-9' in order according to the
@@ -334,7 +334,7 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
     }
 
     return () => {
-      setTheState = () => {};
+      setTheState = () => { };
     };
   }, [numberFormatters, state, initialValue, groupSeparator]);
 

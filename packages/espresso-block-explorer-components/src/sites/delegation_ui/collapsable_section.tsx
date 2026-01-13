@@ -1,4 +1,4 @@
-import { addClassToClassName } from '@/components/higher_order';
+import { addClassToClassName } from '@/higher_order';
 import Text from '@/components/text/text';
 import ChevronDown from '@/components/visual/icons/sharp_line/chevron_down';
 import React from 'react';

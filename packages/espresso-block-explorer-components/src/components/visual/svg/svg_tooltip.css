@@ -1,5 +1,3 @@
-@import url(../../../styles/main.css);
-
 .tooltip--card {
   stroke: var(--card--border-color);
   fill: var(--card--background-color);

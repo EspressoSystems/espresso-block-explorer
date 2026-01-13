@@ -1,6 +1,6 @@
-import { ErrorCarry, ErrorJoiner } from '@/components/contexts';
+import { NodeSummaryData } from '@/block_explorer/components/page_sections/nodes_summary_data_table/nodes_summary_loader';
 import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
-import { NodeSummaryData } from '@/components/page_sections/nodes_summary_data_table/nodes_summary_loader';
+import { ErrorCarry, ErrorJoiner } from '@/contexts/error_provider';
 import {
   filterIterable,
   inf,

@@ -1,12 +1,14 @@
 'use client';
 
 import {
-  BlockNumberContext,
   ProvideCappuccinoHotShotQueryServiceAPIContext,
+} from 'espresso-block-explorer-components';
+import {
+  BlockNumberContext,
   ProvideCappuccinoTransactionDetailDataSource,
   TransactionOffsetContext,
   TransactionPage,
-} from 'espresso-block-explorer-components';
+} from 'espresso-block-explorer-components/block-explorer';
 
 export interface TransactionClientComponentProps {
   height: number;

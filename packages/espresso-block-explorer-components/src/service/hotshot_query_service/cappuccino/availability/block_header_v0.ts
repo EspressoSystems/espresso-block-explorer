@@ -1,10 +1,26 @@
-import { assertRecordWithKeys, Converter, TypeCheckingCodec } from '@/convert/codec/convert';
+import {
+  assertRecordWithKeys,
+  Converter,
+  TypeCheckingCodec,
+} from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
-import { TaggedBase64, taggedBase64Codec } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoBuilderSignature, cappuccinoBuilderSignatureCodec } from './builder_signature';
+import {
+  TaggedBase64,
+  taggedBase64Codec,
+} from '@/models/espresso/tagged_base64/tagged_base64';
+import {
+  CappuccinoBuilderSignature,
+  cappuccinoBuilderSignatureCodec,
+} from './builder_signature';
 import { CappuccinoFeeInfo, cappuccinoFeeInfoCodec } from './fee_info';
-import { CappuccinoL1Finalized, nullableCappuccinoL1FinalizedCodec } from './l1_finalized';
-import { CappuccinoNamespaceTable, cappuccinoNamespaceTableCodec } from './namespace_table';
+import {
+  CappuccinoL1Finalized,
+  nullableCappuccinoL1FinalizedCodec,
+} from './l1_finalized';
+import {
+  CappuccinoNamespaceTable,
+  cappuccinoNamespaceTableCodec,
+} from './namespace_table';
 
 export interface CappuccinoAPIV0HeaderFields {
   readonly height: number;
@@ -33,7 +49,7 @@ export abstract class AbstractCappuccinoAPIV0HeaderFields implements CappuccinoA
     public readonly fee_merkle_tree_root: TaggedBase64,
     public readonly fee_info: CappuccinoFeeInfo,
     public readonly builder_signature: CappuccinoBuilderSignature,
-  ) { }
+  ) {}
 }
 
 export class CappuccinoAPIV0HeaderFieldsImpl extends AbstractCappuccinoAPIV0HeaderFields {
@@ -73,8 +89,8 @@ export class CappuccinoAPIV0HeaderFieldsImpl extends AbstractCappuccinoAPIV0Head
 
 class CappuccinoAPIV0HeaderFieldsDecoder implements Converter<
   unknown,
-  CappuccinoAPIV0HeaderFields> {
-
+  CappuccinoAPIV0HeaderFields
+> {
   convert(input: unknown): CappuccinoAPIV0HeaderFields {
     assertRecordWithKeys(
       input,
@@ -108,20 +124,28 @@ class CappuccinoAPIV0HeaderFieldsDecoder implements Converter<
 }
 class CappuccinoAPIV0HeaderFieldsEncoder implements Converter<
   CappuccinoAPIV0HeaderFields,
-  unknown> {
-
+  unknown
+> {
   convert(input: CappuccinoAPIV0HeaderFields): unknown {
     return {
       height: numberCodec.encode(input.height),
       timestamp: numberCodec.encode(input.timestamp),
       l1_head: numberCodec.encode(input.l1_head),
-      l1_finalized: nullableCappuccinoL1FinalizedCodec.encode(input.l1_finalized),
+      l1_finalized: nullableCappuccinoL1FinalizedCodec.encode(
+        input.l1_finalized,
+      ),
       payload_commitment: taggedBase64Codec.encode(input.payload_commitment),
       builder_commitment: taggedBase64Codec.encode(input.builder_commitment),
       ns_table: cappuccinoNamespaceTableCodec.encode(input.ns_table),
-      block_merkle_tree_root: taggedBase64Codec.encode(input.block_merkle_tree_root),
-      fee_merkle_tree_root: taggedBase64Codec.encode(input.fee_merkle_tree_root),
-      builder_signature: cappuccinoBuilderSignatureCodec.encode(input.builder_signature),
+      block_merkle_tree_root: taggedBase64Codec.encode(
+        input.block_merkle_tree_root,
+      ),
+      fee_merkle_tree_root: taggedBase64Codec.encode(
+        input.fee_merkle_tree_root,
+      ),
+      builder_signature: cappuccinoBuilderSignatureCodec.encode(
+        input.builder_signature,
+      ),
       fee_info: cappuccinoFeeInfoCodec.encode(input.fee_info),
     };
   }
@@ -129,10 +153,11 @@ class CappuccinoAPIV0HeaderFieldsEncoder implements Converter<
 
 class CappuccinoPAPIV0HeaderFieldsCodec extends TypeCheckingCodec<
   CappuccinoAPIV0HeaderFields,
-  unknown> {
+  unknown
+> {
   public readonly encoder = new CappuccinoAPIV0HeaderFieldsEncoder();
   public readonly decoder = new CappuccinoAPIV0HeaderFieldsDecoder();
 }
 
-export const cappuccinoAPIV0HeaderCodec = new CappuccinoPAPIV0HeaderFieldsCodec();
-
+export const cappuccinoAPIV0HeaderCodec =
+  new CappuccinoPAPIV0HeaderFieldsCodec();

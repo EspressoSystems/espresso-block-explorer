@@ -5,7 +5,7 @@ import UnimplementedError from '@/errors/unimplemented_error';
 import WebSocketError from '@/errors/web_socket_error';
 import WebWorkerErrorResponse from '@/errors/web_worker_error_response';
 import React from 'react';
-import { ErrorContext } from '../contexts/error_provider';
+import { ErrorContext } from '@/contexts/error_provider';
 import { addClassToClassName } from '../higher_order';
 import './error_display.css';
 import { ErrorDescription } from './error_description';

@@ -1,4 +1,4 @@
-import { DataContext } from '@/components/contexts';
+import { DataContext } from '@/contexts/data_provider';
 import { iota, mapIterator } from '@/functional/functional';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
@@ -17,7 +17,7 @@ const Example: React.FC<ExampleProps> = (props) => {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'Components/Page Sections/Pie Chart/States',
+  title: 'Block Explorer/Components/Page Sections/Pie Chart/States',
   component: Example,
 };
 

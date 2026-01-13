@@ -1,4 +1,4 @@
-import { Now } from '@/components/contexts/now_provider';
+import { Now } from '@/contexts/now_provider';
 import {
   RainbowKitAccountAddressContext,
   RainbowKitModalContext,

@@ -11,7 +11,7 @@ const Example: React.FC<ExampleProps> = (props) => {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'Sites/Delegation UI/Blockies',
+  title: 'Delegation UI/Blockies',
   component: Example,
 };
 

@@ -17,7 +17,11 @@ import {
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { CappuccinoAPIBlock } from '../block';
-import { CappuccinoAPIHeader, CappuccinoAPIHeaderFields, CappuccinoAPIHeaderImpl } from '../block_header';
+import {
+  CappuccinoAPIHeader,
+  CappuccinoAPIHeaderFields,
+  CappuccinoAPIHeaderImpl,
+} from '../block_header';
 import { CappuccinoBuilderSignature } from '../builder_signature';
 import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
@@ -43,7 +47,9 @@ type GeneratedBlock = AsyncGenerated<
   ReturnType<typeof generateAllEspressoBlocks>
 >;
 
-function headerFromBlock(block: GeneratedBlock): CappuccinoAPIHeader<CappuccinoAPIHeaderFields> {
+function headerFromBlock(
+  block: GeneratedBlock,
+): CappuccinoAPIHeader<CappuccinoAPIHeaderFields> {
   return new CappuccinoAPIHeaderImpl(
     new WrappedVersion(new CappuccinoVersion(0, 1)),
     new CappuccinoAPIV0HeaderFieldsImpl(

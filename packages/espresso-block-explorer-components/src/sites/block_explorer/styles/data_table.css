@@ -1,0 +1,16 @@
+@import '@/block_explorer/styles/main.css';
+
+[data-theme='light'] {
+  --data-table--border-color: var(--color--slate-100);
+}
+
+[data-theme='dark'] {
+  --data-table--border-color: var(--color--slate-700);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --data-table--border-color: var(--color--slate-700);
+  }
+}
+

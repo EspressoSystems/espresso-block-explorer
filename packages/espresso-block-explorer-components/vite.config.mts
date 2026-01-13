@@ -9,12 +9,16 @@ import { peerDependencies } from './package.json';
 export default defineConfig({
   build: {
     lib: {
-      entry: './src/index.ts', // Specifies the entry point for building the library.
+      entry: {
+        'espresso-block-explorer-components': './src/espresso-block-explorer-components.ts', // Specifies the entry point for building the library.
+        'block-explorer': './src/block-explorer.ts',
+        'delegation-ui': './src/delegation-ui.ts',
+      },
       name: 'espresso-block-explorer-components', // Sets the name of the generated library.
       fileName: (format, entryName) => `${entryName}.${format}.js`, // Generates the output file name based on the format.
       formats: ['es', 'cjs'], // Specifies the output formats (CommonJS and ES modules).
     },
-    cssCodeSplit: false,
+    cssCodeSplit: true,
     rollupOptions: {
       external: [...Object.keys(peerDependencies)], // Defines external dependencies for Rollup bundling.
     },
@@ -24,16 +28,29 @@ export default defineConfig({
     sourcemap: false, // Generates source maps for debugging.
     emptyOutDir: true, // Clears the output directory before building.
   },
+  output: {
+    // Customize asset filesnames to esnures CSS files match their entry
+    // point names
+    assetFileNames: ({ name }: { name: string }) => {
+      if (name.endsWith('.css')) {
+        return '[name].[ext]';
+      }
+
+      return 'assets/[name]-[hash][extname]';
+    },
+  },
   resolve: {
     alias: [
       { find: '@/assert', replacement: '/src/assert' },
       { find: '@/async', replacement: '/src/async' },
+      { find: '@/block_explorer', replacement: '/src/sites/block_explorer/' },
       { find: '@/components', replacement: '/src/components/' },
-      { find: '@/contexts', replacement: '/src/components/contexts' },
+      { find: '@/contexts', replacement: '/src/contexts' },
       { find: '@/convert', replacement: '/src/convert' },
       { find: '@/crypto', replacement: '/src/crypto' },
       { find: '@/data_source', replacement: '/src/data_source' },
       { find: '@/data_structures', replacement: '/src/data_structures' },
+      { find: '@/delegation_ui', replacement: '/src/sites/delegation_ui/' },
       { find: '@/errors', replacement: '/src/errors' },
       { find: '@/functional', replacement: '/src/functional' },
       { find: '@/higher_order', replacement: '/src/components/higher_order' },

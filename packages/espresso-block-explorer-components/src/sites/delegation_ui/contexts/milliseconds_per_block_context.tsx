@@ -1,17 +1,17 @@
 import { sleep } from '@/async/sleep';
-import { DataContext } from '@/components/contexts';
 import { AsyncIterableResolver } from '@/components/data';
+import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
+import { DataContext } from '@/contexts/data_provider';
 import {
   computeEpochByBlockAndBlocksPerEpoch,
   EpochAndBlock,
 } from '@/service/espresso_l1_validator_service/common/epoch_and_block';
 import { CappuccinoAPIHeader } from '@/service/hotshot_query_service';
+import { AbstractCappuccinoAPIV4Header } from '@/service/hotshot_query_service/cappuccino/availability/block_header_v4';
 import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
-import { CappuccinoHotShotQueryServiceAPIContext } from 'pages';
 import React from 'react';
 import { ActiveValidatorsContext } from './active_validators_context';
 import { BlocksPerEpochContext } from './blocks_per_epoch_context';
-import { AbstractCappuccinoAPIV4Header } from '@/service/hotshot_query_service/cappuccino/availability/block_header_v4';
 
 /**
  * MillisecondsPerBlockContext is a React Context that provides the average time
@@ -196,13 +196,20 @@ function computeMillisecondsPerBlock(
     return null;
   }
 
-  if (data.endHeader.fields instanceof AbstractCappuccinoAPIV4Header && data.startHeader.fields instanceof AbstractCappuccinoAPIV4Header) {
-    return (data.endHeader.fields.timestamp_millis - data.startHeader.fields.timestamp_millis) /
-      (data.endHeader.fields.height - data.startHeader.fields.height);
+  if (
+    data.endHeader.fields instanceof AbstractCappuccinoAPIV4Header &&
+    data.startHeader.fields instanceof AbstractCappuccinoAPIV4Header
+  ) {
+    return (
+      (data.endHeader.fields.timestamp_millis -
+        data.startHeader.fields.timestamp_millis) /
+      (data.endHeader.fields.height - data.startHeader.fields.height)
+    );
   }
 
   return (
-    ((data.endHeader.fields.timestamp - data.startHeader.fields.timestamp) * 1000) /
+    ((data.endHeader.fields.timestamp - data.startHeader.fields.timestamp) *
+      1000) /
     (data.endHeader.fields.height - data.startHeader.fields.height)
   );
 }

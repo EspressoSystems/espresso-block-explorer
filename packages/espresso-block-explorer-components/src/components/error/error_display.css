@@ -1,6 +1,9 @@
 :root {
-  --error-display--background-color: var(--color--red-600);
-  --error-display--foreground-color: var(--on-color--red-600);
+  --errcolor--background: #dc2626ff;
+  --errcolor--foreground: #ffffffff;
+
+  --error-display--background-color: var(--errcolor--background);
+  --error-display--foreground-color: var(--errcolor--foreground);
   --error-display--horizontal-padding: 16px;
   --error-display--vertical-padding: 8px;
   --error-display--border-radius: 8px;

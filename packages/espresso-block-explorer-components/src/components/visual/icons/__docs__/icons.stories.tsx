@@ -1,4 +1,4 @@
-import { Divider } from '@/components/layout/divider/divider';
+import { Divider } from '@/block_explorer/components/layout/divider/divider';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import ArrowDownward from '../arrow_downward';
@@ -59,7 +59,7 @@ const Example: React.FC = () => (
 );
 
 const meta: Meta<typeof Example> = {
-  title: 'Style Guide/All Icons',
+  title: 'Block Explorer/Style Guide/All Icons',
   component: Example,
 };
 

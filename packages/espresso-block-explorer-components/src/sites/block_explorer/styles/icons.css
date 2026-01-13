@@ -1,0 +1,23 @@
+:root {
+  --icon--fill-color: var(--color--slate-950);
+  --icon--stroke-color: var(--color--transparent);
+  --icon--transparent-color: var(--color--transparent);
+  --icon--transition-duration: 240ms;
+}
+
+[data-theme='light'] {
+  --icon--fill-color: var(--color--slate-950);
+  --icon--stroke-color: var(--color--transparent);
+}
+
+[data-theme='dark'] {
+  --icon--fill-color: var(--color--white);
+  --icon--stroke-color: var(--color--transparent);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --icon--fill-color: var(--color--white);
+    --icon--stroke-color: var(--color--transparent);
+  }
+}

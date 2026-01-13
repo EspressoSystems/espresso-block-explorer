@@ -62,6 +62,8 @@ function getRationalFromRatio(
     return new RatioRational(0n, epochAndBlock.block);
   }
 
+  breakpoint();
+
   if (epochAndBlock.block === 0n || epochAndBlock.epoch === 0n) {
     // This shouldn't happen
     breakpoint();

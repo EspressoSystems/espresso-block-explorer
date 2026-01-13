@@ -1,16 +1,15 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { Example } from '../__shared__/example';
+import { Example, exampleMeta } from '../__shared__/example';
 
 const meta: Meta<typeof Example> = {
+  ...exampleMeta,
   title: 'Components/HID/Inputs/ESPInput',
-  component: Example,
 };
 
 export default meta;
 type Story = StoryObj<typeof Example>;
 
 export const ESPInput: Story = {
-  args: {},
 };
 
 export const EdgeCase: Story = {
@@ -18,3 +17,4 @@ export const EdgeCase: Story = {
     initialValue: '0x152d02c7e14af6800000',
   },
 };
+

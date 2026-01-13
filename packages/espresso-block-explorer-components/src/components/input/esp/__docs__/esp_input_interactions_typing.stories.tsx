@@ -1,8 +1,8 @@
-import { CurrentLocale } from '@/components/contexts/locale_provider';
+import { CurrentLocale } from '@/contexts/locale_provider';
 import {
   createDefaultNumberFormatters,
   ProvideDerivedNumberFormatters,
-} from '@/components/contexts/number_formatters_provider';
+} from '@/contexts/number_formatters_provider';
 import {
   getStartingSeed,
   PseudoRandomNumberGenerator,

@@ -1,11 +1,13 @@
 'use client';
 
 import {
-  NamespaceContext,
   ProvideCappuccinoHotShotQueryServiceAPIContext,
+} from 'espresso-block-explorer-components';
+import {
+  NamespaceContext,
   ProvideCappuccinoRollUpDetailDataSource,
   RollUpPage,
-} from 'espresso-block-explorer-components';
+} from 'espresso-block-explorer-components/block-explorer';
 
 export interface RollupClientComponentProps {
   namespace: number;

@@ -1,0 +1,7 @@
+
+:root {
+  --histogram-plot--fill-color: var(--color--sky-700);
+  --histogram-plot--data-point--dot-inner-color: var(--color--slate-500);
+  --histogram-plot--data-point--dot-outer-color: var(--histogram-plot--missing-background-color);
+}
+

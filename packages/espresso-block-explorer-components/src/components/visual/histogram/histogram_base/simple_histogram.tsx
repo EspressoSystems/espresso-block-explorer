@@ -1,15 +1,7 @@
-import { SkeletonContent } from '@/components/loading';
+import SkeletonContent from '@/block_explorer/components/loading/skeleton_content';
 import React from 'react';
 import { useSVGSize } from '../../svg/hooks';
 import { AffineTransform } from './affine_transform';
-import { DataStatistics } from './data_statistics';
-import { HistogramBase } from './histogram_base';
-import {
-  HistogramGuideLines,
-  HistogramYAxisLabels,
-  ProvideGuideLines,
-} from './histogram_guide_lines';
-import { HistogramPlot } from './histogram_plot';
 import {
   HistogramDomain,
   HistogramDomainAffineTransform,
@@ -21,6 +13,14 @@ import {
   HistogramRangeAffineTransform,
   HistogramRangeStatistics,
 } from './contexts';
+import { DataStatistics } from './data_statistics';
+import { HistogramBase } from './histogram_base';
+import {
+  HistogramGuideLines,
+  HistogramYAxisLabels,
+  ProvideGuideLines,
+} from './histogram_guide_lines';
+import { HistogramPlot } from './histogram_plot';
 
 interface ProvideAffineTransformsProps {
   children: React.ReactNode | React.ReactNode[];

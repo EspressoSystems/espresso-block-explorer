@@ -1,6 +1,6 @@
 import { DataContext } from '@/contexts/data_provider';
 import Text from '@/text/text';
-import { WithUiSmall } from '@/typography/typography';
+import { WithUiSmall } from '@/block_explorer/components/typography/typography';
 import ChevronUp from '@/visual/icons/chevron_up';
 import React from 'react';
 import { SortDirection } from '../types';
@@ -36,11 +36,11 @@ export const DataTableStateContext = React.createContext<
  */
 export const DataTableSetStateContext = React.createContext<
   React.Dispatch<React.SetStateAction<DataTableState<unknown>>>
->(() => {});
+>(() => { });
 
 const DataTableSortColumnContext = React.createContext<
   (column: unknown) => void
->(() => {});
+>(() => { });
 
 /**
  * DataTableRowContext is a Context that provides an individual row within

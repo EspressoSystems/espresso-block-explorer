@@ -1,44 +1,55 @@
-import { assertRecordWithKeys, Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import { cappuccinoAPIV0HeaderCodec, type CappuccinoAPIV0HeaderFields } from './block_header_v0';
+import {
+  assertRecordWithKeys,
+  Converter,
+  TypeCheckingCodec,
+} from '@/convert/codec/convert';
+import {
+  cappuccinoAPIV0HeaderCodec,
+  type CappuccinoAPIV0HeaderFields,
+} from './block_header_v0';
 import { WrappedVersion, wrappedVersionCodec } from './version';
-import { AbstractCappuccinoAPIV2HeaderFields, cappuccinoAPIV2HeaderFieldsCodec } from './block_header_v2';
-import { AbstractCappuccinoAPIV4Header, cappuccinoAPIV4HeaderCodec } from './block_header_v4';
+import {
+  AbstractCappuccinoAPIV2HeaderFields,
+  cappuccinoAPIV2HeaderFieldsCodec,
+} from './block_header_v2';
+import {
+  AbstractCappuccinoAPIV4Header,
+  cappuccinoAPIV4HeaderCodec,
+} from './block_header_v4';
 
-export interface CappuccinoAPIHeaderFields extends CappuccinoAPIV0HeaderFields { }
+export interface CappuccinoAPIHeaderFields extends CappuccinoAPIV0HeaderFields {}
 
-export interface CappuccinoAPIHeader<F extends CappuccinoAPIHeaderFields = CappuccinoAPIHeaderFields> {
+export interface CappuccinoAPIHeader<
+  F extends CappuccinoAPIHeaderFields = CappuccinoAPIHeaderFields,
+> {
   readonly fields: F;
   readonly version: WrappedVersion;
 }
 
-export class AbstractCappuccinoAPIHeader<F extends CappuccinoAPIHeaderFields> implements CappuccinoAPIHeader<F> {
+export class AbstractCappuccinoAPIHeader<
+  F extends CappuccinoAPIHeaderFields,
+> implements CappuccinoAPIHeader<F> {
   constructor(
     public readonly version: WrappedVersion,
     public readonly fields: F,
-  ) { }
+  ) {}
 }
 
-export class CappuccinoAPIHeaderImpl<F extends CappuccinoAPIHeaderFields> extends AbstractCappuccinoAPIHeader<F> {
-  constructor(
-    version: WrappedVersion,
-    fields: F,
-  ) {
+export class CappuccinoAPIHeaderImpl<
+  F extends CappuccinoAPIHeaderFields,
+> extends AbstractCappuccinoAPIHeader<F> {
+  constructor(version: WrappedVersion, fields: F) {
     super(version, fields);
     Object.freeze(this);
   }
 }
-
 
 class CappuccinoAPIHeaderDecoder implements Converter<
   unknown,
   CappuccinoAPIHeader<CappuccinoAPIHeaderFields>
 > {
   convert(input: unknown): CappuccinoAPIHeader<CappuccinoAPIHeaderFields> {
-    assertRecordWithKeys(
-      input,
-      'version',
-      'fields',
-    );
+    assertRecordWithKeys(input, 'version', 'fields');
 
     // Decode the version to determine how to decode the header
     const version = wrappedVersionCodec.decode(input.version);
@@ -48,7 +59,6 @@ class CappuccinoAPIHeaderDecoder implements Converter<
         version,
         cappuccinoAPIV4HeaderCodec.decode(input.fields),
       );
-
     }
 
     if (version.version.major === 0 && version.version.minor >= 2) {
@@ -100,4 +110,3 @@ class CappuccinoAPIHeaderCodec extends TypeCheckingCodec<
 }
 
 export const cappuccinoAPIHeaderCodec = new CappuccinoAPIHeaderCodec();
-

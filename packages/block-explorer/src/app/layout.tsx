@@ -1,11 +1,18 @@
-import 'espresso-block-explorer-components/dist/espresso-block-explorer-components.css';
+import 'espresso-block-explorer-components/block-explorer.css';
+import 'espresso-block-explorer-components/espresso-block-explorer-components.css';
 import React from 'react';
+// Growing pains... It's unclear why these css file code splits are occurring.
+// After spending some time to resolve / determine them without success, we're
+// just adopting them for now until we can figure out how to resolve them
+// at a later time.
+import 'espresso-block-explorer-components/cappuccino_hot_shot_query_service_api_context.css';
+import 'espresso-block-explorer-components/check.css';
+import 'espresso-block-explorer-components/inscription_and_signature.css';
 
 import LayoutClientComponent from '@/client_components/layout';
 import {
   determineEnvironmentFromVariable,
-  validateContractAddress,
-  type EnvironmentConfig,
+  type EnvironmentConfig
 } from '@/helpers/read_from_env';
 import './globals.css';
 
@@ -26,12 +33,6 @@ export default async function RootLayout({
   // Read environment variables on the server at runtime
   const env: EnvironmentConfig = {
     environment: determineEnvironmentFromVariable(process.env.ENVIRONMENT_NAME),
-    contract_address_stake_table: validateContractAddress(
-      process.env.CONTRACT_ADDRESS_STAKE_TABLE,
-    ),
-    contract_address_esp_token: validateContractAddress(
-      process.env.CONTRACT_ADDRESS_ESP_TOKEN,
-    ),
   };
 
   return (

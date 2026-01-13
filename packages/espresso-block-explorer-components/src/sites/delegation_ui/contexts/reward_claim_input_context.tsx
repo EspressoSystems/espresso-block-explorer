@@ -1,13 +1,13 @@
-import { DataContext } from '@/components/contexts/data_provider';
 import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
+import { DataContext } from '@/contexts/data_provider';
 import { neverPromise } from '@/functional/functional_async';
 import { HeightAndAddress } from '@/service/hotshot_query_service/cappuccino/reward_state/height_and_address';
 import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
-import { CappuccinoHotShotQueryServiceAPIContext } from 'pages';
 import React from 'react';
 import { EspressoRefreshTimestampContext } from './espresso_refresh_timestamp_context';
 import { LightClientFinalizedStateContext } from './light_client_finalized_state_context';
+import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 
 /**
  * EspressoRewardClaimInputContext provides a React Context

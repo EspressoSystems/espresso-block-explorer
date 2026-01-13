@@ -1,4 +1,3 @@
-
 import { assertInstanceOf } from '@/assert/assert';
 import { bigintCodec } from '@/convert/codec/bigint';
 import {
@@ -39,7 +38,8 @@ export interface CappuccinoAPIV4Header extends CappuccinoAPIV2HeaderFields {
 
 export class AbstractCappuccinoAPIV4Header
   extends AbstractCappuccinoAPIV2HeaderFields
-  implements CappuccinoAPIV4Header {
+  implements CappuccinoAPIV4Header
+{
   constructor(
     height: number,
     timestamp: number,
@@ -56,7 +56,6 @@ export class AbstractCappuccinoAPIV4Header
     public readonly reward_merkle_tree_root: TaggedBase64,
     public readonly total_reward_distributed: bigint,
     public readonly next_stake_table_hash: null | TaggedBase64,
-
   ) {
     super(
       height,
@@ -71,8 +70,6 @@ export class AbstractCappuccinoAPIV4Header
       fee_info,
       builder_signature,
     );
-
-
   }
   toJSON() {
     return cappuccinoAPIV4HeaderCodec.encode(this);
@@ -180,15 +177,25 @@ export class CappuccinoAPIV4HeaderEncoder implements Converter<CappuccinoAPIV4He
       payload_commitment: taggedBase64Codec.encode(input.payload_commitment),
       builder_commitment: taggedBase64Codec.encode(input.builder_commitment),
       ns_table: cappuccinoNamespaceTableCodec.encode(input.ns_table),
-      block_merkle_tree_root: taggedBase64Codec.encode(input.block_merkle_tree_root),
-      fee_merkle_tree_root: taggedBase64Codec.encode(input.fee_merkle_tree_root),
+      block_merkle_tree_root: taggedBase64Codec.encode(
+        input.block_merkle_tree_root,
+      ),
+      fee_merkle_tree_root: taggedBase64Codec.encode(
+        input.fee_merkle_tree_root,
+      ),
       builder_signature: cappuccinoBuilderSignatureCodec.encode(
         input.builder_signature,
       ),
       fee_info: cappuccinoFeeInfoCodec.encode(input.fee_info),
-      reward_merkle_tree_root: taggedBase64Codec.encode(input.reward_merkle_tree_root),
-      total_reward_distributed: bigintCodec.encode(input.total_reward_distributed),
-      next_stake_table_hash: nullableTaggedBase64Codec.encode(input.next_stake_table_hash),
+      reward_merkle_tree_root: taggedBase64Codec.encode(
+        input.reward_merkle_tree_root,
+      ),
+      total_reward_distributed: bigintCodec.encode(
+        input.total_reward_distributed,
+      ),
+      next_stake_table_hash: nullableTaggedBase64Codec.encode(
+        input.next_stake_table_hash,
+      ),
     } as const;
   }
 }

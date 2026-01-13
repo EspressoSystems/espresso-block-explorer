@@ -1,4 +1,4 @@
-import { addClassToClassName } from '@/components/higher_order';
+import { addClassToClassName } from '@/higher_order';
 import Text from '@/components/text/text';
 import WalletAddressText from '@/components/text/wallet_address_text';
 import WalletAddress from '@/models/wallet_address/wallet_address';

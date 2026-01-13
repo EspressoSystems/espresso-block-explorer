@@ -1,10 +1,13 @@
 'use client';
 
 import {
-  BlocksPage,
-  ProvideCappuccinoBlocksSummaryDataSource,
   ProvideCappuccinoHotShotQueryServiceAPIContext,
 } from 'espresso-block-explorer-components';
+
+import {
+  BlocksPage,
+  ProvideCappuccinoBlocksSummaryDataSource,
+} from 'espresso-block-explorer-components/block-explorer';
 
 export interface BlocksClientComponentProps {
   startAtBlock?: number;

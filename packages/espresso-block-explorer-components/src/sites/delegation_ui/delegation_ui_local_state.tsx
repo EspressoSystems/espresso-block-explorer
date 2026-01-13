@@ -1,7 +1,7 @@
 import { assert } from '@/assert/assert';
 import { breakpoint } from '@/assert/debugger';
 import { sleep } from '@/async/sleep';
-import { DataContext } from '@/components/contexts/data_provider';
+import { DataContext } from '@/contexts/data_provider';
 import { AsyncIterableResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';

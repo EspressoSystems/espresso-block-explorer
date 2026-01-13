@@ -43,9 +43,6 @@ async function newDelegationInteraction(
         const heading = await findByText<HTMLTableCellElement>(
           tableElement,
           'Total Stake',
-          {
-            selector: 'th',
-          },
         );
 
         expect(heading).toBeInTheDocument();
@@ -54,6 +51,11 @@ async function newDelegationInteraction(
       { timeout: 20_000 },
     );
   });
+
+  const tableElement = await findByRole<HTMLTableElement>(
+    sectionElement,
+    'table',
+  );
 
   await step('Connect Account', async () => {
     const connectWalletButton = await act(async () => {
@@ -66,9 +68,7 @@ async function newDelegationInteraction(
 
   await step('Sort By Rank', async () => {
     const rankHeader = await act(async () => {
-      return findByText<HTMLTableCellElement>(delegationUI, 'Total Stake', {
-        selector: 'th',
-      });
+      return findByText<HTMLTableCellElement>(tableElement, 'Total Stake');
     });
     await act(async () => event.click(rankHeader));
     // Click again to sort ascending
@@ -77,43 +77,28 @@ async function newDelegationInteraction(
 
   await step('Spawn New Delegation Modal', async () => {
     const delegateButtons = await act(async () => {
-      return findAllByText<HTMLButtonElement>(delegationUI, 'Delegate', {
-        selector: 'td > button',
-      });
+      return findAllByText<HTMLButtonElement>(tableElement, 'Delegate');
     });
     const [delegateButton0] = delegateButtons;
     await act(async () => event.click(delegateButton0));
 
     await waitFor(async () => {
-      // const dialog = await findByRole<HTMLDialogElement>(
-      //   delegationUI,
-      //   'dialog',
-      // );
-      const dialog = await findByText<HTMLDialogElement>(delegationUI, '', {
-        selector: 'dialog.staking-modal',
-      });
+      const dialog = await findByRole<HTMLDialogElement>(
+        delegationUI,
+        'dialog',
+      );
 
       expect(dialog).toBeInTheDocument();
     });
   });
 
   const modalDialog = await act(async () =>
-    // findByRole<HTMLDialogElement>(delegationUI, 'dialog'),
-    findByText<HTMLDialogElement>(delegationUI, '', {
-      selector: 'dialog.staking-modal',
-    }),
+    findByRole<HTMLDialogElement>(delegationUI, 'dialog'),
   );
 
   await step('Enter Delegation Amount', async () => {
     const amountInput = await act(async () => {
       return findByRole<HTMLInputElement>(modalDialog, 'textbox');
-      // return findByText<HTMLInputElement>(modalDialog, '', {
-      //   selector: 'input[type="text"]',
-      // });
-      // return findByPlaceholderText<HTMLInputElement>(modalDialog, 'ESP 0');
-      // return findByText(modalDialog, '', {
-      //   selector: '#staking-modal-esp-input',
-      // });
     });
 
     // Select the Input Box and enter amount
@@ -122,7 +107,9 @@ async function newDelegationInteraction(
 
     await waitFor(async () => {
       expect(
-        await findByText(modalDialog, 'Approve', { selector: 'button' }),
+        await findByRole<HTMLButtonElement>(modalDialog, 'button', {
+          name: 'Approve',
+        }),
       ).toBeEnabled();
     });
   });

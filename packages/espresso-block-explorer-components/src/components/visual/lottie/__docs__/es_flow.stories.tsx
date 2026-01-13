@@ -9,7 +9,7 @@ const Example: React.FC = () => (
 );
 
 const meta: Meta<typeof Example> = {
-  title: 'Style Guide/Lottie',
+  title: 'Block Explorer/Style Guide/Lottie',
   component: Example,
 };
 

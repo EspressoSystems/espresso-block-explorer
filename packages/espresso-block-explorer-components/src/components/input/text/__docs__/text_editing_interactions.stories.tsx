@@ -1,6 +1,6 @@
+import { InputContainer } from '@/block_explorer/components/input/container';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { InputContainer } from '../../container/container';
 import {
   getTextInput,
   interactionFocusInput,
@@ -33,7 +33,7 @@ const Example: React.FC<ExampleProps> = (props) => {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'components/HID/Inputs/Text Editing',
+  title: 'Components/HID/Inputs/Text Editing',
   component: Example,
   args: {
     startingText: '',

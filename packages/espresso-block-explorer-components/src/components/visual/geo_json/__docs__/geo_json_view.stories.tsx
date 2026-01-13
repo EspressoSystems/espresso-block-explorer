@@ -24,7 +24,7 @@ const Example: React.FC<ExampleProps> = (props) => {
 };
 
 const meta: Meta<typeof Example> = {
-  title: 'Components/visual/GeoJSONView',
+  title: 'Block Explorer/Components/Visual/GeoJSONView',
   component: Example,
 };
 

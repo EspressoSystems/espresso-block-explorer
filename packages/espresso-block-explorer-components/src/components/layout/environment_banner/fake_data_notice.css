@@ -1,0 +1,11 @@
+:root {
+  --fakedatacolor--red: #dc2626ff;
+  --fakedatacolor--on-red: #ffffffff;
+}
+
+.fake-data-notice {
+  background-color: var(--fakedatacolor--red);
+  color: var(--fakedatacolor--on-red);
+
+  padding: 0.5em 0;
+}

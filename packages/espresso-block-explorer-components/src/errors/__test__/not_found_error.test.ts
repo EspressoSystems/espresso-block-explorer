@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import NotFoundError, { notFoundKeyUnknownErrorCodec } from '../not_found_error';
+import NotFoundError, {
+  notFoundKeyUnknownErrorCodec,
+} from '../not_found_error';
 import { espressoErrorCodec } from '../registry';
 
 describe('NotFoundError', () => {

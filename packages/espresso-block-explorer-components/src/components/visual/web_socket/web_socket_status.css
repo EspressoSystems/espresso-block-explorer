@@ -1,14 +1,4 @@
-@import url(../../../styles/main.css);
 :root {
-  --web-socket-status--connecting--color: var(--color--amber-300);
-  --web-socket-status--connecting--on-color: var(--on-color--amber-300);
-
-  --web-socket-status--disconnected--color: var(--color--red-600);
-  --web-socket-status--disconnected--on-color: var(--on-color--red-600);
-
-  --web-socket-status--connected--color: var(--color--transparent);
-  --web-socket-status--connected--on-color: var(--color--transparent);
-
   --web-socket-status--border-radius: 0.5em;
   --web-socket-status--vertical-padding: 0.25em;
   --web-socket-status--horizontal-padding: 0.5em;

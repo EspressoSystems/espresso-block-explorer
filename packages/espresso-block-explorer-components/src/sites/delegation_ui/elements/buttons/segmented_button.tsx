@@ -1,4 +1,4 @@
-import { addClassToClassName } from '@/components/higher_order';
+import { addClassToClassName } from '@/higher_order';
 import React from 'react';
 import ButtonLarge from './button_large';
 import './segmented_button.css';

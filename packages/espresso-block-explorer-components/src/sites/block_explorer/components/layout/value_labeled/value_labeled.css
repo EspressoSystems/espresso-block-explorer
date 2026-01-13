@@ -1,0 +1,44 @@
+@import '@/block_explorer/styles/main.css';
+
+:root {
+  --value--labeled--label--color: var(--color--slate-500);
+  --value--labeled--value--color: var(--color--slate-950);
+}
+
+[data-theme='light'] {
+  --value--labeled--label--color: var(--color--slate-950);
+  --value--labeled--value--color: var(--color--slate-950);
+}
+
+[data-theme='dark'] {
+  --value--labeled--label--color: var(--color--slate-300);
+  --value--labeled--value--color: var(--color--slate-100);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --value--labeled--label--color: var(--color--slate-300);
+    --value--labeled--value--color: var(--color--slate-100);
+  }
+}
+
+.value-labeled {
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-template-columns: 1fr;
+  grid-template-areas: 'value' 'label';
+  gap: 4px;
+}
+
+.value-labeled > label {
+  grid-area: label;
+  color: var(--value--labeled--label--color);
+  --text--color: var(--value--labeled--label--color);
+}
+
+.value-labeled > div.value {
+  box-sizing: border-box;
+  grid-area: value;
+  color: var(--value--labeled--value--color);
+  --text--color: var(--value--labeled--value--color);
+}

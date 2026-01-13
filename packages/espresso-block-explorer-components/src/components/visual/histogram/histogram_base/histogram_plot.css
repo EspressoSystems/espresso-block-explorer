@@ -1,8 +1,5 @@
-@import url(../../../../styles/main.css);
-@import url(../../../layout/card/card.css);
-
 :root {
-  --histogram-plot--fill-color: var(--color--sky-700);
+  --histogram-plot--missing-background-color: var(--color-transparent);
 }
 
 .histogram-plot rect.bbox {
@@ -16,7 +13,7 @@
 .histogram-plot rect.missing {
   stroke: var(--histogram-plot--fill-color);
   stroke-dasharray: 4 2 4 2;
-  fill: var(--color--transparent);
+  fill: var(--histogram-plot--missing-background-color);
 }
 
 .histogram-plot > g {
@@ -31,11 +28,11 @@
 }
 
 circle.value-pointer--outer {
-  fill: var(--card--background-color);
+  fill: var(--histogram-plot--data-point--dot-outer-color);
 }
 
 circle.value-pointer--inner {
-  fill: var(--color--slate-500);
+  fill: var(--histogram-plot--data-point--dot-inner-color);
 }
 
 .histogram-plot rect.bbox:hover ~ g.tooltip,
