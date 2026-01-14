@@ -1,5 +1,14 @@
 import { assert, assertNotNull } from '@/assert/assert';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
+import { L1MethodsContext } from '@/contexts/l1_methods_context';
+import {
+  LightClientContractContext,
+  LightClientContractGasEstimatorContext,
+} from '@/contexts/light_client_contract_context';
+import {
+  LightClientV2ContractContext,
+  LightClientV2ContractGasEstimatorContext,
+} from '@/contexts/light_client_v2_contract_context';
 import { ScalarField } from '@/contracts/bn254/bn254_interface';
 import {
   LightClientState,
@@ -9,15 +18,6 @@ import {
 import { LightClientV2Contract } from '@/contracts/light_client_v2/light_client_v2_interface';
 import UnimplementedError from '@/errors/unimplemented_error';
 import React from 'react';
-import { L1MethodsContext } from '../contexts/l1_methods_context';
-import {
-  LightClientContractContext,
-  LightClientContractGasEstimatorContext,
-} from '../contexts/light_client_contract_context';
-import {
-  LightClientV2ContractContext,
-  LightClientV2ContractGasEstimatorContext,
-} from '../contexts/light_client_contract_v2_context';
 import {
   MockContractStorage,
   MockL1MethodsImpl,
@@ -29,7 +29,7 @@ export class MockLightClientContractState implements MockContractStorage {
   constructor(
     public readonly contractAddress: `0x${string}`,
     public readonly finalizedState: LightClientState,
-  ) {}
+  ) { }
 
   public applyTransaction(
     tx: UnderlyingTransaction,
@@ -244,7 +244,7 @@ function useMockLightClientContractState(
     new MockLightClientContractState(
       initialState?.contractAddress ?? contractAddress,
       initialState?.finalizedState ??
-        new LightClientState(0n, 0n, new ScalarField(0n)),
+      new LightClientState(0n, 0n, new ScalarField(0n)),
     ),
   );
 
@@ -278,7 +278,7 @@ export const MockLightClientV2Contract: React.FC<React.PropsWithChildren> = ({
 
   React.useEffect(() => {
     contract.setAccountAddress(accountAddress);
-    return () => {};
+    return () => { };
   }, [contract, accountAddress]);
 
   if (!(l1Methods instanceof MockL1MethodsImpl)) {

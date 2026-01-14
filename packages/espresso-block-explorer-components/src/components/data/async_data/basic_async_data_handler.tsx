@@ -1,6 +1,6 @@
+import CircularProgressIndicator from '@/components/loading/circular_progress_indicator';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
-import CircularProgressIndicator from '@/block_explorer/components/loading/circular_progress_indicator';
 import Text from '@/text/text';
 import React from 'react';
 

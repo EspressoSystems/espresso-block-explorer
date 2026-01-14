@@ -1,0 +1,7 @@
+
+.skeleton-content {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--skeleton-content--background-color);
+  height: 1em;
+}

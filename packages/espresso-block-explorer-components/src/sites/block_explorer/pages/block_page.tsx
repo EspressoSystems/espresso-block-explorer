@@ -1,7 +1,6 @@
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import Heading1 from '@/block_explorer/components/layout/heading/heading1';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
-import { WithLoadingShimmer } from '@/block_explorer/components/loading/loading_shimmer';
 import {
   BlockDetailsContent,
   BlockDetailsContentPlaceholder,
@@ -17,6 +16,7 @@ import {
   PageType,
 } from '@/block_explorer/contexts/page_path_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
+import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import Text from '@/text/text';
@@ -26,7 +26,7 @@ const EdgeMarginCard = WithEdgeMargin(CardNoPadding);
 const GuardBlockDetailsProps = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 
-interface GuardBlockDetailsProps {}
+interface GuardBlockDetailsProps { }
 
 /**
  * GuardBlockDetails is a component that guards rendering the Block Details
@@ -61,7 +61,7 @@ const GuardBlockDetails: React.FC<GuardBlockDetailsProps> = (props) => {
   );
 };
 
-interface BlockPageProps {}
+interface BlockPageProps { }
 
 /**
  * BlockPage is a component that renders the Block Page.

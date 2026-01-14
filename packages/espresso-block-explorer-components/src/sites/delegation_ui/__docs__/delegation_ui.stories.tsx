@@ -1,3 +1,5 @@
+import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
+import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { ProvideTickEverySecond } from '@/contexts/now_provider';
 import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
 import { Environment } from '@/models/config/environment/environment';
@@ -11,14 +13,11 @@ import {
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
-
-import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import React from 'react';
+import { ProvideL1ValidatorServiceAPIContext } from '../../../contexts/l1_validator_api_context';
 import { delegationUIInteractions } from '../__shared__/delegation_ui_shared';
-import { ProvideL1ValidatorServiceAPIContext } from '../contexts/l1_validator_api_context';
 import DelegationUI from '../delegation_ui';
 import { L1ValidatorServiceMockInjection } from '../mock/validator_service_injection';
-import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 
 interface ExampleProps {
   environment: Environment;

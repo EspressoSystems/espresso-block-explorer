@@ -1,4 +1,3 @@
-import { NodeSummaryData } from '@/block_explorer/components/page_sections/nodes_summary_data_table/nodes_summary_loader';
 import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
 import { ErrorCarry, ErrorJoiner } from '@/contexts/error_provider';
 import {
@@ -11,6 +10,7 @@ import {
   mapAsyncIterable,
   unimplementedAsyncIterable,
 } from '@/functional/functional_async';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { Latitude, Longitude } from '@/models/geo';
 import { generateBoundingBoxFromMinMaxes } from '@/models/geo/geo_json/bounding_box';
 import Degrees from '@/models/geo/units/degrees';
@@ -22,6 +22,19 @@ import {
   gridCellSize,
 } from '@/models/geo/world_map_grid/constants';
 import React from 'react';
+
+export interface NodeSummaryData {
+  publicKey: TaggedBase64;
+  name: null | string;
+  companyDetails: null | {
+    name: null | string;
+    website: null | string;
+  };
+  location: {
+    coords: null | [number, number];
+    country: null | string;
+  };
+}
 
 export const NodeIdentityInformationStreamContext = React.createContext<
   AsyncIterable<NodeSummaryData[]>

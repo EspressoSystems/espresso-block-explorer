@@ -1,13 +1,13 @@
-import { DataContext } from '@/contexts/data_provider';
 import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/text';
+import { DataContext } from '@/contexts/data_provider';
+import { StakeTableContractGasEstimatorContext } from '@/contexts/stake_table_contract_context';
 import { neverPromise } from '@/functional/functional_async';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { RetrieveMinimumDelegationAmount } from '../contexts/minimum_delegation_amount_context';
-import { StakeTableContractGasEstimatorContext } from '../contexts/stake_table_contract_context';
 import { ValidatorName } from '../elements/validator/validator_name';
 import { ApproveButton } from './approve_button';
 import { CloseStakingModalButton } from './close_staking_modal';
@@ -98,11 +98,11 @@ const ProvideDelegateContractGasEstimate: React.FC<React.PropsWithChildren> = ({
   const promise = React.useMemo(
     () =>
       !rewardClaimGasEstimator ||
-      balance <= 0n ||
-      allowance === null ||
-      allowance <= 0n ||
-      amountToTry <= 0n ||
-      !account
+        balance <= 0n ||
+        allowance === null ||
+        allowance <= 0n ||
+        amountToTry <= 0n ||
+        !account
         ? neverPromise
         : rewardClaimGasEstimator.delegate(account, validator, amountToTry),
 

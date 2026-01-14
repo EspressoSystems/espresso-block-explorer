@@ -1,13 +1,13 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import Text from '@/components/text/text';
+import { L1MethodsContext } from '@/contexts/l1_methods_context';
+import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { ESPBalanceContext } from '../contexts/esp_balance_context';
-import { L1MethodsContext } from '../contexts/l1_methods_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
 import { MinimumDelegationAmountContext } from '../contexts/minimum_delegation_amount_context';
-import { StakeTableContractContext } from '../contexts/stake_table_contract_context';
 import ButtonLarge from '../elements/buttons/button_large';
 import { CurrentAllowanceToStakeTableContext } from './contexts/current_allowance_context';
 import {
@@ -87,7 +87,7 @@ export const DelegateButton: React.FC = () => {
   if (
     asyncSnapshot.hasData &&
     (asyncSnapshot.data?.status ?? 0) >=
-      PerformWriteTransactionStatus.receiptRetrieved
+    PerformWriteTransactionStatus.receiptRetrieved
   ) {
     // Delegation succeeded
     return (

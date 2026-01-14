@@ -45,12 +45,15 @@
   );
 }
 
+.delegation-ui-content .collapsable-header h2 {
+  color: inherit;
+}
+
 .collapsable-header h2 {
   font-family: PPNeueMontrealRegular, sans-serif;
   text-transform: none;
   font-size: 14px;
   line-height: 16px;
-  color: inherit;
   flex: 1 1 auto;
 }
 

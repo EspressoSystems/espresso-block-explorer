@@ -4,7 +4,6 @@ import Card from '@/block_explorer/components/layout/card/card';
 import Heading1 from '@/block_explorer/components/layout/heading/heading1';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
 import SummaryTableLabeledValue from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
-import { WithLoadingShimmer } from '@/block_explorer/components/loading/loading_shimmer';
 import { BlockSizeHistogram } from '@/block_explorer/components/page_sections/block_size_histogram/block_size_histogram';
 import { BlockSummaryDataFromStreamLoader } from '@/block_explorer/components/page_sections/block_summary_data_table/block_summary_data_loader';
 import {
@@ -33,9 +32,10 @@ import {
 } from '@/block_explorer/contexts/page_path_provider';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
-import { addClassToClassName } from '@/higher_order';
+import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
+import { addClassToClassName } from '@/higher_order';
 import Text from '@/text/text';
 import React from 'react';
 import './explorer_page.css';
@@ -43,7 +43,7 @@ import './explorer_page.css';
 const Text300H2 = WithUiText300('h2');
 const EdgeShimmerDiv = WithLoadingShimmer('div');
 
-interface GuardedBlocksSummaryDataTableProps {}
+interface GuardedBlocksSummaryDataTableProps { }
 
 const GuardedBlocksSummaryDataTable: React.FC<
   GuardedBlocksSummaryDataTableProps

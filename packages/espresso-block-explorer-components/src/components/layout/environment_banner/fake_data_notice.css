@@ -9,3 +9,7 @@
 
   padding: 0.5em 0;
 }
+
+.fake-data-notice > p {
+  margin: 0 1em;
+}

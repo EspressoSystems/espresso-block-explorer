@@ -112,7 +112,7 @@ export const DelegationUIContent: React.FC = () => {
         <ProvideSearchFilter>
           <ProvideDialogModalControls>
             <StakingModal />
-            <section className="delegation-ui-content edge-margin">
+            <section className="delegation-ui-content">
               <NetworkStats />
 
               <MyBalance />
@@ -254,7 +254,7 @@ const ApplyFiltersToSnapshot: React.FC<React.PropsWithChildren> = ({
     }
 
     return () => {
-      setNextFilteredList = () => {};
+      setNextFilteredList = () => { };
     };
   }, [
     nodeList,

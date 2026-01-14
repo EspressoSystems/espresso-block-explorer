@@ -1,7 +1,7 @@
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import SummaryTableLabeledValue from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
-import { WithLoadingShimmer } from '@/block_explorer/components/loading/loading_shimmer';
-import SkeletonContent from '@/block_explorer/components/loading/skeleton_content';
+import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
+import SkeletonContent from '@/components/loading/skeleton_content';
 import FullHexText from '@/components/text/full_hex_text';
 import { HistogramSectionTitle } from '@/components/visual/histogram/histogram_section_title/histogram_section_title';
 import { DataContext } from '@/contexts/data_provider';
@@ -82,7 +82,7 @@ export const LatestBlockProducersPlaceholder: React.FC<
   );
 };
 
-interface LatestBlockProducersContentProps {}
+interface LatestBlockProducersContentProps { }
 export const LatestBlockProducersContent: React.FC<
   LatestBlockProducersContentProps
 > = (props) => {

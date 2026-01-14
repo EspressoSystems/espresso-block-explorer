@@ -22,11 +22,7 @@ import {
   MapCoordinateSpaceRectContext,
 } from './contexts';
 import './world_map_dots.css';
-import { WithUiText600 } from '@/block_explorer/components/typography/typography';
 
-const UiText600 = WithUiText600('text') as React.FC<
-  React.SVGTextElementAttributes<SVGTextElement>
->;
 const text600FontSize = 14;
 
 const PopulationEntryContext = React.createContext<DotPopulation | null>(null);
@@ -175,26 +171,26 @@ const WorldMapDotToolTipContent: React.FC = () => {
       {dot.nodes.map((node, index) => {
         if (node.name === null) {
           return (
-            <UiText600
+            <text
               key={index}
               x={Number(0)}
               y={text600FontSize * (index + 1)}
               textAnchor="start"
             >
               <Text text={`unnamed node ${index + 1}`} />
-            </UiText600>
+            </text>
           );
         }
 
         return (
-          <UiText600
+          <text
             key={index}
             x={Number(0)}
             y={text600FontSize * (index + 1)}
             textAnchor="start"
           >
             <Text text={node.name} />
-          </UiText600>
+          </text>
         );
       })}
     </>

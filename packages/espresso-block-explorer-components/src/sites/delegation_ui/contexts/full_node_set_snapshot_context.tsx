@@ -1,10 +1,10 @@
-import { DataContext } from '@/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
+import { DataContext } from '@/contexts/data_provider';
+import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
 import { neverPromise } from '@/functional/functional_async';
 import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
 import React from 'react';
 import { L1BlockIDContext } from './l1_block_id_context';
-import { L1ValidatorServiceContext } from './l1_validator_api_context';
 
 /**
  * FullNodeSetSnapshotContext provides a React Context

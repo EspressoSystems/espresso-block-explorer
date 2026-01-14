@@ -1,4 +1,3 @@
-import { WithUiSmall } from '@/block_explorer/components/typography/typography';
 import React from 'react';
 import {
   HistogramGraphWidth,
@@ -10,10 +9,6 @@ import {
   HistogramYAxisLabelComponent,
 } from './contexts';
 import './histogram_guide_lines.css';
-
-const UiTextSmallText = WithUiSmall('text') as React.FC<
-  React.SVGTextElementAttributes<SVGTextElement>
->;
 
 export interface ProvideGuideLinesProps {
   children: React.ReactNode | React.ReactNode[];
@@ -119,7 +114,7 @@ export const HistogramYAxisLabels: React.FC<HistogramYAxisLabelsProps> = (
       role="graphics-category"
     >
       {lines.map((line, i) => (
-        <UiTextSmallText
+        <text
           key={i}
           x={0}
           y={plotHeight - rangeAffineTransform.transform(line)}
@@ -127,7 +122,7 @@ export const HistogramYAxisLabels: React.FC<HistogramYAxisLabelsProps> = (
           className="histogram-y-axis-label"
         >
           {React.createElement(comp, { value: line })}
-        </UiTextSmallText>
+        </text>
       ))}
     </g>
   );

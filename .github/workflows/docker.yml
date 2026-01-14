@@ -36,18 +36,34 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate Docker Metadata
+      - name: Block Explorer - Generate Docker Metadata
         uses: docker/metadata-action@v5
-        id: meta
+        id: be_meta
         with:
           images: ghcr.io/EspressoSystems/espresso-block-explorer
 
-      - name: Build and Push Docker
+      - name: Delegation UI - Generate Docker Metadata
+        uses: docker/metadata-action@v5
+        id: du_meta
+        with:
+          images: ghcr.io/EspressoSystems/espresso-block-explorer
+
+      - name: Block Explorer - Build and Push Docker
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./docker/block-explorer.Dockerfile
           platforms: linux/amd64,linux/arm64 #arm64 timing out currently
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.be_meta.outputs.tags }}
+          labels: ${{ steps.be_meta.outputs.labels }}
+
+      - name: Delegation UI - Build and Push Docker
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./docker/delegation-ui.Dockerfile
+          platforms: linux/amd64,linux/arm64 #arm64 timing out currently
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.du_meta.outputs.tags }}
+          labels: ${{ steps.du_meta.outputs.labels }}

@@ -1,9 +1,9 @@
 import { Label } from '@/block_explorer/components/layout/label/label';
-import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import TableLabeledValue from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
-import SkeletonContent from '@/block_explorer/components/loading/skeleton_content';
-import ByteSizeText from '@/text/byte_size_text';
 import CopyTaggedBase64 from '@/block_explorer/components/text/copy_tagged_base64';
+import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
+import SkeletonContent from '@/components/loading/skeleton_content';
+import ByteSizeText from '@/text/byte_size_text';
 import DateTimeText from '@/text/date_time_text';
 import FullTaggedBase64Text from '@/text/full_tagged_base64_text';
 import NumberText from '@/text/number_text';
@@ -76,7 +76,7 @@ export const TransactionDetailsContentPlaceholder: React.FC<
   );
 };
 
-interface TransactionDetailsContentProps {}
+interface TransactionDetailsContentProps { }
 
 /**
  * TransactionDetailsContent represents the Tabular data of the

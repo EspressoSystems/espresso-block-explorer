@@ -1,7 +1,6 @@
 import Card from '@/block_explorer/components/layout/card/card';
 import Heading1 from '@/block_explorer/components/layout/heading/heading1';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
-import { WithLoadingShimmer } from '@/block_explorer/components/loading/loading_shimmer';
 import Footer from '@/block_explorer/components/page_sections/footer/footer';
 import Header from '@/block_explorer/components/page_sections/header/header';
 import PageTitle from '@/block_explorer/components/page_sections/page_title/page_title';
@@ -18,6 +17,7 @@ import {
   PageType,
 } from '@/block_explorer/contexts/page_path_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
+import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import Text from '@/text/text';
@@ -43,7 +43,7 @@ const GuardedEdgeMarginTransactionsNavigation: React.FC = () => {
   return <EdgeMarginTransactionsNavigation />;
 };
 
-interface GuardedTransactionsSummaryDataTableProps {}
+interface GuardedTransactionsSummaryDataTableProps { }
 
 /**
  * GuardedTransactionsSummaryDataTable is a component that guards rendering the

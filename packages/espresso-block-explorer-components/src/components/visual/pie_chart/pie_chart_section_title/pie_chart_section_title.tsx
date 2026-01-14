@@ -1,4 +1,3 @@
-import Heading2 from '@/block_explorer/components/layout/heading/heading2';
 import React from 'react';
 import './pie_chart_section_title.css';
 
@@ -16,7 +15,7 @@ export const PieChartSectionTitle: React.FC<PieChartSectionTitleProps> = (
 ) => {
   return (
     <div className="pie-chart-section-title card--padding heading--margin">
-      <Heading2>{props.children}</Heading2>
+      <h2>{props.children}</h2>
     </div>
   );
 };

@@ -1,10 +1,10 @@
-import { DataContext } from '@/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
+import { DataContext } from '@/contexts/data_provider';
+import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import { neverPromise } from '@/functional/functional_async';
 import { ConfirmedValidatorContext } from '@/sites/delegation_ui/contexts/confirmed_valdiator_context';
 import { L1RefreshTimestampContext } from '@/sites/delegation_ui/contexts/l1_refresh_timestamp_context';
-import { StakeTableContractContext } from '@/sites/delegation_ui/contexts/stake_table_contract_context';
 import React from 'react';
 
 export const CurrentStakeToValidatorContext = React.createContext<
@@ -24,9 +24,9 @@ export const ProvideCurrentStakeToValidator: React.FC<
       !stakeTableContract || !accountAddress || !confirmedValidator
         ? neverPromise
         : stakeTableContract.delegation(
-            confirmedValidator,
-            accountAddress.toLowerCase() as `0x${string}`,
-          ),
+          confirmedValidator,
+          accountAddress.toLowerCase() as `0x${string}`,
+        ),
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [

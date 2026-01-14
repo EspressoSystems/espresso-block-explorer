@@ -1,17 +1,17 @@
 import { assert, assertNotNull } from '@/assert/assert';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
+import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
+import { L1MethodsContext } from '@/contexts/l1_methods_context';
+import {
+  RewardClaimContractContext,
+  RewardClaimContractGasEstimatorContext,
+} from '@/contexts/reward_claim_contract_context';
 import { RewardClaimContract } from '@/contracts/reward_claim/reward_claim_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { bigintCodec } from '@/convert/codec/bigint';
 import { createKeccakHash } from '@/crypto/keccak/family';
 import UnimplementedError from '@/errors/unimplemented_error';
 import React from 'react';
-import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
-import { L1MethodsContext } from '../contexts/l1_methods_context';
-import {
-  RewardClaimContractContext,
-  RewardClaimContractGasEstimatorContext,
-} from '../contexts/reward_claim_contract_context';
 import { MockESPTokenContractImpl } from './esp_token_contract';
 import {
   MockContractStorage,
@@ -31,7 +31,7 @@ export class MockRewardClaimState implements MockContractStorage {
     public readonly claimedRewards: Map<`0x${string}`, bigint>,
 
     public readonly lastUpdate: Date,
-  ) {}
+  ) { }
 
   applyTransaction(tx: UnderlyingTransaction): MockContractStorage {
     if (tx instanceof RewardClaimStateAction) {
@@ -273,7 +273,7 @@ export const MockRewardClaimContract: React.FC<React.PropsWithChildren> = ({
 
   React.useEffect(() => {
     contract.setAccountAddress(accountAddress as null | `0x${string}`);
-    return () => {};
+    return () => { };
   }, [contract, accountAddress]);
 
   return (

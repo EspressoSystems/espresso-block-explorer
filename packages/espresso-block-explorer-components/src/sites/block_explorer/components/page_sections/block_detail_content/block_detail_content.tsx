@@ -1,14 +1,14 @@
 import { Label } from '@/block_explorer/components/layout/label/label';
+import TableLabeledValue from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
+import CopyHex from '@/block_explorer/components/text/copy_hex';
+import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
+import SkeletonContent from '@/components/loading/skeleton_content';
 import RelativeTimeSinceDateText from '@/components/text/relative_time_since_date_text';
 import { DataContext } from '@/contexts/data_provider';
-import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
-import TableLabeledValue from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
-import SkeletonContent from '@/block_explorer/components/loading/skeleton_content';
 import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import ByteSizeText from '@/text/byte_size_text';
-import CopyHex from '@/block_explorer/components/text/copy_hex';
 import DateTimeText from '@/text/date_time_text';
 import FullHexText from '@/text/full_hex_text';
 import NumberText from '@/text/number_text';
@@ -142,7 +142,7 @@ export const BlockDetailsContentPlaceholder: React.FC<
   );
 };
 
-interface BlockDetailsContentProps {}
+interface BlockDetailsContentProps { }
 
 /**
  * BlockDetailsContext represents the component that displays all of the

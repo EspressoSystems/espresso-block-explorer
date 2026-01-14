@@ -1,5 +1,5 @@
 import { sleep } from '@/async/sleep';
-import CircularProgressIndicator from '@/block_explorer/components/loading/circular_progress_indicator';
+import CircularProgressIndicator from '@/components/loading/circular_progress_indicator';
 import Text from '@/text/text';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';

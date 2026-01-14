@@ -1,5 +1,15 @@
 import { assert, assertNotNull } from '@/assert/assert';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
+import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
+import { L1MethodsContext } from '@/contexts/l1_methods_context';
+import {
+  StakeTableContractContext,
+  StakeTableContractGasEstimatorContext,
+} from '@/contexts/stake_table_contract_context';
+import {
+  StakeTableV2ContractContext,
+  StakeTableV2ContractGasEstimatorContext,
+} from '@/contexts/stake_table_v2_contract_context';
 import { ESPTokenContract } from '@/contracts/esp_token/esp_token_interface';
 import {
   RawUndelegation,
@@ -26,16 +36,6 @@ import {
   takeIterable,
 } from '@/functional/functional';
 import React from 'react';
-import { ESPTokenContractContext } from '../contexts/esp_token_contract_context';
-import { L1MethodsContext } from '../contexts/l1_methods_context';
-import {
-  StakeTableContractContext,
-  StakeTableContractGasEstimatorContext,
-} from '../contexts/stake_table_contract_context';
-import {
-  StakeTableV2ContractContext,
-  StakeTableV2ContractGasEstimatorContext,
-} from '../contexts/stake_table_v2_contract_context';
 import { MockESPTokenContractImpl } from './esp_token_contract';
 import {
   MockContractStorage,
@@ -69,7 +69,7 @@ export class StakeTableState implements MockContractStorage {
     public readonly schnorrKeys: Set<`0x${string}`>,
 
     public readonly lastUpdate: Date,
-  ) {}
+  ) { }
 
   applyTransaction(tx: UnderlyingTransaction): StakeTableState {
     if (tx instanceof StakeTableStateActions) {
@@ -265,7 +265,7 @@ export class Undelegate extends StakeTableStateActions {
     const newUndelegations = new Map(state.undelegations);
     const undelegatorMap = new Map(
       newUndelegations.get(this.validator) ??
-        new Map<`0x${string}`, RawUndelegation>(),
+      new Map<`0x${string}`, RawUndelegation>(),
     );
     undelegatorMap.set(this.delegator, [
       this.amount,
@@ -333,7 +333,7 @@ export class ClaimWithdrawal extends StakeTableStateActions {
     const newUndelegations = new Map(state.undelegations);
     const undelegatorMap = new Map(
       newUndelegations.get(this.validator) ??
-        new Map<`0x${string}`, RawUndelegation>(),
+      new Map<`0x${string}`, RawUndelegation>(),
     );
     undelegatorMap.delete(this.delegator);
     newUndelegations.set(this.validator, undelegatorMap);
@@ -924,7 +924,7 @@ export const MockStakeTableV2Contract: React.FC<React.PropsWithChildren> = ({
 
   React.useEffect(() => {
     contract.setAccountAddress(accountAddress);
-    return () => {};
+    return () => { };
   }, [contract, accountAddress]);
 
   const gasEstimator = new MockStakeTableV2ContractGasEstimatorImpl();

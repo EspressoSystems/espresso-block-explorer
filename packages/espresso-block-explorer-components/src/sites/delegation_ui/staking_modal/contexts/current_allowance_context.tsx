@@ -1,10 +1,10 @@
-import { DataContext } from '@/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
+import { DataContext } from '@/contexts/data_provider';
+import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
+import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import { neverPromise } from '@/functional/functional_async';
-import { ESPTokenContractContext } from '@/sites/delegation_ui/contexts/esp_token_contract_context';
 import { L1RefreshTimestampContext } from '@/sites/delegation_ui/contexts/l1_refresh_timestamp_context';
-import { StakeTableContractContext } from '@/sites/delegation_ui/contexts/stake_table_contract_context';
 import React from 'react';
 
 export const CurrentAllowanceToStakeTableContext = React.createContext<

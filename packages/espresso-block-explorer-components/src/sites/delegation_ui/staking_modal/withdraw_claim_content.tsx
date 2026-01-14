@@ -1,17 +1,17 @@
-import { DataContext } from '@/contexts/data_provider';
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/text';
-import { neverPromise } from '@/functional/functional_async';
-import React from 'react';
-import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
-import { L1MethodsContext } from '../contexts/l1_methods_context';
-import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
+import { DataContext } from '@/contexts/data_provider';
+import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import {
   StakeTableContractContext,
   StakeTableContractGasEstimatorContext,
-} from '../contexts/stake_table_contract_context';
+} from '@/contexts/stake_table_contract_context';
+import { neverPromise } from '@/functional/functional_async';
+import React from 'react';
+import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
+import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
 import ButtonLarge from '../elements/buttons/button_large';
 import { ValidatorName } from '../elements/validator/validator_name';
 import { CloseStakingModalButton } from './close_staking_modal';
@@ -161,7 +161,7 @@ const WithdrawClaimActionsArea: React.FC = () => {
   if (
     asyncSnapshot.hasData &&
     (asyncSnapshot.data?.status ?? 0) >=
-      PerformWriteTransactionStatus.receiptRetrieved
+    PerformWriteTransactionStatus.receiptRetrieved
   ) {
     // Claim withdrawal succeeded
     return (

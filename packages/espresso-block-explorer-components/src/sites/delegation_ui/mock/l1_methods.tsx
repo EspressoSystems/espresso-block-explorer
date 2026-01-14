@@ -1,5 +1,6 @@
 import { assertNotNull } from '@/assert/assert';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
+import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { createKeccakHash } from '@/crypto/keccak/family';
@@ -18,7 +19,6 @@ import {
   GetTransactionReceiptReturnType,
   GetTransactionReturnType,
 } from 'wagmi/actions';
-import { L1MethodsContext } from '../contexts/l1_methods_context';
 
 type Config = typeof fakeData;
 type ChainID = Config['chains'][0]['id'];
@@ -81,7 +81,7 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
   constructor(
     private storage: MockL1State,
     public accountAddress: `0x${string}` | null = null,
-  ) {}
+  ) { }
 
   replaceAccountAddress(
     accountAddress: `0x${string}` | null,
@@ -321,8 +321,8 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     const gas = block.transactions.reduce((acc, tx) => acc + tx.gas, 0n);
     const transactions = includeTransactions
       ? block.transactions.map((tx) =>
-          this.transactionFromTransactionAndBlock(tx, block),
-        )
+        this.transactionFromTransactionAndBlock(tx, block),
+      )
       : block.transactions.map((tx) => tx.hash);
 
     return {
@@ -562,7 +562,7 @@ export const ProvideAutoAdvanceL1Methods: React.FC<
 
     return () => {
       clearInterval(intervalHandle);
-      advance = () => {};
+      advance = () => { };
     };
   }, [l1Methods, interval]);
 
@@ -587,7 +587,7 @@ export const MockL1Methods: React.FC<React.PropsWithChildren> = ({
 
   React.useEffect(() => {
     l1Methods.setAccountAddress(accountAddress as null | `0x${string}`);
-    return () => {};
+    return () => { };
   }, [l1Methods, accountAddress]);
 
   return (

@@ -16,6 +16,7 @@ dialog.staking-modal {
   min-width: 400px;
   overflow: hidden;
   flex-direction: column;
+  margin: auto;
 }
 
 dialog.staking-modal[open] {
