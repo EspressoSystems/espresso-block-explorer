@@ -147,13 +147,7 @@ function sectionFilter(section: Sections, myStakes: null | WalletSnapshot) {
     mapIterable(myStakes?.nodes ?? [], (n) => n.nodeText),
   );
 
-  return (node: `0x${string}`) => {
-    if (!myStakes) {
-      return false;
-    }
-
-    myStakedNodes.has(node);
-  };
+  return (node: `0x${string}`) => myStakedNodes.has(node);
 }
 
 /**
