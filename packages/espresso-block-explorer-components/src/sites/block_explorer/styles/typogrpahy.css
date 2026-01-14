@@ -1,0 +1,38 @@
+
+
+/* UI Small */
+.explorer-grid .data-table thead ,
+.explorer-grid .data-table tbody,
+.explorer-grid svg g.histogram-y-axis-labels text,
+.explorer-grid svg g.histogram-plot g.tooltip text.tooltip--value-label:nth-child(2) {
+  --text--font-weight: 400;
+  --text--font-size: 14px;
+  --text--line-height: 14px;
+}
+
+/* UI Text 600 */
+.node-validator-grid .world-map-population-dots-tooltips g.population g.tooltip text,
+.node-validator-grid svg .pie-chart-tooltip-hitboxes g.tooltip text,
+svg g.histogram-plot g.tooltip text.tooltip--value-label:nth-child(1) {
+  --text--font-weight: 500;
+  --text--font-size: 14px;
+  --text--line-height: 14px;
+}
+
+
+
+/* Apply the typography changes */
+.explorer-grid .data-table thead ,
+.explorer-grid .data-table tbody,
+.explorer-grid svg g.histogram-y-axis-labels text,
+.node-validator-grid .world-map-population-dots-tooltips g.population g.tooltip text,
+.node-validator-grid svg .pie-chart-tooltip-hitboxes g.tooltip text,
+svg g.histogram-plot g.tooltip text.tooltip--value-label {
+  font-family: var(--text--font-family);
+  letter-spacing: var(--text--letter-spacing);
+  background-color: var(--text--background-color);
+  font-weight: var(--text--font-weight);
+  line-height: var(--text--line-height);
+  font-size: var(--text--font-size);
+}
+

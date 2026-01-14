@@ -1,4 +1,5 @@
 import { addClassToClassName } from '@/higher_order';
+import { WithUiText300 } from '@/block_explorer/components/typography/typography';
 import React from 'react';
 import './histogram_section_title.css';
 
@@ -6,6 +7,8 @@ export interface HistogramSectionTitleProps {
   className?: string;
   children: [React.ReactNode, React.ReactNode];
 }
+
+const UiText300H2 = WithUiText300('h2');
 
 /**
  * HistogramSectionTitle is a title element that is displayed above a histogram.
@@ -29,7 +32,7 @@ export const HistogramSectionTitle: React.FC<HistogramSectionTitleProps> = (
         'histogram-section-title',
       )}
     >
-      <h2>{props.children[0]}</h2>
+      <UiText300H2>{props.children[0]}</UiText300H2>
       {props.children[1]}
     </div>
   );
