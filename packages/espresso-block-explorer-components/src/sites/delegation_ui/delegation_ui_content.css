@@ -22,7 +22,6 @@
 }
 
 .delegation-ui-content > * {
-  position: relative;
   z-index: 1;
 }
 
@@ -41,6 +40,7 @@
   font-size: 12px;
   line-height: 16px;
   text-transform: uppercase;
+  font-weight: 300;
 }
 
 .delegation-ui-content h3 {

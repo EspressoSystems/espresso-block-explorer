@@ -30,7 +30,6 @@ table.all-validators-table {
   border-width: 1px;
   font-size: 12px;
   width: 100%;
-  overflow: hidden;
 
   border: 1px solid var(--validator-node-table--border-color);
   background:
@@ -49,6 +48,7 @@ table.all-validators-table {
 
 table.all-validators-table {
   border-spacing: 0;
+  border-radius: 8px;
 }
 
 table.all-validators-table th svg.sharp-icon {
@@ -85,13 +85,44 @@ table.all-validators-table th.sortable {
   cursor: pointer;
 }
 
-table.all-validators-table thead tr {
-  border-radius: 8px 0 0 8px;
+table.all-validators-table thead tr th {
   background: var(--validator-node-table--header--background-color);
 }
 
+table.all-validators-table tbody tr td {
+  color: var(--validator-node-table--cell--foreground-color);
+  background: var(--validator-node-table--cell--background-color);
+}
+
+
+/** Target the Specific Cells for Border Rounding */
+table.all-validators-table {
+  border-radius: 8px;
+}
+table.all-validators-table thead,
+table.all-validators-table thead tr:nth-child(1) {
+  border-radius: 8px 8px 0 0;
+}
+table.all-validators-table thead tr:nth-child(1) th:nth-child(1) {
+  border-radius: 8px 0 0 0;
+}
+table.all-validators-table thead tr:nth-child(1) th:nth-last-child(1) {
+  border-radius: 0 8px 0 0;
+}
+table.all-validators-table body,
+table.all-validators-table body tr:nth-last-child(1) {
+  border-radius: 0 0 8px 8px;
+}
+table.all-validators-table tbody tr:nth-last-child(1) td:nth-child(2) {
+  border-radius: 0 0 0 8px;
+}
+table.all-validators-table tbody tr:nth-last-child(1) td:nth-last-child(1) {
+  border-radius: 0 0 8px 0;
+}
+
 table.all-validators-table thead tr th,
-table.all-validators-table tbody tr:not(:nth-last-child(1)) td {
+table.all-validators-table tbody tr:not(:nth-last-child(1)) {
+  font-weight: 300;
   border-bottom: 1px solid var(--validator-node-table--border-color);
 }
 
@@ -102,12 +133,6 @@ table.all-validators-table thead {
   text-transform: uppercase;
 }
 
-table.all-validators-table tbody {
-  color: var(--validator-node-table--cell--foreground-color);
-}
-table.all-validators-table tbody tr td {
-  background: var(--validator-node-table--cell--background-color);
-}
 
 table.all-validators-table tbody tr td:not(.no-data):nth-child(1) {
   display: none;
@@ -181,6 +206,7 @@ table.all-validators-table .bbtn.manage {
   table.all-validators-table tbody {
     display: grid;
     gap: 8px;
+    background: unset;
   }
 
   table.all-validators-table tbody tr:not(:nth-last-child(1)) td {
@@ -203,20 +229,12 @@ table.all-validators-table .bbtn.manage {
     align-items: stretch;
   }
 
-  table.all-validators-table th:nth-child(1) {
-    border-radius: 0;
-  }
-
-  table.all-validators-table th:nth-last-child(1) {
-    border-radius: 0;
-  }
-
-  table.all-validators-table tr:nth-last-child(1) td:nth-child(1) {
-    border-radius: 0;
-  }
-
-  table.all-validators-table tr:nth-last-child(1) td:nth-last-child(1) {
-    border-radius: 0;
+  /** Target the Specific Cells for Border Rounding */
+  table.all-validators-table thead tr:nth-child(1) th:nth-child(1),
+  table.all-validators-table thead tr:nth-child(1) th:nth-last-child(1),
+  table.all-validators-table tbody tr:nth-last-child(1) td:nth-child(2),
+  table.all-validators-table tbody tr:nth-last-child(1) td:nth-last-child(1) {
+    border-radius: unset;
   }
 
   table.all-validators-table tbody tr td {
