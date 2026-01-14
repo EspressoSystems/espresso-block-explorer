@@ -1,5 +1,17 @@
-import { NodeSummaryData } from '../../../../../../../../../../../src/sites/block_explorer/components/page_sections/nodes_summary_data_table/nodes_summary_loader';
+import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso/tagged_base64/tagged_base64';
 import { default as React } from 'react';
+export interface NodeSummaryData {
+    publicKey: TaggedBase64;
+    name: null | string;
+    companyDetails: null | {
+        name: null | string;
+        website: null | string;
+    };
+    location: {
+        coords: null | [number, number];
+        country: null | string;
+    };
+}
 export declare const NodeIdentityInformationStreamContext: React.Context<AsyncIterable<NodeSummaryData[]>>;
 export interface DotPopulation {
     offset: number;

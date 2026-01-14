@@ -6,6 +6,7 @@ export * from './collapsable_section';
 export * from './connect_wallet_button';
 export * from './delegation_header';
 export * from './delegation_ui';
+export { default as DelegationUI } from './delegation_ui';
 export * from './delegation_ui_content';
 export * from './epoch_ends_in';
 export * from './estimated_apr';
