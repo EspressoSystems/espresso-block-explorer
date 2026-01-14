@@ -1,4 +1,3 @@
-import { WithUiText600 } from '@/block_explorer/components/typography/typography';
 import NumberText from '@/components/text/number_text';
 import { DataContext } from '@/contexts/data_provider';
 import React from 'react';
@@ -16,9 +15,6 @@ import {
 } from '../svg/svg_tool_tip';
 import './pie_chart.css';
 
-const UiText600 = WithUiText600('text') as React.FC<
-  React.SVGTextElementAttributes<SVGTextElement>
->;
 const text600FontSize = 14;
 
 export interface PieChartLabelProps {
@@ -315,11 +311,11 @@ const PieChartToolTipContent: React.FC = () => {
   }
 
   return (
-    <UiText600 x={Number(0)} y={text600FontSize} textAnchor="start">
+    <text x={Number(0)} y={text600FontSize} textAnchor="start">
       <Text text={entry.label} />
       <Text text={' '} />
       <NumberText number={entry.value} />
-    </UiText600>
+    </text>
   );
 };
 

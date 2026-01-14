@@ -1,4 +1,4 @@
-import { addClassToClassName } from '@/higher_order';
+import { addClassToClassName } from '@/components/higher_order';
 import React from 'react';
 import './circular_progress_indicator.css';
 

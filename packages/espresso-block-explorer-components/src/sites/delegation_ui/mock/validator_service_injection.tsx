@@ -1,4 +1,6 @@
 import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
+import { L1MethodsContext } from '@/contexts/l1_methods_context';
+import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { nodeList } from '@/data_source/fake_data_source';
@@ -40,8 +42,6 @@ import { WalletUpdate } from '@/service/espresso_l1_validator_service/wallet/wal
 import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
 import React from 'react';
 import { Config } from 'wagmi';
-import { L1MethodsContext } from '../contexts/l1_methods_context';
-import { L1ValidatorServiceContext } from '../contexts/l1_validator_api_context';
 import { ESPTokenContractStateAction } from './esp_token_contract';
 import {
   L1TransactionCallback,
@@ -117,7 +117,7 @@ const zeroSnapshot = new WalletSnapshot(
 );
 
 class MockL1BlockAPI implements L1BlockAPI {
-  constructor(private l1Methods: MockL1MethodsImpl) {}
+  constructor(private l1Methods: MockL1MethodsImpl) { }
 
   async getBlockForHeight(number: bigint): Promise<L1BlockID> {
     const block = this.l1Methods.mockBlockByHeight(number);
@@ -190,7 +190,7 @@ class MockStatefulWalletAPI implements WalletAPI, L1TransactionCallback {
         ],
       ]),
     },
-  ) {}
+  ) { }
 
   async snapshot(
     address: ArrayBuffer,
@@ -324,7 +324,7 @@ class MockStatefulValidatorsAllAPI implements ValidatorsAllAPI {
   constructor(
     private readonly l1Methods: MockL1MethodsImpl,
     private readonly service: ValidatorsAllAPI,
-  ) {}
+  ) { }
 
   async snapshot(hash: ArrayBuffer): Promise<FullNodeSetSnapshot> {
     return this.service.snapshot(hash);
@@ -352,7 +352,7 @@ class MockStatefulValidatorsActiveAPI implements ValidatorsActiveAPI {
   constructor(
     private readonly service: ValidatorsActiveAPI,
     private readonly hotShotQueryService: CappuccinoHotShotQueryService,
-  ) {}
+  ) { }
 
   async active(): Promise<ActiveNodeSetSnapshot> {
     return this.service.active();

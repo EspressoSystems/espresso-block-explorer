@@ -1,8 +1,4 @@
-@import '@/block_explorer/styles/main.css';
-
 :root {
-    --container-loading--background-color: var(--color--slate-100);
-    --container-loading--highlight-color: var(--color--slate-50);
     --container-loading--border-radius: 0.25em;
     --container-loading--animation-duration: 1s;
 }

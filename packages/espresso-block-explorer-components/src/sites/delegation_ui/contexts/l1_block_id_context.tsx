@@ -1,8 +1,8 @@
-import { DataContext } from '@/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
+import { DataContext } from '@/contexts/data_provider';
+import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
 import { L1BlockID } from '@/service/espresso_l1_validator_service/common/l1_block_id';
 import React from 'react';
-import { L1ValidatorServiceContext } from './l1_validator_api_context';
 
 /**
  * L1BlockIDContext defines a React Context for the current L1 Block ID.

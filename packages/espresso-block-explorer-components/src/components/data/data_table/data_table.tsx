@@ -1,13 +1,9 @@
 import { DataContext } from '@/contexts/data_provider';
 import Text from '@/text/text';
-import { WithUiSmall } from '@/block_explorer/components/typography/typography';
 import ChevronUp from '@/visual/icons/chevron_up';
 import React from 'react';
 import { SortDirection } from '../types';
 import './data_table.css';
-
-const TextSmallThead = WithUiSmall('thead');
-const TextSmallTbody = WithUiSmall('tbody');
 
 /**
  * DataTableState represents the underlying DataTableState. The DataTable
@@ -156,7 +152,7 @@ const DataTableTHead: React.FC = () => {
   const columns = React.useContext(ColumnsContext);
 
   return (
-    <TextSmallThead>
+    <thead>
       <tr>
         {columns.map((column, idx) => (
           <ColumnDataContext.Provider key={idx} value={column}>
@@ -164,7 +160,7 @@ const DataTableTHead: React.FC = () => {
           </ColumnDataContext.Provider>
         ))}
       </tr>
-    </TextSmallThead>
+    </thead>
   );
 };
 
@@ -177,11 +173,11 @@ const DataTableTHead: React.FC = () => {
 const DataTableTBody: React.FC = () => {
   const data = React.useContext(DataContext);
   if (!(data instanceof Array)) {
-    return <TextSmallTbody></TextSmallTbody>;
+    return <tbody></tbody>;
   }
 
   return (
-    <TextSmallTbody>
+    <tbody>
       {data.map((row, idx) => (
         <DataTableRowContext.Provider key={idx} value={row}>
           <DataTableIndexContext.Provider value={idx}>
@@ -189,7 +185,7 @@ const DataTableTBody: React.FC = () => {
           </DataTableIndexContext.Provider>
         </DataTableRowContext.Provider>
       ))}
-    </TextSmallTbody>
+    </tbody>
   );
 };
 

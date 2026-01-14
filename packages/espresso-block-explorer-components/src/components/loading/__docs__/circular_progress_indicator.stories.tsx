@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import CircularProgressIndicatorComp from '../circular_progress_indicator';
 
+const Example: React.FC = () => (<CircularProgressIndicatorComp />);
+
 const meta: Meta<typeof CircularProgressIndicator> = {
-  title: 'Block Explorer/Components/Loading/Circular Progress Indicator',
-  component: CircularProgressIndicatorComp,
+  title: 'Components/Loading/Circular Progress Indicator',
+  component: Example,
 };
 
 export default meta;

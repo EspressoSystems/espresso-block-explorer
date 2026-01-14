@@ -1,4 +1,3 @@
-import SkeletonContent from '@/block_explorer/components/loading/skeleton_content';
 import CopyTaggedBase64 from '@/block_explorer/components/text/copy_tagged_base64';
 import CopyWalletAddress from '@/block_explorer/components/text/copy_wallet_address';
 import {
@@ -14,6 +13,7 @@ import DataTable, {
 } from '@/components/data/data_table/data_table';
 import { SortDirection } from '@/components/data/types';
 import { ErrorDisplay } from '@/components/error/error_display';
+import SkeletonContent from '@/components/loading/skeleton_content';
 import { MoneyText, NumberText } from '@/components/text';
 import PercentageText from '@/components/text/percentage_text';
 import TaggedBase64Text from '@/components/text/tagged_base64_text';

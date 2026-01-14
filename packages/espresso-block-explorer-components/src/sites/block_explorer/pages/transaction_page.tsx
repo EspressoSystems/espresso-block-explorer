@@ -2,7 +2,6 @@ import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import Heading1 from '@/block_explorer/components/layout/heading/heading1';
 import Heading2 from '@/block_explorer/components/layout/heading/heading2';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
-import { WithLoadingShimmer } from '@/block_explorer/components/loading/loading_shimmer';
 import Footer from '@/block_explorer/components/page_sections/footer/footer';
 import Header from '@/block_explorer/components/page_sections/header/header';
 import PageTitle from '@/block_explorer/components/page_sections/page_title/page_title';
@@ -19,6 +18,7 @@ import {
   PageType,
 } from '@/block_explorer/contexts/page_path_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
+import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import Text from '@/text/text';
@@ -29,7 +29,7 @@ const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginHeading2 = WithEdgeMargin(Heading2);
 
-interface GuardedTransactionDetailsContentProps {}
+interface GuardedTransactionDetailsContentProps { }
 
 /**
  * GuardedTransactionDetailsContent is a component that guards rendering the
@@ -65,7 +65,7 @@ const GuardedTransactionDetailsContent: React.FC<
   );
 };
 
-interface GuardedTransactionDataContentsProps {}
+interface GuardedTransactionDataContentsProps { }
 
 /**
  * GuardedTransactionDataContents is a component that guards rendering the
@@ -92,7 +92,7 @@ const GuardedTransactionDataContents: React.FC<
   );
 };
 
-interface TransactionPageProps {}
+interface TransactionPageProps { }
 
 /**
  * TransactionPage is a component that renders the Transaction Page.

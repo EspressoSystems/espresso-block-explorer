@@ -1,10 +1,14 @@
-@import url(../theme/theme.css);
-@import url(./data_table.css);
-@import url(./icons.css);
-@import url(./histogram_guide_lines.css);
-@import url(./histogram_plot.css);
-@import url(./image.css);
-@import url(./pie_chart.css);
-@import url(./web_socket_status.css);
-@import url(./world_map_dots.css);
+@import '../theme/theme.css';
+@import './circular_progress_indicator.css';
+@import './container_loading.css';
+@import './data_table.css';
+@import './icons.css';
+@import './histogram_guide_lines.css';
+@import './histogram_plot.css';
+@import './image.css';
+@import './loading_shimmer.css';
+@import './pie_chart.css';
+@import './skeleton_content.css';
+@import './web_socket_status.css';
+@import './world_map_dots.css';
 

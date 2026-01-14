@@ -1,5 +1,4 @@
 import { addClassToClassName } from '@/higher_order';
-import Heading2 from '@/block_explorer/components/layout/heading/heading2';
 import React from 'react';
 import './histogram_section_title.css';
 
@@ -30,7 +29,7 @@ export const HistogramSectionTitle: React.FC<HistogramSectionTitleProps> = (
         'histogram-section-title',
       )}
     >
-      <Heading2>{props.children[0]}</Heading2>
+      <h2>{props.children[0]}</h2>
       {props.children[1]}
     </div>
   );

@@ -1,8 +1,8 @@
-import SkeletonContent from '@/block_explorer/components/loading/skeleton_content';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import DataTable, {
   DataTableRowContext,
 } from '@/components/data/data_table/data_table';
+import SkeletonContent from '@/components/loading/skeleton_content';
 import { DataContext } from '@/contexts/data_provider';
 import { iota } from '@/functional/functional';
 import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';

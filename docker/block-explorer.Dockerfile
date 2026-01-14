@@ -4,10 +4,11 @@ WORKDIR /app
 COPY package.json package-lock.json /app/
 COPY packages/espresso-block-explorer-components /app/packages/espresso-block-explorer-components
 COPY packages/block-explorer /app/packages/block-explorer
+COPY packages/delegation-ui /app/packages/delegation-ui
 
 RUN apk add --no-cache bash jq tini python3 make g++
 
-RUN npm ci --no-audit --all-workspaces
+RUN npm ci --no-audit
 
 # Build the Components Library
 RUN npm run build --workspace=packages/espresso-block-explorer-components

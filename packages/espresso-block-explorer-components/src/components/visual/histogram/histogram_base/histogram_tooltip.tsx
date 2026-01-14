@@ -1,7 +1,3 @@
-import {
-  WithUiSmall,
-  WithUiText600,
-} from '@/block_explorer/components/typography/typography';
 import { NumberText } from '@/components/text';
 import Text from '@/components/text/text';
 import React from 'react';
@@ -24,13 +20,6 @@ import {
   HistogramYAxisLabelComponent,
 } from './contexts';
 import './histogram_plot.css';
-
-const UiText600 = WithUiText600('text') as React.FC<
-  React.SVGTextElementAttributes<SVGTextElement>
->;
-const UiTextSmallText = WithUiSmall('text') as React.FC<
-  React.SVGTextElementAttributes<SVGTextElement>
->;
 
 const dotRadius = 10;
 const dotBorderWidth = 2;
@@ -99,15 +88,15 @@ const ToolTipText: React.FC = () => {
 
     return (
       <>
-        <UiText600
+        <text
           className="tooltip--value-label"
           x={0}
           y={text600FontSize}
           textAnchor="start"
         >
           <Text text="Missing Data" />
-        </UiText600>
-        <UiTextSmallText
+        </text>
+        <text
           className="tooltip--value-label"
           x={0}
           y={text600FontSize + textSmallFontSize}
@@ -115,7 +104,7 @@ const ToolTipText: React.FC = () => {
         >
           <Text text="Block " />
           <NumberText number={Number(domain[0]) + i} />
-        </UiTextSmallText>
+        </text>
       </>
     );
   }
@@ -123,16 +112,16 @@ const ToolTipText: React.FC = () => {
   return (
     <>
       {/* The box should only hold two lines, but we don't know how wide it will be, sadly */}
-      <UiText600
+      <text
         className="tooltip--value-label"
         x={0}
         y={text600FontSize}
         textAnchor="start"
       >
         {React.createElement(comp, { value })}
-      </UiText600>
+      </text>
 
-      <UiTextSmallText
+      <text
         className="tooltip--value-label"
         x={0}
         y={text600FontSize + textSmallFontSize}
@@ -140,7 +129,7 @@ const ToolTipText: React.FC = () => {
       >
         <Text text="Block " />
         <NumberText number={Number(domain[i])} />
-      </UiTextSmallText>
+      </text>
     </>
   );
 };

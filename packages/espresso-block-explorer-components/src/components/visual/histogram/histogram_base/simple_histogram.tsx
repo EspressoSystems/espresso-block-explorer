@@ -1,4 +1,4 @@
-import SkeletonContent from '@/block_explorer/components/loading/skeleton_content';
+import SkeletonContent from '@/components/loading/skeleton_content';
 import React from 'react';
 import { useSVGSize } from '../../svg/hooks';
 import { AffineTransform } from './affine_transform';

@@ -1,7 +1,7 @@
-import { DataContext } from '@/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
+import { DataContext } from '@/contexts/data_provider';
+import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { neverPromise } from '@/functional/functional_async';
-import { L1MethodsContext } from '@/sites/delegation_ui/contexts/l1_methods_context';
 import { L1RefreshTimestampContext } from '@/sites/delegation_ui/contexts/l1_refresh_timestamp_context';
 import React from 'react';
 import { EstimateFeesPerGasReturnType } from 'viem/actions';

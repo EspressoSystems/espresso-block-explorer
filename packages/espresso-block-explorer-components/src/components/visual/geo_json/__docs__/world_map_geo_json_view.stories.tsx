@@ -1,5 +1,5 @@
-import CircularProgressIndicator from '@/block_explorer/components/loading/circular_progress_indicator';
 import PromiseResolver from '@/components/data/async_data/promise_resolver';
+import CircularProgressIndicator from '@/components/loading/circular_progress_indicator';
 import { DataContext } from '@/contexts/data_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import FetchError from '@/errors/fetch_error';

@@ -1,10 +1,10 @@
-import { DataContext } from '@/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
 import { AsyncSnapshot } from '@/components/data/async_data/async_snapshot';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
+import { DataContext } from '@/contexts/data_provider';
+import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
 import { neverPromise } from '@/functional/functional_async';
 import React from 'react';
-import { ESPTokenContractContext } from './esp_token_contract_context';
 import { L1RefreshTimestampContext } from './l1_refresh_timestamp_context';
 
 export const ESPBalanceContext = React.createContext<bigint>(0n);

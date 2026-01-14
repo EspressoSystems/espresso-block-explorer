@@ -1,10 +1,10 @@
-import { DataContext } from '@/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
+import { DataContext } from '@/contexts/data_provider';
+import { LightClientContractContext } from '@/contexts/light_client_contract_context';
 import { LightClientState } from '@/contracts/light_client/light_client_interface';
 import { neverPromise } from '@/functional/functional_async';
 import React from 'react';
 import { L1RefreshTimestampContext } from './l1_refresh_timestamp_context';
-import { LightClientContractContext } from './light_client_contract_context';
 
 export const LightClientFinalizedStateContext =
   React.createContext<null | LightClientState>(null);

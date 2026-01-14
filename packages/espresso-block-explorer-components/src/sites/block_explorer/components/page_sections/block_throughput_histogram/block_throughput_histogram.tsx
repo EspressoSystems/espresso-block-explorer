@@ -1,5 +1,7 @@
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import ValueLabeled from '@/block_explorer/components/layout/value_labeled/value_labeled';
+import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
+import SkeletonContent from '@/components/loading/skeleton_content';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
@@ -19,8 +21,6 @@ import {
 } from '@/visual/histogram/histogram_base/simple_histogram';
 import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_title/histogram_section_title';
 import React from 'react';
-import { WithLoadingShimmer } from '../../loading/loading_shimmer';
-import SkeletonContent from '../../loading/skeleton_content';
 import { BlockThroughputHistogramData } from './block_throughput_histogram_data_loader';
 
 const CardNoPaddingWithShimmer = WithLoadingShimmer(CardNoPadding);

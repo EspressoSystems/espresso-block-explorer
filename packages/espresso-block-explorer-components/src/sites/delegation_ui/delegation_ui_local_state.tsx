@@ -1,9 +1,10 @@
 import { assert } from '@/assert/assert';
 import { breakpoint } from '@/assert/debugger';
 import { sleep } from '@/async/sleep';
-import { DataContext } from '@/contexts/data_provider';
 import { AsyncIterableResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
+import { DataContext } from '@/contexts/data_provider';
+import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import BadResponseClientError from '@/errors/bad_response_client_error';
 import WebWorkerErrorResponse from '@/errors/web_worker_error_response';
@@ -24,7 +25,6 @@ import { EspressoBlockHeightContext } from './contexts/espresso_block_height_con
 import { EspressoCurrentEpochContext } from './contexts/espresso_current_epoch_context';
 import { FullNodeSetSnapshotContext } from './contexts/full_node_set_snapshot_context';
 import { L1BlockIDContext } from './contexts/l1_block_id_context';
-import { L1ValidatorServiceContext } from './contexts/l1_validator_api_context';
 import { WalletSnapshotContext } from './contexts/wallet_snapshot_context';
 
 /**

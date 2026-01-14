@@ -1,18 +1,18 @@
-import { DataContext } from '@/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/text';
+import { DataContext } from '@/contexts/data_provider';
+import { L1MethodsContext } from '@/contexts/l1_methods_context';
+import {
+  StakeTableContractContext,
+  StakeTableContractGasEstimatorContext,
+} from '@/contexts/stake_table_contract_context';
 import { neverPromise } from '@/functional/functional_async';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
-import { L1MethodsContext } from '../contexts/l1_methods_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
-import {
-  StakeTableContractContext,
-  StakeTableContractGasEstimatorContext,
-} from '../contexts/stake_table_contract_context';
 import ButtonLarge from '../elements/buttons/button_large';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
@@ -74,15 +74,15 @@ const ProvideUndelegateContractGasEstimate: React.FC<
   const promise = React.useMemo(
     () =>
       !account ||
-      !validator ||
-      !stakeTableGasEstimator ||
-      !currentStakeToValidator
+        !validator ||
+        !stakeTableGasEstimator ||
+        !currentStakeToValidator
         ? neverPromise
         : stakeTableGasEstimator.undelegate(
-            account,
-            validator,
-            currentStakeToValidator,
-          ),
+          account,
+          validator,
+          currentStakeToValidator,
+        ),
 
     // We only want to refresh this, if the estimator changes, or if the
     // criteria of our account or validator switch between being set or not,
@@ -187,7 +187,7 @@ const UnstakingActionsArea: React.FC = () => {
   if (
     asyncSnapshot.hasData &&
     (asyncSnapshot.data?.status ?? 0) >=
-      PerformWriteTransactionStatus.receiptRetrieved
+    PerformWriteTransactionStatus.receiptRetrieved
   ) {
     // Undelegation succeeded
     return (

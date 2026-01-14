@@ -1,0 +1,24 @@
+
+@import '@/block_explorer/styles/main.css';
+
+:root {
+  --loading-shimmer--dim-color: var(--color--transparent);
+  --loading-shimmer--highlight-color: var(--color--white);
+}
+
+[data-theme='light'] {
+  --loading-shimmer--dim-color: var(--color--transparent);
+  --loading-shimmer--highlight-color: var(--color--white);
+}
+
+[data-theme='dark'] {
+  --loading-shimmer--dim-color: var(--color--slate-950);
+  --loading-shimmer--highlight-color: var(--color--slate-700);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --loading-shimmer--dim-color: var(--color--slate-950);
+    --loading-shimmer--highlight-color: var(--color--slate-700);
+  }
+}

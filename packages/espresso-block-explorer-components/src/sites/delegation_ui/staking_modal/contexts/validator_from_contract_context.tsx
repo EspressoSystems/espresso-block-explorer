@@ -1,11 +1,11 @@
-import { DataContext } from '@/contexts/data_provider';
 import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
+import { DataContext } from '@/contexts/data_provider';
+import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import { Validator } from '@/contracts/stake_table/stake_table_interface';
 import { neverPromise } from '@/functional/functional_async';
 import { ConfirmedValidatorContext } from '@/sites/delegation_ui/contexts/confirmed_valdiator_context';
 import { L1RefreshTimestampContext } from '@/sites/delegation_ui/contexts/l1_refresh_timestamp_context';
-import { StakeTableContractContext } from '@/sites/delegation_ui/contexts/stake_table_contract_context';
 import React from 'react';
 
 export const ValidatorFromContractContext =

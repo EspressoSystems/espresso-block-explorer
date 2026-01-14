@@ -1,16 +1,16 @@
 import { assert, assertNotNull } from '@/assert/assert';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
+import {
+  ESPTokenContractContext,
+  ESPTokenContractGasEstimatorContext,
+} from '@/contexts/esp_token_contract_context';
+import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { ESPTokenContract } from '@/contracts/esp_token/esp_token_interface';
 import { bigintCodec, hexArrayBufferCodec } from '@/convert/codec';
 import { createKeccakHash } from '@/crypto/keccak/family';
 import { nodeList } from '@/data_source/fake_data_source';
 import { foldRIterable } from '@/functional/functional';
 import React from 'react';
-import {
-  ESPTokenContractContext,
-  ESPTokenContractGasEstimatorContext,
-} from '../contexts/esp_token_contract_context';
-import { L1MethodsContext } from '../contexts/l1_methods_context';
 import { MockESPTokenContractGasEstimatorImpl } from './esp_token_contract_gas_estimator';
 import {
   MockContractStorage,
@@ -40,7 +40,7 @@ export class MockESPTokenContractState implements MockContractStorage {
     public readonly allowances: Map<`0x${string}`, Map<`0x${string}`, bigint>>,
 
     public readonly lastUpdate: Date,
-  ) {}
+  ) { }
 
   public applyTransaction(
     tx: UnderlyingTransaction,
@@ -418,24 +418,24 @@ function useMockESPContractState(
       initialState?.decimals ?? 18,
       initialState?.totalSupply ?? 1_234_567_8900n * 10n ** 18n,
       initialState?.balances ??
-        new Map([
-          // Load some initial balance for our Mock Account
-          [MockAddress, 5_000_000_000_000_000_000_000n],
+      new Map([
+        // Load some initial balance for our Mock Account
+        [MockAddress, 5_000_000_000_000_000_000_000n],
 
-          // Set the initial Balance for the default address of the Mock Stake
-          // Table contract to be equal to all of the expected stake
-          [
-            `0x0000000000000000000000000000000000000002`,
-            foldRIterable((acc, next) => acc + next.stake, 0n, nodeList),
-          ],
+        // Set the initial Balance for the default address of the Mock Stake
+        // Table contract to be equal to all of the expected stake
+        [
+          `0x0000000000000000000000000000000000000002`,
+          foldRIterable((acc, next) => acc + next.stake, 0n, nodeList),
+        ],
 
-          // Set the initial balance for the reward state contract, so we
-          // can claim rewards
-          [
-            '0x0000000000000000000000000000000000000003',
-            1_000_000_000_000_000_000_000_000_000n,
-          ],
-        ]),
+        // Set the initial balance for the reward state contract, so we
+        // can claim rewards
+        [
+          '0x0000000000000000000000000000000000000003',
+          1_000_000_000_000_000_000_000_000_000n,
+        ],
+      ]),
       initialState?.allowances ?? new Map(),
       initialState?.lastUpdate ?? new Date(),
     ),
@@ -471,7 +471,7 @@ export const MockESPTokenContract: React.FC<React.PropsWithChildren> = ({
 
   React.useEffect(() => {
     contract.setAccountAddress(accountAddress);
-    return () => {};
+    return () => { };
   }, [contract, accountAddress]);
 
   if (!(l1Methods instanceof MockL1MethodsImpl)) {

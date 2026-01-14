@@ -32,7 +32,11 @@ export const PendingExitActionsCell: React.FC = () => {
 
   const timeRemaining = pendingExit.availableTime.valueOf() - now.valueOf();
   if (timeRemaining > 0) {
-    return <TimeLeftText durationInMilliseconds={timeRemaining} />;
+    return <>
+      <Text text="Claim in" />
+      &nbsp;
+      <TimeLeftText durationInMilliseconds={timeRemaining} />
+    </>;
   }
 
   return <Action />;
