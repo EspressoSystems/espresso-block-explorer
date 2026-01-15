@@ -4,18 +4,19 @@ import { NodeAddressContext } from '../contexts/node_address_context';
 import { ProvideValidatorNodeContext } from '../contexts/validator_node_context';
 import {
   ClaimRewards,
-  ValidatorConfirmed,
-  ValidatorConfirmedExitWithdraw,
-  ValidatorConfirmedStake,
-  ValidatorConfirmedUndelegate,
-  ValidatorConfirmedUndelegateWithdraw,
   ValidatorSelectionContext,
   ValidatorSelectionEnum,
+  ValidatorSelectionWithConfirmation
 } from '../contexts/validator_selection_context';
 import { ClaimRewardsContent } from './claim_rewards_content';
 import { ValidatorConfirmedContent } from './staking_modal_validator_confirmed_content';
 import { ValidatorSelectionNeededContent } from './validator_selection_needed_content';
 
+/**
+ * ProvideConfirmationContexts creates some local contexts containing address
+ * information about the user's current validator selections and
+ * confirmations, if they exist.
+ */
 const ProvideConfirmationContexts: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
@@ -31,20 +32,26 @@ const ProvideConfirmationContexts: React.FC<React.PropsWithChildren> = ({
   );
 };
 
+/**
+  * isValidatorConfirmed is a type checking fucntion that indicates whether
+  * the passed ValidatorSelectionEnum has a selected address specified or
+  * not.
+  */
 function isValidatorConfirmed(
   selectedValidator: ValidatorSelectionEnum,
-): selectedValidator is ValidatorSelectionEnum & {
-  validatorAddress: `0x${string}`;
-} {
-  return (
-    selectedValidator instanceof ValidatorConfirmed ||
-    selectedValidator instanceof ValidatorConfirmedStake ||
-    selectedValidator instanceof ValidatorConfirmedUndelegate ||
-    selectedValidator instanceof ValidatorConfirmedExitWithdraw ||
-    selectedValidator instanceof ValidatorConfirmedUndelegateWithdraw
-  );
+): selectedValidator is ValidatorSelectionWithConfirmation {
+  return selectedValidator instanceof ValidatorSelectionWithConfirmation;
 }
 
+/**
+  * determineConfirmedValidator returns the confirmed validator address
+  * for a given validator.
+  *
+  * NOTE: This function always returns an address string.  However, if the
+  * user does not actually have a confirmed address, it will return an
+  * empty address, "0x" to indicate that it doesn't match any specified
+  * validator.
+  */
 function determineConfirmedValidator(
   selectedValidator: ValidatorSelectionEnum,
 ): `0x${string}` {
@@ -55,6 +62,11 @@ function determineConfirmedValidator(
   return `0x`;
 }
 
+/**
+ * StakingModalContentRouter is a content router that changes which specific
+ * modal content is being displayed to the user based on the state of the
+ * ValidatorSelectionEnum.
+ */
 const StakingModalContentRouter: React.FC = () => {
   const selectedValidator = React.useContext(ValidatorSelectionContext);
 
@@ -69,6 +81,11 @@ const StakingModalContentRouter: React.FC = () => {
   return <ValidatorSelectionNeededContent />;
 };
 
+/**
+ * StakingModalContent is the content element of the Staking Modal.  All
+ * modal content is provided from this component, and the specific contents
+ * of this modal depend on the StakingModalContentRouter.
+ */
 export const StakingModalContent: React.FC = () => {
   return (
     <ProvideConfirmationContexts>

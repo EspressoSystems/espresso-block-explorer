@@ -12,6 +12,7 @@ import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_n
 import {
   SetValidatorSelectionContext,
   ValidatorConfirmed,
+  ValidatorConfirmedStake,
 } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import ButtonLarge from '@/sites/delegation_ui/elements/buttons/button_large';
 import { ExitedChip } from '@/sites/delegation_ui/elements/chips/exited_chip';
@@ -20,6 +21,10 @@ import { UndelegatedChip } from '@/sites/delegation_ui/elements/chips/undelegate
 import { UndelegatingChip } from '@/sites/delegation_ui/elements/chips/undelegating_chip';
 import React from 'react';
 
+/**
+ * ActionsCell is a table cell that represents the actions that a user
+ * can take to open a modal context for the user in question.
+ */
 export const ActionsCell: React.FC = () => {
   const validator = React.useContext(ValidatorNodeContext);
   const address = React.useContext(RainbowKitAccountAddressContext);
@@ -86,7 +91,7 @@ export const ActionsCell: React.FC = () => {
     <ButtonLarge
       className="action"
       onClick={() => {
-        setSelection(new ValidatorConfirmed(validator.addressText));
+        setSelection(new ValidatorConfirmedStake(validator.addressText));
         modalControls.open();
       }}
     >
