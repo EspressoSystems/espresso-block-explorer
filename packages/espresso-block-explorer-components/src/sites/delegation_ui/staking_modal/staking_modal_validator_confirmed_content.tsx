@@ -73,7 +73,7 @@ const ValidatorConfirmedSpecificContent: React.FC = () => {
     historyControls.replace(
       new ValidatorConfirmedStake(selectedValidator.validatorAddress),
     );
-    return () => { };
+    return () => {};
   }, [selectedValidator, historyControls, currentStakeToValidator]);
 
   if (selectedValidator instanceof ValidatorConfirmedExitWithdraw) {

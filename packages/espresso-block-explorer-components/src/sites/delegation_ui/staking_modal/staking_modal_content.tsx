@@ -6,7 +6,7 @@ import {
   ClaimRewards,
   ValidatorSelectionContext,
   ValidatorSelectionEnum,
-  ValidatorSelectionWithConfirmation
+  ValidatorSelectionWithConfirmation,
 } from '../contexts/validator_selection_context';
 import { ClaimRewardsContent } from './claim_rewards_content';
 import { ValidatorConfirmedContent } from './staking_modal_validator_confirmed_content';
@@ -33,10 +33,10 @@ const ProvideConfirmationContexts: React.FC<React.PropsWithChildren> = ({
 };
 
 /**
-  * isValidatorConfirmed is a type checking fucntion that indicates whether
-  * the passed ValidatorSelectionEnum has a selected address specified or
-  * not.
-  */
+ * isValidatorConfirmed is a type checking fucntion that indicates whether
+ * the passed ValidatorSelectionEnum has a selected address specified or
+ * not.
+ */
 function isValidatorConfirmed(
   selectedValidator: ValidatorSelectionEnum,
 ): selectedValidator is ValidatorSelectionWithConfirmation {
@@ -44,14 +44,14 @@ function isValidatorConfirmed(
 }
 
 /**
-  * determineConfirmedValidator returns the confirmed validator address
-  * for a given validator.
-  *
-  * NOTE: This function always returns an address string.  However, if the
-  * user does not actually have a confirmed address, it will return an
-  * empty address, "0x" to indicate that it doesn't match any specified
-  * validator.
-  */
+ * determineConfirmedValidator returns the confirmed validator address
+ * for a given validator.
+ *
+ * NOTE: This function always returns an address string.  However, if the
+ * user does not actually have a confirmed address, it will return an
+ * empty address, "0x" to indicate that it doesn't match any specified
+ * validator.
+ */
 function determineConfirmedValidator(
   selectedValidator: ValidatorSelectionEnum,
 ): `0x${string}` {

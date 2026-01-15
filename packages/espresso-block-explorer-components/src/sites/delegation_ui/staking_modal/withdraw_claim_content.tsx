@@ -161,7 +161,7 @@ const WithdrawClaimActionsArea: React.FC = () => {
   if (
     asyncSnapshot.hasData &&
     (asyncSnapshot.data?.status ?? 0) >=
-    PerformWriteTransactionStatus.receiptRetrieved
+      PerformWriteTransactionStatus.receiptRetrieved
   ) {
     // Claim withdrawal succeeded
     return (
