@@ -1,0 +1,3 @@
+import{R as o,j as t}from"./iframe-tCHaFxbc.js";import{A as m}from"./async_iterable_resolver-ClLpCr0c.js";import{D as c}from"./data_provider-DMdJRqvD.js";import{c as i,b as s}from"./loading_provider-CZPO-_kN.js";const n=r=>{const e=o.useContext(i);return t.jsx(m,{asyncIterable:e,children:t.jsx(d,{children:r.children})})},d=r=>{const e=o.useContext(c),a=o.useContext(s);return t.jsx(s.Provider,{value:a??e,children:r.children})};try{n.displayName="ErrorStreamConsumer",n.__docgenInfo={description:`ErrorStreamConsumer is a component that is used to consume errors off of
+the ErrorStreamContext.  This component will resolve the error stream
+and provide the resolved error to the children of this component.`,displayName:"ErrorStreamConsumer",props:{}}}catch{}export{n as E};
