@@ -46,7 +46,7 @@ jobs:
         uses: docker/metadata-action@v5
         id: du_meta
         with:
-          images: ghcr.io/EspressoSystems/espresso-block-explorer
+          images: ghcr.io/EspressoSystems/espresso-delegation-ui
 
       - name: Block Explorer - Build and Push Docker
         uses: docker/build-push-action@v6
