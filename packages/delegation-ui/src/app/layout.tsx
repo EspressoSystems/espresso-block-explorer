@@ -1,18 +1,15 @@
 import 'espresso-block-explorer-components/delegation-ui.css';
-import 'espresso-block-explorer-components/espresso-block-explorer-components.css';
 import React from 'react';
 // Growing pains... It's unclear why these css file code splits are occurring.
 // After spending some time to resolve / determine them without success, we're
 // just adopting them for now until we can figure out how to resolve them
 // at a later time.
-import 'espresso-block-explorer-components/cappuccino_hot_shot_query_service_api_context.css';
 import 'espresso-block-explorer-components/stake_table_v2_contract_context.css';
-import 'espresso-block-explorer-components/inscription_and_signature.css';
+import 'espresso-block-explorer-components/inscription.css';
 import { readFromEnv } from '@/helpers/read_from_env';
 
 import LayoutClientComponent from '@/client_components/layout';
 import './globals.css';
-
 
 // Force dynamic rendering to ensure environment variables are read at runtime
 export const dynamic = 'force-dynamic';
