@@ -42,6 +42,17 @@ import { StakingModalTitle } from './staking_modal_title';
 import { ValidatorDisplayArea } from './validator_display_area';
 import './validator_selection_needed_content.css';
 
+/**
+ * ValidatorSelectionNeededContent is the content to display when the user
+ * indicates that he/she wishes to choose a modal, but no specific selection
+ * has been made.
+ *
+ * This indicates that the user wishes to perform a delegation, but has not
+ * specified a specific validator to make the decision with.  As a result,
+ * we need to display additional information to the user so he/she can
+ * make a confirmed decision with regard to which Validator he/she wishes
+ * to perform an action.
+ */
 export const ValidatorSelectionNeededContent: React.FC = () => {
   return (
     <>
@@ -58,6 +69,16 @@ export const ValidatorSelectionNeededContent: React.FC = () => {
   );
 };
 
+/**
+ * ValidatorSelection splits the content of the Validator selection between
+ * a list of validators to select, and the details concerning that validator
+ * selection.
+ *
+ * NOTE: design has requested that this selection always be populated. This
+ * is not always possible, but where we have a list of validators, we will
+ * always select one for the user.  If this is not possible, we will end
+ * up with "no selection" as a failsafe fallback.
+ */
 const ValidatorSelection: React.FC = () => {
   return (
     <div className="validator-selection-split">
@@ -74,6 +95,11 @@ const ValidatorSelection: React.FC = () => {
   );
 };
 
+/**
+ * ProvideNodeList provides a sorted list of node addresses based on stake.
+ * This is done as the order of this list is independent of the one on the
+ * main page.
+ */
 const ProvideNodeList: React.FC<React.PropsWithChildren> = ({ children }) => {
   const nodeList = React.useContext(NodeAddressListContext);
   const allValidators = React.useContext(AllValidatorsContext);
@@ -92,6 +118,10 @@ const ProvideNodeList: React.FC<React.PropsWithChildren> = ({ children }) => {
   );
 };
 
+/**
+ * ValidatorSelectionList filters the provided Node Address List based on
+ * the user input, and displays the validator list to the user.
+ */
 const ValidatorSelectionList: React.FC = () => {
   return (
     <div className="validator-selection-list">
@@ -102,6 +132,10 @@ const ValidatorSelectionList: React.FC = () => {
   );
 };
 
+/**
+ * FilteredValidatorList filters the provided Node Address List based on
+ * the search filter the user has provided.
+ */
 const FilteredValidatorList: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
@@ -128,6 +162,9 @@ const FilteredValidatorList: React.FC<React.PropsWithChildren> = ({
   );
 };
 
+/**
+ * ValidatorList displays the list of validators available for selection.
+ */
 const ValidatorList: React.FC = () => {
   // const nodeList = React.useContext(NodeListContext);
   const nodeListAddresses = React.useContext(NodeAddressListContext);
@@ -147,6 +184,11 @@ const ValidatorList: React.FC = () => {
   );
 };
 
+/**
+ * NodeRow displays a single Validator entry with the relevant details.
+ * It will also indicate whether the specific row matches the user's
+ * selection or not.
+ */
 const NodeRow: React.FC = () => {
   const node = React.useContext(ValidatorNodeContext);
   const selection = React.useContext(ValidatorSelectionContext);
@@ -175,6 +217,10 @@ const NodeRow: React.FC = () => {
   );
 };
 
+/**
+ * ValidatorSelectionDetails reflects the details of the user's current
+ * selected validator, should there be one.
+ */
 const ValidatorSelectionDetails: React.FC = () => {
   return (
     <ProvideSelectedNode>
@@ -194,6 +240,11 @@ const ValidatorSelectionDetails: React.FC = () => {
   );
 };
 
+/**
+ * ProvideSelectedNode provides the context for the currently selected
+ * node. If there is not current selection the default NodeAddressContext
+ * is not overwritten.
+ */
 const ProvideSelectedNode: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
@@ -210,6 +261,11 @@ const ProvideSelectedNode: React.FC<React.PropsWithChildren> = ({
   );
 };
 
+/**
+ * EmptySelectionGuard prevents rendering of children if there is no
+ * active selection. This is done as a fail safe, as the details require
+ * an active selection to display the details properly.
+ */
 const EmptySelectionGuard: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
@@ -233,6 +289,10 @@ const ValidatorDetailsArea: React.FC = () => {
   );
 };
 
+/**
+ * ValidatorConfirmArea provides the area where the user can confirm
+ * the specified Validator as his/her confirmed selection.
+ */
 const ValidatorConfirmArea: React.FC = () => {
   const selection = React.useContext(
     ValidatorSelectionContext,

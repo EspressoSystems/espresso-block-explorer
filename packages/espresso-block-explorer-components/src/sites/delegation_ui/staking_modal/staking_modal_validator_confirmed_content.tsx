@@ -18,6 +18,10 @@ import { UndelegationContent } from './undelegation_content';
 import { WithdrawClaimContent } from './withdraw_claim_content';
 import { WithdrawExitContent } from './withdraw_exit_content';
 
+/**
+ * ValidatorConfirmedContent is the content to render when we have a confirmed
+ * validator.
+ */
 export const ValidatorConfirmedContent: React.FC = () => {
   return (
     <ProvideStakingAmountContexts>
@@ -32,6 +36,21 @@ export const ValidatorConfirmedModalContent: React.FC = () => {
   return <ValidatorConfirmedSpecificContent />;
 };
 
+/**
+ * ValidatorConfirmedSpecificContent renders the specific content for a
+ * confirmed validator based on the specific confirmation value of the
+ * enum.
+ *
+ * This is a routing component to deliver the user to the right content
+ * type.
+ *
+ * NOTE: This is also a decision resolver.  If no more specific state beyond
+ * the validator has been confirmed can be determined, then it will attempt
+ * to resolve the expected state of the user based on other information, some
+ * of which may not be immediately available.  This means that this will
+ * actively try to resolve the confirmed state into a more speicfic confirmed
+ * state for the user.
+ */
 const ValidatorConfirmedSpecificContent: React.FC = () => {
   const selectedValidator = React.useContext(ValidatorSelectionContext);
   const historyControls = React.useContext(StakingModalHistoryControlsContext);
@@ -80,19 +99,6 @@ const ValidatorConfirmedSpecificContent: React.FC = () => {
   // validator.
   // Do we have an existing delegation?  If so, we are in manage mode.
   // If not, we are in new delegation mode.
-
-  if (currentStakeToValidator === null) {
-    // We haven't loaded our stake yet, we don't know which component to
-    // render, so we wait.
-    return <></>;
-  }
-
-  if (currentStakeToValidator <= 0n) {
-    // We don't have any current stake, so we are considered to be a
-    // brand new Delegation.
-
-    return <></>;
-  }
 
   // We have a current Stake, so we must ask the user how he/she would like
   // to continue.

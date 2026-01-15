@@ -1,4 +1,10 @@
 import Text from '@/components/text/text';
+import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
+import { WalletSnapshotContext } from 'delegation-ui';
+import {
+  emptyIterator,
+  firstWhereIterable,
+} from 'espresso-block-explorer-components';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import {
@@ -42,6 +48,14 @@ export const ManageStakeContent: React.FC = () => {
 const ManageStakeActionsArea: React.FC = () => {
   const historyControls = React.useContext(StakingModalHistoryControlsContext);
   const confirmedValidator = React.useContext(ConfirmedValidatorContext);
+  const walletSnapshot = React.useContext(WalletSnapshotContext);
+
+  const currentPendingUndelegation =
+    firstWhereIterable(
+      walletSnapshot?.pendingUndelegations ??
+        emptyIterator<PendingWithdrawal>(),
+      (withdrawal) => withdrawal.nodeText === confirmedValidator,
+    ) ?? null;
 
   return (
     <div className="staking-modal-manage-stake-actions-area">
@@ -54,6 +68,7 @@ const ManageStakeActionsArea: React.FC = () => {
       </ButtonLarge>
 
       <ButtonLarge
+        disabled={currentPendingUndelegation !== null}
         onClick={() => {
           historyControls.push(
             new ValidatorConfirmedUndelegate(confirmedValidator),
