@@ -151,7 +151,7 @@ export const Decaf: Story = {
   args: {
     ...environmentArgsDecafWithContracts,
     l1ValidatorServiceURL:
-      'https://staking.decaf.testnet.espresso.network/v0/staking/',
+      'https://staking-api.decaf.testnet.espresso.network/v0/staking/',
   },
 };
 
