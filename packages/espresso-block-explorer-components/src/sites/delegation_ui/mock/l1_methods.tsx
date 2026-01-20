@@ -7,17 +7,17 @@ import { createKeccakHash } from '@/crypto/keccak/family';
 import { foldRIterable } from '@/functional/functional';
 import { fakeData } from '@/models/config/storybook/wagmi';
 import React from 'react';
-import { BlockTag } from 'viem';
+import { type BlockTag } from 'viem';
 import {
-  EstimateFeesPerGasReturnType,
-  GetBalanceParameters,
-  GetBalanceReturnType,
-  GetBlockParameters,
-  GetBlockReturnType,
-  GetTransactionParameters,
-  GetTransactionReceiptParameters,
-  GetTransactionReceiptReturnType,
-  GetTransactionReturnType,
+  type EstimateFeesPerGasReturnType,
+  type GetBalanceParameters,
+  type GetBalanceReturnType,
+  type GetBlockParameters,
+  type GetBlockReturnType,
+  type GetTransactionParameters,
+  type GetTransactionReceiptParameters,
+  type GetTransactionReceiptReturnType,
+  type GetTransactionReturnType,
 } from 'wagmi/actions';
 
 type Config = typeof fakeData;
@@ -81,7 +81,7 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
   constructor(
     private storage: MockL1State,
     public accountAddress: `0x${string}` | null = null,
-  ) { }
+  ) {}
 
   replaceAccountAddress(
     accountAddress: `0x${string}` | null,
@@ -321,8 +321,8 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     const gas = block.transactions.reduce((acc, tx) => acc + tx.gas, 0n);
     const transactions = includeTransactions
       ? block.transactions.map((tx) =>
-        this.transactionFromTransactionAndBlock(tx, block),
-      )
+          this.transactionFromTransactionAndBlock(tx, block),
+        )
       : block.transactions.map((tx) => tx.hash);
 
     return {
@@ -562,7 +562,7 @@ export const ProvideAutoAdvanceL1Methods: React.FC<
 
     return () => {
       clearInterval(intervalHandle);
-      advance = () => { };
+      advance = () => {};
     };
   }, [l1Methods, interval]);
 
@@ -587,7 +587,7 @@ export const MockL1Methods: React.FC<React.PropsWithChildren> = ({
 
   React.useEffect(() => {
     l1Methods.setAccountAddress(accountAddress as null | `0x${string}`);
-    return () => { };
+    return () => {};
   }, [l1Methods, accountAddress]);
 
   return (

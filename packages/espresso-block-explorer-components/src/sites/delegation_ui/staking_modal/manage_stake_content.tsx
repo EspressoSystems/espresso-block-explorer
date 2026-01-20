@@ -1,10 +1,7 @@
 import Text from '@/components/text/text';
+import { emptyIterator, firstWhereIterable } from '@/functional/functional';
 import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
 import { WalletSnapshotContext } from 'delegation-ui';
-import {
-  emptyIterator,
-  firstWhereIterable,
-} from 'espresso-block-explorer-components';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import {

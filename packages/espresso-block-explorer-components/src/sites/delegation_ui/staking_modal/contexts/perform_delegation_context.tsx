@@ -5,7 +5,7 @@ import { L1Methods } from '@/contracts/l1/l1_interface';
 import { StakeTableContract } from '@/contracts/stake_table/stake_table_interface';
 import { neverAsyncIterable } from '@/functional/functional_async';
 import React from 'react';
-import { Config } from 'wagmi';
+import { type Config } from 'wagmi';
 import {
   performWriteTransaction,
   PerformWriteTransactionState,

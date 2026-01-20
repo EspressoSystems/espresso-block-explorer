@@ -7,6 +7,6 @@ dev-decaf:
   CONTRACT_ADDRESS_LIGHT_CLIENT=0x303872bb82a191771321d4828888920100d0b3e4 \
   QUERY_SERVICE_URI=https://query.decaf.testnet.espresso.network/v0/ \
   NODE_VALIDATOR_URI=wss://nv.decaf.testnet.espresso.network/v0/ \
-  STAKING_UI_SERVICE_URI=https://staking.decaf.testnet.espresso.network/v0/staking/ \
+  STAKING_UI_SERVICE_URI=https://staking-api.decaf.testnet.espresso.network/v0/staking/ \
   bun run dev
 

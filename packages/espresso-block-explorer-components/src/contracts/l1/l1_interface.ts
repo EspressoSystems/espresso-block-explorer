@@ -1,20 +1,20 @@
-import { BlockTag, FeeValuesType } from 'viem';
-import { Config } from 'wagmi';
+import { type BlockTag, type FeeValuesType } from 'viem';
+import { type Config } from 'wagmi';
 import {
-  EstimateFeesPerGasParameters,
-  EstimateFeesPerGasReturnType,
+  type EstimateFeesPerGasParameters,
+  type EstimateFeesPerGasReturnType,
   estimateGas,
-  EstimateGasParameters,
+  type EstimateGasParameters,
   getBalance,
   GetBalanceParameters,
   getBlock,
   getBlockNumber,
-  GetBlockNumberParameters,
-  GetBlockParameters,
+  type GetBlockNumberParameters,
+  type GetBlockParameters,
   getTransaction,
-  GetTransactionParameters,
+  type GetTransactionParameters,
   getTransactionReceipt,
-  GetTransactionReceiptParameters,
+  type GetTransactionReceiptParameters,
 } from 'wagmi/actions';
 
 export interface L1MethodsReadOnly<
