@@ -1,1 +1,0 @@
-import{N as r,h as c,j as s,T as a,g as d,I as l,O as t,m as w,n as i}from"./string-DoEjSKSD.js";class C{convert(e){if(!d(e))throw new l(typeof e,"string");return new URL(e)}}class p{convert(e){return e.toString()}}class u extends a{encoder=new p;decoder=new C}const n=new u,R=new r(new c(n),new s(n)),U=new t(new w(n),new i(n));export{R as n,U as o,n as u};
