@@ -248,7 +248,7 @@ const ApplyFiltersToSnapshot: React.FC<React.PropsWithChildren> = ({
     }
 
     return () => {
-      setNextFilteredList = () => { };
+      setNextFilteredList = () => {};
     };
   }, [
     nodeList,

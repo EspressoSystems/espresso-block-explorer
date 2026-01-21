@@ -7,7 +7,7 @@ import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { neverAsyncIterable } from '@/functional/functional_async';
 import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
 import React from 'react';
-import { Config } from 'wagmi';
+import { type Config } from 'wagmi';
 import {
   performWriteTransaction,
   PerformWriteTransactionState,

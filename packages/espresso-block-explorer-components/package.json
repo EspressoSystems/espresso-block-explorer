@@ -65,7 +65,9 @@
     },
     "./block-explorer.css": "./dist/block-explorer.css",
     "./delegation-ui.css": "./dist/delegation-ui.css",
-    "./inscription.css": "./dist/inscription.css",
+    "./espresso-block-explorer-components.css": "./dist/espresso-block-explorer-components.css",
+    "./cappuccino_hot_shot_query_service_api_context.css": "./dist/cappuccino_hot_shot_query_service_api_context.css",
+    "./inscription_and_signature.css": "./dist/inscription_and_signature.css",
     "./stake_table_v2_contract_context.css": "./dist/stake_table_v2_contract_context.css"
   },
   "name": "espresso-block-explorer-components",

@@ -8,9 +8,11 @@ import { peerDependencies } from './package.json';
 
 export default defineConfig({
   build: {
+    manifest: true,
     lib: {
       entry: {
-        'espresso-block-explorer-components': './src/espresso-block-explorer-components.ts', // Specifies the entry point for building the library.
+        'espresso-block-explorer-components':
+          './src/espresso-block-explorer-components.ts', // Specifies the entry point for building the library.
         'block-explorer': './src/block-explorer.ts',
         'delegation-ui': './src/delegation-ui.ts',
       },
