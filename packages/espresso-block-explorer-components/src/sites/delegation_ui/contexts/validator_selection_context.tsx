@@ -167,6 +167,14 @@ export class ValidatorConfirmedExitWithdraw extends ValidatorSelectionWithConfir
   }
 }
 
+export class ClaimAndStakeIntent extends ValidatorSelectionEnum {
+  toJSON() {
+    return {
+      ClaimAndStakeIntent: true,
+    };
+  }
+}
+
 /**
  * ValidatorSelectionContext provides the current ValidatorSelectionEnum
  * that indicates the user's intended modal decisions.
@@ -180,7 +188,7 @@ export const ValidatorSelectionContext =
  */
 export const SetValidatorSelectionContext = React.createContext<
   React.Dispatch<React.SetStateAction<ValidatorSelectionEnum>>
->(() => { });
+>(() => {});
 
 /**
  * ProvideValidatorSelection is a context provider that allows child

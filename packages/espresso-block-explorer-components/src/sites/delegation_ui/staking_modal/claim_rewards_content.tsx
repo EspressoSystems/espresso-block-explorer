@@ -81,10 +81,10 @@ const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
     !claimRewardsInput || !rewardClaimGasEstimator || !account
       ? neverPromise
       : rewardClaimGasEstimator.claimRewards(
-        account,
-        claimRewardsInput.lifetimeRewards,
-        hexArrayBufferCodec.encode(claimRewardsInput.authData),
-      );
+          account,
+          claimRewardsInput.lifetimeRewards,
+          hexArrayBufferCodec.encode(claimRewardsInput.authData),
+        );
 
   return (
     <PromiseResolver promise={promise}>
@@ -175,7 +175,7 @@ const ClaimRewardsActionsArea: React.FC = () => {
   if (
     asyncSnapshot.hasData &&
     (asyncSnapshot.data?.status ?? 0) >=
-    PerformWriteTransactionStatus.receiptRetrieved
+      PerformWriteTransactionStatus.receiptRetrieved
   ) {
     // We have received the receipt, we *should* be good to go
     return (
