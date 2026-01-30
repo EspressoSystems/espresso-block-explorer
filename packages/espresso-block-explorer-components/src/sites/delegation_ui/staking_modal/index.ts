@@ -1,9 +1,5 @@
 export * from './contexts';
 
-export * from './approve_button';
-export * from './back_button';
-export * from './claim_rewards_content';
-export * from './claimable_rewards_overview_area';
 export * from './claimable_rewards_summary_and_interaction';
 export * from './close_staking_modal';
 export * from './delegate_button';
@@ -23,10 +19,10 @@ export * from './staking_completion_area';
 export * from './staking_content';
 export * from './staking_header';
 export * from './staking_initial_summary_and_interaction';
+export * from './staking_modal';
 export * from './staking_modal_content';
 export * from './staking_modal_title';
 export * from './staking_modal_validator_confirmed_content';
-export * from './staking_modal';
 export * from './staking_overview_area';
 export * from './tx_fee_estimate';
 export * from './undelegation_content';

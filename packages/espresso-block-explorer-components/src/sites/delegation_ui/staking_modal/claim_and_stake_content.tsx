@@ -9,6 +9,7 @@ import {
 import FullWalletAddressText from '@/components/text/full_wallet_address';
 import MoneyText from '@/components/text/money_text';
 import Text from '@/components/text/text';
+import CheckCircle from '@/components/visual/icons/sharp_line/check_circle';
 import { DataContext } from '@/contexts/data_provider';
 import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
@@ -32,12 +33,11 @@ import {
   AllValidatorsContext,
   NodeAddressListContext,
 } from '../contexts/all_validators_context';
-import { ClaimPortalIntentContext } from '../contexts/claim_portal_intent_context';
-import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import {
-  Sections,
-  SetCurrentSectionContext,
-} from '../contexts/current_section_context';
+  ClaimPortalIntentContext,
+  kIntentClaimAndStake,
+} from '../contexts/claim_portal_intent_context';
+import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import {
   ESPBalanceAsyncSnapshotContext,
   ESPBalanceContext,
@@ -83,7 +83,6 @@ import { StakingHeader } from './staking_header';
 import { StakingModalTitle } from './staking_modal_title';
 import { StakingOverviewArea } from './staking_overview_area';
 import { ValidatorDisplayArea } from './validator_display_area';
-import CheckCircle from '@/components/visual/icons/sharp_line/check_circle';
 
 /**
  * ClaimAndStakeContent is a somewhat complex Modal Content with multiple
@@ -123,6 +122,42 @@ const DelegationUIClaimPortalHandOffRouter: React.FC = () => {
   );
 };
 
+/**
+ * SimpleModalLayoutProps represents the set of props that the
+ * SimpleModalLayout utilizes.
+ */
+interface SimpleModalLayoutProps extends React.PropsWithChildren {
+  title: React.ReactNode;
+  after?: React.ReactNode;
+}
+
+/**
+ * SimpleModalLayout is a reuseable component that handles the the basic
+ * consistent layout of the Modals where simple messages, or information
+ * needs to be relayed.
+ *
+ * It doesn't really reduce the amount of code duplication for the React
+ * components but much, but it does prevent mistakes in className usage,
+ * and ensures that these modals have consistent styling applied to them.
+ */
+const SimpleModalLayout: React.FC<SimpleModalLayoutProps> = ({
+  title,
+  after,
+  children,
+}) => {
+  return (
+    <>
+      <StakingHeader>
+        <StakingModalTitle>{title}</StakingModalTitle>
+        {after ?? null}
+      </StakingHeader>
+      <StakingContent>
+        <div className="claim-and-stake-content">{children}</div>
+      </StakingContent>
+    </>
+  );
+};
+
 const CompletionCheck: React.FC<React.PropsWithChildren> = ({ children }) => {
   const delegationAsyncSnapshot = React.useContext(
     DelegateAsyncSnapshotContext,
@@ -155,7 +190,7 @@ const DelegationUIClaimPortalHandOffAccountCheck: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const intent = React.useContext(ClaimPortalIntentContext) ?? {
-    intent: 'claim-and-stake',
+    intent: kIntentClaimAndStake,
     address: null,
     amount: null,
   };
@@ -168,22 +203,13 @@ const DelegationUIClaimPortalHandOffAccountCheck: React.FC<
     // We do not currently have a wallet connected. Let's guide the user
     // toward connecting his/her wallet.
     return (
-      <>
-        <StakingHeader>
-          <StakingModalTitle>
-            <Text text="Connect your wallet" />
-          </StakingModalTitle>
-        </StakingHeader>
-        <StakingContent>
-          <div className="claim-and-stake-content">
-            <p>
-              <Text text="You currently do not have a wallet connected. Please connect your wallet in order to continue." />
-            </p>
-            <br />
-            <ConnectWalletButton />
-          </div>
-        </StakingContent>
-      </>
+      <SimpleModalLayout title={<Text text="Connect your wallet" />}>
+        <p>
+          <Text text="You currently do not have a wallet connected. Please connect your wallet in order to continue." />
+        </p>
+        <br />
+        <ConnectWalletButton />
+      </SimpleModalLayout>
     );
   }
 
@@ -197,37 +223,24 @@ const DelegationUIClaimPortalHandOffAccountCheck: React.FC<
     if (compareArrayBuffer(haveAddress, wantAddress) !== 0) {
       // The user is connected to the wrong address.
       return (
-        <>
-          <StakingHeader>
-            <StakingModalTitle>
-              <Text text="Wrong wallet connected" />
-            </StakingModalTitle>
-          </StakingHeader>
-          <StakingContent>
-            <div className="claim-and-stake-content">
-              <p>
-                <Text text="The current wallet that is connected, " />
-                <strong>
-                  <FullWalletAddressText
-                    value={new WalletAddress(haveAddress)}
-                  />
-                </strong>
-                <Text text=", is not the expected wallet, " />
-                <strong>
-                  <FullWalletAddressText
-                    value={new WalletAddress(wantAddress)}
-                  />
-                </strong>
-                <Text text="." />
-                <br />
-                <br />
-                <Text text="Please reconnect your wallet to the correct address." />
-              </p>
-              <br />
-              <ConnectWalletButton />
-            </div>
-          </StakingContent>
-        </>
+        <SimpleModalLayout title={<Text text="Wrong wallet connected" />}>
+          <p>
+            <Text text="The current wallet that is connected, " />
+            <strong>
+              <FullWalletAddressText value={new WalletAddress(haveAddress)} />
+            </strong>
+            <Text text=", is not the expected wallet, " />
+            <strong>
+              <FullWalletAddressText value={new WalletAddress(wantAddress)} />
+            </strong>
+            <Text text="." />
+            <br />
+            <br />
+            <Text text="Please reconnect your wallet to the correct address." />
+          </p>
+          <br />
+          <ConnectWalletButton />
+        </SimpleModalLayout>
       );
     }
   }
@@ -255,25 +268,16 @@ const DelegationUICClaimPortalHandOffChainCheck: React.FC<
 
   if (haveChainID !== wantChainID) {
     return (
-      <>
-        <StakingHeader>
-          <StakingModalTitle>
-            <Text text="Connected to the Wrong Chain" />
-          </StakingModalTitle>
-        </StakingHeader>
-        <StakingContent>
-          <div className="claim-and-stake-content">
-            <p>
-              <Text text="The wallet is currently configured to utilize the wrong chain." />
-              <br />
-              <br />
-              <Text text="Please select the correct chain." />
-            </p>
-            <br />
-            <ConnectWalletButton />
-          </div>
-        </StakingContent>
-      </>
+      <SimpleModalLayout title={<Text text="Connected to the Wrong Chain" />}>
+        <p>
+          <Text text="The wallet is currently configured to utilize the wrong chain." />
+          <br />
+          <br />
+          <Text text="Please select the correct chain." />
+        </p>
+        <br />
+        <ConnectWalletButton />
+      </SimpleModalLayout>
     );
   }
 
@@ -298,20 +302,11 @@ const DelegationUIClaimPortalHandOffFilterValidators: React.FC<
   if (nodeList.length <= 0) {
     // We do not currently have the node list, so we need to load the list.
     return (
-      <>
-        <StakingHeader>
-          <StakingModalTitle>
-            <Text text="Waiting for Node information" />
-          </StakingModalTitle>
-        </StakingHeader>
-        <StakingContent>
-          <div className="claim-and-stake-content">
-            <p>
-              <Text text="Waiting for node information in order to pick a Node to Stake to." />
-            </p>
-          </div>
-        </StakingContent>
-      </>
+      <SimpleModalLayout title={<Text text="Waiting for Node information" />}>
+        <p>
+          <Text text="Waiting for node information in order to pick a Node to Stake to." />
+        </p>
+      </SimpleModalLayout>
     );
   }
 
@@ -329,23 +324,31 @@ const DelegationUIClaimPortalHandOffValidatorChoice: React.FC<
 
   const nodeList = React.useContext(NodeAddressListContext);
   const nodeMap = React.useContext(AllValidatorsContext);
-
-  // We choose a random entry from our list of nodes.
-  // We memoize this value, so the selected node does not keep changing
-  // every time the component re calculates.
-  const randomOrderNodeList = React.useMemo(
-    () =>
-      Array.from(
-        zipWithIterable(
-          nodeList,
-          mapIterable(nodeList, () => Math.random()),
-          (a, b) => [a, b] as const,
-        ),
-      )
-        .toSorted((a, b) => a[1] - b[1])
-        .map((a) => a[0]),
-    [nodeList.length > 0],
+  const [randomOrderNodeList, setRandomOrderNodeList] = React.useState(
+    [] as `0x${string}`[],
   );
+
+  React.useEffect(() => {
+    // We don't want to recompute the randomOrderNodeList after it's already
+    // been computed.  Otherwise this will end up re-selecting the random
+    // Node to delegate to at odd times.
+    if (nodeList.length <= 0 || randomOrderNodeList.length > 0) {
+      return;
+    }
+
+    // We choose a random entry from our list of nodes.
+    const nextList = Array.from(
+      zipWithIterable(
+        nodeList,
+        mapIterable(nodeList, () => Math.random()),
+        (a, b) => [a, b] as const,
+      ),
+    )
+      .toSorted((a, b) => a[1] - b[1])
+      .map((a) => a[0]);
+
+    setRandomOrderNodeList(nextList);
+  }, [randomOrderNodeList, setRandomOrderNodeList, nodeList]);
 
   const [validatorAddress = null] = randomOrderNodeList;
   const node = !validatorAddress ? null : nodeMap.get(validatorAddress);
@@ -353,20 +356,13 @@ const DelegationUIClaimPortalHandOffValidatorChoice: React.FC<
   if (!validatorAddress || !node) {
     // We have no nodes that meet the criteria we are looking for.
     return (
-      <>
-        <StakingHeader>
-          <StakingModalTitle>
-            <Text text="Unable to determine a Node to Stake to" />
-          </StakingModalTitle>
-        </StakingHeader>
-        <StakingContent>
-          <div className="claim-and-stake-content">
-            <p>
-              <Text text="No valid node found that matches the expected criteria." />
-            </p>
-          </div>
-        </StakingContent>
-      </>
+      <SimpleModalLayout
+        title={<Text text="Unable to determine a Node to Stake to" />}
+      >
+        <p>
+          <Text text="No valid node found that matches the expected criteria." />
+        </p>
+      </SimpleModalLayout>
     );
   }
 
@@ -393,40 +389,24 @@ const DelegationUIClaimPortalHandOffBalanceCheck: React.FC<
     balanceAsyncSnapshot.hasError
   ) {
     return (
-      <>
-        <StakingHeader>
-          <StakingModalTitle>
-            <Text text="Failed to retrieve current Wallet Balance" />
-          </StakingModalTitle>
-        </StakingHeader>
-        <StakingContent>
-          <div className="claim-and-stake-content">
-            <p>
-              <Text text="Unable to determine current Wallet balance.  We are unable to continue, please refresh the page and try again." />
-            </p>
-          </div>
-        </StakingContent>
-      </>
+      <SimpleModalLayout
+        title={<Text text="Failed to retrieve current Wallet Balance" />}
+      >
+        <p>
+          <Text text="Unable to determine current Wallet balance.  We are unable to continue, please refresh the page and try again." />
+        </p>
+      </SimpleModalLayout>
     );
   }
 
-  if (balanceAsyncSnapshot.asyncState === AsyncState.waiting) {
+  if (balanceAsyncSnapshot.asyncState === AsyncState.waiting && !balance) {
     // We're waiting for the balance to load
     return (
-      <>
-        <StakingHeader>
-          <StakingModalTitle>
-            <Text text="Waiting for Wallet balance" />
-          </StakingModalTitle>
-        </StakingHeader>
-        <StakingContent>
-          <div className="claim-and-stake-content">
-            <p>
-              <Text text="We need to be able to determine the current wallet balance in order to continue." />
-            </p>
-          </div>
-        </StakingContent>
-      </>
+      <SimpleModalLayout title={<Text text="Waiting for Wallet balance" />}>
+        <p>
+          <Text text="We need to be able to determine the current wallet balance in order to continue." />
+        </p>
+      </SimpleModalLayout>
     );
   }
 
@@ -439,32 +419,23 @@ const DelegationUIClaimPortalHandOffBalanceCheck: React.FC<
     // The User does not have enough balance to cover the desired delegation
     // operation
     return (
-      <>
-        <StakingHeader>
-          <StakingModalTitle>
-            <Text text="Insufficient Balance" />
-          </StakingModalTitle>
-        </StakingHeader>
-        <StakingContent>
-          <div className="claim-and-stake-content">
-            <p>
-              <Text text="We're unable to fulfill the Staking Intent as specified.  It requires a larger balance than the connected Wallet currently has." />
-              <br />
-              <br />
-              <Text text="Desired Staking amount: " />
-              <strong>
-                <MoneyText money={MonetaryValue.ESP(wantAmount)} />
-              </strong>
-              <Text text=", current balance: " />
-              <strong>
-                <MoneyText money={MonetaryValue.ESP(haveAmount)} />{' '}
-              </strong>
-            </p>
-            <br />
-            <ConnectWalletButton />
-          </div>
-        </StakingContent>
-      </>
+      <SimpleModalLayout title={<Text text="Insufficient Balance" />}>
+        <p>
+          <Text text="We're unable to fulfill the Staking Intent as specified.  It requires a larger balance than the connected Wallet currently has." />
+          <br />
+          <br />
+          <Text text="Desired Staking amount: " />
+          <strong>
+            <MoneyText money={MonetaryValue.ESP(wantAmount)} />
+          </strong>
+          <Text text=", current balance: " />
+          <strong>
+            <MoneyText money={MonetaryValue.ESP(haveAmount)} />{' '}
+          </strong>
+        </p>
+        <br />
+        <ConnectWalletButton />
+      </SimpleModalLayout>
     );
   }
 
@@ -509,53 +480,58 @@ const DelegateToValidatorAutomatically: React.FC = () => {
 
 const DelegationSuccessContent: React.FC = () => {
   const close = React.useContext(StakingModalCloseContext);
-  const setCurrentSection = React.useContext(SetCurrentSectionContext);
 
   return (
-    <>
-      <StakingHeader>
-        <StakingModalTitle>
-          <Text text="Delegation" />
-        </StakingModalTitle>
-        <CloseStakingModalButton />
-      </StakingHeader>
-      <StakingContent>
-        <div className="claim-and-stake-content">
-          <div className="claim-and-stake-success-box">
-            <CheckCircle />
-            <h3>
-              <Text text="Delegation Successful" />
-            </h3>
-            <p>
-              <Text text="You've successfully delegated to a node." />
-            </p>
-          </div>
-          <p>
-            <Text text="You can track your delegations utilizing the " />
-            <strong>
-              <Text text="My Stakes" />
-            </strong>
-            <Text text=" filter" />
-          </p>
-          <div className="claim-and-stake-actions-area">
-            <ButtonLarge
-              onClick={() => {
-                setCurrentSection(Sections.myStakes);
-                close();
-              }}
-            >
-              <Text text="Visit My Stakes" />
-            </ButtonLarge>
-            <ButtonLarge onClick={close}>
-              <Text text="Back to Dashboard" />
-            </ButtonLarge>
-          </div>
-        </div>
-      </StakingContent>
-    </>
+    <SimpleModalLayout
+      title={<Text text="Delegation" />}
+      after={<CloseStakingModalButton />}
+    >
+      <div className="claim-and-stake-success-box">
+        <CheckCircle />
+        <h2>
+          <Text text="Delegation Successful" />
+        </h2>
+        <p>
+          <Text text="You've successfully delegated to a node." />
+        </p>
+      </div>
+      <p>
+        <Text text="You can track your delegations utilizing the " />
+        <strong>
+          <Text text="My Stakes" />
+        </strong>
+        <Text text=" filter" />
+      </p>
+      <div className="claim-and-stake-actions-area">
+        <ButtonLarge onClick={close}>
+          <Text text="Back to Dashboard" />
+        </ButtonLarge>
+      </div>
+    </SimpleModalLayout>
   );
 };
 
+/**
+ * AutoDriveApprove is a component that doesn't have any visual aspect,
+ * instead, it exists to automatically drive interaction forward.
+ *
+ * Based on a request from @clu8, he has explicitly requested that the
+ * "Approve" action automatically trigger, so that the user is immediately
+ * presented with a Wallet signing action.
+ *
+ * This sort of behavior isn't really user-friendly, and it can lead to
+ * confusion, as the user may be prompted for the action before he/she is
+ * event aware of what is happening. Ideally, the user would be the one to
+ * explicitly drive the action, instead of it triggering automatically.
+ * However, since this is an explicit design requirement, this exists to
+ * fulfill the design requirement itself.
+ *
+ * These sort of actions can be error prone, and since they are automatic,
+ * we'd still like to be as friendly to the user as possible.  As such, we
+ * only trigger this at most *ONCE*, so we don't end up in a hot-loop of
+ * failures, or get the user stuck in a workflow he/she is unable to get out
+ * of.
+ */
 const AutoDriveApprove: React.FC = () => {
   const allowance = React.useContext(CurrentAllowanceToStakeTableContext);
   const approveAsyncSnapshot = React.useContext(ApproveAsyncSnapshotContext);
@@ -569,7 +545,7 @@ const AutoDriveApprove: React.FC = () => {
   const l1Methods = React.useContext(L1MethodsContext);
   const espContract = React.useContext(ESPTokenContractContext);
   const stakeTableContract = React.useContext(StakeTableContractContext);
-  const [firstTime, setFirstTime] = React.useState(true);
+  const [triggerOnce, setTriggerOnce] = React.useState(true);
 
   React.useEffect(() => {
     if (approveAsyncSnapshot.asyncState !== AsyncState.none) {
@@ -609,13 +585,13 @@ const AutoDriveApprove: React.FC = () => {
       return;
     }
 
-    if (!firstTime) {
+    if (!triggerOnce) {
       // As a fail safe, we only want to evaluate this once.
       // This should prevent a hot-loop of continually re-performing this
       // action.
       return;
     }
-    setFirstTime(false);
+    setTriggerOnce(false);
 
     setApproveAsyncIterable(
       performApprove(
@@ -638,13 +614,34 @@ const AutoDriveApprove: React.FC = () => {
     l1Methods,
     espContract,
     stakeTableContract,
-    firstTime,
-    setFirstTime,
+    triggerOnce,
+    setTriggerOnce,
   ]);
 
   return null;
 };
 
+/**
+ * AutoDriveDelegate is a component that doesn't have any visual aspect,
+ * instead, it exists to automatically drive interaction forward.
+ *
+ * Based on a request from @clu8, he has explicitly requested that the
+ * "Approve" action automatically trigger, so that the user is immediately
+ * presented with a Wallet signing action.
+ *
+ * This sort of behavior isn't really user-friendly, and it can lead to
+ * confusion, as the user may be prompted for the action before he/she is
+ * event aware of what is happening. Ideally, the user would be the one to
+ * explicitly drive the action, instead of it triggering automatically.
+ * However, since this is an explicit design requirement, this exists to
+ * fulfill the design requirement itself.
+ *
+ * These sort of actions can be error prone, and since they are automatic,
+ * we'd still like to be as friendly to the user as possible.  As such, we
+ * only trigger this at most *ONCE*, so we don't end up in a hot-loop of
+ * failures, or get the user stuck in a workflow he/she is unable to get out
+ * of.
+ */
 const AutoDriveDelegate: React.FC = () => {
   const allowance = React.useContext(CurrentAllowanceToStakeTableContext);
   const stakingAmount = React.useContext(StakingAmountContext)!;
@@ -661,7 +658,7 @@ const AutoDriveDelegate: React.FC = () => {
     SetDelegationAsyncIterableContext,
   );
   const node = React.useContext(ValidatorNodeContext);
-  const [firstTime, setFirstTime] = React.useState(true);
+  const [triggerOnce, setTriggerOnce] = React.useState(true);
 
   React.useEffect(() => {
     if (delegationAsyncSnapshot.asyncState !== AsyncState.none) {
@@ -712,13 +709,13 @@ const AutoDriveDelegate: React.FC = () => {
       return;
     }
 
-    if (!firstTime) {
+    if (!triggerOnce) {
       // As a fail safe, we only want to evaluate this once.
       // This should prevent a hot-loop of continually re-performing this
       // action.
       return;
     }
-    setFirstTime(false);
+    setTriggerOnce(false);
 
     setDelegationAsyncIterable(
       performDelegation(
@@ -742,8 +739,9 @@ const AutoDriveDelegate: React.FC = () => {
     minimumAmount,
     l1Methods,
     stakeTableContract,
-    firstTime,
-    setFirstTime,
+    triggerOnce,
+    setTriggerOnce,
+    node,
   ]);
 
   return null;

@@ -4,12 +4,14 @@ import WalletAddress, {
 } from '@/models/wallet_address/wallet_address';
 import React from 'react';
 
+export const kIntentClaimAndStake = 'claim-and-stake';
+
 /**
  * ClaimPortalIntent represents the potential intent that will is derived
  * from navigation to the Delegation UI portal via some method.
  */
 export interface ClaimPortalIntent {
-  intent: 'claim-and-stake';
+  intent: typeof kIntentClaimAndStake;
   address: null | WalletAddress;
   amount: null | bigint;
 }
@@ -21,10 +23,10 @@ export interface ClaimPortalIntent {
 export const ClaimPortalIntentContext =
   React.createContext<null | ClaimPortalIntent>(null);
 
-function deriveClaimPortalIntentFromURL(url: URL): null | ClaimPortalIntent {
-  return deriveClaimPortalIntentFromOnlyQueryParameters(url);
-}
-
+/**
+ * getAmountFromQueryParams will attempt to retrieve and parse an intended
+ * "amount" from the URL query search parameters.
+ */
 function getAmountFromQueryParams(queryParams: URLSearchParams): null | bigint {
   try {
     const amountRaw = queryParams.get('amount');
@@ -34,6 +36,10 @@ function getAmountFromQueryParams(queryParams: URLSearchParams): null | bigint {
   }
 }
 
+/**
+ * getAddressFromQueryParams will attempt to retrieve and parse an intended
+ * "adddress" from teh URL query search parameters.
+ */
 function getAddressFromQueryParams(
   queryParams: URLSearchParams,
 ): null | WalletAddress {
@@ -45,25 +51,37 @@ function getAddressFromQueryParams(
   }
 }
 
+/**
+ * deriveClaimPortalIntentFromOnlyQueryParameters will attempt to derive
+ * intent based information from the search query parameters.
+ *
+ * The specific intent type is read from the "intent" query parameter.
+ * Once the specific intent type is understood, additional query parameters
+ * for the intent in question can then be decoded and applied.
+ */
 export function deriveClaimPortalIntentFromOnlyQueryParameters(
   url: URL,
 ): null | ClaimPortalIntent {
   const queryParams = url.searchParams;
   const intent = queryParams.get('intent');
 
-  if (intent !== 'claim-and-stake') {
+  if (intent !== kIntentClaimAndStake) {
     return null;
   }
 
-  return specifyIntentParametersFromQueryParameters(url);
+  return decodeClaimAndStakeParametersFromQueryParameters(url);
 }
 
-export function specifyIntentParametersFromQueryParameters(
+/**
+ * decodeClaimAndStakeParametersFromQueryParameters will decode the
+ * "claim-and-stake" intent's arguments from the URL search query parameters.
+ */
+export function decodeClaimAndStakeParametersFromQueryParameters(
   url: URL,
 ): null | ClaimPortalIntent {
   const queryParams = url.searchParams;
   return {
-    intent: 'claim-and-stake',
+    intent: kIntentClaimAndStake,
     address: getAddressFromQueryParams(queryParams),
     amount: getAmountFromQueryParams(queryParams),
   };

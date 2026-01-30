@@ -5,6 +5,11 @@
   align-items: space-around;
   background: var(--color--brown--0);
   padding: 24px;
+  font-family: 'PPNeueMontrealRegular', sans-serif;
+  font-size: 14px;
+}
+.claim-and-stake-content p {
+  text-align: center;
 }
 
 .claim-and-stake-success-box {
@@ -23,7 +28,7 @@
   color: var(--color--undesign--green-3);
 }
 
-.claim-and-stake-success-box h3 {
+.claim-and-stake-success-box h2 {
   margin: 8px 0;
 }
 .claim-and-stake-success-box p {

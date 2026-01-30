@@ -1,4 +1,3 @@
-import Text from '@/components/text/text';
 import React from 'react';
 import { ClaimPortalIntentContext } from '../contexts/claim_portal_intent_context';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
@@ -14,10 +13,10 @@ import {
   ValidatorSelectionEnum,
   ValidatorSelectionWithConfirmation,
 } from '../contexts/validator_selection_context';
+import { ClaimAndStakeContent } from './claim_and_stake_content';
 import { ClaimRewardsContent } from './claim_rewards_content';
 import { ValidatorConfirmedContent } from './staking_modal_validator_confirmed_content';
 import { ValidatorSelectionNeededContent } from './validator_selection_needed_content';
-import { ClaimAndStakeContent } from './claim_and_stake_content';
 
 /**
  * ProvideConfirmationContexts creates some local contexts containing address

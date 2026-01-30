@@ -1,6 +1,7 @@
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { ProvideTickEverySecond } from '@/contexts/now_provider';
+import { nullableBigintCodec } from '@/convert/codec/bigint';
 import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
 import { Environment } from '@/models/config/environment/environment';
 import {
@@ -12,18 +13,18 @@ import {
   extractURLWithEncodedFallback,
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybook/storybook';
+import { nullableWalletAddressCodec } from '@/models/wallet_address/wallet_address';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { ProvideL1ValidatorServiceAPIContext } from '../../../contexts/l1_validator_api_context';
 import { delegationUIInteractions } from '../__shared__/delegation_ui_shared';
-import DelegationUI from '../delegation_ui';
-import { L1ValidatorServiceMockInjection } from '../mock/validator_service_injection';
 import {
   ClaimPortalIntent,
   ClaimPortalIntentContext,
+  kIntentClaimAndStake,
 } from '../contexts/claim_portal_intent_context';
-import { nullableWalletAddressCodec } from '@/models/wallet_address/wallet_address';
-import { nullableBigintCodec } from '@/convert/codec/bigint';
+import DelegationUI from '../delegation_ui';
+import { L1ValidatorServiceMockInjection } from '../mock/validator_service_injection';
 
 interface ExampleProps {
   environment: Environment;
@@ -45,7 +46,7 @@ function deriveIntent(
   intentAccount: undefined | `0x${string}`,
   intentAmount: undefined | `0x${string}`,
 ): null | ClaimPortalIntent {
-  if (intentType !== 'claim-and-stake') {
+  if (intentType !== kIntentClaimAndStake) {
     return null;
   }
   const walletAddress = nullableWalletAddressCodec.decode(
@@ -54,7 +55,7 @@ function deriveIntent(
   const claimAmount = nullableBigintCodec.decode(intentAmount ?? null);
 
   return {
-    intent: 'claim-and-stake',
+    intent: kIntentClaimAndStake,
 
     address: walletAddress,
     amount: claimAmount,

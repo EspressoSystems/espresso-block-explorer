@@ -4,8 +4,7 @@ import {
   environmentArgsLocalDevNetWithContracts,
 } from '@/models/config/storybook/controls';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { delegationUIInteractions } from '../__shared__/delegation_ui_shared';
-
+import { kIntentClaimAndStake } from 'delegation-ui';
 import ExampleMeta, { Example } from './delegation_ui.stories';
 
 const meta: Meta = {
@@ -31,18 +30,9 @@ export const Decaf: Story = {
 export const FakeData: Story = {
   args: {
     ...environmentArgsFakeDataWithContracts,
-    intentType: 'claim-and-stake',
+    intentType: kIntentClaimAndStake,
   },
 };
-
-/**
-export const FakeDataInteractions: Story = {
-  args: environmentArgsFakeDataWithContracts,
-  async play({ canvasElement, step }) {
-    await delegationUIInteractions(canvasElement, step);
-  },
-};
-*/
 
 export const LocalDevNet: Story = {
   args: {
