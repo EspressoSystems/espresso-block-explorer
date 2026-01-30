@@ -18,6 +18,7 @@ type Story = StoryObj<typeof Example>;
 export const Decaf: Story = {
   args: {
     ...environmentArgsDecafWithContracts,
+    intentType: kIntentClaimAndStake,
     l1ValidatorServiceURL:
       'https://staking-api.decaf.testnet.espresso.network/v0/staking/',
   },
@@ -37,6 +38,7 @@ export const FakeData: Story = {
 export const LocalDevNet: Story = {
   args: {
     ...environmentArgsLocalDevNetWithContracts,
+    intentType: kIntentClaimAndStake,
     l1ValidatorServiceURL: 'http://localhost:8080/v0/staking/',
   },
 };
