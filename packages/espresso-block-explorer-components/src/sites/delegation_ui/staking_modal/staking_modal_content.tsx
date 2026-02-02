@@ -1,16 +1,23 @@
 import React from 'react';
+import { ClaimPortalIntentContext } from '../contexts/claim_portal_intent_context';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
+import { ModalContext } from '../contexts/modal_context';
 import { NodeAddressContext } from '../contexts/node_address_context';
 import { ProvideValidatorNodeContext } from '../contexts/validator_node_context';
 import {
+  ClaimAndStakeIntent,
   ClaimRewards,
+  NoValidatorSelected,
+  SetValidatorSelectionContext,
   ValidatorSelectionContext,
   ValidatorSelectionEnum,
   ValidatorSelectionWithConfirmation,
 } from '../contexts/validator_selection_context';
+import { ClaimAndStakeContent } from './claim_and_stake_content';
 import { ClaimRewardsContent } from './claim_rewards_content';
 import { ValidatorConfirmedContent } from './staking_modal_validator_confirmed_content';
 import { ValidatorSelectionNeededContent } from './validator_selection_needed_content';
+import { RainbowKitModalRefContext } from '@/components/rainbowkit/contexts/contexts';
 
 /**
  * ProvideConfirmationContexts creates some local contexts containing address
@@ -30,6 +37,56 @@ const ProvideConfirmationContexts: React.FC<React.PropsWithChildren> = ({
       </ConfirmedValidatorContext.Provider>
     </NodeAddressContext.Provider>
   );
+};
+
+const StakingIntentResolver: React.FC = () => {
+  const selectedValidator = React.useContext(ValidatorSelectionContext);
+  const setValidatorSelection = React.useContext(SetValidatorSelectionContext);
+  const modalContext = React.useContext(ModalContext);
+  const claimPortalIntent = React.useContext(ClaimPortalIntentContext);
+  const rainbowKitModalRef = React.useContext(RainbowKitModalRefContext);
+
+  React.useEffect(() => {
+    if (!claimPortalIntent) {
+      // There is no intent.  There is nothing to do.
+      return;
+    }
+
+    if (rainbowKitModalRef && modalContext.isOpen) {
+      // Our modal is open while the rainbowkit modal is open.
+      // Let's close our modal, and reset while the rainbowkit modal is open.
+      modalContext.close();
+      setValidatorSelection(new NoValidatorSelected());
+      return;
+    }
+
+    if (!(selectedValidator instanceof NoValidatorSelected)) {
+      // We have a different validator state already set, so we're not
+      // in a fresh state, and as a result, we don't wish to trigger any other
+      // actions.
+      return;
+    }
+
+    if (rainbowKitModalRef) {
+      // We don't want to open the modal if the storybook modal is already
+      // open
+      return;
+    }
+
+    if (modalContext.isOpen) {
+      // The modal is already open, we don't want to set any state, or
+      // trigger the modal to open when it's already open.
+      return;
+    }
+
+    // Set the Validator Selection
+    setValidatorSelection(new ClaimAndStakeIntent());
+    // Now open the modal.
+    modalContext.open();
+    return () => {};
+  }, [claimPortalIntent, selectedValidator, rainbowKitModalRef, modalContext]);
+
+  return null;
 };
 
 /**
@@ -74,6 +131,10 @@ const StakingModalContentRouter: React.FC = () => {
     return <ClaimRewardsContent />;
   }
 
+  if (selectedValidator instanceof ClaimAndStakeIntent) {
+    return <ClaimAndStakeContent />;
+  }
+
   if (isValidatorConfirmed(selectedValidator)) {
     return <ValidatorConfirmedContent />;
   }
@@ -89,6 +150,7 @@ const StakingModalContentRouter: React.FC = () => {
 export const StakingModalContent: React.FC = () => {
   return (
     <ProvideConfirmationContexts>
+      <StakingIntentResolver />
       <StakingModalContentRouter />
     </ProvideConfirmationContexts>
   );

@@ -1,4 +1,4 @@
-import { PromiseResolver } from '@/components/data';
+import { AsyncSnapshotContext, PromiseResolver } from '@/components/data';
 import { AsyncSnapshot } from '@/components/data/async_data/async_snapshot';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { DataContext } from '@/contexts/data_provider';
@@ -57,11 +57,16 @@ export const ProvideESPBalanceFromContractCall: React.FC<
 const ConvertDataToESPBalance: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
+  const asyncSnapshot = React.useContext(
+    AsyncSnapshotContext,
+  ) as AsyncSnapshot<bigint>;
   const balance = (React.useContext(DataContext) ?? null) as null | bigint;
 
   return (
-    <ESPBalanceContext.Provider value={balance ?? 0n}>
-      {children}
-    </ESPBalanceContext.Provider>
+    <ESPBalanceAsyncSnapshotContext.Provider value={asyncSnapshot}>
+      <ESPBalanceContext.Provider value={balance ?? 0n}>
+        {children}
+      </ESPBalanceContext.Provider>
+    </ESPBalanceAsyncSnapshotContext.Provider>
   );
 };

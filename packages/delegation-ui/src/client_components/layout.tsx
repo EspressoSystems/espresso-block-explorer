@@ -1,4 +1,3 @@
-
 'use client';
 
 import { EnvironmentProvider } from '@/helpers/environment';
@@ -46,7 +45,11 @@ export default function LayoutClientComponent({
               <ProvideCappuccinoNodeValidatorServiceAPIContext>
                 <ProvideCappuccinoHotShotQueryServiceAPIContext>
                   <ProvideL1ValidatorServiceAPIContext>
-                    <WagmiProvider config={getWagmiConfigForEnvironment(env.environment as Environment)}>
+                    <WagmiProvider
+                      config={getWagmiConfigForEnvironment(
+                        env.environment as Environment,
+                      )}
+                    >
                       <QueryClientProvider client={queryClient}>
                         <RainbowKitProvider>
                           <RainbowKitContextInjector>
@@ -73,6 +76,6 @@ export default function LayoutClientComponent({
           </ProvideDerivedDateTimeFormatters>
         </ProvideDerivedNumberFormatters>
       </ProvideNavigatorLanguage>
-    </EnvironmentProvider >
+    </EnvironmentProvider>
   );
 }

@@ -1,6 +1,7 @@
 export * from './active_validators_context';
 export * from './all_validators_context';
 export * from './blocks_per_epoch_context';
+export * from './claim_portal_intent_context';
 export * from './claimable_rewards_balance_context';
 export * from './claimed_rewards_context';
 export * from './collapse_context';
@@ -31,4 +32,3 @@ export * from './total_supply_context';
 export * from './validator_node_context';
 export * from './validator_selection_context';
 export * from './wallet_snapshot_context';
-

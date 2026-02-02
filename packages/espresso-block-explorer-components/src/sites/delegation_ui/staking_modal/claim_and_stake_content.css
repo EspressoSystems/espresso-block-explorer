@@ -1,0 +1,53 @@
+.claim-and-stake-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: space-around;
+  background: var(--color--brown--0);
+  padding: 24px;
+  font-family: 'PPNeueMontrealRegular', sans-serif;
+  font-size: 14px;
+}
+.claim-and-stake-content p {
+  text-align: center;
+}
+
+.claim-and-stake-success-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 16px;
+  background: var(--color--undesign--green-3-alpha-16);
+  border-color: var(--color--undesign--green-3-alpha-24);
+  --text--color: var(--color--undesign--green-3);
+  --icon--fill-color: var(--color--undesign--green-3);
+  color: var(--color--undesign--green-3);
+}
+
+.claim-and-stake-success-box h2 {
+  margin: 8px 0;
+}
+.claim-and-stake-success-box p {
+  margin: 0;
+}
+
+.claim-and-stake-success-box > svg {
+  width: 25px;
+  height: 25px;
+}
+
+.claim-and-stake-actions-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 24px;
+}
+
+.claim-and-stake-actions-area > .bbtn {
+  flex: 1;
+  height: 42px;
+}
