@@ -5,6 +5,7 @@ import { addClassToClassName } from '@/components/higher_order';
 import {
   RainbowKitAccountAddressContext,
   RainbowKitChainContext,
+  RainbowKitModalContext,
 } from '@/components/rainbowkit/contexts/contexts';
 import FullWalletAddressText from '@/components/text/full_wallet_address';
 import MoneyText from '@/components/text/money_text';
@@ -252,7 +253,9 @@ const DelegationUIClaimPortalHandOffAccountCheck: React.FC<
             <Text text="Please reconnect your wallet to the correct address." />
           </p>
           <br />
-          <ConnectWalletButton />
+          <div className="claim-and-stake-actions-area">
+            <ConnectWalletButton />
+          </div>
         </SimpleModalLayout>
       );
     }
@@ -274,6 +277,7 @@ const DelegationUICClaimPortalHandOffChainCheck: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const chain = React.useContext(RainbowKitChainContext);
+  const rainbowKitModal = React.useContext(RainbowKitModalContext);
   const config = React.useContext(WagmiContext);
 
   const haveChainID = chain?.id ?? null;
@@ -289,7 +293,9 @@ const DelegationUICClaimPortalHandOffChainCheck: React.FC<
           <Text text="Please select the correct chain." />
         </p>
         <br />
-        <ConnectWalletButton />
+        <ButtonLarge onClick={rainbowKitModal.openChainModal}>
+          <Text text="Change Chain" />
+        </ButtonLarge>
       </SimpleModalLayout>
     );
   }
@@ -396,6 +402,7 @@ const DelegationUIClaimPortalHandOffBalanceCheck: React.FC<
   const balance = React.useContext(ESPBalanceContext);
   const balanceAsyncSnapshot = React.useContext(ESPBalanceAsyncSnapshotContext);
   const intent = React.useContext(ClaimPortalIntentContext);
+  const close = React.useContext(StakingModalCloseContext);
 
   if (
     balanceAsyncSnapshot.asyncState === AsyncState.done &&
@@ -447,7 +454,9 @@ const DelegationUIClaimPortalHandOffBalanceCheck: React.FC<
           </strong>
         </p>
         <br />
-        <ConnectWalletButton />
+        <ButtonLarge onClick={close}>
+          <Text text="Close" />
+        </ButtonLarge>
       </SimpleModalLayout>
     );
   }
