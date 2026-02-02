@@ -24,6 +24,51 @@ export const ClaimPortalIntentContext =
   React.createContext<null | ClaimPortalIntent>(null);
 
 /**
+ * SetClaimPortalIntentContext allows for the ClaimPortalIntent to be modified
+ * on behalf of the user.  This allows for the modification of the
+ * ClaimPortalIntent for the user, should the context change.
+ */
+export const SetClaimPortalIntentContext = React.createContext<
+  React.Dispatch<React.SetStateAction<null | ClaimPortalIntent>>
+>(() => {});
+
+/**
+ * useClaimPortalItentState is a custom React hook to setup the management of
+ * the underlying ClaimPortalIntent.
+ */
+function useClaimPortalItentState(
+  initialState: null | ClaimPortalIntent = null,
+) {
+  return React.useState(initialState);
+}
+
+export interface ProvideClaimPortalIntentContextProps
+  extends React.PropsWithChildren {
+  intent?: null | ClaimPortalIntent;
+}
+
+/**
+ * ProvideClaimPortalIntentContext provides the state management of the
+ * ClaimPortalIntent, so that the ClaimPortalIntent can ultimately be
+ * canceled or removed when it is completed.
+ */
+export const ProvideClaimPortalIntentContext: React.FC<
+  ProvideClaimPortalIntentContextProps
+> = ({ children, intent }) => {
+  const [claimPortalIntent, setClaimPortalIntent] = useClaimPortalItentState(
+    intent ?? null,
+  );
+
+  return (
+    <ClaimPortalIntentContext.Provider value={claimPortalIntent}>
+      <SetClaimPortalIntentContext.Provider value={setClaimPortalIntent}>
+        {children}
+      </SetClaimPortalIntentContext.Provider>
+    </ClaimPortalIntentContext.Provider>
+  );
+};
+
+/**
  * getAmountFromQueryParams will attempt to retrieve and parse an intended
  * "amount" from the URL query search parameters.
  */

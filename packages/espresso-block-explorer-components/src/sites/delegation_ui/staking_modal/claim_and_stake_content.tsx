@@ -36,6 +36,7 @@ import {
 import {
   ClaimPortalIntentContext,
   kIntentClaimAndStake,
+  SetClaimPortalIntentContext,
 } from '../contexts/claim_portal_intent_context';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import {
@@ -97,10 +98,22 @@ import { ValidatorDisplayArea } from './validator_display_area';
  * fulfillment for the sake of the user.
  */
 export const ClaimAndStakeContent: React.FC = () => {
+  const closeAction = React.useContext(StakingModalCloseContext);
+  const setClaimPortalIntent = React.useContext(SetClaimPortalIntentContext);
+
+  // We want to amend the close action to also clear the Staking Intent.
+
   return (
-    <ProvideCurrentStakingInformation>
-      <DelegationUIClaimPortalHandOffRouter />
-    </ProvideCurrentStakingInformation>
+    <StakingModalCloseContext.Provider
+      value={() => {
+        closeAction();
+        setClaimPortalIntent(null);
+      }}
+    >
+      <ProvideCurrentStakingInformation>
+        <DelegationUIClaimPortalHandOffRouter />
+      </ProvideCurrentStakingInformation>
+    </StakingModalCloseContext.Provider>
   );
 };
 

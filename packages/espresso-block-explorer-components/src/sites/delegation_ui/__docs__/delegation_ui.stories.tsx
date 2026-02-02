@@ -20,8 +20,8 @@ import { ProvideL1ValidatorServiceAPIContext } from '../../../contexts/l1_valida
 import { delegationUIInteractions } from '../__shared__/delegation_ui_shared';
 import {
   ClaimPortalIntent,
-  ClaimPortalIntentContext,
   kIntentClaimAndStake,
+  ProvideClaimPortalIntentContext,
 } from '../contexts/claim_portal_intent_context';
 import DelegationUI from '../delegation_ui';
 import { L1ValidatorServiceMockInjection } from '../mock/validator_service_injection';
@@ -98,7 +98,7 @@ export const Example: React.FC<ExampleProps> = ({
       >
         <EnvironmentBanner />
         <ProvideTickEverySecond>
-          <ClaimPortalIntentContext.Provider value={intent}>
+          <ProvideClaimPortalIntentContext intent={intent}>
             <SpoofAccountAddress account={spoofAccountAddress}>
               <ProvideCappuccinoHotShotQueryServiceAPIContext>
                 <ProvideL1ValidatorServiceAPIContext>
@@ -108,7 +108,7 @@ export const Example: React.FC<ExampleProps> = ({
                 </ProvideL1ValidatorServiceAPIContext>
               </ProvideCappuccinoHotShotQueryServiceAPIContext>
             </SpoofAccountAddress>
-          </ClaimPortalIntentContext.Provider>
+          </ProvideClaimPortalIntentContext>
         </ProvideTickEverySecond>
       </StoryBookSpecifyEnvironmentAndContracts>
     </>

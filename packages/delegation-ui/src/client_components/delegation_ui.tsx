@@ -2,9 +2,9 @@
 
 import { ProvideCappuccinoHotShotQueryServiceAPIContext } from 'espresso-block-explorer-components';
 import {
-  ClaimPortalIntentContext,
   DelegationUI,
   deriveClaimPortalIntentFromOnlyQueryParameters,
+  ProvideClaimPortalIntentContext,
 } from 'espresso-block-explorer-components/delegation-ui';
 
 export default function ExplorerClientComponent() {
@@ -13,9 +13,9 @@ export default function ExplorerClientComponent() {
 
   return (
     <ProvideCappuccinoHotShotQueryServiceAPIContext>
-      <ClaimPortalIntentContext.Provider value={intent}>
+      <ProvideClaimPortalIntentContext intent={intent}>
         <DelegationUI />
-      </ClaimPortalIntentContext.Provider>
+      </ProvideClaimPortalIntentContext>
     </ProvideCappuccinoHotShotQueryServiceAPIContext>
   );
 }
