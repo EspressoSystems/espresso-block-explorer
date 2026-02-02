@@ -1,0 +1,1 @@
+import{j as t}from"./iframe-tJD8ctAX.js";const o=e=>t.jsx("div",{className:"skeleton-content",...e});try{skeletoncontent.displayName="skeletoncontent",skeletoncontent.__docgenInfo={description:"",displayName:"skeletoncontent",props:{}}}catch{}export{o as S};

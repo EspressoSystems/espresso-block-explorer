@@ -119,6 +119,11 @@ export declare class ValidatorConfirmedExitWithdraw extends ValidatorSelectionWi
         ValidatorConfirmedExitWithdraw: `0x${string}`;
     };
 }
+export declare class ClaimAndStakeIntent extends ValidatorSelectionEnum {
+    toJSON(): {
+        ClaimAndStakeIntent: boolean;
+    };
+}
 /**
  * ValidatorSelectionContext provides the current ValidatorSelectionEnum
  * that indicates the user's intended modal decisions.

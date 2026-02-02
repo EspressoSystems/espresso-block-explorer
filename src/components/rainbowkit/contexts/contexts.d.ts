@@ -108,4 +108,9 @@ export declare const RainbowKitChainContext: React.Context<{
  * that represents the actual authentication status.
  */
 export declare const RainbowKitAuthenticationStatusContext: React.Context<AuthenticationStatus | null>;
+/**
+ * RainbowKitModalRefContext is a Context that holds a reference to the open
+ * RainbowKit Modal, should one exist.
+ */
+export declare const RainbowKitModalRefContext: React.Context<HTMLDivElement | null>;
 export {};
