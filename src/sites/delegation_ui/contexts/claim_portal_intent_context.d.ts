@@ -38,9 +38,9 @@ export declare const ProvideClaimPortalIntentContext: React.FC<ProvideClaimPorta
  * Once the specific intent type is understood, additional query parameters
  * for the intent in question can then be decoded and applied.
  */
-export declare function deriveClaimPortalIntentFromOnlyQueryParameters(url: URL): null | ClaimPortalIntent;
+export declare function deriveClaimPortalIntentFromOnlyQueryParameters(queryParams: URLSearchParams): null | ClaimPortalIntent;
 /**
  * decodeClaimAndStakeParametersFromQueryParameters will decode the
  * "claim-and-stake" intent's arguments from the URL search query parameters.
  */
-export declare function decodeClaimAndStakeParametersFromQueryParameters(url: URL): null | ClaimPortalIntent;
+export declare function decodeClaimAndStakeParametersFromQueryParameters(queryParams: URLSearchParams): null | ClaimPortalIntent;
