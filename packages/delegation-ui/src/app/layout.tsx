@@ -15,6 +15,20 @@ import 'espresso-block-explorer-components/cappuccino_hot_shot_query_service_api
 export const dynamic = 'force-dynamic';
 export const revalidate = 86400;
 
+if (
+  typeof localStorage === 'undefined' ||
+  typeof localStorage.getItem === 'undefined'
+) {
+  (globalThis as any).localStorage = {
+    getItem: (_key: string) => null,
+
+    setItem: (_key: string, _value: string) => {},
+
+    removeItem: (_key: string) => {},
+    clear: () => {},
+  };
+}
+
 /**
  * RootLayout is the default layout of the NextJS Application.  All Pages,
  * by default, have this layout as their default layout.

@@ -6,10 +6,11 @@ import {
   deriveClaimPortalIntentFromOnlyQueryParameters,
   ProvideClaimPortalIntentContext,
 } from 'espresso-block-explorer-components/delegation-ui';
+import { useSearchParams } from 'next/navigation';
 
 export default function ExplorerClientComponent() {
-  const url = new URL(window.location.href);
-  const intent = deriveClaimPortalIntentFromOnlyQueryParameters(url);
+  const params = useSearchParams();
+  const intent = deriveClaimPortalIntentFromOnlyQueryParameters(params);
 
   return (
     <ProvideCappuccinoHotShotQueryServiceAPIContext>
