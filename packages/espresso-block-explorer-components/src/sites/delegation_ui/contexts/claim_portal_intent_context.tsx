@@ -105,16 +105,15 @@ function getAddressFromQueryParams(
  * for the intent in question can then be decoded and applied.
  */
 export function deriveClaimPortalIntentFromOnlyQueryParameters(
-  url: URL,
+  queryParams: URLSearchParams,
 ): null | ClaimPortalIntent {
-  const queryParams = url.searchParams;
   const intent = queryParams.get('intent');
 
   if (intent !== kIntentClaimAndStake) {
     return null;
   }
 
-  return decodeClaimAndStakeParametersFromQueryParameters(url);
+  return decodeClaimAndStakeParametersFromQueryParameters(queryParams);
 }
 
 /**
@@ -122,9 +121,8 @@ export function deriveClaimPortalIntentFromOnlyQueryParameters(
  * "claim-and-stake" intent's arguments from the URL search query parameters.
  */
 export function decodeClaimAndStakeParametersFromQueryParameters(
-  url: URL,
+  queryParams: URLSearchParams,
 ): null | ClaimPortalIntent {
-  const queryParams = url.searchParams;
   return {
     intent: kIntentClaimAndStake,
     address: getAddressFromQueryParams(queryParams),

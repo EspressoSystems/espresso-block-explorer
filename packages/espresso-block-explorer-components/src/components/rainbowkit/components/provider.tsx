@@ -127,6 +127,24 @@ export const ProvideRainbowKitAccount: React.FC<
 
 const kRainbowKitModalQuerySelector = 'body > div > [data-rk]';
 
+function getDocumentBody(): null | HTMLBodyElement {
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  return (document.body ?? null) as null | HTMLBodyElement;
+}
+
+function createMutationObserver(
+  callback: MutationCallback,
+): null | MutationObserver {
+  if (typeof MutationObserver === 'undefined') {
+    return null;
+  }
+
+  return new MutationObserver(callback);
+}
+
 /**
  * ProvideRainbowKitModalReference is a component that aims to determine when
  * the RainbowKit modal is present and available.
@@ -155,17 +173,21 @@ const kRainbowKitModalQuerySelector = 'body > div > [data-rk]';
 const ProvideRainbowKitModalReference: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const bodyElement = React.useMemo(() => document.body, []);
+  const bodyElement = React.useMemo(() => getDocumentBody(), []);
   const [modalRef, setModalRef] = React.useState<null | HTMLDivElement>(null);
   const mutationObserver = React.useMemo(
     () =>
-      new MutationObserver((mutationList) => {
+      createMutationObserver((mutationList) => {
         const found = mutationList.find(
           (mutation) => mutation.type === 'childList',
         );
 
         if (!found) {
           // Ignore mutations we don't care about.
+          return;
+        }
+
+        if (!bodyElement) {
           return;
         }
 
@@ -183,6 +205,9 @@ const ProvideRainbowKitModalReference: React.FC<React.PropsWithChildren> = ({
   );
 
   React.useEffect(() => {
+    if (!bodyElement || !mutationObserver) {
+      return;
+    }
     // We're only interested in subtree mutations.
     mutationObserver.observe(bodyElement, {
       childList: true,
