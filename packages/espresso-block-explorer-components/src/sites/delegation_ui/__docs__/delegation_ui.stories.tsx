@@ -8,6 +8,7 @@ import {
   environmentArgsDecafWithContracts,
   environmentArgsFakeDataWithContracts,
   environmentArgsLocalDevNetWithContracts,
+  environmentArgsMainnetWithContracts,
   environmentArgsTypesL1ValidatorService,
   environmentArgTypesWithContracts,
   extractURLWithEncodedFallback,
@@ -213,9 +214,13 @@ export const Decaf: Story = {
   },
 };
 
-// export const Mainnet: Story = {
-//   args: environmentArgsMainnetWithContracts,
-// };
+export const Mainnet: Story = {
+  args: {
+    ...environmentArgsMainnetWithContracts,
+    l1ValidatorServiceURL:
+      'https://staking-api.main.net.espresso.network/v0/staking/',
+  },
+};
 
 export const FakeData: Story = {
   args: environmentArgsFakeDataWithContracts,

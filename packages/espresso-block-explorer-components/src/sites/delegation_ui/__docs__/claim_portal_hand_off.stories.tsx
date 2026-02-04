@@ -2,6 +2,7 @@ import {
   environmentArgsDecafWithContracts,
   environmentArgsFakeDataWithContracts,
   environmentArgsLocalDevNetWithContracts,
+  environmentArgsMainnetWithContracts,
 } from '@/models/config/storybook/controls';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { kIntentClaimAndStake } from 'delegation-ui';
@@ -24,9 +25,13 @@ export const Decaf: Story = {
   },
 };
 
-// export const Mainnet: Story = {
-//   args: environmentArgsMainnetWithContracts,
-// };
+export const Mainnet: Story = {
+  args: {
+    ...environmentArgsMainnetWithContracts,
+    l1ValidatorServiceURL:
+      'https://staking-api.main.net.espresso.network/v0/staking/',
+  },
+};
 
 export const FakeData: Story = {
   args: {
