@@ -144,9 +144,9 @@ export const environmentArgsMainnet: EnvironmentArgs = {
 export const environmentArgsMainnetWithContracts: EnvironmentWithContractsArgs =
   {
     ...environmentArgsMainnet,
-    stakeTableContractAddress: undefined,
-    espTokenContractAddress: undefined,
-    rewardClaimContractAddress: undefined,
+    stakeTableContractAddress: '0xcef474d372b5b09defe2af187bf17338dc704451',
+    espTokenContractAddress: '0x031de51f3e8016514bd0963d0b2ab825a591db9a',
+    rewardClaimContractAddress: '0x67c966a0ecdd5c33608be7810414e5b54da878d8',
     lightClientContractAddress: '0x95ca91cea73239b15e5d2e5a74d02d6b5e0ae458',
   };
 
