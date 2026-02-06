@@ -1,13 +1,10 @@
-import { Now } from '@/contexts/now_provider';
 import Text from '@/components/text/text';
 import PadlockSquare2 from '@/components/visual/icons/sharp_line/padlock_square_2';
+import { Now } from '@/contexts/now_provider';
 import { compareIterables } from '@/functional/functional';
+import { CollapseState } from 'delegation-ui';
 import React from 'react';
-import {
-  CollapsableHeader,
-  CollapsableSection,
-  CollapseGuard,
-} from './collapsable_section';
+import { CollapsableHeader, CollapsableSection } from './collapsable_section';
 import { NodeAddressListContext } from './contexts/all_validators_context';
 import { PendingExitsContext } from './contexts/pending_exits_context';
 import './pending_exits.css';
@@ -56,7 +53,7 @@ const FilterToAvailablePendingExits: React.FC<React.PropsWithChildren> = ({
     }
 
     return () => {
-      setNextPendingExitsList = () => { };
+      setNextPendingExitsList = () => {};
     };
   }, [nodeAddressList, now, pendingExits, pendingExitsList]);
 
@@ -79,16 +76,17 @@ const PendingExitsSection: React.FC = () => {
   }
 
   return (
-    <CollapsableSection className="pending-exits">
+    <CollapsableSection
+      className="pending-exits"
+      initialState={CollapseState.expanded}
+    >
       <CollapsableHeader>
         <PadlockSquare2 />
         <h2>
           <Text text="Validators you have delegated to have exited the Staking Table.  You can manage your pending withdraws here." />
         </h2>
       </CollapsableHeader>
-      <CollapseGuard>
-        <PendingExitsContent />
-      </CollapseGuard>
+      <PendingExitsContent />
     </CollapsableSection>
   );
 };

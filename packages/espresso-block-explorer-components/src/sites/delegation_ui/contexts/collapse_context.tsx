@@ -28,14 +28,19 @@ function useCollapseState(
   return [state, setState] as const;
 }
 
+export interface ProvideCollapseStateProps extends React.PropsWithChildren {
+  initialState?: CollapseState;
+}
+
 /**
  * ProvideCollapseState is a React Component that defines a collapse state,
  * and provides contexts for reading, and setting it.
  */
-export const ProvideCollapseState: React.FC<React.PropsWithChildren> = ({
+export const ProvideCollapseState: React.FC<ProvideCollapseStateProps> = ({
   children,
+  initialState,
 }) => {
-  const [state, setState] = useCollapseState();
+  const [state, setState] = useCollapseState(initialState);
 
   return (
     <CollapseStateContext.Provider value={state}>
