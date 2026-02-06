@@ -16,18 +16,23 @@ export const MissedSlotsCell: React.FC = () => {
   const activeValidator = consensusMap.get(validator.addressText);
 
   if (!activeValidator || activeValidator.leaderParticipation == null) {
-    return <Text text="-" />;
+    return (
+      <span title="No data">
+        <Text text="-" />
+      </span>
+    );
   }
 
   const rate = activeValidator.leaderParticipation;
   const ratio = rate.ratio;
-  if (!Number.isFinite(ratio) || Number.isNaN(ratio)) {
-    // Handle invalid number representations
-    return <Text text="-" />;
-  }
 
   if (rate instanceof RatioRational) {
     return <RatioRationalText rate={rate.oneMinus()} />;
+  }
+
+  if (!Number.isFinite(ratio) || Number.isNaN(ratio)) {
+    // Handle invalid number representations
+    return <Text text="-" />;
   }
 
   return <PercentageText percentage={1 - ratio} />;

@@ -5,6 +5,7 @@ import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
 import { ValidatorNodeContext } from '../../contexts/validator_node_context';
 import CopyWalletAddress from '../../validator_nodes_table/common/cells/copy_wallet_address';
+import { CuratedValidatorsMapContext } from '@/delegation_ui/contexts/curated_validators_map_context';
 
 export interface ValidatorNameProps {
   className?: string;
@@ -12,8 +13,11 @@ export interface ValidatorNameProps {
 
 export const ValidatorName: React.FC<ValidatorNameProps> = (props) => {
   const validator = React.useContext(ValidatorNodeContext);
+  const curatedMetadataMap = React.useContext(CuratedValidatorsMapContext);
 
-  const nodeName = validator.metadata?.content?.name;
+  const curatedMetadata = curatedMetadataMap.get(validator.addressText) ?? null;
+  const nodeName =
+    validator.metadata?.content?.name ?? curatedMetadata?.name ?? null;
 
   if (!nodeName) {
     const walletAddress = new WalletAddress(validator.address);

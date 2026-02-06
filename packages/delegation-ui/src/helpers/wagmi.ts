@@ -1,4 +1,3 @@
-
 import { Environment } from 'espresso-block-explorer-components';
 import { createClient, defineChain } from 'viem';
 import { createConfig, http } from 'wagmi';
@@ -25,12 +24,12 @@ export const water: WagmiConfig = createConfig({
   chains: [
     defineChain({
       id: 900,
-      name: 'GETH (water)',
+      name: 'RETH (water)',
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
       rpcUrls: {
         default: {
-          http: ['https://geth.water.devnet.espresso.network'],
-          webSocket: ['wss://wsgeth.water.devnet.espresso.network'],
+          http: ['https://reth.water.devnet.espresso.network'],
+          webSocket: ['wss://wsreth.water.devnet.espresso.network'],
         },
       },
       testnet: true,
@@ -45,11 +44,11 @@ export const milk: WagmiConfig = createConfig({
   chains: [
     defineChain({
       id: 900,
-      name: 'GETH (milk)',
+      name: 'RETH (milk)',
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
       rpcUrls: {
         default: {
-          http: ['https://geth.milk.devnet.espresso.network'],
+          http: ['https://reth.milk.devnet.espresso.network'],
           webSocket: ['wss://wsgeth.milk.devnet.espresso.network'],
         },
       },
@@ -65,7 +64,7 @@ export const localDevNet: WagmiConfig = createConfig({
   chains: [
     defineChain({
       id: 31337,
-      name: 'GETH (Local DevNet)',
+      name: 'RETH (Local DevNet)',
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
       rpcUrls: {
         default: {
@@ -85,9 +84,9 @@ export const fakeData: WagmiConfig = createConfig({
   chains: [
     defineChain({
       id: 31337 as const,
-      name: 'GETH (Fake Data)',
+      name: 'Fake Data',
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
       rpcUrls: {} as any,
       testnet: true,
       connectors: [

@@ -253,9 +253,7 @@ const DelegationUIClaimPortalHandOffAccountCheck: React.FC<
             <Text text="Please reconnect your wallet to the correct address." />
           </p>
           <br />
-          <div className="claim-and-stake-actions-area">
-            <ConnectWalletButton />
-          </div>
+          <ConnectWalletButton />
         </SimpleModalLayout>
       );
     }
@@ -415,6 +413,13 @@ const DelegationUIClaimPortalHandOffBalanceCheck: React.FC<
         <p>
           <Text text="Unable to determine current Wallet balance.  We are unable to continue, please refresh the page and try again." />
         </p>
+        <div className="claim-and-stake-actions-area">
+          <RefreshL1Button />
+
+          <ButtonLarge onClick={close}>
+            <Text text="Close" />
+          </ButtonLarge>
+        </div>
       </SimpleModalLayout>
     );
   }
@@ -454,9 +459,13 @@ const DelegationUIClaimPortalHandOffBalanceCheck: React.FC<
           </strong>
         </p>
         <br />
-        <ButtonLarge onClick={close}>
-          <Text text="Close" />
-        </ButtonLarge>
+        <div className="claim-and-stake-actions-area">
+          <RefreshL1Button />
+
+          <ButtonLarge onClick={close}>
+            <Text text="Close" />
+          </ButtonLarge>
+        </div>
       </SimpleModalLayout>
     );
   }
@@ -465,6 +474,30 @@ const DelegationUIClaimPortalHandOffBalanceCheck: React.FC<
     <StakingAmountContext.Provider value={MonetaryValue.ESP(wantAmount)}>
       {children}
     </StakingAmountContext.Provider>
+  );
+};
+
+/**
+ * RefreshL1Button will update the Timestamp for data being retrieved from
+ * the L1, so that it can be re-pulled, getting a more up-to-date state.
+ */
+const RefreshL1Button: React.FC = () => {
+  const setL1Timestamp = React.useContext(SetL1RefreshTimestampContext);
+  const refreshL1State = () => setL1Timestamp(new Date());
+  const balanceAsyncSnapshot = React.useContext(ESPBalanceAsyncSnapshotContext);
+
+  if (balanceAsyncSnapshot.asyncState === AsyncState.waiting) {
+    return (
+      <ButtonLarge disabled>
+        <Text text="Refresh" />
+      </ButtonLarge>
+    );
+  }
+
+  return (
+    <ButtonLarge onClick={refreshL1State}>
+      <Text text="Refresh" />
+    </ButtonLarge>
   );
 };
 

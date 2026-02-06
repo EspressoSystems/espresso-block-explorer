@@ -1,5 +1,6 @@
-import { CurrentNumberFormatters } from '@/contexts/number_formatters_provider';
+import Text from '@/components/text/text';
 import { PercentageText } from '@/components/text';
+import { CurrentNumberFormatters } from '@/contexts/number_formatters_provider';
 import { RatioRational } from '@/service/espresso_l1_validator_service/common/ratio';
 import React from 'react';
 
@@ -15,11 +16,18 @@ export const RatioRationalText: React.FC<RatioRationalText> = ({ rate }) => {
   const numberFormatters = React.useContext(CurrentNumberFormatters);
   const formatter = numberFormatters.default;
 
+  const content =
+    !Number.isFinite(rate.ratio) || Number.isNaN(rate.ratio) ? (
+      <Text text="-" />
+    ) : (
+      <PercentageText percentage={rate.ratio} />
+    );
+
   return (
     <span
       title={`${formatter.format(rate.numerator)} / ${formatter.format(rate.denominator)}`}
     >
-      <PercentageText percentage={rate.ratio} />
+      {content}
     </span>
   );
 };

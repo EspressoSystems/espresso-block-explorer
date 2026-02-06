@@ -8,6 +8,7 @@ import LinkShare2 from '@/components/visual/icons/sharp_line/link_share_2';
 import { filterIterable } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import WalletAddress from '@/models/wallet_address/wallet_address';
+import { CuratedValidatorsMapContext } from 'delegation-ui';
 import React from 'react';
 import {
   AllValidatorsContext,
@@ -367,7 +368,13 @@ const WebsiteLink: React.FC<WebsiteLinkProps> = ({ href }) => {
 
 const Website: React.FC = () => {
   const validator = React.useContext(ValidatorNodeContext);
-  const website = validator.metadata?.content?.companyWebsite ?? null;
+  const curatedMetadataMap = React.useContext(CuratedValidatorsMapContext);
+
+  const curatedMetadata = curatedMetadataMap.get(validator.addressText) ?? null;
+  const website =
+    validator.metadata?.content?.companyWebsite ??
+    curatedMetadata?.companyWebsite ??
+    null;
 
   return (
     <LabelValueSplit>

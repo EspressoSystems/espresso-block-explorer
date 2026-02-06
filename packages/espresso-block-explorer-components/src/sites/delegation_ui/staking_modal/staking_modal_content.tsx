@@ -84,7 +84,13 @@ const StakingIntentResolver: React.FC = () => {
     // Now open the modal.
     modalContext.open();
     return () => {};
-  }, [claimPortalIntent, selectedValidator, rainbowKitModalRef, modalContext]);
+  }, [
+    claimPortalIntent,
+    selectedValidator,
+    setValidatorSelection,
+    rainbowKitModalRef,
+    modalContext,
+  ]);
 
   return null;
 };
