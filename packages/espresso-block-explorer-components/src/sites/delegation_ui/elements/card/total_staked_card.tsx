@@ -1,8 +1,7 @@
 import MoneyText from '@/components/text/money_text';
 import Text from '@/components/text/text';
-import { foldRIterable } from '@/functional/functional';
+import { CurrentTotalStakedContext } from '@/delegation_ui/contexts/current_total_staked_context';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
-import { WalletSnapshotContext } from '@/sites/delegation_ui/contexts/wallet_snapshot_context';
 import React from 'react';
 import { CardContentValue } from './card_content_value';
 import { CardValue } from './card_value';
@@ -14,26 +13,7 @@ import { CardValue } from './card_value';
  * the active wallet.
  */
 export const TotalStakedCard: React.FC = () => {
-  const snapshot = React.useContext(WalletSnapshotContext);
-
-  if (!snapshot) {
-    return (
-      <CardValue className="estimated-apr-card">
-        <h2>
-          <Text text="Total Staked" />
-        </h2>
-        <CardContentValue>
-          <MoneyText money={MonetaryValue.ESP(0n)} />
-        </CardContentValue>
-      </CardValue>
-    );
-  }
-
-  const totalStaked = foldRIterable(
-    (acc, node) => acc + node.amount,
-    0n,
-    snapshot.nodes,
-  );
+  const totalStaked = React.useContext(CurrentTotalStakedContext);
 
   return (
     <CardValue className="estimated-apr-card">

@@ -4,6 +4,7 @@ import { RetrieveBlocksPerEpoch } from './contexts/blocks_per_epoch_context';
 import { RetrieveLifetimeClaimedRewards } from './contexts/claimed_rewards_context';
 import { DeriveConsensusSet } from './contexts/consensus_map_context';
 import { DeriveCurrentDelegations } from './contexts/current_delegations_context';
+import { DeriveCurrentTotalStaked } from './contexts/current_total_staked_context';
 import { ProvideESPBalance } from './contexts/esp_balance_context';
 import { ProvideEspressoRefreshTimestampContext } from './contexts/espresso_refresh_timestamp_context';
 import { ProvideL1RefreshTimestampContext } from './contexts/l1_refresh_timestamp_context';
@@ -37,21 +38,23 @@ export const ProvideDelegationUIContexts: React.FC<React.PropsWithChildren> = ({
                   <RetrieveEspressoRewardClaimInput>
                     <RetrieveBlocksPerEpoch>
                       <DeriveTotalStake>
-                        <DeriveConsensusSet>
-                          <DeriveRank>
-                            <DeriveCurrentDelegations>
-                              <DerivePendingUndelegations>
-                                <DerivePendingExits>
-                                  <ProvideValidatorSelection>
-                                    <ComputeMillisecondsPerBlock>
-                                      {children}
-                                    </ComputeMillisecondsPerBlock>
-                                  </ProvideValidatorSelection>
-                                </DerivePendingExits>
-                              </DerivePendingUndelegations>
-                            </DeriveCurrentDelegations>
-                          </DeriveRank>
-                        </DeriveConsensusSet>
+                        <DeriveCurrentTotalStaked>
+                          <DeriveConsensusSet>
+                            <DeriveRank>
+                              <DeriveCurrentDelegations>
+                                <DerivePendingUndelegations>
+                                  <DerivePendingExits>
+                                    <ProvideValidatorSelection>
+                                      <ComputeMillisecondsPerBlock>
+                                        {children}
+                                      </ComputeMillisecondsPerBlock>
+                                    </ProvideValidatorSelection>
+                                  </DerivePendingExits>
+                                </DerivePendingUndelegations>
+                              </DeriveCurrentDelegations>
+                            </DeriveRank>
+                          </DeriveConsensusSet>
+                        </DeriveCurrentTotalStaked>
                       </DeriveTotalStake>
                     </RetrieveBlocksPerEpoch>
                   </RetrieveEspressoRewardClaimInput>
