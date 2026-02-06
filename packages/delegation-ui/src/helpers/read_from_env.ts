@@ -44,6 +44,7 @@ export interface EnvironmentConfig {
   contract_address_esp_token: null | `0x${string}`;
   contract_address_reward_claim: null | `0x${string}`;
   contract_address_light_client: null | `0x${string}`;
+  walletconnect_project_id: null | string;
 }
 
 /**
@@ -65,5 +66,6 @@ export function readFromEnv() {
     contract_address_light_client: validateContractAddress(
       process.env.CONTRACT_ADDRESS_LIGHT_CLIENT,
     ),
+    walletconnect_project_id: process.env.WALLETCONNECT_PROJECT_ID || null,
   } as const satisfies EnvironmentConfig;
 }

@@ -12,6 +12,7 @@ describe('Reader From ENV', () => {
       contract_address_esp_token: null,
       contract_address_reward_claim: null,
       contract_address_light_client: null,
+      walletconnect_project_id: null,
     });
 
     process.env.ENVIRONMENT_NAME = 'milk';
@@ -21,6 +22,7 @@ describe('Reader From ENV', () => {
       contract_address_esp_token: null,
       contract_address_reward_claim: null,
       contract_address_light_client: null,
+      walletconnect_project_id: null,
     });
 
     process.env.ENVIRONMENT_NAME = 'water';
@@ -30,6 +32,7 @@ describe('Reader From ENV', () => {
       contract_address_esp_token: null,
       contract_address_reward_claim: null,
       contract_address_light_client: null,
+      walletconnect_project_id: null,
     });
 
     process.env.ENVIRONMENT_NAME = 'mainnet';
@@ -39,6 +42,7 @@ describe('Reader From ENV', () => {
       contract_address_esp_token: null,
       contract_address_reward_claim: null,
       contract_address_light_client: null,
+      walletconnect_project_id: null,
     });
 
     process.env.CONTRACT_ADDRESS_STAKE_TABLE = '1234';
@@ -51,6 +55,7 @@ describe('Reader From ENV', () => {
       contract_address_esp_token: null,
       contract_address_reward_claim: null,
       contract_address_light_client: null,
+      walletconnect_project_id: null,
     });
 
     process.env.CONTRACT_ADDRESS_STAKE_TABLE = '0x1234';
@@ -63,6 +68,7 @@ describe('Reader From ENV', () => {
       contract_address_esp_token: '0x5678',
       contract_address_reward_claim: '0x9012',
       contract_address_light_client: '0x3456',
+      walletconnect_project_id: null,
     });
   });
 });

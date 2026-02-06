@@ -4,6 +4,7 @@ import { EnvironmentProvider } from '@/helpers/environment';
 import { EnvironmentConfig } from '@/helpers/read_from_env';
 import { getWagmiConfigForEnvironment } from '@/helpers/wagmi';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   Environment,
@@ -22,7 +23,6 @@ import {
   ProvideTickEverySecond,
   RainbowKitContextInjector,
 } from 'espresso-block-explorer-components';
-import Link from 'next/link';
 import { WagmiProvider } from 'wagmi';
 
 export interface LayoutClientComponentProps {
@@ -36,6 +36,18 @@ export default function LayoutClientComponent({
   env,
   children,
 }: LayoutClientComponentProps) {
+  const rawWagmiConfig = getWagmiConfigForEnvironment(
+    env.environment as Environment,
+  );
+
+  const rainbowKitWagmiConfig = !env.walletconnect_project_id
+    ? rawWagmiConfig
+    : getDefaultConfig({
+        appName: 'Espresso Delegation UI',
+        projectId: env.walletconnect_project_id,
+        ...rawWagmiConfig,
+      });
+
   return (
     <EnvironmentProvider env={env}>
       <ProvideNavigatorLanguage>
@@ -45,11 +57,7 @@ export default function LayoutClientComponent({
               <ProvideCappuccinoNodeValidatorServiceAPIContext>
                 <ProvideCappuccinoHotShotQueryServiceAPIContext>
                   <ProvideL1ValidatorServiceAPIContext>
-                    <WagmiProvider
-                      config={getWagmiConfigForEnvironment(
-                        env.environment as Environment,
-                      )}
-                    >
+                    <WagmiProvider config={rainbowKitWagmiConfig}>
                       <QueryClientProvider client={queryClient}>
                         <RainbowKitProvider>
                           <RainbowKitContextInjector>
