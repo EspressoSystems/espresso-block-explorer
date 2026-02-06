@@ -148,6 +148,22 @@ const TUPLE_INDEX_ACTIVE_NODE = 2;
 const TUPLE_INDEX_PENDING_EXIT = 3;
 const TUPLE_INDEX_PENDING_CLAIM = 4;
 
+function valueOrFallback(
+  input: undefined | null | number,
+  fallback: number = -1,
+): number {
+  if (
+    input === undefined ||
+    input === null ||
+    Number.isNaN(input) ||
+    !Number.isFinite(input)
+  ) {
+    return fallback;
+  }
+
+  return input;
+}
+
 /**
  * sortByRank sorts validators by their rank.
  */
@@ -173,8 +189,8 @@ function sortByValidator(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  */
 function sortByFee(a: ValidatorSortTuple, b: ValidatorSortTuple) {
   return Number(
-    (a[TUPLE_INDEX_NODE_SET_ENTRY]?.commission.valueOf() ?? -1) -
-      (b[TUPLE_INDEX_NODE_SET_ENTRY]?.commission.valueOf() ?? -1),
+    valueOrFallback(a[TUPLE_INDEX_NODE_SET_ENTRY]?.commission.valueOf(), -1) -
+      valueOrFallback(b[TUPLE_INDEX_NODE_SET_ENTRY]?.commission.valueOf(), -1),
   );
 }
 
@@ -182,8 +198,14 @@ function sortByFee(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  * sortByMissedSlots sorts validators by their missed slots.
  */
 function sortByMissedSlots(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  const aMissed = a[TUPLE_INDEX_ACTIVE_NODE]?.leaderParticipation?.ratio ?? -1;
-  const bMissed = b[TUPLE_INDEX_ACTIVE_NODE]?.leaderParticipation?.ratio ?? -1;
+  const aMissed = valueOrFallback(
+    a[TUPLE_INDEX_ACTIVE_NODE]?.leaderParticipation?.ratio,
+    -1,
+  );
+  const bMissed = valueOrFallback(
+    b[TUPLE_INDEX_ACTIVE_NODE]?.leaderParticipation?.ratio,
+    -1,
+  );
   return aMissed - bMissed;
 }
 
@@ -191,8 +213,14 @@ function sortByMissedSlots(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  * sortByParticipationRate sorts validators by their participation rate.
  */
 function sortByParticipationRate(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  const aRate = a[TUPLE_INDEX_ACTIVE_NODE]?.voterParticipation?.ratio ?? -1;
-  const bRate = b[TUPLE_INDEX_ACTIVE_NODE]?.voterParticipation?.ratio ?? -1;
+  const aRate = valueOrFallback(
+    a[TUPLE_INDEX_ACTIVE_NODE]?.voterParticipation?.ratio,
+    -1,
+  );
+  const bRate = valueOrFallback(
+    b[TUPLE_INDEX_ACTIVE_NODE]?.voterParticipation?.ratio,
+    -1,
+  );
   return aRate - bRate;
 }
 
