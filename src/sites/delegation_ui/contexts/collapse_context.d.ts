@@ -13,8 +13,11 @@ export declare const CollapseStateContext: React.Context<CollapseState>;
  * function to update the current collapse state of a UI element.
  */
 export declare const SetCollapseStateContext: React.Context<React.Dispatch<React.SetStateAction<CollapseState>>>;
+export interface ProvideCollapseStateProps extends React.PropsWithChildren {
+    initialState?: CollapseState;
+}
 /**
  * ProvideCollapseState is a React Component that defines a collapse state,
  * and provides contexts for reading, and setting it.
  */
-export declare const ProvideCollapseState: React.FC<React.PropsWithChildren>;
+export declare const ProvideCollapseState: React.FC<ProvideCollapseStateProps>;
