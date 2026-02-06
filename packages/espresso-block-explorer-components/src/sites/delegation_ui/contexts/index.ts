@@ -7,6 +7,7 @@ export * from './claimed_rewards_context';
 export * from './collapse_context';
 export * from './confirmed_valdiator_context';
 export * from './consensus_map_context';
+export * from './curated_validators_map_context';
 export * from './current_delegations_context';
 export * from './current_section_context';
 export * from './current_total_pending_undelegation_amount_context';
