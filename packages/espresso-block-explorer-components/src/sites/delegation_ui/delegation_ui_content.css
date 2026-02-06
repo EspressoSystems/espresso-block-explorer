@@ -19,6 +19,8 @@
   left: 50%;
   opacity: 8%;
   transform: translateX(-50%);
+  pointer-events: none;
+  touch-action: none;
 }
 
 .delegation-ui-content > * {
