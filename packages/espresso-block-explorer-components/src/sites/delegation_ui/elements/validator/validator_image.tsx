@@ -152,15 +152,20 @@ const FallbackBlockiesImage: React.FC = () => {
   const lCaseAddressText = addressText.toLowerCase() as `0x${string}`;
 
   const dataURL = React.useMemo(() => {
-    if (!cache.has(lCaseAddressText)) {
-      cache.set(
-        lCaseAddressText,
-        ethereumBlockiesBase64(lCaseAddressText.toLowerCase()),
-      );
+    if (!lCaseAddressText) {
+      return null;
     }
 
-    return cache.get(lCaseAddressText)!;
+    if (!cache.has(lCaseAddressText)) {
+      cache.set(lCaseAddressText, ethereumBlockiesBase64(lCaseAddressText));
+    }
+
+    return cache.get(lCaseAddressText) ?? null;
   }, [lCaseAddressText, cache]);
+
+  if (!dataURL) {
+    return null;
+  }
 
   return (
     <img
