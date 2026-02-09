@@ -15,6 +15,8 @@ import {
   type GetTransactionParameters,
   getTransactionReceipt,
   type GetTransactionReceiptParameters,
+  waitForTransactionReceipt,
+  type WaitForTransactionReceiptParameters,
 } from 'wagmi/actions';
 
 export interface L1MethodsReadOnly<
@@ -80,6 +82,15 @@ export interface L1MethodsReadOnly<
   getBlockNumber(
     parameters?: GetBlockNumberParameters<config, chainId>,
   ): ReturnType<typeof getBlockNumber<config, chainId>>;
+
+  /**
+   * waitForTransactionRectip waits for transaction to be included within a
+   * block with specified confirmations. Handles retry logic, timeout, and
+   * transaction replacement automatically.
+   */
+  waitForTransactionReceipt(
+    parameters: WaitForTransactionReceiptParameters<config, chainId>,
+  ): ReturnType<typeof waitForTransactionReceipt<config, chainId>>;
 }
 
 export interface L1MethodsWritable {}

@@ -2,22 +2,25 @@ import { BlockTag, FeeValuesType } from 'viem';
 import { Config } from 'wagmi';
 import {
   estimateFeesPerGas,
-  EstimateFeesPerGasParameters,
+  type EstimateFeesPerGasParameters,
   estimateGas,
-  EstimateGasParameters,
+  type EstimateGasParameters,
   getBalance,
-  GetBalanceParameters,
+  type GetBalanceParameters,
   getBlock,
   getBlockNumber,
-  GetBlockNumberParameters,
-  GetBlockParameters,
-  GetBlockReturnType,
+  type GetBlockNumberParameters,
+  type GetBlockParameters,
+  type GetBlockReturnType,
   getTransaction,
-  GetTransactionParameters,
+  type GetTransactionParameters,
   getTransactionReceipt,
-  GetTransactionReceiptParameters,
-  GetTransactionReceiptReturnType,
-  GetTransactionReturnType,
+  type GetTransactionReceiptParameters,
+  type GetTransactionReceiptReturnType,
+  type GetTransactionReturnType,
+  waitForTransactionReceipt,
+  type WaitForTransactionReceiptParameters,
+  type WaitForTransactionReceiptReturnType,
 } from 'wagmi/actions';
 import { L1Methods } from './l1_interface';
 
@@ -98,6 +101,15 @@ export class L1MethodsRemote<
 
   async getBlockNumber(parameters?: GetBlockNumberParameters<config, chainId>) {
     return getBlockNumber(this.config, {
+      ...parameters,
+      chainId: this.chainID,
+    });
+  }
+
+  async waitForTransactionReceipt(
+    parameters: WaitForTransactionReceiptParameters<config, chainId>,
+  ): Promise<WaitForTransactionReceiptReturnType<config, chainId>> {
+    return waitForTransactionReceipt<config, chainId>(this.config, {
       ...parameters,
       chainId: this.chainID,
     });
