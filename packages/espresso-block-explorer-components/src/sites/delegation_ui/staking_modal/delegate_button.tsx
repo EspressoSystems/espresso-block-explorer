@@ -1,13 +1,14 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
+import { addClassToClassName } from '@/components/higher_order';
 import Text from '@/components/text/text';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
 import { MinimumDelegationAmountContext } from '../contexts/minimum_delegation_amount_context';
+import { ButtonProps } from '../elements/buttons/button_base';
 import ButtonLarge from '../elements/buttons/button_large';
 import { CurrentAllowanceToStakeTableContext } from './contexts/current_allowance_context';
 import {
@@ -54,16 +55,14 @@ export const DelegateButton: React.FC = () => {
     }
   }, [asyncSnapshot]);
 
+  const ButtonComponent = asyncSnapshot.hasError ? RetryButton : NormalButton;
+
   if (
     // If the Contracts are not set
     l1Methods === null ||
     stakeTableContract === null
   ) {
-    return (
-      <ButtonLarge className="btn-delegate" disabled>
-        <Text text="Delegate" />
-      </ButtonLarge>
-    );
+    return <ButtonComponent disabled />;
   }
 
   const stakingAmountValue = stakingAmount?.value ?? 0n;
@@ -84,22 +83,15 @@ export const DelegateButton: React.FC = () => {
         stakeTableContract,
         validatorAddress,
         stakingAmountValue,
-        (date) => {
-          setStakingAmount(MonetaryValue.ESP(0n));
-          setL1Timestamp(date);
+        (err) => {
+          if (!err) {
+            setStakingAmount(null);
+          }
+          setL1Timestamp(new Date());
         },
       ),
     );
   };
-
-  if (asyncSnapshot.hasError) {
-    // There was an error delegating
-    return (
-      <ButtonLarge className="btn-delegate retry" onClick={handleDelegateClick}>
-        <Text text="Retry" />
-      </ButtonLarge>
-    );
-  }
 
   if (
     asyncSnapshot.hasData &&
@@ -107,11 +99,7 @@ export const DelegateButton: React.FC = () => {
       PerformWriteTransactionStatus.receiptRetrieved
   ) {
     // Delegation succeeded
-    return (
-      <ButtonLarge className="btn-delegate approved" disabled>
-        <Text text="Delegated" />
-      </ButtonLarge>
-    );
+    return <ButtonComponent className="approved" disabled />;
   }
 
   if (
@@ -119,11 +107,7 @@ export const DelegateButton: React.FC = () => {
     asyncSnapshot.asyncState == AsyncState.active
   ) {
     // We are waiting for the transaction to be completed
-    return (
-      <ButtonLarge className="btn-delegate approving" disabled>
-        <Text text="Delegate" />
-      </ButtonLarge>
-    );
+    return <ButtonComponent className="approving" disabled />;
   }
 
   if (
@@ -137,16 +121,40 @@ export const DelegateButton: React.FC = () => {
     stakingAmountValue < minimumDelegationAmount
   ) {
     // Disable the button
-    return (
-      <ButtonLarge className="btn-delegate" disabled>
-        <Text text="Delegate" />
-      </ButtonLarge>
-    );
+    return <ButtonComponent disabled />;
   }
 
+  return <ButtonComponent onClick={handleDelegateClick} />;
+};
+
+const NormalButton: React.FC<ButtonProps> = ({
+  className,
+  onClick,
+  ...rest
+}) => {
   return (
-    <ButtonLarge className="btn-delegate" onClick={handleDelegateClick}>
+    <ButtonLarge
+      className={addClassToClassName(className, 'btn-delegate')}
+      onClick={onClick}
+      {...rest}
+    >
       <Text text="Delegate" />
+    </ButtonLarge>
+  );
+};
+
+const RetryButton: React.FC<ButtonProps> = ({
+  className,
+  onClick,
+  ...rest
+}) => {
+  return (
+    <ButtonLarge
+      className={addClassToClassName(className, 'btn-delegate retry')}
+      onClick={onClick}
+      {...rest}
+    >
+      <Text text="Retry" />
     </ButtonLarge>
   );
 };

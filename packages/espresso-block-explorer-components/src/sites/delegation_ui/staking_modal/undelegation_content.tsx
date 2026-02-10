@@ -2,7 +2,6 @@ import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import Text from '@/components/text/text';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
@@ -77,9 +76,12 @@ const UnstakingActionsArea: React.FC = () => {
           stakeTableContract,
           validatorAddress,
           stakingAmountValue,
-          (date) => {
-            setStakingAmount(MonetaryValue.ESP(0n));
-            setL1Timestamp(date);
+          (err) => {
+            if (!err) {
+              setStakingAmount(null);
+            }
+
+            setL1Timestamp(new Date());
           },
         ),
       );

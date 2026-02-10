@@ -688,7 +688,9 @@ const AutoDriveApprove: React.FC = () => {
         espContract,
         stakeTableContract,
         currentBalance,
-        setL1Timestamp,
+        () => {
+          setL1Timestamp(new Date());
+        },
       ),
     );
 
@@ -813,7 +815,9 @@ const AutoDriveDelegate: React.FC = () => {
         stakeTableContract,
         node.addressText,
         stakingAmount.value,
-        setL1Timestamp,
+        () => {
+          setL1Timestamp(new Date());
+        },
       ),
     );
 

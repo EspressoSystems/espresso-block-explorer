@@ -1,8 +1,8 @@
 import { sleep } from '@/async/sleep';
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import BaseError from '@/errors/base_error';
-import { Config } from 'wagmi';
-import { GetTransactionReceiptReturnType } from 'wagmi/actions';
+import { type Config } from 'wagmi';
+import { type GetTransactionReceiptReturnType } from 'wagmi/actions';
 
 /**
  * PerformWriteTransactionStatus is an enum that represents the various states
@@ -91,7 +91,10 @@ export class FailedtoReceiveReceipt extends BaseError {
 export async function* performWriteTransaction(
   l1Methods: L1Methods<Config, number>,
   writeToContract: () => Promise<`0x${string}`>,
-  setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>,
+  resultCallback: (
+    err: unknown,
+    result: null | GetTransactionReceiptReturnType<Config>,
+  ) => void,
 ) {
   // Indicate that we are waiting for the delegation to complete
   yield new PerformWriteTransactionWaiting();
@@ -102,7 +105,7 @@ export async function* performWriteTransaction(
   } catch (err) {
     const wrappedError = new FailedToPerformWriteToContract(err);
     console.error('encountered error', wrappedError);
-    setL1Timestamp(new Date());
+    resultCallback(wrappedError, null);
     throw wrappedError;
   }
 
@@ -122,7 +125,7 @@ export async function* performWriteTransaction(
   } catch (err) {
     const wrappedError = new FailedtoReceiveReceipt(err);
     console.error('encountered error', wrappedError);
-    setL1Timestamp(new Date());
+    resultCallback(wrappedError, null);
     throw wrappedError;
   }
 
@@ -131,5 +134,5 @@ export async function* performWriteTransaction(
   // Add delay for indexer lag
   await sleep(2000);
 
-  setL1Timestamp(new Date());
+  resultCallback(null, receipt);
 }

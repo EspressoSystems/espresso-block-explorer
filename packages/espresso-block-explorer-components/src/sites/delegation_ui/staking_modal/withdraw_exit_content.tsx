@@ -80,7 +80,9 @@ const WithdrawExitActionsArea: React.FC = () => {
           l1Methods,
           stakeTableContract,
           validatorAddress,
-          setL1Timestamp,
+          () => {
+            setL1Timestamp(new Date());
+          },
         ),
       );
     },

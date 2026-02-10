@@ -5,7 +5,8 @@ import { L1Methods } from '@/contracts/l1/l1_interface';
 import { StakeTableContract } from '@/contracts/stake_table/stake_table_interface';
 import { neverAsyncIterable } from '@/functional/functional_async';
 import React from 'react';
-import { Config } from 'wagmi';
+import { type Config } from 'wagmi';
+import { type GetTransactionReceiptReturnType } from 'wagmi/actions';
 import {
   performWriteTransaction,
   PerformWriteTransactionState,
@@ -78,11 +79,14 @@ export async function* performUndelegation(
   stakeTableContract: StakeTableContract,
   validatorAddress: `0x${string}`,
   stakingAmount: bigint,
-  setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>,
+  resultCallback: (
+    error: unknown,
+    result: null | GetTransactionReceiptReturnType<Config>,
+  ) => void,
 ) {
   yield* performWriteTransaction(
     l1Methods,
     async () => stakeTableContract.undelegate(validatorAddress, stakingAmount),
-    setL1Timestamp,
+    resultCallback,
   );
 }

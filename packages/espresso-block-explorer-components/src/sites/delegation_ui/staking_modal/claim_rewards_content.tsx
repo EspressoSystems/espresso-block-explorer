@@ -92,7 +92,9 @@ const ClaimRewardsActionsArea: React.FC = () => {
           l1Methods,
           rewardClaimContract,
           rewardClaimInput,
-          setL1Timestamp,
+          () => {
+            setL1Timestamp(new Date());
+          },
         ),
       );
     },
