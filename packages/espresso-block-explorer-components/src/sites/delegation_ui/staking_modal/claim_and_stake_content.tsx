@@ -70,13 +70,17 @@ import { StakingModalCloseContext } from './contexts/staking_modal_close_context
 import { DelegateButton } from './delegate_button';
 import { NewStakeInstructionsAndProgress } from './new_stake_instructions_and_progress';
 import { NoticeArea } from './notice_area';
-import { ProvideCurrentStakingInformation } from './provide_staking_information';
+import {
+  ProvideAsyncIterableDrivers,
+  ProvideValidatorInfoFromContract,
+} from './provide_staking_information';
 import { StakingCompletionArea } from './staking_completion_area';
 import { StakingContent } from './staking_content';
 import { StakingHeader } from './staking_header';
 import { StakingModalTitle } from './staking_modal_title';
 import { StakingOverviewArea } from './staking_overview_area';
 import { ValidatorDisplayArea } from './validator_display_area';
+import { ConfirmedValidatorContext } from 'delegation-ui';
 
 /**
  * ClaimAndStakeContent is a somewhat complex Modal Content with multiple
@@ -103,28 +107,30 @@ export const ClaimAndStakeContent: React.FC = () => {
         setClaimPortalIntent(null);
       }}
     >
-      <ProvideCurrentStakingInformation>
+      <ProvideAsyncIterableDrivers>
         <DelegationUIClaimPortalHandOffRouter />
-      </ProvideCurrentStakingInformation>
+      </ProvideAsyncIterableDrivers>
     </StakingModalCloseContext.Provider>
   );
 };
 
 const DelegationUIClaimPortalHandOffRouter: React.FC = () => {
   return (
-    <CompletionCheck>
-      <DelegationUIClaimPortalHandOffAccountCheck>
-        <DelegationUICClaimPortalHandOffChainCheck>
-          <DelegationUIClaimPortalHandOffFilterValidators>
-            <DelegationUIClaimPortalHandOffValidatorChoice>
-              <DelegationUIClaimPortalHandOffBalanceCheck>
-                <ClaimAndStakePerformDelegationContent />
-              </DelegationUIClaimPortalHandOffBalanceCheck>
-            </DelegationUIClaimPortalHandOffValidatorChoice>
-          </DelegationUIClaimPortalHandOffFilterValidators>
-        </DelegationUICClaimPortalHandOffChainCheck>
-      </DelegationUIClaimPortalHandOffAccountCheck>
-    </CompletionCheck>
+    <DelegationUIClaimPortalHandOffPickRandomValidator>
+      <CompletionCheck>
+        <DelegationUIClaimPortalHandOffAccountCheck>
+          <DelegationUICClaimPortalHandOffChainCheck>
+            <DelegationUIClaimPortalHandOffBalanceCheck>
+              <ValidatorPickedCheck>
+                <ProvideValidatorInfoFromContract>
+                  <ClaimAndStakePerformDelegationContent />
+                </ProvideValidatorInfoFromContract>
+              </ValidatorPickedCheck>
+            </DelegationUIClaimPortalHandOffBalanceCheck>
+          </DelegationUICClaimPortalHandOffChainCheck>
+        </DelegationUIClaimPortalHandOffAccountCheck>
+      </CompletionCheck>
+    </DelegationUIClaimPortalHandOffPickRandomValidator>
   );
 };
 
@@ -308,17 +314,6 @@ const DelegationUIClaimPortalHandOffFilterValidators: React.FC<
     return Boolean(name);
   });
 
-  if (nodeList.length <= 0) {
-    // We do not currently have the node list, so we need to load the list.
-    return (
-      <SimpleModalLayout title={<Text text="Waiting for Node information" />}>
-        <p>
-          <Text text="Waiting for node information in order to pick a Node to Stake to." />
-        </p>
-      </SimpleModalLayout>
-    );
-  }
-
   return (
     <NodeAddressListContext.Provider value={filteredNodeList}>
       {children}
@@ -331,6 +326,7 @@ const DelegationUIClaimPortalHandOffValidatorChoice: React.FC<
 > = ({ children }) => {
   // We need to resolve the Validator.
 
+  const fallback = React.useContext(ValidatorNodeContext);
   const nodeList = React.useContext(NodeAddressListContext);
   const nodeMap = React.useContext(AllValidatorsContext);
   const [randomOrderNodeList, setRandomOrderNodeList] = React.useState(
@@ -362,7 +358,65 @@ const DelegationUIClaimPortalHandOffValidatorChoice: React.FC<
   const [validatorAddress = null] = randomOrderNodeList;
   const node = !validatorAddress ? null : nodeMap.get(validatorAddress);
 
-  if (!validatorAddress || !node) {
+  // We have our selected Node Validator
+
+  return (
+    <NodeAddressContext.Provider value={validatorAddress ?? '0x'}>
+      <ValidatorNodeContext.Provider value={node ?? fallback}>
+        <ConfirmedValidatorContext.Provider value={validatorAddress ?? '0x'}>
+          {children}
+        </ConfirmedValidatorContext.Provider>
+      </ValidatorNodeContext.Provider>
+    </NodeAddressContext.Provider>
+  );
+};
+
+/**
+ * DelegationUIClaimPortalHandOffPickRandomValidator is a component that serves
+ * performs random validator selection with the infomration provided.
+ *
+ * This should be done as high in the component tree as possible in order to
+ * prevent the node from being re-selected when a re-render is triggered.
+ */
+const DelegationUIClaimPortalHandOffPickRandomValidator: React.FC<
+  React.PropsWithChildren
+> = ({ children }) => {
+  return (
+    <DelegationUIClaimPortalHandOffFilterValidators>
+      <DelegationUIClaimPortalHandOffValidatorChoice>
+        {children}
+      </DelegationUIClaimPortalHandOffValidatorChoice>
+    </DelegationUIClaimPortalHandOffFilterValidators>
+  );
+};
+
+/**
+ * ValidtorPickedCheck is a component that checks to ensure that we have
+ * successfully selected a Validator for the user.
+ *
+ * This component acts as a guard, that prevents the user from moving foward.
+ * It's meant to guard empty selections and prevent us from utilizing the
+ * address if it's invalid.
+ */
+const ValidatorPickedCheck: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const nodeList = React.useContext(NodeAddressListContext);
+  const validatorAddress = React.useContext(NodeAddressContext);
+  const node = React.useContext(ValidatorNodeContext);
+
+  if (nodeList.length <= 0) {
+    // We do not currently have the node list, so we need to load the list.
+    return (
+      <SimpleModalLayout title={<Text text="Waiting for Node information" />}>
+        <p>
+          <Text text="Waiting for node information in order to pick a Node to Stake to." />
+        </p>
+      </SimpleModalLayout>
+    );
+  }
+
+  if (!validatorAddress || !node || validatorAddress === '0x') {
     // We have no nodes that meet the criteria we are looking for.
     return (
       <SimpleModalLayout
@@ -375,15 +429,7 @@ const DelegationUIClaimPortalHandOffValidatorChoice: React.FC<
     );
   }
 
-  // We have our selected Node Validator
-
-  return (
-    <NodeAddressContext.Provider value={validatorAddress}>
-      <ValidatorNodeContext.Provider value={node}>
-        {children}
-      </ValidatorNodeContext.Provider>
-    </NodeAddressContext.Provider>
-  );
+  return children;
 };
 
 const DelegationUIClaimPortalHandOffBalanceCheck: React.FC<

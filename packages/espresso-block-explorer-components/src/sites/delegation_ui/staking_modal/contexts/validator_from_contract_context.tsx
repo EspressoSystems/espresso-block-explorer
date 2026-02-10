@@ -21,7 +21,10 @@ export const ProvideValidatorFromContract: React.FC<
 
   const promise = React.useMemo(
     () =>
-      !stakeTableContract || !confirmedValidator || !accountAddress
+      !stakeTableContract ||
+      !confirmedValidator ||
+      !accountAddress ||
+      confirmedValidator === '0x'
         ? neverPromise
         : stakeTableContract.validator(confirmedValidator),
 

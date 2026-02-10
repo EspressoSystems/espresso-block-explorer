@@ -12,22 +12,38 @@ export const ProvideCurrentStakingInformation: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   return (
+    <ProvideValidatorInfoFromContract>
+      <ProvideAsyncIterableDrivers>{children}</ProvideAsyncIterableDrivers>
+    </ProvideValidatorInfoFromContract>
+  );
+};
+
+export const ProvideValidatorInfoFromContract: React.FC<
+  React.PropsWithChildren
+> = ({ children }) => {
+  return (
     <ProvideCurrentStakeToValidator>
-      <ProvideValidatorFromContract>
-        <ProvideApproveAsyncIterableContext>
-          <ProvideDelegateAsyncIterableContext>
-            <ProvideUndelegateAsyncIterableContext>
-              <ProvideClaimWithdrawalAsyncIterableContext>
-                <ProvideClaimValidatorExitAsyncIterableContext>
-                  <ProvideClaimRewardsAsyncIterableContext>
-                    {children}
-                  </ProvideClaimRewardsAsyncIterableContext>
-                </ProvideClaimValidatorExitAsyncIterableContext>
-              </ProvideClaimWithdrawalAsyncIterableContext>
-            </ProvideUndelegateAsyncIterableContext>
-          </ProvideDelegateAsyncIterableContext>
-        </ProvideApproveAsyncIterableContext>
-      </ProvideValidatorFromContract>
+      <ProvideValidatorFromContract>{children}</ProvideValidatorFromContract>
     </ProvideCurrentStakeToValidator>
+  );
+};
+
+export const ProvideAsyncIterableDrivers: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  return (
+    <ProvideApproveAsyncIterableContext>
+      <ProvideDelegateAsyncIterableContext>
+        <ProvideUndelegateAsyncIterableContext>
+          <ProvideClaimWithdrawalAsyncIterableContext>
+            <ProvideClaimValidatorExitAsyncIterableContext>
+              <ProvideClaimRewardsAsyncIterableContext>
+                {children}
+              </ProvideClaimRewardsAsyncIterableContext>
+            </ProvideClaimValidatorExitAsyncIterableContext>
+          </ProvideClaimWithdrawalAsyncIterableContext>
+        </ProvideUndelegateAsyncIterableContext>
+      </ProvideDelegateAsyncIterableContext>
+    </ProvideApproveAsyncIterableContext>
   );
 };
