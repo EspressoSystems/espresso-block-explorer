@@ -8,9 +8,9 @@ import { MoreInfoElement } from '@/sites/delegation_ui/elements/tooltip/more_inf
 export const HotShotConsensusHeadCell: React.FC = () => {
   return (
     <>
-      <Text text="Consensus" />
+      <Text text="Status" />
       <MoreInfoElement>
-        <Text text="Espresso validators vote on each block and come to an agreement on the correct state of the blockchain in order to finalize it." />
+        <Text text="Active validators are participating in consensus and earning rewards.  Inactive Validators are not currently participating in consensus or earning rewards." />
       </MoreInfoElement>
     </>
   );
