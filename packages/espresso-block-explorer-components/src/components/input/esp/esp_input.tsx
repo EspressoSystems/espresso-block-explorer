@@ -221,7 +221,8 @@ function shouldAllowEventEdit(
         expectedResult
           .substring(resultingFormat.length)
           .split('')
-          .every((char) => numberMap.indexOf(char) >= 0)))
+          .every((char) => numberMap.indexOf(char) >= 0))) &&
+    expectedResult.length - expectedResult.indexOf(decimalSeparator) < 19
   ) {
     // This is a special case where the user is adding `0`s after the decimal
     // separator.  We want to allow this as long as it doesn't exceed the
@@ -264,7 +265,7 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
   const currencyCodeSide = React.useMemo(
     () =>
       exampleNumberFormat.findIndex((part) => part.type === 'currency') <
-        exampleNumberFormat.length / 2
+      exampleNumberFormat.length / 2
         ? CurrencyCodeSide.prefix
         : CurrencyCodeSide.suffix,
     [exampleNumberFormat],
@@ -275,8 +276,8 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
     !initialValue
       ? ''
       : numberFormatters.defaultFinance
-        .format(initialValue.toNumericLiteralString())
-        .replaceAll(groupSeparator, ''),
+          .format(initialValue.toNumericLiteralString())
+          .replaceAll(groupSeparator, ''),
   );
 
   // This is a number map of the digits '0-9' in order according to the
@@ -334,7 +335,7 @@ export const ESPInput: React.FC<ESPInputProps> = (props) => {
     }
 
     return () => {
-      setTheState = () => { };
+      setTheState = () => {};
     };
   }, [numberFormatters, state, initialValue, groupSeparator]);
 
