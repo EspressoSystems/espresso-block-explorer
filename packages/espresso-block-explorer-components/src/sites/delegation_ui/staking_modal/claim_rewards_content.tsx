@@ -1,15 +1,7 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
-import PromiseResolver from '@/components/data/async_data/promise_resolver';
-import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/text';
-import { DataContext } from '@/contexts/data_provider';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
-import {
-  RewardClaimContractContext,
-  RewardClaimContractGasEstimatorContext,
-} from '@/contexts/reward_claim_contract_context';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
-import { neverPromise } from '@/functional/functional_async';
+import { RewardClaimContractContext } from '@/contexts/reward_claim_contract_context';
 import React from 'react';
 import { LifetimeClaimedRewardsContext } from '../contexts/claimed_rewards_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
@@ -18,8 +10,6 @@ import ButtonLarge from '../elements/buttons/button_large';
 import { ClaimableRewardsOverviewArea } from './claimable_rewards_overview_area';
 import { ClaimableRewardsSummaryAndInteraction } from './claimable_rewards_summary_and_interaction';
 import { CloseStakingModalButton } from './close_staking_modal';
-import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
-import { ProvideEstimatedFeesPerGas } from './contexts/estimated_fees_per_gas_context';
 import {
   ClaimRewardsAsyncSnapshotContext,
   performClaimRewards,
@@ -46,7 +36,7 @@ export const ClaimRewardsContent: React.FC = () => {
 
 export const ClaimRewardsModalContent: React.FC = () => {
   return (
-    <ProvideEstimatedFeesPerGas>
+    <>
       <StakingHeader>
         <StakingModalTitle>
           <Text text="Claim All" />
@@ -54,54 +44,11 @@ export const ClaimRewardsModalContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <ProvideContractGasEstimate>
-          <ClaimableRewardsSummaryAndInteraction />
-          <ClaimableRewardsOverviewArea />
-          <ClaimRewardsActionsArea />
-        </ProvideContractGasEstimate>
+        <ClaimableRewardsSummaryAndInteraction />
+        <ClaimableRewardsOverviewArea />
+        <ClaimRewardsActionsArea />
       </StakingContent>
-    </ProvideEstimatedFeesPerGas>
-  );
-};
-
-/**
- * ProvideContractGasEstimate is a React component that provides the gas
- * estimate for claiming rewards to its children.
- */
-const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const account = React.useContext(RainbowKitAccountAddressContext);
-  const claimRewardsInput = React.useContext(EspressoRewardClaimInputContext);
-  const rewardClaimGasEstimator = React.useContext(
-    RewardClaimContractGasEstimatorContext,
-  );
-
-  const promise =
-    !claimRewardsInput || !rewardClaimGasEstimator || !account
-      ? neverPromise
-      : rewardClaimGasEstimator.claimRewards(
-          account,
-          claimRewardsInput.lifetimeRewards,
-          hexArrayBufferCodec.encode(claimRewardsInput.authData),
-        );
-
-  return (
-    <PromiseResolver promise={promise}>
-      <TransformDataToGasEstimate>{children}</TransformDataToGasEstimate>
-    </PromiseResolver>
-  );
-};
-
-const TransformDataToGasEstimate: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const data = (React.useContext(DataContext) ?? null) as null | bigint;
-
-  return (
-    <EstimatedContractGasContext.Provider value={data}>
-      {children}
-    </EstimatedContractGasContext.Provider>
+    </>
   );
 };
 

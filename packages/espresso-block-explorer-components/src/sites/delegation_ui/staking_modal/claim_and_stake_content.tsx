@@ -1,6 +1,5 @@
 import { assert } from '@/assert/assert';
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
-import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { addClassToClassName } from '@/components/higher_order';
 import {
   RainbowKitAccountAddressContext,
@@ -11,20 +10,15 @@ import FullWalletAddressText from '@/components/text/full_wallet_address';
 import MoneyText from '@/components/text/money_text';
 import Text from '@/components/text/text';
 import CheckCircle from '@/components/visual/icons/sharp_line/check_circle';
-import { DataContext } from '@/contexts/data_provider';
 import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
-import {
-  StakeTableContractContext,
-  StakeTableContractGasEstimatorContext,
-} from '@/contexts/stake_table_contract_context';
+import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   compareArrayBuffer,
   mapIterable,
   zipWithIterable,
 } from '@/functional/functional';
-import { neverPromise } from '@/functional/functional_async';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
@@ -39,7 +33,6 @@ import {
   kIntentClaimAndStake,
   SetClaimPortalIntentContext,
 } from '../contexts/claim_portal_intent_context';
-import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import {
   ESPBalanceAsyncSnapshotContext,
   ESPBalanceContext,
@@ -62,7 +55,6 @@ import {
 } from './contexts/current_allowance_context';
 import { ProvideCurrentCurrentEpochActiveValidators } from './contexts/current_epoch_active_validators_context';
 import { ProvideEpochCurrentStakeToValidator } from './contexts/current_epoch_stake_to_validator_context';
-import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
 import {
   ApproveAsyncSnapshotContext,
   performApprove,
@@ -823,16 +815,14 @@ const ClaimAndStakeDelegationContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <ProvideDelegateContractGasEstimate>
-          <div className="staking-modal-initial-summary-and-interaction">
-            <ValidatorDisplayArea />
-            <NoticeArea />
-            <StakingAmountSummary />
-          </div>
-          <StakingOverviewArea />
-          <StakingActionsArea />
-          <StakingCompletionArea />
-        </ProvideDelegateContractGasEstimate>
+        <div className="staking-modal-initial-summary-and-interaction">
+          <ValidatorDisplayArea />
+          <NoticeArea />
+          <StakingAmountSummary />
+        </div>
+        <StakingOverviewArea />
+        <StakingActionsArea />
+        <StakingCompletionArea />
       </StakingContent>
     </>
   );
@@ -868,65 +858,6 @@ const StakingAmountSummary: React.FC = () => {
         <MoneyText money={stakingAmount} />
       </div>
     </div>
-  );
-};
-
-/**
- * ProvideDelegateContractGasEstimate is a React component that provides the gas
- * estimate the delegate method on the StakeTable.  The estimate is passed
- * to its children via the EstimatedContractGasContext.
- */
-const ProvideDelegateContractGasEstimate: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const account = React.useContext(RainbowKitAccountAddressContext);
-  const allowance = React.useContext(CurrentAllowanceToStakeTableContext) ?? 0n;
-  const balance = React.useContext(ESPBalanceContext);
-  const validator = React.useContext(ConfirmedValidatorContext);
-  const rewardClaimGasEstimator = React.useContext(
-    StakeTableContractGasEstimatorContext,
-  );
-
-  const amountToTry = allowance < balance ? allowance : balance;
-
-  const promise = React.useMemo(
-    () =>
-      !rewardClaimGasEstimator ||
-      balance <= 0n ||
-      allowance === null ||
-      allowance <= 0n ||
-      amountToTry <= 0n ||
-      !account
-        ? neverPromise
-        : rewardClaimGasEstimator.delegate(account, validator, amountToTry),
-
-    // We only want to refresh this, if the estimator changes, or if the
-    // criteria of our account or validator switch between being set or not,
-    // or if the amount is positive or not.
-    //
-    // Beyond these conditions, the gas price is assumed to be the same,
-    // regardless of the specific values utilized.
-    //
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [rewardClaimGasEstimator, !!account, !!validator, amountToTry > 0n],
-  );
-
-  return (
-    <PromiseResolver promise={promise}>
-      <TransformDataToGasEstimate>{children}</TransformDataToGasEstimate>
-    </PromiseResolver>
-  );
-};
-
-const TransformDataToGasEstimate: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const data = (React.useContext(DataContext) ?? null) as null | bigint;
-
-  return (
-    <EstimatedContractGasContext.Provider value={data}>
-      {children}
-    </EstimatedContractGasContext.Provider>
   );
 };
 

@@ -70,16 +70,24 @@ const FeeBreakdown: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const priceComponents = [
     `Estimated Gas: ${contractGasDisplay}`,
-    !gasPriceDisplay
-      ? null
-      : `Gas Price: ${gasPriceDisplay} * ${contractGasDisplay} = ${numberFormatters.ETHFull.format(MonetaryValue.ETH(estimatedContractGas * gasPrice!).toNumericLiteralString())}`,
-    !maxPriorityFeePerGasDisplay || !maxFeesPerGasDisplay
+
+    !gasPriceDisplay ? null : `Gas Price: ${gasPriceDisplay}`,
+    !maxFeesPerGasDisplay ? null : `Max Fees Per Gas: ${maxFeesPerGasDisplay}`,
+    !maxPriorityFeePerGasDisplay
       ? null
       : `Max Priority Fee Per Gas: ${maxPriorityFeePerGasDisplay}`,
-    !maxFeesPerGasDisplay
-      ? null
-      : `Max Fee Per Gas: ${maxFeesPerGasDisplay} * ${contractGasDisplay} = ${numberFormatters.ETHFull.format(MonetaryValue.ETH(estimatedContractGas * maxFeesPerGas!).toNumericLiteralString())}`,
+    '',
   ];
+
+  if (maxFeesPerGasDisplay && maxPriorityFeePerGasDisplay) {
+    priceComponents.push(
+      `${contractGasDisplay} * (${maxFeesPerGasDisplay} + ${maxPriorityFeePerGasDisplay}) = ${numberFormatters.ETHFull.format(
+        MonetaryValue.ETH(
+          estimatedContractGas * (maxFeesPerGas! + maxPriorityFeePerGas!),
+        ).toNumericLiteralString(),
+      )}`,
+    );
+  }
 
   const title = priceComponents.filter(isNotNull).join('\n');
 

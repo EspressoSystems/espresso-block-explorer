@@ -28,7 +28,6 @@ import { ClaimRewardsModalContent } from '../claim_rewards_content';
 import { CurrentAllowanceToStakeTableContext } from '../contexts/current_allowance_context';
 import { CurrentPendingUndelegationFromValidatorContext } from '../contexts/current_pending_undelegation_from_validator_context';
 import { CurrentStakeToValidatorContext } from '../contexts/current_stake_to_validator_context';
-import { ProvideEstimatedFeesPerGas } from '../contexts/estimated_fees_per_gas_context';
 import { ClaimValidatorExitAsyncSnapshotContext } from '../contexts/perfom_claim_validator_exit_context';
 import { ApproveAsyncSnapshotContext } from '../contexts/perform_approve_delegation_context';
 import { ClaimRewardsAsyncSnapshotContext } from '../contexts/perform_claim_rewards_context';
@@ -137,45 +136,43 @@ export const ValidatorConfirmedExample: React.FC<
                                                     )
                                               }
                                             >
-                                              <ProvideEstimatedFeesPerGas>
-                                                <UndelegateAsyncSnapshotContext.Provider
+                                              <UndelegateAsyncSnapshotContext.Provider
+                                                value={
+                                                  props.undelegationAsyncSnapshot
+                                                }
+                                              >
+                                                <ApproveAsyncSnapshotContext.Provider
                                                   value={
-                                                    props.undelegationAsyncSnapshot
+                                                    props.approvalAsyncSnapshot
                                                   }
                                                 >
-                                                  <ApproveAsyncSnapshotContext.Provider
+                                                  <DelegateAsyncSnapshotContext.Provider
                                                     value={
-                                                      props.approvalAsyncSnapshot
+                                                      props.delegationAsyncSnapshot
                                                     }
                                                   >
-                                                    <DelegateAsyncSnapshotContext.Provider
+                                                    <ClaimWithdrawalAsyncSnapshotContext.Provider
                                                       value={
-                                                        props.delegationAsyncSnapshot
+                                                        props.claimWithDrawalAsyncSnapshot
                                                       }
                                                     >
-                                                      <ClaimWithdrawalAsyncSnapshotContext.Provider
+                                                      <ClaimValidatorExitAsyncSnapshotContext.Provider
                                                         value={
-                                                          props.claimWithDrawalAsyncSnapshot
+                                                          props.claimExitAsyncSnapshot
                                                         }
                                                       >
-                                                        <ClaimValidatorExitAsyncSnapshotContext.Provider
+                                                        <ClaimRewardsAsyncSnapshotContext.Provider
                                                           value={
-                                                            props.claimExitAsyncSnapshot
+                                                            props.claimRewardsAsyncSnapshot
                                                           }
                                                         >
-                                                          <ClaimRewardsAsyncSnapshotContext.Provider
-                                                            value={
-                                                              props.claimRewardsAsyncSnapshot
-                                                            }
-                                                          >
-                                                            <Content />
-                                                          </ClaimRewardsAsyncSnapshotContext.Provider>
-                                                        </ClaimValidatorExitAsyncSnapshotContext.Provider>
-                                                      </ClaimWithdrawalAsyncSnapshotContext.Provider>
-                                                    </DelegateAsyncSnapshotContext.Provider>
-                                                  </ApproveAsyncSnapshotContext.Provider>
-                                                </UndelegateAsyncSnapshotContext.Provider>
-                                              </ProvideEstimatedFeesPerGas>
+                                                          <Content />
+                                                        </ClaimRewardsAsyncSnapshotContext.Provider>
+                                                      </ClaimValidatorExitAsyncSnapshotContext.Provider>
+                                                    </ClaimWithdrawalAsyncSnapshotContext.Provider>
+                                                  </DelegateAsyncSnapshotContext.Provider>
+                                                </ApproveAsyncSnapshotContext.Provider>
+                                              </UndelegateAsyncSnapshotContext.Provider>
                                             </StakingAmountContext.Provider>
                                           </ValidatorNodeContext.Provider>
                                         </CurrentStakeToValidatorContext.Provider>

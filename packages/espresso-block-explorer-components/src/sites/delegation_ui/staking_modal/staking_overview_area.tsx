@@ -8,14 +8,12 @@ import { CurrentEpochStakeToValidatorContext } from './contexts/current_epoch_st
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
 import { LabelValueSplit } from './label_value_split';
 import './staking_overview_area.css';
-import { TxFeeEstimate } from './tx_fee_estimate';
 
 export const StakingOverviewArea: React.FC = () => {
   return (
-    <div className="staking-modal-staking-overview-area">
+    <div className="staking-modal-staking-overview-area only-three">
       <CurrentEpochStake />
       <CurrentStake />
-      <TxFeeEstimate />
       <CommissionRate />
     </div>
   );

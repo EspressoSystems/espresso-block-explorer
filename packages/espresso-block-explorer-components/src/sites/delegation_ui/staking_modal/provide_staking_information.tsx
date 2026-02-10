@@ -1,6 +1,5 @@
 import React from 'react';
 import { ProvideCurrentStakeToValidator } from './contexts/current_stake_to_validator_context';
-import { ProvideEstimatedFeesPerGas } from './contexts/estimated_fees_per_gas_context';
 import { ProvideClaimValidatorExitAsyncIterableContext } from './contexts/perfom_claim_validator_exit_context';
 import { ProvideApproveAsyncIterableContext } from './contexts/perform_approve_delegation_context';
 import { ProvideClaimRewardsAsyncIterableContext } from './contexts/perform_claim_rewards_context';
@@ -13,24 +12,22 @@ export const ProvideCurrentStakingInformation: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   return (
-    <ProvideEstimatedFeesPerGas>
-      <ProvideCurrentStakeToValidator>
-        <ProvideValidatorFromContract>
-          <ProvideApproveAsyncIterableContext>
-            <ProvideDelegateAsyncIterableContext>
-              <ProvideUndelegateAsyncIterableContext>
-                <ProvideClaimWithdrawalAsyncIterableContext>
-                  <ProvideClaimValidatorExitAsyncIterableContext>
-                    <ProvideClaimRewardsAsyncIterableContext>
-                      {children}
-                    </ProvideClaimRewardsAsyncIterableContext>
-                  </ProvideClaimValidatorExitAsyncIterableContext>
-                </ProvideClaimWithdrawalAsyncIterableContext>
-              </ProvideUndelegateAsyncIterableContext>
-            </ProvideDelegateAsyncIterableContext>
-          </ProvideApproveAsyncIterableContext>
-        </ProvideValidatorFromContract>
-      </ProvideCurrentStakeToValidator>
-    </ProvideEstimatedFeesPerGas>
+    <ProvideCurrentStakeToValidator>
+      <ProvideValidatorFromContract>
+        <ProvideApproveAsyncIterableContext>
+          <ProvideDelegateAsyncIterableContext>
+            <ProvideUndelegateAsyncIterableContext>
+              <ProvideClaimWithdrawalAsyncIterableContext>
+                <ProvideClaimValidatorExitAsyncIterableContext>
+                  <ProvideClaimRewardsAsyncIterableContext>
+                    {children}
+                  </ProvideClaimRewardsAsyncIterableContext>
+                </ProvideClaimValidatorExitAsyncIterableContext>
+              </ProvideClaimWithdrawalAsyncIterableContext>
+            </ProvideUndelegateAsyncIterableContext>
+          </ProvideDelegateAsyncIterableContext>
+        </ProvideApproveAsyncIterableContext>
+      </ProvideValidatorFromContract>
+    </ProvideCurrentStakeToValidator>
   );
 };

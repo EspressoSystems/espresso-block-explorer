@@ -6,14 +6,12 @@ import { LifetimeClaimedRewardsContext } from '../contexts/claimed_rewards_conte
 import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { EspressoRewardClaimInputContext } from '../contexts/reward_claim_input_context';
 import { LabelValueSplit } from './label_value_split';
-import { TxFeeEstimate } from './tx_fee_estimate';
 
 export const ClaimableRewardsOverviewArea: React.FC = () => {
   return (
     <div className="staking-modal-staking-overview-area only-three">
       <CurrentBalance />
       <NewBalance />
-      <TxFeeEstimate />
     </div>
   );
 };

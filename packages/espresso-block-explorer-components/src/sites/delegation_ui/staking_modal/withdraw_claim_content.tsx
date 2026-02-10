@@ -1,14 +1,7 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
-import PromiseResolver from '@/components/data/async_data/promise_resolver';
-import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/text';
-import { DataContext } from '@/contexts/data_provider';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
-import {
-  StakeTableContractContext,
-  StakeTableContractGasEstimatorContext,
-} from '@/contexts/stake_table_contract_context';
-import { neverPromise } from '@/functional/functional_async';
+import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
@@ -19,7 +12,6 @@ import {
   CurrentPendingUndelegationFromValidatorContext,
   ProvideCurrentPendingUndelegationToValidator,
 } from './contexts/current_pending_undelegation_from_validator_context';
-import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
 import {
   ClaimWithdrawalAsyncSnapshotContext,
   performClaimWithdrawal,
@@ -57,46 +49,11 @@ export const WithDrawClaimModalContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <ProvideContractGasEstimate>
-          <PendingClaimSummaryAndInteraction />
-          <PendingClaimOverviewArea />
-          <WithdrawClaimActionsArea />
-        </ProvideContractGasEstimate>
+        <PendingClaimSummaryAndInteraction />
+        <PendingClaimOverviewArea />
+        <WithdrawClaimActionsArea />
       </StakingContent>
     </>
-  );
-};
-
-const ProvideContractGasEstimate: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const account = React.useContext(RainbowKitAccountAddressContext);
-  const validator = React.useContext(ConfirmedValidatorContext);
-  const stakeTableGasEstimator = React.useContext(
-    StakeTableContractGasEstimatorContext,
-  );
-
-  const promise =
-    !stakeTableGasEstimator || !account
-      ? neverPromise
-      : stakeTableGasEstimator.claimWithdrawal(account, validator);
-
-  return (
-    <PromiseResolver promise={promise}>
-      <TransformDataToGasEstimate>{children}</TransformDataToGasEstimate>
-    </PromiseResolver>
-  );
-};
-
-const TransformDataToGasEstimate: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const data = (React.useContext(DataContext) ?? null) as null | bigint;
-
-  return (
-    <EstimatedContractGasContext.Provider value={data}>
-      {children}
-    </EstimatedContractGasContext.Provider>
   );
 };
 

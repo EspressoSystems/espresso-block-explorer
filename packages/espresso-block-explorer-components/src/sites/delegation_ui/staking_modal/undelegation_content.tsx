@@ -1,14 +1,7 @@
-import { PromiseResolver } from '@/components/data';
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
-import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/text';
-import { DataContext } from '@/contexts/data_provider';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
-import {
-  StakeTableContractContext,
-  StakeTableContractGasEstimatorContext,
-} from '@/contexts/stake_table_contract_context';
-import { neverPromise } from '@/functional/functional_async';
+import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
@@ -16,7 +9,6 @@ import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_c
 import ButtonLarge from '../elements/buttons/button_large';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
-import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
 import {
   performUndelegation,
   SetUndelegationAsyncIterableContext,
@@ -45,80 +37,11 @@ export const UndelegationContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <ProvideUndelegateContractGasEstimate>
-          <UnstakingInitialSummaryAndInteraction />
-          <UnstakingOverviewArea />
-          <UnstakingActionsArea />
-        </ProvideUndelegateContractGasEstimate>
+        <UnstakingInitialSummaryAndInteraction />
+        <UnstakingOverviewArea />
+        <UnstakingActionsArea />
       </StakingContent>
     </>
-  );
-};
-
-/**
- * ProvideUndelegateContractGasEstimate provides an estimated gas amount
- * for undelegation operations to its children via the
- * EstimatedContractGasContext.
- */
-const ProvideUndelegateContractGasEstimate: React.FC<
-  React.PropsWithChildren
-> = ({ children }) => {
-  const account = React.useContext(RainbowKitAccountAddressContext);
-  const currentStakeToValidator =
-    React.useContext(CurrentStakeToValidatorContext) ?? 0n;
-  const validator = React.useContext(ConfirmedValidatorContext);
-  const stakeTableGasEstimator = React.useContext(
-    StakeTableContractGasEstimatorContext,
-  );
-
-  const promise = React.useMemo(
-    () =>
-      !account ||
-      !validator ||
-      !stakeTableGasEstimator ||
-      !currentStakeToValidator
-        ? neverPromise
-        : stakeTableGasEstimator.undelegate(
-            account,
-            validator,
-            currentStakeToValidator,
-          ),
-
-    // We only want to refresh this, if the estimator changes, or if the
-    // criteria of our account or validator switch between being set or not,
-    // or if the stake to the current validator is positive or not.
-    //
-    // Beyond these conditions, the gas price is assumed to be the same,
-    // regardless of the specific values utilized.
-    //
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      stakeTableGasEstimator,
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      !!account,
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      !!validator,
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      currentStakeToValidator > 0n,
-    ],
-  );
-
-  return (
-    <PromiseResolver promise={promise}>
-      <TransformDataToGasEstimate>{children}</TransformDataToGasEstimate>
-    </PromiseResolver>
-  );
-};
-
-const TransformDataToGasEstimate: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const data = (React.useContext(DataContext) ?? null) as null | bigint;
-
-  return (
-    <EstimatedContractGasContext.Provider value={data}>
-      {children}
-    </EstimatedContractGasContext.Provider>
   );
 };
 

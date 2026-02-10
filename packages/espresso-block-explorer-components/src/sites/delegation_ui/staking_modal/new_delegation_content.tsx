@@ -1,23 +1,12 @@
-import PromiseResolver from '@/components/data/async_data/promise_resolver';
-import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import Text from '@/components/text/text';
-import { DataContext } from '@/contexts/data_provider';
-import { StakeTableContractGasEstimatorContext } from '@/contexts/stake_table_contract_context';
-import { neverPromise } from '@/functional/functional_async';
 import React from 'react';
-import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
-import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { RetrieveMinimumDelegationAmount } from '../contexts/minimum_delegation_amount_context';
 import { ValidatorName } from '../elements/validator/validator_name';
 import { ApproveButton } from './approve_button';
 import { CloseStakingModalButton } from './close_staking_modal';
-import {
-  CurrentAllowanceToStakeTableContext,
-  ProvideCurrentAllowanceToStakeTable,
-} from './contexts/current_allowance_context';
+import { ProvideCurrentAllowanceToStakeTable } from './contexts/current_allowance_context';
 import { ProvideCurrentCurrentEpochActiveValidators } from './contexts/current_epoch_active_validators_context';
 import { ProvideEpochCurrentStakeToValidator } from './contexts/current_epoch_stake_to_validator_context';
-import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
 import { DelegateButton } from './delegate_button';
 import './new_delegation_content.css';
 import { NewStakeInstructionsAndProgress } from './new_stake_instructions_and_progress';
@@ -66,73 +55,12 @@ export const NewDelegationModalContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <ProvideDelegateContractGasEstimate>
-          <StakingInitialSummaryAndInteraction />
-          <StakingOverviewArea />
-          <StakingActionsArea />
-          <StakingCompletionArea />
-        </ProvideDelegateContractGasEstimate>
+        <StakingInitialSummaryAndInteraction />
+        <StakingOverviewArea />
+        <StakingActionsArea />
+        <StakingCompletionArea />
       </StakingContent>
     </>
-  );
-};
-
-/**
- * ProvideDelegateContractGasEstimate is a React component that provides the gas
- * estimate the delegate method on the StakeTable.  The estimate is passed
- * to its children via the EstimatedContractGasContext.
- */
-const ProvideDelegateContractGasEstimate: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const account = React.useContext(RainbowKitAccountAddressContext);
-  const allowance = React.useContext(CurrentAllowanceToStakeTableContext) ?? 0n;
-  const balance = React.useContext(ESPBalanceContext);
-  const validator = React.useContext(ConfirmedValidatorContext);
-  const rewardClaimGasEstimator = React.useContext(
-    StakeTableContractGasEstimatorContext,
-  );
-
-  const amountToTry = allowance < balance ? allowance : balance;
-
-  const promise = React.useMemo(
-    () =>
-      !rewardClaimGasEstimator ||
-      balance <= 0n ||
-      allowance === null ||
-      allowance <= 0n ||
-      amountToTry <= 0n ||
-      !account
-        ? neverPromise
-        : rewardClaimGasEstimator.delegate(account, validator, amountToTry),
-
-    // We only want to refresh this, if the estimator changes, or if the
-    // criteria of our account or validator switch between being set or not,
-    // or if the amount is positive or not.
-    //
-    // Beyond these conditions, the gas price is assumed to be the same,
-    // regardless of the specific values utilized.
-    //
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [rewardClaimGasEstimator, !!account, !!validator, amountToTry > 0n],
-  );
-
-  return (
-    <PromiseResolver promise={promise}>
-      <TransformDataToGasEstimate>{children}</TransformDataToGasEstimate>
-    </PromiseResolver>
-  );
-};
-
-const TransformDataToGasEstimate: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const data = (React.useContext(DataContext) ?? null) as null | bigint;
-
-  return (
-    <EstimatedContractGasContext.Provider value={data}>
-      {children}
-    </EstimatedContractGasContext.Provider>
   );
 };
 
