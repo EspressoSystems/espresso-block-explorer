@@ -10,7 +10,9 @@ export const PendingClaimSummaryAndInteraction: React.FC = () => {
   return (
     <div className="staking-modal-initial-summary-and-interaction">
       <ValidatorDisplayArea />
-      <NoticeArea />
+      <NoticeArea>
+        <></>
+      </NoticeArea>
       <ClaimableESPArea />
     </div>
   );

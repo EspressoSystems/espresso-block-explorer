@@ -48,7 +48,7 @@ const TimeLeftText: React.FC<RelativeTimeTextProps> = (props) => {
       parts.push(formatters.days.format(days));
     /* fallthrough */
     case 2:
-      parts.push(formatters.minutes.format(minutes));
+      parts.push(formatters.hours.format(hours));
     /* fallthrough */
     case 1:
       parts.push(formatters.minutes.format(minutes));
