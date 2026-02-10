@@ -18,6 +18,7 @@ main.delegation-ui {
     var(--color--brown--1) 100%
   );
   color: var(--color--brown--text);
+  --icon--fill-color: var(--color--brown--text);
   overflow: hidden;
 }
 
