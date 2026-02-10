@@ -11,6 +11,7 @@ import MoneyText from '@/components/text/money_text';
 import Text from '@/components/text/text';
 import CheckCircle from '@/components/visual/icons/sharp_line/check_circle';
 import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
+import { IntentCompletedCallbackContext } from '@/contexts/intent_completed_callback_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
@@ -743,6 +744,9 @@ const AutoDriveDelegate: React.FC = () => {
   const l1Methods = React.useContext(L1MethodsContext);
   const stakeTableContract = React.useContext(StakeTableContractContext);
   const approveAsyncSnapshot = React.useContext(ApproveAsyncSnapshotContext);
+  const intentCompletedCallback = React.useContext(
+    IntentCompletedCallbackContext,
+  );
   const delegationAsyncSnapshot = React.useContext(
     DelegateAsyncSnapshotContext,
   );
@@ -815,7 +819,10 @@ const AutoDriveDelegate: React.FC = () => {
         stakeTableContract,
         node.addressText,
         stakingAmount.value,
-        () => {
+        (err) => {
+          if (!err) {
+            intentCompletedCallback();
+          }
           setL1Timestamp(new Date());
         },
       ),
@@ -836,6 +843,7 @@ const AutoDriveDelegate: React.FC = () => {
     triggerOnce,
     setTriggerOnce,
     node,
+    intentCompletedCallback,
   ]);
 
   return null;

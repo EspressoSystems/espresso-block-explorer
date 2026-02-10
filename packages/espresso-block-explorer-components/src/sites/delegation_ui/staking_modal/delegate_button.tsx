@@ -1,6 +1,7 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import { addClassToClassName } from '@/components/higher_order';
 import Text from '@/components/text/text';
+import { IntentCompletedCallbackContext } from '@/contexts/intent_completed_callback_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import React from 'react';
@@ -37,6 +38,9 @@ export const DelegateButton: React.FC = () => {
   const balance = React.useContext(ESPBalanceContext);
   const stakeTableContract = React.useContext(StakeTableContractContext);
   const allowance = React.useContext(CurrentAllowanceToStakeTableContext) ?? 0n;
+  const intentCompletedCallback = React.useContext(
+    IntentCompletedCallbackContext,
+  );
   const asyncSnapshot = React.useContext(DelegateAsyncSnapshotContext);
   const minimumDelegationAmount = React.useContext(
     MinimumDelegationAmountContext,
@@ -86,6 +90,7 @@ export const DelegateButton: React.FC = () => {
         (err) => {
           if (!err) {
             setStakingAmount(null);
+            intentCompletedCallback();
           }
           setL1Timestamp(new Date());
         },
