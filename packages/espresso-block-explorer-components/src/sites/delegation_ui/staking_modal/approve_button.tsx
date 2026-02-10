@@ -3,6 +3,7 @@ import Text from '@/components/text/text';
 import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
+import { ESPBalanceContext } from 'delegation-ui';
 import React from 'react';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
 import ButtonLarge from '../elements/buttons/button_large';
@@ -29,10 +30,16 @@ export const ApproveButton: React.FC = () => {
   const espContract = React.useContext(ESPTokenContractContext);
   const stakeTableContract = React.useContext(StakeTableContractContext);
   const allowance = React.useContext(CurrentAllowanceToStakeTableContext);
+  const balance = React.useContext(ESPBalanceContext);
   const asyncSnapshot = React.useContext(ApproveAsyncSnapshotContext);
   const setApproveAsyncIterable = React.useContext(
     SetApproveAsyncIterableContext,
   );
+
+  const toApprove =
+    stakingAmount && stakingAmount.value > balance
+      ? stakingAmount.value
+      : balance;
 
   // Ref-based guard for immediate synchronous protection against duplicate clicks
   const transactionInProgressRef = React.useRef(false);
@@ -56,6 +63,7 @@ export const ApproveButton: React.FC = () => {
           l1Methods,
           espContract,
           stakeTableContract,
+          toApprove,
           setL1Timestamp,
         ),
       );
@@ -64,6 +72,7 @@ export const ApproveButton: React.FC = () => {
       espContract,
       stakeTableContract,
       l1Methods,
+      toApprove,
       setL1Timestamp,
       setApproveAsyncIterable,
     ],

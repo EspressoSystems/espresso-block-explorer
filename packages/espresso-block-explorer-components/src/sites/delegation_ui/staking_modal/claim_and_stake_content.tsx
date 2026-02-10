@@ -687,6 +687,7 @@ const AutoDriveApprove: React.FC = () => {
         l1Methods,
         espContract,
         stakeTableContract,
+        currentBalance,
         setL1Timestamp,
       ),
     );

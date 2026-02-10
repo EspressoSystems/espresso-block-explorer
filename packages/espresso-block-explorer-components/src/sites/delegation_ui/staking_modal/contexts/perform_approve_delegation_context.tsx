@@ -73,15 +73,12 @@ export async function* performApprove(
   l1Methods: L1Methods<Config, number>,
   espContract: ESPTokenContract,
   stakeTableContract: StakeTableContract,
+  amount: bigint,
   setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>,
 ) {
   yield* performWriteTransaction(
     l1Methods,
-    async () =>
-      espContract.approve(
-        stakeTableContract.address,
-        0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffffn,
-      ),
+    async () => espContract.approve(stakeTableContract.address, amount),
     setL1Timestamp,
   );
 }
