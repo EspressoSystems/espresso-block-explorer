@@ -19,7 +19,13 @@ export const UnstakingInitialSummaryAndInteraction: React.FC = () => {
   return (
     <div className="staking-modal-initial-summary-and-interaction">
       <ValidatorDisplayArea />
-      <NoticeArea />
+      <NoticeArea>
+        <p>
+          <Text text="It takes 7 days after undelegating until you can claim your funds." />
+          <Text text=" " />
+          <Text text="You can only have ongoing undelegation per validator at a given time." />
+        </p>
+      </NoticeArea>
       <UnstakingESPInputArea />
       <UnstakingOptionsArea />
     </div>
