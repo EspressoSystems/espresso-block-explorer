@@ -74,15 +74,15 @@ const ProvideUndelegateContractGasEstimate: React.FC<
   const promise = React.useMemo(
     () =>
       !account ||
-        !validator ||
-        !stakeTableGasEstimator ||
-        !currentStakeToValidator
+      !validator ||
+      !stakeTableGasEstimator ||
+      !currentStakeToValidator
         ? neverPromise
         : stakeTableGasEstimator.undelegate(
-          account,
-          validator,
-          currentStakeToValidator,
-        ),
+            account,
+            validator,
+            currentStakeToValidator,
+          ),
 
     // We only want to refresh this, if the estimator changes, or if the
     // criteria of our account or validator switch between being set or not,
@@ -137,6 +137,53 @@ const UnstakingActionsArea: React.FC = () => {
     SetUndelegationAsyncIterableContext,
   );
   const stakingAmountValue = stakingAmount?.value ?? 0n;
+  const debounceGuard = React.useRef(false);
+
+  const performUndelegationAction = React.useMemo(
+    () => () => {
+      if (debounceGuard.current) {
+        return;
+      }
+      if (!l1Methods || !stakeTableContract || !validatorAddress) {
+        return;
+      }
+      debounceGuard.current = true;
+      setUndelegationAsyncIterable(
+        performUndelegation(
+          l1Methods,
+          stakeTableContract,
+          validatorAddress,
+          stakingAmountValue,
+          (date) => {
+            setStakingAmount(MonetaryValue.ESP(0n));
+            setL1Timestamp(date);
+          },
+        ),
+      );
+    },
+    [
+      l1Methods,
+      stakeTableContract,
+      validatorAddress,
+      stakingAmountValue,
+      setL1Timestamp,
+      setStakingAmount,
+      setUndelegationAsyncIterable,
+    ],
+  );
+
+  // Reset the debounceGuard should the conditions be right.
+  React.useEffect(() => {
+    if (!debounceGuard.current) {
+      return;
+    }
+
+    if (asyncSnapshot.asyncState !== AsyncState.done) {
+      return;
+    }
+
+    debounceGuard.current = false;
+  }, [asyncSnapshot]);
 
   if (
     // If the Contracts are not set
@@ -152,20 +199,6 @@ const UnstakingActionsArea: React.FC = () => {
       </div>
     );
   }
-
-  const performUndelegationAction = () =>
-    setUndelegationAsyncIterable(
-      performUndelegation(
-        l1Methods,
-        stakeTableContract,
-        validatorAddress,
-        stakingAmountValue,
-        (date) => {
-          setStakingAmount(MonetaryValue.ESP(0n));
-          setL1Timestamp(date);
-        },
-      ),
-    );
 
   if (asyncSnapshot.hasError) {
     // There was an error undelegating
@@ -187,7 +220,7 @@ const UnstakingActionsArea: React.FC = () => {
   if (
     asyncSnapshot.hasData &&
     (asyncSnapshot.data?.status ?? 0) >=
-    PerformWriteTransactionStatus.receiptRetrieved
+      PerformWriteTransactionStatus.receiptRetrieved
   ) {
     // Undelegation succeeded
     return (

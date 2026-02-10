@@ -98,11 +98,11 @@ const ProvideDelegateContractGasEstimate: React.FC<React.PropsWithChildren> = ({
   const promise = React.useMemo(
     () =>
       !rewardClaimGasEstimator ||
-        balance <= 0n ||
-        allowance === null ||
-        allowance <= 0n ||
-        amountToTry <= 0n ||
-        !account
+      balance <= 0n ||
+      allowance === null ||
+      allowance <= 0n ||
+      amountToTry <= 0n ||
+      !account
         ? neverPromise
         : rewardClaimGasEstimator.delegate(account, validator, amountToTry),
 

@@ -104,6 +104,50 @@ const WithdrawExitActionsArea: React.FC = () => {
   const setClaimExitAsyncIterable = React.useContext(
     SetClaimValidatorExitAsyncIterableContext,
   );
+  const processingGuard = React.useRef(false);
+
+  const performClaimExitAction = React.useMemo(
+    () => () => {
+      if (processingGuard.current) {
+        return;
+      }
+
+      if (!l1Methods || !stakeTableContract || !validatorAddress) {
+        return;
+      }
+
+      processingGuard.current = true;
+
+      setClaimExitAsyncIterable(
+        performClaimValidatorExit(
+          l1Methods,
+          stakeTableContract,
+          validatorAddress,
+          setL1Timestamp,
+        ),
+      );
+    },
+    [
+      l1Methods,
+      stakeTableContract,
+      validatorAddress,
+      setL1Timestamp,
+      setClaimExitAsyncIterable,
+    ],
+  );
+
+  // This effect resets the processing reference for debounce protection.
+  React.useEffect(() => {
+    if (!processingGuard.current) {
+      return;
+    }
+
+    if (asyncSnapshot.asyncState !== AsyncState.done) {
+      return;
+    }
+
+    processingGuard.current = false;
+  }, [asyncSnapshot]);
 
   if (
     // If the Contracts are not set
@@ -119,16 +163,6 @@ const WithdrawExitActionsArea: React.FC = () => {
       </div>
     );
   }
-
-  const performClaimExitAction = () =>
-    setClaimExitAsyncIterable(
-      performClaimValidatorExit(
-        l1Methods,
-        stakeTableContract,
-        validatorAddress,
-        setL1Timestamp,
-      ),
-    );
 
   if (asyncSnapshot.hasError) {
     // There was an error claiming exit
@@ -150,7 +184,7 @@ const WithdrawExitActionsArea: React.FC = () => {
   if (
     asyncSnapshot.hasData &&
     (asyncSnapshot.data?.status ?? 0) >=
-    PerformWriteTransactionStatus.receiptRetrieved
+      PerformWriteTransactionStatus.receiptRetrieved
   ) {
     // Claim exit succeeded
     return (

@@ -34,6 +34,48 @@ export const ApproveButton: React.FC = () => {
     SetApproveAsyncIterableContext,
   );
 
+  // Ref-based guard for immediate synchronous protection against duplicate clicks
+  const transactionInProgressRef = React.useRef(false);
+
+  const handleApproveClick = React.useMemo(
+    () => () => {
+      // Synchronous guard - blocks immediately, even for rapid synchronous clicks
+      if (transactionInProgressRef.current) {
+        return;
+      }
+
+      if (!l1Methods || !espContract || !stakeTableContract) {
+        return;
+      }
+
+      // Set the ref immediately to block subsequent clicks
+      transactionInProgressRef.current = true;
+
+      setApproveAsyncIterable(
+        performApprove(
+          l1Methods,
+          espContract,
+          stakeTableContract,
+          setL1Timestamp,
+        ),
+      );
+    },
+    [
+      espContract,
+      stakeTableContract,
+      l1Methods,
+      setL1Timestamp,
+      setApproveAsyncIterable,
+    ],
+  );
+
+  // Reset the ref when transaction completes or errors
+  React.useEffect(() => {
+    if (asyncSnapshot.asyncState === AsyncState.done) {
+      transactionInProgressRef.current = false;
+    }
+  }, [asyncSnapshot.asyncState, asyncSnapshot.hasError]);
+
   // Sanity Checks
   // Do we already have an approval that is high enough?
   const stakingAmountValue = stakingAmount?.value ?? 0n;
@@ -48,21 +90,6 @@ export const ApproveButton: React.FC = () => {
     );
   }
 
-  const handleApproveClick = () => {
-    if (!espContract || !stakeTableContract) {
-      return;
-    }
-
-    setApproveAsyncIterable(
-      performApprove(
-        l1Methods,
-        espContract,
-        stakeTableContract,
-        setL1Timestamp,
-      ),
-    );
-  };
-
   if (asyncSnapshot.hasError) {
     // There was an error approving
     return (
@@ -76,7 +103,7 @@ export const ApproveButton: React.FC = () => {
     !needAllowanceIncrease ||
     (asyncSnapshot.hasData &&
       (asyncSnapshot.data?.status ?? 0) >
-      PerformWriteTransactionStatus.receiptRetrieved)
+        PerformWriteTransactionStatus.receiptRetrieved)
   ) {
     // Approval succeeded
     return (
@@ -88,7 +115,7 @@ export const ApproveButton: React.FC = () => {
 
   if (
     asyncSnapshot.asyncState === AsyncState.waiting ||
-    asyncSnapshot.asyncState == AsyncState.active
+    asyncSnapshot.asyncState === AsyncState.active
   ) {
     // We are waiting for the transaction to be completed
     return (

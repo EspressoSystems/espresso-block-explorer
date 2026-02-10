@@ -127,6 +127,48 @@ const ClaimRewardsActionsArea: React.FC = () => {
   const claimableRewardsBalance =
     (claimableRewardsInput?.lifetimeRewards ?? lifetimeClaimedRewards) -
     lifetimeClaimedRewards;
+  const debounceGuard = React.useRef(false);
+  const performClaimRewardsAction = React.useMemo(
+    () => () => {
+      if (debounceGuard.current) {
+        return;
+      }
+
+      if (!l1Methods || !rewardClaimContract || !rewardClaimInput) {
+        return;
+      }
+
+      debounceGuard.current = true;
+
+      setClaimRewardsAsyncIterable(
+        performClaimRewards(
+          l1Methods,
+          rewardClaimContract,
+          rewardClaimInput,
+          setL1Timestamp,
+        ),
+      );
+    },
+    [
+      l1Methods,
+      rewardClaimContract,
+      rewardClaimInput,
+      setL1Timestamp,
+      setClaimRewardsAsyncIterable,
+    ],
+  );
+
+  // Reset the Debounce Guard when applicable
+  React.useEffect(() => {
+    if (!debounceGuard.current) {
+      return;
+    }
+    if (asyncSnapshot.asyncState !== AsyncState.done) {
+      return;
+    }
+
+    debounceGuard.current = false;
+  }, [asyncSnapshot]);
 
   if (
     // If the Contracts are not set
@@ -144,16 +186,6 @@ const ClaimRewardsActionsArea: React.FC = () => {
       </div>
     );
   }
-
-  const performClaimRewardsAction = () =>
-    setClaimRewardsAsyncIterable(
-      performClaimRewards(
-        l1Methods,
-        rewardClaimContract,
-        rewardClaimInput,
-        setL1Timestamp,
-      ),
-    );
 
   if (asyncSnapshot.hasError) {
     // There was an error claiming rewards

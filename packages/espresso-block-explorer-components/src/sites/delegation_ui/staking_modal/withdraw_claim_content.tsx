@@ -115,6 +115,50 @@ const WithdrawClaimActionsArea: React.FC = () => {
     SetClaimWithdrawalAsyncIterableContext,
   );
   const toWithdraw = undelegationObject?.amount ?? 0n;
+  const debounceGuard = React.useRef(false);
+
+  const performClaimWithdrawalAction = React.useMemo(
+    () => () => {
+      if (debounceGuard.current) {
+        return;
+      }
+
+      if (!l1Methods || !stakeTableContract || !validatorAddress) {
+        return;
+      }
+
+      debounceGuard.current = true;
+
+      setClaimWithdrawalAsyncIterable(
+        performClaimWithdrawal(
+          l1Methods,
+          stakeTableContract,
+          validatorAddress,
+          setL1Timestamp,
+        ),
+      );
+    },
+    [
+      l1Methods,
+      stakeTableContract,
+      validatorAddress,
+      setL1Timestamp,
+      setClaimWithdrawalAsyncIterable,
+    ],
+  );
+
+  // Reset the debounce guard when the conditions are correct.
+  React.useEffect(() => {
+    if (!debounceGuard.current) {
+      return;
+    }
+
+    if (asyncSnapshot.asyncState !== AsyncState.done) {
+      return;
+    }
+
+    debounceGuard.current = false;
+  }, [asyncSnapshot]);
 
   if (
     // If the Contracts are not set
@@ -130,16 +174,6 @@ const WithdrawClaimActionsArea: React.FC = () => {
       </div>
     );
   }
-
-  const performClaimWithdrawalAction = () =>
-    setClaimWithdrawalAsyncIterable(
-      performClaimWithdrawal(
-        l1Methods,
-        stakeTableContract,
-        validatorAddress,
-        setL1Timestamp,
-      ),
-    );
 
   if (asyncSnapshot.hasError) {
     // There was an error processing the claim withdrawal.

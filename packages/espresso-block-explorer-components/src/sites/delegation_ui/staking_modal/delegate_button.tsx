@@ -45,6 +45,15 @@ export const DelegateButton: React.FC = () => {
   );
   const confirmedValidator = React.useContext(ConfirmedValidatorContext);
 
+  // Ref-based guard for immediate synchronous protection against duplicate clicks
+  const transactionInProgressRef = React.useRef(false);
+  // Reset the ref when transaction completes or errors
+  React.useEffect(() => {
+    if (asyncSnapshot.asyncState === AsyncState.done) {
+      transactionInProgressRef.current = false;
+    }
+  }, [asyncSnapshot]);
+
   if (
     // If the Contracts are not set
     l1Methods === null ||
@@ -61,6 +70,14 @@ export const DelegateButton: React.FC = () => {
 
   const validatorAddress = confirmedValidator;
   const handleDelegateClick = () => {
+    // Synchronous guard - blocks immediately, even for rapid synchronous clicks
+    if (transactionInProgressRef.current) {
+      return;
+    }
+
+    // Set the ref immediately to block subsequent clicks
+    transactionInProgressRef.current = true;
+
     setDelegationAsyncIterable(
       performDelegation(
         l1Methods,
@@ -87,7 +104,7 @@ export const DelegateButton: React.FC = () => {
   if (
     asyncSnapshot.hasData &&
     (asyncSnapshot.data?.status ?? 0) >=
-    PerformWriteTransactionStatus.receiptRetrieved
+      PerformWriteTransactionStatus.receiptRetrieved
   ) {
     // Delegation succeeded
     return (
