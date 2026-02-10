@@ -1,3 +1,4 @@
+import { CurrentDelegationsContext } from '@/delegation_ui/contexts/current_delegations_context';
 import UnimplementedError from '@/errors/unimplemented_error';
 import {
   compareArrayBuffer,
@@ -5,6 +6,7 @@ import {
   mapIterable,
 } from '@/functional/functional';
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
+import { Delegation } from '@/service/espresso_l1_validator_service/common/delegation';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
 import {
@@ -29,6 +31,7 @@ export enum CellType {
   missedSlots,
   participationRate,
   hotShotConsensus,
+  myStake,
 
   // Extra Types for specific Tables
   pendingExit,
@@ -140,6 +143,7 @@ type ValidatorSortTuple = readonly [
   null | ActiveNodeSetEntry,
   null | PendingWithdrawal,
   null | PendingWithdrawal,
+  null | Delegation,
 ];
 
 const TUPLE_INDEX_NODE_SET_ENTRY = 0;
@@ -147,6 +151,7 @@ const TUPLE_INDEX_RANK = 1;
 const TUPLE_INDEX_ACTIVE_NODE = 2;
 const TUPLE_INDEX_PENDING_EXIT = 3;
 const TUPLE_INDEX_PENDING_CLAIM = 4;
+const TUPLE_INDEX_CURRENT_DELEGATION = 5;
 
 function valueOrFallback(
   input: undefined | null | number,
@@ -245,6 +250,16 @@ function sortByStake(a: ValidatorSortTuple, b: ValidatorSortTuple) {
 }
 
 /**
+ *  sortByMyStake sorts validators by the stake of the user in that validator.
+ */
+function sortByMyStake(a: ValidatorSortTuple, b: ValidatorSortTuple) {
+  return Number(
+    (a[TUPLE_INDEX_CURRENT_DELEGATION]?.amount ?? 0n) -
+      (b[TUPLE_INDEX_CURRENT_DELEGATION]?.amount ?? 0n),
+  );
+}
+
+/**
  * sortByPendingExit sorts validators by their pending exit amount.
  */
 function sortByPendingExit(a: ValidatorSortTuple, b: ValidatorSortTuple) {
@@ -291,6 +306,9 @@ function getSortFunction(
     case CellType.hotShotConsensus:
       return sortByHotShotConsensus;
 
+    case CellType.myStake:
+      return sortByMyStake;
+
     case CellType.pendingExit:
       return sortByPendingExit;
 
@@ -331,6 +349,7 @@ function sortWithState(
   consensusSet: Map<`0x${string}`, ActiveNodeSetEntry>,
   pendingExits: Map<`0x${string}`, PendingWithdrawal>,
   pendingClaims: Map<`0x${string}`, PendingWithdrawal>,
+  currentDelegations: Map<`0x${string}`, Delegation>,
 ): `0x${string}`[] {
   const { sortBy, sortDirection } = tableState;
   const sortDirectionFunction = getSortDirection(sortDirection);
@@ -344,6 +363,7 @@ function sortWithState(
         consensusSet.get(address) ?? null,
         pendingExits.get(address) ?? null,
         pendingClaims.get(address) ?? null,
+        currentDelegations.get(address) ?? null,
       ] as const;
     }),
   )
@@ -377,6 +397,7 @@ export const ValidatorTableSortStateProvider: React.FC<
   const consensusMap = React.useContext(ConsensusMapContext);
   const pendingExits = React.useContext(PendingExitsContext);
   const pendingClaims = React.useContext(PendingUndelegationsContext);
+  const currentDelegations = React.useContext(CurrentDelegationsContext);
 
   const [sortedValues, setSortedValues] = React.useState<`0x${string}`[]>([]);
 
@@ -397,6 +418,7 @@ export const ValidatorTableSortStateProvider: React.FC<
       consensusMap,
       pendingExits,
       pendingClaims,
+      currentDelegations,
     );
 
     // Compare the new sorted values with the current ones, if they are not
@@ -422,6 +444,7 @@ export const ValidatorTableSortStateProvider: React.FC<
     sortedValues,
     pendingExits,
     pendingClaims,
+    currentDelegations,
   ]);
 
   // We need to sort the Validators according to the Table State
