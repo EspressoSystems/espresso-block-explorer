@@ -151,7 +151,7 @@ const UnstakingActionsArea: React.FC = () => {
     return (
       <div className="staking-modal-unstaking-actions-area succeeded">
         <div>
-          <Text text="Delegation Successful" />
+          <Text text="Undelegation Successful" />
         </div>
         <ButtonLarge onClick={close}>
           <Text text="Close" />
