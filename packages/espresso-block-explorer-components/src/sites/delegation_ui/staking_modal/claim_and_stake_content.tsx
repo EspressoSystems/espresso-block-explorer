@@ -16,11 +16,12 @@ import { StakeTableContractContext } from '@/contexts/stake_table_contract_conte
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   compareArrayBuffer,
+  foldRIterable,
   mapIterable,
-  zipWithIterable,
 } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import WalletAddress from '@/models/wallet_address/wallet_address';
+import { ConfirmedValidatorContext } from 'delegation-ui';
 import React from 'react';
 import { WagmiContext } from 'wagmi';
 import { ConnectWalletButton } from '../connect_wallet_button';
@@ -80,7 +81,6 @@ import { StakingHeader } from './staking_header';
 import { StakingModalTitle } from './staking_modal_title';
 import { StakingOverviewArea } from './staking_overview_area';
 import { ValidatorDisplayArea } from './validator_display_area';
-import { ConfirmedValidatorContext } from 'delegation-ui';
 
 /**
  * ClaimAndStakeContent is a somewhat complex Modal Content with multiple
@@ -329,33 +329,29 @@ const DelegationUIClaimPortalHandOffValidatorChoice: React.FC<
   const fallback = React.useContext(ValidatorNodeContext);
   const nodeList = React.useContext(NodeAddressListContext);
   const nodeMap = React.useContext(AllValidatorsContext);
-  const [randomOrderNodeList, setRandomOrderNodeList] = React.useState(
-    [] as `0x${string}`[],
+  const randomRoll = React.useMemo(() => Math.random(), []);
+
+  const nodeWeights = Array.from(
+    mapIterable(nodeList, (address) =>
+      // If the node's comission is <= 5%, then we'll want to bump their
+      // weight compared to a normal node.
+      (nodeMap.get(address)?.commission.ratio ?? 1.0) <= 0.05 ? 1.5 : 1,
+    ),
   );
 
-  React.useEffect(() => {
-    // We don't want to recompute the randomOrderNodeList after it's already
-    // been computed.  Otherwise this will end up re-selecting the random
-    // Node to delegate to at odd times.
-    if (nodeList.length <= 0 || randomOrderNodeList.length > 0) {
-      return;
-    }
+  const totalWeight = foldRIterable((a, b) => a + b, 0, nodeWeights);
+  const resolvedRoll = randomRoll * totalWeight;
 
-    // We choose a random entry from our list of nodes.
-    const nextList = Array.from(
-      zipWithIterable(
-        nodeList,
-        mapIterable(nodeList, () => Math.random()),
-        (a, b) => [a, b] as const,
-      ),
-    )
-      .toSorted((a, b) => a[1] - b[1])
-      .map((a) => a[0]);
+  let selectedNode = nodeList[0];
 
-    setRandomOrderNodeList(nextList);
-  }, [randomOrderNodeList, setRandomOrderNodeList, nodeList]);
+  for (let i = 0, acc = 0; i < nodeList.length && acc < resolvedRoll; i++) {
+    const weight = nodeWeights[i];
+    const node = nodeList[i];
+    selectedNode = node;
+    acc += weight;
+  }
 
-  const [validatorAddress = null] = randomOrderNodeList;
+  const validatorAddress = selectedNode;
   const node = !validatorAddress ? null : nodeMap.get(validatorAddress);
 
   // We have our selected Node Validator
