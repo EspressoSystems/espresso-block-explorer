@@ -7,14 +7,6 @@ export interface RelativeTimeTextProps {
 }
 
 /**
- * isNullOrUndefined is a type guard that checks if a value is neither null
- * nor undefined.
- */
-function isNotNullOrUndefined<T>(value: T | null | undefined): value is T {
-  return value !== null && value !== undefined;
-}
-
-/**
  * determineParts breaks down the total milliseconds into hours, minutes,
  * and seconds components. The seconds, and minutes are capped at 60, while
  * hours can be any value.
@@ -24,8 +16,9 @@ function determineParts(totalMilliseconds: number) {
   const totalSeconds = Math.floor(totalMilliseconds / 1000);
   const totalMinutes = Math.floor(totalSeconds / 60);
   const totalHours = Math.floor(totalMinutes / 60);
+  const totalDays = Math.floor(totalHours / 24);
 
-  return [totalHours, totalMinutes % 60, totalSeconds % 60].map(
+  return [totalDays, totalHours % 24, totalMinutes % 60, totalSeconds % 60].map(
     (v) => v * negate,
   );
 }
@@ -37,15 +30,33 @@ function determineParts(totalMilliseconds: number) {
 const TimeLeftText: React.FC<RelativeTimeTextProps> = (props) => {
   const formatters = useContext(CurrentDateTimeFormatters);
 
-  const [hours, minutes, seconds] = determineParts(
-    props.durationInMilliseconds,
-  );
+  const [days, hours, minutes] = determineParts(props.durationInMilliseconds);
 
-  const parts = [
-    formatters.hours.format(hours),
-    formatters.minutes.format(minutes),
-    formatters.seconds.format(seconds),
-  ].filter(isNotNullOrUndefined);
+  const parts: string[] = [];
+
+  let numComponents = 0;
+  if (days > 0) {
+    numComponents = 3;
+  } else if (hours > 0) {
+    numComponents = 2;
+  } else if (minutes > 0) {
+    numComponents = 1;
+  }
+
+  switch (numComponents) {
+    case 3:
+      parts.push(formatters.days.format(days));
+    /* fallthrough */
+    case 2:
+      parts.push(formatters.minutes.format(minutes));
+    /* fallthrough */
+    case 1:
+      parts.push(formatters.minutes.format(minutes));
+      break;
+
+    default:
+      parts.push('<', formatters.minutes.format(1));
+  }
 
   return <Text text={parts.join(' ')} />;
 };

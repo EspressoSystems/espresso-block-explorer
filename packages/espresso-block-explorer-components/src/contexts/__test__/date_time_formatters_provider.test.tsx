@@ -62,6 +62,7 @@ describe('Date Time Formatters Provider', () => {
               friendly: new Intl.DateTimeFormat('en-US', {}),
               time: new Intl.DateTimeFormat('en-US', {}),
               relative: new Intl.RelativeTimeFormat('en-US', {}),
+              days: new Intl.NumberFormat('en-US', {}),
               hours: new Intl.NumberFormat('en-US', {}),
               minutes: new Intl.NumberFormat('en-US', {}),
               seconds: new Intl.NumberFormat('en-US', {}),
