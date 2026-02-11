@@ -43,19 +43,20 @@ const TimeLeftText: React.FC<RelativeTimeTextProps> = (props) => {
     numComponents = 1;
   }
 
-  switch (numComponents) {
-    case 3:
-      parts.push(formatters.days.format(days));
-    /* fallthrough */
-    case 2:
-      parts.push(formatters.hours.format(hours));
-    /* fallthrough */
-    case 1:
-      parts.push(formatters.minutes.format(minutes));
-      break;
+  if (numComponents >= 3) {
+    parts.push(formatters.days.format(days));
+  }
 
-    default:
-      parts.push('<', formatters.minutes.format(1));
+  if (numComponents >= 2) {
+    parts.push(formatters.hours.format(hours));
+  }
+
+  if (numComponents >= 1) {
+    parts.push(formatters.minutes.format(minutes));
+  }
+
+  if (numComponents === 0) {
+    parts.push('<', formatters.minutes.format(1));
   }
 
   return <Text text={parts.join(' ')} />;
