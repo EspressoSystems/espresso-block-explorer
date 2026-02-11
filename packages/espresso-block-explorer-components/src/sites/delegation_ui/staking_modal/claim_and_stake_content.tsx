@@ -11,6 +11,7 @@ import MoneyText from '@/components/text/money_text';
 import Text from '@/components/text/text';
 import CheckCircle from '@/components/visual/icons/sharp_line/check_circle';
 import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
+import { IntentCompletedCallbackContext } from '@/contexts/intent_completed_callback_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
@@ -55,7 +56,6 @@ import {
   ProvideCurrentAllowanceToStakeTable,
 } from './contexts/current_allowance_context';
 import { ProvideCurrentCurrentEpochActiveValidators } from './contexts/current_epoch_active_validators_context';
-import { ProvideEpochCurrentStakeToValidator } from './contexts/current_epoch_stake_to_validator_context';
 import {
   ApproveAsyncSnapshotContext,
   performApprove,
@@ -81,7 +81,6 @@ import { StakingHeader } from './staking_header';
 import { StakingModalTitle } from './staking_modal_title';
 import { StakingOverviewArea } from './staking_overview_area';
 import { ValidatorDisplayArea } from './validator_display_area';
-import { IntentCompletedCallbackContext } from '@/contexts/intent_completed_callback_context';
 
 /**
  * ClaimAndStakeContent is a somewhat complex Modal Content with multiple
@@ -545,9 +544,7 @@ const ClaimAndStakePerformDelegationContent: React.FC = () => {
     <RetrieveMinimumDelegationAmount>
       <ProvideCurrentAllowanceToStakeTable>
         <ProvideCurrentCurrentEpochActiveValidators>
-          <ProvideEpochCurrentStakeToValidator>
-            <DelegateToValidatorAutomatically />
-          </ProvideEpochCurrentStakeToValidator>
+          <DelegateToValidatorAutomatically />
         </ProvideCurrentCurrentEpochActiveValidators>
       </ProvideCurrentAllowanceToStakeTable>
     </RetrieveMinimumDelegationAmount>

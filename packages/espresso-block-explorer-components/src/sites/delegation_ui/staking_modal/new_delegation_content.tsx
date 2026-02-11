@@ -5,7 +5,6 @@ import { ValidatorName } from '../elements/validator/validator_name';
 import { ApproveButton } from './approve_button';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { ProvideCurrentAllowanceToStakeTable } from './contexts/current_allowance_context';
-import { ProvideCurrentCurrentEpochActiveValidators } from './contexts/current_epoch_active_validators_context';
 import { ProvideEpochCurrentStakeToValidator } from './contexts/current_epoch_stake_to_validator_context';
 import { DelegateButton } from './delegate_button';
 import './new_delegation_content.css';
@@ -25,11 +24,9 @@ export const NewDelegationContent: React.FC = () => {
   return (
     <RetrieveMinimumDelegationAmount>
       <ProvideCurrentAllowanceToStakeTable>
-        <ProvideCurrentCurrentEpochActiveValidators>
-          <ProvideEpochCurrentStakeToValidator>
-            <NewDelegationModalContent />
-          </ProvideEpochCurrentStakeToValidator>
-        </ProvideCurrentCurrentEpochActiveValidators>
+        <ProvideEpochCurrentStakeToValidator>
+          <NewDelegationModalContent />
+        </ProvideEpochCurrentStakeToValidator>
       </ProvideCurrentAllowanceToStakeTable>
     </RetrieveMinimumDelegationAmount>
   );
