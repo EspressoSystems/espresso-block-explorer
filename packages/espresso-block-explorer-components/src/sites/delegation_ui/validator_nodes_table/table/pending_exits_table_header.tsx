@@ -3,7 +3,7 @@ import { ActionsHeadCell } from '../common/cells/actions_head_cell';
 import { FeeHeadCell } from '../common/cells/fee_head_cell';
 import { HotShotConsensusHeadCell } from '../common/cells/hot_shot_consensus_head_cell';
 import { MissedSlotsHeadCell } from '../common/cells/missed_slots_head_cell';
-import { ParticipationRateHeadCell } from '../common/cells/participation_rate_head_cell';
+import { MyStakeHeadCell } from '../common/cells/my_stake_head_cell';
 import { StakedHeadCell } from '../common/cells/staked_head_cell';
 import { ValidatorHeadCell } from '../common/cells/validator_head_cell';
 import {
@@ -42,7 +42,7 @@ export const PendingExitsDelegationTableHeader: React.FC = () => {
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.participationRate}>
           <TableHeading sortable>
-            <ParticipationRateHeadCell />
+            <MyStakeHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.hotShotConsensus}>
