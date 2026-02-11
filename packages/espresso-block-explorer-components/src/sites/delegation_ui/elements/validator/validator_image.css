@@ -1,29 +1,36 @@
-.validator-image img {
+.validator-image {
+  overflow: hidden;
   border-style: solid;
   border-color: var(--color--brown--4);
   border-width: 1px;
   box-sizing: border-box;
+  position: relative;
+  border-radius: 4px;
+}
+
+.validator-image img {
   overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .validator-image.i24x24 {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
 }
 
 .validator-image.i24x24 img {
   width: 24px;
   height: 24px;
-  border-radius: 4px;
 }
 
 .validator-image.i14x14 {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
 }
 
 .validator-image.i14x14 img {
   width: 14px;
   height: 14px;
-  border-radius: 4px;
 }
