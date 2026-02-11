@@ -406,7 +406,7 @@ const ValidatorPickedCheck: React.FC<React.PropsWithChildren> = ({
     return (
       <SimpleModalLayout title={<Text text="Waiting for Node information" />}>
         <p>
-          <Text text="Waiting for node information in order to pick a Node to Stake to." />
+          <Text text="Waiting for node information in order to pick a Node to Delegate to." />
         </p>
       </SimpleModalLayout>
     );
@@ -416,7 +416,7 @@ const ValidatorPickedCheck: React.FC<React.PropsWithChildren> = ({
     // We have no nodes that meet the criteria we are looking for.
     return (
       <SimpleModalLayout
-        title={<Text text="Unable to determine a Node to Stake to" />}
+        title={<Text text="Unable to determine a Node to Delegate to" />}
       >
         <p>
           <Text text="No valid node found that matches the expected criteria." />
@@ -585,7 +585,7 @@ const DelegationSuccessContent: React.FC = () => {
       <p>
         <Text text="You can track your delegations utilizing the " />
         <strong>
-          <Text text="My Stakes" />
+          <Text text="My Delegations" />
         </strong>
         <Text text=" filter" />
       </p>
@@ -902,7 +902,7 @@ const StakingAmountSummary: React.FC = () => {
   return (
     <div className="staking-modal-esp-input-area">
       <label htmlFor="staking-modal-esp-input">
-        <Text text="Amount to Stake" />
+        <Text text="Amount to Delegate" />
       </label>
       <div
         className={addClassToClassName(errorClass, 'staking-modal-esp-display')}

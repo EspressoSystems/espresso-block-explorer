@@ -26,7 +26,7 @@ export const ManageStakeContent: React.FC = () => {
     <>
       <StakingHeader>
         <StakingModalTitle>
-          <Text text="Manage Stake" />
+          <Text text="Manage Delegation" />
         </StakingModalTitle>
         <CloseStakingModalButton />
       </StakingHeader>

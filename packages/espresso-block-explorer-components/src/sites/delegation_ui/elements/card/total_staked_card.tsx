@@ -18,7 +18,7 @@ export const TotalStakedCard: React.FC = () => {
   return (
     <CardValue className="estimated-apr-card">
       <h2>
-        <Text text="Total Staked" />
+        <Text text="Total Delegated" />
       </h2>
       <CardContentValue>
         <MoneyText money={MonetaryValue.ESP(totalStaked)} />

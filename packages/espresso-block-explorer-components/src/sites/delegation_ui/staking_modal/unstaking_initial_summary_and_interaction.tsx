@@ -46,7 +46,7 @@ const UnstakingESPInputArea: React.FC = () => {
   return (
     <div className="staking-modal-esp-input-area">
       <label htmlFor="staking-modal-esp-input">
-        <Text text="Unstake Amount" />
+        <Text text="Undelegate Amount" />
       </label>
       <ESPInput
         id="staking-modal-esp-input"
@@ -83,7 +83,7 @@ const InsufficientBalanceWarning: React.FC = () => {
 
   return (
     <div className="staking-modal-insufficient-balance-warning">
-      <Text text="Insufficient Stake" />
+      <Text text="Insufficient Balance" />
     </div>
   );
 };
@@ -94,7 +94,7 @@ const CurrentBalanceArea: React.FC = () => {
   return (
     <div className="staking-modal-current-balance-area">
       <span className="staking-modal-current-balance-label">
-        <Text text="Current Stake" />
+        <Text text="Current Delegation" />
       </span>
 
       <span className="staking-modal-current-balance-value">

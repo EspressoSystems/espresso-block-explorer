@@ -1,10 +1,12 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
+import { addClassToClassName } from '@/components/higher_order';
 import Text from '@/components/text/text';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
+import { ButtonProps } from '../elements/buttons/button_base';
 import ButtonLarge from '../elements/buttons/button_large';
 import { ValidatorName } from '../elements/validator/validator_name';
 import { CloseStakingModalButton } from './close_staking_modal';
@@ -58,6 +60,110 @@ export const WithDrawClaimModalContent: React.FC = () => {
 };
 
 const WithdrawClaimActionsArea: React.FC = () => {
+  const asyncSnapshot = React.useContext(ClaimWithdrawalAsyncSnapshotContext);
+
+  const child = (
+    <>
+      <WithdrawClaimStatus />
+      <WithdrawClaimButton />
+    </>
+  );
+
+  if (asyncSnapshot.hasError) {
+    // There was an error processing the claim withdrawal.
+    return (
+      <div className="staking-modal-unstaking-actions-area error">{child}</div>
+    );
+  }
+
+  if (
+    asyncSnapshot.hasData &&
+    (asyncSnapshot.data?.status ?? 0) >=
+      PerformWriteTransactionStatus.receiptRetrieved
+  ) {
+    // Claim withdrawal succeeded
+    return (
+      <div className="staking-modal-unstaking-actions-area succeeded">
+        {child}
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.asyncState === AsyncState.waiting ||
+    asyncSnapshot.asyncState == AsyncState.active
+  ) {
+    // We are waiting for the claim withdrawal to be processed.
+    return (
+      <div className="staking-modal-unstaking-actions-area waiting">
+        {child}
+      </div>
+    );
+  }
+
+  return <div className="staking-modal-unstaking-actions-area">{child}</div>;
+};
+
+const WithdrawClaimStatus: React.FC = () => {
+  const l1Methods = React.useContext(L1MethodsContext);
+  const stakeTableContract = React.useContext(StakeTableContractContext);
+  const undelegationObject = React.useContext(
+    CurrentPendingUndelegationFromValidatorContext,
+  );
+  const asyncSnapshot = React.useContext(ClaimWithdrawalAsyncSnapshotContext);
+  const toWithdraw = undelegationObject?.amount ?? 0n;
+
+  if (
+    // If the Contracts are not set
+    l1Methods === null ||
+    stakeTableContract === null
+  ) {
+    return <div>&nbsp;</div>;
+  }
+
+  if (asyncSnapshot.hasError) {
+    // There was an error processing the claim withdrawal.
+    return (
+      <div>
+        <Text text="Claim Failed" />
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.hasData &&
+    (asyncSnapshot.data?.status ?? 0) >=
+      PerformWriteTransactionStatus.receiptRetrieved
+  ) {
+    // Claim withdrawal succeeded
+    return (
+      <div>
+        <Text text="Tokens Claimed Successfully" />
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.asyncState === AsyncState.waiting ||
+    asyncSnapshot.asyncState == AsyncState.active
+  ) {
+    // We are waiting for the claim withdrawal to be processed.
+    return (
+      <div>
+        <Text text="Withdrawing..." />
+      </div>
+    );
+  }
+
+  if (toWithdraw <= 0n) {
+    // We have no staking amount
+    return <div>&nbsp;</div>;
+  }
+
+  return <div>&nbsp;</div>;
+};
+
+const WithdrawClaimButton: React.FC = () => {
   const l1Methods = React.useContext(L1MethodsContext);
   const stakeTableContract = React.useContext(StakeTableContractContext);
   const confirmedValidator = React.useContext(ConfirmedValidatorContext);
@@ -119,36 +225,14 @@ const WithdrawClaimActionsArea: React.FC = () => {
     debounceGuard.current = false;
   }, [asyncSnapshot]);
 
+  const ButtonComponent = asyncSnapshot.hasError ? RetryButton : NormalButton;
+
   if (
     // If the Contracts are not set
     l1Methods === null ||
     stakeTableContract === null
   ) {
-    return (
-      <div className="staking-modal-unstaking-actions-area">
-        <div>&nbsp;</div>
-        <ButtonLarge className="btn-undelegate" disabled>
-          <Text text="Claim Stake" />
-        </ButtonLarge>
-      </div>
-    );
-  }
-
-  if (asyncSnapshot.hasError) {
-    // There was an error processing the claim withdrawal.
-    return (
-      <div className="staking-modal-unstaking-actions-area error">
-        <div>
-          <Text text="Claim Stake Failed" />
-        </div>
-        <ButtonLarge
-          className="btn-undelegate"
-          onClick={performClaimWithdrawalAction}
-        >
-          <Text text="Retry" />
-        </ButtonLarge>
-      </div>
-    );
+    return <ButtonComponent disabled />;
   }
 
   if (
@@ -158,14 +242,9 @@ const WithdrawClaimActionsArea: React.FC = () => {
   ) {
     // Claim withdrawal succeeded
     return (
-      <div className="staking-modal-unstaking-actions-area succeeded">
-        <div>
-          <Text text="Stake Claimed Successfully" />
-        </div>
-        <ButtonLarge onClick={close}>
-          <Text text="Close" />
-        </ButtonLarge>
-      </div>
+      <ButtonLarge onClick={close}>
+        <Text text="Close" />
+      </ButtonLarge>
     );
   }
 
@@ -174,39 +253,45 @@ const WithdrawClaimActionsArea: React.FC = () => {
     asyncSnapshot.asyncState == AsyncState.active
   ) {
     // We are waiting for the claim withdrawal to be processed.
-    return (
-      <div className="staking-modal-unstaking-actions-area waiting">
-        <div>
-          <Text text="Withdrawing..." />
-        </div>
-        <ButtonLarge className="btn-undelegate" disabled>
-          <Text text="Claim Stake" />
-        </ButtonLarge>
-      </div>
-    );
+    return <ButtonComponent disabled />;
   }
 
   if (toWithdraw <= 0n) {
     // We have no staking amount
-    return (
-      <div className="staking-modal-unstaking-actions-area">
-        <div>&nbsp;</div>
-        <ButtonLarge className="btn-undelegate" disabled>
-          <Text text="Claim Stake" />
-        </ButtonLarge>
-      </div>
-    );
+    return <ButtonComponent disabled />;
   }
 
+  return <ButtonComponent onClick={performClaimWithdrawalAction} />;
+};
+
+const NormalButton: React.FC<ButtonProps> = ({
+  onClick,
+  className,
+  ...rest
+}) => {
   return (
-    <div className="staking-modal-unstaking-actions-area">
-      <div>&nbsp;</div>
-      <ButtonLarge
-        className="btn-undelegate"
-        onClick={performClaimWithdrawalAction}
-      >
-        <Text text="Claim Stake" />
-      </ButtonLarge>
-    </div>
+    <ButtonLarge
+      className={addClassToClassName(className, 'btn-undelegate')}
+      onClick={onClick}
+      {...rest}
+    >
+      <Text text="Withdraw Tokens" />
+    </ButtonLarge>
+  );
+};
+
+const RetryButton: React.FC<ButtonProps> = ({
+  onClick,
+  className,
+  ...rest
+}) => {
+  return (
+    <ButtonLarge
+      className={addClassToClassName(className, 'btn-undelegate')}
+      onClick={onClick}
+      {...rest}
+    >
+      <Text text="Retry" />
+    </ButtonLarge>
   );
 };

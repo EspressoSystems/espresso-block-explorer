@@ -9,7 +9,7 @@ import React from 'react';
 export const MyStakeHeadCell: React.FC = () => {
   return (
     <>
-      <Text text="my Stake" />
+      <Text text="My Delegation" />
       <MoreInfoElement>
         <Text text="How much stake the current wallet has delegated to this validator node." />
       </MoreInfoElement>
