@@ -1,29 +1,27 @@
 import { fallback } from '@wagmi/core';
 import { Environment } from 'espresso-block-explorer-components';
 import { defineChain } from 'viem';
-import { createConfig, http } from 'wagmi';
+import { http, type CreateConfigParameters } from 'wagmi';
 import * as chains from 'wagmi/chains';
 import { mock } from 'wagmi/connectors';
-
-type WagmiConfig = ReturnType<typeof createConfig>;
 
 function httpTransports(urls: readonly string[]) {
   return fallback(urls.map((url) => http(url)));
 }
 
-export const mainnet: WagmiConfig = createConfig({
+export const mainnet: CreateConfigParameters = {
   chains: [chains.mainnet],
   transports: {
     [chains.mainnet.id]: httpTransports(chains.mainnet.rpcUrls.default.http),
   },
-});
+};
 
-export const decaf: WagmiConfig = createConfig({
+export const decaf: CreateConfigParameters = {
   chains: [chains.sepolia],
   transports: {
     [chains.sepolia.id]: httpTransports(chains.sepolia.rpcUrls.default.http),
   },
-});
+};
 
 const waterChainID = 900;
 const waterChain = defineChain({
@@ -39,12 +37,12 @@ const waterChain = defineChain({
   testnet: true,
 });
 
-export const water: WagmiConfig = createConfig({
+export const water: CreateConfigParameters = {
   chains: [waterChain],
   transports: {
     [waterChain.id]: httpTransports(waterChain.rpcUrls.default.http),
   },
-});
+};
 
 const milkChainID = 900;
 const milkChain = defineChain({
@@ -60,12 +58,12 @@ const milkChain = defineChain({
   testnet: true,
 });
 
-export const milk: WagmiConfig = createConfig({
+export const milk: CreateConfigParameters = {
   chains: [milkChain],
   transports: {
     [milkChain.id]: httpTransports(milkChain.rpcUrls.default.http),
   },
-});
+};
 
 const localDevNetChainID = 31337;
 const localDevnetChain = defineChain({
@@ -80,14 +78,14 @@ const localDevnetChain = defineChain({
   },
   testnet: true,
 });
-export const localDevNet: WagmiConfig = createConfig({
+export const localDevNet: CreateConfigParameters = {
   chains: [localDevnetChain],
   transports: {
     [localDevnetChain.id]: httpTransports(
       localDevnetChain.rpcUrls.default.http,
     ),
   },
-});
+};
 
 const fakeDataChainID = 31337;
 const fakeDataChain = defineChain({
@@ -110,12 +108,12 @@ const fakeDataChain = defineChain({
     }),
   ],
 });
-export const fakeData: WagmiConfig = createConfig({
+export const fakeData: CreateConfigParameters = {
   chains: [fakeDataChain],
   transports: {
     [fakeDataChain.id]: httpTransports(fakeDataChain.rpcUrls.default.http),
   },
-});
+};
 
 /**
  * getWagmiConfigForEnvironment returns the appropriate WagmiConfig based on
@@ -125,7 +123,7 @@ export const fakeData: WagmiConfig = createConfig({
  */
 export function getWagmiConfigForEnvironment(
   environment: Environment,
-): WagmiConfig {
+): CreateConfigParameters {
   switch (environment) {
     case Environment.mainnet:
       return mainnet;

@@ -3,8 +3,7 @@
 import { EnvironmentProvider } from '@/helpers/environment';
 import { EnvironmentConfig } from '@/helpers/read_from_env';
 import { getWagmiConfigForEnvironment } from '@/helpers/wagmi';
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { getDefaultConfig } from '@rainbow-me/rainbowkit';
+import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   Environment,
@@ -23,7 +22,13 @@ import {
   ProvideTickEverySecond,
   RainbowKitContextInjector,
 } from 'espresso-block-explorer-components';
-import { fallback, http, WagmiProvider } from 'wagmi';
+import {
+  createConfig,
+  fallback,
+  http,
+  WagmiProvider,
+  type CreateConfigParameters,
+} from 'wagmi';
 
 export interface LayoutClientComponentProps {
   env: EnvironmentConfig;
@@ -51,12 +56,17 @@ export default function LayoutClientComponent({
       };
 
   const rainbowKitWagmiConfig = !env.walletconnect_project_id
-    ? rawWagmiConfig
+    ? createConfig({
+        ...rawWagmiConfig,
+        ...transports,
+        ssr: true,
+      } as CreateConfigParameters)
     : getDefaultConfig({
         appName: 'Espresso Delegation UI',
         projectId: env.walletconnect_project_id,
         ...rawWagmiConfig,
         ...transports,
+        ssr: true,
       });
 
   return (
