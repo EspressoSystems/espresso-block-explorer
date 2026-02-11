@@ -11,8 +11,9 @@
   line-height: 16px;
 }
 
-.staking-modal-staking-overview-area.only-three > *:nth-child(3) {
+.staking-modal-staking-overview-area.only-three > *:nth-last-child(1) {
   grid-column: span 2;
+  border-inline-end-style: none;
 }
 
 .staking-modal-label-value-split {

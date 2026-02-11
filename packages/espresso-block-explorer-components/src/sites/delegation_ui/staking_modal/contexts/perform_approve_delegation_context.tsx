@@ -7,6 +7,7 @@ import { StakeTableContract } from '@/contracts/stake_table/stake_table_interfac
 import { neverAsyncIterable } from '@/functional/functional_async';
 import React from 'react';
 import { type Config } from 'wagmi';
+import { type GetTransactionReceiptReturnType } from 'wagmi/actions';
 import {
   performWriteTransaction,
   PerformWriteTransactionState,
@@ -73,15 +74,15 @@ export async function* performApprove(
   l1Methods: L1Methods<Config, number>,
   espContract: ESPTokenContract,
   stakeTableContract: StakeTableContract,
-  setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>,
+  amount: bigint,
+  resultCallback: (
+    error: unknown,
+    result: null | GetTransactionReceiptReturnType<Config>,
+  ) => void,
 ) {
   yield* performWriteTransaction(
     l1Methods,
-    async () =>
-      espContract.approve(
-        stakeTableContract.address,
-        0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffffn,
-      ),
-    setL1Timestamp,
+    async () => espContract.approve(stakeTableContract.address, amount),
+    resultCallback,
   );
 }

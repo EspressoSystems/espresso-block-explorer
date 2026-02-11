@@ -1,5 +1,9 @@
 import { AsyncSnapshot } from '@/components/data/async_data/async_snapshot';
-import { Undelegation } from '@/contracts/stake_table/stake_table_interface';
+import {
+  Undelegation,
+  Validator,
+  ValidatorStatus,
+} from '@/contracts/stake_table/stake_table_interface';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
 import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
@@ -28,7 +32,6 @@ import { ClaimRewardsModalContent } from '../claim_rewards_content';
 import { CurrentAllowanceToStakeTableContext } from '../contexts/current_allowance_context';
 import { CurrentPendingUndelegationFromValidatorContext } from '../contexts/current_pending_undelegation_from_validator_context';
 import { CurrentStakeToValidatorContext } from '../contexts/current_stake_to_validator_context';
-import { ProvideEstimatedFeesPerGas } from '../contexts/estimated_fees_per_gas_context';
 import { ClaimValidatorExitAsyncSnapshotContext } from '../contexts/perfom_claim_validator_exit_context';
 import { ApproveAsyncSnapshotContext } from '../contexts/perform_approve_delegation_context';
 import { ClaimRewardsAsyncSnapshotContext } from '../contexts/perform_claim_rewards_context';
@@ -38,6 +41,7 @@ import { UndelegateAsyncSnapshotContext } from '../contexts/perform_undelgation_
 import { PerformWriteTransactionState } from '../contexts/perform_write_states';
 import { StakingAmountContext } from '../contexts/staking_amount_context';
 import { ProvideStakingHistory } from '../contexts/staking_modal_history_context';
+import { ValidatorFromContractContext } from '../contexts/validator_from_contract_context';
 import { ValidatorConfirmedModalContent } from '../staking_modal_validator_confirmed_content';
 import { WithDrawClaimModalContent } from '../withdraw_claim_content';
 import {
@@ -125,19 +129,26 @@ export const ValidatorConfirmedExample: React.FC<
                                             props.currentStakeToNode,
                                           )}
                                         >
-                                          <ValidatorNodeContext.Provider
-                                            value={props.validator}
+                                          <ValidatorFromContractContext.Provider
+                                            value={
+                                              new Validator(
+                                                1_000_000_000_000_000_000_000n,
+                                                ValidatorStatus.active,
+                                              )
+                                            }
                                           >
-                                            <StakingAmountContext.Provider
-                                              value={
-                                                props.amount.trim() === ''
-                                                  ? null
-                                                  : MonetaryValue.ESP(
-                                                      BigInt(props.amount),
-                                                    )
-                                              }
+                                            <ValidatorNodeContext.Provider
+                                              value={props.validator}
                                             >
-                                              <ProvideEstimatedFeesPerGas>
+                                              <StakingAmountContext.Provider
+                                                value={
+                                                  props.amount.trim() === ''
+                                                    ? null
+                                                    : MonetaryValue.ESP(
+                                                        BigInt(props.amount),
+                                                      )
+                                                }
+                                              >
                                                 <UndelegateAsyncSnapshotContext.Provider
                                                   value={
                                                     props.undelegationAsyncSnapshot
@@ -175,9 +186,9 @@ export const ValidatorConfirmedExample: React.FC<
                                                     </DelegateAsyncSnapshotContext.Provider>
                                                   </ApproveAsyncSnapshotContext.Provider>
                                                 </UndelegateAsyncSnapshotContext.Provider>
-                                              </ProvideEstimatedFeesPerGas>
-                                            </StakingAmountContext.Provider>
-                                          </ValidatorNodeContext.Provider>
+                                              </StakingAmountContext.Provider>
+                                            </ValidatorNodeContext.Provider>
+                                          </ValidatorFromContractContext.Provider>
                                         </CurrentStakeToValidatorContext.Provider>
                                       </ProvideStakingHistory>
                                     </DialogModal>
@@ -209,7 +220,7 @@ export const DefaultMeta = {
     balance: '5000000000000000000000000',
     amount: '',
     allowance: '0',
-    currentStakeToNode: '5000000000000000000000',
+    currentStakeToNode: '50000000000000000000',
     claimableRewards: '5000000000000000000000',
     lifetimeRewardsClaimed: '0',
 

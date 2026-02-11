@@ -12,7 +12,9 @@ export const ManageStakeInitialSummary: React.FC = () => {
   return (
     <div className="staking-modal-initial-summary-and-interaction">
       <ValidatorDisplayArea />
-      <NoticeArea />
+      <NoticeArea>
+        <></>
+      </NoticeArea>
       <CurrentStakeArea />
     </div>
   );

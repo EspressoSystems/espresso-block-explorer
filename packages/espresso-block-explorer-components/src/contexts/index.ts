@@ -7,6 +7,7 @@ export * from './date_time_formatters_provider';
 export * from './error_provider';
 export * from './error_stream_consumer';
 export * from './esp_token_contract_context';
+export * from './intent_completed_callback_context';
 export * from './l1_methods_context';
 export * from './l1_validator_api_context';
 export * from './light_client_contract_context';
@@ -21,4 +22,3 @@ export * from './stake_table_v2_contract_context';
 export * from './transactions_per_second_number_format';
 export * from './variable_bytes_number_format';
 export * from './web_socket_response_provider';
-

@@ -6,11 +6,11 @@ import { StakeTableContract } from '@/contracts/stake_table/stake_table_interfac
 import { neverAsyncIterable } from '@/functional/functional_async';
 import React from 'react';
 import { type Config } from 'wagmi';
+import { type GetTransactionReceiptReturnType } from 'wagmi/actions';
 import {
   performWriteTransaction,
   PerformWriteTransactionState,
 } from './perform_write_states';
-
 export const ClaimValidatorExitAsyncIterableContext =
   React.createContext<null | AsyncIterable<PerformWriteTransactionState>>(null);
 
@@ -82,11 +82,14 @@ export async function* performClaimValidatorExit(
   l1Methods: L1Methods<Config, number>,
   stakeTableContract: StakeTableContract,
   validatorAddress: `0x${string}`,
-  setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>,
+  resultCallback: (
+    error: unknown,
+    result: null | GetTransactionReceiptReturnType<Config>,
+  ) => void,
 ) {
   yield* performWriteTransaction(
     l1Methods,
     async () => stakeTableContract.claimValidatorExit(validatorAddress),
-    setL1Timestamp,
+    resultCallback,
   );
 }

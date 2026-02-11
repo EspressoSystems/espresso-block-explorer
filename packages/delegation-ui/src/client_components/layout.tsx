@@ -23,7 +23,7 @@ import {
   ProvideTickEverySecond,
   RainbowKitContextInjector,
 } from 'espresso-block-explorer-components';
-import { WagmiProvider } from 'wagmi';
+import { fallback, http, WagmiProvider } from 'wagmi';
 
 export interface LayoutClientComponentProps {
   env: EnvironmentConfig;
@@ -40,12 +40,23 @@ export default function LayoutClientComponent({
     env.environment as Environment,
   );
 
+  const transports = !env.rpc_urls
+    ? {}
+    : {
+        transports: {
+          [rawWagmiConfig.chains[0].id]: fallback(
+            env.rpc_urls.map((url) => http(url)),
+          ),
+        },
+      };
+
   const rainbowKitWagmiConfig = !env.walletconnect_project_id
     ? rawWagmiConfig
     : getDefaultConfig({
         appName: 'Espresso Delegation UI',
         projectId: env.walletconnect_project_id,
         ...rawWagmiConfig,
+        ...transports,
       });
 
   return (

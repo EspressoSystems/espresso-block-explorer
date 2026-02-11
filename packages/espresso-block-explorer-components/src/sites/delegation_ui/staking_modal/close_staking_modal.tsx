@@ -1,4 +1,4 @@
-import Close from '@/components/visual/icons/close';
+import Delete1 from '@/components/visual/icons/sharp_line/delete_1';
 import React from 'react';
 import ButtonFlat from '../elements/buttons/button_flat';
 import './close_staking_modal.css';
@@ -9,7 +9,7 @@ export const CloseStakingModalButton: React.FC = () => {
 
   return (
     <ButtonFlat className="close-modal-button" title="close" onClick={close}>
-      <Close />
+      <Delete1 />
     </ButtonFlat>
   );
 };

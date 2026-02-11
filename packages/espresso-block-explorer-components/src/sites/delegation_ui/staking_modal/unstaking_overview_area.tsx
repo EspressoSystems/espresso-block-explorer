@@ -7,14 +7,12 @@ import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
 import { StakingAmountContext } from './contexts/staking_amount_context';
 import { LabelValueSplit } from './label_value_split';
-import { TxFeeEstimate } from './tx_fee_estimate';
 
 export const UnstakingOverviewArea: React.FC = () => {
   return (
-    <div className="staking-modal-staking-overview-area">
+    <div className="staking-modal-staking-overview-area only-three">
       <CurrentBalance />
       <NewBalance />
-      <TxFeeEstimate />
       <CommissionRate />
     </div>
   );

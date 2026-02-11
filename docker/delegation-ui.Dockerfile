@@ -15,9 +15,9 @@ RUN npm run build --workspace=packages/espresso-block-explorer-components
 
 # Copy over public, and asset files, then install again, for the block-explorer-components
 RUN cp -r packages/espresso-block-explorer-components/public/* packages/delegation-ui/public/. && \
-    rm -rf packages/delegation-ui/public/assets/* && \
-    cp -r packages/espresso-block-explorer-components/dist/assets/*.js packages/delegation-ui/public/assets/. && \
-    rm packages/delegation-ui/public/*.json
+  rm -rf packages/delegation-ui/public/assets/* && \
+  cp -r packages/espresso-block-explorer-components/dist/assets/*.js packages/delegation-ui/public/assets/. && \
+  rm packages/delegation-ui/public/*.json
 RUN npm install --no-audit --save --workspace=packages/delegation-ui packages/espresso-block-explorer-components/
 
 # Build the Next Application
@@ -93,5 +93,6 @@ ENV CONTRACT_ADDRESS_ESP_TOKEN=""
 ENV CONTRACT_ADDRESS_REWARD_CLAIM=""
 ENV CONTRACT_ADDRESS_LIGHT_CLIENT=""
 ENV WALLETCONNECT_PROJECT_ID=""
+ENV RPC_URLS=""
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["./delegation-ui-init.sh"]

@@ -13,6 +13,19 @@ export const TotalStakeCell: React.FC = () => {
   const totalStake = React.useContext(TotalStakeContext);
   const validator = React.useContext(ValidatorNodeContext);
   const pct = Number(validator.stake) / Number(totalStake);
+
+  if (totalStake <= 0n) {
+    return (
+      <span>
+        <MoneyText money={MonetaryValue.ESP(validator.stake)} />
+        &nbsp;
+        <span className="percentage-text">
+          (<PercentageText percentage={0} />)
+        </span>
+      </span>
+    );
+  }
+
   return (
     <span>
       <MoneyText money={MonetaryValue.ESP(validator.stake)} />

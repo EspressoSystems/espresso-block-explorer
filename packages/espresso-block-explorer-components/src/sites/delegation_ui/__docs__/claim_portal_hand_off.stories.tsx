@@ -28,6 +28,7 @@ export const Decaf: Story = {
 export const Mainnet: Story = {
   args: {
     ...environmentArgsMainnetWithContracts,
+    intentType: kIntentClaimAndStake,
     l1ValidatorServiceURL:
       'https://staking-api.main.net.espresso.network/v0/staking/',
   },

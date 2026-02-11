@@ -17,6 +17,10 @@ export const CurrentlyStaked: React.FC = () => {
   const totalSupply = React.useContext(TotalSupplyContext);
   const numberFormatter = React.useContext(CurrentNumberFormatters);
 
+  const percent =
+    !totalSupply || totalSupply <= 0n
+      ? 0
+      : Number(totalStake) / Number(totalSupply);
   return (
     <NetworkStatValue>
       <h2>
@@ -30,7 +34,7 @@ export const CurrentlyStaked: React.FC = () => {
       <span
         title={`${numberFormatter.ESP.format(MonetaryValue.ESP(totalStake).toNumericLiteralString())} / ${numberFormatter.ESP.format(MonetaryValue.ESP(totalSupply ?? 0n).toNumericLiteralString())}`}
       >
-        <PercentageText percentage={Number(totalStake) / Number(totalSupply)} />
+        <PercentageText percentage={percent} />
       </span>
     </NetworkStatValue>
   );

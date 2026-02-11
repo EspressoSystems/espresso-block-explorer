@@ -1,4 +1,5 @@
 import { assertNotNull } from '@/assert/assert';
+import { sleep } from '@/async/sleep';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { L1Methods } from '@/contracts/l1/l1_interface';
@@ -18,6 +19,8 @@ import {
   type GetTransactionReceiptParameters,
   type GetTransactionReceiptReturnType,
   type GetTransactionReturnType,
+  type WaitForTransactionReceiptParameters,
+  type WaitForTransactionReceiptReturnType,
 } from 'wagmi/actions';
 
 type Config = typeof fakeData;
@@ -393,6 +396,59 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     >,
   ) {
     return this.blockHeightFromTag(parameters?.blockTag);
+  }
+
+  async waitForTransactionReceipt(
+    parameters: WaitForTransactionReceiptParameters<Config, ChainID>,
+  ): Promise<WaitForTransactionReceiptReturnType<Config, ChainID>> {
+    const {
+      hash,
+      confirmations = 1,
+      timeout = 180_000,
+      pollingInterval = 100, // Fast polling for mock - checking local state
+    } = parameters;
+    const startTime = Date.now();
+
+    // Wait for transaction to exist
+    let tx: null | L1Transaction = null;
+    for (let now = Date.now(); now - startTime < timeout; now = Date.now()) {
+      tx = this.storage.transactions.get(hash) ?? null;
+      if (tx) {
+        break;
+      }
+      await sleep(pollingInterval);
+    }
+
+    if (!tx) {
+      throw new Error(`wait for transaction timeout after ${timeout}ms`);
+    }
+
+    // Wait for sufficient confirmations
+    let confirmedBlocks: bigint = 0n;
+    for (let now = Date.now(); now - startTime < timeout; now = Date.now()) {
+      const txBlockHeight = this.storage.transactionToBlockMap.get(hash);
+      if (!txBlockHeight) {
+        await sleep(pollingInterval);
+        continue;
+      }
+
+      const currentBlock = this.storage.pendingBlockHeight - 1n;
+      confirmedBlocks = currentBlock - txBlockHeight;
+
+      if (confirmedBlocks >= BigInt(confirmations)) {
+        break;
+      }
+
+      await sleep(pollingInterval);
+    }
+
+    if (confirmedBlocks < BigInt(confirmations)) {
+      throw new Error(
+        `wait for transaction confirmed blcks timeout after ${timeout}ms`,
+      );
+    }
+
+    return this.getTransactionReceipt({ hash });
   }
 
   // Mock specific methods

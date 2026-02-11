@@ -1,6 +1,5 @@
 import { assert } from '@/assert/assert';
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
-import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { addClassToClassName } from '@/components/higher_order';
 import {
   RainbowKitAccountAddressContext,
@@ -11,22 +10,19 @@ import FullWalletAddressText from '@/components/text/full_wallet_address';
 import MoneyText from '@/components/text/money_text';
 import Text from '@/components/text/text';
 import CheckCircle from '@/components/visual/icons/sharp_line/check_circle';
-import { DataContext } from '@/contexts/data_provider';
 import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
+import { IntentCompletedCallbackContext } from '@/contexts/intent_completed_callback_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
-import {
-  StakeTableContractContext,
-  StakeTableContractGasEstimatorContext,
-} from '@/contexts/stake_table_contract_context';
+import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import {
   compareArrayBuffer,
+  foldRIterable,
   mapIterable,
-  zipWithIterable,
 } from '@/functional/functional';
-import { neverPromise } from '@/functional/functional_async';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import WalletAddress from '@/models/wallet_address/wallet_address';
+import { ConfirmedValidatorContext } from 'delegation-ui';
 import React from 'react';
 import { WagmiContext } from 'wagmi';
 import { ConnectWalletButton } from '../connect_wallet_button';
@@ -39,7 +35,6 @@ import {
   kIntentClaimAndStake,
   SetClaimPortalIntentContext,
 } from '../contexts/claim_portal_intent_context';
-import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import {
   ESPBalanceAsyncSnapshotContext,
   ESPBalanceContext,
@@ -61,8 +56,6 @@ import {
   ProvideCurrentAllowanceToStakeTable,
 } from './contexts/current_allowance_context';
 import { ProvideCurrentCurrentEpochActiveValidators } from './contexts/current_epoch_active_validators_context';
-import { ProvideEpochCurrentStakeToValidator } from './contexts/current_epoch_stake_to_validator_context';
-import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
 import {
   ApproveAsyncSnapshotContext,
   performApprove,
@@ -78,7 +71,10 @@ import { StakingModalCloseContext } from './contexts/staking_modal_close_context
 import { DelegateButton } from './delegate_button';
 import { NewStakeInstructionsAndProgress } from './new_stake_instructions_and_progress';
 import { NoticeArea } from './notice_area';
-import { ProvideCurrentStakingInformation } from './provide_staking_information';
+import {
+  ProvideAsyncIterableDrivers,
+  ProvideValidatorInfoFromContract,
+} from './provide_staking_information';
 import { StakingCompletionArea } from './staking_completion_area';
 import { StakingContent } from './staking_content';
 import { StakingHeader } from './staking_header';
@@ -111,28 +107,30 @@ export const ClaimAndStakeContent: React.FC = () => {
         setClaimPortalIntent(null);
       }}
     >
-      <ProvideCurrentStakingInformation>
+      <ProvideAsyncIterableDrivers>
         <DelegationUIClaimPortalHandOffRouter />
-      </ProvideCurrentStakingInformation>
+      </ProvideAsyncIterableDrivers>
     </StakingModalCloseContext.Provider>
   );
 };
 
 const DelegationUIClaimPortalHandOffRouter: React.FC = () => {
   return (
-    <CompletionCheck>
-      <DelegationUIClaimPortalHandOffAccountCheck>
-        <DelegationUICClaimPortalHandOffChainCheck>
-          <DelegationUIClaimPortalHandOffFilterValidators>
-            <DelegationUIClaimPortalHandOffValidatorChoice>
-              <DelegationUIClaimPortalHandOffBalanceCheck>
-                <ClaimAndStakePerformDelegationContent />
-              </DelegationUIClaimPortalHandOffBalanceCheck>
-            </DelegationUIClaimPortalHandOffValidatorChoice>
-          </DelegationUIClaimPortalHandOffFilterValidators>
-        </DelegationUICClaimPortalHandOffChainCheck>
-      </DelegationUIClaimPortalHandOffAccountCheck>
-    </CompletionCheck>
+    <DelegationUIClaimPortalHandOffPickRandomValidator>
+      <CompletionCheck>
+        <DelegationUIClaimPortalHandOffAccountCheck>
+          <DelegationUICClaimPortalHandOffChainCheck>
+            <DelegationUIClaimPortalHandOffBalanceCheck>
+              <ValidatorPickedCheck>
+                <ProvideValidatorInfoFromContract>
+                  <ClaimAndStakePerformDelegationContent />
+                </ProvideValidatorInfoFromContract>
+              </ValidatorPickedCheck>
+            </DelegationUIClaimPortalHandOffBalanceCheck>
+          </DelegationUICClaimPortalHandOffChainCheck>
+        </DelegationUIClaimPortalHandOffAccountCheck>
+      </CompletionCheck>
+    </DelegationUIClaimPortalHandOffPickRandomValidator>
   );
 };
 
@@ -316,17 +314,6 @@ const DelegationUIClaimPortalHandOffFilterValidators: React.FC<
     return Boolean(name);
   });
 
-  if (nodeList.length <= 0) {
-    // We do not currently have the node list, so we need to load the list.
-    return (
-      <SimpleModalLayout title={<Text text="Waiting for Node information" />}>
-        <p>
-          <Text text="Waiting for node information in order to pick a Node to Stake to." />
-        </p>
-      </SimpleModalLayout>
-    );
-  }
-
   return (
     <NodeAddressListContext.Provider value={filteredNodeList}>
       {children}
@@ -339,38 +326,93 @@ const DelegationUIClaimPortalHandOffValidatorChoice: React.FC<
 > = ({ children }) => {
   // We need to resolve the Validator.
 
+  const fallback = React.useContext(ValidatorNodeContext);
   const nodeList = React.useContext(NodeAddressListContext);
   const nodeMap = React.useContext(AllValidatorsContext);
-  const [randomOrderNodeList, setRandomOrderNodeList] = React.useState(
-    [] as `0x${string}`[],
+  const randomRoll = React.useMemo(() => Math.random(), []);
+
+  const nodeWeights = Array.from(
+    mapIterable(nodeList, (address) =>
+      // If the node's comission is <= 5%, then we'll want to bump their
+      // weight compared to a normal node.
+      (nodeMap.get(address)?.commission.ratio ?? 1.0) <= 0.05 ? 1.5 : 1,
+    ),
   );
 
-  React.useEffect(() => {
-    // We don't want to recompute the randomOrderNodeList after it's already
-    // been computed.  Otherwise this will end up re-selecting the random
-    // Node to delegate to at odd times.
-    if (nodeList.length <= 0 || randomOrderNodeList.length > 0) {
-      return;
-    }
+  const totalWeight = foldRIterable((a, b) => a + b, 0, nodeWeights);
+  const resolvedRoll = randomRoll * totalWeight;
 
-    // We choose a random entry from our list of nodes.
-    const nextList = Array.from(
-      zipWithIterable(
-        nodeList,
-        mapIterable(nodeList, () => Math.random()),
-        (a, b) => [a, b] as const,
-      ),
-    )
-      .toSorted((a, b) => a[1] - b[1])
-      .map((a) => a[0]);
+  let selectedNode = nodeList[0];
 
-    setRandomOrderNodeList(nextList);
-  }, [randomOrderNodeList, setRandomOrderNodeList, nodeList]);
+  for (let i = 0, acc = 0; i < nodeList.length && acc < resolvedRoll; i++) {
+    const weight = nodeWeights[i];
+    const node = nodeList[i];
+    selectedNode = node;
+    acc += weight;
+  }
 
-  const [validatorAddress = null] = randomOrderNodeList;
+  const validatorAddress = selectedNode;
   const node = !validatorAddress ? null : nodeMap.get(validatorAddress);
 
-  if (!validatorAddress || !node) {
+  // We have our selected Node Validator
+
+  return (
+    <NodeAddressContext.Provider value={validatorAddress ?? '0x'}>
+      <ValidatorNodeContext.Provider value={node ?? fallback}>
+        <ConfirmedValidatorContext.Provider value={validatorAddress ?? '0x'}>
+          {children}
+        </ConfirmedValidatorContext.Provider>
+      </ValidatorNodeContext.Provider>
+    </NodeAddressContext.Provider>
+  );
+};
+
+/**
+ * DelegationUIClaimPortalHandOffPickRandomValidator is a component that serves
+ * performs random validator selection with the infomration provided.
+ *
+ * This should be done as high in the component tree as possible in order to
+ * prevent the node from being re-selected when a re-render is triggered.
+ */
+const DelegationUIClaimPortalHandOffPickRandomValidator: React.FC<
+  React.PropsWithChildren
+> = ({ children }) => {
+  return (
+    <DelegationUIClaimPortalHandOffFilterValidators>
+      <DelegationUIClaimPortalHandOffValidatorChoice>
+        {children}
+      </DelegationUIClaimPortalHandOffValidatorChoice>
+    </DelegationUIClaimPortalHandOffFilterValidators>
+  );
+};
+
+/**
+ * ValidtorPickedCheck is a component that checks to ensure that we have
+ * successfully selected a Validator for the user.
+ *
+ * This component acts as a guard, that prevents the user from moving foward.
+ * It's meant to guard empty selections and prevent us from utilizing the
+ * address if it's invalid.
+ */
+const ValidatorPickedCheck: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const nodeList = React.useContext(NodeAddressListContext);
+  const validatorAddress = React.useContext(NodeAddressContext);
+  const node = React.useContext(ValidatorNodeContext);
+
+  if (nodeList.length <= 0) {
+    // We do not currently have the node list, so we need to load the list.
+    return (
+      <SimpleModalLayout title={<Text text="Waiting for Node information" />}>
+        <p>
+          <Text text="Waiting for node information in order to pick a Node to Stake to." />
+        </p>
+      </SimpleModalLayout>
+    );
+  }
+
+  if (!validatorAddress || !node || validatorAddress === '0x') {
     // We have no nodes that meet the criteria we are looking for.
     return (
       <SimpleModalLayout
@@ -383,15 +425,7 @@ const DelegationUIClaimPortalHandOffValidatorChoice: React.FC<
     );
   }
 
-  // We have our selected Node Validator
-
-  return (
-    <NodeAddressContext.Provider value={validatorAddress}>
-      <ValidatorNodeContext.Provider value={node}>
-        {children}
-      </ValidatorNodeContext.Provider>
-    </NodeAddressContext.Provider>
-  );
+  return children;
 };
 
 const DelegationUIClaimPortalHandOffBalanceCheck: React.FC<
@@ -510,9 +544,7 @@ const ClaimAndStakePerformDelegationContent: React.FC = () => {
     <RetrieveMinimumDelegationAmount>
       <ProvideCurrentAllowanceToStakeTable>
         <ProvideCurrentCurrentEpochActiveValidators>
-          <ProvideEpochCurrentStakeToValidator>
-            <DelegateToValidatorAutomatically />
-          </ProvideEpochCurrentStakeToValidator>
+          <DelegateToValidatorAutomatically />
         </ProvideCurrentCurrentEpochActiveValidators>
       </ProvideCurrentAllowanceToStakeTable>
     </RetrieveMinimumDelegationAmount>
@@ -653,7 +685,10 @@ const AutoDriveApprove: React.FC = () => {
         l1Methods,
         espContract,
         stakeTableContract,
-        setL1Timestamp,
+        currentBalance,
+        () => {
+          setL1Timestamp(new Date());
+        },
       ),
     );
 
@@ -706,6 +741,9 @@ const AutoDriveDelegate: React.FC = () => {
   const l1Methods = React.useContext(L1MethodsContext);
   const stakeTableContract = React.useContext(StakeTableContractContext);
   const approveAsyncSnapshot = React.useContext(ApproveAsyncSnapshotContext);
+  const intentCompletedCallback = React.useContext(
+    IntentCompletedCallbackContext,
+  );
   const delegationAsyncSnapshot = React.useContext(
     DelegateAsyncSnapshotContext,
   );
@@ -778,7 +816,12 @@ const AutoDriveDelegate: React.FC = () => {
         stakeTableContract,
         node.addressText,
         stakingAmount.value,
-        setL1Timestamp,
+        (err) => {
+          if (!err) {
+            intentCompletedCallback();
+          }
+          setL1Timestamp(new Date());
+        },
       ),
     );
 
@@ -797,6 +840,7 @@ const AutoDriveDelegate: React.FC = () => {
     triggerOnce,
     setTriggerOnce,
     node,
+    intentCompletedCallback,
   ]);
 
   return null;
@@ -823,16 +867,14 @@ const ClaimAndStakeDelegationContent: React.FC = () => {
         <CloseStakingModalButton />
       </StakingHeader>
       <StakingContent>
-        <ProvideDelegateContractGasEstimate>
-          <div className="staking-modal-initial-summary-and-interaction">
-            <ValidatorDisplayArea />
-            <NoticeArea />
-            <StakingAmountSummary />
-          </div>
-          <StakingOverviewArea />
-          <StakingActionsArea />
-          <StakingCompletionArea />
-        </ProvideDelegateContractGasEstimate>
+        <div className="staking-modal-initial-summary-and-interaction">
+          <ValidatorDisplayArea />
+          <NoticeArea />
+          <StakingAmountSummary />
+        </div>
+        <StakingOverviewArea />
+        <StakingActionsArea />
+        <StakingCompletionArea />
       </StakingContent>
     </>
   );
@@ -868,65 +910,6 @@ const StakingAmountSummary: React.FC = () => {
         <MoneyText money={stakingAmount} />
       </div>
     </div>
-  );
-};
-
-/**
- * ProvideDelegateContractGasEstimate is a React component that provides the gas
- * estimate the delegate method on the StakeTable.  The estimate is passed
- * to its children via the EstimatedContractGasContext.
- */
-const ProvideDelegateContractGasEstimate: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const account = React.useContext(RainbowKitAccountAddressContext);
-  const allowance = React.useContext(CurrentAllowanceToStakeTableContext) ?? 0n;
-  const balance = React.useContext(ESPBalanceContext);
-  const validator = React.useContext(ConfirmedValidatorContext);
-  const rewardClaimGasEstimator = React.useContext(
-    StakeTableContractGasEstimatorContext,
-  );
-
-  const amountToTry = allowance < balance ? allowance : balance;
-
-  const promise = React.useMemo(
-    () =>
-      !rewardClaimGasEstimator ||
-      balance <= 0n ||
-      allowance === null ||
-      allowance <= 0n ||
-      amountToTry <= 0n ||
-      !account
-        ? neverPromise
-        : rewardClaimGasEstimator.delegate(account, validator, amountToTry),
-
-    // We only want to refresh this, if the estimator changes, or if the
-    // criteria of our account or validator switch between being set or not,
-    // or if the amount is positive or not.
-    //
-    // Beyond these conditions, the gas price is assumed to be the same,
-    // regardless of the specific values utilized.
-    //
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [rewardClaimGasEstimator, !!account, !!validator, amountToTry > 0n],
-  );
-
-  return (
-    <PromiseResolver promise={promise}>
-      <TransformDataToGasEstimate>{children}</TransformDataToGasEstimate>
-    </PromiseResolver>
-  );
-};
-
-const TransformDataToGasEstimate: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
-  const data = (React.useContext(DataContext) ?? null) as null | bigint;
-
-  return (
-    <EstimatedContractGasContext.Provider value={data}>
-      {children}
-    </EstimatedContractGasContext.Provider>
   );
 };
 

@@ -17,6 +17,7 @@ describe('Block Explorer/Components/Links/Layout', () => {
           contract_address_light_client:
             '0x0000000000000000000000000000000000000000',
           walletconnect_project_id: null,
+          rpc_urls: null,
         }}
       >
         <div />

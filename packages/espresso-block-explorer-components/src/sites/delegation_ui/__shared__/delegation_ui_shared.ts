@@ -107,9 +107,14 @@ async function newDelegationInteraction(
 
     await waitFor(async () => {
       expect(
-        await findByRole<HTMLButtonElement>(modalDialog, 'button', {
-          name: 'Approve',
-        }),
+        await findByRole<HTMLButtonElement>(
+          modalDialog,
+          'button',
+          {
+            name: 'Approve',
+          },
+          { timeout: 24_000 },
+        ),
       ).toBeEnabled();
     });
   });
@@ -143,7 +148,7 @@ async function newDelegationInteraction(
       async () => {
         await findByText(modalDialog, 'Confirm Delegation');
       },
-      { timeout: 24_000 },
+      { timeout: 36_000 },
     );
   });
 

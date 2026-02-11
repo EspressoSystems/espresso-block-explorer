@@ -38,6 +38,41 @@ export function validateContractAddress(
   return address as `0x${string}`;
 }
 
+/**
+ * isValidURL returns whether the given string is a valid URL or not.
+ */
+function isValidURL(urlString: string): boolean {
+  try {
+    new URL(urlString);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * parseRPCURLs takes an environment variable, and returns the valid list of
+ * RPC URLS within them.
+ *
+ * The value is expected to be a comma separated list of URL strings.
+ */
+export function parseRPCURLs(envValue: string | undefined): null | string[] {
+  if (!envValue || envValue.trim() === '') {
+    return null;
+  }
+
+  const urls = envValue
+    .split(',')
+    .map((url) => url.trim())
+    .filter(isValidURL);
+
+  if (urls.length === 0) {
+    return null;
+  }
+
+  return urls;
+}
+
 export interface EnvironmentConfig {
   environment: string;
   contract_address_stake_table: null | `0x${string}`;
@@ -45,6 +80,7 @@ export interface EnvironmentConfig {
   contract_address_reward_claim: null | `0x${string}`;
   contract_address_light_client: null | `0x${string}`;
   walletconnect_project_id: null | string;
+  rpc_urls: null | string[];
 }
 
 /**
@@ -67,5 +103,6 @@ export function readFromEnv() {
       process.env.CONTRACT_ADDRESS_LIGHT_CLIENT,
     ),
     walletconnect_project_id: process.env.WALLETCONNECT_PROJECT_ID || null,
+    rpc_urls: parseRPCURLs(process.env.RPC_URLS),
   } as const satisfies EnvironmentConfig;
 }

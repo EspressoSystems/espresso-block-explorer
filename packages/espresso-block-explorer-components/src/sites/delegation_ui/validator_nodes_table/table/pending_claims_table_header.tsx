@@ -4,7 +4,7 @@ import { FeeHeadCell } from '../common/cells/fee_head_cell';
 import { HotShotConsensusHeadCell } from '../common/cells/hot_shot_consensus_head_cell';
 import { MissedSlotsHeadCell } from '../common/cells/missed_slots_head_cell';
 import { ParticipationRateHeadCell } from '../common/cells/participation_rate_head_cell';
-import { StakedHeadCell } from '../common/cells/staked_head_cell';
+import { UndelegatedHeadCell } from '../common/cells/undelegated_head_cell';
 import { ValidatorHeadCell } from '../common/cells/validator_head_cell';
 import {
   CellType,
@@ -27,7 +27,7 @@ export const PendingClaimsDelegationTableHeader: React.FC = () => {
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.pendingClaim}>
           <TableHeading sortable>
-            <StakedHeadCell />
+            <UndelegatedHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.fee}>

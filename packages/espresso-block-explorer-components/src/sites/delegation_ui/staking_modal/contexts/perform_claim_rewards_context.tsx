@@ -8,6 +8,7 @@ import { neverAsyncIterable } from '@/functional/functional_async';
 import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
 import React from 'react';
 import { type Config } from 'wagmi';
+import { type GetTransactionReceiptReturnType } from 'wagmi/actions';
 import {
   performWriteTransaction,
   PerformWriteTransactionState,
@@ -82,7 +83,10 @@ export async function* performClaimRewards(
   l1Methods: L1Methods<Config, number>,
   rewardClaimContract: RewardClaimContract,
   rewardClaimInput: RewardClaimInput,
-  setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>,
+  resultCallback: (
+    error: unknown,
+    result: null | GetTransactionReceiptReturnType<Config>,
+  ) => void,
 ) {
   yield* performWriteTransaction(
     l1Methods,
@@ -91,6 +95,6 @@ export async function* performClaimRewards(
         rewardClaimInput.lifetimeRewards,
         hexArrayBufferCodec.encode(rewardClaimInput.authData),
       ),
-    setL1Timestamp,
+    resultCallback,
   );
 }

@@ -24,7 +24,10 @@ export const ProvideCurrentStakeToValidator: React.FC<
 
   const promise = React.useMemo(
     () =>
-      !stakeTableContract || !accountAddress || !confirmedValidator
+      !stakeTableContract ||
+      !accountAddress ||
+      !confirmedValidator ||
+      confirmedValidator === '0x'
         ? neverPromise
         : stakeTableContract.delegation(
             confirmedValidator,
