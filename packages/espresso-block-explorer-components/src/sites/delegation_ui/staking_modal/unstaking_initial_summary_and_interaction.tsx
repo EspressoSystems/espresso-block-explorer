@@ -23,7 +23,7 @@ export const UnstakingInitialSummaryAndInteraction: React.FC = () => {
         <p>
           <Text text="It takes 7 days after undelegating until you can claim your funds." />
           <Text text=" " />
-          <Text text="You can only have ongoing undelegation per validator at a given time." />
+          <Text text="You can only have one ongoing undelegation per validator at a given time." />
         </p>
       </NoticeArea>
       <UnstakingESPInputArea />
