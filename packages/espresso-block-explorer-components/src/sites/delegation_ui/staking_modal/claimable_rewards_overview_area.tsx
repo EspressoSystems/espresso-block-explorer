@@ -9,7 +9,7 @@ import { LabelValueSplit } from './label_value_split';
 
 export const ClaimableRewardsOverviewArea: React.FC = () => {
   return (
-    <div className="staking-modal-staking-overview-area only-three">
+    <div className="staking-modal-staking-overview-area">
       <CurrentBalance />
       <NewBalance />
     </div>

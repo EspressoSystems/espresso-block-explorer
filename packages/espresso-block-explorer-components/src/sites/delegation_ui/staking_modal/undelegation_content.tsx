@@ -1,10 +1,12 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
+import { addClassToClassName } from '@/components/higher_order';
 import Text from '@/components/text/text';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
+import { ButtonProps } from '../elements/buttons/button_base';
 import ButtonLarge from '../elements/buttons/button_large';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
@@ -31,7 +33,7 @@ export const UndelegationContent: React.FC = () => {
     <>
       <StakingHeader>
         <StakingModalTitle>
-          <Text text="Manage Stake" />
+          <Text text="Manage Delegation" />
         </StakingModalTitle>
         <CloseStakingModalButton />
       </StakingHeader>
@@ -45,6 +47,89 @@ export const UndelegationContent: React.FC = () => {
 };
 
 const UnstakingActionsArea: React.FC = () => {
+  const asyncSnapshot = React.useContext(UndelegateAsyncSnapshotContext);
+  const child = (
+    <>
+      <UnstakingStatus />
+      <UnstakingButton />
+    </>
+  );
+
+  if (asyncSnapshot.hasError) {
+    // There was an error undelegating
+    return (
+      <div className="staking-modal-unstaking-actions-area error">{child}</div>
+    );
+  }
+
+  if (
+    asyncSnapshot.hasData &&
+    (asyncSnapshot.data?.status ?? 0) >=
+      PerformWriteTransactionStatus.receiptRetrieved
+  ) {
+    // Undelegation succeeded
+    return (
+      <div className="staking-modal-unstaking-actions-area succeeded">
+        {child}
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.asyncState === AsyncState.waiting ||
+    asyncSnapshot.asyncState == AsyncState.active
+  ) {
+    // We are waiting for the transaction to be completed
+    return (
+      <div className="staking-modal-unstaking-actions-area waiting">
+        {child}
+      </div>
+    );
+  }
+
+  return <div className="staking-modal-unstaking-actions-area">{child}</div>;
+};
+
+const UnstakingStatus: React.FC = () => {
+  const asyncSnapshot = React.useContext(UndelegateAsyncSnapshotContext);
+  if (asyncSnapshot.hasError) {
+    // There was an error undelegating
+    return (
+      <div>
+        <Text text="Undelegation Failed" />
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.hasData &&
+    (asyncSnapshot.data?.status ?? 0) >=
+      PerformWriteTransactionStatus.receiptRetrieved
+  ) {
+    // Undelegation succeeded
+    return (
+      <div>
+        <Text text="Undelegation Successful" />
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.asyncState === AsyncState.waiting ||
+    asyncSnapshot.asyncState == AsyncState.active
+  ) {
+    // We are waiting for the transaction to be completed
+    return (
+      <div>
+        <Text text="Undelegating..." />
+      </div>
+    );
+  }
+
+  return <div>&nbsp;</div>;
+};
+
+const UnstakingButton: React.FC = () => {
   const l1Methods = React.useContext(L1MethodsContext);
   const stakeTableContract = React.useContext(StakeTableContractContext);
   const confirmedValidator = React.useContext(ConfirmedValidatorContext);
@@ -110,36 +195,14 @@ const UnstakingActionsArea: React.FC = () => {
     debounceGuard.current = false;
   }, [asyncSnapshot]);
 
+  const ButtonComponent = asyncSnapshot.hasError ? RetryButton : NormalButton;
+
   if (
     // If the Contracts are not set
     l1Methods === null ||
     stakeTableContract === null
   ) {
-    return (
-      <div className="staking-modal-unstaking-actions-area">
-        <div>&nbsp;</div>
-        <ButtonLarge className="btn-undelegate" disabled>
-          <Text text="Undelegate" />
-        </ButtonLarge>
-      </div>
-    );
-  }
-
-  if (asyncSnapshot.hasError) {
-    // There was an error undelegating
-    return (
-      <div className="staking-modal-unstaking-actions-area error">
-        <div>
-          <Text text="Undelegation Failed" />
-        </div>
-        <ButtonLarge
-          className="btn-undelegate"
-          onClick={performUndelegationAction}
-        >
-          <Text text="Retry" />
-        </ButtonLarge>
-      </div>
-    );
+    return <ButtonComponent disabled />;
   }
 
   if (
@@ -149,14 +212,9 @@ const UnstakingActionsArea: React.FC = () => {
   ) {
     // Undelegation succeeded
     return (
-      <div className="staking-modal-unstaking-actions-area succeeded">
-        <div>
-          <Text text="Undelegation Successful" />
-        </div>
-        <ButtonLarge onClick={close}>
-          <Text text="Close" />
-        </ButtonLarge>
-      </div>
+      <ButtonLarge onClick={close}>
+        <Text text="Close" />
+      </ButtonLarge>
     );
   }
 
@@ -165,16 +223,7 @@ const UnstakingActionsArea: React.FC = () => {
     asyncSnapshot.asyncState == AsyncState.active
   ) {
     // We are waiting for the transaction to be completed
-    return (
-      <div className="staking-modal-unstaking-actions-area waiting">
-        <div>
-          <Text text="Undelegating..." />
-        </div>
-        <ButtonLarge className="btn-undelegate" disabled>
-          <Text text="Undelegate" />
-        </ButtonLarge>
-      </div>
-    );
+    return <ButtonComponent disabled />;
   }
 
   if (
@@ -183,25 +232,40 @@ const UnstakingActionsArea: React.FC = () => {
     // We don't have the balance to cover the staking amount
     stakingAmountValue > currentStake
   ) {
-    return (
-      <div className="staking-modal-unstaking-actions-area">
-        <div>&nbsp;</div>
-        <ButtonLarge className="btn-undelegate" disabled>
-          <Text text="Undelegate" />
-        </ButtonLarge>
-      </div>
-    );
+    return <ButtonComponent disabled />;
   }
 
+  return <ButtonComponent onClick={performUndelegationAction} />;
+};
+
+const NormalButton: React.FC<ButtonProps> = ({
+  onClick,
+  className,
+  ...rest
+}) => {
   return (
-    <div className="staking-modal-unstaking-actions-area">
-      <div>&nbsp;</div>
-      <ButtonLarge
-        className="btn-undelegate"
-        onClick={performUndelegationAction}
-      >
-        <Text text="Undelegate" />
-      </ButtonLarge>
-    </div>
+    <ButtonLarge
+      className={addClassToClassName(className, 'btn-undelegate')}
+      onClick={onClick}
+      {...rest}
+    >
+      <Text text="Undelegate" />
+    </ButtonLarge>
+  );
+};
+
+const RetryButton: React.FC<ButtonProps> = ({
+  onClick,
+  className,
+  ...rest
+}) => {
+  return (
+    <ButtonLarge
+      className={addClassToClassName(className, 'btn-undelegate')}
+      onClick={onClick}
+      {...rest}
+    >
+      <Text text="Retry" />
+    </ButtonLarge>
   );
 };

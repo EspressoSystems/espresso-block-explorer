@@ -1,6 +1,7 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import { addClassToClassName } from '@/components/higher_order';
 import Text from '@/components/text/text';
+import { IntentCompletedCallbackContext } from '@/contexts/intent_completed_callback_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import React from 'react';
@@ -21,7 +22,6 @@ import {
   SetStakingAmountContext,
   StakingAmountContext,
 } from './contexts/staking_amount_context';
-import { IntentCompletedCallbackContext } from '@/contexts/intent_completed_callback_context';
 
 /**
  * DelegateButton is the button to delegate stake to a validator.

@@ -55,7 +55,7 @@ const StakingESPInputArea: React.FC = () => {
       )}
     >
       <label htmlFor="staking-modal-esp-input">
-        <Text text="Amount to Stake" />
+        <Text text="Amount to Delegate" />
       </label>
       <ButtonLarge
         className="bbtn-max"

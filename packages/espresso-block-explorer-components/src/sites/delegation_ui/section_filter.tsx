@@ -22,7 +22,7 @@ export const SectionFilter: React.FC = () => {
       }}
       segments={[
         { value: Sections.all, label: <Text text="All" /> },
-        { value: Sections.myStakes, label: <Text text="My Stakes" /> },
+        { value: Sections.myStakes, label: <Text text="My Delegations" /> },
       ]}
     />
   );

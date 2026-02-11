@@ -94,7 +94,6 @@ table.all-validators-table tbody tr td {
   background: var(--validator-node-table--cell--background-color);
 }
 
-
 /** Target the Specific Cells for Border Rounding */
 table.all-validators-table {
   border-radius: 8px;
@@ -132,7 +131,6 @@ table.all-validators-table thead {
   font-size: 11px;
   text-transform: uppercase;
 }
-
 
 table.all-validators-table tbody tr td:not(.no-data):nth-child(1) {
   display: none;
@@ -326,7 +324,7 @@ table.all-validators-table .bbtn.manage {
   }
 
   table.all-validators-table tbody tr td:nth-child(6)::before {
-    content: 'Participation';
+    content: 'My Delegation';
   }
   table.all-validators-table tbody tr td:nth-child(6) {
     order: 7;
