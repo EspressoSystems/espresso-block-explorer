@@ -1,7 +1,6 @@
 import LayoutClientComponent from '@/client_components/layout';
 import { readFromEnv } from '@/helpers/read_from_env';
 import 'espresso-block-explorer-components/delegation-ui.css';
-import 'espresso-block-explorer-components/espresso-block-explorer-components.css';
 import React from 'react';
 import './globals.css';
 // Growing pains... It's unclear why these css file code splits are occurring.
