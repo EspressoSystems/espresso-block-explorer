@@ -324,7 +324,7 @@ table.all-validators-table .bbtn.manage {
   }
 
   table.all-validators-table tbody tr td:nth-child(6)::before {
-    content: 'My Stake';
+    content: 'My Delegation';
   }
   table.all-validators-table tbody tr td:nth-child(6) {
     order: 7;
