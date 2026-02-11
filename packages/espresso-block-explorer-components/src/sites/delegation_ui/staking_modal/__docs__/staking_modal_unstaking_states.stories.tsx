@@ -47,31 +47,31 @@ export const None: Story = {
 
 export const Option25Percent: Story = {
   args: {
-    amount: '1250000000000000000000',
+    amount: '12500000000000000000',
   },
 };
 
 export const Option50Percent: Story = {
   args: {
-    amount: '2500000000000000000000',
+    amount: '25000000000000000000',
   },
 };
 
 export const Option75Percent: Story = {
   args: {
-    amount: '3750000000000000000000',
+    amount: '37500000000000000000',
   },
 };
 
 export const OptionAll: Story = {
   args: {
-    amount: '5000000000000000000000',
+    amount: '50000000000000000000',
   },
 };
 
 export const InsufficientStake: Story = {
   args: {
-    amount: '50000000000000000000000',
+    amount: '500000000000000000000',
   },
 };
 

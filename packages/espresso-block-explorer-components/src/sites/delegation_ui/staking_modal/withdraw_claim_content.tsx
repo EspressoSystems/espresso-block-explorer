@@ -105,21 +105,7 @@ const WithdrawClaimActionsArea: React.FC = () => {
 };
 
 const WithdrawClaimStatus: React.FC = () => {
-  const l1Methods = React.useContext(L1MethodsContext);
-  const stakeTableContract = React.useContext(StakeTableContractContext);
-  const undelegationObject = React.useContext(
-    CurrentPendingUndelegationFromValidatorContext,
-  );
   const asyncSnapshot = React.useContext(ClaimWithdrawalAsyncSnapshotContext);
-  const toWithdraw = undelegationObject?.amount ?? 0n;
-
-  if (
-    // If the Contracts are not set
-    l1Methods === null ||
-    stakeTableContract === null
-  ) {
-    return <div>&nbsp;</div>;
-  }
 
   if (asyncSnapshot.hasError) {
     // There was an error processing the claim withdrawal.
@@ -153,11 +139,6 @@ const WithdrawClaimStatus: React.FC = () => {
         <Text text="Withdrawing..." />
       </div>
     );
-  }
-
-  if (toWithdraw <= 0n) {
-    // We have no staking amount
-    return <div>&nbsp;</div>;
   }
 
   return <div>&nbsp;</div>;

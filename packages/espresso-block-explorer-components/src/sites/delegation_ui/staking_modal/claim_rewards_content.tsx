@@ -1,4 +1,5 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
+import { addClassToClassName } from '@/components/higher_order';
 import Text from '@/components/text/text';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { RewardClaimContractContext } from '@/contexts/reward_claim_contract_context';
@@ -6,6 +7,7 @@ import React from 'react';
 import { LifetimeClaimedRewardsContext } from '../contexts/claimed_rewards_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
 import { EspressoRewardClaimInputContext } from '../contexts/reward_claim_input_context';
+import { ButtonProps } from '../elements/buttons/button_base';
 import ButtonLarge from '../elements/buttons/button_large';
 import { ClaimableRewardsOverviewArea } from './claimable_rewards_overview_area';
 import { ClaimableRewardsSummaryAndInteraction } from './claimable_rewards_summary_and_interaction';
@@ -57,6 +59,90 @@ export const ClaimRewardsModalContent: React.FC = () => {
  * for claiming rewards in the staking modal.
  */
 const ClaimRewardsActionsArea: React.FC = () => {
+  const asyncSnapshot = React.useContext(ClaimRewardsAsyncSnapshotContext);
+  const child = (
+    <>
+      <ClaimRewardsStatus />
+      <ClaimRewardsButton />
+    </>
+  );
+
+  if (asyncSnapshot.hasError) {
+    // There was an error claiming rewards
+    return (
+      <div className="staking-modal-unstaking-actions-area error">{child}</div>
+    );
+  }
+
+  if (
+    asyncSnapshot.hasData &&
+    (asyncSnapshot.data?.status ?? 0) >=
+      PerformWriteTransactionStatus.receiptRetrieved
+  ) {
+    // We have received the receipt, we *should* be good to go
+    return (
+      <div className="staking-modal-unstaking-actions-area succeeded">
+        {child}
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.asyncState === AsyncState.waiting ||
+    asyncSnapshot.asyncState == AsyncState.active
+  ) {
+    // We are waiting for the transaction to be completed
+    return (
+      <div className="staking-modal-unstaking-actions-area waiting">
+        {child}
+      </div>
+    );
+  }
+
+  return <div className="staking-modal-unstaking-actions-area">{child}</div>;
+};
+
+const ClaimRewardsStatus: React.FC = () => {
+  const asyncSnapshot = React.useContext(ClaimRewardsAsyncSnapshotContext);
+
+  if (asyncSnapshot.hasError) {
+    // There was an error claiming rewards
+    return (
+      <div>
+        <Text text="Claim Failed" />
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.hasData &&
+    (asyncSnapshot.data?.status ?? 0) >=
+      PerformWriteTransactionStatus.receiptRetrieved
+  ) {
+    // We have received the receipt, we *should* be good to go
+    return (
+      <div>
+        <Text text="Claim Successful" />
+      </div>
+    );
+  }
+
+  if (
+    asyncSnapshot.asyncState === AsyncState.waiting ||
+    asyncSnapshot.asyncState == AsyncState.active
+  ) {
+    // We are waiting for the transaction to be completed
+    return (
+      <div>
+        <Text text="Claiming..." />
+      </div>
+    );
+  }
+
+  return <div>&nbsp;</div>;
+};
+
+const ClaimRewardsButton: React.FC = () => {
   const l1Methods = React.useContext(L1MethodsContext);
   const rewardClaimContract = React.useContext(RewardClaimContractContext);
   const rewardClaimInput = React.useContext(EspressoRewardClaimInputContext);
@@ -119,6 +205,8 @@ const ClaimRewardsActionsArea: React.FC = () => {
     debounceGuard.current = false;
   }, [asyncSnapshot]);
 
+  const ButtonComponent = asyncSnapshot.hasError ? RetryButton : NormalButton;
+
   if (
     // If the Contracts are not set
     l1Methods === null ||
@@ -126,31 +214,12 @@ const ClaimRewardsActionsArea: React.FC = () => {
     // We do not have a reward claim input
     rewardClaimInput === null
   ) {
-    return (
-      <div className="staking-modal-unstaking-actions-area">
-        <div>&nbsp;</div>
-        <ButtonLarge className="btn-undelegate" disabled>
-          <Text text="Claim Rewards" />
-        </ButtonLarge>
-      </div>
-    );
+    return <ButtonComponent disabled />;
   }
 
   if (asyncSnapshot.hasError) {
     // There was an error claiming rewards
-    return (
-      <div className="staking-modal-unstaking-actions-area error">
-        <div>
-          <Text text="Claim Failed" />
-        </div>
-        <ButtonLarge
-          className="btn-undelegate"
-          onClick={performClaimRewardsAction}
-        >
-          <Text text="Retry" />
-        </ButtonLarge>
-      </div>
-    );
+    return <ButtonComponent onClick={performClaimRewardsAction} />;
   }
 
   if (
@@ -160,14 +229,9 @@ const ClaimRewardsActionsArea: React.FC = () => {
   ) {
     // We have received the receipt, we *should* be good to go
     return (
-      <div className="staking-modal-unstaking-actions-area succeeded">
-        <div>
-          <Text text="Claim Successful" />
-        </div>
-        <ButtonLarge onClick={close}>
-          <Text text="Close" />
-        </ButtonLarge>
-      </div>
+      <ButtonLarge onClick={close}>
+        <Text text="Close" />
+      </ButtonLarge>
     );
   }
 
@@ -176,39 +240,45 @@ const ClaimRewardsActionsArea: React.FC = () => {
     asyncSnapshot.asyncState == AsyncState.active
   ) {
     // We are waiting for the transaction to be completed
-    return (
-      <div className="staking-modal-unstaking-actions-area waiting">
-        <div>
-          <Text text="Claiming..." />
-        </div>
-        <ButtonLarge className="btn-undelegate" disabled>
-          <Text text="Claim Rewards" />
-        </ButtonLarge>
-      </div>
-    );
+    return <ButtonComponent disabled />;
   }
 
   if (claimableRewardsBalance <= 0n) {
     // We have no rewards to claim
-    return (
-      <div className="staking-modal-unstaking-actions-area">
-        <div>&nbsp;</div>
-        <ButtonLarge className="btn-undelegate" disabled>
-          <Text text="Claim Rewards" />
-        </ButtonLarge>
-      </div>
-    );
+    return <ButtonComponent disabled />;
   }
 
+  return <ButtonComponent onClick={performClaimRewardsAction} />;
+};
+
+const NormalButton: React.FC<ButtonProps> = ({
+  onClick,
+  className,
+  ...rest
+}) => {
   return (
-    <div className="staking-modal-unstaking-actions-area">
-      <div>&nbsp;</div>
-      <ButtonLarge
-        className="btn-undelegate"
-        onClick={performClaimRewardsAction}
-      >
-        <Text text="Claim Rewards" />
-      </ButtonLarge>
-    </div>
+    <ButtonLarge
+      className={addClassToClassName(className, 'btn-undelegate')}
+      onClick={onClick}
+      {...rest}
+    >
+      <Text text="Claim Rewards" />
+    </ButtonLarge>
+  );
+};
+
+const RetryButton: React.FC<ButtonProps> = ({
+  onClick,
+  className,
+  ...rest
+}) => {
+  return (
+    <ButtonLarge
+      className={addClassToClassName(className, 'btn-undelegate')}
+      onClick={onClick}
+      {...rest}
+    >
+      <Text text="Retry" />
+    </ButtonLarge>
   );
 };
