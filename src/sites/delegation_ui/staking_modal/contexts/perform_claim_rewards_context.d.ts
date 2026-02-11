@@ -4,9 +4,10 @@ import { RewardClaimContract } from '../../../../contracts/reward_claim/reward_c
 import { RewardClaimInput } from '../../../../../../../../../../../../src/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
 import { default as React } from 'react';
 import { Config } from 'wagmi';
+import { GetTransactionReceiptReturnType } from 'wagmi/actions';
 import { PerformWriteTransactionState } from './perform_write_states';
 export declare const PerformClaimRewardsAsyncIterableContext: React.Context<AsyncIterable<PerformWriteTransactionState> | null>;
 export declare const SetClaimRewardsAsyncIterableContext: React.Context<React.Dispatch<React.SetStateAction<AsyncIterable<PerformWriteTransactionState> | null>>>;
 export declare const ClaimRewardsAsyncSnapshotContext: React.Context<AsyncSnapshot<PerformWriteTransactionState>>;
 export declare const ProvideClaimRewardsAsyncIterableContext: React.FC<React.PropsWithChildren>;
-export declare function performClaimRewards(l1Methods: L1Methods<Config, number>, rewardClaimContract: RewardClaimContract, rewardClaimInput: RewardClaimInput, setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>): AsyncGenerator<import('./perform_write_states').PerformWriteTransactionWaiting | import('./perform_write_states').PerformWriteTransactionSucceeded | import('./perform_write_states').PerformWriteTransactionReceiptWaiting | import('./perform_write_states').PerformWriteTransactionReceiptRetrieved, void, unknown>;
+export declare function performClaimRewards(l1Methods: L1Methods<Config, number>, rewardClaimContract: RewardClaimContract, rewardClaimInput: RewardClaimInput, resultCallback: (error: unknown, result: null | GetTransactionReceiptReturnType<Config>) => void): AsyncGenerator<import('./perform_write_states').PerformWriteTransactionWaiting | import('./perform_write_states').PerformWriteTransactionSucceeded | import('./perform_write_states').PerformWriteTransactionReceiptWaiting | import('./perform_write_states').PerformWriteTransactionReceiptRetrieved, void, unknown>;

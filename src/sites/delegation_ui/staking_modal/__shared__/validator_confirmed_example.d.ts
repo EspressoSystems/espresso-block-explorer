@@ -33,7 +33,7 @@ export declare const DefaultMeta: {
         readonly balance: "5000000000000000000000000";
         readonly amount: "";
         readonly allowance: "0";
-        readonly currentStakeToNode: "5000000000000000000000";
+        readonly currentStakeToNode: "50000000000000000000";
         readonly claimableRewards: "5000000000000000000000";
         readonly lifetimeRewardsClaimed: "0";
         readonly undelegation: Undelegation;

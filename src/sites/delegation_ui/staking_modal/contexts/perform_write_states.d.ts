@@ -1,4 +1,5 @@
 import { L1Methods } from '../../../../contracts/l1/l1_interface';
+import { default as BaseError } from '../../../../../../../../../../../../src/errors/base_error';
 import { Config } from 'wagmi';
 import { GetTransactionReceiptReturnType } from 'wagmi/actions';
 /**
@@ -55,4 +56,12 @@ export declare class PerformWriteTransactionReceiptRetrieved extends PerformWrit
     constructor(transactionHash: `0x${string}`, receipt: GetTransactionReceiptReturnType<Config>);
     readonly status = PerformWriteTransactionStatus.receiptRetrieved;
 }
-export declare function performWriteTransaction(l1Methods: L1Methods<Config, number>, writeToContract: () => Promise<`0x${string}`>, setL1Timestamp: React.Dispatch<React.SetStateAction<Date>>): AsyncGenerator<PerformWriteTransactionWaiting | PerformWriteTransactionSucceeded | PerformWriteTransactionReceiptWaiting | PerformWriteTransactionReceiptRetrieved, void, unknown>;
+export declare class FailedToPerformWriteToContract extends BaseError {
+    readonly cause: unknown;
+    constructor(cause: unknown, message?: string);
+}
+export declare class FailedtoReceiveReceipt extends BaseError {
+    readonly cause: unknown;
+    constructor(cause: unknown, message?: string);
+}
+export declare function performWriteTransaction(l1Methods: L1Methods<Config, number>, writeToContract: () => Promise<`0x${string}`>, resultCallback: (err: unknown, result: null | GetTransactionReceiptReturnType<Config>) => void): AsyncGenerator<PerformWriteTransactionWaiting | PerformWriteTransactionSucceeded | PerformWriteTransactionReceiptWaiting | PerformWriteTransactionReceiptRetrieved, void, unknown>;

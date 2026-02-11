@@ -11,8 +11,9 @@ export declare enum CellType {
     missedSlots = 4,
     participationRate = 5,
     hotShotConsensus = 6,
-    pendingExit = 7,
-    pendingClaim = 8
+    myStake = 7,
+    pendingExit = 8,
+    pendingClaim = 9
 }
 /**
  * SortDirection enumerates the possible directions for sorting the table.

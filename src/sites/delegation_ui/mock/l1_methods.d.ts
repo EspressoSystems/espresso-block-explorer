@@ -2,7 +2,7 @@ import { L1Methods } from '../../../contracts/l1/l1_interface';
 import { fakeData } from '../../../../../../../../../../../src/models/config/storybook/wagmi';
 import { default as React } from 'react';
 import { BlockTag } from 'viem';
-import { EstimateFeesPerGasReturnType, GetBalanceParameters, GetBlockParameters, GetBlockReturnType, GetTransactionParameters, GetTransactionReceiptParameters, GetTransactionReturnType } from 'wagmi/actions';
+import { EstimateFeesPerGasReturnType, GetBalanceParameters, GetBlockParameters, GetBlockReturnType, GetTransactionParameters, GetTransactionReceiptParameters, GetTransactionReturnType, WaitForTransactionReceiptParameters, WaitForTransactionReceiptReturnType } from 'wagmi/actions';
 type Config = typeof fakeData;
 type ChainID = Config['chains'][0]['id'];
 export interface UnderlyingTransaction {
@@ -94,6 +94,7 @@ export declare class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     blockFromBlock(block: Block, includeTransactions?: boolean): GetBlockReturnType<boolean, BlockTag, Config, ChainID>;
     getBlock<includeTransactions extends boolean = false, blockTag extends BlockTag = 'latest'>(parameters?: GetBlockParameters<includeTransactions, blockTag, Config, ChainID>): Promise<GetBlockReturnType<includeTransactions, blockTag, Config, ChainID>>;
     getBlockNumber<includeTransactions extends boolean = false, blockTag extends BlockTag = 'latest'>(parameters?: GetBlockParameters<includeTransactions, blockTag, Config, ChainID>): Promise<bigint>;
+    waitForTransactionReceipt(parameters: WaitForTransactionReceiptParameters<Config, ChainID>): Promise<WaitForTransactionReceiptReturnType<Config, ChainID>>;
     private transactionCallBack;
     setTransactionCallback(transactionCallBack: null | L1TransactionCallback): void;
     mockWriteContractStorage<T extends MockContractStorage>(key: symbol, value: T): void;

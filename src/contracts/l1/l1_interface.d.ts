@@ -1,6 +1,6 @@
 import { BlockTag, FeeValuesType } from 'viem';
 import { Config } from 'wagmi';
-import { EstimateFeesPerGasParameters, EstimateFeesPerGasReturnType, estimateGas, EstimateGasParameters, getBalance, GetBalanceParameters, getBlock, getBlockNumber, GetBlockNumberParameters, GetBlockParameters, getTransaction, GetTransactionParameters, getTransactionReceipt, GetTransactionReceiptParameters } from 'wagmi/actions';
+import { EstimateFeesPerGasParameters, EstimateFeesPerGasReturnType, estimateGas, EstimateGasParameters, getBalance, GetBalanceParameters, getBlock, getBlockNumber, GetBlockNumberParameters, GetBlockParameters, getTransaction, GetTransactionParameters, getTransactionReceipt, GetTransactionReceiptParameters, waitForTransactionReceipt, WaitForTransactionReceiptParameters } from 'wagmi/actions';
 export interface L1MethodsReadOnly<config extends Config, chainId extends config['chains'][number]['id']> {
     /**
      * Action for fetching native currency or token balance.
@@ -31,6 +31,12 @@ export interface L1MethodsReadOnly<config extends Config, chainId extends config
      * Action for fetching the number of the most recent block seen.
      */
     getBlockNumber(parameters?: GetBlockNumberParameters<config, chainId>): ReturnType<typeof getBlockNumber<config, chainId>>;
+    /**
+     * waitForTransactionRectip waits for transaction to be included within a
+     * block with specified confirmations. Handles retry logic, timeout, and
+     * transaction replacement automatically.
+     */
+    waitForTransactionReceipt(parameters: WaitForTransactionReceiptParameters<config, chainId>): ReturnType<typeof waitForTransactionReceipt<config, chainId>>;
 }
 export interface L1MethodsWritable {
 }
