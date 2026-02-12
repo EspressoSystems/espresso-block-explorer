@@ -352,7 +352,7 @@ interface WebsiteLinkProps {
 }
 
 const WebsiteLink: React.FC<WebsiteLinkProps> = ({ href }) => {
-  if (!href) {
+  if (!href || (href.protocol !== 'http:' && href.protocol !== 'https:')) {
     return <Text text="-" />;
   }
 

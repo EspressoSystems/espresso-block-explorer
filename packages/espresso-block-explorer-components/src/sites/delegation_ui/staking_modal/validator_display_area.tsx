@@ -64,6 +64,13 @@ const CompanyWebsite: React.FC = () => {
 
   try {
     const url = new URL(companyWebsite);
+
+    // Add a check to ensure that we only support http links to avoid
+    // pointential cross site scripting attacks.
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return null;
+    }
+
     return (
       <div className="company-website">
         <WebsiteLink href={url} />
