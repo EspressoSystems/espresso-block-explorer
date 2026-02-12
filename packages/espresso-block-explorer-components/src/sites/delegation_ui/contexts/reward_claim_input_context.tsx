@@ -1,13 +1,12 @@
 import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
+import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { DataContext } from '@/contexts/data_provider';
 import { neverPromise } from '@/functional/functional_async';
 import { HeightAndAddress } from '@/service/hotshot_query_service/cappuccino/reward_state/height_and_address';
 import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
 import React from 'react';
-import { EspressoRefreshTimestampContext } from './espresso_refresh_timestamp_context';
 import { LightClientFinalizedStateContext } from './light_client_finalized_state_context';
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 
 /**
  * EspressoRewardClaimInputContext provides a React Context
@@ -28,7 +27,6 @@ export const RetrieveEspressoRewardClaimInput: React.FC<
   const lightClientFinalizedState = React.useContext(
     LightClientFinalizedStateContext,
   );
-  const refreshTimestamp = React.useContext(EspressoRefreshTimestampContext);
   const accountAddress = React.useContext(RainbowKitAccountAddressContext);
   const hotShotQueryService = React.useContext(
     CappuccinoHotShotQueryServiceAPIContext,
@@ -39,22 +37,15 @@ export const RetrieveEspressoRewardClaimInput: React.FC<
 
   const promise = React.useMemo(
     () =>
-      !lightClientFinalizedState || !accountAddress || !hotShotQueryService
+      !accountAddress || !hotShotQueryService || !finalizedStateBlockHeight
         ? neverPromise
         : hotShotQueryService.rewardState.getRewardClaimInput(
             new HeightAndAddress(
-              Number(lightClientFinalizedState.blockHeight),
+              Number(finalizedStateBlockHeight),
               accountAddress,
             ),
           ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      refreshTimestamp,
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      !!finalizedStateBlockHeight && finalizedStateBlockHeight > 0n,
-      accountAddress,
-      hotShotQueryService,
-    ],
+    [finalizedStateBlockHeight, accountAddress, hotShotQueryService],
   );
 
   return (
