@@ -428,6 +428,37 @@ const ValidatorPickedCheck: React.FC<React.PropsWithChildren> = ({
   return children;
 };
 
+/**
+ * minimumReasonableStake represents the minimum reasonable stake amount
+ * that we can allow the user to perform.
+ */
+const minimumReasonableStake = 10n ** 18n; // 1 ESP
+
+/**
+ * determineIntentAmount is a function that determines the amount that the user
+ * will be set to stake based on the user's claimed amount and balance.
+ */
+function determineIntentAmount(
+  amount: null | undefined | bigint,
+  balance: bigint,
+): bigint {
+  const resolvedInitial = amount ?? balance;
+
+  if (resolvedInitial !== balance) {
+    return resolvedInitial;
+  }
+
+  // We're staking everyting. We want to try and target balance - 1,
+  // if possible / reasonable.
+  const idealAmount = balance - minimumReasonableStake;
+
+  if (idealAmount < minimumReasonableStake) {
+    return minimumReasonableStake;
+  }
+
+  return idealAmount;
+}
+
 const DelegationUIClaimPortalHandOffBalanceCheck: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
@@ -471,7 +502,7 @@ const DelegationUIClaimPortalHandOffBalanceCheck: React.FC<
 
   assert(balance !== null && balance !== undefined);
 
-  const wantAmount = intent?.amount ?? balance;
+  const wantAmount = determineIntentAmount(intent?.amount, balance);
   const haveAmount = balance;
 
   if (wantAmount !== null && haveAmount < wantAmount) {
