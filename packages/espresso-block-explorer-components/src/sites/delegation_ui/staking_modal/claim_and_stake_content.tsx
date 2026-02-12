@@ -478,9 +478,9 @@ const DelegationUIClaimPortalHandOffBalanceCheck: React.FC<
     // The User does not have enough balance to cover the desired delegation
     // operation
     return (
-      <SimpleModalLayout title={<Text text="Insufficient Balance" />}>
+      <SimpleModalLayout title={<Text text="Refresh Balance" />}>
         <p>
-          <Text text="We're unable to fulfill the Staking Intent as specified.  It requires a larger balance than the connected Wallet currently has." />
+          <Text text="We weren't able to load your correct balance. Please try clicking the refresh button to reload your balance." />
           <br />
           <br />
           <Text text="Desired Staking amount: " />
