@@ -3,7 +3,7 @@ import MoneyText from '@/components/text/money_text';
 import PercentageText from '@/components/text/percentage_text';
 import Text from '@/components/text/text';
 import WalletAddressText from '@/components/text/wallet_address_text';
-import { Check } from '@/components/visual';
+import CheckCircle from '@/components/visual/icons/sharp_line/check_circle';
 import LinkShare2 from '@/components/visual/icons/sharp_line/link_share_2';
 import { filterIterable } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
@@ -211,7 +211,7 @@ const NodeRow: React.FC = () => {
         <NodeNameCell />
       </td>
       <td className="node-selected" onClick={select}>
-        <Check />
+        <CheckCircle />
       </td>
     </tr>
   );
