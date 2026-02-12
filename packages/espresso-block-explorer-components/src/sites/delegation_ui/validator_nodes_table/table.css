@@ -184,6 +184,16 @@ table.all-validators-table .bbtn.manage {
   --button-base--default--border-color: var(--color--brown--4);
 }
 
+/**
+ * TODO: This is here to hide the column while there is no status information
+ * to display to the user.  Remove this when PoS goes live
+ */
+table.all-validators-table tbody tr td:nth-child(7),
+table.all-validators-table thead th:nth-child(6),
+.staking-modal-validator-display-area .bchip.consensus-chip {
+  display: none;
+}
+
 @media screen and (max-width: 1280px) {
 }
 

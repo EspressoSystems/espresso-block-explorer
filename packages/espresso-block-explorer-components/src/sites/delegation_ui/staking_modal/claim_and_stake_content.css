@@ -9,6 +9,7 @@
   font-size: 14px;
 }
 .claim-and-stake-content p {
+  margin-block: 1em;
   text-align: center;
 }
 
