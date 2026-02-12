@@ -1,4 +1,6 @@
+import Text from '@/components/text/text';
 import WalletAddressText from '@/components/text/wallet_address_text';
+import LinkShare2 from '@/components/visual/icons/sharp_line/link_share_2';
 import WalletAddress from '@/models/wallet_address/wallet_address';
 import React from 'react';
 import { ConsensusMapContext } from '../contexts/consensus_map_context';
@@ -8,6 +10,7 @@ import { InactiveConsensusChip } from '../elements/chips/inactive_consensus_chip
 import { ValidatorImage24x24 } from '../elements/validator/validator_image';
 import { ValidatorName } from '../elements/validator/validator_name';
 import CopyWalletAddress from '../validator_nodes_table/common/cells/copy_wallet_address';
+import './validator_display_area.css';
 
 /**
  * ActiveStatusChip is a component that displays whether the validator is active
@@ -40,8 +43,51 @@ export const ValidatorDisplayArea: React.FC = () => {
         <CopyWalletAddress className="address" value={walletAddress}>
           <WalletAddressText value={walletAddress} />
         </CopyWalletAddress>
+        <CompanyWebsite />
       </div>
       <ActiveStatusChip />
     </div>
+  );
+};
+
+/**
+ * CompanyWebsite is a component that displays the validator's company
+ * website, if it is populated and a valid URL.
+ */
+const CompanyWebsite: React.FC = () => {
+  const validator = React.useContext(ValidatorNodeContext);
+  const companyWebsite = validator.metadata?.content?.companyWebsite;
+
+  if (!companyWebsite) {
+    return null;
+  }
+
+  try {
+    const url = new URL(companyWebsite);
+    return (
+      <div className="company-website">
+        <WebsiteLink href={url} />
+      </div>
+    );
+  } catch {
+    return null;
+  }
+};
+
+interface WebsiteLinkProps {
+  href: URL;
+}
+
+/**
+ * WebsiteLink is an external link to the validator's company website, should
+ * it be available.
+ */
+const WebsiteLink: React.FC<WebsiteLinkProps> = ({ href }) => {
+  return (
+    <a href={href.toString()} target="_blank" rel="noopener noreferrer">
+      <Text text={href.hostname} />
+      &nbsp;
+      <LinkShare2 />
+    </a>
   );
 };
