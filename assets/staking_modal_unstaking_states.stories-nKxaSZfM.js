@@ -1,0 +1,59 @@
+import{b as r,a as t}from"./provide_async_states-Czoq1B-f.js";import{h}from"./array_buffer-DMedzaQw.js";import"./blocks-BLRm0qbp.js";import{n as y}from"./nodes-DdUtUYCE.js";import{$ as w,P as E,a as T,b as R,c as P}from"./delegation_ui-D1EhxUvy.js";import{f as W,F as A,a as D,I as l}from"./example_data-DxOYZAOM.js";import{D as f}from"./validator_confirmed_example-Bs69v08f.js";import"./iframe-D4NG4Ygg.js";import"./preload-helper-PPVm8Dsz.js";import"./data_provider-kgUlCSLb.js";import"./loading_provider-B7axcFy0.js";import"./sleep-CW-vxfof.js";import"./missing_element_error-BOfgw7mk.js";import"./string-DoEjSKSD.js";import"./assert-B11BgmXM.js";import"./unimplemented_error-CUVVCP1k.js";import"./base64-Bp_idpg2.js";import"./functional-Ci6o84Cp.js";import"./monetary_value-krz3zuqt.js";import"./bigint-DqPQCubx.js";import"./data-D5p7UK42.js";import"./tagged_base64-CUYa8gnG.js";import"./espresso_logo_and_title-D-eQhVjv.js";import"./higher_order-BVplWATc.js";import"./en_US-Y4ZOVFV4-DsOXqJtv.js";import"./index-CN5LEFBF.js";import"./index-vB25Cpb6.js";import"./environment-DI_yWvm_.js";import"./environment_banner-BN7pIaVD.js";import"./text-CEhLEmI-.js";import"./explorer-CNUcw_TJ.js";import"./wallet_address_text-CtFk5HS0.js";import"./url-fXESVLgZ.js";import"./wallet_address-BEIvL2Xd.js";import"./validator-BLy62hcp.js";import"./async_iterable_resolver-dodiaUJj.js";import"./circular_progress_indicator-BaXbhGAa.js";import"./error_display-Cn-8odhf.js";import"./fetch_error-g-VCQtdm.js";import"./height_and_address-Do-kAfmv.js";import"./not_found_error-DDa8r4Zj.js";import"./promise_resolver-6eSa-CmG.js";import"./data_table-dLKW4ONu.js";import"./chevron_up-DnyZ5qB_.js";import"./svg_icon_base-D3FfKTtS.js";import"./cappuccino_hot_shot_query_service_api_context-DlSdfeHd.js";import"./text-yK6boW87.js";import"./money_text-mTZS0F0I.js";import"./number_formatters_provider-CV8eEq8L.js";import"./locale_provider-y_w6A6F5.js";/* empty css               */import"./main-BEJN2Eg5.js";import"./now_provider-DEocB4vj.js";import"./transactions_per_second_text-DHh5fdnR.js";import"./date_time_formatters_provider-D_NikJXM.js";import"./esp_input-DjCyNcAf.js";import"./esp_symbol-tLOr4PPT.js";import"./byte_size_text-CEkXcn-C.js";import"./date_time_text-fOLyOuvc.js";import"./full_hex_text-ke0vBHh2.js";import"./hex_text-D-eI2otM.js";import"./number_text-CGho1SjB.js";import"./relative_time_since_date_text-Oku8-zsN.js";import"./tagged_base64_text-DCRL9Rv3.js";import"./time_text-cZm6g82q.js";import"./money_text_full-CCkG_Ppj.js";import"./container_loading-C4JgKPAi.js";import"./loading_shimmer-BQy7T3CJ.js";import"./skeleton_content-Ot69JtSC.js";import"./geo_json_view-ExGpv7qb.js";import"./constants-DWX-v_jx.js";import"./affine_transform-UCCpzMIM.js";import"./svg_path_builder-4dyJLere.js";import"./world_map_dots_population_full_resolution-Cye2vD0d.js";import"./world_map_dots_full_resolution-Ck4YB49Z.js";import"./world_map_grid-DQWIItck.js";import"./svg_tool_tip-DbyrSKj_.js";import"./world_map_dots_population_resolver-BUwjLKPk.js";import"./histogram_section_title-D8cROGfX.js";import"./typography-B6ctLHzU.js";import"./payments-CnPrcTPU.js";import"./arrow_left-DaHYwgmp.js";import"./arrow_right-DfpAVoSm.js";import"./check_circle_filled-BEqZoCaN.js";import"./twitter_icon-Bb52ZUdj.js";import"./close-XRvtkUUb.js";import"./copy-efENwpca.js";import"./medium_icon-JPjBpRr9.js";import"./espresso_logo-D3A2VT0-.js";import"./menu-B19a6MhA.js";import"./search_glass-C-IxBWA0.js";import"./x_icon-B-oO2T_n.js";import"./pie_chart-C_LI6GWu.js";import"./web_socket_status-Bsii-yVt.js";import"./web_socket_response_provider-JVqqmnzf.js";import"./cappuccino_node_validator_service_api_context-94h4s3WR.js";import"./error_stream_consumer-DAVqECj-.js";import"./espresso-BnLvrtO7.js";import"./inscription-lyh_GhK4.js";import"./fake_data-Brn1PITY.js";const yr={title:"Delegation UI/Staking Modal/States/Unstaking",...f,args:{...f.args,selection:new w(h.encode(y[l].address)),validator:W.nodes[l]}},o={args:{amount:"0"}},a={args:{amount:"12500000000000000000"}},e={args:{amount:"25000000000000000000"}},n={args:{amount:"37500000000000000000"}},i={args:{amount:"50000000000000000000"}},s={args:{amount:"500000000000000000000"}},m={args:{amount:"0"}},p={args:{amount:"1250000000000000000",undelegationAsyncSnapshot:r.waiting()}},c={args:{amount:"1250000000000000000",undelegationAsyncSnapshot:r.withData(t.active,new R)}},u={args:{amount:"1250000000000000000",undelegationAsyncSnapshot:r.withData(t.active,new T(A))}},d={args:{amount:"1250000000000000000",undelegationAsyncSnapshot:r.withData(t.active,new P(A))}},g={args:{amount:"1250000000000000000",undelegationAsyncSnapshot:r.withData(t.done,new E(A,D))}},S={args:{amount:"1250000000000000000",undelegationAsyncSnapshot:r.withError(t.done,new Error("Undelegation failed"))}};o.parameters={...o.parameters,docs:{...o.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '0'
+  }
+}`,...o.parameters?.docs?.source}}};a.parameters={...a.parameters,docs:{...a.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '12500000000000000000'
+  }
+}`,...a.parameters?.docs?.source}}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '25000000000000000000'
+  }
+}`,...e.parameters?.docs?.source}}};n.parameters={...n.parameters,docs:{...n.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '37500000000000000000'
+  }
+}`,...n.parameters?.docs?.source}}};i.parameters={...i.parameters,docs:{...i.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '50000000000000000000'
+  }
+}`,...i.parameters?.docs?.source}}};s.parameters={...s.parameters,docs:{...s.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '500000000000000000000'
+  }
+}`,...s.parameters?.docs?.source}}};m.parameters={...m.parameters,docs:{...m.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '0'
+  }
+}`,...m.parameters?.docs?.source}}};p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '1250000000000000000',
+    undelegationAsyncSnapshot: AsyncSnapshot.waiting()
+  }
+}`,...p.parameters?.docs?.source}}};c.parameters={...c.parameters,docs:{...c.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '1250000000000000000',
+    undelegationAsyncSnapshot: AsyncSnapshot.withData(AsyncState.active, new PerformWriteTransactionWaiting())
+  }
+}`,...c.parameters?.docs?.source}}};u.parameters={...u.parameters,docs:{...u.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '1250000000000000000',
+    undelegationAsyncSnapshot: AsyncSnapshot.withData(AsyncState.active, new PerformWriteTransactionSucceeded(FAKE_TRANSACTION_HASH))
+  }
+}`,...u.parameters?.docs?.source}}};d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '1250000000000000000',
+    undelegationAsyncSnapshot: AsyncSnapshot.withData(AsyncState.active, new PerformWriteTransactionReceiptWaiting(FAKE_TRANSACTION_HASH))
+  }
+}`,...d.parameters?.docs?.source}}};g.parameters={...g.parameters,docs:{...g.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '1250000000000000000',
+    undelegationAsyncSnapshot: AsyncSnapshot.withData(AsyncState.done, new PerformWriteTransactionReceiptRetrieved(FAKE_TRANSACTION_HASH, FAKE_RECEIPT))
+  }
+}`,...g.parameters?.docs?.source}}};S.parameters={...S.parameters,docs:{...S.parameters?.docs,source:{originalSource:`{
+  args: {
+    amount: '1250000000000000000',
+    undelegationAsyncSnapshot: AsyncSnapshot.withError(AsyncState.done, new Error('Undelegation failed'))
+  }
+}`,...S.parameters?.docs?.source}}};const wr=["None","Option25Percent","Option50Percent","Option75Percent","OptionAll","InsufficientStake","SufficientStake","Submitting","Waiting","Submitted","WaitingForReceipt","ReceiptRetrieved","SubmissionError"];export{s as InsufficientStake,o as None,a as Option25Percent,e as Option50Percent,n as Option75Percent,i as OptionAll,g as ReceiptRetrieved,S as SubmissionError,u as Submitted,p as Submitting,m as SufficientStake,c as Waiting,d as WaitingForReceipt,wr as __namedExportsOrder,yr as default};
