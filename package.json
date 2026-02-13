@@ -1,8 +1,23 @@
 {
   "name": "espresso-block-explorer",
+  "packageManager": "npm@10.9.2",
   "workspaces": [
     "packages/espresso-block-explorer-components",
     "packages/block-explorer",
     "packages/delegation-ui"
-  ]
+  ],
+  "devDependencies": {
+    "turbo": "^2.8.7"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "coverage": "turbo coverage",
+    "clean": "npm run clean:turbo && npm run clean:build",
+    "clean:turbo": "rm -rf .turbo packages/*/.turbo",
+    "clean:build": "rm -rf packages/espresso-block-explorer-components/dist packages/block-explorer/.next packages/delegation-ui/.next packages/*/storybook-static",
+    "clean:all": "npm run clean:turbo && npm run clean:build && rm -rf node_modules packages/*/node_modules"
+  }
 }

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**",
+        "storybook-static/**",
+        "public/**/*.js"
+      ],
+      "env": [
+        "ENVIRONMENT_NAME",
+        "CONTRACT_ADDRESS_STAKE_TABLE",
+        "CONTRACT_ADDRESS_ESP_TOKEN",
+        "CONTRACT_ADDRESS_REWARD_CLAIM",
+        "CONTRACT_ADDRESS_LIGHT_CLIENT",
+        "QUERY_SERVICE_URI",
+        "NODE_VALIDATOR_URI",
+        "STAKING_UI_SERVICE_URI",
+        "WALLETCONNECT_PROJECT_ID",
+        "RPC_URLS"
+      ]
+    },
+    "build-storybook": {
+      "dependsOn": ["^build"],
+      "outputs": ["storybook-static/**"]
+    },
+    "lint": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "coverage": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

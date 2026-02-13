@@ -4,3 +4,6 @@ dist
 storybook-static
 src/stories
 coverage/
+
+# turborepo
+.turbo

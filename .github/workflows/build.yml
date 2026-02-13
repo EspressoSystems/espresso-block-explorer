@@ -28,21 +28,17 @@ jobs:
       - name: Install Dependencies
         run: npm ci --workspaces
 
-      - name: Build Components Library
-        run: npm run build --workspace=packages/espresso-block-explorer-components
+      - name: Build All Packages
+        run: npx turbo build
 
-      - name: Build Applications
-        run: |
-          npm run build --workspace=packages/block-explorer &
-          npm run build --workspace=packages/delegation-ui &
-          wait
+      - name: Lint All Packages
+        run: npx turbo lint
 
-      - name: Lint, Test, and Coverage
-        run: |
-          npm run lint --workspaces &
-          npm run test --workspaces &
-          npm run coverage --workspaces &
-          wait
+      - name: Test All Packages
+        run: npx turbo test
+
+      - name: Coverage All Packages
+        run: npx turbo coverage
 
       - name: Components Coverage Main Branch
         if: ${{ github.ref == 'refs/heads/main' }}
