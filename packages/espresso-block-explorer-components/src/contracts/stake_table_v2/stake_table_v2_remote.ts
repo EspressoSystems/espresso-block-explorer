@@ -55,7 +55,7 @@ export class StakeTableV2Remote
     >,
   >(
     functionName: N,
-    args?: A['args'],
+    args?: StakeTableV2ReadContractParams<N>['args'],
     extra?: Omit<A, 'args'>,
   ): Promise<StakeTableV2ReadContractReturnType<N>> {
     return readContract(this.config, {
