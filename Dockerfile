@@ -23,7 +23,8 @@ COPY packages/block-explorer/package.json ./packages/block-explorer/
 COPY packages/delegation-ui/package.json ./packages/delegation-ui/
 
 # Install all dependencies (this layer is cached if package.json files don't change)
-RUN npm ci --workspaces --no-audit
+RUN npm ci --workspaces --no-audit && \
+    npm cache clean --force
 
 # Copy shared components source (needed by both apps)
 COPY packages/espresso-block-explorer-components ./packages/espresso-block-explorer-components
@@ -60,16 +61,15 @@ FROM node:22-alpine AS base-production
 
 WORKDIR /app
 
-RUN apk add --no-cache bash jq tini python3 make g++
-
-# Copy root package files
-COPY package.json package-lock.json ./
+# Only install runtime dependencies (bash, jq, tini - no build tools)
+RUN apk add --no-cache bash jq tini
 
 EXPOSE 3000
 ENV HOST=0.0.0.0
 ENV QUERY_SERVICE_URI=""
 ENV NODE_VALIDATOR_URI=""
 ENV ENVIRONMENT_NAME="mainnet"
+ENV NODE_ENV=production
 
 ENTRYPOINT ["/sbin/tini", "--"]
 
@@ -79,14 +79,11 @@ ENTRYPOINT ["/sbin/tini", "--"]
 # ============================================================================
 FROM base-production AS block-explorer
 
-# Copy block-explorer package.json
-COPY packages/block-explorer/package.json ./packages/block-explorer/
+# Copy standalone output (includes minimal node_modules)
+COPY --from=block-explorer-builder /app/packages/block-explorer/.next/standalone ./
 
-# Install production dependencies
-RUN NODE_ENV=production npm ci --workspaces --only=production --no-audit
-
-# Copy built application from builder
-COPY --from=block-explorer-builder /app/packages/block-explorer/.next ./packages/block-explorer/.next
+# Copy static files
+COPY --from=block-explorer-builder /app/packages/block-explorer/.next/static ./packages/block-explorer/.next/static
 COPY --from=block-explorer-builder /app/packages/block-explorer/public ./packages/block-explorer/public
 
 # Copy and setup init script
@@ -110,14 +107,11 @@ ENV CONTRACT_ADDRESS_LIGHT_CLIENT=""
 ENV WALLETCONNECT_PROJECT_ID=""
 ENV RPC_URLS=""
 
-# Copy delegation-ui package.json
-COPY packages/delegation-ui/package.json ./packages/delegation-ui/
+# Copy standalone output (includes minimal node_modules)
+COPY --from=delegation-ui-builder /app/packages/delegation-ui/.next/standalone ./
 
-# Install production dependencies
-RUN NODE_ENV=production npm ci --workspaces --only=production --no-audit
-
-# Copy built application from builder
-COPY --from=delegation-ui-builder /app/packages/delegation-ui/.next ./packages/delegation-ui/.next
+# Copy static files
+COPY --from=delegation-ui-builder /app/packages/delegation-ui/.next/static ./packages/delegation-ui/.next/static
 COPY --from=delegation-ui-builder /app/packages/delegation-ui/public ./packages/delegation-ui/public
 
 # Copy and setup init script

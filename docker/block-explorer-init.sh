@@ -1,4 +1,4 @@
 #!/bin/bash
 
-# Actually start app
-npm run start --workspace=packages/block-explorer
+# Start standalone Next.js server
+node packages/block-explorer/server.js
