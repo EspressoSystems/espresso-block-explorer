@@ -18,28 +18,26 @@ export default defineConfig({
       },
       name: 'espresso-block-explorer-components', // Sets the name of the generated library.
       fileName: (format, entryName) => `${entryName}.${format}.js`, // Generates the output file name based on the format.
-      formats: ['es', 'cjs'], // Specifies the output formats (CommonJS and ES modules).
+      formats: ['es'], // Only ESM needed for modern Next.js apps
     },
     cssCodeSplit: true,
     rollupOptions: {
       external: [...Object.keys(peerDependencies)], // Defines external dependencies for Rollup bundling.
+      output: {
+        // Customize asset filenames to ensure CSS files match their entry point names
+        assetFileNames: ({ name }: { name?: string }) => {
+          if (name && name.endsWith('.css')) {
+            return '[name].[ext]';
+          }
+          return 'assets/[name]-[hash][extname]';
+        },
+      },
     },
     // Disabling source maps due to memory issues in CI/CD pipelines.
     // See:
     // https://github.com/storybookjs/builder-vite/issues/409#issuecomment-1295495352
     sourcemap: false, // Generates source maps for debugging.
     emptyOutDir: true, // Clears the output directory before building.
-  },
-  output: {
-    // Customize asset filesnames to esnures CSS files match their entry
-    // point names
-    assetFileNames: ({ name }: { name: string }) => {
-      if (name.endsWith('.css')) {
-        return '[name].[ext]';
-      }
-
-      return 'assets/[name]-[hash][extname]';
-    },
   },
   resolve: {
     alias: [
