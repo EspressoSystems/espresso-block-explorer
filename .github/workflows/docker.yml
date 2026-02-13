@@ -52,18 +52,24 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./docker/block-explorer.Dockerfile
-          platforms: linux/amd64,linux/arm64 #arm64 timing out currently
+          file: ./Dockerfile
+          target: block-explorer
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.be_meta.outputs.tags }}
           labels: ${{ steps.be_meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Delegation UI - Build and Push Docker
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./docker/delegation-ui.Dockerfile
-          platforms: linux/amd64,linux/arm64 #arm64 timing out currently
+          file: ./Dockerfile
+          target: delegation-ui
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.du_meta.outputs.tags }}
           labels: ${{ steps.du_meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
