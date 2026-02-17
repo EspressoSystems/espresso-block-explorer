@@ -7,7 +7,7 @@ type LightClientV2FunctionNames = ContractFunctionName<typeof LightClientV2Abi, 
 type LightClientV2ReadContractParams<N extends LightClientV2FunctionNames> = ReadContractParameters<typeof LightClientV2Abi, N>;
 type LightClientV2ReadContractReturnType<N extends LightClientV2FunctionNames> = ReadContractReturnType<typeof LightClientV2Abi, N>;
 export declare class LightClientV2Remote extends LightClientRemote implements LightClientV2Contract {
-    protected readContractV2<N extends LightClientV2FunctionNames, A extends Omit<LightClientV2ReadContractParams<N>, 'address' | 'abi' | 'chainId' | 'functionName'>>(functionName: N, args?: A['args'], extra?: Omit<A, 'args'>): Promise<LightClientV2ReadContractReturnType<N>>;
+    protected readContractV2<N extends LightClientV2FunctionNames, A extends Omit<LightClientV2ReadContractParams<N>, 'address' | 'abi' | 'chainId' | 'functionName'>>(functionName: N, args?: LightClientV2ReadContractParams<N>['args'], extra?: Omit<A, 'args'>): Promise<LightClientV2ReadContractReturnType<N>>;
     blocksPerEpoch(): Promise<bigint>;
     epochStartBlock(): Promise<bigint>;
     votingStakeTableState(): Promise<StakeTableState>;
