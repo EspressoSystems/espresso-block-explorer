@@ -25,18 +25,28 @@ jobs:
           node-version: 24
           cache: "npm"
 
-      - name: Run Tests
-        run: |
-          npm ci --workspaces
-          npm run build --workspace=packages/espresso-block-explorer-components
-          npm ci --workspaces
-          cp packages/espresso-block-explorer-components/dist/*.js packages/block-explorer/public/.
-          mkdir -p packages/block-explorer/public/assets
-          cp packages/espresso-block-explorer-components/dist/assets/*.js packages/block-explorer/public/assets/.
-          npm run build --workspace=packages/block-explorer
-          npm run lint --workspaces
-          npm run test --workspaces
-          npm run coverage --workspaces
+      - name: Cache Turbo
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
+
+      - name: Install Dependencies
+        run: npm ci --workspaces
+
+      - name: Build All Packages
+        run: npx turbo build
+
+      - name: Lint All Packages
+        run: npx turbo lint
+
+      - name: Test All Packages
+        run: npx turbo test
+
+      - name: Coverage All Packages
+        run: npx turbo coverage
 
       - name: Components Coverage Main Branch
         if: ${{ github.ref == 'refs/heads/main' }}

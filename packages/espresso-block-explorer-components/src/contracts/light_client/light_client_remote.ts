@@ -44,7 +44,7 @@ export class LightClientRemote implements LightClientContract {
     >,
   >(
     functionName: N,
-    args?: A['args'],
+    args?: LightClientReadContractParams<N>['args'],
     extra?: Omit<A, 'args'>,
   ): Promise<LightClientReadContractReturnType<N>> {
     return readContract(this.config, {

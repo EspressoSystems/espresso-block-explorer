@@ -55,7 +55,7 @@ export class StakeTableRemote implements StakeTableContract {
     >,
   >(
     functionName: N,
-    args?: A['args'],
+    args?: StakeTableReadContractParams<N>['args'],
     extra?: Omit<A, 'args'>,
   ): Promise<StakeTableReadContractReturnType<N>> {
     return readContract(this.config, {

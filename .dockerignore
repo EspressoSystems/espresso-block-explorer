@@ -12,6 +12,7 @@
 
 !package.json
 !package-lock.json
+!turbo.json
 
 # Explicitly allow espresso-block-explorer-components pieces
 
@@ -19,7 +20,10 @@
 !packages/espresso-block-explorer-components/src
 !packages/espresso-block-explorer-components/package.json
 !packages/espresso-block-explorer-components/tsconfig.json
-!packages/espresso-block-explorer-components/vite.config.ts
+!packages/espresso-block-explorer-components/tsconfig.*.json
+!packages/espresso-block-explorer-components/vite.config.mts
+!packages/espresso-block-explorer-components/setupTests.ts
+!packages/espresso-block-explorer-components/vitest.global-setup.ts
 
 # Explicitly allow block-explorer pieces
 
@@ -27,16 +31,12 @@
 !packages/block-explorer/src
 !packages/block-explorer/package.json
 !packages/block-explorer/tsconfig.json
-!packages/block-explorer/tsconfig.base.json
-!packages/block-explorer/tsconfig.build.json
-!packages/block-explorer/next.config.js
+!packages/block-explorer/next.config.mjs
 
-# Explicitly allow inscriptions pieces
+# Explicitly allow delegation-ui pieces
 
-!packages/inscriptions/public
-!packages/inscriptions/src
-!packages/inscriptions/package.json
-!packages/inscriptions/tsconfig.json
-!packages/inscriptions/tsconfig.base.json
-!packages/inscriptions/tsconfig.build.json
-!packages/inscriptions/next.config.js
+!packages/delegation-ui/public
+!packages/delegation-ui/src
+!packages/delegation-ui/package.json
+!packages/delegation-ui/tsconfig.json
+!packages/delegation-ui/next.config.mjs

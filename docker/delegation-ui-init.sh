@@ -1,4 +1,4 @@
 #!/bin/bash
 
-# Actually start app
-npm run start --workspace=packages/delegation-ui
+# Start standalone Next.js server
+node packages/delegation-ui/server.js

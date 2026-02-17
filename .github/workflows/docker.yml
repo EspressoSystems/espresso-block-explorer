@@ -13,16 +13,20 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  docker:
+  # Build each app/platform combination in parallel
+  build-images:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [block-explorer, delegation-ui]
+        platform: [linux/amd64, linux/arm64]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
 
-      - name: Install QEMU
+      - name: Setup QEMU
         uses: docker/setup-qemu-action@v3
         with:
-          cache-image: false
           platforms: arm64,amd64
 
       - name: Setup Docker BuildKit
@@ -36,34 +40,83 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Block Explorer - Generate Docker Metadata
-        uses: docker/metadata-action@v5
-        id: be_meta
-        with:
-          images: ghcr.io/EspressoSystems/espresso-block-explorer
+      - name: Generate platform tag
+        id: platform
+        run: |
+          # Convert linux/amd64 to amd64, linux/arm64 to arm64
+          PLATFORM_TAG=$(echo "${{ matrix.platform }}" | cut -d'/' -f2)
+          echo "tag=${PLATFORM_TAG}" >> $GITHUB_OUTPUT
 
-      - name: Delegation UI - Generate Docker Metadata
-        uses: docker/metadata-action@v5
-        id: du_meta
-        with:
-          images: ghcr.io/EspressoSystems/espresso-delegation-ui
+      - name: Set image name
+        id: image
+        run: |
+          if [ "${{ matrix.app }}" = "block-explorer" ]; then
+            echo "name=ghcr.io/espressosystems/espresso-block-explorer" >> $GITHUB_OUTPUT
+          else
+            echo "name=ghcr.io/espressosystems/espresso-delegation-ui" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Block Explorer - Build and Push Docker
+      - name: Generate Docker Metadata
+        uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ${{ steps.image.outputs.name }}
+          tags: |
+            type=ref,event=branch,suffix=-${{ steps.platform.outputs.tag }}
+            type=ref,event=pr,suffix=-${{ steps.platform.outputs.tag }}
+
+      - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./docker/block-explorer.Dockerfile
-          platforms: linux/amd64,linux/arm64 #arm64 timing out currently
+          file: ./Dockerfile
+          target: ${{ matrix.app }}
+          platforms: ${{ matrix.platform }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.be_meta.outputs.tags }}
-          labels: ${{ steps.be_meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=${{ matrix.app }}-${{ steps.platform.outputs.tag }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.app }}-${{ steps.platform.outputs.tag }}
 
-      - name: Delegation UI - Build and Push Docker
-        uses: docker/build-push-action@v6
+  # Combine platform-specific images into multi-arch manifests
+  create-manifests:
+    runs-on: ubuntu-latest
+    needs: build-images
+    if: github.event_name != 'pull_request'
+    strategy:
+      matrix:
+        app: [block-explorer, delegation-ui]
+    steps:
+      - name: Login to Github Container Repo
+        uses: docker/login-action@v3
         with:
-          context: .
-          file: ./docker/delegation-ui.Dockerfile
-          platforms: linux/amd64,linux/arm64 #arm64 timing out currently
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.du_meta.outputs.tags }}
-          labels: ${{ steps.du_meta.outputs.labels }}
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set image name
+        id: image
+        run: |
+          if [ "${{ matrix.app }}" = "block-explorer" ]; then
+            echo "name=ghcr.io/espressosystems/espresso-block-explorer" >> $GITHUB_OUTPUT
+          else
+            echo "name=ghcr.io/espressosystems/espresso-delegation-ui" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create and push multi-arch manifest
+        run: |
+          IMAGE=${{ steps.image.outputs.name }}
+          BRANCH_TAG=$(echo "${{ github.ref_name }}" | sed 's/\//-/g')
+
+          # Create and push manifest combining amd64 and arm64 images
+          # The imagetools create command automatically pushes the manifest
+          docker buildx imagetools create -t ${IMAGE}:${BRANCH_TAG} \
+            ${IMAGE}:${BRANCH_TAG}-amd64 \
+            ${IMAGE}:${BRANCH_TAG}-arm64
+
+          # If this is main branch, also create and push latest tag
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            docker buildx imagetools create -t ${IMAGE}:latest \
+              ${IMAGE}:${BRANCH_TAG}-amd64 \
+              ${IMAGE}:${BRANCH_TAG}-arm64
+          fi

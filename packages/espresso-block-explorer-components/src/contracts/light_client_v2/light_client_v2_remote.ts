@@ -33,7 +33,7 @@ export class LightClientV2Remote
     >,
   >(
     functionName: N,
-    args?: A['args'],
+    args?: LightClientV2ReadContractParams<N>['args'],
     extra?: Omit<A, 'args'>,
   ): Promise<LightClientV2ReadContractReturnType<N>> {
     return readContract(this.config, {
