@@ -26,6 +26,7 @@ import { EspressoCurrentEpochContext } from './contexts/espresso_current_epoch_c
 import { FullNodeSetSnapshotContext } from './contexts/full_node_set_snapshot_context';
 import { L1BlockIDContext } from './contexts/l1_block_id_context';
 import { WalletSnapshotContext } from './contexts/wallet_snapshot_context';
+import { FetchError } from 'espresso-block-explorer-components';
 
 /**
  * MINIMUM_SLEEP_TIME defines the minimum sleep time
@@ -75,11 +76,31 @@ function isNotFoundError(error: unknown) {
 }
 
 /**
+ * isFetchError is a helper function to determine if an error is, or has, an
+ * underlying error that results from a failure during a `fetch` call.
+ *
+ * NOTE: Ideally, we would inspect the nature of the specific `fetch` failure
+ * in order to determine whether the failure is a recoverable `feetch` failure
+ * or not.  However, the specifics of this error are opaque and hide the
+ * details of the underlying cause.  So the best we can do is just treat every
+ * `FetchError` as retryable.
+ */
+function isFetchError(error: unknown) {
+  let localError: unknown = error;
+  if (error instanceof WebWorkerErrorResponse) {
+    // We have a WebWorkerErrorResponse, we can inspect the underlying error.
+    localError = error.error;
+  }
+
+  return localError instanceof FetchError;
+}
+
+/**
  * isRetryableError determines if an error that does not represent
  * a category of errors that prevent the attempt from being reattempted.
  */
 function isARetryableError(error: unknown) {
-  return isNotFoundError(error);
+  return isNotFoundError(error) || isFetchError(error);
 }
 
 /**
