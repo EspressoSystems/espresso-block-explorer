@@ -1,5 +1,5 @@
-import { createClient, defineChain } from 'viem';
-import { createConfig, http } from 'wagmi';
+import { defineChain } from 'viem';
+import { createConfig, fallback, http } from 'wagmi';
 import * as chains from 'wagmi/chains';
 import { mock } from 'wagmi/connectors';
 import { Environment } from '../environment/environment';
@@ -7,101 +7,109 @@ import { WagmiConfig } from '../environment/wagmi';
 
 export const mainnet: WagmiConfig = createConfig({
   chains: [chains.mainnet],
-  client({ chain }) {
-    return createClient({ chain, transport: http() });
+  transports: {
+    [chains.mainnet.id]: fallback(
+      chains.mainnet.rpcUrls.default.http.map((u) => http(u)),
+    ),
   },
 });
 
 export const decaf: WagmiConfig = createConfig({
   chains: [chains.sepolia],
-  client({ chain }) {
-    return createClient({ chain, transport: http() });
+  transports: {
+    [chains.sepolia.id]: fallback(
+      chains.sepolia.rpcUrls.default.http.map((u) => http(u)),
+    ),
   },
+});
+
+export const waterChain = defineChain({
+  id: 900,
+  name: 'RETH (water)',
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ['https://reth.water.devnet.espresso.network'],
+      webSocket: ['wss://wsreth.water.devnet.espresso.network'],
+    },
+  },
+  testnet: true,
 });
 
 export const water: WagmiConfig = createConfig({
-  chains: [
-    defineChain({
-      id: 900,
-      name: 'RETH (water)',
-      nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-      rpcUrls: {
-        default: {
-          http: ['https://reth.water.devnet.espresso.network'],
-          webSocket: ['wss://wsreth.water.devnet.espresso.network'],
-        },
-      },
-      testnet: true,
-    }),
-  ],
-  client({ chain }) {
-    return createClient({ chain, transport: http() });
+  chains: [waterChain],
+  transports: {
+    [waterChain.id]: fallback(
+      waterChain.rpcUrls.default.http.map((u) => http(u)),
+    ),
   },
+});
+
+const milkChain = defineChain({
+  id: 900,
+  name: 'RETH (milk)',
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ['https://reth.milk.devnet.espresso.network'],
+      webSocket: ['wss://wsreth.milk.devnet.espresso.network'],
+    },
+  },
+  testnet: true,
 });
 
 export const milk: WagmiConfig = createConfig({
-  chains: [
-    defineChain({
-      id: 900,
-      name: 'RETH (milk)',
-      nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-      rpcUrls: {
-        default: {
-          http: ['https://reth.milk.devnet.espresso.network'],
-          webSocket: ['wss://wsreth.milk.devnet.espresso.network'],
-        },
-      },
-      testnet: true,
-    }),
-  ],
-  client({ chain }) {
-    return createClient({ chain, transport: http() });
+  chains: [milkChain],
+  transports: {
+    [milkChain.id]: fallback(
+      milkChain.rpcUrls.default.http.map((u) => http(u)),
+    ),
   },
+});
+
+const localDevNetChain = defineChain({
+  id: 31337,
+  name: 'RETH (Local DevNet)',
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ['http://localhost:8545'],
+      webSocket: ['ws://localhost:8546'],
+    },
+  },
+  testnet: true,
 });
 
 export const localDevNet: WagmiConfig = createConfig({
-  chains: [
-    defineChain({
-      id: 31337,
-      name: 'RETH (Local DevNet)',
-      nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-      rpcUrls: {
-        default: {
-          http: ['http://localhost:8545'],
-          webSocket: ['ws://localhost:8546'],
-        },
-      },
-      testnet: true,
-    }),
-  ],
-  client({ chain }) {
-    return createClient({ chain, transport: http() });
+  chains: [localDevNetChain],
+  transports: {
+    [localDevNetChain.id]: fallback(
+      localDevNetChain.rpcUrls.default.http.map((u) => http(u)),
+    ),
   },
 });
 
-export const fakeData: WagmiConfig = createConfig({
-  chains: [
-    defineChain({
-      id: 31337 as const,
-      name: 'Fake Data',
-      nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      rpcUrls: {} as any,
-      testnet: true,
-      connectors: [
-        mock({
-          accounts: [
-            '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-            '0x70997970c51812dc3a010c7d01b50e0d17dc79c8',
-            '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-          ],
-        }),
+const fakeDataChain = defineChain({
+  id: 31337 as const,
+  name: 'Fake Data',
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  rpcUrls: {} as any,
+  testnet: true,
+  connectors: [
+    mock({
+      accounts: [
+        '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+        '0x70997970c51812dc3a010c7d01b50e0d17dc79c8',
+        '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
       ],
     }),
   ],
-  client({ chain }) {
-    return createClient({ chain, transport: http() });
-  },
+});
+
+export const fakeData: WagmiConfig = createConfig({
+  chains: [fakeDataChain],
+  transports: { [fakeDataChain.id]: fallback([]) },
 });
 
 /**
