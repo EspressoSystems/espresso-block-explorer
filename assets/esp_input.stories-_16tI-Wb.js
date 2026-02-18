@@ -1,0 +1,5 @@
+import{e}from"./example-IhDJZE1n.js";import"./iframe-DRi1LiY1.js";import"./preload-helper-PPVm8Dsz.js";import"./money_text_full-EOBcLZWG.js";import"./number_formatters_provider-DrWfDPcd.js";import"./functional-Ci6o84Cp.js";import"./missing_element_error-BOfgw7mk.js";import"./string-DoEjSKSD.js";import"./assert-B11BgmXM.js";import"./locale_provider-CADKL3Zh.js";/* empty css               */import"./bigint-DqPQCubx.js";import"./monetary_value-krz3zuqt.js";import"./esp_input-RvH-Glkp.js";import"./esp_symbol-CzauJQg9.js";import"./unimplemented_error-CUVVCP1k.js";import"./text-TLxmkbG3.js";const C={...e,title:"Components/HID/Inputs/ESPInput"},r={},t={args:{initialValue:"0x152d02c7e14af6800000"}};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:"{}",...r.parameters?.docs?.source}}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
+  args: {
+    initialValue: '0x152d02c7e14af6800000'
+  }
+}`,...t.parameters?.docs?.source}}};const P=["ESPInput","EdgeCase"];export{r as ESPInput,t as EdgeCase,P as __namedExportsOrder,C as default};
