@@ -5,6 +5,7 @@ import {
   ValidatorConfirmedExitWithdraw,
   ValidatorConfirmedStake,
   ValidatorConfirmedUndelegate,
+  ValidatorConfirmedUndelegateConfirm,
   ValidatorConfirmedUndelegateWithdraw,
   ValidatorSelectionContext,
 } from '../contexts/validator_selection_context';
@@ -14,6 +15,7 @@ import { StakingModalHistoryControlsContext } from './contexts/staking_modal_his
 import { ManageStakeContent } from './manage_stake_content';
 import { NewDelegationContent } from './new_delegation_content';
 import { ProvideCurrentStakingInformation } from './provide_staking_information';
+import { UndelegationConfirmContent } from './undelegation_confirm_content';
 import { UndelegationContent } from './undelegation_content';
 import { WithdrawClaimContent } from './withdraw_claim_content';
 import { WithdrawExitContent } from './withdraw_exit_content';
@@ -90,6 +92,10 @@ const ValidatorConfirmedSpecificContent: React.FC = () => {
 
   if (selectedValidator instanceof ValidatorConfirmedUndelegate) {
     return <UndelegationContent />;
+  }
+
+  if (selectedValidator instanceof ValidatorConfirmedUndelegateConfirm) {
+    return <UndelegationConfirmContent />;
   }
 
   assert(selectedValidator instanceof ValidatorConfirmed);

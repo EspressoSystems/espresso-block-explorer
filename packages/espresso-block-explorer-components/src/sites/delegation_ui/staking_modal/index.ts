@@ -26,6 +26,7 @@ export * from './staking_modal_validator_confirmed_content';
 export * from './staking_overview_area';
 export * from './tx_fee_estimate';
 export * from './undelegation_content';
+export * from './undelegation_confirm_content';
 export * from './unstaking_initial_summary_and_interaction';
 export * from './unstaking_overview_area';
 export * from './validator_display_area';

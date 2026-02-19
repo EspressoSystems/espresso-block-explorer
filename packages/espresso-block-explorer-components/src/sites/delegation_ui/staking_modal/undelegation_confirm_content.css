@@ -1,0 +1,76 @@
+.undelegation-confirm {
+  background: var(--color--brown--0);
+}
+
+.undelegate-confirm-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100px;
+  padding: 16px 8px;
+  text-align: center;
+  font-size: 18px;
+  color: var(--color--undesign--red--1);
+  line-height: 28px;
+  font-weight: 500;
+}
+
+.undelegation-confirm > ol {
+  border-color: var(--color--brown--3--alpha-24);
+  border-width: 0;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-style: solid;
+  padding-inline-start: 0;
+  margin: 0;
+}
+
+.undelegation-confirm > ol > div {
+  padding-inline-start: 50px;
+  border-color: var(--color--brown--3--alpha-48);
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-style: solid;
+}
+
+.undelegation-confirm > ol li {
+  padding: 18px 8px;
+  color: var(--color--brown--text--darker);
+}
+
+.undelegation-confirm > ol > div:nth-last-child(1) {
+  border-bottom: 0;
+}
+
+.undelegation-confirm > ol > div > li::marker {
+}
+
+.undelegation-confirm > ol {
+  margin-block-end: 20px;
+}
+
+.undelegation-confirm-actions {
+  display: flex;
+  padding: 16px 8px;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.undelegation-confirm-actions > .bbtn {
+  --button-base--default--height: 43px;
+}
+
+.undelegation-confirm-actions > .bbtn.btn-undelegate {
+  --button-base--default--background-color: transparent;
+  --button-base--default--foreground-color: var(--color--undesign--red--1);
+  --button-base--default--border-color: transparent;
+  --button-base--default--outline-color: transparent;
+  --button-base--hovered--background-color: var(
+    --color--undesign--red--1--alpha-16
+  );
+
+  --button-base--hovered--foreground-color: var(--color--undesign--red--1);
+  --button-base--pressed--border-color: transparent;
+  --button-base--pressed--background-color: transparent;
+}

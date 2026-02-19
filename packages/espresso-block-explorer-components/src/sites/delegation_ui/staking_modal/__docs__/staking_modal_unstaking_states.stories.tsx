@@ -4,7 +4,10 @@ import {
 } from '@/components/data/async_data/async_snapshot';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
 import { nodeList } from '@/data_source/fake_data_source';
-import { ValidatorConfirmedUndelegate } from '@/sites/delegation_ui/contexts/validator_selection_context';
+import {
+  ValidatorConfirmedUndelegate,
+  ValidatorConfirmedUndelegateConfirm,
+} from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import {
   FAKE_RECEIPT,
@@ -77,7 +80,16 @@ export const InsufficientStake: Story = {
 
 export const SufficientStake: Story = {
   args: {
-    amount: '0',
+    amount: '10000000000000000000',
+  },
+};
+
+export const Confirmation: Story = {
+  args: {
+    selection: new ValidatorConfirmedUndelegateConfirm(
+      hexArrayBufferCodec.encode(nodeList[INDEX_STAKED].address),
+    ),
+    amount: '10000000000000000000',
   },
 };
 
