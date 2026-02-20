@@ -24,7 +24,7 @@ COPY packages/delegation-ui/package.json ./packages/delegation-ui/
 
 # Install all dependencies (this layer is cached if package.json files don't change)
 RUN npm ci --workspaces --no-audit && \
-    npm cache clean --force
+  npm cache clean --force
 
 # Copy shared components source (needed by both apps)
 COPY packages/espresso-block-explorer-components ./packages/espresso-block-explorer-components
@@ -106,6 +106,8 @@ ENV CONTRACT_ADDRESS_REWARD_CLAIM=""
 ENV CONTRACT_ADDRESS_LIGHT_CLIENT=""
 ENV WALLETCONNECT_PROJECT_ID=""
 ENV RPC_URLS=""
+ENV BASE_URL=""
+ENV BASE_PATH=""
 
 # Copy standalone output (includes minimal node_modules)
 COPY --from=delegation-ui-builder /app/packages/delegation-ui/.next/standalone ./

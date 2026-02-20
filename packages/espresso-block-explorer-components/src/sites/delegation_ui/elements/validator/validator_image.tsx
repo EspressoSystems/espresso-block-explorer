@@ -118,7 +118,7 @@ export const ValidatorImage14x14: React.FC = () => {
       <ValidatorSources14x14 />
       <FallbackImageSource />
 
-      <FallbackBlockiesImage />
+      <FallbackBlockiesImage width="14" height="14" />
     </picture>
   );
 };
@@ -133,7 +133,7 @@ export const ValidatorImage24x24: React.FC = () => {
     <picture className="validator-image i24x24">
       <ValidatorSources24x24 />
       <FallbackImageSource />
-      <FallbackBlockiesImage />
+      <FallbackBlockiesImage width="24" height="24" />
     </picture>
   );
 };
@@ -146,7 +146,9 @@ const BlockiesCacheContext = React.createContext<Map<`0x${string}`, string>>(
  * FallbackBlockiesImage displays a blockies image as a fallback for
  * the validator image.
  */
-const FallbackBlockiesImage: React.FC = () => {
+const FallbackBlockiesImage: React.FC<
+  Omit<React.HTMLProps<HTMLImageElement>, 'src' | 'alt' | 'loading'>
+> = (props) => {
   const cache = React.useContext(BlockiesCacheContext);
   const addressText = React.useContext(NodeAddressContext);
   const lCaseAddressText = addressText.toLowerCase() as `0x${string}`;
@@ -172,6 +174,7 @@ const FallbackBlockiesImage: React.FC = () => {
       src={dataURL}
       alt={walletAddressCodec.decode(addressText).toString()}
       loading="lazy"
+      {...props}
     />
   );
 };
