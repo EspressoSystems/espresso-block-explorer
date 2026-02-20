@@ -142,6 +142,20 @@ export class ValidatorConfirmedUndelegate extends ValidatorSelectionWithConfirma
 }
 
 /**
+ * ValidatorConfirmedUndelegateConfirm indicates that the user has attempted to
+ * Undelegate from a valdiator.  We want to make sure the user is aware of
+ * the implication of this request, by relaying a warning to the user, and
+ * making him/her confirm the choice to undelegate from the validator.
+ */
+export class ValidatorConfirmedUndelegateConfirm extends ValidatorSelectionWithConfirmation {
+  toJSON() {
+    return {
+      ValidatorConfirmedUndelegateConfirm: this.validatorAddress,
+    };
+  }
+}
+
+/**
  * ValidatorConfirmedUndelegateWithdraw indicates that the user wishes to
  * withdraw the outstanding balance currently attributed to the confirmed
  * Validator that has previously been undelegated from.

@@ -20,6 +20,8 @@
   --color--brown--3--alpha-12: #b672371f;
   --color--brown--3--alpha-24: #b672373d;
   --color--brown--3--alpha-32: #b6723752;
+  --color--brown--3--alpha-42: #b672376b;
+  --color--brown--3--alpha-48: #b672377a;
   --color--brown--3--alpha-60: #b6723799;
   --color--brown--3--mix-80: #925b2c;
   --color--brown--4--alpha-04: #451f170a;
@@ -69,4 +71,5 @@
   --color--undesign--green-3-alpha-16: #67b93e29;
   --color--undesign--green-3-alpha-24: #67b93e3d;
   --color--undesign--red--1: #f43f5e;
+  --color--undesign--red--1--alpha-16: #f43f5e29;
 }

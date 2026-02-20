@@ -29,6 +29,7 @@ dialog.staking-modal[open] {
   flex-basis: auto;
   overflow-y: auto;
   overflow-x: hidden;
+  --button-base--default--font-size: 16px;
 }
 
 @media screen and (max-width: 1280px) {

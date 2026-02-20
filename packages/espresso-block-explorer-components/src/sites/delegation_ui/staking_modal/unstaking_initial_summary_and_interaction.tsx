@@ -54,6 +54,7 @@ const UnstakingESPInputArea: React.FC = () => {
           insufficient,
           'staking-modal-esp-focus-display',
         )}
+        placeholder="0"
         value={stakingAmount}
         onChange={(_event, amount) => setStakingAmount(amount)}
       />

@@ -1,0 +1,108 @@
+.undelegation-confirm {
+  color: var(--color--brown--text--darker);
+  background: var(--color--brown--0);
+  font-family: 'PPNeueMontreal', sans-serif;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.undelegate-confirm-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--color--undesign--red--1);
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.undelegation-confirm > ol {
+  border-color: var(--color--brown--3--alpha-24);
+  border-width: 0;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-style: solid;
+  padding-inline-start: 0;
+  margin: 0;
+}
+
+.undelegation-confirm > ol > div {
+  padding-inline-start: 50px;
+  border-color: var(--color--brown--3--alpha-42);
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-style: solid;
+}
+
+.undelegation-confirm > ol li {
+  padding: 18px 8px;
+}
+
+.undelegation-confirm > ol > div:nth-last-child(1) {
+  border-bottom: 0;
+}
+
+.undelegation-confirm > ol > div > li::marker {
+}
+
+.undelegation-confirm > ol {
+  margin-block-end: 60px;
+}
+
+.undelegation-confirm-actions {
+  display: flex;
+  padding: 24px;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.undelegation-confirm-actions > .bbtn {
+  --button-base--default--height: 43px;
+  --button-base--default--font-size: 16px;
+  --button-base--default--line-height: 16px;
+}
+
+.undelegation-confirm-actions > p {
+  margin: 0;
+  margin-block-end: 24px;
+  text-align: center;
+}
+
+.undelegation-confirm-actions > .bbtn.btn-undelegate {
+  --button-base--default--background-color: transparent;
+  --button-base--default--foreground-color: var(--color--undesign--red--1);
+  --button-base--default--border-color: transparent;
+  --button-base--default--outline-color: transparent;
+  --button-base--hovered--background-color: var(
+    --color--undesign--red--1--alpha-16
+  );
+
+  --button-base--hovered--foreground-color: var(--color--undesign--red--1);
+  --button-base--pressed--border-color: transparent;
+  --button-base--pressed--background-color: transparent;
+}
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .undelegate-confirm-title {
+    padding: 24px;
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .undelegation-confirm {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .undelegation-confirm > ol {
+    margin-block-end: 20px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+}

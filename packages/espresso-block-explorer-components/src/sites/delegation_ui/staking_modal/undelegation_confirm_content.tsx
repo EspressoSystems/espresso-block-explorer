@@ -5,24 +5,29 @@ import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
-import { ValidatorConfirmedUndelegateConfirm } from '../contexts/validator_selection_context';
+import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
 import { ButtonProps } from '../elements/buttons/button_base';
 import ButtonLarge from '../elements/buttons/button_large';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
-import { UndelegateAsyncSnapshotContext } from './contexts/perform_undelgation_context';
+import {
+  performUndelegation,
+  SetUndelegationAsyncIterableContext,
+  UndelegateAsyncSnapshotContext,
+} from './contexts/perform_undelgation_context';
 import { PerformWriteTransactionStatus } from './contexts/perform_write_states';
-import { StakingAmountContext } from './contexts/staking_amount_context';
+import {
+  SetStakingAmountContext,
+  StakingAmountContext,
+} from './contexts/staking_amount_context';
 import { StakingModalCloseContext } from './contexts/staking_modal_close_context';
 import { StakingModalHistoryControlsContext } from './contexts/staking_modal_history_context';
 import { StakingContent } from './staking_content';
 import { StakingHeader } from './staking_header';
 import { StakingModalTitle } from './staking_modal_title';
-import './undelegation_content.css';
-import { UnstakingInitialSummaryAndInteraction } from './unstaking_initial_summary_and_interaction';
-import { UnstakingOverviewArea } from './unstaking_overview_area';
+import './undelegation_confirm_content.css';
 
-export const UndelegationContent: React.FC = () => {
+export const UndelegationConfirmContent: React.FC = () => {
   return (
     <>
       <StakingHeader>
@@ -31,9 +36,27 @@ export const UndelegationContent: React.FC = () => {
         </StakingModalTitle>
         <CloseStakingModalButton />
       </StakingHeader>
-      <StakingContent>
-        <UnstakingInitialSummaryAndInteraction />
-        <UnstakingOverviewArea />
+      <StakingContent className="undelegation-confirm">
+        <strong className="undelegate-confirm-title">
+          <Text text="Are you sure you want to undelegate?" />
+        </strong>
+        <ol>
+          <div>
+            <li>
+              <Text text="You'll stop accuring staking rewards." />
+            </li>
+          </div>
+          <div>
+            <li>
+              <Text text="Your funds unlock after a 7-day unbonding period." />
+            </li>
+          </div>
+          <div>
+            <li>
+              <Text text="Bonus staking incentives may no longer apply (up to 420%)." />
+            </li>
+          </div>
+        </ol>
         <UnstakingActionsArea />
       </StakingContent>
     </>
@@ -41,86 +64,18 @@ export const UndelegationContent: React.FC = () => {
 };
 
 const UnstakingActionsArea: React.FC = () => {
-  const asyncSnapshot = React.useContext(UndelegateAsyncSnapshotContext);
-  const child = (
-    <>
-      <UnstakingStatus />
+  const historyControls = React.useContext(StakingModalHistoryControlsContext);
+  return (
+    <div className="undelegation-confirm-actions">
+      <p>
+        <Text text="Press 'No' below to stay delegated and ensure uninterrupted rewards." />
+      </p>
+      <ButtonLarge onClick={historyControls.back}>
+        <Text text="No" />
+      </ButtonLarge>
       <UnstakingButton />
-    </>
+    </div>
   );
-
-  if (asyncSnapshot.hasError) {
-    // There was an error undelegating
-    return (
-      <div className="staking-modal-unstaking-actions-area error">{child}</div>
-    );
-  }
-
-  if (
-    asyncSnapshot.hasData &&
-    (asyncSnapshot.data?.status ?? 0) >=
-      PerformWriteTransactionStatus.receiptRetrieved
-  ) {
-    // Undelegation succeeded
-    return (
-      <div className="staking-modal-unstaking-actions-area succeeded">
-        {child}
-      </div>
-    );
-  }
-
-  if (
-    asyncSnapshot.asyncState === AsyncState.waiting ||
-    asyncSnapshot.asyncState == AsyncState.active
-  ) {
-    // We are waiting for the transaction to be completed
-    return (
-      <div className="staking-modal-unstaking-actions-area waiting">
-        {child}
-      </div>
-    );
-  }
-
-  return <div className="staking-modal-unstaking-actions-area">{child}</div>;
-};
-
-const UnstakingStatus: React.FC = () => {
-  const asyncSnapshot = React.useContext(UndelegateAsyncSnapshotContext);
-  if (asyncSnapshot.hasError) {
-    // There was an error undelegating
-    return (
-      <div>
-        <Text text="Undelegation Failed" />
-      </div>
-    );
-  }
-
-  if (
-    asyncSnapshot.hasData &&
-    (asyncSnapshot.data?.status ?? 0) >=
-      PerformWriteTransactionStatus.receiptRetrieved
-  ) {
-    // Undelegation succeeded
-    return (
-      <div>
-        <Text text="Undelegation Successful" />
-      </div>
-    );
-  }
-
-  if (
-    asyncSnapshot.asyncState === AsyncState.waiting ||
-    asyncSnapshot.asyncState == AsyncState.active
-  ) {
-    // We are waiting for the transaction to be completed
-    return (
-      <div>
-        <Text text="Undelegating..." />
-      </div>
-    );
-  }
-
-  return <div>&nbsp;</div>;
 };
 
 const UnstakingButton: React.FC = () => {
@@ -128,11 +83,17 @@ const UnstakingButton: React.FC = () => {
   const stakeTableContract = React.useContext(StakeTableContractContext);
   const confirmedValidator = React.useContext(ConfirmedValidatorContext);
   const stakingAmount = React.useContext(StakingAmountContext);
+  const setStakingAmount = React.useContext(SetStakingAmountContext);
   const currentStake = React.useContext(CurrentStakeToValidatorContext) ?? 0n;
   const validatorAddress = confirmedValidator;
   const asyncSnapshot = React.useContext(UndelegateAsyncSnapshotContext);
-  const historyControls = React.useContext(StakingModalHistoryControlsContext);
+  const setL1Timestamp = React.useContext(SetL1RefreshTimestampContext);
   const close = React.useContext(StakingModalCloseContext);
+  const setUndelegationAsyncIterable = React.useContext(
+    SetUndelegationAsyncIterableContext,
+  );
+  const historyControls = React.useContext(StakingModalHistoryControlsContext);
+
   const stakingAmountValue = stakingAmount?.value ?? 0n;
   const debounceGuard = React.useRef(false);
 
@@ -141,15 +102,39 @@ const UnstakingButton: React.FC = () => {
       if (debounceGuard.current) {
         return;
       }
+
       if (!l1Methods || !stakeTableContract || !validatorAddress) {
         return;
       }
 
-      historyControls.push(
-        new ValidatorConfirmedUndelegateConfirm(validatorAddress),
+      debounceGuard.current = true;
+      historyControls.back();
+      setUndelegationAsyncIterable(
+        performUndelegation(
+          l1Methods,
+          stakeTableContract,
+          validatorAddress,
+          stakingAmountValue,
+          (err) => {
+            if (!err) {
+              setStakingAmount(null);
+            }
+
+            setL1Timestamp(new Date());
+          },
+        ),
       );
     },
-    [l1Methods, stakeTableContract, validatorAddress, historyControls],
+    [
+      l1Methods,
+      stakeTableContract,
+      validatorAddress,
+      stakingAmountValue,
+      historyControls,
+      setL1Timestamp,
+      setStakingAmount,
+      setUndelegationAsyncIterable,
+    ],
   );
 
   // Reset the debounceGuard should the conditions be right.
@@ -165,7 +150,7 @@ const UnstakingButton: React.FC = () => {
     debounceGuard.current = false;
   }, [asyncSnapshot]);
 
-  const ButtonComponent = asyncSnapshot.hasError ? RetryButton : NormalButton;
+  const ButtonComponent = NormalButton;
 
   if (
     // If the Contracts are not set
@@ -219,23 +204,7 @@ const NormalButton: React.FC<ButtonProps> = ({
       onClick={onClick}
       {...rest}
     >
-      <Text text="Undelegate" />
-    </ButtonLarge>
-  );
-};
-
-const RetryButton: React.FC<ButtonProps> = ({
-  onClick,
-  className,
-  ...rest
-}) => {
-  return (
-    <ButtonLarge
-      className={addClassToClassName(className, 'btn-undelegate')}
-      onClick={onClick}
-      {...rest}
-    >
-      <Text text="Retry" />
+      <Text text="Yes, I'm sure" />
     </ButtonLarge>
   );
 };
