@@ -1,1 +1,0 @@
-import{j as s}from"./iframe-DVElLztL.js";import{a as r}from"./higher_order-D3ayJwRx.js";const a=e=>s.jsx("hr",{...e,className:r(e.className,"divider")});try{a.displayName="Divider",a.__docgenInfo={description:"",displayName:"Divider",props:{className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}}}}}catch{}export{a as D};
