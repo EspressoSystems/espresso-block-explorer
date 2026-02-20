@@ -38,24 +38,22 @@ export const UndelegationConfirmContent: React.FC = () => {
       </StakingHeader>
       <StakingContent className="undelegation-confirm">
         <strong className="undelegate-confirm-title">
-          <Text text="You are about to undelegate" />
+          <Text text="Are you sure you want to undelegate?" />
         </strong>
         <ol>
           <div>
             <li>
-              <Text text="7-day unbonding period" />
-              <br />
-              <Text text="(no rewards during this period)" />
+              <Text text="You'll stop accuring staking rewards." />
             </li>
           </div>
           <div>
             <li>
-              <Text text="Undelegating stops staking rewards" />
+              <Text text="Your funds unlock after a 7-day unbonding period." />
             </li>
           </div>
           <div>
             <li>
-              <Text text="You may lose eligibility for the Foundation bonus staking incentives (up to 420%)." />
+              <Text text="Bonus staking incentives may no longer apply (up to 420%)." />
             </li>
           </div>
         </ol>
@@ -69,8 +67,11 @@ const UnstakingActionsArea: React.FC = () => {
   const historyControls = React.useContext(StakingModalHistoryControlsContext);
   return (
     <div className="undelegation-confirm-actions">
+      <p>
+        <Text text="Press 'No' below to stay delegated and ensure uninterrupted rewards." />
+      </p>
       <ButtonLarge onClick={historyControls.back}>
-        <Text text="No, take me back" />
+        <Text text="No" />
       </ButtonLarge>
       <UnstakingButton />
     </div>

@@ -1,5 +1,9 @@
 .undelegation-confirm {
+  color: var(--color--brown--text--darker);
   background: var(--color--brown--0);
+  font-family: 'PPNeueMontreal', sans-serif;
+  font-size: 18px;
+  line-height: 28px;
 }
 
 .undelegate-confirm-title {
@@ -7,13 +11,12 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  height: 100px;
-  padding: 16px 8px;
+  padding: 60px 24px;
   text-align: center;
-  font-size: 18px;
   color: var(--color--undesign--red--1);
-  line-height: 28px;
   font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
 }
 
 .undelegation-confirm > ol {
@@ -28,7 +31,7 @@
 
 .undelegation-confirm > ol > div {
   padding-inline-start: 50px;
-  border-color: var(--color--brown--3--alpha-48);
+  border-color: var(--color--brown--3--alpha-42);
   border-width: 0;
   border-bottom-width: 1px;
   border-style: solid;
@@ -36,7 +39,6 @@
 
 .undelegation-confirm > ol li {
   padding: 18px 8px;
-  color: var(--color--brown--text--darker);
 }
 
 .undelegation-confirm > ol > div:nth-last-child(1) {
@@ -47,18 +49,26 @@
 }
 
 .undelegation-confirm > ol {
-  margin-block-end: 20px;
+  margin-block-end: 60px;
 }
 
 .undelegation-confirm-actions {
   display: flex;
-  padding: 16px 8px;
+  padding: 24px;
   flex-direction: column;
   gap: 8px;
 }
 
 .undelegation-confirm-actions > .bbtn {
   --button-base--default--height: 43px;
+  --button-base--default--font-size: 16px;
+  --button-base--default--line-height: 16px;
+}
+
+.undelegation-confirm-actions > p {
+  margin: 0;
+  margin-block-end: 24px;
+  text-align: center;
 }
 
 .undelegation-confirm-actions > .bbtn.btn-undelegate {
@@ -73,4 +83,26 @@
   --button-base--hovered--foreground-color: var(--color--undesign--red--1);
   --button-base--pressed--border-color: transparent;
   --button-base--pressed--background-color: transparent;
+}
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 834px) {
+  .undelegate-confirm-title {
+    padding: 24px;
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .undelegation-confirm {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .undelegation-confirm > ol {
+    margin-block-end: 20px;
+  }
+}
+
+@media screen and (max-width: 320px) {
 }
