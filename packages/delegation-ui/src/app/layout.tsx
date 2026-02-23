@@ -67,9 +67,6 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <Head>
-        <link rel="canonical" href="https://claim.espresso.foundation/stake/" />
-      </Head>
       <body>
         <LayoutClientComponent env={env}>{children}</LayoutClientComponent>
       </body>
