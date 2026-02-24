@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   Environment,
   EnvironmentBanner,
+  ProofOfStakeReleasedContext,
   ProvideCappuccinoHotShotQueryServiceAPIContext,
   ProvideCappuccinoNodeValidatorServiceAPIContext,
   ProvideDerivedDateTimeFormatters,
@@ -71,40 +72,42 @@ export default function LayoutClientComponent({
 
   return (
     <EnvironmentProvider env={env}>
-      <ProvideNavigatorLanguage>
-        <ProvideDerivedNumberFormatters>
-          <ProvideDerivedDateTimeFormatters>
-            <ProvideTickEverySecond>
-              <ProvideCappuccinoNodeValidatorServiceAPIContext>
-                <ProvideCappuccinoHotShotQueryServiceAPIContext>
-                  <ProvideL1ValidatorServiceAPIContext>
-                    <WagmiProvider config={rainbowKitWagmiConfig}>
-                      <QueryClientProvider client={queryClient}>
-                        <RainbowKitProvider>
-                          <RainbowKitContextInjector>
-                            <ProvideL1Methods>
-                              <ProvideESPTokenContract>
-                                <ProvideStakeTableV2Contract>
-                                  <ProvideRewardClaimContract>
-                                    <ProvideLightClientV2Contract>
-                                      <EnvironmentBanner />
-                                      {children}
-                                    </ProvideLightClientV2Contract>
-                                  </ProvideRewardClaimContract>
-                                </ProvideStakeTableV2Contract>
-                              </ProvideESPTokenContract>
-                            </ProvideL1Methods>
-                          </RainbowKitContextInjector>
-                        </RainbowKitProvider>
-                      </QueryClientProvider>
-                    </WagmiProvider>
-                  </ProvideL1ValidatorServiceAPIContext>
-                </ProvideCappuccinoHotShotQueryServiceAPIContext>
-              </ProvideCappuccinoNodeValidatorServiceAPIContext>
-            </ProvideTickEverySecond>
-          </ProvideDerivedDateTimeFormatters>
-        </ProvideDerivedNumberFormatters>
-      </ProvideNavigatorLanguage>
+      <ProofOfStakeReleasedContext.Provider value={env.proof_of_stake_released}>
+        <ProvideNavigatorLanguage>
+          <ProvideDerivedNumberFormatters>
+            <ProvideDerivedDateTimeFormatters>
+              <ProvideTickEverySecond>
+                <ProvideCappuccinoNodeValidatorServiceAPIContext>
+                  <ProvideCappuccinoHotShotQueryServiceAPIContext>
+                    <ProvideL1ValidatorServiceAPIContext>
+                      <WagmiProvider config={rainbowKitWagmiConfig}>
+                        <QueryClientProvider client={queryClient}>
+                          <RainbowKitProvider>
+                            <RainbowKitContextInjector>
+                              <ProvideL1Methods>
+                                <ProvideESPTokenContract>
+                                  <ProvideStakeTableV2Contract>
+                                    <ProvideRewardClaimContract>
+                                      <ProvideLightClientV2Contract>
+                                        <EnvironmentBanner />
+                                        {children}
+                                      </ProvideLightClientV2Contract>
+                                    </ProvideRewardClaimContract>
+                                  </ProvideStakeTableV2Contract>
+                                </ProvideESPTokenContract>
+                              </ProvideL1Methods>
+                            </RainbowKitContextInjector>
+                          </RainbowKitProvider>
+                        </QueryClientProvider>
+                      </WagmiProvider>
+                    </ProvideL1ValidatorServiceAPIContext>
+                  </ProvideCappuccinoHotShotQueryServiceAPIContext>
+                </ProvideCappuccinoNodeValidatorServiceAPIContext>
+              </ProvideTickEverySecond>
+            </ProvideDerivedDateTimeFormatters>
+          </ProvideDerivedNumberFormatters>
+        </ProvideNavigatorLanguage>
+      </ProofOfStakeReleasedContext.Provider>
     </EnvironmentProvider>
   );
 }

@@ -18,6 +18,7 @@ describe('Block Explorer/Components/Links/Layout', () => {
             '0x0000000000000000000000000000000000000000',
           walletconnect_project_id: null,
           rpc_urls: null,
+          proof_of_stake_released: false,
         }}
       >
         <div />

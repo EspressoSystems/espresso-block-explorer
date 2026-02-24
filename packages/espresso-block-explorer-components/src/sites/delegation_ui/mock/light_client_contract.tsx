@@ -29,7 +29,7 @@ export class MockLightClientContractState implements MockContractStorage {
   constructor(
     public readonly contractAddress: `0x${string}`,
     public readonly finalizedState: LightClientState,
-  ) { }
+  ) {}
 
   public applyTransaction(
     tx: UnderlyingTransaction,
@@ -211,7 +211,7 @@ export class MockLightClientV2ContractImpl implements LightClientV2Contract {
   }
 
   async getVersion(): Promise<readonly [number, number, number]> {
-    throw new UnimplementedError();
+    return [2, 0, 0];
   }
 
   async lagOverEscapeHatchThreshold(): Promise<boolean> {
@@ -244,7 +244,7 @@ function useMockLightClientContractState(
     new MockLightClientContractState(
       initialState?.contractAddress ?? contractAddress,
       initialState?.finalizedState ??
-      new LightClientState(0n, 0n, new ScalarField(0n)),
+        new LightClientState(0n, 0n, new ScalarField(0n)),
     ),
   );
 
@@ -278,7 +278,7 @@ export const MockLightClientV2Contract: React.FC<React.PropsWithChildren> = ({
 
   React.useEffect(() => {
     contract.setAccountAddress(accountAddress);
-    return () => { };
+    return () => {};
   }, [contract, accountAddress]);
 
   if (!(l1Methods instanceof MockL1MethodsImpl)) {

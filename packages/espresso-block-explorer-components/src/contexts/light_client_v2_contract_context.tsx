@@ -54,18 +54,18 @@ const ProvideLightClientV2ContractUtilizingWagmi: React.FC<
   const stakeTable = !espressoConfig?.lightClientContractAddress
     ? null
     : new LightClientV2Remote(
-      config,
-      config.chains[0].id,
-      espressoConfig.lightClientContractAddress,
-    );
+        config,
+        config.chains[0].id,
+        espressoConfig.lightClientContractAddress,
+      );
 
   const stakeTableGasEstimator = !espressoConfig?.lightClientContractAddress
     ? null
     : new LightClientV2ContractGasEstimatorRemote(
-      config,
-      config.chains[0].id,
-      espressoConfig.lightClientContractAddress,
-    );
+        config,
+        config.chains[0].id,
+        espressoConfig.lightClientContractAddress,
+      );
 
   return (
     <LightClientContractContext.Provider value={stakeTable}>
