@@ -41,9 +41,10 @@ export const ProvideTotalSupplyFromContractCall: React.FC<
   React.useContext(L1RefreshTimestampContext);
   const espTokenContract = React.useContext(ESPTokenContractContext);
 
-  const promise = !espTokenContract
-    ? neverPromise
-    : espTokenContract.totalSupply();
+  const promise =
+    !espTokenContract || typeof window === 'undefined'
+      ? neverPromise
+      : espTokenContract.totalSupply();
 
   return (
     <PromiseResolver promise={promise}>

@@ -21,9 +21,10 @@ export const RetrieveBlocksPerEpoch: React.FC<React.PropsWithChildren> = ({
 }) => {
   const lightClientV2 = React.useContext(LightClientV2ContractContext);
 
-  const promise = !lightClientV2
-    ? neverPromise
-    : lightClientV2.blocksPerEpoch();
+  const promise =
+    !lightClientV2 || typeof window === 'undefined'
+      ? neverPromise
+      : lightClientV2.blocksPerEpoch();
 
   return (
     <PromiseResolver promise={promise}>
