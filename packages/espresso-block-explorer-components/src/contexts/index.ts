@@ -16,6 +16,7 @@ export * from './loading_provider';
 export * from './locale_provider';
 export * from './now_provider';
 export * from './number_formatters_provider';
+export * from './proof_of_stake_released_context';
 export * from './reward_claim_contract_context';
 export * from './stake_table_contract_context';
 export * from './stake_table_v2_contract_context';

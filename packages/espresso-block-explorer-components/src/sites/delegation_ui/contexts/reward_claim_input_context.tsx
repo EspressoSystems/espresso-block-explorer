@@ -2,6 +2,7 @@ import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { DataContext } from '@/contexts/data_provider';
+import { ProofOfStakeReleasedContext } from '@/contexts/proof_of_stake_released_context';
 import { neverPromise } from '@/functional/functional_async';
 import { HeightAndAddress } from '@/service/hotshot_query_service/cappuccino/reward_state/height_and_address';
 import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
@@ -31,13 +32,17 @@ export const RetrieveEspressoRewardClaimInput: React.FC<
   const hotShotQueryService = React.useContext(
     CappuccinoHotShotQueryServiceAPIContext,
   );
+  const proofOfStakeReleased = React.useContext(ProofOfStakeReleasedContext);
 
   const finalizedStateBlockHeight =
     lightClientFinalizedState?.blockHeight ?? 0n;
 
   const promise = React.useMemo(
     () =>
-      !accountAddress || !hotShotQueryService || !finalizedStateBlockHeight
+      !proofOfStakeReleased ||
+      !accountAddress ||
+      !hotShotQueryService ||
+      !finalizedStateBlockHeight
         ? neverPromise
         : hotShotQueryService.rewardState.getRewardClaimInput(
             new HeightAndAddress(

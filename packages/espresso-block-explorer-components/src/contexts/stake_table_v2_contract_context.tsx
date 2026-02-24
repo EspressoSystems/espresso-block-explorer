@@ -54,18 +54,18 @@ const ProvideStakeTableV2ContractUtilizingWagmi: React.FC<
   const stakeTable = !espressoConfig?.stakeTableContractAddress
     ? null
     : new StakeTableV2Remote(
-      config,
-      config.chains[0].id,
-      espressoConfig.stakeTableContractAddress,
-    );
+        config,
+        config.chains[0].id,
+        espressoConfig.stakeTableContractAddress,
+      );
 
   const stakeTableGasEstimator = !espressoConfig?.stakeTableContractAddress
     ? null
     : new StakeTableV2ContractGasEstimatorRemote(
-      config,
-      config.chains[0].id,
-      espressoConfig.stakeTableContractAddress,
-    );
+        config,
+        config.chains[0].id,
+        espressoConfig.stakeTableContractAddress,
+      );
 
   return (
     <StakeTableContractContext.Provider value={stakeTable}>

@@ -27,6 +27,7 @@ describe('Reader From ENV', () => {
       contract_address_light_client: null,
       walletconnect_project_id: null,
       rpc_urls: null,
+      proof_of_stake_released: false,
     });
 
     process.env.ENVIRONMENT_NAME = 'milk';
@@ -38,6 +39,7 @@ describe('Reader From ENV', () => {
       contract_address_light_client: null,
       walletconnect_project_id: null,
       rpc_urls: null,
+      proof_of_stake_released: false,
     });
 
     process.env.ENVIRONMENT_NAME = 'water';
@@ -49,6 +51,7 @@ describe('Reader From ENV', () => {
       contract_address_light_client: null,
       walletconnect_project_id: null,
       rpc_urls: null,
+      proof_of_stake_released: false,
     });
 
     process.env.ENVIRONMENT_NAME = 'mainnet';
@@ -60,6 +63,7 @@ describe('Reader From ENV', () => {
       contract_address_light_client: null,
       walletconnect_project_id: null,
       rpc_urls: null,
+      proof_of_stake_released: false,
     });
 
     process.env.CONTRACT_ADDRESS_STAKE_TABLE = '1234';
@@ -74,6 +78,7 @@ describe('Reader From ENV', () => {
       contract_address_light_client: null,
       walletconnect_project_id: null,
       rpc_urls: null,
+      proof_of_stake_released: false,
     });
 
     process.env.CONTRACT_ADDRESS_STAKE_TABLE = '0x1234';
@@ -88,6 +93,7 @@ describe('Reader From ENV', () => {
       contract_address_light_client: '0x3456',
       walletconnect_project_id: null,
       rpc_urls: null,
+      proof_of_stake_released: false,
     });
   });
 
@@ -96,7 +102,10 @@ describe('Reader From ENV', () => {
     process.env.RPC_URLS = 'https://rpc1.example.com,https://rpc2.example.com';
 
     const result = readFromEnv();
-    expect(result.rpc_urls).toEqual(['https://rpc1.example.com', 'https://rpc2.example.com']);
+    expect(result.rpc_urls).toEqual([
+      'https://rpc1.example.com',
+      'https://rpc2.example.com',
+    ]);
   });
 
   it('should handle empty RPC_URLS', () => {
@@ -112,7 +121,11 @@ describe('Reader From ENV', () => {
     process.env.RPC_URLS = 'https://rpc1.com,https://rpc2.com,https://rpc3.com';
 
     const result = readFromEnv();
-    expect(result.rpc_urls).toEqual(['https://rpc1.com', 'https://rpc2.com', 'https://rpc3.com']);
+    expect(result.rpc_urls).toEqual([
+      'https://rpc1.com',
+      'https://rpc2.com',
+      'https://rpc3.com',
+    ]);
   });
 });
 
@@ -129,17 +142,30 @@ describe('parseRPCURLs', () => {
   });
 
   it('should parse multiple URLs', () => {
-    const result = parseRPCURLs('https://rpc1.example.com,https://rpc2.example.com,https://rpc3.example.com');
-    expect(result).toEqual(['https://rpc1.example.com', 'https://rpc2.example.com', 'https://rpc3.example.com']);
+    const result = parseRPCURLs(
+      'https://rpc1.example.com,https://rpc2.example.com,https://rpc3.example.com',
+    );
+    expect(result).toEqual([
+      'https://rpc1.example.com',
+      'https://rpc2.example.com',
+      'https://rpc3.example.com',
+    ]);
   });
 
   it('should trim whitespace from URLs', () => {
-    const result = parseRPCURLs('  https://rpc1.example.com  ,  https://rpc2.example.com  ');
-    expect(result).toEqual(['https://rpc1.example.com', 'https://rpc2.example.com']);
+    const result = parseRPCURLs(
+      '  https://rpc1.example.com  ,  https://rpc2.example.com  ',
+    );
+    expect(result).toEqual([
+      'https://rpc1.example.com',
+      'https://rpc2.example.com',
+    ]);
   });
 
   it('should filter out invalid URLs', () => {
-    const result = parseRPCURLs('https://valid.com,invalid-url,https://another-valid.com');
+    const result = parseRPCURLs(
+      'https://valid.com,invalid-url,https://another-valid.com',
+    );
     expect(result).toEqual(['https://valid.com', 'https://another-valid.com']);
   });
 
@@ -159,17 +185,29 @@ describe('parseRPCURLs', () => {
   });
 
   it('should handle URLs with ports', () => {
-    const result = parseRPCURLs('https://rpc.example.com:8545,http://localhost:8555');
-    expect(result).toEqual(['https://rpc.example.com:8545', 'http://localhost:8555']);
+    const result = parseRPCURLs(
+      'https://rpc.example.com:8545,http://localhost:8555',
+    );
+    expect(result).toEqual([
+      'https://rpc.example.com:8545',
+      'http://localhost:8555',
+    ]);
   });
 
   it('should handle URLs with paths', () => {
-    const result = parseRPCURLs('https://rpc.example.com/v1/mainnet,https://rpc.example.com/v2/mainnet');
-    expect(result).toEqual(['https://rpc.example.com/v1/mainnet', 'https://rpc.example.com/v2/mainnet']);
+    const result = parseRPCURLs(
+      'https://rpc.example.com/v1/mainnet,https://rpc.example.com/v2/mainnet',
+    );
+    expect(result).toEqual([
+      'https://rpc.example.com/v1/mainnet',
+      'https://rpc.example.com/v2/mainnet',
+    ]);
   });
 
   it('should handle mixed valid and invalid URLs with whitespace', () => {
-    const result = parseRPCURLs(' https://valid1.com , not-valid , https://valid2.com , , also-invalid ');
+    const result = parseRPCURLs(
+      ' https://valid1.com , not-valid , https://valid2.com , , also-invalid ',
+    );
     expect(result).toEqual(['https://valid1.com', 'https://valid2.com']);
   });
 });

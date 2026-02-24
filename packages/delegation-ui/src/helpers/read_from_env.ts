@@ -81,8 +81,16 @@ export interface EnvironmentConfig {
   contract_address_light_client: null | `0x${string}`;
   walletconnect_project_id: null | string;
   rpc_urls: null | string[];
+  proof_of_stake_released: boolean;
 }
 
+function booleanEnv(input: unknown): boolean {
+  if (typeof input !== 'string') {
+    return false;
+  }
+
+  return Boolean(input.trim());
+}
 /**
  * readFromEnv reads the environment variables and returns an object
  * containing the environment and contract addresses.
@@ -104,5 +112,6 @@ export function readFromEnv() {
     ),
     walletconnect_project_id: process.env.WALLETCONNECT_PROJECT_ID || null,
     rpc_urls: parseRPCURLs(process.env.RPC_URLS),
+    proof_of_stake_released: booleanEnv(process.env.PROOF_OF_STAKE_RELEASED),
   } as const satisfies EnvironmentConfig;
 }
