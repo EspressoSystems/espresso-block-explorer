@@ -6,6 +6,10 @@ import { neverPromise } from '@/functional/functional_async';
 import React from 'react';
 import { L1RefreshTimestampContext } from './l1_refresh_timestamp_context';
 
+/**
+ * LightClientFinalizedStateContext is a context holding the LightClientState
+ * that is currently provided for the rest of the React app.
+ */
 export const LightClientFinalizedStateContext =
   React.createContext<null | LightClientState>(null);
 
@@ -16,9 +20,10 @@ export const RetrieveLightClientFinalizedState: React.FC<
   React.useContext(L1RefreshTimestampContext);
   const lightClientContract = React.useContext(LightClientContractContext);
 
-  const finalizedState = !lightClientContract
-    ? neverPromise
-    : lightClientContract.finalizedState();
+  const finalizedState =
+    !lightClientContract || typeof window === 'undefined'
+      ? neverPromise
+      : lightClientContract.finalizedState();
 
   return (
     <PromiseResolver promise={finalizedState}>
