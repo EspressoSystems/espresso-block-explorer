@@ -1,9 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-
-// Force dynamic rendering to ensure environment variables are read at runtime
-export const dynamic = 'force-dynamic';
-// We allow for the contents to be cached for 24 hours.
-export const revalidate = 86400;
+import { cacheLife, cacheTag } from 'next/cache';
+import { connection, NextRequest, NextResponse } from 'next/server';
 
 interface ConfigFileResponse {
   hotshot_query_service_url: null | string;
@@ -43,6 +39,17 @@ function validateURL(urlString: undefined | string): null | string {
  * the service with the path `/config.json`.
  */
 
+async function getConfigResponse(): Promise<ConfigFileResponse> {
+  'use cache';
+  cacheLife('max');
+  cacheTag('config.json');
+
+  return {
+    hotshot_query_service_url: validateURL(process.env.QUERY_SERVICE_URI),
+    node_validator_service_url: validateURL(process.env.NODE_VALIDATOR_URI),
+    l1_validators_service_url: validateURL(process.env.STAKING_UI_SERVICE_URI),
+  };
+}
 /**
  * GET represents a GET request for the /config.json endpoint.
  * It returns a JSON response containing the configuration
@@ -52,16 +59,15 @@ export function GET(
   request: NextRequest,
 ): Promise<NextResponse<ConfigFileResponse>>;
 export async function GET(): Promise<NextResponse<ConfigFileResponse>> {
-  return NextResponse.json(
-    {
-      hotshot_query_service_url: validateURL(process.env.QUERY_SERVICE_URI),
-      node_validator_service_url: validateURL(process.env.NODE_VALIDATOR_URI),
-      l1_validators_service_url: validateURL(process.env.STAKING_UI_SERVICE_URI),
+  // connection waits for an actual user connection before continuing.
+  // This is done in order to ensure that we are actually evaluating the
+  // Environment variables at runtime instead  of at build time.
+  await connection();
+
+  const config = await getConfigResponse();
+  return NextResponse.json(config, {
+    headers: {
+      'Cache-Control': 'max-age=86400, s-maxage=86400, public',
     },
-    {
-      headers: {
-        'Cache-Control': 'max-age=86400, s-maxage=86400, public',
-      },
-    },
-  );
+  });
 }

@@ -8,6 +8,8 @@ const nextConfig = {
 
   // Enable standalone output for smaller Docker images
   output: 'standalone',
+
+  cacheComponents: true,
 };
 
 export default nextConfig;

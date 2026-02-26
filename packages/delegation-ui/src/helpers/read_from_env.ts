@@ -1,3 +1,5 @@
+import { cacheLife, cacheTag } from 'next/cache';
+
 /**
  * determineEnvironment determines the environment based on the
  * ENVIRONMENT_NAME environment variable.
@@ -73,6 +75,10 @@ export function parseRPCURLs(envValue: string | undefined): null | string[] {
   return urls;
 }
 
+/**
+ * EnvironmentConfig represents the configuration of the Delegation UI that
+ * is derived from Environment variables.
+ */
 export interface EnvironmentConfig {
   environment: string;
   contract_address_stake_table: null | `0x${string}`;
@@ -82,20 +88,64 @@ export interface EnvironmentConfig {
   walletconnect_project_id: null | string;
   rpc_urls: null | string[];
   proof_of_stake_released: boolean;
+  base_url: null | string;
+  base_path: null | string;
 }
 
+/**
+ * booleanEnv is an input validator / sanitizer that is utilized to ensure that
+ * the given string is a valid `boolean` value.
+ */
 function booleanEnv(input: unknown): boolean {
   if (typeof input !== 'string') {
     return false;
   }
 
-  return Boolean(input.trim());
+  const trimmed = input.trim();
+
+  switch (trimmed.toLowerCase()) {
+    // We explicitly handle the string "false" in order to ensure that
+    // this is interpretted as false.
+    case 'false':
+      return false;
+
+    // We explicitly handle the string "0" in order to ensure that this
+    // is interpretted as false.
+    case '0':
+      return false;
+
+    default:
+      return Boolean(input.trim());
+  }
 }
+
+/**
+ * urlEnv is an input validator / sanitizer that is utilized to ensure that
+ * environment variables are valid URL strings.
+ */
+function urlEnv(input: unknown): null | string {
+  if (typeof input !== 'string') {
+    return null;
+  }
+
+  const trimmed = input.trim();
+
+  if (!isValidURL(trimmed)) {
+    return null;
+  }
+
+  return trimmed;
+}
+
 /**
  * readFromEnv reads the environment variables and returns an object
  * containing the environment and contract addresses.
  */
-export function readFromEnv() {
+export async function readFromEnv() {
+  'use cache';
+  cacheTag('ENV');
+  cacheLife('max');
+
   return {
     environment: determineEnvironmentFromVariable(process.env.ENVIRONMENT_NAME),
     contract_address_stake_table: validateContractAddress(
@@ -113,5 +163,7 @@ export function readFromEnv() {
     walletconnect_project_id: process.env.WALLETCONNECT_PROJECT_ID || null,
     rpc_urls: parseRPCURLs(process.env.RPC_URLS),
     proof_of_stake_released: booleanEnv(process.env.PROOF_OF_STAKE_RELEASED),
+    base_url: urlEnv(process.env.BASE_URL) || null,
+    base_path: process.env.BASE_PATH || null,
   } as const satisfies EnvironmentConfig;
 }

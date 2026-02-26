@@ -16,10 +16,10 @@ describe('Reader From ENV', () => {
     process.env = originalEnv;
   });
 
-  it('should resolve environment from ENVIRONMENT_NAME', () => {
+  it('should resolve environment from ENVIRONMENT_NAME', async () => {
     process.env.ENVIRONMENT_NAME = 'decaf';
 
-    expect(readFromEnv()).to.deep.equal({
+    await expect(readFromEnv()).resolves.to.deep.equal({
       environment: Environment.decaf,
       contract_address_stake_table: null,
       contract_address_esp_token: null,
@@ -31,7 +31,7 @@ describe('Reader From ENV', () => {
     });
 
     process.env.ENVIRONMENT_NAME = 'milk';
-    expect(readFromEnv()).to.deep.equal({
+    await expect(readFromEnv()).resolves.to.deep.equal({
       environment: Environment.milk,
       contract_address_stake_table: null,
       contract_address_esp_token: null,
@@ -43,7 +43,7 @@ describe('Reader From ENV', () => {
     });
 
     process.env.ENVIRONMENT_NAME = 'water';
-    expect(readFromEnv()).to.deep.equal({
+    await expect(readFromEnv()).resolves.to.deep.equal({
       environment: Environment.water,
       contract_address_stake_table: null,
       contract_address_esp_token: null,
@@ -55,7 +55,7 @@ describe('Reader From ENV', () => {
     });
 
     process.env.ENVIRONMENT_NAME = 'mainnet';
-    expect(readFromEnv()).to.deep.equal({
+    await expect(readFromEnv()).resolves.to.deep.equal({
       environment: Environment.mainnet,
       contract_address_stake_table: null,
       contract_address_esp_token: null,
@@ -70,7 +70,7 @@ describe('Reader From ENV', () => {
     process.env.CONTRACT_ADDRESS_ESP_TOKEN = '5678';
     process.env.CONTRACT_ADDRESS_REWARD_CLAIM = '9012';
     process.env.CONTRACT_ADDRESS_LIGHT_CLIENT = '3456';
-    expect(readFromEnv()).to.deep.equal({
+    await expect(readFromEnv()).resolves.to.deep.equal({
       environment: Environment.mainnet,
       contract_address_stake_table: null,
       contract_address_esp_token: null,
@@ -85,7 +85,7 @@ describe('Reader From ENV', () => {
     process.env.CONTRACT_ADDRESS_ESP_TOKEN = '0x5678';
     process.env.CONTRACT_ADDRESS_REWARD_CLAIM = '0x9012';
     process.env.CONTRACT_ADDRESS_LIGHT_CLIENT = '0x3456';
-    expect(readFromEnv()).to.deep.equal({
+    await expect(readFromEnv()).resolves.to.deep.equal({
       environment: Environment.mainnet,
       contract_address_stake_table: '0x1234',
       contract_address_esp_token: '0x5678',
@@ -97,30 +97,30 @@ describe('Reader From ENV', () => {
     });
   });
 
-  it('should parse RPC_URLS environment variable', () => {
+  it('should parse RPC_URLS environment variable', async () => {
     process.env.ENVIRONMENT_NAME = 'water';
     process.env.RPC_URLS = 'https://rpc1.example.com,https://rpc2.example.com';
 
-    const result = readFromEnv();
+    const result = await readFromEnv();
     expect(result.rpc_urls).toEqual([
       'https://rpc1.example.com',
       'https://rpc2.example.com',
     ]);
   });
 
-  it('should handle empty RPC_URLS', () => {
+  it('should handle empty RPC_URLS', async () => {
     process.env.ENVIRONMENT_NAME = 'water';
     process.env.RPC_URLS = '';
 
-    const result = readFromEnv();
+    const result = await readFromEnv();
     expect(result.rpc_urls).toBeNull();
   });
 
-  it('should handle RPC_URLS with multiple fallbacks', () => {
+  it('should handle RPC_URLS with multiple fallbacks', async () => {
     process.env.ENVIRONMENT_NAME = 'mainnet';
     process.env.RPC_URLS = 'https://rpc1.com,https://rpc2.com,https://rpc3.com';
 
-    const result = readFromEnv();
+    const result = await readFromEnv();
     expect(result.rpc_urls).toEqual([
       'https://rpc1.com',
       'https://rpc2.com',
