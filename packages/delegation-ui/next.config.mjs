@@ -6,10 +6,9 @@ const nextConfig = {
   // https://github.com/vercel/next.js/issues/86099
   serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
 
-  // Enable standalone output for smaller Docker images
-  output: 'standalone',
-
-  cacheComponents: true,
+  // Export as fully static files served by nginx.
+  // Runtime configuration is injected via /config.json at container startup.
+  output: 'export',
 };
 
 export default nextConfig;

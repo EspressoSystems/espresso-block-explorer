@@ -1,25 +1,10 @@
 import { Environment } from 'espresso-block-explorer-components';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { parseRPCURLs, readFromEnv } from '../read_from_env';
+import { describe, expect, it } from 'vitest';
+import { parseConfigFromJSON, parseRPCURLs } from '../read_from_env';
 
-describe('Reader From ENV', () => {
-  const originalEnv = process.env;
-
-  beforeEach(() => {
-    // Reset process.env before each test
-    process.env = { ...originalEnv };
-    delete process.env.RPC_URLS;
-  });
-
-  afterEach(() => {
-    // Restore process.env after each test
-    process.env = originalEnv;
-  });
-
-  it('should resolve environment from ENVIRONMENT_NAME', async () => {
-    process.env.ENVIRONMENT_NAME = 'decaf';
-
-    await expect(readFromEnv()).resolves.to.deep.equal({
+describe('parseConfigFromJSON', () => {
+  it('should resolve environment from ENVIRONMENT_NAME', () => {
+    expect(parseConfigFromJSON({ ENVIRONMENT_NAME: 'decaf' })).to.deep.equal({
       environment: Environment.decaf,
       contract_address_stake_table: null,
       contract_address_esp_token: null,
@@ -28,10 +13,11 @@ describe('Reader From ENV', () => {
       walletconnect_project_id: null,
       rpc_urls: null,
       proof_of_stake_released: false,
+      base_url: null,
+      base_path: null,
     });
 
-    process.env.ENVIRONMENT_NAME = 'milk';
-    await expect(readFromEnv()).resolves.to.deep.equal({
+    expect(parseConfigFromJSON({ ENVIRONMENT_NAME: 'milk' })).to.deep.equal({
       environment: Environment.milk,
       contract_address_stake_table: null,
       contract_address_esp_token: null,
@@ -40,10 +26,11 @@ describe('Reader From ENV', () => {
       walletconnect_project_id: null,
       rpc_urls: null,
       proof_of_stake_released: false,
+      base_url: null,
+      base_path: null,
     });
 
-    process.env.ENVIRONMENT_NAME = 'water';
-    await expect(readFromEnv()).resolves.to.deep.equal({
+    expect(parseConfigFromJSON({ ENVIRONMENT_NAME: 'water' })).to.deep.equal({
       environment: Environment.water,
       contract_address_stake_table: null,
       contract_address_esp_token: null,
@@ -52,10 +39,34 @@ describe('Reader From ENV', () => {
       walletconnect_project_id: null,
       rpc_urls: null,
       proof_of_stake_released: false,
+      base_url: null,
+      base_path: null,
     });
 
-    process.env.ENVIRONMENT_NAME = 'mainnet';
-    await expect(readFromEnv()).resolves.to.deep.equal({
+    expect(parseConfigFromJSON({ ENVIRONMENT_NAME: 'mainnet' })).to.deep.equal(
+      {
+        environment: Environment.mainnet,
+        contract_address_stake_table: null,
+        contract_address_esp_token: null,
+        contract_address_reward_claim: null,
+        contract_address_light_client: null,
+        walletconnect_project_id: null,
+        rpc_urls: null,
+        proof_of_stake_released: false,
+        base_url: null,
+        base_path: null,
+      },
+    );
+
+    expect(
+      parseConfigFromJSON({
+        ENVIRONMENT_NAME: 'mainnet',
+        CONTRACT_ADDRESS_STAKE_TABLE: '1234',
+        CONTRACT_ADDRESS_ESP_TOKEN: '5678',
+        CONTRACT_ADDRESS_REWARD_CLAIM: '9012',
+        CONTRACT_ADDRESS_LIGHT_CLIENT: '3456',
+      }),
+    ).to.deep.equal({
       environment: Environment.mainnet,
       contract_address_stake_table: null,
       contract_address_esp_token: null,
@@ -64,28 +75,19 @@ describe('Reader From ENV', () => {
       walletconnect_project_id: null,
       rpc_urls: null,
       proof_of_stake_released: false,
+      base_url: null,
+      base_path: null,
     });
 
-    process.env.CONTRACT_ADDRESS_STAKE_TABLE = '1234';
-    process.env.CONTRACT_ADDRESS_ESP_TOKEN = '5678';
-    process.env.CONTRACT_ADDRESS_REWARD_CLAIM = '9012';
-    process.env.CONTRACT_ADDRESS_LIGHT_CLIENT = '3456';
-    await expect(readFromEnv()).resolves.to.deep.equal({
-      environment: Environment.mainnet,
-      contract_address_stake_table: null,
-      contract_address_esp_token: null,
-      contract_address_reward_claim: null,
-      contract_address_light_client: null,
-      walletconnect_project_id: null,
-      rpc_urls: null,
-      proof_of_stake_released: false,
-    });
-
-    process.env.CONTRACT_ADDRESS_STAKE_TABLE = '0x1234';
-    process.env.CONTRACT_ADDRESS_ESP_TOKEN = '0x5678';
-    process.env.CONTRACT_ADDRESS_REWARD_CLAIM = '0x9012';
-    process.env.CONTRACT_ADDRESS_LIGHT_CLIENT = '0x3456';
-    await expect(readFromEnv()).resolves.to.deep.equal({
+    expect(
+      parseConfigFromJSON({
+        ENVIRONMENT_NAME: 'mainnet',
+        CONTRACT_ADDRESS_STAKE_TABLE: '0x1234',
+        CONTRACT_ADDRESS_ESP_TOKEN: '0x5678',
+        CONTRACT_ADDRESS_REWARD_CLAIM: '0x9012',
+        CONTRACT_ADDRESS_LIGHT_CLIENT: '0x3456',
+      }),
+    ).to.deep.equal({
       environment: Environment.mainnet,
       contract_address_stake_table: '0x1234',
       contract_address_esp_token: '0x5678',
@@ -94,38 +96,51 @@ describe('Reader From ENV', () => {
       walletconnect_project_id: null,
       rpc_urls: null,
       proof_of_stake_released: false,
+      base_url: null,
+      base_path: null,
     });
   });
 
-  it('should parse RPC_URLS environment variable', async () => {
-    process.env.ENVIRONMENT_NAME = 'water';
-    process.env.RPC_URLS = 'https://rpc1.example.com,https://rpc2.example.com';
-
-    const result = await readFromEnv();
+  it('should parse RPC_URLS field', () => {
+    const result = parseConfigFromJSON({
+      ENVIRONMENT_NAME: 'water',
+      RPC_URLS: 'https://rpc1.example.com,https://rpc2.example.com',
+    });
     expect(result.rpc_urls).toEqual([
       'https://rpc1.example.com',
       'https://rpc2.example.com',
     ]);
   });
 
-  it('should handle empty RPC_URLS', async () => {
-    process.env.ENVIRONMENT_NAME = 'water';
-    process.env.RPC_URLS = '';
-
-    const result = await readFromEnv();
+  it('should handle empty RPC_URLS', () => {
+    const result = parseConfigFromJSON({ ENVIRONMENT_NAME: 'water', RPC_URLS: '' });
     expect(result.rpc_urls).toBeNull();
   });
 
-  it('should handle RPC_URLS with multiple fallbacks', async () => {
-    process.env.ENVIRONMENT_NAME = 'mainnet';
-    process.env.RPC_URLS = 'https://rpc1.com,https://rpc2.com,https://rpc3.com';
-
-    const result = await readFromEnv();
+  it('should handle RPC_URLS with multiple fallbacks', () => {
+    const result = parseConfigFromJSON({
+      ENVIRONMENT_NAME: 'mainnet',
+      RPC_URLS: 'https://rpc1.com,https://rpc2.com,https://rpc3.com',
+    });
     expect(result.rpc_urls).toEqual([
       'https://rpc1.com',
       'https://rpc2.com',
       'https://rpc3.com',
     ]);
+  });
+
+  it('should parse BASE_URL and BASE_PATH', () => {
+    const result = parseConfigFromJSON({
+      BASE_URL: 'https://staking.main.net.espresso.network',
+      BASE_PATH: '/staking/',
+    });
+    expect(result.base_url).toBe('https://staking.main.net.espresso.network');
+    expect(result.base_path).toBe('/staking/');
+  });
+
+  it('should reject invalid BASE_URL', () => {
+    const result = parseConfigFromJSON({ BASE_URL: 'not-a-url' });
+    expect(result.base_url).toBeNull();
   });
 });
 

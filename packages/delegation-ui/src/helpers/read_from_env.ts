@@ -1,5 +1,3 @@
-import { cacheLife, cacheTag } from 'next/cache';
-
 /**
  * determineEnvironment determines the environment based on the
  * ENVIRONMENT_NAME environment variable.
@@ -138,32 +136,46 @@ function urlEnv(input: unknown): null | string {
 }
 
 /**
- * readFromEnv reads the environment variables and returns an object
- * containing the environment and contract addresses.
+ * RawConfig represents the shape of the config.json file served to the client.
+ * All values are strings (as they originate from environment variables).
  */
-export async function readFromEnv() {
-  'use cache';
-  cacheTag('ENV');
-  cacheLife('max');
+export interface RawConfig {
+  ENVIRONMENT_NAME?: string;
+  CONTRACT_ADDRESS_STAKE_TABLE?: string;
+  CONTRACT_ADDRESS_ESP_TOKEN?: string;
+  CONTRACT_ADDRESS_REWARD_CLAIM?: string;
+  CONTRACT_ADDRESS_LIGHT_CLIENT?: string;
+  WALLETCONNECT_PROJECT_ID?: string;
+  RPC_URLS?: string;
+  PROOF_OF_STAKE_RELEASED?: string;
+  BASE_URL?: string;
+  BASE_PATH?: string;
+}
 
+/**
+ * parseConfigFromJSON parses a RawConfig object (as fetched from /config.json)
+ * into a typed EnvironmentConfig, applying the same validation logic that was
+ * previously applied when reading directly from process.env.
+ */
+export function parseConfigFromJSON(raw: RawConfig): EnvironmentConfig {
   return {
-    environment: determineEnvironmentFromVariable(process.env.ENVIRONMENT_NAME),
+    environment: determineEnvironmentFromVariable(raw.ENVIRONMENT_NAME),
     contract_address_stake_table: validateContractAddress(
-      process.env.CONTRACT_ADDRESS_STAKE_TABLE,
+      raw.CONTRACT_ADDRESS_STAKE_TABLE,
     ),
     contract_address_esp_token: validateContractAddress(
-      process.env.CONTRACT_ADDRESS_ESP_TOKEN,
+      raw.CONTRACT_ADDRESS_ESP_TOKEN,
     ),
     contract_address_reward_claim: validateContractAddress(
-      process.env.CONTRACT_ADDRESS_REWARD_CLAIM,
+      raw.CONTRACT_ADDRESS_REWARD_CLAIM,
     ),
     contract_address_light_client: validateContractAddress(
-      process.env.CONTRACT_ADDRESS_LIGHT_CLIENT,
+      raw.CONTRACT_ADDRESS_LIGHT_CLIENT,
     ),
-    walletconnect_project_id: process.env.WALLETCONNECT_PROJECT_ID || null,
-    rpc_urls: parseRPCURLs(process.env.RPC_URLS),
-    proof_of_stake_released: booleanEnv(process.env.PROOF_OF_STAKE_RELEASED),
-    base_url: urlEnv(process.env.BASE_URL) || null,
-    base_path: process.env.BASE_PATH || null,
+    walletconnect_project_id: raw.WALLETCONNECT_PROJECT_ID || null,
+    rpc_urls: parseRPCURLs(raw.RPC_URLS),
+    proof_of_stake_released: booleanEnv(raw.PROOF_OF_STAKE_RELEASED),
+    base_url: urlEnv(raw.BASE_URL) || null,
+    base_path: raw.BASE_PATH || null,
   } as const satisfies EnvironmentConfig;
 }

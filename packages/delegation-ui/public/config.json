@@ -1,0 +1,15 @@
+{
+  "hotshot_query_service_url": "https://query.decaf.testnet.espresso.network/v0/",
+  "node_validator_service_url": "wss://nv.decaf.testnet.espresso.network/v0/",
+  "l1_validators_service_url": "https://staking-api.decaf.testnet.espresso.network/v0/staking/",
+  "ENVIRONMENT_NAME": "decaf",
+  "CONTRACT_ADDRESS_STAKE_TABLE": "0x40304fbe94d5e7d1492dd90c53a2d63e8506a037",
+  "CONTRACT_ADDRESS_ESP_TOKEN": "0xb3e655a030e2e34a18b72757b40be086a8f43f3b",
+  "CONTRACT_ADDRESS_REWARD_CLAIM": "0xe81908E34dBb4BA01f27F8769264199727Be50c8",
+  "CONTRACT_ADDRESS_LIGHT_CLIENT": "0x303872bb82a191771321d4828888920100d0b3e4",
+  "WALLETCONNECT_PROJECT_ID": "e7b028f72467c489a6ad4617dda742e5",
+  "RPC_URLS": "",
+  "PROOF_OF_STAKE_RELEASED": "0xkekdafejadkflfjajdf",
+  "BASE_URL": "https://staking.decaf.testnet.espresso.network",
+  "BASE_PATH": "/"
+}

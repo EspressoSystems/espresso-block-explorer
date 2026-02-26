@@ -1,7 +1,7 @@
 'use client';
 
 import { EnvironmentProvider } from '@/helpers/environment';
-import { EnvironmentConfig } from '@/helpers/read_from_env';
+import { EnvironmentConfig, parseConfigFromJSON } from '@/helpers/read_from_env';
 import { getWagmiConfigForEnvironment } from '@/helpers/wagmi';
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -19,25 +19,42 @@ import {
 } from 'wagmi';
 
 /**
- * ProvideContextsFromEnvProps represents the types for the props that are
- * being passed to the ProvideContextsFromEnv.
+ * ProvideContextsFromEnv fetches /config.json on mount and provides all
+ * environment-derived contexts to its children.
+ *
+ * Returns null while the config is loading (a fast static file fetch),
+ * then renders the full provider tree once the config is available.
  */
-export interface ProvideContextsFromEnvProps extends React.PropsWithChildren {
-  env: EnvironmentConfig;
+export default function ProvideContextsFromEnv({
+  children,
+}: React.PropsWithChildren) {
+  const [env, setEnv] = React.useState<EnvironmentConfig | null>(null);
+
+  React.useEffect(() => {
+    fetch('/config.json')
+      .then((r) => r.json())
+      .then((data) => setEnv(parseConfigFromJSON(data)))
+      .catch((err) => {
+        console.error('Failed to load app config:', err);
+      });
+  }, []);
+
+  if (env === null) {
+    return null;
+  }
+
+  return <ProvideContextsWithEnv env={env}>{children}</ProvideContextsWithEnv>;
 }
 
 /**
- * ProvideContextsFromEnv is a client side component that will populate
- * initial contexts from information that has been provided by Environment
- * variables.
- *
- * These Environment variables should already have been resolved at this
- * point.
+ * ProvideContextsWithEnv sets up the Wagmi and RainbowKit providers once
+ * a valid EnvironmentConfig has been loaded. This component is only rendered
+ * after config is available, so the Wagmi config is never recreated.
  */
-export default function ProvideContextsFromEnv({
+function ProvideContextsWithEnv({
   env,
   children,
-}: ProvideContextsFromEnvProps) {
+}: { env: EnvironmentConfig } & React.PropsWithChildren) {
   const rawWagmiConfig = React.useMemo(
     () => getWagmiConfigForEnvironment(env.environment as Environment),
     [env.environment],

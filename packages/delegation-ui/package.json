@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node .next/standalone/packages/delegation-ui/server.js",
     "lint": "eslint src --fix",
     "test": "vitest run",
     "coverage": "vitest run --coverage"

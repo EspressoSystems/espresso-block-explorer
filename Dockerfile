@@ -96,9 +96,15 @@ CMD ["./block-explorer-init.sh"]
 # ============================================================================
 # Delegation UI Production Image
 # ============================================================================
-FROM base-production AS delegation-ui
+# Uses nginx to serve the fully static export — no Node.js at runtime.
+# Runtime configuration is injected by the entrypoint before nginx starts.
+FROM nginx:1-alpine AS delegation-ui
+
+# Install bash (for the init script) and tini (for proper signal handling).
+RUN apk add --no-cache bash tini
 
 # Delegation-UI specific environment variables
+ENV ENVIRONMENT_NAME="mainnet"
 ENV STAKING_UI_SERVICE_URI=""
 ENV CONTRACT_ADDRESS_STAKE_TABLE=""
 ENV CONTRACT_ADDRESS_ESP_TOKEN=""
@@ -109,15 +115,17 @@ ENV RPC_URLS=""
 ENV BASE_URL=""
 ENV BASE_PATH=""
 
-# Copy standalone output (includes minimal node_modules)
-COPY --from=delegation-ui-builder /app/packages/delegation-ui/.next/standalone ./
+# Copy the static export into the nginx web root.
+COPY --from=delegation-ui-builder /app/packages/delegation-ui/out /usr/share/nginx/html
 
-# Copy static files
-COPY --from=delegation-ui-builder /app/packages/delegation-ui/.next/static ./packages/delegation-ui/.next/static
-COPY --from=delegation-ui-builder /app/packages/delegation-ui/public ./packages/delegation-ui/public
+# Replace the default nginx config with one that serves on port 3000.
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/delegation-ui-nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy and setup init script
-COPY docker/delegation-ui-init.sh ./delegation-ui-init.sh
-RUN chmod +x ./delegation-ui-init.sh
+COPY docker/delegation-ui-init.sh /delegation-ui-init.sh
+RUN chmod +x /delegation-ui-init.sh
 
-CMD ["./delegation-ui-init.sh"]
+EXPOSE 3000
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["/delegation-ui-init.sh"]
