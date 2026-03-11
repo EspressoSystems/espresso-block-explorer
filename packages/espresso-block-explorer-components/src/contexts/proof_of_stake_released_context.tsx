@@ -6,4 +6,4 @@ import React from 'react';
  *
  * This acts as a feature flag that prevents certain calls from completing.
  */
-export const ProofOfStakeReleasedContext = React.createContext<boolean>(false);
+export const ProofOfStakeReleasedContext = React.createContext<boolean>(true);
