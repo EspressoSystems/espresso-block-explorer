@@ -17,6 +17,8 @@ export function determineEnvironmentFromVariable(
       return 'milk';
     case 'fakeData':
       return 'fakeData';
+    case 'main':
+      return 'mainnet';
     case 'mainnet':
       return 'mainnet';
     default:
