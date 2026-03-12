@@ -1,6 +1,7 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import { addClassToClassName } from '@/components/higher_order';
 import Text from '@/components/text/text';
+import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { RewardClaimContractContext } from '@/contexts/reward_claim_contract_context';
 import React from 'react';
@@ -168,6 +169,7 @@ const ClaimRewardsButton: React.FC = () => {
   const l1Methods = React.useContext(L1MethodsContext);
   const rewardClaimContract = React.useContext(RewardClaimContractContext);
   const rewardClaimInput = React.useContext(EspressoRewardClaimInputContext);
+  const accountAddress = React.useContext(RainbowKitAccountAddressContext);
   const lifetimeClaimedRewards =
     React.useContext(LifetimeClaimedRewardsContext) ?? 0n;
   const asyncSnapshot = React.useContext(ClaimRewardsAsyncSnapshotContext);
@@ -186,7 +188,12 @@ const ClaimRewardsButton: React.FC = () => {
         return;
       }
 
-      if (!l1Methods || !rewardClaimContract || !rewardClaimInput) {
+      if (
+        !l1Methods ||
+        !rewardClaimContract ||
+        !rewardClaimInput ||
+        !accountAddress
+      ) {
         return;
       }
 
@@ -197,6 +204,7 @@ const ClaimRewardsButton: React.FC = () => {
           l1Methods,
           rewardClaimContract,
           rewardClaimInput,
+          accountAddress,
           () => {
             setL1Timestamp(new Date());
           },
@@ -207,6 +215,7 @@ const ClaimRewardsButton: React.FC = () => {
       l1Methods,
       rewardClaimContract,
       rewardClaimInput,
+      accountAddress,
       setL1Timestamp,
       setClaimRewardsAsyncIterable,
     ],
@@ -239,24 +248,27 @@ const ClaimRewardsButton: React.FC = () => {
 
   const ButtonComponent = asyncSnapshot.hasError ? RetryButton : NormalButton;
 
+  if (asyncSnapshot.hasError && isAlreadyClaimed) {
+    return (
+      <ButtonLarge onClick={close}>
+        <Text text="Close" />
+      </ButtonLarge>
+    );
+  }
+
   if (
     // If the Contracts are not set
     l1Methods === null ||
     rewardClaimContract === null ||
     // We do not have a reward claim input
-    rewardClaimInput === null
+    rewardClaimInput === null ||
+    // We do not have an account address
+    accountAddress === null
   ) {
     return <ButtonComponent disabled />;
   }
 
   if (asyncSnapshot.hasError) {
-    if (isAlreadyClaimed) {
-      return (
-        <ButtonLarge onClick={close}>
-          <Text text="Close" />
-        </ButtonLarge>
-      );
-    }
     return <ButtonComponent onClick={performClaimRewardsAction} />;
   }
 
