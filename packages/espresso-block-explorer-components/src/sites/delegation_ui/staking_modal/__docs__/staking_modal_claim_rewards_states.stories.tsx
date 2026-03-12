@@ -15,10 +15,12 @@ import {
   ValidatorConfirmedExample,
 } from '../__shared__/validator_confirmed_example';
 import {
+  FailedToPerformWriteToContract,
   PerformWriteTransactionReceiptRetrieved,
   PerformWriteTransactionReceiptWaiting,
   PerformWriteTransactionSucceeded,
   PerformWriteTransactionWaiting,
+  TransactionReverted,
 } from '../contexts/perform_write_states';
 import '../staking_modal.css';
 
@@ -89,6 +91,38 @@ export const SubmissionError: Story = {
     claimRewardsAsyncSnapshot: AsyncSnapshot.withError(
       AsyncState.done,
       new Error('Claim Rewards failed'),
+    ),
+  },
+};
+
+/**
+ * Regression: when a tx is mined but reverts on-chain (receipt.status ===
+ * 'reverted'), the UI should show an error -- not "Claim Successful".
+ */
+export const ReceiptReverted: Story = {
+  args: {
+    claimRewardsAsyncSnapshot: AsyncSnapshot.withError(
+      AsyncState.done,
+      new TransactionReverted({ ...FAKE_RECEIPT, status: 'reverted' }),
+    ),
+  },
+};
+
+/**
+ * Regression: InvalidAuthRoot revert should show a specific message
+ * encouraging the user to retry.
+ */
+export const InvalidAuthRootError: Story = {
+  args: {
+    claimRewardsAsyncSnapshot: AsyncSnapshot.withError(
+      AsyncState.done,
+      new FailedToPerformWriteToContract({
+        name: 'ContractFunctionExecutionError',
+        cause: {
+          name: 'ContractFunctionRevertedError',
+          data: { errorName: 'InvalidAuthRoot' },
+        },
+      }),
     ),
   },
 };

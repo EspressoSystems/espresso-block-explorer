@@ -18,7 +18,10 @@ import {
   ProvideClaimRewardsAsyncIterableContext,
   SetClaimRewardsAsyncIterableContext,
 } from './contexts/perform_claim_rewards_context';
-import { PerformWriteTransactionStatus } from './contexts/perform_write_states';
+import {
+  extractContractErrorName,
+  PerformWriteTransactionStatus,
+} from './contexts/perform_write_states';
 import { StakingModalCloseContext } from './contexts/staking_modal_close_context';
 import { StakingContent } from './staking_content';
 import { StakingHeader } from './staking_header';
@@ -106,10 +109,17 @@ const ClaimRewardsStatus: React.FC = () => {
   const asyncSnapshot = React.useContext(ClaimRewardsAsyncSnapshotContext);
 
   if (asyncSnapshot.hasError) {
-    // There was an error claiming rewards
+    const errorName = extractContractErrorName(asyncSnapshot.error);
     return (
       <div>
-        <Text text="Claim Failed" />
+        <div>
+          <Text text="Claim Failed" />
+        </div>
+        {errorName === 'InvalidAuthRoot' && (
+          <div>
+            <Text text="Authorization data is stale. Please retry." />
+          </div>
+        )}
       </div>
     );
   }

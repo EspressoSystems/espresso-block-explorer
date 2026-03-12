@@ -1,7 +1,7 @@
 import { composeStories } from '@storybook/react-vite';
 import '@testing-library/jest-dom';
-import { act, render } from '@testing-library/react';
-import { describe, it } from 'vitest';
+import { act, render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 import * as stories from '../__docs__/staking_modal_claim_rewards_states.stories';
 
 const {
@@ -12,6 +12,8 @@ const {
   WaitingForReceipt,
   ReceiptRetrieved,
   SubmissionError,
+  ReceiptReverted,
+  InvalidAuthRootError,
 } = composeStories(stories);
 
 describe('Staking Modal:: Claim Rewards States', async () => {
@@ -41,5 +43,26 @@ describe('Staking Modal:: Claim Rewards States', async () => {
   });
   it('should render the SubmissionError state error', async () => {
     await expect(act(() => render(<SubmissionError />))).resolves.not.toThrow();
+  });
+
+  it('should show error state when receipt status is reverted', async () => {
+    await act(() => render(<ReceiptReverted />));
+
+    expect(screen.queryByText('Claim Successful')).not.toBeInTheDocument();
+    expect(screen.getByText('Claim Failed')).toBeInTheDocument();
+    expect(screen.getByText('Retry')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Authorization data is stale. Please retry.'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('should show retry message for InvalidAuthRoot error', async () => {
+    await act(() => render(<InvalidAuthRootError />));
+
+    expect(screen.getByText('Claim Failed')).toBeInTheDocument();
+    expect(
+      screen.getByText('Authorization data is stale. Please retry.'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Retry')).toBeInTheDocument();
   });
 });

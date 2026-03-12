@@ -88,6 +88,39 @@ export class FailedtoReceiveReceipt extends BaseError {
   }
 }
 
+export class TransactionReverted extends BaseError {
+  constructor(
+    public readonly receipt: GetTransactionReceiptReturnType<Config>,
+    message: string = 'transaction was reverted',
+  ) {
+    super(message);
+  }
+}
+
+/**
+ * Walks the cause chain of a FailedToPerformWriteToContract error to find
+ * a viem ContractFunctionRevertedError and extract its errorName.
+ * Returns null if no contract error name can be found.
+ */
+export function extractContractErrorName(error: unknown): string | null {
+  const cause =
+    error instanceof FailedToPerformWriteToContract ? error.cause : error;
+
+  // Walk the cause chain looking for ContractFunctionRevertedError
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let current: any = cause;
+  for (let depth = 0; current && depth < 10; depth++) {
+    if (
+      current.name === 'ContractFunctionRevertedError' &&
+      current.data?.errorName
+    ) {
+      return current.data.errorName as string;
+    }
+    current = current.cause;
+  }
+  return null;
+}
+
 export async function* performWriteTransaction(
   l1Methods: L1Methods<Config, number>,
   writeToContract: () => Promise<`0x${string}`>,
@@ -124,6 +157,13 @@ export async function* performWriteTransaction(
     });
   } catch (err) {
     const wrappedError = new FailedtoReceiveReceipt(err);
+    console.error('encountered error', wrappedError);
+    resultCallback(wrappedError, null);
+    throw wrappedError;
+  }
+
+  if (receipt.status === 'reverted') {
+    const wrappedError = new TransactionReverted(receipt);
     console.error('encountered error', wrappedError);
     resultCallback(wrappedError, null);
     throw wrappedError;
