@@ -6,14 +6,13 @@ import {
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
 import BaseError, { baseErrorEncoder } from './base_error';
-import { EspressoError } from './espresso_error';
 import { espressoErrorCodec, registerCodec } from './registry';
 
 const kWebWorkerErrorResponseCode = 'WebWorkerErrorResponse';
 
 export default class WebWorkerErrorResponse extends BaseError {
-  readonly error: EspressoError;
-  constructor(error: EspressoError, message: string = 'error in web worker') {
+  readonly error: unknown;
+  constructor(error: unknown, message: string = 'error in web worker') {
     super(message);
     this.error = error;
     Object.freeze(this);

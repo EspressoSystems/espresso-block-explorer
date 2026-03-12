@@ -14,7 +14,6 @@ import {
   Completer,
   createCompleter,
 } from '@/data_structures/async/completer/completer';
-import { EspressoError } from '@/errors/espresso_error';
 import InvalidInputError from '@/errors/invalid_input_error';
 import InvalidTypeError from '@/errors/invalid_type_error';
 import NoCompleterFoundForRequestID from '@/errors/no_completer_found_for_request_id';
@@ -204,9 +203,9 @@ export const webWorkerResponseSuccessJSONCodec =
  * WebWorkerResponseError represents an error response from a Web Worker.
  */
 export class WebWorkerResponseError extends WebWorkerResponse {
-  readonly error: EspressoError;
+  readonly error: unknown;
 
-  constructor(requestID: RequestID, error: EspressoError) {
+  constructor(requestID: RequestID, error: unknown) {
     super(requestID);
     this.error = error;
   }
