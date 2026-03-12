@@ -71,9 +71,14 @@ const ClaimRewardsActionsArea: React.FC = () => {
   );
 
   if (asyncSnapshot.hasError) {
-    // There was an error claiming rewards
+    const isAlreadyClaimed =
+      extractContractErrorName(asyncSnapshot.error) === 'AlreadyClaimed';
     return (
-      <div className="staking-modal-unstaking-actions-area error">{child}</div>
+      <div
+        className={`staking-modal-unstaking-actions-area ${isAlreadyClaimed ? 'succeeded' : 'error'}`}
+      >
+        {child}
+      </div>
     );
   }
 
@@ -110,6 +115,13 @@ const ClaimRewardsStatus: React.FC = () => {
 
   if (asyncSnapshot.hasError) {
     const errorName = extractContractErrorName(asyncSnapshot.error);
+    if (errorName === 'AlreadyClaimed') {
+      return (
+        <div>
+          <Text text="Your rewards have already been claimed." />
+        </div>
+      );
+    }
     return (
       <div>
         <div>
@@ -156,9 +168,6 @@ const ClaimRewardsButton: React.FC = () => {
   const l1Methods = React.useContext(L1MethodsContext);
   const rewardClaimContract = React.useContext(RewardClaimContractContext);
   const rewardClaimInput = React.useContext(EspressoRewardClaimInputContext);
-  const claimableRewardsInput = React.useContext(
-    EspressoRewardClaimInputContext,
-  );
   const lifetimeClaimedRewards =
     React.useContext(LifetimeClaimedRewardsContext) ?? 0n;
   const asyncSnapshot = React.useContext(ClaimRewardsAsyncSnapshotContext);
@@ -168,7 +177,7 @@ const ClaimRewardsButton: React.FC = () => {
     SetClaimRewardsAsyncIterableContext,
   );
   const claimableRewardsBalance =
-    (claimableRewardsInput?.lifetimeRewards ?? lifetimeClaimedRewards) -
+    (rewardClaimInput?.lifetimeRewards ?? lifetimeClaimedRewards) -
     lifetimeClaimedRewards;
   const debounceGuard = React.useRef(false);
   const performClaimRewardsAction = React.useMemo(
@@ -215,6 +224,19 @@ const ClaimRewardsButton: React.FC = () => {
     debounceGuard.current = false;
   }, [asyncSnapshot]);
 
+  const isAlreadyClaimed =
+    asyncSnapshot.hasError &&
+    extractContractErrorName(asyncSnapshot.error) === 'AlreadyClaimed';
+
+  // Refresh balances when AlreadyClaimed -- rewards were claimed by a previous tx
+  const hasRefreshedForAlreadyClaimed = React.useRef(false);
+  React.useEffect(() => {
+    if (isAlreadyClaimed && !hasRefreshedForAlreadyClaimed.current) {
+      hasRefreshedForAlreadyClaimed.current = true;
+      setL1Timestamp(new Date());
+    }
+  }, [isAlreadyClaimed, setL1Timestamp]);
+
   const ButtonComponent = asyncSnapshot.hasError ? RetryButton : NormalButton;
 
   if (
@@ -228,7 +250,13 @@ const ClaimRewardsButton: React.FC = () => {
   }
 
   if (asyncSnapshot.hasError) {
-    // There was an error claiming rewards
+    if (isAlreadyClaimed) {
+      return (
+        <ButtonLarge onClick={close}>
+          <Text text="Close" />
+        </ButtonLarge>
+      );
+    }
     return <ButtonComponent onClick={performClaimRewardsAction} />;
   }
 

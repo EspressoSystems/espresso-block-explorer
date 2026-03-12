@@ -112,9 +112,10 @@ export function extractContractErrorName(error: unknown): string | null {
   for (let depth = 0; current && depth < 10; depth++) {
     if (
       current.name === 'ContractFunctionRevertedError' &&
-      current.data?.errorName
+      current.data &&
+      typeof current.data.errorName === 'string'
     ) {
-      return current.data.errorName as string;
+      return current.data.errorName;
     }
     current = current.cause;
   }

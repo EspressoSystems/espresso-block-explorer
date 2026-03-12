@@ -109,6 +109,25 @@ export const ReceiptReverted: Story = {
 };
 
 /**
+ * AlreadyClaimed revert means a previous tx already succeeded.
+ * Show success-like UI with Close button instead of Retry.
+ */
+export const AlreadyClaimedError: Story = {
+  args: {
+    claimRewardsAsyncSnapshot: AsyncSnapshot.withError(
+      AsyncState.done,
+      new FailedToPerformWriteToContract({
+        name: 'ContractFunctionExecutionError',
+        cause: {
+          name: 'ContractFunctionRevertedError',
+          data: { errorName: 'AlreadyClaimed' },
+        },
+      }),
+    ),
+  },
+};
+
+/**
  * Regression: InvalidAuthRoot revert should show a specific message
  * encouraging the user to retry.
  */

@@ -13,6 +13,7 @@ const {
   ReceiptRetrieved,
   SubmissionError,
   ReceiptReverted,
+  AlreadyClaimedError,
   InvalidAuthRootError,
 } = composeStories(stories);
 
@@ -54,6 +55,17 @@ describe('Staking Modal:: Claim Rewards States', async () => {
     expect(
       screen.queryByText('Authorization data is stale. Please retry.'),
     ).not.toBeInTheDocument();
+  });
+
+  it('should show success-like UI for AlreadyClaimed error', async () => {
+    await act(() => render(<AlreadyClaimedError />));
+
+    expect(
+      screen.getByText('Your rewards have already been claimed.'),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Claim Failed')).not.toBeInTheDocument();
+    expect(screen.queryByText('Retry')).not.toBeInTheDocument();
+    expect(screen.getByText('Close')).toBeInTheDocument();
   });
 
   it('should show retry message for InvalidAuthRoot error', async () => {
