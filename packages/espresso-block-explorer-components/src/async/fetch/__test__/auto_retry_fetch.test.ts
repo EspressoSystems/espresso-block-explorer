@@ -197,7 +197,7 @@ describe('createAutoRetryFetch', () => {
       .mockResolvedValue(makeOkResponse());
 
     const autoRetry = createAutoRetryFetch(
-      { maxRetries: 3, isRetryableFetchErrror: () => true },
+      { maxRetries: 3, isRetryableFetchError: () => true },
       mockFetch,
     );
 

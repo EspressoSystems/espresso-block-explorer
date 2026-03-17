@@ -82,7 +82,7 @@ export function isARetryableError(err: unknown): boolean {
   return isFetchError(err);
 }
 
-function defaultIsRetryableFetchErrror(err: unknown): boolean {
+function defaultIsRetryableFetchError(err: unknown): boolean {
   return isARetryableError(err);
 }
 /**
@@ -93,9 +93,9 @@ function defaultIsRetryableFetchErrror(err: unknown): boolean {
 export interface FetchRetryConfig {
   maxRetries?: number;
   maxPenaltyMs?: Milliseconds<number>;
-  retryPenalityMs?: Milliseconds<number>;
+  retryPenaltyMs?: Milliseconds<number>;
   maxRandomDelayMs?: Milliseconds<number>;
-  isRetryableFetchErrror?: (err: unknown) => boolean;
+  isRetryableFetchError?: (err: unknown) => boolean;
 }
 
 export function createAutoRetryFetch(
@@ -105,9 +105,9 @@ export function createAutoRetryFetch(
   const {
     maxRetries,
     maxPenaltyMs,
-    retryPenalityMs,
+    retryPenaltyMs,
     maxRandomDelayMs,
-    isRetryableFetchErrror = defaultIsRetryableFetchErrror,
+    isRetryableFetchError = defaultIsRetryableFetchError,
   } = config;
 
   return async (
@@ -116,9 +116,9 @@ export function createAutoRetryFetch(
   ) => {
     const controller = createRetryController(
       createAlwaysRetryController(),
-      withErrorBased(isRetryableFetchErrror),
+      withErrorBased(isRetryableFetchError),
       withMaxAttempts(maxRetries),
-      withLinearBackOff(retryPenalityMs, maxPenaltyMs),
+      withLinearBackOff(retryPenaltyMs, maxPenaltyMs),
       withRandomDelay(maxRandomDelayMs),
     );
 
