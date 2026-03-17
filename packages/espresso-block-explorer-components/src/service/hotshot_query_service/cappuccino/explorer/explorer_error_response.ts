@@ -4,7 +4,7 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import { EspressoError, espressoErrorCodec } from '@/errors/index';
+import { espressoErrorCodec } from '@/errors/registry';
 
 /**
  * CappuccinoExplorerErrorResponse is a response that is returned when an error
@@ -60,9 +60,9 @@ class CappuccinoExplorerErrorResponseCodec extends TypeCheckingCodec<
  * occurred while querying the Cappuccino Explorer API.
  */
 export class CappuccinoExplorerErrorWrapper {
-  readonly error: EspressoError;
+  readonly error: unknown;
 
-  constructor(error: EspressoError) {
+  constructor(error: unknown) {
     this.error = error;
   }
 
@@ -112,9 +112,9 @@ export const cappuccinoExplorerErrorResponseCodec =
 
 class UnwrappedCappuccinoExplorerErrorResponseDecoder implements Converter<
   unknown,
-  EspressoError
+  unknown
 > {
-  convert(input: unknown): EspressoError {
+  convert(input: unknown): unknown {
     return cappuccinoExplorerErrorResponseCodec.decode(input).explorer.error;
   }
 }

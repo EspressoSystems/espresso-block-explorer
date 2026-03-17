@@ -8,7 +8,6 @@ import {
 } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 import { stringCodec } from '@/convert/codec/string';
-import { EspressoError } from '@/errors/espresso_error';
 import InvalidInputError from '@/errors/invalid_input_error';
 import { espressoErrorCodec } from '@/errors/registry';
 
@@ -136,9 +135,9 @@ export const webWorkerResponseSuccessCodec =
   new WebWorkerResponseSuccessCodec();
 
 export class WebWorkerResponseError extends WebWorkerResponse {
-  readonly error: EspressoError;
+  readonly error: unknown;
 
-  constructor(requestID: RequestID, error: EspressoError) {
+  constructor(requestID: RequestID, error: unknown) {
     super(requestID);
     this.error = error;
   }

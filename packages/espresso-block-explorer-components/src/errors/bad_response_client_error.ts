@@ -20,7 +20,7 @@ export default class BadResponseClientError extends BaseBadResponseError {
   constructor(
     status: number,
     response: null | Response,
-    message: string = 'bad server response: client error',
+    message: string = `bad server response: client error ${status}`,
   ) {
     super(status, response, message);
     Object.freeze(this);

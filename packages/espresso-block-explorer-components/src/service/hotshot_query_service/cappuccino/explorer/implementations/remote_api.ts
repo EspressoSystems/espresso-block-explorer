@@ -1,4 +1,7 @@
-import { validateAndExpandResponse } from '@/async/fetch/response_validators';
+import {
+  checkErrorAndExpandResponse,
+  validateAndExpandResponse,
+} from '@/async/fetch/response_validators';
 import UnimplementedError from '@/errors/unimplemented_error';
 import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer_api';
 import { unwrappedCappuccinoExplorerErrorResponseDecoder } from '../explorer_error_response';
@@ -39,7 +42,33 @@ import {
 export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI implements CappuccinoHotShotQueryServiceExplorerAPI {
   private readonly fetcher: typeof fetch;
   private readonly baseURL: URL;
-
+  private readonly catchErrorResponseHandler = checkErrorAndExpandResponse(
+    unwrappedCappuccinoExplorerErrorResponseDecoder,
+  );
+  private readonly blockDetailHandler = validateAndExpandResponse(
+    cappuccinoExplorerGetBlockDetailResponseCodec.decoder,
+    unwrappedCappuccinoExplorerErrorResponseDecoder,
+  );
+  private readonly blockSummariesHandler = validateAndExpandResponse(
+    cappuccinoExplorerGetBlockSummariesResponseCodec.decoder,
+    unwrappedCappuccinoExplorerErrorResponseDecoder,
+  );
+  private readonly transactionDetailHandler = validateAndExpandResponse(
+    cappuccinoExplorerGetTransactionDetailResponseCodec.decoder,
+    unwrappedCappuccinoExplorerErrorResponseDecoder,
+  );
+  private readonly transactionSummariesHandler = validateAndExpandResponse(
+    cappuccinoExplorerGetTransactionSummariesResponseCodec.decoder,
+    unwrappedCappuccinoExplorerErrorResponseDecoder,
+  );
+  private readonly explorerSummaryHandler = validateAndExpandResponse(
+    cappuccinoExplorerGetExplorerSummaryResponseCodec.decoder,
+    unwrappedCappuccinoExplorerErrorResponseDecoder,
+  );
+  private readonly searchResultsHnalder = validateAndExpandResponse(
+    cappuccinoExplorerGetSearchResultResponseCodec.decoder,
+    unwrappedCappuccinoExplorerErrorResponseDecoder,
+  );
   constructor(fetcher: typeof fetch, url: URL) {
     this.fetcher = fetcher;
     this.baseURL = url;
@@ -50,10 +79,8 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI implements Cappu
   ): Promise<CappuccinoExplorerGetBlockDetailResponse> {
     const url = new URL(`block/${request.target}`, this.baseURL);
     return this.fetcher(url).then(
-      validateAndExpandResponse(
-        cappuccinoExplorerGetBlockDetailResponseCodec.decoder,
-        unwrappedCappuccinoExplorerErrorResponseDecoder,
-      ),
+      this.blockDetailHandler,
+      this.catchErrorResponseHandler,
     );
   }
 
@@ -65,10 +92,8 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI implements Cappu
       this.baseURL,
     );
     return this.fetcher(url).then(
-      validateAndExpandResponse(
-        cappuccinoExplorerGetBlockSummariesResponseCodec.decoder,
-        unwrappedCappuccinoExplorerErrorResponseDecoder,
-      ),
+      this.blockSummariesHandler,
+      this.catchErrorResponseHandler,
     );
   }
   async getTransactionDetail(
@@ -91,10 +116,8 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI implements Cappu
       throw new UnimplementedError();
     }
     return this.fetcher(url).then(
-      validateAndExpandResponse(
-        cappuccinoExplorerGetTransactionDetailResponseCodec.decoder,
-        unwrappedCappuccinoExplorerErrorResponseDecoder,
-      ),
+      this.transactionDetailHandler,
+      this.catchErrorResponseHandler,
     );
   }
 
@@ -106,20 +129,16 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI implements Cappu
     url = filter.convertURL(url);
 
     return this.fetcher(url).then(
-      validateAndExpandResponse(
-        cappuccinoExplorerGetTransactionSummariesResponseCodec.decoder,
-        unwrappedCappuccinoExplorerErrorResponseDecoder,
-      ),
+      this.transactionSummariesHandler,
+      this.catchErrorResponseHandler,
     );
   }
 
   async getExplorerOverview(): Promise<CappuccinoExplorerGetExplorerSummaryResponse> {
     const url = new URL('explorer-summary', this.baseURL);
     return this.fetcher(url).then(
-      validateAndExpandResponse(
-        cappuccinoExplorerGetExplorerSummaryResponseCodec.decoder,
-        unwrappedCappuccinoExplorerErrorResponseDecoder,
-      ),
+      this.explorerSummaryHandler,
+      this.catchErrorResponseHandler,
     );
   }
 
@@ -132,10 +151,8 @@ export class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI implements Cappu
     );
 
     return this.fetcher(url).then(
-      validateAndExpandResponse(
-        cappuccinoExplorerGetSearchResultResponseCodec.decoder,
-        unwrappedCappuccinoExplorerErrorResponseDecoder,
-      ),
+      this.searchResultsHnalder,
+      this.catchErrorResponseHandler,
     );
   }
 }

@@ -1,6 +1,7 @@
 import { Channel, createBufferedChannel } from '@/async/channel';
+import { createAutoRetryFetch } from '@/async/fetch/auto_retry_fetch';
+import { createExtendedFetch } from '@/async/fetch/extended_fetch';
 import { EspressoError } from '@/errors/espresso_error';
-import FetchError from '@/errors/fetch_error';
 import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
 import {
@@ -25,21 +26,6 @@ type Config = {
 
 type ProxyRequest = WebWorkerRequest<'proxy', 'set-url', [string]>;
 
-/**
- * wrappedFetch is a wrapper around the fetch function that throws a FetchError
- * when the fetch operation fails.
- *
- * This is done so fetch doesn't have to suffer binding issues, and so that the
- * resulting error can be encodable.
- */
-const wrappedFetch: typeof fetch = async (input: unknown, init?: unknown) => {
-  try {
-    return await fetch(input as RequestInfo | URL, init as RequestInit);
-  } catch (error) {
-    throw new FetchError(error);
-  }
-};
-
 type PostMessageFunction = typeof postMessage;
 
 async function determineServiceImplementationFromConfigFile(): Promise<CappuccinoHotShotQueryService> {
@@ -48,7 +34,10 @@ async function determineServiceImplementationFromConfigFile(): Promise<Cappuccin
     const config: Config = await response.json();
     if (config.hotshot_query_service_url) {
       const url = new URL(config.hotshot_query_service_url);
-      return new FetchBasedCappuccinoHotShotQueryService(wrappedFetch, url);
+      return new FetchBasedCappuccinoHotShotQueryService(
+        createAutoRetryFetch({}, createExtendedFetch()),
+        url,
+      );
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
@@ -96,7 +85,7 @@ export class WebWorkerProxy {
       this.service = Promise.resolve(
         new WebWorkerProxyHotShotQueryService(
           new FetchBasedCappuccinoHotShotQueryService(
-            wrappedFetch,
+            createAutoRetryFetch({}, createExtendedFetch()),
             new URL(url),
           ),
         ),

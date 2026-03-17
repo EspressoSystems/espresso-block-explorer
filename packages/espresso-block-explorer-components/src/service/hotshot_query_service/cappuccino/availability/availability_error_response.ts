@@ -4,16 +4,16 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import { EspressoError, espressoErrorCodec } from '@/errors/index';
+import { espressoErrorCodec } from '@/errors/registry';
 
 /**
  * CappuccinoAvailabilityErrorResponse is a response that is returned when an error
  * occurs while querying the Cappuccino Availability API.
  */
 export class CappuccinoAvailabilityErrorResponse {
-  readonly availability: EspressoError;
+  readonly availability: unknown;
 
-  constructor(availability: EspressoError) {
+  constructor(availability: unknown) {
     this.availability = availability;
   }
 
@@ -62,9 +62,9 @@ export const cappuccinoAvailabilityErrorResponseCodec =
 
 class UnwrappedCappuccinoAvailabilityErrorResponseDecoder implements Converter<
   unknown,
-  EspressoError
+  unknown
 > {
-  convert(input: unknown): EspressoError {
+  convert(input: unknown): unknown {
     return cappuccinoAvailabilityErrorResponseCodec.decode(input).availability;
   }
 }
