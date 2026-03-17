@@ -295,6 +295,7 @@ class EspressoErrorEncoder implements Converter<unknown, unknown> {
         message: input.message,
         stack: input.stack,
         cause: this.convert(input.cause),
+        error: this.convert(input.error),
         suppressed: this.convert(input.suppressed),
       };
     }
