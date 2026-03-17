@@ -18,7 +18,9 @@ function makeResponse(status: number): Response {
 
 describe('createExtendedFetch', () => {
   it('returns the response unchanged for a 2xx status', async () => {
-    const mockFetch = vi.fn<typeof fetch>().mockResolvedValue(makeResponse(200));
+    const mockFetch = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(makeResponse(200));
     const fetch = createExtendedFetch(mockFetch);
 
     const response = await fetch('https://example.com/api');
@@ -27,7 +29,9 @@ describe('createExtendedFetch', () => {
   });
 
   it('throws BadResponseServerError for a 5xx status', async () => {
-    const mockFetch = vi.fn<typeof fetch>().mockResolvedValue(makeResponse(500));
+    const mockFetch = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(makeResponse(500));
     const fetch = createExtendedFetch(mockFetch);
 
     await expect(fetch('https://example.com/api')).rejects.toBeInstanceOf(
@@ -37,7 +41,9 @@ describe('createExtendedFetch', () => {
 
   it('throws BadResponseServerError for any status in the 500–599 range', async () => {
     for (const status of [500, 503, 599]) {
-      const mockFetch = vi.fn<typeof fetch>().mockResolvedValue(makeResponse(status));
+      const mockFetch = vi
+        .fn<typeof fetch>()
+        .mockResolvedValue(makeResponse(status));
       const fetch = createExtendedFetch(mockFetch);
 
       await expect(fetch('https://example.com/api')).rejects.toBeInstanceOf(
@@ -47,7 +53,9 @@ describe('createExtendedFetch', () => {
   });
 
   it('throws BadResponseClientError for a 4xx status', async () => {
-    const mockFetch = vi.fn<typeof fetch>().mockResolvedValue(makeResponse(400));
+    const mockFetch = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(makeResponse(400));
     const fetch = createExtendedFetch(mockFetch);
 
     await expect(fetch('https://example.com/api')).rejects.toBeInstanceOf(
@@ -57,7 +65,9 @@ describe('createExtendedFetch', () => {
 
   it('throws BadResponseClientError for any status in the 400–499 range', async () => {
     for (const status of [400, 401, 403, 404, 422, 499]) {
-      const mockFetch = vi.fn<typeof fetch>().mockResolvedValue(makeResponse(status));
+      const mockFetch = vi
+        .fn<typeof fetch>()
+        .mockResolvedValue(makeResponse(status));
       const fetch = createExtendedFetch(mockFetch);
 
       await expect(fetch('https://example.com/api')).rejects.toBeInstanceOf(
@@ -68,7 +78,9 @@ describe('createExtendedFetch', () => {
 
   it('throws BadResponseError for a non-ok status outside 4xx and 5xx', async () => {
     // 3xx responses are not ok and do not fall into the 4xx or 5xx bands.
-    const mockFetch = vi.fn<typeof fetch>().mockResolvedValue(makeResponse(301));
+    const mockFetch = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(makeResponse(301));
     const fetch = createExtendedFetch(mockFetch);
 
     await expect(fetch('https://example.com/api')).rejects.toBeInstanceOf(
@@ -79,7 +91,9 @@ describe('createExtendedFetch', () => {
   it('wraps a network-level exception in a FetchError', async () => {
     // Simulate a network failure (e.g. DNS error, connection refused) that
     // prevents fetch from returning a Response at all.
-    const mockFetch = vi.fn<typeof fetch>().mockRejectedValue(new TypeError('Failed to fetch'));
+    const mockFetch = vi
+      .fn<typeof fetch>()
+      .mockRejectedValue(new TypeError('Failed to fetch'));
     const fetch = createExtendedFetch(mockFetch);
 
     await expect(fetch('https://example.com/api')).rejects.toBeInstanceOf(
@@ -99,7 +113,9 @@ describe('createExtendedFetch', () => {
   });
 
   it('forwards the input and init arguments to the underlying fetchFn', async () => {
-    const mockFetch = vi.fn<typeof fetch>().mockResolvedValue(makeResponse(200));
+    const mockFetch = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(makeResponse(200));
     const fetch = createExtendedFetch(mockFetch);
     const init: RequestInit = { method: 'POST', body: 'hello' };
 
