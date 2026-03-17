@@ -6,7 +6,7 @@ import {
 } from './controller';
 
 /**
- * DEFAULT_DELAY_PENALTY is the default maximum linear time delay penalty to
+ * DEFAULT_MAX_PENALTY is the default maximum linear time delay penalty to
  * apply for a linear back-off retry strategy.
  */
 const DEFAULT_MAX_PENALTY = 2000;
@@ -34,7 +34,7 @@ class LinearBackOffRetryController implements RetryController {
   shouldRetry(attempt: number, err: unknown): ShouldRetry {
     const result = this.controller.shouldRetry(attempt, err);
 
-    if (result === ShouldRetryResult.no) {
+    if (result !== ShouldRetryResult.no) {
       return result;
     }
 

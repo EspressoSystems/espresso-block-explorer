@@ -25,8 +25,7 @@ export function isNotFoundError(error: unknown) {
     localError instanceof BadResponseClientError &&
     localError.status === HTTP_STATUS_CODE_NOT_FOUND
   ) {
-    // This likely means that the active validator set is not yet
-    // available.  We can just return the previous state.
+    // This is indeed a Not Found error.
     return true;
   }
 
@@ -63,7 +62,7 @@ export function isGoneError(error: unknown) {
  * underlying error that results from a failure during a `fetch` call.
  *
  * NOTE: Ideally, we would inspect the nature of the specific `fetch` failure
- * in order to determine whether the failure is a recoverable `feetch` failure
+ * in order to determine whether the failure is a recoverable `fetch` failure
  * or not.  However, the specifics of this error are opaque and hide the
  * details of the underlying cause.  So the best we can do is just treat every
  * `FetchError` as retryable.

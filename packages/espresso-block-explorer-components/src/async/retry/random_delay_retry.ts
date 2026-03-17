@@ -12,6 +12,9 @@ import {
 const DEFAULT_RANDOM_DELAY_MAX = 250;
 
 /**
+ * RandomDelayRetryController applies a randomly applied delay to whatever
+ * delay is returned.  This is done in order to prevent multiple requests
+ * from occurring at the **exact** same time.
  */
 class RandomDelayRetryController implements RetryController {
   constructor(
