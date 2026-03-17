@@ -1,6 +1,6 @@
 import { Channel, createBufferedChannel } from '@/async/channel';
 import { createAutoRetryFetch } from '@/async/fetch/auto_retry_fetch';
-import { extendedFetch } from '@/async/fetch/extended_fetch';
+import { createExtendedFetch } from '@/async/fetch/extended_fetch';
 import { EspressoError } from '@/errors/espresso_error';
 import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
@@ -35,7 +35,7 @@ async function determineServiceImplementationFromConfigFile(): Promise<Cappuccin
     if (config.hotshot_query_service_url) {
       const url = new URL(config.hotshot_query_service_url);
       return new FetchBasedCappuccinoHotShotQueryService(
-        createAutoRetryFetch({}, extendedFetch),
+        createAutoRetryFetch({}, createExtendedFetch()),
         url,
       );
     }
@@ -85,7 +85,7 @@ export class WebWorkerProxy {
       this.service = Promise.resolve(
         new WebWorkerProxyHotShotQueryService(
           new FetchBasedCappuccinoHotShotQueryService(
-            createAutoRetryFetch({}, extendedFetch),
+            createAutoRetryFetch({}, createExtendedFetch()),
             new URL(url),
           ),
         ),

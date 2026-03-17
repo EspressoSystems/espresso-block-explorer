@@ -1,6 +1,6 @@
 import { Channel, createBufferedChannel } from '@/async/channel';
 import { createAutoRetryFetch } from '@/async/fetch/auto_retry_fetch';
-import { extendedFetch } from '@/async/fetch/extended_fetch';
+import { createExtendedFetch } from '@/async/fetch/extended_fetch';
 import { EspressoError } from '@/errors/espresso_error';
 import UnimplementedError from '@/errors/unimplemented_error';
 import { FakeDataL1ValidatorService } from './implementations/fake_data';
@@ -47,7 +47,7 @@ async function determineServiceImplementationFromConfigFile(): Promise<L1Validat
     if (config.l1_validators_service_url) {
       const url = new URL(config.l1_validators_service_url);
       return new FetchBasedL1ValidatorService(
-        createAutoRetryFetch({}, extendedFetch),
+        createAutoRetryFetch({}, createExtendedFetch()),
         url,
       );
     }
@@ -106,7 +106,7 @@ export class WebWorkerProxy {
       this.service = Promise.resolve(
         new WebWorkerL1ValidatorService(
           new FetchBasedL1ValidatorService(
-            createAutoRetryFetch({}, extendedFetch),
+            createAutoRetryFetch({}, createExtendedFetch()),
             new URL(url),
           ),
         ),
