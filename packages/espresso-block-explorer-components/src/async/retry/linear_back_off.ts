@@ -34,7 +34,7 @@ class LinearBackOffRetryController implements RetryController {
   shouldRetry(attempt: number, err: unknown): ShouldRetry {
     const result = this.controller.shouldRetry(attempt, err);
 
-    if (result !== ShouldRetryResult.no) {
+    if (result === ShouldRetryResult.no) {
       return result;
     }
 

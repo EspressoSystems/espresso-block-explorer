@@ -6,7 +6,12 @@
 
 import { describe, expect, it } from 'vitest';
 import { createAlwaysRetryController } from '../always_retry';
-import { RetryController, ShouldRetry, ShouldRetryResult } from '../controller';
+import {
+  Milliseconds,
+  RetryController,
+  ShouldRetry,
+  ShouldRetryResult,
+} from '../controller';
 import {
   createLinearBackOffRetryController,
   withLinearBackOffRetryController,
@@ -16,11 +21,9 @@ import { createNeverRetryController } from '../never_retry';
 // The Milliseconds<number> brand resolves to `never` for generic `number`, so
 // numeric literals must be cast at call sites, mirroring the source file's own
 // use of `as Milliseconds<number>`.
-/* eslint-disable @typescript-eslint/no-explicit-any */
-const penalty100 = 100 as any;
-const penalty500 = 500 as any;
-const penalty2000 = 2000 as any;
-/* eslint-enable @typescript-eslint/no-explicit-any */
+const penalty100 = 100 as Milliseconds<number>;
+const penalty500 = 500 as Milliseconds<number>;
+const penalty2000 = 2000 as Milliseconds<number>;
 
 describe('LinearBackOffRetryController', () => {
   describe('createLinearBackOffRetryController', () => {
