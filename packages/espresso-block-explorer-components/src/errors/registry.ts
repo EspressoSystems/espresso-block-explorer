@@ -51,18 +51,6 @@ class ReferenceErrorRehydrate extends ReferenceError {
   }
 }
 
-class SuppressedErrorRehydrate extends SuppressedError {
-  constructor(
-    public override message: string,
-    public override error: unknown,
-    public override suppressed: unknown,
-    public override cause?: unknown,
-    public override stack?: string,
-  ) {
-    super(error, suppressed, message);
-  }
-}
-
 class SyntaxErrorRehydrate extends SyntaxError {
   constructor(
     public override message: string,
@@ -127,22 +115,6 @@ function convertCause(dec: EspressoErrorDecoder, input: unknown): unknown {
   return undefined;
 }
 
-function convertSuppressed(dec: EspressoErrorDecoder, input: unknown): unknown {
-  if (isRecordWithKeys(input, 'suppressed')) {
-    return dec.convert(input.suppressed);
-  }
-
-  return undefined;
-}
-
-function convertError(dec: EspressoErrorDecoder, input: unknown): unknown {
-  if (isRecordWithKeys(input, 'error')) {
-    return dec.convert(input.error);
-  }
-
-  return undefined;
-}
-
 function convertErrors(dec: EspressoErrorDecoder, input: unknown): unknown[] {
   if (isRecordWithKeys(input, 'errors') && input.errors instanceof Array) {
     return input.errors.map(dec.convert);
@@ -180,14 +152,6 @@ class EspressoErrorDecoder implements Converter<unknown, unknown> {
       case 'ReferenceError':
         return new ReferenceErrorRehydrate(
           convertMessage(input),
-          convertCause(this, input),
-          convertStack(input),
-        );
-      case 'SuppressedError':
-        return new SuppressedErrorRehydrate(
-          convertMessage(input),
-          convertError(this, input),
-          convertSuppressed(this, input),
           convertCause(this, input),
           convertStack(input),
         );
@@ -286,17 +250,6 @@ class EspressoErrorEncoder implements Converter<unknown, unknown> {
         message: input.message,
         stack: input.stack,
         cause: this.convert(input.cause),
-      };
-    }
-
-    if (input instanceof SuppressedError) {
-      return {
-        code: input.name,
-        message: input.message,
-        stack: input.stack,
-        cause: this.convert(input.cause),
-        error: this.convert(input.error),
-        suppressed: this.convert(input.suppressed),
       };
     }
 
