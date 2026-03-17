@@ -24,6 +24,34 @@ export function validateAndExpandResponse<A, E>(
 }
 
 /**
+ * checkErrorAndExpandResponse is a helper function that takes a [Converter]
+ * and returns a `catch` handler that should decode and inflate any detected
+ * error response detected within the given error.
+ */
+export function checkErrorAndExpandResponse<E>(
+  errorConverter?: Converter<unknown, E> | undefined,
+) {
+  return async (error: unknown) => {
+    let localError: unknown = error;
+    while (
+      typeof localError === 'object' &&
+      localError &&
+      !(localError instanceof BadResponseError) &&
+      'cause' in localError
+    ) {
+      localError = localError.cause;
+    }
+
+    if (localError instanceof BadResponseError && localError.response) {
+      await validateAndExpandErrorResponse(localError.response, errorConverter);
+    }
+
+    // Just throw what we currently have.
+    throw error;
+  };
+}
+
+/**
  * validateResponseIsOk checks if the response is 'ok', and if not will throw
  * an error.
  *
@@ -47,6 +75,17 @@ export async function validateResponseIsOk<E>(
     return;
   }
 
+  await validateAndExpandErrorResponse(response, errorConverter);
+}
+
+/**
+ * validateAndExpandErrorResponse expands any detectable server or client
+ * responses into the relevant error based on the given Converter.
+ */
+async function validateAndExpandErrorResponse<E>(
+  response: Response,
+  errorConverter?: undefined | Converter<unknown, E>,
+) {
   if (response.status >= 500 && response.status < 600) {
     try {
       validateResponseIsJSON(response);

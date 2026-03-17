@@ -1,4 +1,7 @@
-import { validateAndExpandResponse } from '@/async/fetch/response_validators';
+import {
+  checkErrorAndExpandResponse,
+  validateAndExpandResponse,
+} from '@/async/fetch/response_validators';
 import {
   collectAsyncIterator,
   dropAsyncIterator,
@@ -31,6 +34,25 @@ import {
 export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements CappuccinoHotShotQueryServiceAvailabilityAPI {
   private readonly fetcher: typeof fetch;
   private readonly baseURL: URL;
+  private readonly catchErrorHandler = checkErrorAndExpandResponse(
+    unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+  );
+  private readonly leafHandler = validateAndExpandResponse(
+    cappuccinoAPILeafResponseCodec.decoder,
+    unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+  );
+  private readonly transactionHandler = validateAndExpandResponse(
+    cappuccinoAPITransactionResponseCodec.decoder,
+    unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+  );
+  private readonly blockHandler = validateAndExpandResponse(
+    cappuccinoAPIBlockCodec.decoder,
+    unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+  );
+  private readonly headerHandler = validateAndExpandResponse(
+    cappuccinoAPIHeaderCodec.decoder,
+    unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+  );
 
   constructor(fetcher: typeof fetch, url: URL) {
     this.fetcher = fetcher;
@@ -39,12 +61,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
 
   getLeafFromHeight(height: number): Promise<CappuccinoAPILeafResponse> {
     const url = new URL(`leaf/${height}`, this.baseURL);
-    return this.fetcher(url).then(
-      validateAndExpandResponse(
-        cappuccinoAPILeafResponseCodec.decoder,
-        unwrappedCappuccinoAvailabilityErrorResponseDecoder,
-      ),
-    );
+    return this.fetcher(url).then(this.leafHandler, this.catchErrorHandler);
   }
 
   getTransactionFromHeightAndOffset(
@@ -53,10 +70,8 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
   ): Promise<CappuccinoAPITransactionResponse> {
     const url = new URL(`transaction/${height}/${index}`, this.baseURL);
     return this.fetcher(url).then(
-      validateAndExpandResponse(
-        cappuccinoAPITransactionResponseCodec.decoder,
-        unwrappedCappuccinoAvailabilityErrorResponseDecoder,
-      ),
+      this.transactionHandler,
+      this.catchErrorHandler,
     );
   }
 
@@ -84,12 +99,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
 
   getBlockFromHeight(height: number): Promise<CappuccinoAPIBlock> {
     const url = new URL(`block/${height}`, this.baseURL);
-    return this.fetcher(url).then(
-      validateAndExpandResponse(
-        cappuccinoAPIBlockCodec.decoder,
-        unwrappedCappuccinoAvailabilityErrorResponseDecoder,
-      ),
-    );
+    return this.fetcher(url).then(this.blockHandler, this.catchErrorHandler);
   }
 
   private async *streamBlocksFromHeightRange(
@@ -160,11 +170,6 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
 
   async getHeader(height: number): Promise<CappuccinoAPIHeader> {
     const url = new URL(`header/${height}`, this.baseURL);
-    return this.fetcher(url).then(
-      validateAndExpandResponse(
-        cappuccinoAPIHeaderCodec.decoder,
-        unwrappedCappuccinoAvailabilityErrorResponseDecoder,
-      ),
-    );
+    return this.fetcher(url).then(this.headerHandler, this.catchErrorHandler);
   }
 }
