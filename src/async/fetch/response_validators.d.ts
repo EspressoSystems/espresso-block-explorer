@@ -8,6 +8,12 @@ import { Converter } from '../../../../../../../../../../src/convert/codec/conve
  */
 export declare function validateAndExpandResponse<A, E>(successConverter: Converter<unknown, A>, errorConverter?: Converter<unknown, E> | undefined): (response: Response) => Promise<A>;
 /**
+ * checkErrorAndExpandResponse is a helper function that takes a [Converter]
+ * and returns a `catch` handler that should decode and inflate any detected
+ * error response detected within the given error.
+ */
+export declare function checkErrorAndExpandResponse<E>(errorConverter?: Converter<unknown, E> | undefined): (error: unknown) => Promise<never>;
+/**
  * validateResponseIsOk checks if the response is 'ok', and if not will throw
  * an error.
  *

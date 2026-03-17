@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
-import { EspressoError } from '../../../../../../../../../../src/errors/espresso_error';
 export type RequestID = number;
 export declare class WebWorkerRequest<API extends string = string, Method extends string = string, Param = unknown> {
     requestID: RequestID;
@@ -58,8 +57,8 @@ declare class WebWorkerResponseSuccessCodec extends TypeCheckingCodec<WebWorkerR
 }
 export declare const webWorkerResponseSuccessCodec: WebWorkerResponseSuccessCodec;
 export declare class WebWorkerResponseError extends WebWorkerResponse {
-    readonly error: EspressoError;
-    constructor(requestID: RequestID, error: EspressoError);
+    readonly error: unknown;
+    constructor(requestID: RequestID, error: unknown);
     toJSON(): {
         requestID: number;
         error: unknown;

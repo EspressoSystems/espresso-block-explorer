@@ -8,6 +8,11 @@ import { CappuccinoAPITransactionResponse } from '../transaction_response';
 export declare class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements CappuccinoHotShotQueryServiceAvailabilityAPI {
     private readonly fetcher;
     private readonly baseURL;
+    private readonly catchErrorHandler;
+    private readonly leafHandler;
+    private readonly transactionHandler;
+    private readonly blockHandler;
+    private readonly headerHandler;
     constructor(fetcher: typeof fetch, url: URL);
     getLeafFromHeight(height: number): Promise<CappuccinoAPILeafResponse>;
     getTransactionFromHeightAndOffset(height: number, index: number): Promise<CappuccinoAPITransactionResponse>;

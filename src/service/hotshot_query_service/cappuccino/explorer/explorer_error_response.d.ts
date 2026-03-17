@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
-import { EspressoError } from '../../../../../../../../../../../../src/errors/index';
 /**
  * CappuccinoExplorerErrorResponse is a response that is returned when an error
  * occurs while querying the Cappuccino Explorer API.
@@ -32,8 +31,8 @@ declare class CappuccinoExplorerErrorResponseCodec extends TypeCheckingCodec<Cap
  * occurred while querying the Cappuccino Explorer API.
  */
 export declare class CappuccinoExplorerErrorWrapper {
-    readonly error: EspressoError;
-    constructor(error: EspressoError);
+    readonly error: unknown;
+    constructor(error: unknown);
     toJSON(): {
         Explorer: unknown;
     };
@@ -52,8 +51,8 @@ declare class CappuccinoExplorerErrorWrapperCodec extends TypeCheckingCodec<Capp
 }
 export declare const cappuccinoExplorerErrorWrapperCodec: CappuccinoExplorerErrorWrapperCodec;
 export declare const cappuccinoExplorerErrorResponseCodec: CappuccinoExplorerErrorResponseCodec;
-declare class UnwrappedCappuccinoExplorerErrorResponseDecoder implements Converter<unknown, EspressoError> {
-    convert(input: unknown): EspressoError;
+declare class UnwrappedCappuccinoExplorerErrorResponseDecoder implements Converter<unknown, unknown> {
+    convert(input: unknown): unknown;
 }
 export declare const unwrappedCappuccinoExplorerErrorResponseDecoder: UnwrappedCappuccinoExplorerErrorResponseDecoder;
 export {};

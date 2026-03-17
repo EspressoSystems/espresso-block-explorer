@@ -1,5 +1,4 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
-import { EspressoError } from '../../../../../../../../../../src/errors/espresso_error';
 import { WebWorkerProxyResponse } from './web_worker_proxy_response';
 export declare const kErrorResponseType: "Error";
 /**
@@ -7,9 +6,9 @@ export declare const kErrorResponseType: "Error";
  * has occurred.
  */
 export declare class ErrorResponse extends WebWorkerProxyResponse {
-    readonly error: EspressoError;
+    readonly error: unknown;
     get type(): string;
-    constructor(error: EspressoError);
+    constructor(error: unknown);
     toJSON(): {
         Error: unknown;
     };

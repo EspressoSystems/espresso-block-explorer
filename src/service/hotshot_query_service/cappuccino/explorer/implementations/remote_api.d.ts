@@ -13,6 +13,13 @@ import { CappuccinoExplorerGetTransactionSummariesResponse } from '../get_transa
 export declare class FetchBasedCappuccinoHotShotQueryServiceExplorerAPI implements CappuccinoHotShotQueryServiceExplorerAPI {
     private readonly fetcher;
     private readonly baseURL;
+    private readonly catchErrorResponseHandler;
+    private readonly blockDetailHandler;
+    private readonly blockSummariesHandler;
+    private readonly transactionDetailHandler;
+    private readonly transactionSummariesHandler;
+    private readonly explorerSummaryHandler;
+    private readonly searchResultsHnalder;
     constructor(fetcher: typeof fetch, url: URL);
     getBlockDetail(request: CappuccinoExplorerGetBlockDetailRequest): Promise<CappuccinoExplorerGetBlockDetailResponse>;
     getBlockSummaries(request: CappuccinoExplorerGetBlockSummariesRequest): Promise<CappuccinoExplorerGetBlockSummariesResponse>;
