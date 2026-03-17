@@ -1,6 +1,7 @@
 import { Channel, createBufferedChannel } from '@/async/channel';
+import { createAutoRetryFetch } from '@/async/fetch/auto_retry_fetch';
+import { extendedFetch } from '@/async/fetch/extended_fetch';
 import { EspressoError } from '@/errors/espresso_error';
-import FetchError from '@/errors/fetch_error';
 import UnimplementedError from '@/errors/unimplemented_error';
 import { FakeDataL1ValidatorService } from './implementations/fake_data';
 import { FetchBasedL1ValidatorService } from './implementations/fetch_based';
@@ -30,21 +31,6 @@ type Config = {
 };
 
 /**
- * wrappedFetch is a wrapper around the fetch function that throws a FetchError
- * when the fetch operation fails.
- *
- * This is done so fetch doesn't have to suffer binding issues, and so that the
- * resulting error can be encodable.
- */
-const wrappedFetch: typeof fetch = async (input: unknown, init?: unknown) => {
-  try {
-    return await fetch(input as RequestInfo | URL, init as RequestInit);
-  } catch (error) {
-    throw new FetchError(error);
-  }
-};
-
-/**
  * PostMessageFunction is the type of the postMessage function.
  */
 type PostMessageFunction = typeof postMessage;
@@ -60,7 +46,10 @@ async function determineServiceImplementationFromConfigFile(): Promise<L1Validat
     const config: Config = await response.json();
     if (config.l1_validators_service_url) {
       const url = new URL(config.l1_validators_service_url);
-      return new FetchBasedL1ValidatorService(wrappedFetch, url);
+      return new FetchBasedL1ValidatorService(
+        createAutoRetryFetch({}, extendedFetch),
+        url,
+      );
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
@@ -116,7 +105,10 @@ export class WebWorkerProxy {
 
       this.service = Promise.resolve(
         new WebWorkerL1ValidatorService(
-          new FetchBasedL1ValidatorService(wrappedFetch, new URL(url)),
+          new FetchBasedL1ValidatorService(
+            createAutoRetryFetch({}, extendedFetch),
+            new URL(url),
+          ),
         ),
       );
       return true;
