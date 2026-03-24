@@ -1,8 +1,12 @@
-import { describe, expect, it, vi } from 'vitest';
+import { L1Methods } from '@/contracts/l1/l1_interface';
+import UnimplementedError from '@/errors/unimplemented_error';
+import { FormattedTransactionReceipt } from 'viem';
+import { describe, expect, it, type Mock, vi } from 'vitest';
+import { Config } from 'wagmi';
 import {
   extractContractErrorName,
   FailedToPerformWriteToContract,
-  FailedtoReceiveReceipt,
+  FailedToReceiveReceipt,
   performWriteTransaction,
   PerformWriteTransactionReceiptRetrieved,
   PerformWriteTransactionReceiptWaiting,
@@ -15,7 +19,9 @@ import {
 const FAKE_TX_HASH =
   '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef' as const;
 
-function makeReceipt(status: 'success' | 'reverted') {
+function makeReceipt(
+  status: 'success' | 'reverted',
+): FormattedTransactionReceipt {
   return {
     blockHash: '0x' as const,
     blockNumber: 0n,
@@ -31,16 +37,27 @@ function makeReceipt(status: 'success' | 'reverted') {
     transactionHash: '0x' as const,
     transactionIndex: 0,
     type: 'legacy' as const,
-    chainId: 0,
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function makeMockL1Methods(receipt: any) {
+type waitForTransactionReceiptMethod = L1Methods<
+  Config,
+  0
+>['waitForTransactionReceipt'];
+
+function makeMockL1Methods(
+  mockWaitForTransactionReceipt: Mock<waitForTransactionReceiptMethod>,
+): L1Methods<Config, 0> {
   return {
-    waitForTransactionReceipt: vi.fn().mockResolvedValue(receipt),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any;
+    getBalance: vi.fn().mockRejectedValue(new UnimplementedError()),
+    estimateFeesPerGas: vi.fn().mockRejectedValue(new UnimplementedError()),
+    estimateGas: vi.fn().mockRejectedValue(new UnimplementedError()),
+    getTransactionReceipt: vi.fn().mockRejectedValue(new UnimplementedError()),
+    getTransaction: vi.fn().mockRejectedValue(new UnimplementedError()),
+    getBlock: vi.fn().mockRejectedValue(new UnimplementedError()),
+    getBlockNumber: vi.fn().mockRejectedValue(new UnimplementedError()),
+    waitForTransactionReceipt: mockWaitForTransactionReceipt,
+  };
 }
 
 async function collectAll<T>(
@@ -61,7 +78,7 @@ async function collectAll<T>(
 describe('performWriteTransaction', () => {
   it('yields correct states for a successful transaction', async () => {
     const receipt = makeReceipt('success');
-    const l1Methods = makeMockL1Methods(receipt);
+    const l1Methods = makeMockL1Methods(vi.fn().mockResolvedValue(receipt));
     const writeToContract = vi.fn().mockResolvedValue(FAKE_TX_HASH);
     const resultCallback = vi.fn();
 
@@ -79,7 +96,9 @@ describe('performWriteTransaction', () => {
   });
 
   it('throws FailedToPerformWriteToContract when writeToContract rejects', async () => {
-    const l1Methods = makeMockL1Methods(makeReceipt('success'));
+    const l1Methods = makeMockL1Methods(
+      vi.fn().mockResolvedValue(makeReceipt('success')),
+    );
     const writeToContract = vi
       .fn()
       .mockRejectedValue(new Error('user rejected'));
@@ -99,13 +118,9 @@ describe('performWriteTransaction', () => {
   });
 
   it('throws FailedtoReceiveReceipt when waitForTransactionReceipt rejects', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const l1Methods = {
-      waitForTransactionReceipt: vi
-        .fn()
-        .mockRejectedValue(new Error('timeout')),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any;
+    const l1Methods = makeMockL1Methods(
+      vi.fn().mockRejectedValue(new Error('timeout')),
+    );
     const writeToContract = vi.fn().mockResolvedValue(FAKE_TX_HASH);
     const resultCallback = vi.fn();
 
@@ -117,16 +132,17 @@ describe('performWriteTransaction', () => {
     expect(values[0]).toBeInstanceOf(PerformWriteTransactionWaiting);
     expect(values[1]).toBeInstanceOf(PerformWriteTransactionSucceeded);
     expect(values[2]).toBeInstanceOf(PerformWriteTransactionReceiptWaiting);
-    expect(error).toBeInstanceOf(FailedtoReceiveReceipt);
+    expect(error).toBeInstanceOf(FailedToReceiveReceipt);
     expect(resultCallback).toHaveBeenCalledWith(
-      expect.any(FailedtoReceiveReceipt),
+      expect.any(FailedToReceiveReceipt),
       null,
     );
   });
 
   it('should throw TransactionReverted for a reverted receipt', async () => {
-    const receipt = makeReceipt('reverted');
-    const l1Methods = makeMockL1Methods(receipt);
+    const l1Methods = makeMockL1Methods(
+      vi.fn().mockResolvedValue(makeReceipt('reverted')),
+    );
     const writeToContract = vi.fn().mockResolvedValue(FAKE_TX_HASH);
     const resultCallback = vi.fn();
 

@@ -22,7 +22,12 @@ import {
   PerformWriteTransactionWaiting,
   TransactionReverted,
 } from '../contexts/perform_write_states';
+import RewardClaimAbi from '@/contracts/reward_claim/reward_claim_abi';
 import '../staking_modal.css';
+import {
+  ContractFunctionExecutionError,
+  ContractFunctionRevertedError,
+} from 'viem';
 
 const meta: Meta = {
   title: 'Delegation UI/Staking Modal/States/Claim Rewards',
@@ -116,13 +121,20 @@ export const AlreadyClaimedError: Story = {
   args: {
     claimRewardsAsyncSnapshot: AsyncSnapshot.withError(
       AsyncState.done,
-      new FailedToPerformWriteToContract({
-        name: 'ContractFunctionExecutionError',
-        cause: {
-          name: 'ContractFunctionRevertedError',
-          data: { errorName: 'AlreadyClaimed' },
-        },
-      }),
+      new FailedToPerformWriteToContract(
+        new ContractFunctionExecutionError(
+          new ContractFunctionRevertedError({
+            abi: RewardClaimAbi,
+            data: '0x646cf558',
+            functionName: 'claimRewards',
+          }),
+          {
+            abi: RewardClaimAbi,
+            functionName: 'claimRewards',
+            args: ['0x', '0x'],
+          },
+        ),
+      ),
     ),
   },
 };
@@ -135,13 +147,20 @@ export const InvalidAuthRootError: Story = {
   args: {
     claimRewardsAsyncSnapshot: AsyncSnapshot.withError(
       AsyncState.done,
-      new FailedToPerformWriteToContract({
-        name: 'ContractFunctionExecutionError',
-        cause: {
-          name: 'ContractFunctionRevertedError',
-          data: { errorName: 'InvalidAuthRoot' },
-        },
-      }),
+      new FailedToPerformWriteToContract(
+        new ContractFunctionExecutionError(
+          new ContractFunctionRevertedError({
+            abi: RewardClaimAbi,
+            data: '0x328b8878',
+            functionName: 'claimRewards',
+          }),
+          {
+            abi: RewardClaimAbi,
+            functionName: 'claimRewards',
+            args: ['0x', '0x'],
+          },
+        ),
+      ),
     ),
   },
 };

@@ -1,9 +1,14 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import { addClassToClassName } from '@/components/higher_order';
-import Text from '@/components/text/text';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
+import Text from '@/components/text/text';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { RewardClaimContractContext } from '@/contexts/reward_claim_contract_context';
+import { extractContractFunctionRevertedError } from '@/contracts/error_helpers';
+import {
+  isAlreadyClaimedError,
+  isInvalidAuthRootError,
+} from '@/contracts/reward_claim/error_helpers';
 import React from 'react';
 import { LifetimeClaimedRewardsContext } from '../contexts/claimed_rewards_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
@@ -115,24 +120,36 @@ const ClaimRewardsStatus: React.FC = () => {
   const asyncSnapshot = React.useContext(ClaimRewardsAsyncSnapshotContext);
 
   if (asyncSnapshot.hasError) {
-    const errorName = extractContractErrorName(asyncSnapshot.error);
-    if (errorName === 'AlreadyClaimed') {
+    const revertedError = extractContractFunctionRevertedError(
+      asyncSnapshot.error,
+    );
+
+    if (isAlreadyClaimedError(revertedError)) {
       return (
         <div>
           <Text text="Your rewards have already been claimed." />
         </div>
       );
     }
+
+    if (isInvalidAuthRootError(revertedError)) {
+      return (
+        <div>
+          <div>
+            <Text text="Claim Failed" />
+          </div>
+          <div>
+            <Text text="Authorization data is stale. Please retry." />
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div>
         <div>
           <Text text="Claim Failed" />
         </div>
-        {errorName === 'InvalidAuthRoot' && (
-          <div>
-            <Text text="Authorization data is stale. Please retry." />
-          </div>
-        )}
       </div>
     );
   }
