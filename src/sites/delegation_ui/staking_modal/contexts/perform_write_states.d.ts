@@ -56,12 +56,35 @@ export declare class PerformWriteTransactionReceiptRetrieved extends PerformWrit
     constructor(transactionHash: `0x${string}`, receipt: GetTransactionReceiptReturnType<Config>);
     readonly status = PerformWriteTransactionStatus.receiptRetrieved;
 }
+/**
+ * FailedToperformWriteToContract represents the state where a write
+ * transaction was attempted, but failed for some underlying reason.
+ */
 export declare class FailedToPerformWriteToContract extends BaseError {
     readonly cause: unknown;
     constructor(cause: unknown, message?: string);
 }
-export declare class FailedtoReceiveReceipt extends BaseError {
+/**
+ * FailedtoReceiveReceipt represents the state where we attempted to retrieve
+ * a receipt for a given transaction hash that has failed.
+ */
+export declare class FailedToReceiveReceipt extends BaseError {
     readonly cause: unknown;
     constructor(cause: unknown, message?: string);
 }
+/**
+ * TransctionReverted represents the state where a transaction was
+ * successfully submitted, but the transaction execution itself failed due to
+ * some underlying reason =encountered during execution.
+ */
+export declare class TransactionReverted extends BaseError {
+    readonly receipt: GetTransactionReceiptReturnType<Config>;
+    constructor(receipt: GetTransactionReceiptReturnType<Config>, message?: string);
+}
+/**
+ * Walks the cause chain of a FailedToPerformWriteToContract error to find
+ * a viem ContractFunctionRevertedError and extract its errorName.
+ * Returns null if no contract error name can be found.
+ */
+export declare function extractContractErrorName(error: unknown): string | null;
 export declare function performWriteTransaction(l1Methods: L1Methods<Config, number>, writeToContract: () => Promise<`0x${string}`>, resultCallback: (err: unknown, result: null | GetTransactionReceiptReturnType<Config>) => void): AsyncGenerator<PerformWriteTransactionWaiting | PerformWriteTransactionSucceeded | PerformWriteTransactionReceiptWaiting | PerformWriteTransactionReceiptRetrieved, void, unknown>;
