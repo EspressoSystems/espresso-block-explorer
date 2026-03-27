@@ -10,8 +10,10 @@ import React from 'react';
 import { type Config } from 'wagmi';
 import { type GetTransactionReceiptReturnType } from 'wagmi/actions';
 import {
+  FailedToPerformWriteToContract,
   performWriteTransaction,
   PerformWriteTransactionState,
+  TransactionReverted,
 } from './perform_write_states';
 
 export const PerformClaimRewardsAsyncIterableContext =
@@ -83,18 +85,46 @@ export async function* performClaimRewards(
   l1Methods: L1Methods<Config, number>,
   rewardClaimContract: RewardClaimContract,
   rewardClaimInput: RewardClaimInput,
+  accountAddress: `0x${string}`,
   resultCallback: (
     error: unknown,
     result: null | GetTransactionReceiptReturnType<Config>,
   ) => void,
 ) {
-  yield* performWriteTransaction(
-    l1Methods,
-    async () =>
-      rewardClaimContract.claimRewards(
-        rewardClaimInput.lifetimeRewards,
-        hexArrayBufferCodec.encode(rewardClaimInput.authData),
-      ),
-    resultCallback,
-  );
+  try {
+    yield* performWriteTransaction(
+      l1Methods,
+      async () =>
+        rewardClaimContract.claimRewards(
+          rewardClaimInput.lifetimeRewards,
+          hexArrayBufferCodec.encode(rewardClaimInput.authData),
+        ),
+      resultCallback,
+    );
+  } catch (error) {
+    // Note: resultCallback was already invoked by performWriteTransaction
+    // with the original TransactionReverted before we re-diagnose here.
+    if (!(error instanceof TransactionReverted)) {
+      throw error;
+    }
+
+    let claimedOnChain: bigint;
+    try {
+      claimedOnChain = await rewardClaimContract.claimedRewards(accountAddress);
+    } catch {
+      throw error;
+    }
+
+    if (claimedOnChain >= rewardClaimInput.lifetimeRewards) {
+      throw new FailedToPerformWriteToContract({
+        name: 'ContractFunctionExecutionError',
+        cause: {
+          name: 'ContractFunctionRevertedError',
+          data: { errorName: 'AlreadyClaimed' },
+        },
+      });
+    }
+
+    throw error;
+  }
 }

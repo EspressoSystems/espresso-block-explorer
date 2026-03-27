@@ -70,6 +70,10 @@ export class PerformWriteTransactionReceiptRetrieved extends PerformWriteTransac
   readonly status = PerformWriteTransactionStatus.receiptRetrieved;
 }
 
+/**
+ * FailedToperformWriteToContract represents the state where a write
+ * transaction was attempted, but failed for some underlying reason.
+ */
 export class FailedToPerformWriteToContract extends BaseError {
   constructor(
     public readonly cause: unknown,
@@ -79,13 +83,68 @@ export class FailedToPerformWriteToContract extends BaseError {
   }
 }
 
-export class FailedtoReceiveReceipt extends BaseError {
+/**
+ * FailedtoReceiveReceipt represents the state where we attempted to retrieve
+ * a receipt for a given transaction hash that has failed.
+ */
+export class FailedToReceiveReceipt extends BaseError {
   constructor(
     public readonly cause: unknown,
     message: string = `failed to receive receipt: ${String(cause)}`,
   ) {
     super(message);
   }
+}
+
+/**
+ * TransctionReverted represents the state where a transaction was
+ * successfully submitted, but the transaction execution itself failed due to
+ * some underlying reason =encountered during execution.
+ */
+export class TransactionReverted extends BaseError {
+  constructor(
+    public readonly receipt: GetTransactionReceiptReturnType<Config>,
+    message: string = 'transaction was reverted',
+  ) {
+    super(message);
+  }
+}
+
+/**
+ * Walks the cause chain of a FailedToPerformWriteToContract error to find
+ * a viem ContractFunctionRevertedError and extract its errorName.
+ * Returns null if no contract error name can be found.
+ */
+export function extractContractErrorName(error: unknown): string | null {
+  const cause =
+    error instanceof FailedToPerformWriteToContract ? error.cause : error;
+
+  // Walk the cause chain looking for ContractFunctionRevertedError
+  let current: unknown = cause;
+  for (let depth = 0; current && depth < 10; depth++) {
+    if (typeof current !== 'object' || !current) {
+      break;
+    }
+
+    if (
+      'name' in current &&
+      current.name === 'ContractFunctionRevertedError' &&
+      'data' in current &&
+      typeof current.data === 'object' &&
+      current.data &&
+      'errorName' in current.data &&
+      typeof current.data.errorName === 'string'
+    ) {
+      return current.data.errorName;
+    }
+
+    if (!('cause' in current)) {
+      break;
+    }
+
+    current = current.cause;
+  }
+  return null;
 }
 
 export async function* performWriteTransaction(
@@ -123,10 +182,17 @@ export async function* performWriteTransaction(
       timeout: 180_000, // 3 minutes
     });
   } catch (err) {
-    const wrappedError = new FailedtoReceiveReceipt(err);
+    const wrappedError = new FailedToReceiveReceipt(err);
     console.error('encountered error', wrappedError);
     resultCallback(wrappedError, null);
     throw wrappedError;
+  }
+
+  if (receipt.status === 'reverted') {
+    const err = new TransactionReverted(receipt);
+    console.error('encountered error', err);
+    resultCallback(err, null);
+    throw err;
   }
 
   yield new PerformWriteTransactionReceiptRetrieved(transactionHash, receipt);

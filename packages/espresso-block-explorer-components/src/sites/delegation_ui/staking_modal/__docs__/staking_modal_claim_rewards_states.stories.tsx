@@ -15,12 +15,19 @@ import {
   ValidatorConfirmedExample,
 } from '../__shared__/validator_confirmed_example';
 import {
+  FailedToPerformWriteToContract,
   PerformWriteTransactionReceiptRetrieved,
   PerformWriteTransactionReceiptWaiting,
   PerformWriteTransactionSucceeded,
   PerformWriteTransactionWaiting,
+  TransactionReverted,
 } from '../contexts/perform_write_states';
+import RewardClaimAbi from '@/contracts/reward_claim/reward_claim_abi';
 import '../staking_modal.css';
+import {
+  ContractFunctionExecutionError,
+  ContractFunctionRevertedError,
+} from 'viem';
 
 const meta: Meta = {
   title: 'Delegation UI/Staking Modal/States/Claim Rewards',
@@ -89,6 +96,71 @@ export const SubmissionError: Story = {
     claimRewardsAsyncSnapshot: AsyncSnapshot.withError(
       AsyncState.done,
       new Error('Claim Rewards failed'),
+    ),
+  },
+};
+
+/**
+ * Regression: when a tx is mined but reverts on-chain (receipt.status ===
+ * 'reverted'), the UI should show an error -- not "Claim Successful".
+ */
+export const ReceiptReverted: Story = {
+  args: {
+    claimRewardsAsyncSnapshot: AsyncSnapshot.withError(
+      AsyncState.done,
+      new TransactionReverted({ ...FAKE_RECEIPT, status: 'reverted' }),
+    ),
+  },
+};
+
+/**
+ * AlreadyClaimed revert means a previous tx already succeeded.
+ * Show success-like UI with Close button instead of Retry.
+ */
+export const AlreadyClaimedError: Story = {
+  args: {
+    claimRewardsAsyncSnapshot: AsyncSnapshot.withError(
+      AsyncState.done,
+      new FailedToPerformWriteToContract(
+        new ContractFunctionExecutionError(
+          new ContractFunctionRevertedError({
+            abi: RewardClaimAbi,
+            data: '0x646cf558',
+            functionName: 'claimRewards',
+          }),
+          {
+            abi: RewardClaimAbi,
+            functionName: 'claimRewards',
+            args: ['0x', '0x'],
+          },
+        ),
+      ),
+    ),
+  },
+};
+
+/**
+ * Regression: InvalidAuthRoot revert should show a specific message
+ * encouraging the user to retry.
+ */
+export const InvalidAuthRootError: Story = {
+  args: {
+    claimRewardsAsyncSnapshot: AsyncSnapshot.withError(
+      AsyncState.done,
+      new FailedToPerformWriteToContract(
+        new ContractFunctionExecutionError(
+          new ContractFunctionRevertedError({
+            abi: RewardClaimAbi,
+            data: '0x328b8878',
+            functionName: 'claimRewards',
+          }),
+          {
+            abi: RewardClaimAbi,
+            functionName: 'claimRewards',
+            args: ['0x', '0x'],
+          },
+        ),
+      ),
     ),
   },
 };
