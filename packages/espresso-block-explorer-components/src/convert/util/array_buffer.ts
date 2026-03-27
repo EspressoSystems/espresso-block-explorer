@@ -39,7 +39,9 @@ function cloneFromTypedArray(
   const l = input.byteLength;
   const buffer = new ArrayBuffer(l);
   const dst = new DataView(buffer);
-  const src = new DataView(input.slice().buffer);
+  const src = new DataView(
+    input.buffer.slice(input.byteOffset, input.byteOffset + input.byteLength),
+  );
 
   for (let i = 0; i < l; i++) {
     dst.setUint8(i, src.getUint8(i));
