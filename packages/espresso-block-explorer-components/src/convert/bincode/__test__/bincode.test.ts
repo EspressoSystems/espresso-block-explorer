@@ -1,4 +1,5 @@
 import { createBufferedDataView, Endianess } from '@/convert/data_view';
+import { ensureArrayBuffer } from '@/convert/util/array_buffer';
 import { describe, expect, test } from 'vitest';
 import { createBincodeDeserializer } from '../deserializer';
 import { createBincodeSerializer } from '../serializer';
@@ -23,7 +24,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeBoolean()).to.equal(value);
           }
@@ -47,7 +48,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeInt8()).to.equal(value);
           }
@@ -71,7 +72,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeUint8()).to.equal(value);
           }
@@ -95,7 +96,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeInt16()).to.equal(value);
           }
@@ -119,7 +120,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeUint16()).to.equal(value);
           }
@@ -145,7 +146,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeInt32()).to.equal(value);
           }
@@ -169,7 +170,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeUint32()).to.equal(value);
           }
@@ -204,7 +205,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeInt64()).to.equal(value);
           }
@@ -235,7 +236,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeUint64()).to.equal(value);
           }
@@ -272,7 +273,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeInt128()).to.equal(value);
           }
@@ -304,7 +305,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeUint128()).to.equal(value);
           }
@@ -328,7 +329,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeFloat32()).to.equal(value);
           }
@@ -352,7 +353,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(byteSize);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeFloat64()).to.equal(value);
           }
@@ -374,7 +375,7 @@ describe('bincode', () => {
             expect(() => serializer.serializeStringUTF8(value)).not.toThrow();
             const bytes = serializer.toBytes();
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeStringUTF8()).to.equal(value);
           }
@@ -397,7 +398,7 @@ describe('bincode', () => {
             const bytes = serializer.toBytes();
             expect(bytes.byteLength).to.equal(value.byteLength + 8);
             const deserializer = createBincodeDeserializer(
-              createBufferedDataView(bytes.buffer, endianess),
+              createBufferedDataView(ensureArrayBuffer(bytes), endianess),
             );
             expect(deserializer.deserializeBytes()).to.deep.equal(value);
           }

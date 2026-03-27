@@ -3,9 +3,10 @@ import CopyWalletAddress from '@/block_explorer/components/text/copy_wallet_addr
 import DateTimeText from '@/components/text/date_time_text';
 import MoneyText from '@/components/text/money_text';
 import WalletAddressText from '@/components/text/wallet_address_text';
-import { uint8ArrayToArrayBufferCodec } from '@/convert/codec';
+import { uint8ArrayToArrayBufferCodec } from '@/convert/codec/uint8_array';
 import { createBufferedDataView, Endianess } from '@/convert/data_view';
 import { createRLPDeserializer } from '@/convert/rlp';
+import { isOptimismIntegrationNamespace } from '@/models/block_explorer/rollup_entry/data';
 import { decodeEthHeader, EthHeader } from '@/service/ethereum/header';
 import {
   decodeEthTransaction,
@@ -33,7 +34,6 @@ import {
   EthTransactionExtensionComponentContext,
 } from './ethereum_display';
 import { TransactionDetailContext } from './transaction_detail_loader';
-import { isOptimismIntegrationNamespace } from '@/models/block_explorer/rollup_entry/data';
 
 /**
  * OptimismEspressoBatchV0 represents the data that is submitted to Espresso

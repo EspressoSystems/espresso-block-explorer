@@ -1,5 +1,7 @@
 export * from './array';
 export * from './array_buffer';
+export * from './array_buffer_base64';
+export * from './array_buffer_hex';
 export * from './bigint';
 export * from './boolean';
 export * from './convert';

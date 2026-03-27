@@ -1,4 +1,4 @@
-import { hexArrayBufferCodec } from '@/convert/codec';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import '@testing-library/jest-dom';
 import { describe, expect, it } from 'vitest';
 import { createKeccakHash } from '../family';

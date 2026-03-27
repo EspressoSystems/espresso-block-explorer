@@ -1,4 +1,4 @@
-import { Converter, TypeCheckingCodec } from '@/convert/codec';
+import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import {
   StakeTableField,
   stakeTableFieldArrayCodec,

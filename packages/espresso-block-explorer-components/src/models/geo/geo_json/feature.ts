@@ -1,4 +1,4 @@
-import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import {
   Codec,
   Converter,

@@ -1,4 +1,4 @@
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import React from 'react';
 import './inline.css';
 

@@ -1,5 +1,6 @@
-import { booleanCodec, stringCodec } from '@/convert/codec';
+import { booleanCodec } from '@/convert/codec/boolean';
 import { Codec } from '@/convert/codec/convert';
+import { stringCodec } from '@/convert/codec/string';
 import { WebWorkerClientBasedL1BlockAPI } from '../l1_block/implementations/web_worker_client';
 import { L1BlockAPI } from '../l1_block/l1_block_api';
 import { L1ValidatorService } from '../l1_validator_service_api';

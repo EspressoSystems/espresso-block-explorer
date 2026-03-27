@@ -1,58 +1,23 @@
-import { assertInstanceOf } from '@/assert/assert';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
-import {
-  Converter,
-  TypeCheckingCodec,
-  assertRecordWithKeys,
-} from '@/convert/codec/convert';
-import { numberArrayCodec, numberCodec } from '@/convert/codec/number';
-import {
-  TaggedBase64,
-  taggedBase64Codec,
-} from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoAPIHeader, cappuccinoAPIHeaderCodec } from './block_header';
-import { CappuccinoAPIPayload, cappuccinoAPIPayloadCodec } from './payload';
-import {
-  CappuccinoAPIQuorumCertificate,
-  cappuccinoAPIQuorumCertificateCodec,
-} from './quorum_certificate';
+import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
+import ExpectedObjectWithKeyError from '@/convert/codec/expected_object_with_key_error';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
+import { CappuccinoAPIHeader } from './block_header';
+import { LeafV0, leafV0Codec } from './leaf_v0';
+import { LeafV1, leafV1Codec } from './leaf_v1';
+import { LeafV2, leafV2Codec } from './leaf_v2';
+import { CappuccinoAPIPayload } from './payload';
+import { SimpleCertificate } from './simple_certificate';
+import UnimplementedError from '@/errors/unimplemented_error';
 
 /**
  * CappuccinoAPILeaf represents a leaf in the Cappuccino API.
  */
-export class CappuccinoAPILeaf {
+export interface CappuccinoAPILeaf {
   readonly view_number: number;
-  readonly justify_qc: CappuccinoAPIQuorumCertificate;
+  readonly justify_qc: SimpleCertificate<unknown>;
   readonly parent_commitment: TaggedBase64;
   readonly block_header: CappuccinoAPIHeader;
-  readonly block_payload: CappuccinoAPIPayload;
-  readonly rejected: number[];
-  readonly timestamp: number;
-  readonly proposer_id: ArrayBuffer;
-
-  constructor(
-    view_number: number,
-    justify_qc: CappuccinoAPIQuorumCertificate,
-    parent_commitment: TaggedBase64,
-    block_header: CappuccinoAPIHeader,
-    block_payload: CappuccinoAPIPayload,
-    rejected: number[],
-    timestamp: number,
-    proposer_id: ArrayBuffer,
-  ) {
-    this.view_number = view_number;
-    this.justify_qc = justify_qc;
-    this.parent_commitment = parent_commitment;
-    this.block_header = block_header;
-    this.block_payload = block_payload;
-    this.rejected = rejected;
-    this.timestamp = timestamp;
-    this.proposer_id = proposer_id;
-  }
-
-  toJSON() {
-    return cappuccinoAPILeafCodec.encode(this);
-  }
+  readonly block_payload: null | CappuccinoAPIPayload;
 }
 
 export class CappuccinoAPILeafDecoder implements Converter<
@@ -60,45 +25,45 @@ export class CappuccinoAPILeafDecoder implements Converter<
   CappuccinoAPILeaf
 > {
   convert(input: unknown): CappuccinoAPILeaf {
-    assertRecordWithKeys(
-      input,
-      'view_number',
-      'justify_qc',
-      'parent_commitment',
-      'block_header',
-      'block_payload',
-      'rejected',
-      'timestamp',
-      'proposer_id',
-    );
+    try {
+      return leafV2Codec.decode(input);
+    } catch (err) {
+      if (!(err instanceof ExpectedObjectWithKeyError)) {
+        throw err;
+      }
 
-    return new CappuccinoAPILeaf(
-      numberCodec.decode(input.view_number),
-      cappuccinoAPIQuorumCertificateCodec.decode(input.justify_qc),
-      taggedBase64Codec.decode(input.parent_commitment),
-      cappuccinoAPIHeaderCodec.decode(input.block_header),
-      cappuccinoAPIPayloadCodec.decode(input.block_payload),
-      numberArrayCodec.decode(input.rejected),
-      numberCodec.decode(input.timestamp),
-      hexArrayBufferCodec.decode(input.proposer_id),
-    );
+      // Try a different version
+    }
+
+    try {
+      return leafV1Codec.decode(input);
+    } catch (err) {
+      if (!(err instanceof ExpectedObjectWithKeyError)) {
+        throw err;
+      }
+
+      // Try a different version
+    }
+
+    return leafV0Codec.decode(input);
   }
 }
 
 export class CappuccinoAPILeafEncoder implements Converter<CappuccinoAPILeaf> {
   convert(input: CappuccinoAPILeaf) {
-    assertInstanceOf(input, CappuccinoAPILeaf);
+    if (input instanceof LeafV2) {
+      return leafV2Codec.encode(input);
+    }
 
-    return {
-      view_number: numberCodec.encode(input.view_number),
-      justify_qc: cappuccinoAPIQuorumCertificateCodec.encode(input.justify_qc),
-      parent_commitment: taggedBase64Codec.encode(input.parent_commitment),
-      block_header: cappuccinoAPIHeaderCodec.encode(input.block_header),
-      block_payload: cappuccinoAPIPayloadCodec.encode(input.block_payload),
-      rejected: numberArrayCodec.encode(input.rejected),
-      timestamp: numberCodec.encode(input.timestamp),
-      proposer_id: hexArrayBufferCodec.encode(input.proposer_id),
-    };
+    if (input instanceof LeafV1) {
+      return leafV1Codec.encode(input);
+    }
+
+    if (input instanceof LeafV0) {
+      return leafV0Codec.encode(input);
+    }
+
+    throw new UnimplementedError();
   }
 }
 

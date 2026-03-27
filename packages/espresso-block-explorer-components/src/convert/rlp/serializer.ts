@@ -229,7 +229,7 @@ class RLPSerializerImpl extends RLPSerializerBase {
 
     const buffer = new Uint8Array(16);
     const dv = createBufferedDataView(buffer.buffer, Endianess.big);
-    dv.setInt128(input);
+    dv.setBigInt128(input);
     return this.serializeByteString(buffer);
   }
 
@@ -237,7 +237,7 @@ class RLPSerializerImpl extends RLPSerializerBase {
     const buffer = new Uint8Array(16);
     const dv = createBufferedDataView(buffer.buffer, Endianess.big);
     // Encode as big endian
-    dv.setUint128(input);
+    dv.setBigUint128(input);
     return this.serializePositiveInteger(buffer);
   }
 

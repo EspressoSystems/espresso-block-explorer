@@ -1,6 +1,6 @@
 import { assertInstanceOf } from '@/assert/assert';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
-import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer_base64';
 import {
   Converter,
   TypeCheckingCodec,

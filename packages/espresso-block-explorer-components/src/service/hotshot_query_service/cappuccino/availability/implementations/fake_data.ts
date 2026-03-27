@@ -22,23 +22,23 @@ import {
   CappuccinoAPIHeaderFields,
   CappuccinoAPIHeaderImpl,
 } from '../block_header';
+import { CappuccinoAPIV0HeaderFieldsImpl } from '../block_header_v0';
 import { CappuccinoBuilderSignature } from '../builder_signature';
 import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
 import { CappuccinoFeeInfo } from '../fee_info';
 import { CappuccinoL1Finalized } from '../l1_finalized';
-import { CappuccinoAPILeaf } from '../leaf';
 import { CappuccinoAPILeafResponse } from '../leaf_response';
+import { LeafV0 } from '../leaf_v0';
 import { CappuccinoAPIMerkleTreeBranchProof } from '../merkle_tree_proof';
 import { CappuccinoNamespaceTable } from '../namespace_table';
 import { CappuccinoAPIPayload } from '../payload';
-import { CappuccinoAPIQuorumCertificate } from '../quorum_certificate';
-import { CappuccinoAPIBQuorumCertificateData } from '../quorum_certificate_data';
+import { QuorumCertificateV1 } from '../quorum_certificate_v1';
+import { QuorumDataV1 } from '../quorum_data_v1';
 import { CappuccinoAPITransactionNMTEntry } from '../transaction_nmt_entry';
 import { CappuccinoAPITransactionProof } from '../transaction_proof';
 import { CappuccinoAPITransactionResponse } from '../transaction_response';
-import { CappuccinoAPIV0HeaderFieldsImpl } from '../block_header_v0';
-import { WrappedVersion, CappuccinoVersion } from '../version';
+import { CappuccinoVersion, WrappedVersion } from '../version';
 
 // type Generated<T> = T extends Generator<infer A> ? A : never;
 type AsyncGenerated<T> = T extends AsyncGenerator<infer A> ? A : never;
@@ -157,10 +157,10 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements Cap
     const block = await this.getBlockFromHeight(height);
 
     return new CappuccinoAPILeafResponse(
-      new CappuccinoAPILeaf(
+      new LeafV0(
         height,
-        new CappuccinoAPIQuorumCertificate(
-          new CappuccinoAPIBQuorumCertificateData(
+        new QuorumCertificateV1(
+          new QuorumDataV1(
             new TaggedBase64('EMPTY', new Uint8Array([0, 0, 0, 0]).buffer),
           ),
           new TaggedBase64('EMPTY', new Uint8Array([0, 0, 0, 0]).buffer),
@@ -176,8 +176,8 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements Cap
         block.header.fields.timestamp,
         block.header.fields.fee_info.account,
       ),
-      new CappuccinoAPIQuorumCertificate(
-        new CappuccinoAPIBQuorumCertificateData(
+      new QuorumCertificateV1(
+        new QuorumDataV1(
           new TaggedBase64('EMPTY', new Uint8Array([0, 0, 0, 0]).buffer),
         ),
         new TaggedBase64('EMPTY', new Uint8Array([0, 0, 0, 0]).buffer),

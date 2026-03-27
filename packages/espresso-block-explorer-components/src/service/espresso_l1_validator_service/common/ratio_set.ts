@@ -1,9 +1,9 @@
-import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec';
 import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
 import { nullableURLCodec, optionalURLCodec } from '@/convert/codec/url';
 
 /**

@@ -1,15 +1,13 @@
 import {
-  nullableStringCodec,
-  NullCodec,
-  NullDecoder,
-  NullEncoder,
-  preferNullOverEmptyString,
-} from '@/convert/codec';
-import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
+import {
+  nullableStringCodec,
+  preferNullOverEmptyString,
+} from '@/convert/codec/string';
 import Degrees from '@/models/geo/units/degrees';
 import LatLng, { nullableLatLngDegreesCodec } from '@/models/geo/units/lat_lng';
 

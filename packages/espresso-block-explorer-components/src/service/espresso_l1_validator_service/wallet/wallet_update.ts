@@ -2,7 +2,7 @@ import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
-} from '@/convert/codec';
+} from '@/convert/codec/convert';
 import { L1BlockInfo, l1BlockInfoJSONCodec } from '../common/l1_block_info';
 import { WalletDiff } from './wallet_diff/wallet_diff';
 import { walletDiffArrayJSONCodec } from './wallet_diff/wallet_diff_codec';

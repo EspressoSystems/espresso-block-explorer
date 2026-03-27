@@ -3,19 +3,15 @@ import {
   BincodeDeserializerBase,
 } from '@/convert/bincode/deserializer';
 import { BincodeSerializer } from '@/convert/bincode/serializer';
-import {
-  ArrayCodec,
-  ArrayDecoder,
-  ArrayEncoder,
-  numberCodec,
-  stringCodec,
-  uint8ArrayToArrayBufferCodec,
-} from '@/convert/codec';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import {
   Converter,
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
+import { stringCodec } from '@/convert/codec/string';
+import { uint8ArrayToArrayBufferCodec } from '@/convert/codec/uint8_array';
 import InvalidTypeError from '@/errors/invalid_type_error';
 import WalletAddress, {
   walletAddressCodec,

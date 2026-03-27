@@ -9,31 +9,29 @@ import { CappuccinoAPIV0HeaderFieldsImpl } from '../block_header_v0';
 import { CappuccinoBuilderSignature } from '../builder_signature';
 import { CappuccinoFeeInfo } from '../fee_info';
 import { CappuccinoL1Finalized } from '../l1_finalized';
-import { CappuccinoAPILeaf } from '../leaf';
 import {
   CappuccinoAPILeafResponse,
   cappuccinoAPILeafResponseCodec,
 } from '../leaf_response';
+import { LeafV0 } from '../leaf_v0';
 import { CappuccinoNamespaceTable } from '../namespace_table';
 import { CappuccinoAPIPayload } from '../payload';
-import { CappuccinoAPIQuorumCertificate } from '../quorum_certificate';
-import { CappuccinoAPIBQuorumCertificateData } from '../quorum_certificate_data';
-import { CappuccinoAPIQuorumCertificateSignatures } from '../quorum_certificate_signatures';
+import { QuorumCertificateV1 } from '../quorum_certificate_v1';
+import { QuorumDataV1 } from '../quorum_data_v1';
+import { SimpleCertificateSignatures } from '../simple_certificate_signatures';
 import { CappuccinoAPITransactionNMTEntry } from '../transaction_nmt_entry';
 import { CappuccinoVersion, WrappedVersion } from '../version';
 
 describe('CappuccinoAPILeafResponse', () => {
   const prng = new PseudoRandomNumberGenerator();
   for (let i = 0; i < 10; i++) {
-    const leaf = new CappuccinoAPILeaf(
+    const leaf = new LeafV0(
       prng.nextInt(),
-      new CappuccinoAPIQuorumCertificate(
-        new CappuccinoAPIBQuorumCertificateData(
-          new TaggedBase64('COMMIT', prng.fillBytes(20)),
-        ),
+      new QuorumCertificateV1(
+        new QuorumDataV1(new TaggedBase64('COMMIT', prng.fillBytes(20))),
         new TaggedBase64('VOTE', prng.fillBytes(20)),
         prng.nextInt(),
-        new CappuccinoAPIQuorumCertificateSignatures(
+        new SimpleCertificateSignatures(
           new TaggedBase64('SIG', prng.fillBytes(20)),
           new CappuccinoAPIBitVec(
             CappuccinoAPIBitVecOrder.lsb0,
@@ -81,13 +79,11 @@ describe('CappuccinoAPILeafResponse', () => {
       prng.fillBytes(20),
     );
 
-    const qc = new CappuccinoAPIQuorumCertificate(
-      new CappuccinoAPIBQuorumCertificateData(
-        new TaggedBase64('QC', prng.fillBytes(20)),
-      ),
+    const qc = new QuorumCertificateV1(
+      new QuorumDataV1(new TaggedBase64('QC', prng.fillBytes(20))),
       new TaggedBase64('VOTE', prng.fillBytes(20)),
       prng.nextInt(),
-      new CappuccinoAPIQuorumCertificateSignatures(
+      new SimpleCertificateSignatures(
         new TaggedBase64('SIG', prng.fillBytes(20)),
         new CappuccinoAPIBitVec(
           CappuccinoAPIBitVecOrder.lsb0,
@@ -103,11 +99,11 @@ describe('CappuccinoAPILeafResponse', () => {
     const response = new CappuccinoAPILeafResponse(leaf, qc);
 
     it('should encode and decode to the same values', () => {
-      expect(
-        cappuccinoAPILeafResponseCodec.decode(
-          cappuccinoAPILeafResponseCodec.encode(response),
-        ),
-      ).deep.equals(response);
+      const want = response;
+      const have = cappuccinoAPILeafResponseCodec.decode(
+        cappuccinoAPILeafResponseCodec.encode(response),
+      );
+      expect(have).deep.equals(want);
     });
   }
 });

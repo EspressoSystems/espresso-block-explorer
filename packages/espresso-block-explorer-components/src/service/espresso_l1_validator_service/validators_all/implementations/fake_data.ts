@@ -1,4 +1,4 @@
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { nullableURLCodec } from '@/convert/codec/url';
 import { nodeList } from '@/data_source/fake_data_source/espresso/nodes';
 import { mapIterable } from '@/functional/functional';

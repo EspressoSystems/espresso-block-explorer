@@ -1,4 +1,3 @@
-import { hexArrayBufferArrayCodec } from '@/convert/codec';
 import {
   assertRecordWithKeys,
   Converter,
@@ -6,6 +5,7 @@ import {
 } from '@/convert/codec/convert';
 import { Ratio, ratioCodec } from '../../common/ratio';
 import { ActiveNodeSetDiff } from './active_node_set_diff';
+import { hexArrayBufferArrayCodec } from '@/convert/codec/array_buffer_hex';
 
 /**
  * NewEpoch represents the beginning of a new epoch in the active validator set.

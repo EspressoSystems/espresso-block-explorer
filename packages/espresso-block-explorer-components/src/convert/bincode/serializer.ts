@@ -107,11 +107,11 @@ class BincodeSerializerImpl extends BincodeSerializerBase {
   }
 
   serializeInt128(input: bigint): void {
-    this.bufferedDataView.setInt128(input);
+    this.bufferedDataView.setBigInt128(input);
   }
 
   serializeUint128(input: bigint): void {
-    this.bufferedDataView.setUint128(input);
+    this.bufferedDataView.setBigUint128(input);
   }
 
   toBytes(): Uint8Array {

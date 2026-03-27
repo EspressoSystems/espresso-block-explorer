@@ -1,5 +1,5 @@
 import { validateAndExpandResponse } from '@/async/fetch/response_validators';
-import { hexArrayBufferCodec } from '@/convert/codec';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { WalletAPI } from '../wallet_api';
 import { WalletSnapshot, walletSnapshotJSONCodec } from '../wallet_snapshot';
 import { WalletUpdate, walletUpdateJSONCodec } from '../wallet_update';

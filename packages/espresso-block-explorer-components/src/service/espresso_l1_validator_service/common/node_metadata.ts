@@ -1,16 +1,14 @@
 import {
-  NullCodec,
-  NullDecoder,
-  NullEncoder,
-  OptionalCodec,
-  OptionalDecoder,
-  OptionalEncoder,
-} from '@/convert/codec';
-import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
+import {
+  OptionalCodec,
+  OptionalDecoder,
+  OptionalEncoder,
+} from '@/convert/codec/optional';
 import { urlCodec } from '@/convert/codec/url';
 import {
   NodeMetadataContent,

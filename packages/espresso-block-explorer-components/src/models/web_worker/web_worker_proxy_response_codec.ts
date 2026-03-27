@@ -2,7 +2,7 @@ import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
-} from '@/convert/codec';
+} from '@/convert/codec/convert';
 import { EspressoError } from '@/errors/espresso_error';
 import InvalidTypeError from '@/errors/invalid_type_error';
 import UnimplementedError from '@/errors/unimplemented_error';

@@ -1,4 +1,4 @@
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import React from 'react';
 import CopyButton from '../hid/buttons/copy_button/copy_button';
 import { CopyArrayBufferAsTextProps } from './copy_array_buffer_as_text_props';

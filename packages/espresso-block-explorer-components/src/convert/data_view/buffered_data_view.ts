@@ -1,3 +1,4 @@
+import UnimplementedError from '@/errors/unimplemented_error';
 import { uint8ArrayToArrayBufferCodec } from '../codec/uint8_array';
 import { Endianess } from './endianess';
 
@@ -22,15 +23,19 @@ export interface BufferedDataView {
   getUint8(): number;
   getUint16(): number;
   getUint32(): number;
-  getUint64(): bigint;
+  getBigUint64(): bigint;
   getInt8(): number;
   getInt16(): number;
   getInt32(): number;
-  getInt64(): bigint;
+  getBigInt64(): bigint;
   getFloat32(): number;
   getFloat64(): number;
-  getInt128(): bigint;
-  getUint128(): bigint;
+  getBigInt128(): bigint;
+  getBigUint128(): bigint;
+  getBigInt256(): bigint;
+  getBigUint256(): bigint;
+  getBigInt512(): bigint;
+  getBigUint512(): bigint;
 
   getBytes(length: number): Uint8Array;
 
@@ -45,8 +50,12 @@ export interface BufferedDataView {
   setInt64(input: bigint): void;
   setFloat32(input: number): void;
   setFloat64(input: number): void;
-  setInt128(input: bigint): void;
-  setUint128(input: bigint): void;
+  setBigInt128(input: bigint): void;
+  setBigUint128(input: bigint): void;
+  setBigInt256(input: bigint): void;
+  setBigUint256(input: bigint): void;
+  setBigInt512(input: bigint): void;
+  setBigUint512(input: bigint): void;
 
   setBytes(input: Uint8Array): void;
 }
@@ -67,15 +76,19 @@ export abstract class BufferedDataViewBase implements BufferedDataView {
   abstract getInt8(): number;
   abstract getInt16(): number;
   abstract getInt32(): number;
-  abstract getInt64(): bigint;
+  abstract getBigInt64(): bigint;
   abstract getUint8(): number;
   abstract getUint16(): number;
   abstract getUint32(): number;
-  abstract getUint64(): bigint;
+  abstract getBigUint64(): bigint;
   abstract getFloat32(): number;
   abstract getFloat64(): number;
-  abstract getInt128(): bigint;
-  abstract getUint128(): bigint;
+  abstract getBigInt128(): bigint;
+  abstract getBigUint128(): bigint;
+  abstract getBigInt256(): bigint;
+  abstract getBigUint256(): bigint;
+  abstract getBigInt512(): bigint;
+  abstract getBigUint512(): bigint;
 
   abstract getBytes(length: number): Uint8Array;
 
@@ -90,8 +103,12 @@ export abstract class BufferedDataViewBase implements BufferedDataView {
   abstract setInt64(input: bigint): void;
   abstract setFloat32(input: number): void;
   abstract setFloat64(input: number): void;
-  abstract setInt128(input: bigint): void;
-  abstract setUint128(input: bigint): void;
+  abstract setBigInt128(input: bigint): void;
+  abstract setBigUint128(input: bigint): void;
+  abstract setBigInt256(input: bigint): void;
+  abstract setBigUint256(input: bigint): void;
+  abstract setBigInt512(input: bigint): void;
+  abstract setBigUint512(input: bigint): void;
 
   abstract setBytes(input: Uint8Array): void;
 }
@@ -172,7 +189,7 @@ class BufferedDataViewImpl extends BufferedDataViewBase {
     }
   }
 
-  getUint64(): bigint {
+  getBigUint64(): bigint {
     try {
       return this.dataView.getBigUint64(
         this.offset,
@@ -213,7 +230,7 @@ class BufferedDataViewImpl extends BufferedDataViewBase {
     }
   }
 
-  getInt64(): bigint {
+  getBigInt64(): bigint {
     try {
       return this.dataView.getBigInt64(
         this.offset,
@@ -246,43 +263,79 @@ class BufferedDataViewImpl extends BufferedDataViewBase {
     }
   }
 
-  getInt128(): bigint {
-    try {
-      const { isLittleEndian } = this.currentEndianess;
-      const first = this.dataView.getBigUint64(this.offset, isLittleEndian);
+  private createIndexFunction(numBytes: number, fromEnd: boolean) {
+    if (!fromEnd) {
+      return (offset: number, index: number) => {
+        return offset + index;
+      };
+    }
 
-      const second = this.dataView.getBigUint64(
-        this.offset + 8,
-        isLittleEndian,
+    return (offset: number, index: number) => {
+      return offset + numBytes - 1 - index;
+    };
+  }
+
+  private createEncodeIndexFunction(numBytes: number, endianess: Endianess) {
+    return this.createIndexFunction(numBytes, !endianess.isLittleEndian);
+  }
+
+  private createDecodeIndexFunction(numBytes: number, endianess: Endianess) {
+    return this.createIndexFunction(numBytes, endianess.isLittleEndian);
+  }
+
+  private getBigUintN(bits: number): bigint {
+    const numBytes = bits / 8;
+    if (!Number.isInteger(numBytes) || numBytes <= 0) {
+      throw new UnimplementedError();
+    }
+
+    try {
+      let local = 0n;
+      const offsetFn = this.createDecodeIndexFunction(
+        numBytes,
+        this.currentEndianess,
       );
 
-      const low = isLittleEndian ? first : second;
-      const high = isLittleEndian ? second : first;
+      for (let i = 0; i < numBytes; i++) {
+        const value = BigInt.asUintN(
+          8,
+          BigInt(this.dataView.getUint8(offsetFn(this.offset, i))),
+        );
+        local = (local << 8n) | value;
+      }
 
-      const reconstructed = (high << 64n) | low;
-      return BigInt.asIntN(128, reconstructed);
+      return BigInt.asUintN(bits, local);
     } finally {
-      this.offset += 16;
+      this.offset += numBytes;
     }
   }
 
-  getUint128(): bigint {
-    try {
-      const { isLittleEndian } = this.currentEndianess;
-      const first = this.dataView.getBigUint64(this.offset, isLittleEndian);
+  private getBigIntN(bits: number): bigint {
+    return BigInt.asIntN(bits, this.getBigUintN(bits));
+  }
 
-      const second = this.dataView.getBigUint64(
-        this.offset + 8,
-        isLittleEndian,
-      );
+  getBigInt128(): bigint {
+    return this.getBigIntN(128);
+  }
 
-      const low = isLittleEndian ? first : second;
-      const high = isLittleEndian ? second : first;
+  getBigUint128(): bigint {
+    return this.getBigUintN(128);
+  }
 
-      return (high << 64n) | low;
-    } finally {
-      this.offset += 16;
-    }
+  getBigInt256(): bigint {
+    return this.getBigIntN(256);
+  }
+
+  getBigUint256(): bigint {
+    return this.getBigUintN(256);
+  }
+
+  getBigInt512(): bigint {
+    return this.getBigIntN(512);
+  }
+
+  getBigUint512(): bigint {
+    return this.getBigUintN(512);
   }
 
   getBytes(length: number): Uint8Array {
@@ -425,38 +478,57 @@ class BufferedDataViewImpl extends BufferedDataViewBase {
     }
   }
 
-  setInt128(input: bigint): void {
+  private setBigIntN(input: bigint, bits: number) {
+    const trunc = BigInt.asIntN(bits, input);
+    return this.setBigUintN(trunc, bits);
+  }
+
+  private setBigUintN(input: bigint, bits: number) {
+    const numBytes = bits / 8;
+    if (!Number.isInteger(numBytes)) {
+      throw new UnimplementedError();
+    }
+
     try {
-      const trunc = BigInt.asIntN(128, input);
-      const low = (trunc >> 0n) & 0xffffffffffffffffn;
-      const high = (trunc >> 64n) & 0xffffffffffffffffn;
+      const trunc = BigInt.asUintN(bits, input);
+      let local = trunc;
+      const offsetFn = this.createEncodeIndexFunction(
+        numBytes,
+        this.currentEndianess,
+      );
 
-      const { isLittleEndian } = this.currentEndianess;
-      const first = isLittleEndian ? low : high;
-      const second = isLittleEndian ? high : low;
-
-      this.dataView.setBigUint64(this.offset, first, isLittleEndian);
-      this.dataView.setBigUint64(this.offset + 8, second, isLittleEndian);
+      for (let i = 0; i < numBytes; i++) {
+        const value = local & 0xffn;
+        local >>= 8n;
+        this.dataView.setUint8(offsetFn(this.offset, i), Number(value));
+      }
     } finally {
-      this.offset += 16;
+      this.offset += numBytes;
     }
   }
 
-  setUint128(input: bigint): void {
-    try {
-      const trunc = BigInt.asIntN(128, input);
-      const low = (trunc >> 0n) & 0xffffffffffffffffn;
-      const high = (trunc >> 64n) & 0xffffffffffffffffn;
+  setBigInt128(input: bigint): void {
+    this.setBigIntN(input, 128);
+  }
 
-      const { isLittleEndian } = this.currentEndianess;
-      const first = isLittleEndian ? low : high;
-      const second = isLittleEndian ? high : low;
+  setBigUint128(input: bigint): void {
+    this.setBigUintN(input, 128);
+  }
 
-      this.dataView.setBigUint64(this.offset, first, isLittleEndian);
-      this.dataView.setBigUint64(this.offset + 8, second, isLittleEndian);
-    } finally {
-      this.offset += 16;
-    }
+  setBigInt256(input: bigint): void {
+    this.setBigIntN(input, 256);
+  }
+
+  setBigUint256(input: bigint): void {
+    this.setBigUintN(input, 256);
+  }
+
+  setBigInt512(input: bigint): void {
+    this.setBigIntN(input, 512);
+  }
+
+  setBigUint512(input: bigint): void {
+    this.setBigUintN(input, 512);
   }
 }
 

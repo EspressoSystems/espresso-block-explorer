@@ -1,8 +1,8 @@
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import {
-  hexArrayBufferCodec,
   rawStdBase64ArrayBufferCodec,
   rawURLBase64ArrayBufferCodec,
-} from '@/convert/codec/array_buffer';
+} from '@/convert/codec/array_buffer_base64';
 import { Environment } from '../environment/environment';
 
 export const environmentControlArgType = {
@@ -95,7 +95,7 @@ export interface EnvironmentWithContractsArgs extends EnvironmentArgs {
 
 export const environmentArgsMilk: EnvironmentArgs = {
   environment: Environment.milk,
-  hotshotQueryServiceURL: 'https://query.milk.devnet.espresso.network/v0/',
+  hotshotQueryServiceURL: 'https://cache.milk.devnet.espresso.network/v0/',
   nodeValidatorWebSocketURL: 'wss://nv.milk.devnet.espresso.network/v0/',
 };
 
@@ -109,7 +109,7 @@ export const environmentArgsMilkWithContracts: EnvironmentWithContractsArgs = {
 
 export const environmentArgsWater: EnvironmentArgs = {
   environment: Environment.water,
-  hotshotQueryServiceURL: 'https://query.water.devnet.espresso.network/v0/',
+  hotshotQueryServiceURL: 'https://cache.water.devnet.espresso.network/v0/',
   nodeValidatorWebSocketURL: 'wss://nv.water.devnet.espresso.network/v0/',
 };
 
@@ -123,7 +123,7 @@ export const environmentArgsWaterWithContracts: EnvironmentWithContractsArgs = {
 
 export const environmentArgsDecaf: EnvironmentArgs = {
   environment: Environment.decaf,
-  hotshotQueryServiceURL: 'https://query.decaf.testnet.espresso.network/v0/',
+  hotshotQueryServiceURL: 'https://cache.decaf.testnet.espresso.network/v0/',
   nodeValidatorWebSocketURL: 'wss://nv.decaf.testnet.espresso.network/v0/',
 };
 
@@ -137,8 +137,8 @@ export const environmentArgsDecafWithContracts: EnvironmentWithContractsArgs = {
 
 export const environmentArgsMainnet: EnvironmentArgs = {
   environment: Environment.mainnet,
-  hotshotQueryServiceURL: 'https://query.main.net.espresso.network/v0/',
-  nodeValidatorWebSocketURL: 'wss://nv.main.net.espresso.network/v0/',
+  hotshotQueryServiceURL: 'https://cache.main.net.espresso.network/v0/',
+  nodeValidatorWebSocketURL: 'wss:/nv.main.net.espresso.network/v0/',
 };
 
 export const environmentArgsMainnetWithContracts: EnvironmentWithContractsArgs =

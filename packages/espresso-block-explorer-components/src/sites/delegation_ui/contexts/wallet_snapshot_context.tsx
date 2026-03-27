@@ -2,7 +2,7 @@ import { PromiseResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { DataContext } from '@/contexts/data_provider';
 import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { neverPromise } from '@/functional/functional_async';
 import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
 import React from 'react';
@@ -33,9 +33,9 @@ export const RetrieveWalletSnapshot: React.FC<React.PropsWithChildren> = ({
     !l1BlockInfo || !walletAddress
       ? neverPromise
       : l1DelegationAPI.wallet.snapshot(
-        hexArrayBufferCodec.decode(walletAddress),
-        l1BlockInfo?.hash,
-      );
+          hexArrayBufferCodec.decode(walletAddress),
+          l1BlockInfo?.hash,
+        );
 
   return (
     <PromiseResolver promise={walletSnapShotPromise}>

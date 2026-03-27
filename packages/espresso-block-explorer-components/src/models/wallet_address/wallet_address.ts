@@ -1,11 +1,7 @@
-import {
-  hexArrayBufferCodec,
-  NullCodec,
-  NullDecoder,
-  NullEncoder,
-} from '@/convert/codec';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import { eip55Encoder } from '@/convert/codec/eip_55';
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
 
 /**
  * WalletAddress represents a general Wallet Address within the Ethereum

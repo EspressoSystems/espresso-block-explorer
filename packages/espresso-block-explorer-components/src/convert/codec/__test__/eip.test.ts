@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { hexArrayBufferCodec } from '../array_buffer';
+import { hexArrayBufferCodec } from '../array_buffer_hex';
 import { eip55Encoder } from '../eip_55';
 
 describe('EIP-55 tests', () => {

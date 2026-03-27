@@ -97,8 +97,9 @@ describe('base64', () => {
         ];
 
         for (const example of examples) {
-          expect(() =>
-            stdEncoding.decode(new Uint8Array(charCodes(example))),
+          expect(
+            () => stdEncoding.decode(new Uint8Array(charCodes(example)).buffer),
+            `${example} is an invalid base64 encoding, and should throw`,
           ).throws();
         }
       });

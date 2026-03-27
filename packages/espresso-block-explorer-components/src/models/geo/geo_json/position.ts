@@ -1,10 +1,5 @@
-import {
-  ArrayCodec,
-  ArrayDecoder,
-  ArrayEncoder,
-  Converter,
-  TypeCheckingCodec,
-} from '@/convert/codec';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
+import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import InvalidTypeError from '@/errors/invalid_type_error';
 import Degrees from '../units/degrees';
 import LatLng from '../units/lat_lng';

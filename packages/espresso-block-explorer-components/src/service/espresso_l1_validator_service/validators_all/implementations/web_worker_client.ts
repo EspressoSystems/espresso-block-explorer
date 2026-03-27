@@ -1,7 +1,5 @@
-import {
-  hexArrayBufferCodec,
-  stdBase64ArrayBufferCodec,
-} from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
+import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer_base64';
 import { Codec } from '@/convert/codec/convert';
 import { AsyncRequestHelper } from '../../web_worker_types';
 import {

@@ -1,4 +1,4 @@
-import { hexArrayBufferCodec } from '@/convert/codec';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { generateAllEspressoBlocks } from '@/data_source/fake_data_source/espresso/blocks';
 import {
   expandAsyncIterator,

@@ -2,7 +2,7 @@ import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
-} from '@/convert/codec';
+} from '@/convert/codec/convert';
 import {
   EpochAndBlock,
   epochAndBlockNumberJSONCodec,

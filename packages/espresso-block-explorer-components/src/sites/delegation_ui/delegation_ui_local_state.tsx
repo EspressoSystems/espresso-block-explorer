@@ -5,12 +5,11 @@ import { AsyncIterableResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { DataContext } from '@/contexts/data_provider';
 import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
-import BadResponseClientError from '@/errors/bad_response_client_error';
-import WebWorkerErrorResponse from '@/errors/web_worker_error_response';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { compareArrayBuffer } from '@/functional/functional';
 import { EpochAndBlock } from '@/service/espresso_l1_validator_service/common/epoch_and_block';
 import { L1BlockID } from '@/service/espresso_l1_validator_service/common/l1_block_id';
+import { L1BlockInfo } from '@/service/espresso_l1_validator_service/common/l1_block_info';
 import { L1ValidatorService } from '@/service/espresso_l1_validator_service/l1_validator_service_api';
 import { ActiveNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_active/active_node_set_snapshot';
 import { applyActiveNodesUpdate } from '@/service/espresso_l1_validator_service/validators_active/apply_active_node_update';
@@ -18,6 +17,7 @@ import { applyAllNodesUpdate } from '@/service/espresso_l1_validator_service/val
 import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
 import { applyWalletSnapshotUpdates } from '@/service/espresso_l1_validator_service/wallet/apply_wallet_update';
 import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
+import { isGoneError } from 'espresso-block-explorer-components';
 import React from 'react';
 import { ActiveValidatorsContext } from './contexts/active_validators_context';
 import { DeriveNodeSetFromFullNodeSetSnapshot } from './contexts/all_validators_context';
@@ -26,128 +26,140 @@ import { EspressoCurrentEpochContext } from './contexts/espresso_current_epoch_c
 import { FullNodeSetSnapshotContext } from './contexts/full_node_set_snapshot_context';
 import { L1BlockIDContext } from './contexts/l1_block_id_context';
 import { WalletSnapshotContext } from './contexts/wallet_snapshot_context';
-import { FetchError } from 'espresso-block-explorer-components';
 
 /**
  * MINIMUM_SLEEP_TIME defines the minimum sleep time
  * between polling attempts.
  */
-const MINIMUM_SLEEP_TIME = 100; // in ms
+const MINIMUM_SLEEP_TIME = 250; // in ms
 
 /**
- * isSameL1Block determines if two L1BlockID objects
- * represent the same L1 Block.
+ * ReorgCause provides a list of causes for why a reorg is being detected. In
+ * general, the specific cause of the Reorg does not really matter, as the
+ * logic result would ultimately be the same regardless of the cause. That
+ * being said, the cause is a point of data that could potentially point to
+ * errorneous logical behavior in our implementation.
+ */
+enum ReorgCause {
+  none,
+  sameHeight,
+  notSuccessor,
+  hashMismatch,
+}
+
+/**
+ * detectHeightReorg is a helper function that will determine the cause for
+ * a Reorg (should one exist), based on the two provided heights.
  *
- * This is a convenience check to quickly rule out L1 Block equality.
+ * The only real cause for a reorg in this case is if the next height is not
+ * the immediate successor to the previous height. If this is not the case
+ * then this is always a reorg cause.  However, specific causes for this
+ * difference may be called out in order to help minimize cases where
+ * this needs to result in a specific reset.
  */
-function isSameL1Block(a: null | L1BlockID, b: null | L1BlockID) {
-  if (a === null && b === null) {
-    return true;
+function detectHeightReorg(
+  previousHeight: bigint,
+  nextHeight: bigint,
+): ReorgCause {
+  if (previousHeight === nextHeight) {
+    return ReorgCause.sameHeight;
   }
 
-  if (a === null || b === null) {
-    return false;
+  if (nextHeight !== previousHeight + 1n) {
+    return ReorgCause.notSuccessor;
   }
 
-  return a.number === b.number && compareArrayBuffer(a.hash, b.hash) === 0;
+  return ReorgCause.none;
 }
 
 /**
- * isNotFoundError is a helper function to determine if an error
- * is, or has, an underlying error that results from a 404 server response.
- */
-function isNotFoundError(error: unknown) {
-  let localError: unknown = error;
-  if (error instanceof WebWorkerErrorResponse) {
-    // We have a WebWorkerErrorResponse, we can inspect the underlying
-    localError = error.error;
-  }
-
-  if (
-    localError instanceof BadResponseClientError &&
-    localError.status === 404
-  ) {
-    // This likely means that the active validator set is not yet
-    // available.  We can just return the previous state.
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * isFetchError is a helper function to determine if an error is, or has, an
- * underlying error that results from a failure during a `fetch` call.
+ * detectL1BlockIDReorg determines if a reorg has occurred between the
+ * previous and the next L1 block ID structures.
  *
- * NOTE: Ideally, we would inspect the nature of the specific `fetch` failure
- * in order to determine whether the failure is a recoverable `feetch` failure
- * or not.  However, the specifics of this error are opaque and hide the
- * details of the underlying cause.  So the best we can do is just treat every
- * `FetchError` as retryable.
+ * The expected next block should be the successor to the previous block.
  */
-function isFetchError(error: unknown) {
-  let localError: unknown = error;
-  if (error instanceof WebWorkerErrorResponse) {
-    // We have a WebWorkerErrorResponse, we can inspect the underlying error.
-    localError = error.error;
+function detectL1BlockIDReorg(
+  previous: null | L1BlockID,
+  next: L1BlockID,
+): ReorgCause {
+  if (!previous) {
+    return ReorgCause.none;
   }
 
-  return localError instanceof FetchError;
-}
+  assert(next !== null);
 
-/**
- * isRetryableError determines if an error that does not represent
- * a category of errors that prevent the attempt from being reattempted.
- */
-function isARetryableError(error: unknown) {
-  return isNotFoundError(error) || isFetchError(error);
-}
-
-/**
- * isL1ReorgDetected determines if a reorg has occurred between the
- * previous L1 block and the new L1 block.
- *
- * The expected next block should be immediately following the previous block.
- */
-function isL1ReorgDetected(
-  previousBlock: null | L1BlockID,
-  newBlock: L1BlockID,
-): boolean {
-  if (!previousBlock) {
-    return false;
-  }
-
-  assert(newBlock !== null);
-
-  if (newBlock.number === previousBlock.number) {
-    // This is odd, we really shouldn't get here.
-    console.warn(
-      'request for l1 block at height returned the previous block?!',
-      previousBlock,
-      newBlock,
-    );
-    return true;
-  }
-
-  if (newBlock.number !== previousBlock.number + 1n) {
-    // The block did not progress as expected, reorg detected.
-    return true;
+  const heightReorg = detectHeightReorg(previous.number, next.number);
+  if (heightReorg !== ReorgCause.none) {
+    return heightReorg;
   }
 
   // Do our hashes agree
-  if (compareArrayBuffer(previousBlock.hash, newBlock.parent) !== 0) {
+  if (compareArrayBuffer(previous.hash, next.parent) !== 0) {
     // We have detected a different in the chain, a reorg has occurred.
-    return true;
+    breakpoint();
+    return ReorgCause.hashMismatch;
   }
 
-  return false;
+  return ReorgCause.none;
 }
+
+/**
+ * detectL1BlockInfoReorg determins if a reorg has occurred between the
+ * previous and next L1 Block Info structures.
+ *
+ * The expected next block should be the successor to the previous block.
+ */
+function detectL1BlockInfoReorg(
+  previous: null | L1BlockInfo,
+  next: L1BlockInfo,
+): ReorgCause {
+  if (!previous) {
+    return ReorgCause.none;
+  }
+
+  return detectHeightReorg(previous.number, next.number);
+}
+
+/**
+ * detectEspressoReorg determines if a reorg has occurred between the
+ * previous and next EpochAndBlock structures.
+ *
+ * The expcted next block should be the successor to the previous block.
+ */
+function detectEspressoReorg(
+  previous: null | EpochAndBlock,
+  next: EpochAndBlock,
+): ReorgCause {
+  if (!previous) {
+    return ReorgCause.none;
+  }
+
+  return detectHeightReorg(previous.block, next.block);
+}
+
+/**
+ * FORCE_REORG is a constant used to force a reorg when encountered.
+ * This is meant to handle an edge case in otherwise straight forward
+ * logic.
+ *
+ * In the majority of cases when the server is returning us
+ * standard status codes, whether they be success or failures, then
+ * we are able to proceed without issue.  The exception comes when we
+ * receive a `410 GONE` error.  When receiving a `Gone`, it is meant to
+ * indicate that the data that we are requesting is **TOO OLD** and that
+ * the server has explicitly removed it. When we receive this error, we
+ * are unable to progress, and we will continually receive the same
+ * error indefinitely.  To fix the issue we **MUST** rest our state.
+ *
+ * This is meant to act as a sentinel signal to inform us of this case.
+ */
+const FORCE_REORG = Symbol('FORCE_REOG');
 
 /**
  * L!_BLOCK_ID_POLLING_RATE defines how often we poll
  * for new L1 Block IDs.
  */
-const L1_BLOCK_ID_POLLING_RATE = 1_000; // in ms
+const L1_BLOCK_ID_POLLING_RATE = 6_000; // in ms
 
 /**
  * fetchNextL1BlockID attempts to fetch the next L1 Block ID
@@ -157,31 +169,21 @@ const L1_BLOCK_ID_POLLING_RATE = 1_000; // in ms
 async function fetchNextL1BlockID(
   l1ValidatorService: L1ValidatorService,
   previousL1BlockID: null | L1BlockID,
-  pollingInterval: number = L1_BLOCK_ID_POLLING_RATE,
 ) {
-  while (true) {
-    try {
-      if (!previousL1BlockID) {
-        return await l1ValidatorService.l1Block.getLatestBlock();
-      }
-
-      return await l1ValidatorService.l1Block.getBlockForHeight(
-        previousL1BlockID.number + 1n,
-      );
-    } catch (err) {
-      if (isARetryableError(err)) {
-        // This likely means that the active validator set is not yet
-        // available.  We can just return the previous state.
-        await sleep(pollingInterval);
-        continue;
-      }
-
-      console.error(
-        'encountered error attempting to retrieve l1 block id',
-        err,
-      );
-      await sleep(pollingInterval);
+  try {
+    if (!previousL1BlockID) {
+      return await l1ValidatorService.l1Block.getLatestBlock();
     }
+
+    return await l1ValidatorService.l1Block.getBlockForHeight(
+      previousL1BlockID.number + 1n,
+    );
+  } catch (err) {
+    if (isGoneError(err)) {
+      // We **MUST** force a reorg in order to continue progressing
+      return FORCE_REORG;
+    }
+    return null;
   }
 }
 
@@ -193,23 +195,37 @@ async function* l1BlocksIDStream(
   l1ValidatorService: L1ValidatorService,
   pollingInterval: number = L1_BLOCK_ID_POLLING_RATE,
 ) {
-  let lastL1Block: L1BlockID = await fetchNextL1BlockID(
-    l1ValidatorService,
-    null,
-    pollingInterval,
-  );
+  let lastL1Block: null | L1BlockID = null;
 
   // Yield the l1 block immediately before going into the loop
-  yield lastL1Block;
-
   while (true) {
-    await sleep(pollingInterval);
-    lastL1Block = await fetchNextL1BlockID(
+    // TODO: We need to handle a `410` GONE here.
+    const nextL1Block = await fetchNextL1BlockID(
       l1ValidatorService,
       lastL1Block,
-      pollingInterval,
     );
+
+    if (!nextL1Block) {
+      await sleep(pollingInterval);
+      continue;
+    }
+
+    if (nextL1Block === FORCE_REORG) {
+      // Forced reorg detected, reset state
+      lastL1Block = null;
+      continue;
+    }
+
+    const l1Reorg = detectL1BlockIDReorg(lastL1Block, nextL1Block);
+    if (l1Reorg !== ReorgCause.none) {
+      // Reorg detected, reset state so we pull the latest information.
+      lastL1Block = null;
+      continue;
+    }
+
+    lastL1Block = nextL1Block;
     yield lastL1Block;
+    await sleep(pollingInterval);
   }
 }
 
@@ -261,22 +277,10 @@ async function retrieveL1AllNodesSnapshot(
   l1ValidatorService: L1ValidatorService,
   l1BlockID: L1BlockID,
 ) {
-  let penalty = MINIMUM_SLEEP_TIME; // start with a low penalty in ms
-  while (true) {
-    try {
-      return await l1ValidatorService.validatorsAll.snapshot(l1BlockID.hash);
-    } catch (err) {
-      if (isARetryableError(err)) {
-        // This likely means that the active validator set is not yet
-        // available.  We can just return the previous state.
-        await sleep(penalty);
-        penalty = Math.min(penalty * 2, 5_000); // exponential backoff up to 5s
-        continue;
-      }
-
-      // Re throw the error
-      throw err;
-    }
+  try {
+    return await l1ValidatorService.validatorsAll.snapshot(l1BlockID.hash);
+  } catch {
+    return null;
   }
 }
 
@@ -288,24 +292,10 @@ async function retrieveL1AllNodesUpdates(
   l1ValidatorService: L1ValidatorService,
   l1BlockID: L1BlockID,
 ) {
-  let penalty = MINIMUM_SLEEP_TIME; // start with a low penalty in ms
-  while (true) {
-    try {
-      return await l1ValidatorService.validatorsAll.updatesSince(
-        l1BlockID.hash,
-      );
-    } catch (err) {
-      if (isARetryableError(err)) {
-        // This likely means that the active validator set is not yet
-        // available.  We can just return the previous state.
-        await sleep(penalty);
-        penalty = Math.min(penalty * 2, 5_000); // exponential backoff up to 5s
-        continue;
-      }
-
-      // Re throw the error
-      throw err;
-    }
+  try {
+    return await l1ValidatorService.validatorsAll.updatesSince(l1BlockID.hash);
+  } catch {
+    return null;
   }
 }
 
@@ -313,38 +303,36 @@ async function retrieveL1AllNodesUpdates(
  * allNodesStream is an async generator that yields the FullNodeSetSnapshot
  * as it is updated over time.
  */
-async function* allNodesStream(l1ValidatorService: L1ValidatorService) {
-  let lastL1Block: null | L1BlockID = yield null;
-  while (lastL1Block === null) {
-    // We don't want to hot loop here, so we need to wait a little bit.
-    await sleep(MINIMUM_SLEEP_TIME);
-
-    // We cannot progress without an l1 Block
-    lastL1Block = yield null;
-  }
-
-  let allNodes: FullNodeSetSnapshot = await retrieveL1AllNodesSnapshot(
-    l1ValidatorService,
-    lastL1Block,
-  );
+async function* allNodesStream(
+  l1ValidatorService: L1ValidatorService,
+  pollingInterval: number = MINIMUM_SLEEP_TIME,
+) {
+  let lastL1Block: null | L1BlockID = null;
+  let allNodes: null | FullNodeSetSnapshot = null;
   while (true) {
     const nextL1Block: L1BlockID = yield allNodes;
+    if (!nextL1Block) {
+      await sleep(pollingInterval);
+      continue;
+    }
 
+    const l1Reorg = detectL1BlockIDReorg(lastL1Block, nextL1Block);
     // Did we receive the same block again?
-    if (isSameL1Block(nextL1Block, lastL1Block)) {
+    if (l1Reorg === ReorgCause.sameHeight) {
       // We receive the same block again.  This is due to the
       // AsyncIterableResolver polling before the next block is available.
       // This is not an error, but we don't have any work to do here.
       // So we'll sleep until the next block is different.
-      await sleep(MINIMUM_SLEEP_TIME);
+      await sleep(pollingInterval);
       continue;
     }
 
     if (
-      // Reorg detection
-      isL1ReorgDetected(lastL1Block, nextL1Block)
+      // If we don't have our `allNodes`
+      !allNodes ||
+      // If we detect a reorg
+      l1Reorg !== ReorgCause.none
     ) {
-      breakpoint();
       allNodes = await retrieveL1AllNodesSnapshot(
         l1ValidatorService,
         nextL1Block,
@@ -357,6 +345,29 @@ async function* allNodesStream(l1ValidatorService: L1ValidatorService) {
       l1ValidatorService,
       nextL1Block,
     );
+
+    if (!updates) {
+      // No update to apply
+      await sleep(pollingInterval);
+      continue;
+    }
+
+    const l1InfoReorg = detectL1BlockInfoReorg(
+      allNodes.l1Block,
+      updates.l1Block,
+    );
+    if (l1InfoReorg === ReorgCause.sameHeight) {
+      // Same number, no update.
+      await sleep(pollingInterval);
+      continue;
+    }
+
+    if (l1InfoReorg !== ReorgCause.none) {
+      // Oh no, we have been given a block number out of sequence.
+      breakpoint();
+      allNodes = null;
+      continue;
+    }
 
     // Apply the updates to our local state
     allNodes = applyAllNodesUpdate(allNodes, updates);
@@ -410,29 +421,10 @@ const TransformDataToAllValidators: React.FC<React.PropsWithChildren> = ({
 async function retrieveLatestActiveValidatorsSnapshot(
   l1ValidatorService: L1ValidatorService,
 ) {
-  let penalty = MINIMUM_SLEEP_TIME; // start with a low penalty in ms
-  while (true) {
-    try {
-      return await l1ValidatorService.validatorsActive.active();
-    } catch (err) {
-      let localError: unknown = err;
-      if (err instanceof WebWorkerErrorResponse) {
-        // We have a WebWorkerErrorResponse, we can inspect the underlying
-        localError = err.error;
-      }
-      if (
-        localError instanceof BadResponseClientError &&
-        localError.status === 404
-      ) {
-        // This likely means that the active validator set is not yet
-        // available.  We can just return the previous state.
-        await sleep(penalty);
-        penalty = Math.min(penalty * 2, 5_000); // exponential backoff up to 5s
-        continue;
-      }
-      // Re throw the error
-      throw err;
-    }
+  try {
+    return await l1ValidatorService.validatorsActive.active();
+  } catch {
+    return null;
   }
 }
 
@@ -444,23 +436,18 @@ async function retrieveLatestActiveValidatorsSnapshot(
 async function retrieveUpdatesSinceLastActiveValidatorsSnapshot(
   l1ValidatorService: L1ValidatorService,
   epochAndBlock: EpochAndBlock,
-  pollingInterval: number = ESPRESSO_BLOCK_HEIGHT_POLLING_RATE,
 ) {
-  while (true) {
-    try {
-      return await l1ValidatorService.validatorsActive.updatesSince(
-        epochAndBlock.block + 1n,
-      );
-    } catch (err) {
-      if (isARetryableError(err)) {
-        // This likely means that the active validator set is not yet
-        // available.  We can just return the previous state.
-        await sleep(pollingInterval);
-        continue;
-      }
-
-      throw err;
+  try {
+    return await l1ValidatorService.validatorsActive.updatesSince(
+      epochAndBlock.block + 1n,
+    );
+  } catch (err) {
+    if (isGoneError(err)) {
+      // We **MUST** force a reorg in order to continue progressing
+      return FORCE_REORG;
     }
+
+    return null;
   }
 }
 
@@ -471,23 +458,55 @@ async function* activeValidatorsStream(
   l1ValidatorService: L1ValidatorService,
   pollingInterval: number = ESPRESSO_BLOCK_HEIGHT_POLLING_RATE,
 ) {
-  let activeNodes =
-    await retrieveLatestActiveValidatorsSnapshot(l1ValidatorService);
-
-  let epochAndBlock = activeNodes.espressoBlock;
+  let activeNodes: null | ActiveNodeSetSnapshot = null;
 
   while (true) {
+    if (!activeNodes) {
+      activeNodes =
+        await retrieveLatestActiveValidatorsSnapshot(l1ValidatorService);
+    }
     yield activeNodes;
+
+    if (!activeNodes) {
+      await sleep(pollingInterval);
+      continue;
+    }
 
     const activeNodesUpdate =
       await retrieveUpdatesSinceLastActiveValidatorsSnapshot(
         l1ValidatorService,
-        epochAndBlock,
-        pollingInterval,
+        activeNodes.espressoBlock,
       );
 
+    if (!activeNodesUpdate) {
+      await sleep(pollingInterval);
+      continue;
+    }
+
+    if (activeNodesUpdate === FORCE_REORG) {
+      // forced reorg detected, reset state.
+      activeNodes = null;
+      continue;
+    }
+
+    const espressoReorg = detectEspressoReorg(
+      activeNodes.espressoBlock,
+      activeNodesUpdate.espressoBlock,
+    );
+
+    if (espressoReorg === ReorgCause.sameHeight) {
+      await sleep(pollingInterval);
+      continue;
+    }
+
+    if (espressoReorg !== ReorgCause.none) {
+      // we weren't given the block we were expecting.
+      breakpoint();
+      activeNodes = null;
+      continue;
+    }
+
     activeNodes = applyActiveNodesUpdate(activeNodes, activeNodesUpdate);
-    epochAndBlock = activeNodes.espressoBlock;
   }
 }
 
@@ -549,23 +568,14 @@ async function retrieveWalletSnapshot(
   if (!activeWallet) {
     return null;
   }
-  const address = hexArrayBufferCodec.decode(activeWallet);
-  let penalty = MINIMUM_SLEEP_TIME; // start with a low penalty in ms
-  while (true) {
-    try {
-      return await l1ValidatorService.wallet.snapshot(address, l1BlockID.hash);
-    } catch (err) {
-      if (isARetryableError(err)) {
-        // This likely means that the active validator set is not yet
-        // available.  We can just return the previous state.
-        await sleep(penalty);
-        penalty = Math.min(penalty * 2, 5_000); // exponential backoff up to 5s
-        continue;
-      }
 
-      // Re throw the error
-      throw err;
-    }
+  const address = hexArrayBufferCodec.decode(activeWallet);
+  try {
+    return await l1ValidatorService.wallet.snapshot(address, l1BlockID.hash);
+  } catch {
+    // Catch the error, and return null.  We don't want to try forever, we
+    // have some definite limits to the number of attempts.
+    return null;
   }
 }
 
@@ -578,22 +588,11 @@ async function retrieveWalletUpdates(
   l1BlockID: L1BlockID,
   activeWallet: `0x${string}`,
 ) {
-  const address = hexArrayBufferCodec.decode(activeWallet);
-  let penalty = MINIMUM_SLEEP_TIME; // start with a low penalty in ms
-  while (true) {
-    try {
-      return await l1ValidatorService.wallet.updates(address, l1BlockID.hash);
-    } catch (err) {
-      if (isARetryableError(err)) {
-        // This likely means that the active validator set is not yet
-        // available.  We can just return the previous state.
-        await sleep(penalty);
-        penalty = Math.min(penalty * 2, 5_000); // exponential backoff up to 5s
-        continue;
-      }
-      // Re throw the error
-      throw err;
-    }
+  try {
+    const address = hexArrayBufferCodec.decode(activeWallet);
+    return await l1ValidatorService.wallet.updates(address, l1BlockID.hash);
+  } catch {
+    return null;
   }
 }
 
@@ -603,12 +602,13 @@ async function retrieveWalletUpdates(
  */
 async function* activeWalletStateStream(
   l1ValidatorService: L1ValidatorService,
+  pollingInterval: number = MINIMUM_SLEEP_TIME,
 ) {
   let [l1BlockID, activeAccount]: [null | L1BlockID, null | `0x${string}`] =
     yield null;
   while (l1BlockID === null) {
     // We don't want to hot loop here, so we need to wait a little bit.
-    await sleep(MINIMUM_SLEEP_TIME);
+    await sleep(pollingInterval);
     // We cannot progress without an l1 Block
     [l1BlockID, activeAccount] = yield null;
   }
@@ -630,20 +630,21 @@ async function* activeWalletStateStream(
 
     if (nextL1BlockID === null) {
       // We cannot progress without an l1 Block
-      await sleep(MINIMUM_SLEEP_TIME);
+      await sleep(pollingInterval);
       continue;
     }
 
+    const l1Reorg = detectL1BlockIDReorg(l1BlockID, nextL1BlockID);
     // Did we receive the same input again?
     if (
-      isSameL1Block(nextL1BlockID, l1BlockID) &&
+      l1Reorg === ReorgCause.sameHeight &&
       nextActiveAccount === activeAccount
     ) {
       // We receive the same input again.  This is due to the
       // AsyncIterableResolver polling before the next block is available.
       // This is not an error, but we don't have any work to do here.
       // So we'll sleep until the next input is different.
-      await sleep(MINIMUM_SLEEP_TIME);
+      await sleep(pollingInterval);
       continue;
     }
 
@@ -653,7 +654,7 @@ async function* activeWalletStateStream(
       // Has the active account changed?
       activeAccount !== nextActiveAccount ||
       // Do we detect and L1 Reorg?
-      isL1ReorgDetected(l1BlockID, nextL1BlockID)
+      l1Reorg !== ReorgCause.none
     ) {
       walletSnapshot = await retrieveWalletSnapshot(
         l1ValidatorService,
@@ -683,6 +684,30 @@ async function* activeWalletStateStream(
       nextL1BlockID,
       nextActiveAccount,
     );
+
+    if (!updates) {
+      await sleep(pollingInterval);
+      continue;
+    }
+
+    const l1InfoReorg = detectL1BlockInfoReorg(
+      walletSnapshot.l1Block,
+      updates.l1Block,
+    );
+
+    if (l1InfoReorg === ReorgCause.sameHeight) {
+      // We've been given the same block again, no update
+      await sleep(pollingInterval);
+      continue;
+    }
+
+    if (l1InfoReorg !== ReorgCause.none) {
+      // We've been given an update out of sequence, we need to reset
+      // our state.
+      breakpoint();
+      walletSnapshot = null;
+      continue;
+    }
 
     // Apply the updates to our local state
     walletSnapshot = applyWalletSnapshotUpdates(walletSnapshot, updates);

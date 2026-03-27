@@ -1,12 +1,12 @@
 import { assert } from '@/assert/assert';
 import { breakpoint } from '@/assert/debugger';
+import { bigintCodec } from '@/convert/codec/bigint';
 import {
   assertRecordWithKeys,
-  bigintCodec,
   Converter,
-  numberCodec,
   TypeCheckingCodec,
-} from '@/convert/codec';
+} from '@/convert/codec/convert';
+import { numberCodec } from '@/convert/codec/number';
 
 /**
  * computeBlocksPerEpoch computes the number of blocks per epoch given a block

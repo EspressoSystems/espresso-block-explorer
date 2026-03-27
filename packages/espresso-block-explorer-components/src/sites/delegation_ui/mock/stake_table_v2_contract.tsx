@@ -23,7 +23,8 @@ import {
   StakeTableV2Contract,
   UndelegationInfo,
 } from '@/contracts/stake_table_v2/stake_table_v2_interface';
-import { bigintCodec, hexArrayBufferCodec } from '@/convert/codec';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
+import { bigintCodec } from '@/convert/codec/bigint';
 import { createKeccakHash } from '@/crypto/keccak';
 import { nodeList } from '@/data_source/fake_data_source';
 import UnimplementedError from '@/errors/unimplemented_error';
@@ -69,7 +70,7 @@ export class StakeTableState implements MockContractStorage {
     public readonly schnorrKeys: Set<`0x${string}`>,
 
     public readonly lastUpdate: Date,
-  ) { }
+  ) {}
 
   applyTransaction(tx: UnderlyingTransaction): StakeTableState {
     if (tx instanceof StakeTableStateActions) {
@@ -265,7 +266,7 @@ export class Undelegate extends StakeTableStateActions {
     const newUndelegations = new Map(state.undelegations);
     const undelegatorMap = new Map(
       newUndelegations.get(this.validator) ??
-      new Map<`0x${string}`, RawUndelegation>(),
+        new Map<`0x${string}`, RawUndelegation>(),
     );
     undelegatorMap.set(this.delegator, [
       this.amount,
@@ -333,7 +334,7 @@ export class ClaimWithdrawal extends StakeTableStateActions {
     const newUndelegations = new Map(state.undelegations);
     const undelegatorMap = new Map(
       newUndelegations.get(this.validator) ??
-      new Map<`0x${string}`, RawUndelegation>(),
+        new Map<`0x${string}`, RawUndelegation>(),
     );
     undelegatorMap.delete(this.delegator);
     newUndelegations.set(this.validator, undelegatorMap);
@@ -924,7 +925,7 @@ export const MockStakeTableV2Contract: React.FC<React.PropsWithChildren> = ({
 
   React.useEffect(() => {
     contract.setAccountAddress(accountAddress);
-    return () => { };
+    return () => {};
   }, [contract, accountAddress]);
 
   const gasEstimator = new MockStakeTableV2ContractGasEstimatorImpl();

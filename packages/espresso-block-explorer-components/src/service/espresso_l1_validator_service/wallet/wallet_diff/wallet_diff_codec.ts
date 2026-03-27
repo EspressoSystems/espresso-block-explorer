@@ -1,12 +1,10 @@
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import {
-  ArrayCodec,
-  ArrayDecoder,
-  ArrayEncoder,
   assertRecordWithKeys,
   Converter,
   isRecordWithKeys,
   TypeCheckingCodec,
-} from '@/convert/codec';
+} from '@/convert/codec/convert';
 import InvalidTypeError from '@/errors/invalid_type_error';
 import {
   ClaimedRewardsKey,

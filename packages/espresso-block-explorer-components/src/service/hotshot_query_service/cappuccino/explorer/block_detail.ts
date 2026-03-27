@@ -1,10 +1,6 @@
 import { assertInstanceOf } from '@/assert/assert';
-import {
-  ArrayCodec,
-  ArrayDecoder,
-  ArrayEncoder,
-  backwardsCompatibleHexArrayBufferCodec,
-} from '@/convert/codec';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
+import { backwardsCompatibleHexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import {
   Codec,
   Converter,

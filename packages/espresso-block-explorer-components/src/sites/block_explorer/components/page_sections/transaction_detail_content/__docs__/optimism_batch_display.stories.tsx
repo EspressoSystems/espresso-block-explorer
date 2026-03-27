@@ -1,4 +1,4 @@
-import { stdBase64ArrayBufferCodec } from '@/convert/codec';
+import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer_base64';
 import { parseHexString } from '@/convert/hex';
 import Text from '@/text/text';
 import type { Meta, StoryObj } from '@storybook/react-vite';

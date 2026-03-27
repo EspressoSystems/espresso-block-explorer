@@ -23,14 +23,15 @@ import { CappuccinoAPITransactionResponse } from './transaction_response';
  */
 export async function convertCappuccinoBlockAndLeafToBlockSummary(
   block: CappuccinoAPIBlock,
-  leaf: CappuccinoAPILeafResponse,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _leaf: CappuccinoAPILeafResponse,
 ): Promise<CappuccinoDerivedBlockSummary> {
   return new CappuccinoDerivedBlockSummary(
     block.header,
     block.hash,
     block.size,
     block.payload.transaction_nmt.length,
-    [leaf.leaf.proposer_id],
+    [],
   );
 }
 
@@ -53,7 +54,7 @@ export async function convertCappuccinoBlockToBlockSummary(
     block.hash,
     block.size,
     block.payload.transaction_nmt.length,
-    [new Uint8Array([0, 0, 0, 0]).buffer],
+    [],
   );
 }
 
@@ -79,10 +80,12 @@ export async function* convertCappuccinoLeafAndTransactionsToTransactionSummarie
 ): AsyncGenerator<CappuccinoDerivedTransactionSummary> {
   const it = transactions[Symbol.asyncIterator]();
   yield* mapAsyncIterable(
-    convertIterableToAsyncIterable(leaf.leaf.block_payload.transaction_nmt),
+    convertIterableToAsyncIterable(
+      leaf.leaf.block_payload?.transaction_nmt ?? [],
+    ),
     async (transaction) => {
       const offset =
-        leaf.leaf.block_payload.transaction_nmt.indexOf(transaction);
+        leaf.leaf.block_payload?.transaction_nmt?.indexOf(transaction) ?? -1;
       const next = await it.next();
       if (next.done) {
         throw new Error('Not enough transactions');

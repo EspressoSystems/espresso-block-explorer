@@ -1,10 +1,10 @@
 import {
+  assertRecordWithKeys,
+  assertTypeCode,
   Codec,
   Converter,
   TypeCheckingCodec,
-  assertRecordWithKeys,
-  assertTypeCode,
-} from '@/convert/codec';
+} from '@/convert/codec/convert';
 import { Degrees } from '../units';
 import LatLng from '../units/lat_lng';
 import GeoJSONBoundingBox from './bounding_box';
