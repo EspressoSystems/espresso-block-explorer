@@ -1,4 +1,4 @@
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { nodeList } from '@/data_source/fake_data_source';
 import { ValidatorConfirmed } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { Meta, StoryObj } from '@storybook/react-vite';

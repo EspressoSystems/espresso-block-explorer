@@ -1,5 +1,5 @@
 import { validateAndExpandResponse } from '@/async/fetch/response_validators';
-import { hexArrayBufferCodec } from '@/convert/codec';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import {
   FullNodeSetSnapshot,
   fullNodeSetSnapshotJSONCodec,

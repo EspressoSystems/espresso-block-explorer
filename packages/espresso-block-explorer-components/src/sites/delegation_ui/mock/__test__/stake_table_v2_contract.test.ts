@@ -1,7 +1,7 @@
 import { sleep } from '@/async/sleep';
 import { ESPTokenContract } from '@/contracts/esp_token/esp_token_interface';
 import { ValidatorStatus } from '@/contracts/stake_table/stake_table_interface';
-import { hexArrayBufferCodec } from '@/convert/codec';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { nodeList } from '@/data_source/fake_data_source';
 import { mapIterable } from '@/functional/functional';
 import { describe, it } from 'vitest';

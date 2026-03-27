@@ -3,7 +3,7 @@ import { sleep } from '@/async/sleep';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { L1Methods } from '@/contracts/l1/l1_interface';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { createKeccakHash } from '@/crypto/keccak/family';
 import { foldRIterable } from '@/functional/functional';
 import { fakeData } from '@/models/config/storybook/wagmi';

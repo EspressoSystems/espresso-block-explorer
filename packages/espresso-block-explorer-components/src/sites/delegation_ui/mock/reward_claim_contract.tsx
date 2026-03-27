@@ -7,7 +7,7 @@ import {
   RewardClaimContractGasEstimatorContext,
 } from '@/contexts/reward_claim_contract_context';
 import { RewardClaimContract } from '@/contracts/reward_claim/reward_claim_interface';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { bigintCodec } from '@/convert/codec/bigint';
 import { createKeccakHash } from '@/crypto/keccak/family';
 import UnimplementedError from '@/errors/unimplemented_error';
@@ -31,7 +31,7 @@ export class MockRewardClaimState implements MockContractStorage {
     public readonly claimedRewards: Map<`0x${string}`, bigint>,
 
     public readonly lastUpdate: Date,
-  ) { }
+  ) {}
 
   applyTransaction(tx: UnderlyingTransaction): MockContractStorage {
     if (tx instanceof RewardClaimStateAction) {
@@ -273,7 +273,7 @@ export const MockRewardClaimContract: React.FC<React.PropsWithChildren> = ({
 
   React.useEffect(() => {
     contract.setAccountAddress(accountAddress as null | `0x${string}`);
-    return () => { };
+    return () => {};
   }, [contract, accountAddress]);
 
   return (

@@ -1,16 +1,14 @@
-import {
-  ArrayCodec,
-  ArrayDecoder,
-  ArrayEncoder,
-  nullableStringCodec,
-  nullableURLCodec,
-  preferNullOverEmptyString,
-} from '@/convert/codec';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
+import {
+  nullableStringCodec,
+  preferNullOverEmptyString,
+} from '@/convert/codec/string';
+import { nullableURLCodec } from '@/convert/codec/url';
 import {
   TaggedBase64,
   taggedBase64Codec,

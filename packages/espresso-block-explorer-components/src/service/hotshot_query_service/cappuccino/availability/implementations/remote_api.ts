@@ -116,7 +116,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
           leaf,
 
           mapAsyncIterator(
-            iotaAsync(leaf.leaf.block_payload.transaction_nmt.length),
+            iotaAsync(leaf.leaf.block_payload?.transaction_nmt?.length ?? 0),
             (index) =>
               this.getTransactionFromHeightAndOffset(
                 leaf.leaf.block_header.fields.height,

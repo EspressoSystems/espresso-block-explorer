@@ -1,7 +1,7 @@
 import { CorruptBase64InputError } from '@/errors/corrupt_base64_input_error';
 import { IncorrectBase64PaddingError } from '@/errors/incorrect_base64_padding_error';
 import { InvalidBase64AlphabetLengthError } from '@/errors/invalid_base64_length_error';
-import { uint8ArrayToArrayBufferCodec } from '../codec/uint8_array';
+import { ensureArrayBuffer } from '../util/array_buffer';
 
 const textEncoder = new TextEncoder();
 export function convertStringToUint8Array(s: string): Uint8Array {
@@ -211,6 +211,10 @@ export class Encoding {
                 // not enough padding
                 throw new CorruptBase64InputError(l);
               }
+              if (src.getUint8(si) !== this.padChar) {
+                // incorrect padding
+                throw new CorruptBase64InputError(si - 1);
+              }
 
               si++;
           }
@@ -283,9 +287,7 @@ export class Encoding {
   }
 
   public decodeString(s: string) {
-    return this.decode(
-      uint8ArrayToArrayBufferCodec.encode(convertStringToUint8Array(s)),
-    );
+    return this.decode(ensureArrayBuffer(convertStringToUint8Array(s)));
   }
 
   public encodeToString(src: ArrayBuffer) {

@@ -8,6 +8,7 @@ import {
   CappuccinoAPITransactionNMTEntry,
   arrayCappuccinoAPITransactionNMTEntryCodec,
 } from './transaction_nmt_entry';
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
 
 /**
  * CappuccinoAPIPayload represents the payload in the Cappuccino API.
@@ -58,3 +59,7 @@ export class CappuccinoAPIPayloadCodec extends TypeCheckingCodec<
 }
 
 export const cappuccinoAPIPayloadCodec = new CappuccinoAPIPayloadCodec();
+export const nullableCappuccinoAPIPayloadCodec = new NullCodec(
+  new NullDecoder(cappuccinoAPIPayloadCodec),
+  new NullEncoder(cappuccinoAPIPayloadCodec),
+);

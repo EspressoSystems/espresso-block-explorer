@@ -1,7 +1,7 @@
 import { PromiseResolver } from '@/components/data';
 import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { DataContext } from '@/contexts/data_provider';
-import { nullableBigintCodec } from '@/convert/codec';
+import { nullableBigintCodec } from '@/convert/codec/bigint';
 import React from 'react';
 import { EspressoRefreshTimestampContext } from './espresso_refresh_timestamp_context';
 

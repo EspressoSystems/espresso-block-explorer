@@ -1,8 +1,6 @@
 import { Now } from '@/contexts/now_provider';
-import {
-  hexArrayBufferCodec,
-  stdBase64ArrayBufferCodec,
-} from '@/convert/codec/array_buffer';
+import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer_base64';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { Converter } from '@/convert/codec/convert';
 import Text from '@/text/text';
 import React from 'react';

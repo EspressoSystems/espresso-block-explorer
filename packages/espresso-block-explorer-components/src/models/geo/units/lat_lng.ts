@@ -1,12 +1,12 @@
-import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec';
 import { Codec, Converter, TypeCheckingCodec } from '@/convert/codec/convert';
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
 import InvalidTypeError from '@/errors/invalid_type_error';
 import { NumberLike, max, min } from '../../numeric/numeric';
 import { degreesCodec } from './degrees';
 import Latitude from './latitude';
+import { GenericLATLNG } from './latlng_interface';
 import Longitude from './longitude';
 import { radiansCodec } from './radians';
-import { GenericLATLNG } from './latlng_interface';
 
 /**
  * LatLng represents a tuple of latitude and longitude values.

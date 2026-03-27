@@ -6,13 +6,13 @@ import {
   BincodeSerializer,
   createBincodeSerializer,
 } from '@/convert/bincode/serializer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import {
   assertRecordWithKeys,
   Converter,
-  hexArrayBufferCodec,
   TypeCheckingCodec,
-  uint8ArrayToArrayBufferCodec,
-} from '@/convert/codec';
+} from '@/convert/codec/convert';
+import { uint8ArrayToArrayBufferCodec } from '@/convert/codec/uint8_array';
 import { createBufferedDataView } from '@/convert/data_view/buffered_data_view';
 import { Endianess } from '@/convert/data_view/endianess';
 import Inscription, {

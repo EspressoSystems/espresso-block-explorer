@@ -1,4 +1,4 @@
-import { hexArrayBufferCodec } from '@/convert/codec';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { WebWorkerRequest } from '../../web_worker_types';
 import { WalletAPI } from '../wallet_api';
 import { WalletSnapshot, walletSnapshotJSONCodec } from '../wallet_snapshot';

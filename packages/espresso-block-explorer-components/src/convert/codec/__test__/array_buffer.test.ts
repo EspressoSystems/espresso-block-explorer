@@ -1,13 +1,13 @@
-import { TypeCheckingCodec } from '@/convert';
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng';
 import { describe, expect, it } from 'vitest';
 import {
-  hexArrayBufferCodec,
   rawStdBase64ArrayBufferCodec,
   rawURLBase64ArrayBufferCodec,
   stdBase64ArrayBufferCodec,
   urlBase64ArrayBufferCodec,
-} from '../array_buffer';
+} from '../array_buffer_base64';
+import { hexArrayBufferCodec } from '../array_buffer_hex';
+import { TypeCheckingCodec } from '../convert';
 
 function appendGarbage(
   input: (boolean | number | null | undefined | string | bigint | object)[],

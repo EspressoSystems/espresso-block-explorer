@@ -1,10 +1,6 @@
 import { assert, assertInstanceOf } from '@/assert/assert';
-import {
-  ArrayCodec,
-  ArrayDecoder,
-  ArrayEncoder,
-  bigintArrayCodec,
-} from '@/convert/codec';
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
+import { bigintArrayCodec } from '@/convert/codec/bigint';
 import {
   assertRecordWithKeys,
   Converter,

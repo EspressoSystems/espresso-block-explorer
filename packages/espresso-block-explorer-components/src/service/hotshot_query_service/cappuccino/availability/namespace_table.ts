@@ -1,5 +1,5 @@
 import { assertInstanceOf } from '@/assert/assert';
-import { urlBase64ArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { urlBase64ArrayBufferCodec } from '@/convert/codec/array_buffer_base64';
 import {
   Converter,
   TypeCheckingCodec,

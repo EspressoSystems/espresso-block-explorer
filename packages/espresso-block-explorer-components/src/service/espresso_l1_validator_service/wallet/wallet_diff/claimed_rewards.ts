@@ -1,4 +1,4 @@
-import { bigintCodec } from '@/convert/codec';
+import { bigintCodec } from '@/convert/codec/bigint';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import { WalletDiff } from './wallet_diff';
 

@@ -1,9 +1,9 @@
+import { bigintCodec } from '@/convert/codec/bigint';
 import {
   assertRecordWithKeys,
-  bigintCodec,
   Converter,
   TypeCheckingCodec,
-} from '@/convert/codec';
+} from '@/convert/codec/convert';
 import { Delegation, delegationArrayJSONCodec } from '../common/delegation';
 import { L1BlockInfo, l1BlockInfoJSONCodec } from '../common/l1_block_info';
 import {

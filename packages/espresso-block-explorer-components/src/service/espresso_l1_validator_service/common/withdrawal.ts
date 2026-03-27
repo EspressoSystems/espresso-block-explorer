@@ -1,5 +1,5 @@
-import { bigintCodec } from '@/convert/codec';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
+import { bigintCodec } from '@/convert/codec/bigint';
 import {
   assertRecordWithKeys,
   Converter,

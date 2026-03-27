@@ -1,13 +1,11 @@
+import { ArrayCodec, ArrayDecoder, ArrayEncoder } from '@/convert/codec/array';
 import {
-  ArrayCodec,
-  ArrayDecoder,
-  ArrayEncoder,
+  assertRecordWithKeys,
   Codec,
   Converter,
-  TypeCheckingCodec,
-  assertRecordWithKeys,
   isString,
-} from '@/convert/codec';
+  TypeCheckingCodec,
+} from '@/convert/codec/convert';
 import InvalidTypeError from '@/errors/invalid_type_error';
 import NoCodecFoundError from '@/errors/no_codec_found_error';
 import GeoJSONBoundingBox from './bounding_box';

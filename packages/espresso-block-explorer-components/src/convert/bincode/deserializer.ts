@@ -61,7 +61,7 @@ class BincodeDeserializerImpl
   }
 
   deserializeInt64(): bigint {
-    return this.bufferedDataView.getInt64();
+    return this.bufferedDataView.getBigInt64();
   }
 
   deserializeUint8(): number {
@@ -77,7 +77,7 @@ class BincodeDeserializerImpl
   }
 
   deserializeUint64(): bigint {
-    return this.bufferedDataView.getUint64();
+    return this.bufferedDataView.getBigUint64();
   }
 
   deserializeFloat32(): number {
@@ -104,11 +104,11 @@ class BincodeDeserializerImpl
   }
 
   deserializeInt128(): bigint {
-    return this.bufferedDataView.getInt128();
+    return this.bufferedDataView.getBigInt128();
   }
 
   deserializeUint128(): bigint {
-    return this.bufferedDataView.getUint128();
+    return this.bufferedDataView.getBigUint128();
   }
 }
 

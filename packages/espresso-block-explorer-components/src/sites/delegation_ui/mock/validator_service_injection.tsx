@@ -2,7 +2,7 @@ import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_h
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
 import { L1Methods } from '@/contracts/l1/l1_interface';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { nodeList } from '@/data_source/fake_data_source';
 import BadResponseClientError from '@/errors/bad_response_client_error';
 import UnimplementedError from '@/errors/unimplemented_error';

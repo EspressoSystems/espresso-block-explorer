@@ -2,7 +2,7 @@ import {
   assertRecordWithKeys,
   Converter,
   TypeCheckingCodec,
-} from '@/convert/codec';
+} from '@/convert/codec/convert';
 import InvalidTypeError from '@/errors/invalid_type_error';
 import WebSocketCommand from './web_socket_command';
 

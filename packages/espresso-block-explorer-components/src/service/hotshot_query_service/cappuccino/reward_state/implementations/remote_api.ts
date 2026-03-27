@@ -1,5 +1,5 @@
 import { validateAndExpandResponse } from '@/async/fetch/response_validators';
-import { nullableBigintCodec } from '@/convert/codec';
+import { nullableBigintCodec } from '@/convert/codec/bigint';
 import { HeightAndAddress } from '../height_and_address';
 import { RewardClaimInput, rewardClaimInputCodec } from '../reward_claim_input';
 import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_start_api';

@@ -14,7 +14,7 @@ import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
 import { IntentCompletedCallbackContext } from '@/contexts/intent_completed_callback_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
-import { hexArrayBufferCodec } from '@/convert/codec/array_buffer';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import {
   compareArrayBuffer,
   foldRIterable,

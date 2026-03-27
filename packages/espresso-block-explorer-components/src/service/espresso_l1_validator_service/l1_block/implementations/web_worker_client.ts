@@ -1,4 +1,4 @@
-import { bigintCodec } from '@/convert/codec';
+import { bigintCodec } from '@/convert/codec/bigint';
 import { Codec } from '@/convert/codec/convert';
 import { L1BlockID, l1BlockIDJSONCodec } from '../../common/l1_block_id';
 import { AsyncRequestHelper } from '../../web_worker_types';
