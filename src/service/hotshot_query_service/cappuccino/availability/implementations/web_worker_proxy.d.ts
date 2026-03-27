@@ -8,9 +8,7 @@ export declare class WebWorkerProxyAvailabilityAPI {
         leaf: {
             view_number: number;
             justify_qc: {
-                data: {
-                    leaf_commit: string;
-                };
+                data: unknown;
                 vote_commitment: string;
                 view_number: number;
                 signatures: (string | {
@@ -36,11 +34,52 @@ export declare class WebWorkerProxyAvailabilityAPI {
             rejected: number[];
             timestamp: number;
             proposer_id: `0x${string}`;
+        } | {
+            view_number: number;
+            justify_qc: {
+                data: unknown;
+                vote_commitment: string;
+                view_number: number;
+                signatures: (string | {
+                    order: string;
+                    head: {
+                        width: number;
+                        index: number;
+                    };
+                    bits: number;
+                    data: `0x${string}`[];
+                })[] | null;
+                is_genesis: boolean;
+                _pd: null;
+            };
+            parent_commitment: string;
+            block_header: unknown;
+            upgrade_certificate: import('..').SimpleCertificate<import('../upgrade_proposal_data_v1').UpgradeProposalDataV1> | null;
+            block_payload: {
+                transaction_nmt: {
+                    vm: number;
+                    payload: number[];
+                }[];
+            };
+        } | {
+            view_number: number;
+            justify_qc: import('..').SimpleCertificate<import('..').QuorumDataV2>;
+            next_epoch_justify_qc: import('..').SimpleCertificate<import('..').QuorumDataV2> | null;
+            parent_commitment: string;
+            block_header: unknown;
+            upgrade_certificate: import('..').SimpleCertificate<import('../upgrade_proposal_data_v1').UpgradeProposalDataV1> | null;
+            block_payload: {
+                transaction_nmt: {
+                    vm: number;
+                    payload: number[];
+                }[];
+            } | null;
+            view_change_evidence: unknown;
+            next_drb_result: `0x${string}` | null;
+            with_epoch: boolean;
         };
         qc: {
-            data: {
-                leaf_commit: string;
-            };
+            data: unknown;
             vote_commitment: string;
             view_number: number;
             signatures: (string | {

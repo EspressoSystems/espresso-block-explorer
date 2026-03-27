@@ -1,4 +1,4 @@
-import { ArrayCodec } from '../../../../../../../../../../../../src/convert/codec';
+import { ArrayCodec } from '../../../../../../../../../../../../src/convert/codec/array';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { CappuccinoAPIBitVecHead } from './bit_vec_head';
 import { CappuccinoAPIBitVecOrder } from './bit_vec_order';

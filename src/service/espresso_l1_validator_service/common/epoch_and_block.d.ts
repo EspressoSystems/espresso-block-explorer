@@ -1,4 +1,4 @@
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 /**
  * computeEpochByBlockAndBlocksPerEpoch computes the epoch number given a
  * block number and the number of blocks per epoch.

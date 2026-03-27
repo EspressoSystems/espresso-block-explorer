@@ -1,49 +1,30 @@
-import { ArrayCodec } from './array';
 import { Converter, TypeCheckingCodec } from './convert';
 import { NullCodec } from './null';
-import * as base64 from '../base64/base64';
-export declare class HexArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
+/**
+ * ArrayBufferDecoder is a flexible decder that attempts to decode a variety
+ * of different serialization representations for an ArrayBuffer.
+ */
+export declare class ArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
     convert(input: unknown): ArrayBuffer;
 }
-export declare class HexArrayBufferEncoder implements Converter<ArrayBuffer, `0x${string}`> {
+/**
+ * ArrayBufferEncoder encodes an ArrayBuffer into a hex string, prefixed with
+ * '0x'.
+ */
+export declare class ArrayBufferEncoder implements Converter<ArrayBuffer, `0x${string}`> {
     convert(input: ArrayBuffer): `0x${string}`;
 }
-export declare class HexArrayBufferCodec extends TypeCheckingCodec<ArrayBuffer, `0x${string}`> {
-    encoder: HexArrayBufferEncoder;
-    decoder: HexArrayBufferDecoder;
+export declare class ArrayBufferCodec extends TypeCheckingCodec<ArrayBuffer, `0x${string}`> {
+    readonly encoder: Converter<ArrayBuffer, `0x${string}`>;
+    readonly decoder: Converter<unknown, ArrayBuffer>;
 }
-export declare const hexArrayBufferCodec: HexArrayBufferCodec;
-export declare const nullableHexArrayBufferCodec: NullCodec<ArrayBuffer, `0x${string}`>;
-export declare const hexArrayBufferArrayCodec: ArrayCodec<ArrayBuffer, `0x${string}`>;
-declare class BackwardsCompatibleHexArrayBufferDecoder implements Converter<unknown, ArrayBuffer[]> {
-    convert(input: unknown): ArrayBuffer[];
-}
-declare class BackwardsCompatibleHexArrayBufferEncoder implements Converter<ArrayBuffer[], unknown> {
-    convert(input: ArrayBuffer[]): unknown;
-}
-declare class BackwardsCompatibleHexArrayBufferCodec extends TypeCheckingCodec<ArrayBuffer[], unknown> {
-    readonly encoder: BackwardsCompatibleHexArrayBufferEncoder;
-    readonly decoder: BackwardsCompatibleHexArrayBufferDecoder;
-}
-export declare const backwardsCompatibleHexArrayBufferCodec: BackwardsCompatibleHexArrayBufferCodec;
-export declare class Base64ArrayBufferDecoder implements Converter<unknown, ArrayBuffer> {
-    private encoding;
-    constructor(encoding: base64.Encoding);
-    convert(input: unknown): ArrayBuffer;
-}
-export declare class Base64ArrayBufferEncoder implements Converter<ArrayBuffer, string> {
-    private encoding;
-    constructor(encoding: base64.Encoding);
-    convert(input: ArrayBuffer): string;
-}
-export declare class Base64ArrayBufferCodec extends TypeCheckingCodec<ArrayBuffer, string> {
-    readonly encoder: Base64ArrayBufferEncoder;
-    readonly decoder: Base64ArrayBufferDecoder;
-    constructor(encoding: base64.Encoding);
-}
-export declare const rawURLBase64ArrayBufferCodec: Base64ArrayBufferCodec;
-export declare const rawStdBase64ArrayBufferCodec: Base64ArrayBufferCodec;
-export declare const urlBase64ArrayBufferCodec: Base64ArrayBufferCodec;
-export declare const stdBase64ArrayBufferCodec: Base64ArrayBufferCodec;
-export declare const nullableStdBase64ArrayBufferCodec: NullCodec<ArrayBuffer, string>;
-export {};
+/**
+ * arrayBufferCodec is a codec for ArrayBuffers that encodes them as hex
+ * strings.
+ */
+export declare const arrayBufferCodec: ArrayBufferCodec;
+/**
+ * nullableArrayBufferCodec is an extension of the regular `ArrayBufferCodec`
+ * and allows for `null` to be serialized in place of the `ArraytBuffer`.
+ */
+export declare const nullableArrayBufferCodec: NullCodec<ArrayBuffer, `0x${string}`>;

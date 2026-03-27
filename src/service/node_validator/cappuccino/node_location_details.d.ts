@@ -1,5 +1,5 @@
-import { NullCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
+import { NullCodec } from '../../../../../../../../../../../src/convert/codec/null';
 import { default as Degrees } from '../../../../../../../../../../../src/models/geo/units/degrees';
 import { default as LatLng } from '../../../../../../../../../../../src/models/geo/units/lat_lng';
 /**

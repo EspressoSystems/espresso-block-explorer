@@ -1,5 +1,6 @@
-import { NullCodec, OptionalCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
+import { NullCodec } from '../../../../../../../../../../../src/convert/codec/null';
+import { OptionalCodec } from '../../../../../../../../../../../src/convert/codec/optional';
 import { NodeMetadataContent } from './node_metadata_content';
 /**
  * NodeMetadata contains metadata URI and, potentially, the content derived

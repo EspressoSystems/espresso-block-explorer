@@ -1,4 +1,4 @@
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { default as WebSocketCommand } from './web_socket_command';
 export declare const kWebSocketCommandSetURLType: "Set-Url";
 /**

@@ -1,4 +1,4 @@
-import { ArrayCodec } from '../../../../../../../../../../../../src/convert/codec';
+import { ArrayCodec } from '../../../../../../../../../../../../src/convert/codec/array';
 import { Codec, Converter } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { default as MonetaryValue } from '../../../../../../../../../../../../src/models/block_explorer/monetary_value';
 import { TaggedBase64 } from '../../../../../../../../../../../../src/models/espresso/tagged_base64/tagged_base64';

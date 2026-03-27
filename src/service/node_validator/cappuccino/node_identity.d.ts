@@ -1,4 +1,4 @@
-import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec';
+import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec/array';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { TaggedBase64 } from '../../../../../../../../../../../src/models/espresso/tagged_base64/tagged_base64';
 import { default as CappuccinoLocationDetails } from './node_location_details';

@@ -1,9 +1,9 @@
-import { NullCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Codec, Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
+import { NullCodec } from '../../../../../../../../../../../src/convert/codec/null';
 import { NumberLike } from '../../numeric/numeric';
 import { default as Latitude } from './latitude';
-import { default as Longitude } from './longitude';
 import { GenericLATLNG } from './latlng_interface';
+import { default as Longitude } from './longitude';
 /**
  * LatLng represents a tuple of latitude and longitude values.
  * It exists for convenience and type safety.

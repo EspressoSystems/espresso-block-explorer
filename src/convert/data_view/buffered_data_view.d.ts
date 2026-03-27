@@ -17,15 +17,19 @@ export interface BufferedDataView {
     getUint8(): number;
     getUint16(): number;
     getUint32(): number;
-    getUint64(): bigint;
+    getBigUint64(): bigint;
     getInt8(): number;
     getInt16(): number;
     getInt32(): number;
-    getInt64(): bigint;
+    getBigInt64(): bigint;
     getFloat32(): number;
     getFloat64(): number;
-    getInt128(): bigint;
-    getUint128(): bigint;
+    getBigInt128(): bigint;
+    getBigUint128(): bigint;
+    getBigInt256(): bigint;
+    getBigUint256(): bigint;
+    getBigInt512(): bigint;
+    getBigUint512(): bigint;
     getBytes(length: number): Uint8Array;
     setBoolean(input: boolean): void;
     setUint8(input: number): void;
@@ -38,8 +42,12 @@ export interface BufferedDataView {
     setInt64(input: bigint): void;
     setFloat32(input: number): void;
     setFloat64(input: number): void;
-    setInt128(input: bigint): void;
-    setUint128(input: bigint): void;
+    setBigInt128(input: bigint): void;
+    setBigUint128(input: bigint): void;
+    setBigInt256(input: bigint): void;
+    setBigUint256(input: bigint): void;
+    setBigInt512(input: bigint): void;
+    setBigUint512(input: bigint): void;
     setBytes(input: Uint8Array): void;
 }
 /**
@@ -58,15 +66,19 @@ export declare abstract class BufferedDataViewBase implements BufferedDataView {
     abstract getInt8(): number;
     abstract getInt16(): number;
     abstract getInt32(): number;
-    abstract getInt64(): bigint;
+    abstract getBigInt64(): bigint;
     abstract getUint8(): number;
     abstract getUint16(): number;
     abstract getUint32(): number;
-    abstract getUint64(): bigint;
+    abstract getBigUint64(): bigint;
     abstract getFloat32(): number;
     abstract getFloat64(): number;
-    abstract getInt128(): bigint;
-    abstract getUint128(): bigint;
+    abstract getBigInt128(): bigint;
+    abstract getBigUint128(): bigint;
+    abstract getBigInt256(): bigint;
+    abstract getBigUint256(): bigint;
+    abstract getBigInt512(): bigint;
+    abstract getBigUint512(): bigint;
     abstract getBytes(length: number): Uint8Array;
     abstract setBoolean(input: boolean): void;
     abstract setUint8(input: number): void;
@@ -79,8 +91,12 @@ export declare abstract class BufferedDataViewBase implements BufferedDataView {
     abstract setInt64(input: bigint): void;
     abstract setFloat32(input: number): void;
     abstract setFloat64(input: number): void;
-    abstract setInt128(input: bigint): void;
-    abstract setUint128(input: bigint): void;
+    abstract setBigInt128(input: bigint): void;
+    abstract setBigUint128(input: bigint): void;
+    abstract setBigInt256(input: bigint): void;
+    abstract setBigUint256(input: bigint): void;
+    abstract setBigInt512(input: bigint): void;
+    abstract setBigUint512(input: bigint): void;
     abstract setBytes(input: Uint8Array): void;
 }
 /**

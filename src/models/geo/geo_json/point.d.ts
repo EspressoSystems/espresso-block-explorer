@@ -1,4 +1,4 @@
-import { Codec, Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec';
+import { Codec, Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { Degrees } from '../units';
 import { default as LatLng } from '../units/lat_lng';
 import { default as GeoJSONBoundingBox } from './bounding_box';

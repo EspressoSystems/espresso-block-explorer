@@ -1,4 +1,4 @@
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { EpochAndBlock } from '../common/epoch_and_block';
 import { ActiveNodeSetDiff } from './active_node_set_diff/active_node_set_diff';
 /**

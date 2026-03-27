@@ -1,4 +1,4 @@
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
 import { EspressoError } from '../../../../../../../../../../src/errors/espresso_error';
 import { ErrorResponse } from './error_response';
 import { default as WebSocketStatus } from './web_socket/status/web_socket_status';

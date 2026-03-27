@@ -1,5 +1,6 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { CappuccinoAPITransactionNMTEntry } from './transaction_nmt_entry';
+import { NullCodec } from '../../../../../../../../../../../../src/convert/codec/null';
 /**
  * CappuccinoAPIPayload represents the payload in the Cappuccino API.
  */
@@ -29,3 +30,9 @@ export declare class CappuccinoAPIPayloadCodec extends TypeCheckingCodec<Cappucc
     readonly decoder: CappuccinoAPIPayloadDecoder;
 }
 export declare const cappuccinoAPIPayloadCodec: CappuccinoAPIPayloadCodec;
+export declare const nullableCappuccinoAPIPayloadCodec: NullCodec<CappuccinoAPIPayload, {
+    transaction_nmt: {
+        vm: number;
+        payload: number[];
+    }[];
+}>;

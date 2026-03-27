@@ -1,4 +1,4 @@
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
 import { default as WebSocketCommand } from './web_socket/request/web_socket_command';
 import { WebWorkerProxyRequest } from './web_worker_proxy_request';
 declare class WebWorkerProxyRequestEncoder implements Converter<WebWorkerProxyRequest, unknown> {

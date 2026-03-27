@@ -1,5 +1,5 @@
-import { NullCodec } from '../../../../../../../../../../../src/convert/codec';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
+import { NullCodec } from '../../../../../../../../../../../src/convert/codec/null';
 /**
  * RatioSet represents a set of URLs for different device pixel ratios.
  */

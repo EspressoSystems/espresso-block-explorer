@@ -1,6 +1,6 @@
 import { BincodeDeserializer } from '../../../../../../../../../../src/convert/bincode/deserializer';
 import { BincodeSerializer } from '../../../../../../../../../../src/convert/bincode/serializer';
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
 import { default as Inscription } from './inscription';
 /**
  * InscriptionAndSignature represents the combination of an Inscription and

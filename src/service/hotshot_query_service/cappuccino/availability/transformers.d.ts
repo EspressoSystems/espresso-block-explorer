@@ -16,7 +16,7 @@ import { CappuccinoAPITransactionResponse } from './transaction_response';
  * With the creation of the explorer API, this function should no longer be
  * necessary.
  */
-export declare function convertCappuccinoBlockAndLeafToBlockSummary(block: CappuccinoAPIBlock, leaf: CappuccinoAPILeafResponse): Promise<CappuccinoDerivedBlockSummary>;
+export declare function convertCappuccinoBlockAndLeafToBlockSummary(block: CappuccinoAPIBlock, _leaf: CappuccinoAPILeafResponse): Promise<CappuccinoDerivedBlockSummary>;
 /**
  * convertCappuccinoBlockToBlockSummary is a helper function that is able to
  * convert a CappuccinoAPIBlock into a CappuccinoDerivedBlockSummary.

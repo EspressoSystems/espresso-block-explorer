@@ -1,4 +1,4 @@
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { L1BlockInfo } from '../common/l1_block_info';
 import { WalletDiff } from './wallet_diff/wallet_diff';
 /**

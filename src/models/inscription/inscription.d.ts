@@ -1,6 +1,6 @@
 import { BincodeDeserializer } from '../../../../../../../../../../src/convert/bincode/deserializer';
 import { BincodeSerializer } from '../../../../../../../../../../src/convert/bincode/serializer';
-import { ArrayCodec } from '../../../../../../../../../../src/convert/codec';
+import { ArrayCodec } from '../../../../../../../../../../src/convert/codec/array';
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../../src/convert/codec/convert';
 import { default as WalletAddress } from '../wallet_address/wallet_address';
 /**

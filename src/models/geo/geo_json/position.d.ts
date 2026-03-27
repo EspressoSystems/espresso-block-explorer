@@ -1,4 +1,5 @@
-import { ArrayCodec, Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec';
+import { ArrayCodec } from '../../../../../../../../../../../src/convert/codec/array';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { default as Degrees } from '../units/degrees';
 import { default as LatLng } from '../units/lat_lng';
 /**

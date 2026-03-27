@@ -1,4 +1,5 @@
-import { ArrayCodec, Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec';
+import { ArrayCodec } from '../../../../../../../../../../../../src/convert/codec/array';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { ActiveNodeSetDiff } from './active_node_set_diff';
 /**
  * ActiveNodeSetDiffJSONDecoder decodes ActiveNodeSetDiff objects

@@ -1,4 +1,4 @@
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../../src/convert/codec/convert';
 import { StakeTableField } from './stake_table_field';
 export declare class StakeTable {
     readonly entries: StakeTableField[];

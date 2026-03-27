@@ -1,4 +1,4 @@
-import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec';
+import { Converter, TypeCheckingCodec } from '../../../../../../../../../../../src/convert/codec/convert';
 import { ActiveNodeSetEntry } from '../common/active_node_set_entry';
 import { EpochAndBlock } from '../common/epoch_and_block';
 import { Ratio } from '../common/ratio';
