@@ -138,7 +138,7 @@ export const environmentArgsDecafWithContracts: EnvironmentWithContractsArgs = {
 export const environmentArgsMainnet: EnvironmentArgs = {
   environment: Environment.mainnet,
   hotshotQueryServiceURL: 'https://cache.main.net.espresso.network/v0/',
-  nodeValidatorWebSocketURL: 'wss:/nv.main.net.espresso.network/v0/',
+  nodeValidatorWebSocketURL: 'wss://nv.main.net.espresso.network/v0/',
 };
 
 export const environmentArgsMainnetWithContracts: EnvironmentWithContractsArgs =

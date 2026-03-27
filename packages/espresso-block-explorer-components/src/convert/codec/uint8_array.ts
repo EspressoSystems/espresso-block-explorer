@@ -39,7 +39,7 @@ export class Uint8ArrayDecoder implements Converter<unknown, Uint8Array> {
 
 export class Uint8ArrayEncoder implements Converter<Uint8Array, `0x${string}`> {
   convert(input: Uint8Array): `0x${string}` {
-    return arrayBufferCodec.encode(ensureArrayBuffer(input.buffer));
+    return arrayBufferCodec.encode(ensureArrayBuffer(input));
   }
 }
 

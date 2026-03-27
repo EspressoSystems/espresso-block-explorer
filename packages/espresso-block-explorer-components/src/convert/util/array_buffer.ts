@@ -153,7 +153,11 @@ export function ensureArrayBuffer(
     input instanceof Float32Array ||
     input instanceof Float64Array
   ) {
-    if (input.buffer instanceof ArrayBuffer) {
+    if (
+      input.buffer instanceof ArrayBuffer &&
+      input.byteOffset === 0 &&
+      input.byteLength === input.buffer.byteLength
+    ) {
       return input.buffer;
     }
 
