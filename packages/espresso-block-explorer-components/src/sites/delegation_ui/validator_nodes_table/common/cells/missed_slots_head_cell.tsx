@@ -11,7 +11,7 @@ export const MissedSlotsHeadCell: React.FC = () => {
     <>
       <Text text="Missed Slots" />
       <MoreInfoElement>
-        <Text text="The amount of times a validator fails to propose a block when it's their turn (e.g. by being offline). A higher % of missed slots means the validator is not performing well." />
+        <Text text="The amount of times a validator fails to propose a block when it's their turn (e.g. by being offline). A higher % of missed slots means the validator is not performing well. A '-' indicates the validator has not yet proposed any blocks, or may not be actively participating in consensus for the current Epoch." />
       </MoreInfoElement>
     </>
   );
