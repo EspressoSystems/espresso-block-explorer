@@ -56,7 +56,7 @@
   background: var(--color--black);
 }
 
-[data-theme='light'] .nav--main-drawr li a {
+[data-theme='light'] .nav--main-drawer li a {
   --link--default--color: var(--color--slate-950) !important;
 }
 
