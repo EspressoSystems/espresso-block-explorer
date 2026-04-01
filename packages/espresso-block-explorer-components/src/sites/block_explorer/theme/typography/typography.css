@@ -1,5 +1,5 @@
 @font-face {
-  font-family: PPNeueMontreal;
+  font-family: 'Neue Montreal';
   src:
     local('PPNeueMontrealBook'),
     url('./fonts/PPNeueMontreal-Book.otf') format('opentype');
@@ -7,7 +7,7 @@
 }
 
 @font-face {
-  font-family: PPNeueMontreal;
+  font-family: 'Neue Montreal';
   src:
     local('PPNeueMontrealThin'),
     url('./fonts/PPNeueMontreal-Thin.otf') format('opentype');
@@ -15,7 +15,7 @@
 }
 
 @font-face {
-  font-family: PPNeueMontreal;
+  font-family: 'Neue Montreal';
   src:
     local('PPNeueMontrealRegular'),
     url('./fonts/PPNeueMontreal-Regular.otf') format('opentype');
@@ -24,7 +24,7 @@
 
 :root {
   /* Espresso Typography */
-  --espresso--text--font-family: PPNeueMontrealRegular, sans-serif;
+  --espresso--text--font-family: 'Neue Montreal', sans-serif;
   --espresso--text--letter-spacing: 1;
 
   /* Default Text Styles */

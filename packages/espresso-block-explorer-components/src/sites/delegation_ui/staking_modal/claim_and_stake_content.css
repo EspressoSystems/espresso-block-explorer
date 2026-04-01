@@ -5,7 +5,7 @@
   align-items: space-around;
   background: var(--color--brown--0);
   padding: 24px;
-  font-family: PPNeueMontreal, sans-serif;
+  font-family: 'Neue Montreal', sans-serif;
   font-size: 14px;
 }
 .claim-and-stake-content p {
