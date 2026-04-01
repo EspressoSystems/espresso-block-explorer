@@ -32,11 +32,11 @@ class ReleaseBreakpointExecutor implements breakpointExecutor {
  * environment (development or production).
  */
 function createBreakpointExecutor(): breakpointExecutor {
-  if (import.meta.env.PROD) {
-    return new ReleaseBreakpointExecutor();
+  if (import.meta.env.DEV) {
+    return new DebugBreakpointExecutor();
   }
 
-  return new DebugBreakpointExecutor();
+  return new ReleaseBreakpointExecutor();
 }
 
 export function isProduction(): boolean {
