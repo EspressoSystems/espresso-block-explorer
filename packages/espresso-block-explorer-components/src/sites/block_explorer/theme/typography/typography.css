@@ -1,6 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+
+@font-face {
+  font-family: PPNeueMontrealRegular;
+  src:
+    local('PPNeueMontrealRegular'),
+    url('./fonts/PPNeueMontreal-Regular.otf') format('opentype');
+}
+
 :root {
   /* Espresso Typography */
-  --espresso--text--font-family: system-ui;
+  --espresso--text--font-family: PPNeueMontrealRegular, sans-serif;
   --espresso--text--letter-spacing: 1;
 
   /* Default Text Styles */
