@@ -63,7 +63,7 @@ async function* generateAllCurrentBlocks(
   let height = 1;
   let time = getStartingSeed();
   while (time < now) {
-    const genTimeS = Math.floor(prng.nextFloat() * 14 * 1000);
+    const genTimeS = prng.nextFloat() * 14 * 1000;
     yield generateIndividualEspressoBlock(
       new PseudoRandomNumberGenerator(height + genTimeS),
       height,
@@ -103,7 +103,7 @@ export async function* streamNewEspressoBlocks(
   let time = incomingTime;
   let height = incomingHeight;
   while (true) {
-    const genTimeS = Math.floor(prng.nextFloat() * 14 * 1000);
+    const genTimeS = prng.nextFloat() * 14 * 1000;
     const toWaitMs = time + genTimeS - Date.now();
     if (shouldSleep && toWaitMs > 0) {
       await sleep(toWaitMs);

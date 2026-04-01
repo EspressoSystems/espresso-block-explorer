@@ -389,7 +389,7 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
       lastBlock = createBlockDetailFromGeneratedBlock(block);
       blockBuffer.put(createBlockSummaryFromGeneratedBlock(block));
       sizeBuffer.put(block.size);
-      timeBuffer.put(Math.round(block.genTime / 1000));
+      timeBuffer.put(block.genTime / 1000);
       transactionsBuffer.put(block.numTransactions);
       heightBuffer.put(block.height);
 

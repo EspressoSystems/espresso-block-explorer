@@ -22,7 +22,7 @@ import {
   CappuccinoAPIHeaderFields,
   CappuccinoAPIHeaderImpl,
 } from '../block_header';
-import { CappuccinoAPIV0HeaderFieldsImpl } from '../block_header_v0';
+import { CappuccinoAPIV4HeaderImpl } from '../block_header_v4';
 import { CappuccinoBuilderSignature } from '../builder_signature';
 import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
 import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
@@ -51,11 +51,12 @@ function headerFromBlock(
   block: GeneratedBlock,
 ): CappuccinoAPIHeader<CappuccinoAPIHeaderFields> {
   return new CappuccinoAPIHeaderImpl(
-    new WrappedVersion(new CappuccinoVersion(0, 1)),
-    new CappuccinoAPIV0HeaderFieldsImpl(
+    new WrappedVersion(new CappuccinoVersion(0, 4)),
+    new CappuccinoAPIV4HeaderImpl(
       block.height,
       block.time.valueOf() / 1000,
-      0,
+      block.time.valueOf(),
+      Math.floor(block.height / 12) + 30_000_000,
       new CappuccinoL1Finalized(0, '00', '00'),
       new TaggedBase64('PAYLOAD_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
       new TaggedBase64('BUILDER_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
@@ -64,6 +65,9 @@ function headerFromBlock(
       new TaggedBase64('MERKLE_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
       new CappuccinoFeeInfo(new ArrayBuffer(0), new ArrayBuffer(0)),
       new CappuccinoBuilderSignature(new ArrayBuffer(0), new ArrayBuffer(0), 0),
+      new TaggedBase64('MERKLE_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
+      0n,
+      null,
     ),
   );
 }
