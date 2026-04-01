@@ -33,7 +33,7 @@ export const T3rnLogo24: React.FC<PreFedSrcAvatarLogoProps> = (props) => (
       className="only-light"
       src={T3rnLogoLight24x24_1x}
       alt="T3rn Logo"
-      srcSet={`${T3rnLogoLight24x24_1x}1x, ${T3rnLogoLight24x24_2x} 2x, ${T3rnLogoLight24x24_3x} 3x`}
+      srcSet={`${T3rnLogoLight24x24_1x} 1x, ${T3rnLogoLight24x24_2x} 2x, ${T3rnLogoLight24x24_3x} 3x`}
     />
     <img
       className="only-dark"
