@@ -69,7 +69,7 @@
     background: var(--color--black);
   }
 
-  :not([data-theme='light']). nav--main-drawer li a {
+  :not([data-theme='light']) .nav--main-drawer li a {
     --link--default--color: var(--color--white);
   }
 }
