@@ -271,6 +271,10 @@ class SearchStateController {
   setOffset(offset: null | number) {
     this.pOffset = offset;
 
+    if (typeof document === 'undefined') {
+      return;
+    }
+
     const ele = document.querySelector(`[data-index="${offset}"]`);
     if (
       ele &&

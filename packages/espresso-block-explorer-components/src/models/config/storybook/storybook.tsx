@@ -28,12 +28,14 @@ if (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (globalThis as any).localStorage = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getItem: (_key: string) => null,
+    getItem: (_key: string) => {
+      return null; // Return null for missing keys instead of throwing
+    },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setItem: (_key: string, _value: string) => { },
+    setItem: (_key: string, _value: string) => {},
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    removeItem: (_key: string) => { },
-    clear: () => { },
+    removeItem: (_key: string) => {},
+    clear: () => {},
   };
 }
 
@@ -68,20 +70,20 @@ export const StoryBookSpecifyEnvironment: React.FC<
   l1ValidatorServiceURL,
   children,
 }) => {
-    const config: ExplorerConfig = {
-      hotshotQueryServiceURL: resolveURL(hotshotQueryServiceURL ?? null),
-      nodeValidatorServiceURL: resolveURL(nodeValidatorWebSocketURL ?? null),
-      l1ValidatorServiceURL: resolveURL(l1ValidatorServiceURL ?? null),
-    };
-
-    return (
-      <EnvironmentContext.Provider value={environment}>
-        <BlockExplorerConfigContext.Provider value={config}>
-          {children}
-        </BlockExplorerConfigContext.Provider>
-      </EnvironmentContext.Provider>
-    );
+  const config: ExplorerConfig = {
+    hotshotQueryServiceURL: resolveURL(hotshotQueryServiceURL ?? null),
+    nodeValidatorServiceURL: resolveURL(nodeValidatorWebSocketURL ?? null),
+    l1ValidatorServiceURL: resolveURL(l1ValidatorServiceURL ?? null),
   };
+
+  return (
+    <EnvironmentContext.Provider value={environment}>
+      <BlockExplorerConfigContext.Provider value={config}>
+        {children}
+      </BlockExplorerConfigContext.Provider>
+    </EnvironmentContext.Provider>
+  );
+};
 
 function resolveContractAddress(
   address: null | undefined | string,
@@ -119,44 +121,44 @@ export const StoryBookSpecifyEnvironmentAndContracts: React.FC<
   l1ValidatorServiceURL,
   children,
 }) => {
-    const wagmiConfig = getWagmiConfigForEnvironment(environment);
-    const espressoConfig = deriveAddressesWithEnvironmentFallback(
-      resolveContractAddress(espTokenContractAddress),
-      resolveContractAddress(stakeTableContractAddress),
-      resolveContractAddress(rewardClaimContractAddress),
-      resolveContractAddress(lightClientContractAddress),
-    );
+  const wagmiConfig = getWagmiConfigForEnvironment(environment);
+  const espressoConfig = deriveAddressesWithEnvironmentFallback(
+    resolveContractAddress(espTokenContractAddress),
+    resolveContractAddress(stakeTableContractAddress),
+    resolveContractAddress(rewardClaimContractAddress),
+    resolveContractAddress(lightClientContractAddress),
+  );
 
-    return (
-      <StoryBookSpecifyEnvironment
-        environment={environment}
-        hotshotQueryServiceURL={hotshotQueryServiceURL}
-        nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
-        l1ValidatorServiceURL={l1ValidatorServiceURL}
-      >
-        <EspressoConfigContext.Provider value={espressoConfig}>
-          <WagmiProvider config={wagmiConfig}>
-            <QueryClientProvider client={queryClient}>
-              <RainbowKitProvider>
-                <RainbowKitContextInjector>
-                  <ProvideL1Methods>
-                    <ProvideESPTokenContract>
-                      <ProvideStakeTableV2Contract>
-                        <ProvideRewardClaimContract>
-                          <ProvideLightClientV2Contract>
-                            <FakeDataMockOverrides>
-                              {children}
-                            </FakeDataMockOverrides>
-                          </ProvideLightClientV2Contract>
-                        </ProvideRewardClaimContract>
-                      </ProvideStakeTableV2Contract>
-                    </ProvideESPTokenContract>
-                  </ProvideL1Methods>
-                </RainbowKitContextInjector>
-              </RainbowKitProvider>
-            </QueryClientProvider>
-          </WagmiProvider>
-        </EspressoConfigContext.Provider>
-      </StoryBookSpecifyEnvironment>
-    );
-  };
+  return (
+    <StoryBookSpecifyEnvironment
+      environment={environment}
+      hotshotQueryServiceURL={hotshotQueryServiceURL}
+      nodeValidatorWebSocketURL={nodeValidatorWebSocketURL}
+      l1ValidatorServiceURL={l1ValidatorServiceURL}
+    >
+      <EspressoConfigContext.Provider value={espressoConfig}>
+        <WagmiProvider config={wagmiConfig}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider>
+              <RainbowKitContextInjector>
+                <ProvideL1Methods>
+                  <ProvideESPTokenContract>
+                    <ProvideStakeTableV2Contract>
+                      <ProvideRewardClaimContract>
+                        <ProvideLightClientV2Contract>
+                          <FakeDataMockOverrides>
+                            {children}
+                          </FakeDataMockOverrides>
+                        </ProvideLightClientV2Contract>
+                      </ProvideRewardClaimContract>
+                    </ProvideStakeTableV2Contract>
+                  </ProvideESPTokenContract>
+                </ProvideL1Methods>
+              </RainbowKitContextInjector>
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
+      </EspressoConfigContext.Provider>
+    </StoryBookSpecifyEnvironment>
+  );
+};

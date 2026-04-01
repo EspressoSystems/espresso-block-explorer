@@ -50,11 +50,11 @@ class ReleaseAssertExecutor implements AssertExecutor {
 }
 
 function createAssertExecutor(): AssertExecutor {
-  if (import.meta.env.PROD) {
-    return new ReleaseAssertExecutor();
+  if (import.meta.env.DEV) {
+    return new DebugAssertExecutor();
   }
 
-  return new DebugAssertExecutor();
+  return new ReleaseAssertExecutor();
 }
 
 export function isProduction(): boolean {

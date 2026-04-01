@@ -1,4 +1,5 @@
 a.link.link--external {
+  font-family: 'IBM Plex Mono', monospace;
   color: var(--on-color--coffee);
   padding: 4px 8px;
   text-decoration: none;
