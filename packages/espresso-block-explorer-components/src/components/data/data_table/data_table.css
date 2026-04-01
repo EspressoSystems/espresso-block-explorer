@@ -14,7 +14,7 @@ table.data-table th {
   make inline buttons and images take up the same height as the text they
   are being displayed next to.
   */
-  height: 20px;
+  height: 28px;
 }
 
 table.data-table table {
