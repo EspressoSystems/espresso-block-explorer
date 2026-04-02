@@ -5,15 +5,12 @@
  * and logo.
  */
 export class RollUpEntry {
-  public readonly namespace: number;
-  public readonly name: string;
-  public readonly site: URL;
-  public readonly blockExplorer: URL;
-
-  constructor(namespace: number, name: string, site: URL, blockExplorer: URL) {
-    this.namespace = namespace;
-    this.name = name;
-    this.site = site;
-    this.blockExplorer = blockExplorer;
+  constructor(
+    public readonly namespace: number,
+    public readonly name: string,
+    public readonly site: URL,
+    public readonly blockExplorer: null | URL,
+  ) {
+    Object.freeze(this);
   }
 }

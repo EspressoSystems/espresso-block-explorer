@@ -135,6 +135,21 @@ const rari = new RollUpEntry(
   new URL('https://mainnet.explorer.rarichain.org/'),
 );
 
+export const kLigeroDecafNamespace = 100_042;
+const ligeroDecaf = new RollUpEntry(
+  kLigeroDecafNamespace,
+  'Ligero',
+  new URL('https://ligero-inc.com/'),
+  null,
+);
+export const kLigeroNamespace = 100_042;
+const ligero = new RollUpEntry(
+  kLigeroNamespace,
+  'Ligero',
+  new URL('https://ligero-inc.com/'),
+  null,
+);
+
 export const kLogXDecafNamespace = 9369;
 
 const logXDecaf = new RollUpEntry(
@@ -299,6 +314,7 @@ const celoDecaf = new RollUpEntry(
 export const curatedMainnetList = [
   infiniteGarden,
   rari,
+  ligero,
   logX,
   molten,
   appChain,
@@ -311,6 +327,7 @@ export const curatedMainnetList = [
 export const curatedDecafList = [
   infiniteGarden,
   rariDevNet,
+  ligeroDecaf,
   logXDecaf,
   appChainDecaf,
   moltenDecaf,

@@ -1,7 +1,8 @@
+import { OverridePathResolver } from '@/block_explorer/contexts/path_resolver_provider';
+import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { ProvideTickEverySecond } from '@/contexts/now_provider';
 import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
-import { NamespaceContext } from '@/block_explorer/components/page_sections/rollup_detail_data_table/roll_up_detail_loader';
-import { OverridePathResolver } from '@/block_explorer/contexts/path_resolver_provider';
+import { NamespaceContext } from '@/models/block_explorer/rollup_entry/contexts';
 import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
@@ -17,7 +18,6 @@ import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { ProvideCappuccinoRollUpDetailDataSource } from '../cappuccino_hot_shot_query_service_adapters';
-import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import RollUpPage from '../roll_up_page';
 import { StoryBookPathResolver } from '../story_book_path_resolver';
 

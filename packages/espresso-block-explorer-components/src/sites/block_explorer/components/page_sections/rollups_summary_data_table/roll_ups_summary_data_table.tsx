@@ -81,7 +81,7 @@ const BlockExplorerCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as RollUpSummary;
   const rollUp = curatedRollupMap.get(row.namespace);
 
-  if (!rollUp) {
+  if (!rollUp || !rollUp.blockExplorer) {
     return <Text text="-" />;
   }
 
