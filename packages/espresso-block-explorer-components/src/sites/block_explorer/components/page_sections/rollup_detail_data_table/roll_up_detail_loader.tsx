@@ -6,15 +6,10 @@ import {
 import { SortDirection } from '@/components/data/types';
 import UnimplementedError from '@/errors/unimplemented_error';
 import { RollUpDetailAsyncRetriever } from '@/models/block_explorer/rollup_detail';
+import { NamespaceContext } from '@/models/block_explorer/rollup_entry/contexts';
 import { TransactionSummaryColumn } from '@/models/block_explorer/transaction_summary';
 import React from 'react';
 import { TransactionSummary } from '../transaction_summary_data_table/transaction_summary_data_loader';
-
-/**
- * NamespaceContext is a React Context that holds a reference to the
- * current Namespace
- */
-export const NamespaceContext = React.createContext<number>(0);
 
 /**
  * RetrieverContext is a React Context that holds a reference to a

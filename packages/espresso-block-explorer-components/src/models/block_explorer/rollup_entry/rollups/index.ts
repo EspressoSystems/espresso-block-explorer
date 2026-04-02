@@ -3,6 +3,7 @@ export * from './appchain';
 export * from './espresso';
 export * from './fake_rollups';
 export * from './huddle01';
+export * from './ligero';
 export * from './logx';
 export * from './molten';
 export * from './rari';

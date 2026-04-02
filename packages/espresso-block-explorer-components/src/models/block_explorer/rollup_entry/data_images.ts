@@ -5,6 +5,8 @@ import {
   kAppChainNamespace,
   kHuddle01DecafNamespace,
   kHuddle01Namespace,
+  kLigeroDecafNamespace,
+  kLigeroNamespace,
   kLogXDecafNamespace,
   kLogXNamespace,
   kMoltenDecafNamespace,
@@ -47,6 +49,11 @@ import {
   Huddle01Logo32,
   Huddle01Logo40,
 } from './rollups/huddle01/huddle01';
+import {
+  LigeroLogo24,
+  LigeroLogo32,
+  LigeroLogo40,
+} from './rollups/ligero/ligero';
 import { LogXLogo24, LogXLogo32, LogXLogo40 } from './rollups/logx/logx';
 import {
   MoltenLogo24,
@@ -206,6 +213,20 @@ const rari = new RollUpImages(
   With40PxSquare(RariLogo40),
 );
 
+const ligeroDecaf = new RollUpImages(
+  kLigeroDecafNamespace,
+  With24PxSquare(LigeroLogo24),
+  With32PxSquare(LigeroLogo32),
+  With40PxSquare(LigeroLogo40),
+);
+
+const ligero = new RollUpImages(
+  kLigeroNamespace,
+  With24PxSquare(LigeroLogo24),
+  With32PxSquare(LigeroLogo32),
+  With40PxSquare(LigeroLogo40),
+);
+
 const logXDecaf = new RollUpImages(
   kLogXDecafNamespace,
   With24PxSquare(LogXLogo24),
@@ -333,5 +354,7 @@ export const rollUpImagesMap = new Map(
     rufusDecaf,
     huddle01,
     huddle01Decaf,
+    ligeroDecaf,
+    ligero,
   ].map((entry) => [entry.namespace, entry]),
 );

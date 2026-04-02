@@ -10,10 +10,7 @@ import {
   RollUpDetailDataTable,
   RollUpDetailDataTablePlaceholder,
 } from '@/block_explorer/components/page_sections/rollup_detail_data_table/roll_up_detail_data_table';
-import {
-  NamespaceContext,
-  RollUpDetailsDataLoader,
-} from '@/block_explorer/components/page_sections/rollup_detail_data_table/roll_up_detail_loader';
+import { RollUpDetailsDataLoader } from '@/block_explorer/components/page_sections/rollup_detail_data_table/roll_up_detail_loader';
 import {
   OverridePagePath,
   PageType,
@@ -22,6 +19,7 @@ import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
+import { NamespaceContext } from '@/models/block_explorer/rollup_entry/contexts';
 import React from 'react';
 
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
@@ -29,7 +27,7 @@ const EdgeMarginRollUpInfo = WithEdgeMargin(RollUpInfo);
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
 
-interface GuardRollUpPageDetailDataTableProps { }
+interface GuardRollUpPageDetailDataTableProps {}
 
 /**
  * GuardRollUpPageDetailDataTable is a component that guards the rendering
@@ -65,10 +63,7 @@ const GuardRollUpPageDetailDataTable: React.FC<
   );
 };
 
-const RolUpSection: React.FC = () => {
-  const namespace = React.useContext(NamespaceContext);
-  return <EdgeMarginRollUpInfo namespace={namespace} />;
-};
+const RolUpSection = EdgeMarginRollUpInfo;
 
 interface RollUpPageProps {
   startAtBlock?: number;
