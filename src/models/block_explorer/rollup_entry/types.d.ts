@@ -8,6 +8,6 @@ export declare class RollUpEntry {
     readonly namespace: number;
     readonly name: string;
     readonly site: URL;
-    readonly blockExplorer: URL;
-    constructor(namespace: number, name: string, site: URL, blockExplorer: URL);
+    readonly blockExplorer: null | URL;
+    constructor(namespace: number, name: string, site: URL, blockExplorer: null | URL);
 }

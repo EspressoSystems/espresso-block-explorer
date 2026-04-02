@@ -3,11 +3,6 @@ import { RollUpDetailAsyncRetriever } from '../../../../../../../../../../../../
 import { TransactionSummaryColumn } from '../../../../../../../../../../../../../src/models/block_explorer/transaction_summary';
 import { default as React } from 'react';
 /**
- * NamespaceContext is a React Context that holds a reference to the
- * current Namespace
- */
-export declare const NamespaceContext: React.Context<number>;
-/**
  * RetrieverContext is a React Context that holds a reference to a
  * RollUpDetailAsyncRetriever
  */

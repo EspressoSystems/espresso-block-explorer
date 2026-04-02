@@ -1,7 +1,6 @@
 import { default as React } from 'react';
 export interface RollUpInfoProps {
     className?: string;
-    namespace: number;
 }
 /**
  * RollUpInfo is a small section of information concerning the rollup in
