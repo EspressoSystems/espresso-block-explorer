@@ -17,8 +17,7 @@ export interface RollUpInfoProps {
 }
 
 const RollupWebsiteLink: React.FC = () => {
-  const namespace = React.useContext(NamespaceContext);
-  const rollUp = curatedRollupMap.get(namespace);
+  const rollUp = React.useContext(RollUpEntryContext);
   if (!rollUp || !rollUp.site) {
     return <Text text="-" />;
   }
@@ -31,8 +30,7 @@ const RollupWebsiteLink: React.FC = () => {
 };
 
 const RollupExplorerLink: React.FC = () => {
-  const namespace = React.useContext(NamespaceContext);
-  const rollUp = curatedRollupMap.get(namespace);
+  const rollUp = React.useContext(RollUpEntryContext);
   if (!rollUp || !rollUp.blockExplorer) {
     return <Text text="-" />;
   }
