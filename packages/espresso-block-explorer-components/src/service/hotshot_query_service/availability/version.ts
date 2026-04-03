@@ -6,9 +6,9 @@ import {
 import { numberCodec } from '@/convert/codec/number';
 
 /**
- * CappuccinoVersion represents an Espresso version in the Cappuccino API.
+ * AvailabilityVersion represents an Espresso version in the Availablity API.
  */
-export class CappuccinoVersion {
+export class AvailabilityVersion {
   constructor(
     public readonly major: number,
     public readonly minor: number,
@@ -17,29 +17,29 @@ export class CappuccinoVersion {
   }
 
   toJSON() {
-    return cappuccinoVersionCodec.encode(this);
+    return availabilityVersionCodec.encode(this);
   }
 }
 
-class CappuccinoVersionDecoder implements Converter<
+class AvailabilitytVersionDecodert implements Converter<
   unknown,
-  CappuccinoVersion
+  AvailabilityVersion
 > {
-  convert(input: unknown): CappuccinoVersion {
+  convert(input: unknown): AvailabilityVersion {
     assertRecordWithKeys(input, 'major', 'minor');
 
-    return new CappuccinoVersion(
+    return new AvailabilityVersion(
       numberCodec.decode(input.major),
       numberCodec.decode(input.minor),
     );
   }
 }
 
-class CappuccinoVersionEncoder implements Converter<
-  CappuccinoVersion,
+class AvailabilityVersionEncoder implements Converter<
+  AvailabilityVersion,
   unknown
 > {
-  convert(input: CappuccinoVersion): unknown {
+  convert(input: AvailabilityVersion): unknown {
     return {
       major: numberCodec.encode(input.major),
       minor: numberCodec.encode(input.minor),
@@ -47,18 +47,18 @@ class CappuccinoVersionEncoder implements Converter<
   }
 }
 
-class CappuccinoVersionCodec extends TypeCheckingCodec<
-  CappuccinoVersion,
+class AvailabilityVersionCodec extends TypeCheckingCodec<
+  AvailabilityVersion,
   unknown
 > {
-  public readonly encoder = new CappuccinoVersionEncoder();
-  public readonly decoder = new CappuccinoVersionDecoder();
+  public readonly encoder = new AvailabilityVersionEncoder();
+  public readonly decoder = new AvailabilitytVersionDecodert();
 }
 
-export const cappuccinoVersionCodec = new CappuccinoVersionCodec();
+export const availabilityVersionCodec = new AvailabilityVersionCodec();
 
 export class WrappedVersion {
-  constructor(public readonly version: CappuccinoVersion) {
+  constructor(public readonly version: AvailabilityVersion) {
     Object.freeze(this);
   }
 
@@ -71,14 +71,14 @@ class WrappedVersionDecoder implements Converter<unknown, WrappedVersion> {
   convert(input: unknown): WrappedVersion {
     assertRecordWithKeys(input, 'Version');
 
-    return new WrappedVersion(cappuccinoVersionCodec.decode(input.Version));
+    return new WrappedVersion(availabilityVersionCodec.decode(input.Version));
   }
 }
 
 class WrappedVersionEncoder implements Converter<WrappedVersion, unknown> {
   convert(input: WrappedVersion): unknown {
     return {
-      Version: cappuccinoVersionCodec.encode(input.version),
+      Version: availabilityVersionCodec.encode(input.version),
     };
   }
 }

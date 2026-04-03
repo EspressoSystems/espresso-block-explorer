@@ -12,26 +12,23 @@ import Degrees from '@/models/geo/units/degrees';
 import LatLng, { nullableLatLngDegreesCodec } from '@/models/geo/units/lat_lng';
 
 /**
- * CappuccinoLocationDetails represents the location details of a Cappuccino
+ * LocationDetails represents the location details of an Espresso
  * node.  It contains details that represents an Alpha-2 ISO3166 country code
  * identity as well as a pair of latitude and longitude coordinates.
  */
-export default class CappuccinoLocationDetails {
-  readonly coords: null | LatLng<Degrees>;
-  readonly country: null | string;
-
-  constructor(coords: null | LatLng<Degrees>, country: null | string) {
-    this.coords = coords;
-    this.country = country;
-  }
+export default class LocationDetails {
+  constructor(
+    public readonly coords: null | LatLng<Degrees>,
+    public readonly country: null | string,
+  ) {}
 
   toJSON() {
-    return cappuccinoLocationDetailsCodec.encode(this);
+    return locationDetailsCodec.encode(this);
   }
 }
 
-class CappuccinoLocationDetailsEncoder implements Converter<CappuccinoLocationDetails> {
-  convert(input: CappuccinoLocationDetails) {
+class LocationDetailsEncoder implements Converter<LocationDetails> {
+  convert(input: LocationDetails) {
     return {
       coords: nullableLatLngDegreesCodec.encode(input.coords),
       country: nullableStringCodec.encode(input.country),
@@ -39,28 +36,24 @@ class CappuccinoLocationDetailsEncoder implements Converter<CappuccinoLocationDe
   }
 }
 
-class CappuccinoLocationDetailsDecoder implements Converter<
-  unknown,
-  CappuccinoLocationDetails
-> {
+class LocationDetailsDecoder implements Converter<unknown, LocationDetails> {
   convert(input: unknown) {
     assertRecordWithKeys(input, 'coords', 'country');
-    return new CappuccinoLocationDetails(
+    return new LocationDetails(
       nullableLatLngDegreesCodec.decode(input.coords),
       preferNullOverEmptyString(nullableStringCodec.decode(input.country)),
     );
   }
 }
 
-class CappuccinoLocationDetailsCodec extends TypeCheckingCodec<CappuccinoLocationDetails> {
-  readonly encoder = new CappuccinoLocationDetailsEncoder();
-  readonly decoder = new CappuccinoLocationDetailsDecoder();
+class LocationDetailsCodec extends TypeCheckingCodec<LocationDetails> {
+  readonly encoder = new LocationDetailsEncoder();
+  readonly decoder = new LocationDetailsDecoder();
 }
 
-export const cappuccinoLocationDetailsCodec =
-  new CappuccinoLocationDetailsCodec();
+export const locationDetailsCodec = new LocationDetailsCodec();
 
-export const nullableCappuccinoLocationDetailsCodec = new NullCodec(
-  new NullDecoder(cappuccinoLocationDetailsCodec),
-  new NullEncoder(cappuccinoLocationDetailsCodec),
+export const nullableLocationDetailsCodec = new NullCodec(
+  new NullDecoder(locationDetailsCodec),
+  new NullEncoder(locationDetailsCodec),
 );

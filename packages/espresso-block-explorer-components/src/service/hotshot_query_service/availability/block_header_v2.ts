@@ -10,50 +10,51 @@ import {
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
 import {
-  AbstractCappuccinoAPIV0HeaderFields,
-  CappuccinoAPIV0HeaderFields,
+  AbstractavailabilityAPIV0HeaderFields,
+  AvailabilityAPIV0HeaderFields,
 } from './block_header_v0';
 import {
-  CappuccinoBuilderSignature,
-  cappuccinoBuilderSignatureCodec,
+  AvailabilityBuilderSignature,
+  availabilityBuilderSignatureCodec,
 } from './builder_signature';
-import { CappuccinoFeeInfo, cappuccinoFeeInfoCodec } from './fee_info';
+import { AvailabilityFeeInfo, availabilityFeeInfoCodec } from './fee_info';
 import {
-  CappuccinoL1Finalized,
-  nullableCappuccinoL1FinalizedCodec,
+  AvailabilityL1Finalized,
+  nullableAvailabilityL1FinalizedCodec,
 } from './l1_finalized';
 import {
-  CappuccinoNamespaceTable,
-  cappuccinoNamespaceTableCodec,
+  AvailabilityNamespaceTable,
+  availabilityNamespaceTableCodec,
 } from './namespace_table';
 
-export interface CappuccinoAPIV2HeaderFields extends CappuccinoAPIV0HeaderFields {}
+export interface AvailabilityAPIV2HeaderFields extends AvailabilityAPIV0HeaderFields {}
 
-export class AbstractCappuccinoAPIV2HeaderFields
-  extends AbstractCappuccinoAPIV0HeaderFields
-  implements CappuccinoAPIV2HeaderFields
+export class AbstractAvailabilityAPIV2HeaderFields
+  extends AbstractavailabilityAPIV0HeaderFields
+  implements AvailabilityAPIV2HeaderFields
 {
   toJSON() {
-    return cappuccinoAPIV2HeaderFieldsCodec.encode(this);
+    return availabilityAPIV2HeaderFieldsCodec.encode(this);
   }
 }
 
 /**
- * CappuccinoAPIHeader represents the header of a block in the Cappuccino API.
+ * AvailabilityAPIV2HeaderFieldsImpl represents the header of a block in the
+ * Availability API.
  */
-export class CappuccinoAPIV2HeaderFieldsImpl extends AbstractCappuccinoAPIV2HeaderFields {
+export class AvailabilityAPIV2HeaderFieldsImpl extends AbstractAvailabilityAPIV2HeaderFields {
   constructor(
     height: number,
     timestamp: number,
     l1_head: number,
-    l1_finalized: null | CappuccinoL1Finalized,
+    l1_finalized: null | AvailabilityL1Finalized,
     payload_commitment: TaggedBase64,
     builder_commitment: TaggedBase64,
-    ns_table: CappuccinoNamespaceTable,
+    ns_table: AvailabilityNamespaceTable,
     block_merkle_tree_root: TaggedBase64,
     fee_merkle_tree_root: TaggedBase64,
-    fee_info: CappuccinoFeeInfo,
-    builder_signature: CappuccinoBuilderSignature,
+    fee_info: AvailabilityFeeInfo,
+    builder_signature: AvailabilityBuilderSignature,
   ) {
     super(
       height,
@@ -72,11 +73,11 @@ export class CappuccinoAPIV2HeaderFieldsImpl extends AbstractCappuccinoAPIV2Head
   }
 }
 
-export class CappuccinoAPIV2HeaderFieldsDecoder implements Converter<
+export class AvailabilityAPIV2HeaderFieldsDecoder implements Converter<
   unknown,
-  CappuccinoAPIV2HeaderFields
+  AvailabilityAPIV2HeaderFields
 > {
-  convert(input: unknown): CappuccinoAPIV2HeaderFields {
+  convert(input: unknown): AvailabilityAPIV2HeaderFields {
     assertRecordWithKeys(
       input,
       'height',
@@ -92,59 +93,59 @@ export class CappuccinoAPIV2HeaderFieldsDecoder implements Converter<
       'builder_signature',
     );
 
-    return new CappuccinoAPIV2HeaderFieldsImpl(
+    return new AvailabilityAPIV2HeaderFieldsImpl(
       numberCodec.decode(input.height),
       numberCodec.decode(input.timestamp),
       numberCodec.decode(input.l1_head),
-      nullableCappuccinoL1FinalizedCodec.decode(input.l1_finalized),
+      nullableAvailabilityL1FinalizedCodec.decode(input.l1_finalized),
       taggedBase64Codec.decode(input.payload_commitment),
       taggedBase64Codec.decode(input.builder_commitment),
-      cappuccinoNamespaceTableCodec.decode(input.ns_table),
+      availabilityNamespaceTableCodec.decode(input.ns_table),
       taggedBase64Codec.decode(input.block_merkle_tree_root),
       taggedBase64Codec.decode(input.fee_merkle_tree_root),
-      cappuccinoFeeInfoCodec.decode(input.fee_info),
-      cappuccinoBuilderSignatureCodec.decode(input.builder_signature),
+      availabilityFeeInfoCodec.decode(input.fee_info),
+      availabilityBuilderSignatureCodec.decode(input.builder_signature),
     );
   }
 }
 
-export class CappuccinoAPIV2HeaderFieldsEncoder implements Converter<CappuccinoAPIV2HeaderFields> {
-  convert(input: CappuccinoAPIV2HeaderFields) {
-    assertInstanceOf(input, CappuccinoAPIV2HeaderFieldsImpl);
+export class AvailabilityAPIV2HeaderFieldsEncoder implements Converter<AvailabilityAPIV2HeaderFields> {
+  convert(input: AvailabilityAPIV2HeaderFields) {
+    assertInstanceOf(input, AvailabilityAPIV2HeaderFieldsImpl);
 
     return {
       height: numberCodec.encode(input.height),
       timestamp: numberCodec.encode(input.timestamp),
       l1_head: numberCodec.encode(input.l1_head),
-      l1_finalized: nullableCappuccinoL1FinalizedCodec.encode(
+      l1_finalized: nullableAvailabilityL1FinalizedCodec.encode(
         input.l1_finalized,
       ),
       payload_commitment: taggedBase64Codec.encode(input.payload_commitment),
       builder_commitment: taggedBase64Codec.encode(input.builder_commitment),
-      ns_table: cappuccinoNamespaceTableCodec.encode(input.ns_table),
+      ns_table: availabilityNamespaceTableCodec.encode(input.ns_table),
       block_merkle_tree_root: taggedBase64Codec.encode(
         input.block_merkle_tree_root,
       ),
       fee_merkle_tree_root: taggedBase64Codec.encode(
         input.fee_merkle_tree_root,
       ),
-      builder_signature: cappuccinoBuilderSignatureCodec.encode(
+      builder_signature: availabilityBuilderSignatureCodec.encode(
         input.builder_signature,
       ),
-      fee_info: cappuccinoFeeInfoCodec.encode(input.fee_info),
+      fee_info: availabilityFeeInfoCodec.encode(input.fee_info),
     } as const;
   }
 }
 
-export class CappuccinoAPIV2HeaderFieldsCodec extends TypeCheckingCodec<
-  CappuccinoAPIV2HeaderFields,
+export class AvailabilityAPIV2HeaderFieldsCodec extends TypeCheckingCodec<
+  AvailabilityAPIV2HeaderFields,
   ReturnType<
-    InstanceType<new () => CappuccinoAPIV2HeaderFieldsEncoder>['convert']
+    InstanceType<new () => AvailabilityAPIV2HeaderFieldsEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoAPIV2HeaderFieldsEncoder();
-  readonly decoder = new CappuccinoAPIV2HeaderFieldsDecoder();
+  readonly encoder = new AvailabilityAPIV2HeaderFieldsEncoder();
+  readonly decoder = new AvailabilityAPIV2HeaderFieldsDecoder();
 }
 
-export const cappuccinoAPIV2HeaderFieldsCodec =
-  new CappuccinoAPIV2HeaderFieldsCodec();
+export const availabilityAPIV2HeaderFieldsCodec =
+  new AvailabilityAPIV2HeaderFieldsCodec();

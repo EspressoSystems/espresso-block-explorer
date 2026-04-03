@@ -3,13 +3,13 @@ import { nodeList } from '@/data_source/fake_data_source';
 import { mapIterable } from '@/functional/functional';
 import { CommissionPercent } from '@/models/espresso';
 import { ActiveValidators } from '../active_validators';
-import { CappuccinoHotShotQueryServiceNodeAPI } from '../node_api';
+import { HotShotQueryServiceNodeAPI } from '../node_api';
 import { StakeTable } from '../stake_table';
 import { StakeTableEntry } from '../stake_table_entry';
 import { StakeTableField } from '../stake_table_field';
 import { ValidatorEntry } from '../validator_entry';
 
-export class FakeDataCappuccinoHotShotQueryServiceNodeAPI implements CappuccinoHotShotQueryServiceNodeAPI {
+export class FakeDataHotShotQueryServiceNodeAPI implements HotShotQueryServiceNodeAPI {
   async getStakeTableForEpoch(): Promise<StakeTable> {
     return new StakeTable(
       Array.from(

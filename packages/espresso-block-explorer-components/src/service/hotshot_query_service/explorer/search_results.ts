@@ -5,68 +5,68 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import {
-  CappuccinoExplorerBlockSummary,
-  cappuccinoExplorerBlockSummaryArrayCodec,
+  ExplorerBlockSummary,
+  explorerBlockSummaryArrayCodec,
 } from './block_summary';
 import {
-  CappuccinoExplorerTransactionSummary,
-  cappuccinoExplorerTransactionSummaryArrayCodec,
+  ExplorerTransactionSummary,
+  explorerTransactionSummaryArrayCodec,
 } from './transaction_summary';
 
-export class CappuccinoExplorerSearchResults {
-  readonly blocks: CappuccinoExplorerBlockSummary[];
-  readonly transactions: CappuccinoExplorerTransactionSummary[];
+/**
+ * ExplorerSearchResults is a class that represents the search results from the
+ * search request to the Explorer API.
+ */
+export class ExplorerSearchResults {
+  readonly blocks: ExplorerBlockSummary[];
+  readonly transactions: ExplorerTransactionSummary[];
 
   constructor(
-    blocks: CappuccinoExplorerBlockSummary[],
-    transactions: CappuccinoExplorerTransactionSummary[],
+    blocks: ExplorerBlockSummary[],
+    transactions: ExplorerTransactionSummary[],
   ) {
     this.blocks = blocks;
     this.transactions = transactions;
   }
 
   toJSON() {
-    return cappuccinoExplorerSearchResultsCodec.encode(this);
+    return explorerSearchResultsCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerSearchResultsDecoder implements Converter<
+class ExplorerSearchResultsDecoder implements Converter<
   unknown,
-  CappuccinoExplorerSearchResults
+  ExplorerSearchResults
 > {
-  convert(input: unknown): CappuccinoExplorerSearchResults {
+  convert(input: unknown): ExplorerSearchResults {
     assertRecordWithKeys(input, 'blocks', 'transactions');
 
-    return new CappuccinoExplorerSearchResults(
-      cappuccinoExplorerBlockSummaryArrayCodec.decode(input.blocks),
-      cappuccinoExplorerTransactionSummaryArrayCodec.decode(input.transactions),
+    return new ExplorerSearchResults(
+      explorerBlockSummaryArrayCodec.decode(input.blocks),
+      explorerTransactionSummaryArrayCodec.decode(input.transactions),
     );
   }
 }
 
-class CappuccinoExplorerSearchResultsEncoder implements Converter<
-  CappuccinoExplorerSearchResults,
+class ExplorerSearchResultsEncoder implements Converter<
+  ExplorerSearchResults,
   unknown
 > {
-  convert(input: CappuccinoExplorerSearchResults): unknown {
-    assertInstanceOf(input, CappuccinoExplorerSearchResults);
+  convert(input: ExplorerSearchResults): unknown {
+    assertInstanceOf(input, ExplorerSearchResults);
 
     return {
-      blocks: cappuccinoExplorerBlockSummaryArrayCodec.encode(input.blocks),
-      transactions: cappuccinoExplorerTransactionSummaryArrayCodec.encode(
+      blocks: explorerBlockSummaryArrayCodec.encode(input.blocks),
+      transactions: explorerTransactionSummaryArrayCodec.encode(
         input.transactions,
       ),
     };
   }
 }
 
-class CappuccinoExplorerSearchResultsCodec extends Codec<
-  CappuccinoExplorerSearchResults,
-  unknown
-> {
-  readonly encoder = new CappuccinoExplorerSearchResultsEncoder();
-  readonly decoder = new CappuccinoExplorerSearchResultsDecoder();
+class ExplorerSearchResultsCodec extends Codec<ExplorerSearchResults, unknown> {
+  readonly encoder = new ExplorerSearchResultsEncoder();
+  readonly decoder = new ExplorerSearchResultsDecoder();
 }
 
-export const cappuccinoExplorerSearchResultsCodec =
-  new CappuccinoExplorerSearchResultsCodec();
+export const explorerSearchResultsCodec = new ExplorerSearchResultsCodec();

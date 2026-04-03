@@ -7,86 +7,74 @@ import {
 import { espressoErrorCodec } from '@/errors/registry';
 
 /**
- * CappuccinoExplorerErrorResponse is a response that is returned when an error
- * occurs while querying the Cappuccino Explorer API.
+ * ExplorerErrorResponse is a response that is returned when an error
+ * occurs while querying the Explorer API.
  */
-export class CappuccinoExplorerErrorResponse {
-  readonly explorer: CappuccinoExplorerErrorWrapper;
-
-  constructor(explorer: CappuccinoExplorerErrorWrapper) {
-    this.explorer = explorer;
-  }
+export class ExplorerErrorResponse {
+  constructor(public readonly explorer: ExplorerErrorWrapper) {}
 
   toJSON() {
-    return cappuccinoExplorerErrorResponseCodec.encode(this);
+    return explorerErrorResponseCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerErrorResponseDecoder implements Converter<
+class ExplorerErrorResponseDecoder implements Converter<
   unknown,
-  CappuccinoExplorerErrorResponse
+  ExplorerErrorResponse
 > {
-  convert(input: unknown): CappuccinoExplorerErrorResponse {
+  convert(input: unknown): ExplorerErrorResponse {
     assertRecordWithKeys(input, 'Explorer');
 
-    return new CappuccinoExplorerErrorResponse(
-      cappuccinoExplorerErrorWrapperCodec.decode(input.Explorer),
+    return new ExplorerErrorResponse(
+      explorerErrorWrapperCodec.decode(input.Explorer),
     );
   }
 }
 
-class CappuccinoExplorerErrorResponseEncoder implements Converter<CappuccinoExplorerErrorResponse> {
-  convert(input: CappuccinoExplorerErrorResponse) {
-    assertInstanceOf(input, CappuccinoExplorerErrorResponse);
+class ExplorerErrorResponseEncoder implements Converter<ExplorerErrorResponse> {
+  convert(input: ExplorerErrorResponse) {
+    assertInstanceOf(input, ExplorerErrorResponse);
 
     return {
-      Explorer: cappuccinoExplorerErrorWrapperCodec.encode(input.explorer),
+      Explorer: explorerErrorWrapperCodec.encode(input.explorer),
     };
   }
 }
 
-class CappuccinoExplorerErrorResponseCodec extends TypeCheckingCodec<
-  CappuccinoExplorerErrorResponse,
-  ReturnType<
-    InstanceType<new () => CappuccinoExplorerErrorResponseEncoder>['convert']
-  >
+class ExplorerErrorResponseCodec extends TypeCheckingCodec<
+  ExplorerErrorResponse,
+  ReturnType<InstanceType<new () => ExplorerErrorResponseEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoExplorerErrorResponseEncoder();
-  readonly decoder = new CappuccinoExplorerErrorResponseDecoder();
+  readonly encoder = new ExplorerErrorResponseEncoder();
+  readonly decoder = new ExplorerErrorResponseDecoder();
 }
 
 /**
- * CappuccinoExplorerErrorWrapper is a wrapper around an EspressoError that
- * occurred while querying the Cappuccino Explorer API.
+ * ExplorerErrorWrapper is a wrapper around an EspressoError that
+ * occurred while querying the Explorer API.
  */
-export class CappuccinoExplorerErrorWrapper {
-  readonly error: unknown;
-
-  constructor(error: unknown) {
-    this.error = error;
-  }
+export class ExplorerErrorWrapper {
+  constructor(public readonly error: unknown) {}
 
   toJSON() {
-    return cappuccinoExplorerErrorWrapperCodec.encode(this);
+    return explorerErrorWrapperCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerErrorWrapperDecoder implements Converter<
+class ExplorerErrorWrapperDecoder implements Converter<
   unknown,
-  CappuccinoExplorerErrorWrapper
+  ExplorerErrorWrapper
 > {
-  convert(input: unknown): CappuccinoExplorerErrorWrapper {
+  convert(input: unknown): ExplorerErrorWrapper {
     assertRecordWithKeys(input, 'error');
 
-    return new CappuccinoExplorerErrorWrapper(
-      espressoErrorCodec.decode(input.error),
-    );
+    return new ExplorerErrorWrapper(espressoErrorCodec.decode(input.error));
   }
 }
 
-class CappuccinoExplorerErrorWrapperEncoder implements Converter<CappuccinoExplorerErrorWrapper> {
-  convert(input: CappuccinoExplorerErrorWrapper) {
-    assertInstanceOf(input, CappuccinoExplorerErrorWrapper);
+class ExplorerErrorWrapperEncoder implements Converter<ExplorerErrorWrapper> {
+  convert(input: ExplorerErrorWrapper) {
+    assertInstanceOf(input, ExplorerErrorWrapper);
 
     return {
       Explorer: espressoErrorCodec.encode(input.error),
@@ -94,30 +82,26 @@ class CappuccinoExplorerErrorWrapperEncoder implements Converter<CappuccinoExplo
   }
 }
 
-class CappuccinoExplorerErrorWrapperCodec extends TypeCheckingCodec<
-  CappuccinoExplorerErrorWrapper,
-  ReturnType<
-    InstanceType<new () => CappuccinoExplorerErrorWrapperEncoder>['convert']
-  >
+class ExplorerErrorWrapperCodec extends TypeCheckingCodec<
+  ExplorerErrorWrapper,
+  ReturnType<InstanceType<new () => ExplorerErrorWrapperEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoExplorerErrorWrapperEncoder();
-  readonly decoder = new CappuccinoExplorerErrorWrapperDecoder();
+  readonly encoder = new ExplorerErrorWrapperEncoder();
+  readonly decoder = new ExplorerErrorWrapperDecoder();
 }
 
-export const cappuccinoExplorerErrorWrapperCodec =
-  new CappuccinoExplorerErrorWrapperCodec();
+export const explorerErrorWrapperCodec = new ExplorerErrorWrapperCodec();
 
-export const cappuccinoExplorerErrorResponseCodec =
-  new CappuccinoExplorerErrorResponseCodec();
+export const explorerErrorResponseCodec = new ExplorerErrorResponseCodec();
 
-class UnwrappedCappuccinoExplorerErrorResponseDecoder implements Converter<
+class UnwrappedExplorerErrorResponseDecoder implements Converter<
   unknown,
   unknown
 > {
   convert(input: unknown): unknown {
-    return cappuccinoExplorerErrorResponseCodec.decode(input).explorer.error;
+    return explorerErrorResponseCodec.decode(input).explorer.error;
   }
 }
 
-export const unwrappedCappuccinoExplorerErrorResponseDecoder =
-  new UnwrappedCappuccinoExplorerErrorResponseDecoder();
+export const unwrappedExplorerErrorResponseDecoder =
+  new UnwrappedExplorerErrorResponseDecoder();

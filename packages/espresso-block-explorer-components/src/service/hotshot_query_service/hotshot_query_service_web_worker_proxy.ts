@@ -6,9 +6,9 @@ import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
 import { AvailabilityRequest } from './availability/implementations/web_worker_proxy';
 import { ExplorerRequest } from './explorer/implementations/web_worker_proxy';
-import { CappuccinoHotShotQueryService } from './hot_shot_query_service_api';
-import { FakeDataCappuccinoHotShotQueryService } from './implementations/fake_data';
-import { FetchBasedCappuccinoHotShotQueryService } from './implementations/remote_api';
+import { HotShotQueryService } from './hot_shot_query_service_api';
+import { FakeDataHotShotQueryService } from './implementations/fake_data';
+import { FetchBasedHotShotQueryService } from './implementations/remote_api';
 import { WebWorkerProxyHotShotQueryService } from './implementations/web_worker_proxy';
 import { RewardStateRequest } from './reward_state/implementations/web_worker_proxy';
 import { StatusRequest } from './status/implementations/web_worker_proxy';
@@ -28,13 +28,13 @@ type ProxyRequest = WebWorkerRequest<'proxy', 'set-url', [string]>;
 
 type PostMessageFunction = typeof postMessage;
 
-async function determineServiceImplementationFromConfigFile(): Promise<CappuccinoHotShotQueryService> {
+async function determineServiceImplementationFromConfigFile(): Promise<HotShotQueryService> {
   try {
     const response = await fetch('/config.json');
     const config: Config = await response.json();
     if (config.hotshot_query_service_url) {
       const url = new URL(config.hotshot_query_service_url);
-      return new FetchBasedCappuccinoHotShotQueryService(
+      return new FetchBasedHotShotQueryService(
         createAutoRetryFetch({}, createExtendedFetch()),
         url,
       );
@@ -44,7 +44,7 @@ async function determineServiceImplementationFromConfigFile(): Promise<Cappuccin
     // We ignore this error for now, and fallback to fake data.
   }
 
-  return new FakeDataCappuccinoHotShotQueryService();
+  return new FakeDataHotShotQueryService();
 }
 
 async function determineService() {
@@ -84,7 +84,7 @@ export class WebWorkerProxy {
 
       this.service = Promise.resolve(
         new WebWorkerProxyHotShotQueryService(
-          new FetchBasedCappuccinoHotShotQueryService(
+          new FetchBasedHotShotQueryService(
             createAutoRetryFetch({}, createExtendedFetch()),
             new URL(url),
           ),

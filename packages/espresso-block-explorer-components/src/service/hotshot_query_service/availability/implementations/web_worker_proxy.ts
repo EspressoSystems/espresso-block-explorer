@@ -1,49 +1,49 @@
 import { numberCodec } from '@/convert/codec/number';
 import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/hotshot_query_service/web_worker_types';
-import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
-import { cappuccinoAPIBlockCodec } from '../block';
-import { cappuccinoAPIHeaderCodec } from '../block_header';
-import { listCappuccinoDerivedBlockSummaryCodec } from '../derived_block_summary';
-import { listCappuccinoDerivedTransactionSummaryCodec } from '../derived_transaction_summary';
-import { cappuccinoAPILeafResponseCodec } from '../leaf_response';
-import { cappuccinoAPITransactionResponseCodec } from '../transaction_response';
+import { HotShotQueryServiceAvailabilityAPI } from '../availability_api';
+import { availabilityAPIBlockCodec } from '../block';
+import { availabilityAPIHeaderCodec } from '../block_header';
+import { listAvailabilityDerivedBlockSummaryCodec } from '../derived_block_summary';
+import { listAvailabilityDerivedTransactionSummaryCodec } from '../derived_transaction_summary';
+import { availabilityAPILeafResponseCodec } from '../leaf_response';
+import { availabilityAPITransactionResponseCodec } from '../transaction_response';
 
 export type AvailabilityRequest<
-  Method extends keyof CappuccinoHotShotQueryServiceAvailabilityAPI =
-    keyof CappuccinoHotShotQueryServiceAvailabilityAPI,
+  Method extends keyof HotShotQueryServiceAvailabilityAPI =
+    keyof HotShotQueryServiceAvailabilityAPI,
 > = WebWorkerRequest<
   'availability',
   Method,
-  Parameters<CappuccinoHotShotQueryServiceAvailabilityAPI[Method]>
+  Parameters<HotShotQueryServiceAvailabilityAPI[Method]>
 >;
 
 export class WebWorkerProxyAvailabilityAPI {
-  private service: CappuccinoHotShotQueryServiceAvailabilityAPI;
-  constructor(service: CappuccinoHotShotQueryServiceAvailabilityAPI) {
+  private service: HotShotQueryServiceAvailabilityAPI;
+  constructor(service: HotShotQueryServiceAvailabilityAPI) {
     this.service = service;
   }
 
   async getLeafFromHeight(height: number) {
-    return cappuccinoAPILeafResponseCodec.encode(
+    return availabilityAPILeafResponseCodec.encode(
       await this.service.getLeafFromHeight(height),
     );
   }
 
   async getTransactionFromHeightAndOffset(height: number, index: number) {
-    return cappuccinoAPITransactionResponseCodec.encode(
+    return availabilityAPITransactionResponseCodec.encode(
       await this.service.getTransactionFromHeightAndOffset(height, index),
     );
   }
 
   async getBlockFromHeight(height: number) {
-    return cappuccinoAPIBlockCodec.encode(
+    return availabilityAPIBlockCodec.encode(
       await this.service.getBlockFromHeight(height),
     );
   }
 
   async getBlockSummaries(from: number, until: number) {
-    return listCappuccinoDerivedBlockSummaryCodec.encode(
+    return listAvailabilityDerivedBlockSummaryCodec.encode(
       await this.service.getBlockSummaries(from, until),
     );
   }
@@ -53,7 +53,7 @@ export class WebWorkerProxyAvailabilityAPI {
     offset: number,
     limit: number,
   ) {
-    return listCappuccinoDerivedTransactionSummaryCodec.encode(
+    return listAvailabilityDerivedTransactionSummaryCodec.encode(
       await this.service.getTransactionSummaryRange(height, offset, limit),
     );
   }
@@ -64,7 +64,7 @@ export class WebWorkerProxyAvailabilityAPI {
     offset: number,
     limit: number,
   ) {
-    return listCappuccinoDerivedTransactionSummaryCodec.encode(
+    return listAvailabilityDerivedTransactionSummaryCodec.encode(
       await this.service.getTransactionSummaryRangeForRollup(
         namespace,
         height,
@@ -75,7 +75,7 @@ export class WebWorkerProxyAvailabilityAPI {
   }
 
   async getHeader(height: number) {
-    return cappuccinoAPIHeaderCodec.encode(
+    return availabilityAPIHeaderCodec.encode(
       await this.service.getHeader(height),
     );
   }

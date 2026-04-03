@@ -2,18 +2,18 @@ import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { describe, expect, it } from 'vitest';
 import {
-  CappuccinoExplorerGetTransactionSummariesResponse,
-  cappuccinoExplorerGetTransactionSummariesResponseCodec,
+  ExplorerGetTransactionSummariesResponse,
+  explorerGetTransactionSummariesResponseCodec,
 } from '../get_transaction_summaries_response';
-import { CappuccinoExplorerTransactionSummary } from '../transaction_summary';
+import { ExplorerTransactionSummary } from '../transaction_summary';
 
-describe('CappuccinoExplorerGetTransactionSummariesResponse', () => {
+describe('ExplorerGetTransactionSummariesResponse', () => {
   const prng = new PseudoRandomNumberGenerator();
 
   {
     for (let i = 0; i < 10; i++) {
-      const response = new CappuccinoExplorerGetTransactionSummariesResponse([
-        new CappuccinoExplorerTransactionSummary(
+      const response = new ExplorerGetTransactionSummariesResponse([
+        new ExplorerTransactionSummary(
           new TaggedBase64('COMMIT', prng.fillBytes(20)),
           [prng.nextInt()],
           prng.nextInt(),
@@ -25,16 +25,12 @@ describe('CappuccinoExplorerGetTransactionSummariesResponse', () => {
 
       it('should encode and decode to the same values', () => {
         expect(response.toJSON()).deep.equals(
-          cappuccinoExplorerGetTransactionSummariesResponseCodec.encode(
-            response,
-          ),
+          explorerGetTransactionSummariesResponseCodec.encode(response),
         );
 
         expect(
-          cappuccinoExplorerGetTransactionSummariesResponseCodec.decode(
-            cappuccinoExplorerGetTransactionSummariesResponseCodec.encode(
-              response,
-            ),
+          explorerGetTransactionSummariesResponseCodec.decode(
+            explorerGetTransactionSummariesResponseCodec.encode(response),
           ),
         ).deep.equals(response);
       });

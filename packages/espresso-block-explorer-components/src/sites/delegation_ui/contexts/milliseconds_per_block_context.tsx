@@ -1,14 +1,14 @@
 import { sleep } from '@/async/sleep';
 import { AsyncIterableResolver } from '@/components/data';
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { DataContext } from '@/contexts/data_provider';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import {
   computeEpochByBlockAndBlocksPerEpoch,
   EpochAndBlock,
 } from '@/service/espresso_l1_validator_service/common/epoch_and_block';
-import { CappuccinoAPIHeader } from '@/service/hotshot_query_service';
-import { AbstractCappuccinoAPIV4Header } from '@/service/hotshot_query_service/availability/block_header_v4';
-import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
+import { AvailabilityAPIHeader } from '@/service/hotshot_query_service';
+import { AbstractAvailabilityAPIV4Header } from '@/service/hotshot_query_service/availability/block_header_v4';
+import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
 import React from 'react';
 import { ActiveValidatorsContext } from './active_validators_context';
 import { BlocksPerEpochContext } from './blocks_per_epoch_context';
@@ -24,12 +24,12 @@ export const MillisecondsPerBlockContext = React.createContext<number>(
 
 type MillisecondsPerBlockState = {
   epochAndBlock: null | EpochAndBlock;
-  startHeader: null | CappuccinoAPIHeader;
-  endHeader: null | CappuccinoAPIHeader;
+  startHeader: null | AvailabilityAPIHeader;
+  endHeader: null | AvailabilityAPIHeader;
 };
 
 type ComputeMillisecondsPerBlockInput = {
-  hotShotQueryService: null | CappuccinoHotShotQueryService;
+  hotShotQueryService: null | HotShotQueryService;
   epochAndBlock: null | EpochAndBlock;
   blocksPerEpoch: null | bigint;
 };
@@ -165,9 +165,7 @@ export const ComputeMillisecondsPerBlock: React.FC<React.PropsWithChildren> = ({
 }) => {
   const epochAndBlock =
     React.useContext(ActiveValidatorsContext)?.espressoBlock ?? null;
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
   const blocksPerEpoch = React.useContext(BlocksPerEpochContext);
 
   const asyncIterable = React.useMemo(
@@ -197,8 +195,8 @@ function computeMillisecondsPerBlock(
   }
 
   if (
-    data.endHeader.fields instanceof AbstractCappuccinoAPIV4Header &&
-    data.startHeader.fields instanceof AbstractCappuccinoAPIV4Header
+    data.endHeader.fields instanceof AbstractAvailabilityAPIV4Header &&
+    data.startHeader.fields instanceof AbstractAvailabilityAPIV4Header
   ) {
     return (
       (data.endHeader.fields.timestamp_millis -

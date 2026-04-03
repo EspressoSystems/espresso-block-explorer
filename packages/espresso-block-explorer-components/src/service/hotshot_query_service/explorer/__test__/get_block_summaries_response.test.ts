@@ -1,19 +1,19 @@
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { describe, expect, it } from 'vitest';
-import { CappuccinoExplorerBlockSummary } from '../block_summary';
+import { ExplorerBlockSummary } from '../block_summary';
 import {
-  CappuccinoExplorerGetBlockSummariesResponse,
-  cappuccinoExplorerGetBlockSummariesResponseCodec,
+  ExplorerGetBlockSummariesResponse,
+  explorerGetBlockSummariesResponseCodec,
 } from '../get_block_summaries_response';
 
-describe('CappuccinoExplorerGetBlockSummariesResponse', () => {
+describe('ExplorerGetBlockSummariesResponse', () => {
   const prng = new PseudoRandomNumberGenerator();
 
   {
     for (let i = 0; i < 10; i++) {
-      const response = new CappuccinoExplorerGetBlockSummariesResponse([
-        new CappuccinoExplorerBlockSummary(
+      const response = new ExplorerGetBlockSummariesResponse([
+        new ExplorerBlockSummary(
           new TaggedBase64('BLOCK', prng.fillBytes(20)),
           prng.nextInt(),
           [prng.fillBytes(20)],
@@ -25,12 +25,12 @@ describe('CappuccinoExplorerGetBlockSummariesResponse', () => {
 
       it('should encode and decode to the same values', () => {
         expect(response.toJSON()).deep.equals(
-          cappuccinoExplorerGetBlockSummariesResponseCodec.encode(response),
+          explorerGetBlockSummariesResponseCodec.encode(response),
         );
 
         expect(
-          cappuccinoExplorerGetBlockSummariesResponseCodec.decode(
-            cappuccinoExplorerGetBlockSummariesResponseCodec.encode(response),
+          explorerGetBlockSummariesResponseCodec.decode(
+            explorerGetBlockSummariesResponseCodec.encode(response),
           ),
         ).deep.equals(response);
       });

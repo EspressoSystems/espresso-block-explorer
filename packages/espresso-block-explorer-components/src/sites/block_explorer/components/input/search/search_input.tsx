@@ -6,17 +6,17 @@ import { PathResolver } from '@/block_explorer/contexts/path_resolver';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import PromiseResolver from '@/components/data/async_data/promise_resolver';
 import RelativeTimeSinceDateText from '@/components/text/relative_time_since_date_text';
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoExplorerBlockSummary } from '@/service/hotshot_query_service/explorer/block_summary';
-import { CappuccinoExplorerGetSearchResultRequest } from '@/service/hotshot_query_service/explorer/get_search_result_request';
-import { CappuccinoExplorerGetSearchResultResponse } from '@/service/hotshot_query_service/explorer/get_search_result_response';
-import { CappuccinoExplorerSearchResults } from '@/service/hotshot_query_service/explorer/search_results';
-import { CappuccinoExplorerTransactionSummary } from '@/service/hotshot_query_service/explorer/transaction_summary';
-import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
+import { ExplorerBlockSummary } from '@/service/hotshot_query_service/explorer/block_summary';
+import { ExplorerGetSearchResultRequest } from '@/service/hotshot_query_service/explorer/get_search_result_request';
+import { ExplorerGetSearchResultResponse } from '@/service/hotshot_query_service/explorer/get_search_result_response';
+import { ExplorerSearchResults } from '@/service/hotshot_query_service/explorer/search_results';
+import { ExplorerTransactionSummary } from '@/service/hotshot_query_service/explorer/transaction_summary';
+import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
 import NumberText from '@/text/number_text';
 import Text from '@/text/text';
 import SearchGlass from '@/visual/icons/search_glass';
@@ -77,7 +77,7 @@ export interface InitialSearchState {
   rawQuery?: string;
   query?: string;
   searchResultsQuery?: string;
-  searchResults?: CappuccinoExplorerGetSearchResultResponse;
+  searchResults?: ExplorerGetSearchResultResponse;
   isLoading?: boolean;
   offset?: null | number;
   location?: PartialLocationHref;
@@ -185,7 +185,7 @@ function parsePositiveIntegerOrReturnNull(query: string): null | number {
 class SearchStateController {
   private pRawQuery: string;
   private pQuery: string;
-  private pSearchResults: CappuccinoExplorerGetSearchResultResponse;
+  private pSearchResults: ExplorerGetSearchResultResponse;
   private pSearchResultsQuery: string;
   private pIsLoading: boolean;
   private pOffset: number | null;
@@ -195,8 +195,8 @@ class SearchStateController {
     const {
       rawQuery = '',
       query = '',
-      searchResults = new CappuccinoExplorerGetSearchResultResponse(
-        new CappuccinoExplorerSearchResults([], []),
+      searchResults = new ExplorerGetSearchResultResponse(
+        new ExplorerSearchResults([], []),
       ),
       searchResultsQuery = '',
       isLoading = false,
@@ -219,7 +219,7 @@ class SearchStateController {
   get query(): string {
     return this.pQuery;
   }
-  get searchResults(): CappuccinoExplorerGetSearchResultResponse {
+  get searchResults(): ExplorerGetSearchResultResponse {
     return this.pSearchResults;
   }
   get searchResultsQuery(): string {
@@ -244,10 +244,7 @@ class SearchStateController {
     this.pOffset = null;
   }
 
-  setSearchResults(
-    query: string,
-    results: CappuccinoExplorerGetSearchResultResponse,
-  ) {
+  setSearchResults(query: string, results: ExplorerGetSearchResultResponse) {
     this.pSearchResults = results;
     this.pSearchResultsQuery = query;
     this.pOffset = null;
@@ -258,8 +255,8 @@ class SearchStateController {
     this.pQuery = '';
     this.pRawQuery = '';
     this.pSearchResultsQuery = '';
-    this.pSearchResults = new CappuccinoExplorerGetSearchResultResponse(
-      new CappuccinoExplorerSearchResults([], []),
+    this.pSearchResults = new ExplorerGetSearchResultResponse(
+      new ExplorerSearchResults([], []),
     );
   }
 
@@ -289,10 +286,7 @@ class SearchStateController {
     this.pLocation.href = href;
   }
 
-  async activate(
-    service: CappuccinoHotShotQueryService,
-    pathResolver: PathResolver,
-  ) {
+  async activate(service: HotShotQueryService, pathResolver: PathResolver) {
     // Alright, we want to navigate to the selected element.
     if (this.offset === null) {
       const blockNumber = parsePositiveIntegerOrReturnNull(this.query);
@@ -310,7 +304,7 @@ class SearchStateController {
         }
 
         const result = await service.explorer.getSearchResult(
-          new CappuccinoExplorerGetSearchResultRequest(taggedBase64.toString()),
+          new ExplorerGetSearchResultRequest(taggedBase64.toString()),
         );
 
         if (result.searchResults.blocks.length > 0) {
@@ -340,12 +334,12 @@ class SearchStateController {
 
     // Get the target window.
 
-    if (result instanceof CappuccinoExplorerBlockSummary) {
+    if (result instanceof ExplorerBlockSummary) {
       this.navigateTo(pathResolver.block(result.height));
       return;
     }
 
-    if (result instanceof CappuccinoExplorerTransactionSummary) {
+    if (result instanceof ExplorerTransactionSummary) {
       this.navigateTo(pathResolver.transaction(result.height, result.offset));
       return;
     }
@@ -353,7 +347,7 @@ class SearchStateController {
 
   getResultForOffset(
     offset: number,
-  ): CappuccinoExplorerBlockSummary | CappuccinoExplorerTransactionSummary {
+  ): ExplorerBlockSummary | ExplorerTransactionSummary {
     const results = this.searchResults.searchResults;
     if (offset >= results.blocks.length) {
       return results.transactions[offset - results.blocks.length];
@@ -392,7 +386,7 @@ export interface SearchInputProps {
  */
 export const SearchInput: React.FC<SearchInputProps> = (props) => {
   const [controller, invalidate] = useSearchStateController(props.initialState);
-  const service = React.useContext(CappuccinoHotShotQueryServiceAPIContext);
+  const service = React.useContext(HotShotQueryServiceAPIContext);
   const pathResolver = React.useContext(PathResolverContext);
 
   // Search State.
@@ -539,7 +533,7 @@ const SearchBarrier: React.FC = () => <div className="search-barrier"></div>;
  * heavily recursive loop of making requests.
  */
 const SearchLoader: React.FC = () => {
-  const service = React.useContext(CappuccinoHotShotQueryServiceAPIContext);
+  const service = React.useContext(HotShotQueryServiceAPIContext);
   const controller = React.useContext(SearchStateControllerContext);
   const query = React.useContext(QueryContext);
 
@@ -566,7 +560,7 @@ const SearchLoader: React.FC = () => {
       promise={Promise.all([
         Promise.resolve(query),
         service.explorer.getSearchResult(
-          new CappuccinoExplorerGetSearchResultRequest(taggedBase64.toString()),
+          new ExplorerGetSearchResultRequest(taggedBase64.toString()),
         ),
       ])}
     >
@@ -585,7 +579,7 @@ const SearchDataConsumer: React.FC = () => {
   const error = React.useContext(ErrorContext);
   const data = React.useContext(DataContext) as [
     string,
-    CappuccinoExplorerGetSearchResultResponse,
+    ExplorerGetSearchResultResponse,
   ];
   const invalidate = React.useContext(InvalidateContext);
 
@@ -618,9 +612,7 @@ const SearchDataConsumer: React.FC = () => {
  * display the search results if there are search results to display.
  */
 const SearchResultsGuard: React.FC = () => {
-  const data = React.useContext(
-    DataContext,
-  ) as CappuccinoExplorerGetSearchResultResponse;
+  const data = React.useContext(DataContext) as ExplorerGetSearchResultResponse;
   const query = React.useContext(QueryContext);
 
   if (
@@ -689,7 +681,7 @@ const ResultRow: React.FC<ResultRowProps> = ({ children, index }) => {
  * index for the current block summary row.
  */
 const BlockSummaryResultRowContext = React.createContext<
-  [CappuccinoExplorerBlockSummary, number]
+  [ExplorerBlockSummary, number]
 >(null!);
 
 /**
@@ -698,9 +690,7 @@ const BlockSummaryResultRowContext = React.createContext<
  * enough query.
  */
 const SearchResultsNoResults: React.FC = () => {
-  const data = React.useContext(
-    DataContext,
-  ) as CappuccinoExplorerGetSearchResultResponse;
+  const data = React.useContext(DataContext) as ExplorerGetSearchResultResponse;
   const query = React.useContext(QueryContext);
 
   if (
@@ -726,9 +716,7 @@ const SearchResultsNoResults: React.FC = () => {
  */
 const SearchBlockResults: React.FC = () => {
   const pathResolver = React.useContext(PathResolverContext);
-  const data = React.useContext(
-    DataContext,
-  ) as CappuccinoExplorerGetSearchResultResponse;
+  const data = React.useContext(DataContext) as ExplorerGetSearchResultResponse;
   const { searchResults } = data;
   const { blocks } = searchResults;
   if (blocks.length <= 0) {
@@ -808,7 +796,7 @@ const SearchBlockRow: React.FC = () => {
  * summary and index for the current transaction summary row.
  */
 const TransactionSummaryResultRowContext = React.createContext<
-  [CappuccinoExplorerTransactionSummary, number]
+  [ExplorerTransactionSummary, number]
 >(null!);
 
 /**
@@ -817,9 +805,7 @@ const TransactionSummaryResultRowContext = React.createContext<
  */
 const SearchTransactionResults: React.FC = () => {
   const pathResolver = React.useContext(PathResolverContext);
-  const data = React.useContext(
-    DataContext,
-  ) as CappuccinoExplorerGetSearchResultResponse;
+  const data = React.useContext(DataContext) as ExplorerGetSearchResultResponse;
   const { searchResults } = data;
   const { blocks, transactions } = searchResults;
   if (transactions.length <= 0) {

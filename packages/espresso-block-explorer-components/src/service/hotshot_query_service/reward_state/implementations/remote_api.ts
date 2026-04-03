@@ -2,21 +2,19 @@ import { validateAndExpandResponse } from '@/async/fetch/response_validators';
 import { nullableBigintCodec } from '@/convert/codec/bigint';
 import { HeightAndAddress } from '../height_and_address';
 import { RewardClaimInput, rewardClaimInputCodec } from '../reward_claim_input';
-import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_start_api';
+import { HotShotQueryServiceRewardStateAPI } from '../reward_start_api';
 
-export class FetchBasedCappuccinoHotShotQueryServiceRewardStateAPI implements CappuccinoHotShotQueryServiceRewardStateAPI {
-  private readonly fetcher: typeof fetch;
-  private readonly baseURL: URL;
+export class FetchBasedHotShotQueryServiceRewardStateAPI implements HotShotQueryServiceRewardStateAPI {
   private readonly rewardBalanceResponseValidator = validateAndExpandResponse(
     nullableBigintCodec.decoder,
   );
   private readonly rewardClaimInputResponseValidator =
     validateAndExpandResponse(rewardClaimInputCodec.decoder);
 
-  constructor(fetcher: typeof fetch, url: URL) {
-    this.fetcher = fetcher;
-    this.baseURL = url;
-  }
+  constructor(
+    private readonly fetcher: typeof fetch,
+    private readonly baseURL: URL,
+  ) {}
 
   async getLatestRewardBalance(address: string): Promise<null | bigint> {
     return this.fetcher(

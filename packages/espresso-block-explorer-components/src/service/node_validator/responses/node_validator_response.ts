@@ -1,1 +1,1 @@
-export default abstract class CappuccinoNodeValidatorResponse {}
+export default abstract class NodeValidatorResponse {}

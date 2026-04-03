@@ -24,48 +24,48 @@ import {
   takeWhileAsyncIterable,
   takeWhileAsyncIterator,
 } from '@/functional/functional_async';
-import { CappuccinoExplorerBlockDetail } from '../block_detail';
-import { CappuccinoExplorerBlockSummary } from '../block_summary';
+import { ExplorerBlockDetail } from '../block_detail';
+import { ExplorerBlockSummary } from '../block_summary';
 import { latestConstant } from '../constants';
-import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer_api';
-import { CappuccinoExplorerSummary } from '../explorer_summary';
-import { CappuccinoGenesisOverview } from '../genesis_overview';
-import { CappuccinoExplorerGetBlockDetailRequest } from '../get_block_detail_request';
-import { CappuccinoExplorerGetBlockDetailResponse } from '../get_block_detail_response';
-import { CappuccinoExplorerGetBlockSummariesRequest } from '../get_block_summaries_request';
-import { CappuccinoExplorerGetBlockSummariesResponse } from '../get_block_summaries_response';
-import { CappuccinoExplorerGetExplorerSummaryResponse } from '../get_explorer_summary_response';
-import { CappuccinoExplorerGetSearchResultRequest } from '../get_search_result_request';
-import { CappuccinoExplorerGetSearchResultResponse } from '../get_search_result_response';
+import { HotShotQueryServiceExplorerAPI } from '../explorer_api';
+import { ExplorerSummary } from '../explorer_summary';
+import { GenesisOverview } from '../genesis_overview';
+import { ExplorerGetBlockDetailRequest } from '../get_block_detail_request';
+import { ExplorerGetBlockDetailResponse } from '../get_block_detail_response';
+import { ExplorerGetBlockSummariesRequest } from '../get_block_summaries_request';
+import { ExplorerGetBlockSummariesResponse } from '../get_block_summaries_response';
+import { ExplorerGetExplorerSummaryResponse } from '../get_explorer_summary_response';
+import { ExplorerGetSearchResultRequest } from '../get_search_result_request';
+import { ExplorerGetSearchResultResponse } from '../get_search_result_response';
 import {
-  CappuccinoExplorerGetTransactionDetailRequest,
-  CappuccinoExplorerGetTransactionDetailRequestHash,
-  CappuccinoExplorerGetTransactionDetailRequestHeightAndOffset,
+  ExplorerGetTransactionDetailRequest,
+  ExplorerGetTransactionDetailRequestHash,
+  ExplorerGetTransactionDetailRequestHeightAndOffset,
 } from '../get_transaction_detail_request';
-import { CappuccinoExplorerGetTransactionDetailResponse } from '../get_transaction_detail_response';
+import { ExplorerGetTransactionDetailResponse } from '../get_transaction_detail_response';
 import {
-  CappuccinoExplorerGetTransactionSummariesFilter,
-  CappuccinoExplorerGetTransactionSummariesFilterBlock,
-  CappuccinoExplorerGetTransactionSummariesFilterNamespace,
+  ExplorerGetTransactionSummariesFilter,
+  ExplorerGetTransactionSummariesFilterBlock,
+  ExplorerGetTransactionSummariesFilterNamespace,
 } from '../get_transaction_summaries_filter';
-import { CappuccinoExplorerGetTransactionSummariesRequest } from '../get_transaction_summaries_request';
-import { CappuccinoExplorerGetTransactionSummariesResponse } from '../get_transaction_summaries_response';
+import { ExplorerGetTransactionSummariesRequest } from '../get_transaction_summaries_request';
+import { ExplorerGetTransactionSummariesResponse } from '../get_transaction_summaries_response';
 import {
-  CappuccinoExplorerGetTransactionSummariesTargetHash,
-  CappuccinoExplorerGetTransactionSummariesTargetHeightAndOffset,
-  CappuccinoExplorerGetTransactionSummariesTargetLatest,
+  ExplorerGetTransactionSummariesTargetHash,
+  ExplorerGetTransactionSummariesTargetHeightAndOffset,
+  ExplorerGetTransactionSummariesTargetLatest,
 } from '../get_transaction_summaries_target';
-import { CappuccinoExplorerSearchResults } from '../search_results';
-import { CappuccinoSummaryHistograms } from '../summary_histograms';
-import { CappuccinoExplorerTransactionDetail } from '../transaction_detail';
-import { CappuccinoExplorerTransactionDetailData } from '../transaction_detail_data';
-import { CappuccinoExplorerTransactionDetailDetails } from '../transaction_detail_details';
-import { CappuccinoExplorerTransactionSummary } from '../transaction_summary';
+import { ExplorerSearchResults } from '../search_results';
+import { SummaryHistograms } from '../summary_histograms';
+import { ExplorerTransactionDetail } from '../transaction_detail';
+import { ExplorerTransactionDetailData } from '../transaction_detail_data';
+import { ExplorerTransactionDetailDetails } from '../transaction_detail_details';
+import { ExplorerTransactionSummary } from '../transaction_summary';
 
 function createBlockDetailFromGeneratedBlock(
   block: GeneratedEspressoBlock,
-): CappuccinoExplorerBlockDetail {
-  return new CappuccinoExplorerBlockDetail(
+): ExplorerBlockDetail {
+  return new ExplorerBlockDetail(
     block.hash,
     block.height,
     block.time,
@@ -79,8 +79,8 @@ function createBlockDetailFromGeneratedBlock(
 
 function createBlockSummaryFromGeneratedBlock(
   block: GeneratedEspressoBlock,
-): CappuccinoExplorerBlockSummary {
-  return new CappuccinoExplorerBlockSummary(
+): ExplorerBlockSummary {
+  return new ExplorerBlockSummary(
     block.hash,
     block.height,
     block.proposer,
@@ -93,9 +93,9 @@ function createBlockSummaryFromGeneratedBlock(
 function createTransactionDetailFromGeneratedBlockAndTransaction(
   block: GeneratedEspressoBlock,
   txn: GeneratedEspressoTransaction,
-): CappuccinoExplorerTransactionDetail {
-  return new CappuccinoExplorerTransactionDetail(
-    new CappuccinoExplorerTransactionDetailDetails(
+): ExplorerTransactionDetail {
+  return new ExplorerTransactionDetail(
+    new ExplorerTransactionDetailDetails(
       txn.hash,
       txn.block,
       true,
@@ -106,20 +106,15 @@ function createTransactionDetailFromGeneratedBlockAndTransaction(
       [],
       [],
     ),
-    [
-      new CappuccinoExplorerTransactionDetailData(
-        txn.tree.namespace,
-        txn.tree.data,
-      ),
-    ],
+    [new ExplorerTransactionDetailData(txn.tree.namespace, txn.tree.data)],
   );
 }
 
 function createTransactionSummaryFromGeneratedBlockAndTransaction(
   block: GeneratedEspressoBlock,
   txn: GeneratedEspressoTransaction,
-): CappuccinoExplorerTransactionSummary {
-  return new CappuccinoExplorerTransactionSummary(
+): ExplorerTransactionSummary {
+  return new ExplorerTransactionSummary(
     txn.hash,
     [txn.tree.namespace],
     txn.block,
@@ -129,10 +124,10 @@ function createTransactionSummaryFromGeneratedBlockAndTransaction(
   );
 }
 
-export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements CappuccinoHotShotQueryServiceExplorerAPI {
+export class FakeDataHotShotQueryServiceExplorerAPI implements HotShotQueryServiceExplorerAPI {
   async getBlockDetail(
-    request: CappuccinoExplorerGetBlockDetailRequest,
-  ): Promise<CappuccinoExplorerGetBlockDetailResponse> {
+    request: ExplorerGetBlockDetailRequest,
+  ): Promise<ExplorerGetBlockDetailResponse> {
     const target = request.target;
     const block = await (target === latestConstant
       ? lastAsyncIterable(generateAllEspressoBlocks())
@@ -140,13 +135,13 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
           dropAsyncIterable(generateAllEspressoBlocks(), target),
         ));
 
-    return new CappuccinoExplorerGetBlockDetailResponse(
+    return new ExplorerGetBlockDetailResponse(
       createBlockDetailFromGeneratedBlock(block),
     );
   }
   async getBlockSummaries(
-    request: CappuccinoExplorerGetBlockSummariesRequest,
-  ): Promise<CappuccinoExplorerGetBlockSummariesResponse> {
+    request: ExplorerGetBlockSummariesRequest,
+  ): Promise<ExplorerGetBlockSummariesResponse> {
     const step1 = takeWhileAsyncIterator(
       generateAllEspressoBlocks(),
       (block) =>
@@ -159,17 +154,14 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
     );
 
     const blockSummaries = await collectAsyncIterator(step4);
-    return new CappuccinoExplorerGetBlockSummariesResponse(blockSummaries);
+    return new ExplorerGetBlockSummariesResponse(blockSummaries);
   }
   async getTransactionDetail(
-    request: CappuccinoExplorerGetTransactionDetailRequest,
-  ): Promise<CappuccinoExplorerGetTransactionDetailResponse> {
+    request: ExplorerGetTransactionDetailRequest,
+  ): Promise<ExplorerGetTransactionDetailResponse> {
     const generatedBlocks = generateAllEspressoBlocks();
 
-    if (
-      request instanceof
-      CappuccinoExplorerGetTransactionDetailRequestHeightAndOffset
-    ) {
+    if (request instanceof ExplorerGetTransactionDetailRequestHeightAndOffset) {
       const skippedBlocks = takeWhileAsyncIterable(
         generatedBlocks,
         (block) => block.height <= request.height,
@@ -189,10 +181,10 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
       );
 
       const transaction = await firstAsyncIterator(skippedTransactions);
-      return new CappuccinoExplorerGetTransactionDetailResponse(transaction);
+      return new ExplorerGetTransactionDetailResponse(transaction);
     }
 
-    if (request instanceof CappuccinoExplorerGetTransactionDetailRequestHash) {
+    if (request instanceof ExplorerGetTransactionDetailRequestHash) {
       const generatedTransactions = expandAsyncIterable(
         generatedBlocks,
         (block) =>
@@ -210,28 +202,24 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
         throw new NotFoundError(request.hash);
       }
 
-      return new CappuccinoExplorerGetTransactionDetailResponse(transaction);
+      return new ExplorerGetTransactionDetailResponse(transaction);
     }
 
     throw new UnimplementedError();
   }
 
   private applyFilter(
-    transactions: AsyncIterable<CappuccinoExplorerTransactionSummary>,
-    filter: CappuccinoExplorerGetTransactionSummariesFilter,
-  ): AsyncIterable<CappuccinoExplorerTransactionSummary> {
-    if (
-      filter instanceof CappuccinoExplorerGetTransactionSummariesFilterBlock
-    ) {
+    transactions: AsyncIterable<ExplorerTransactionSummary>,
+    filter: ExplorerGetTransactionSummariesFilter,
+  ): AsyncIterable<ExplorerTransactionSummary> {
+    if (filter instanceof ExplorerGetTransactionSummariesFilterBlock) {
       return filterAsyncIterable(
         transactions,
         (txn) => txn.height == filter.block,
       );
     }
 
-    if (
-      filter instanceof CappuccinoExplorerGetTransactionSummariesFilterNamespace
-    ) {
+    if (filter instanceof ExplorerGetTransactionSummariesFilterNamespace) {
       return filterAsyncIterable(
         transactions,
         (txn) => txn.rollups.indexOf(filter.namespace) >= 0,
@@ -242,15 +230,13 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
   }
 
   async getTransactionSummaries(
-    request: CappuccinoExplorerGetTransactionSummariesRequest,
-  ): Promise<CappuccinoExplorerGetTransactionSummariesResponse> {
+    request: ExplorerGetTransactionSummariesRequest,
+  ): Promise<ExplorerGetTransactionSummariesResponse> {
     const generatedBlocks = generateAllEspressoBlocks();
 
     const { target, filter } = request;
 
-    if (
-      target instanceof CappuccinoExplorerGetTransactionSummariesTargetLatest
-    ) {
+    if (target instanceof ExplorerGetTransactionSummariesTargetLatest) {
       const blocks = generatedBlocks;
 
       const generatedTransactions = expandAsyncIterable(blocks, (block) =>
@@ -271,14 +257,11 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
         takeAsyncIterable(filteredTransactions, target.limit),
       );
 
-      return new CappuccinoExplorerGetTransactionSummariesResponse(
-        transactions,
-      );
+      return new ExplorerGetTransactionSummariesResponse(transactions);
     }
 
     if (
-      target instanceof
-      CappuccinoExplorerGetTransactionSummariesTargetHeightAndOffset
+      target instanceof ExplorerGetTransactionSummariesTargetHeightAndOffset
     ) {
       const blocks = takeWhileAsyncIterable(
         generatedBlocks,
@@ -306,19 +289,17 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
         takeAsyncIterable(filteredTransactions, target.limit),
       );
 
-      return new CappuccinoExplorerGetTransactionSummariesResponse(
-        transactions,
-      );
+      return new ExplorerGetTransactionSummariesResponse(transactions);
     }
 
-    if (target instanceof CappuccinoExplorerGetTransactionSummariesTargetHash) {
+    if (target instanceof ExplorerGetTransactionSummariesTargetHash) {
       const blocks = generateAllEspressoBlocks();
 
       const generatedTransactions = expandAsyncIterable(blocks, (block) =>
         mapAsyncIterable(
           block.transactions,
           async (txn) =>
-            new CappuccinoExplorerTransactionSummary(
+            new ExplorerTransactionSummary(
               txn.hash,
               [txn.tree.namespace],
               txn.block,
@@ -345,15 +326,13 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
         takeAsyncIterable(filteredTransactions, target.limit),
       );
 
-      return new CappuccinoExplorerGetTransactionSummariesResponse(
-        transactions,
-      );
+      return new ExplorerGetTransactionSummariesResponse(transactions);
     }
 
     throw new UnimplementedError();
   }
 
-  async getExplorerOverview(): Promise<CappuccinoExplorerGetExplorerSummaryResponse> {
+  async getExplorerOverview(): Promise<ExplorerGetExplorerSummaryResponse> {
     // We need all blocks, and all transactions sadly...
     // But this does make sense.
     // For the graph data... we want the last 50 blocks.
@@ -369,15 +348,13 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
     // Windowing would be amazing here.
     // It would be better if we could always grab the last 50 blocks.
 
-    let lastBlock: null | CappuccinoExplorerBlockDetail;
-    const blockBuffer =
-      createCircularBuffer<CappuccinoExplorerBlockSummary>(11);
+    let lastBlock: null | ExplorerBlockDetail;
+    const blockBuffer = createCircularBuffer<ExplorerBlockSummary>(11);
     const sizeBuffer = createCircularBuffer<number>(51);
     const timeBuffer = createCircularBuffer<number>(51);
     const transactionsBuffer = createCircularBuffer<number>(51);
     const heightBuffer = createCircularBuffer<number>(51);
-    const txnBuffer =
-      createCircularBuffer<CappuccinoExplorerTransactionSummary>(11);
+    const txnBuffer = createCircularBuffer<ExplorerTransactionSummary>(11);
 
     let numBlocks = 0;
     let numTransactions = 0;
@@ -407,17 +384,17 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
 
     // We now have the last 10 blocks and transactions in ascending order.
 
-    return new CappuccinoExplorerGetExplorerSummaryResponse(
-      new CappuccinoExplorerSummary(
+    return new ExplorerGetExplorerSummaryResponse(
+      new ExplorerSummary(
         lastBlock!,
-        new CappuccinoGenesisOverview(
+        new GenesisOverview(
           Array.from(rollupMap.keys()).length,
           numTransactions,
           numBlocks,
         ),
         Array.from(blockBuffer),
         Array.from(txnBuffer),
-        new CappuccinoSummaryHistograms(
+        new SummaryHistograms(
           Array.from(timeBuffer),
           Array.from(sizeBuffer),
           Array.from(transactionsBuffer),
@@ -430,13 +407,11 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
   }
 
   async getSearchResult(
-    request: CappuccinoExplorerGetSearchResultRequest,
-  ): Promise<CappuccinoExplorerGetSearchResultResponse> {
+    request: ExplorerGetSearchResultRequest,
+  ): Promise<ExplorerGetSearchResultResponse> {
     const rawBlockBuffer = createCircularBuffer<GeneratedEspressoBlock>(101);
-    const blockBuffer =
-      createCircularBuffer<CappuccinoExplorerBlockSummary>(10);
-    const txnBuffer =
-      createCircularBuffer<CappuccinoExplorerTransactionSummary>(10);
+    const blockBuffer = createCircularBuffer<ExplorerBlockSummary>(10);
+    const txnBuffer = createCircularBuffer<ExplorerTransactionSummary>(10);
 
     for await (const block of generateAllEspressoBlocks()) {
       rawBlockBuffer.put(block);
@@ -459,11 +434,8 @@ export class FakeDataCappuccinoHotShotQueryServiceExplorerAPI implements Cappucc
       }
     }
 
-    return new CappuccinoExplorerGetSearchResultResponse(
-      new CappuccinoExplorerSearchResults(
-        Array.from(blockBuffer),
-        Array.from(txnBuffer),
-      ),
+    return new ExplorerGetSearchResultResponse(
+      new ExplorerSearchResults(Array.from(blockBuffer), Array.from(txnBuffer)),
     );
   }
 }

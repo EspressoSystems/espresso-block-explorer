@@ -2,47 +2,45 @@ import { assertInstanceOf } from '@/assert/assert';
 import { Codec, Converter } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
 
-export class CappuccinoExplorerGetSearchResultRequest {
-  readonly query: string;
-
-  constructor(query: string) {
-    this.query = query;
-  }
+/**
+ * ExplorerGetSearchResultRequest is a request to get the search result for a
+ * a given search query.
+ */
+export class ExplorerGetSearchResultRequest {
+  constructor(public readonly query: string) {}
 
   toJSON() {
-    return cappuccinoExplorerGetSearchResultRequestCodec.encode(this);
+    return explorerGetSearchResultRequestCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetSearchResultRequestEncoder implements Converter<
-  CappuccinoExplorerGetSearchResultRequest,
+class ExplorerGetSearchResultRequestEncoder implements Converter<
+  ExplorerGetSearchResultRequest,
   unknown
 > {
-  convert(input: CappuccinoExplorerGetSearchResultRequest) {
-    assertInstanceOf(input, CappuccinoExplorerGetSearchResultRequest);
+  convert(input: ExplorerGetSearchResultRequest) {
+    assertInstanceOf(input, ExplorerGetSearchResultRequest);
 
     return stringCodec.encode(input.query);
   }
 }
 
-class CappuccinoExplorerGetSearchResultRequestDecoder implements Converter<
+class ExplorerGetSearchResultRequestDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetSearchResultRequest
+  ExplorerGetSearchResultRequest
 > {
-  convert(input: unknown): CappuccinoExplorerGetSearchResultRequest {
-    return new CappuccinoExplorerGetSearchResultRequest(
-      stringCodec.decode(input),
-    );
+  convert(input: unknown): ExplorerGetSearchResultRequest {
+    return new ExplorerGetSearchResultRequest(stringCodec.decode(input));
   }
 }
 
-class CappuccinoExplorerGetSearchResultRequestCodec extends Codec<
-  CappuccinoExplorerGetSearchResultRequest,
+class ExplorerGetSearchResultRequestCodec extends Codec<
+  ExplorerGetSearchResultRequest,
   unknown
 > {
-  readonly encoder = new CappuccinoExplorerGetSearchResultRequestEncoder();
-  readonly decoder = new CappuccinoExplorerGetSearchResultRequestDecoder();
+  readonly encoder = new ExplorerGetSearchResultRequestEncoder();
+  readonly decoder = new ExplorerGetSearchResultRequestDecoder();
 }
 
-export const cappuccinoExplorerGetSearchResultRequestCodec =
-  new CappuccinoExplorerGetSearchResultRequestCodec();
+export const explorerGetSearchResultRequestCodec =
+  new ExplorerGetSearchResultRequestCodec();

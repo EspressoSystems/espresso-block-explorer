@@ -1,8 +1,9 @@
-import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
 import { BlockNumberContext } from '@/block_explorer/components/page_sections/block_detail_content';
 import { TransactionOffsetContext } from '@/block_explorer/components/page_sections/transaction_detail_content/transaction_detail_loader';
-import { ProvideTickEverySecond } from '@/contexts/now_provider';
 import { OverridePathResolver } from '@/block_explorer/contexts/path_resolver_provider';
+import { ProvideHotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
+import { ProvideTickEverySecond } from '@/contexts/now_provider';
+import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
 import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
@@ -17,8 +18,7 @@ import {
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { ProvideCappuccinoTransactionDetailDataSource } from '../cappuccino_hot_shot_query_service_adapters';
-import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
+import { ProvideTransactionDetailDataSource } from '../hot_shot_query_service_adapters';
 import { StoryBookPathResolver } from '../story_book_path_resolver';
 import TransactionPage from '../transaction_page';
 
@@ -50,15 +50,15 @@ const Example: React.FC<ExampleProps> = ({
     <EnvironmentBanner />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideCappuccinoHotShotQueryServiceAPIContext>
+        <ProvideHotShotQueryServiceAPIContext>
           <BlockNumberContext.Provider value={height}>
             <TransactionOffsetContext.Provider value={offset}>
-              <ProvideCappuccinoTransactionDetailDataSource>
+              <ProvideTransactionDetailDataSource>
                 <TransactionPage {...rest} />
-              </ProvideCappuccinoTransactionDetailDataSource>
+              </ProvideTransactionDetailDataSource>
             </TransactionOffsetContext.Provider>
           </BlockNumberContext.Provider>
-        </ProvideCappuccinoHotShotQueryServiceAPIContext>
+        </ProvideHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </StoryBookSpecifyEnvironment>

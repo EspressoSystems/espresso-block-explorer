@@ -4,25 +4,25 @@ import { ESP } from '@/models/block_explorer/currency_code';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { describe, expect, it } from 'vitest';
-import { CappuccinoExplorerBlockDetail } from '../block_detail';
-import { CappuccinoExplorerBlockSummary } from '../block_summary';
-import { CappuccinoExplorerSummary } from '../explorer_summary';
-import { CappuccinoGenesisOverview } from '../genesis_overview';
+import { ExplorerBlockDetail } from '../block_detail';
+import { ExplorerBlockSummary } from '../block_summary';
+import { ExplorerSummary } from '../explorer_summary';
+import { GenesisOverview } from '../genesis_overview';
 import {
-  CappuccinoExplorerGetExplorerSummaryResponse,
-  cappuccinoExplorerGetExplorerSummaryResponseCodec,
+  ExplorerGetExplorerSummaryResponse,
+  explorerGetExplorerSummaryResponseCodec,
 } from '../get_explorer_summary_response';
-import { CappuccinoSummaryHistograms } from '../summary_histograms';
-import { CappuccinoExplorerTransactionSummary } from '../transaction_summary';
+import { SummaryHistograms } from '../summary_histograms';
+import { ExplorerTransactionSummary } from '../transaction_summary';
 
-describe('CappuccinoExplorerGetExplorerSummaryResponse', () => {
+describe('ExplorerGetExplorerSummaryResponse', () => {
   const prng = new PseudoRandomNumberGenerator();
 
   {
     for (let i = 0; i < 10; i++) {
-      const response = new CappuccinoExplorerGetExplorerSummaryResponse(
-        new CappuccinoExplorerSummary(
-          new CappuccinoExplorerBlockDetail(
+      const response = new ExplorerGetExplorerSummaryResponse(
+        new ExplorerSummary(
+          new ExplorerBlockDetail(
             new TaggedBase64('BLOCK', prng.fillBytes(20)),
             prng.nextInt(),
             new Date(prng.nextInt()),
@@ -32,13 +32,9 @@ describe('CappuccinoExplorerGetExplorerSummaryResponse', () => {
             prng.nextInt(),
             [new MonetaryValue(ESP, BigInt(prng.nextInt()))],
           ),
-          new CappuccinoGenesisOverview(
-            prng.nextInt(),
-            prng.nextInt(),
-            prng.nextInt(),
-          ),
+          new GenesisOverview(prng.nextInt(), prng.nextInt(), prng.nextInt()),
           [
-            new CappuccinoExplorerBlockSummary(
+            new ExplorerBlockSummary(
               new TaggedBase64('BLOCK', prng.fillBytes(20)),
               prng.nextInt(),
               [prng.fillBytes(20)],
@@ -48,7 +44,7 @@ describe('CappuccinoExplorerGetExplorerSummaryResponse', () => {
             ),
           ],
           [
-            new CappuccinoExplorerTransactionSummary(
+            new ExplorerTransactionSummary(
               new TaggedBase64('COMMIT', prng.fillBytes(20)),
               [prng.nextInt()],
               prng.nextInt(),
@@ -57,7 +53,7 @@ describe('CappuccinoExplorerGetExplorerSummaryResponse', () => {
               prng.nextInt(),
             ),
           ],
-          new CappuccinoSummaryHistograms(
+          new SummaryHistograms(
             Array.from(new Uint8Array(prng.fillBytes(50))),
             Array.from(new Uint8Array(prng.fillBytes(50))),
             Array.from(new Uint8Array(prng.fillBytes(50))),
@@ -68,12 +64,12 @@ describe('CappuccinoExplorerGetExplorerSummaryResponse', () => {
 
       it('should encode and decode to the same values', () => {
         expect(response.toJSON()).deep.equals(
-          cappuccinoExplorerGetExplorerSummaryResponseCodec.encode(response),
+          explorerGetExplorerSummaryResponseCodec.encode(response),
         );
 
         expect(
-          cappuccinoExplorerGetExplorerSummaryResponseCodec.decode(
-            cappuccinoExplorerGetExplorerSummaryResponseCodec.encode(response),
+          explorerGetExplorerSummaryResponseCodec.decode(
+            explorerGetExplorerSummaryResponseCodec.encode(response),
           ),
         ).deep.equals(response);
       });

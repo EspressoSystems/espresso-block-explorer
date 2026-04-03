@@ -4,20 +4,20 @@ import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
 import { HeightAndAddress, heightAndAddressCodec } from '../height_and_address';
 import { nullableRewardClaimInputCodec } from '../reward_claim_input';
-import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_start_api';
+import { HotShotQueryServiceRewardStateAPI } from '../reward_start_api';
 
 export type RewardStateRequest<
-  Method extends keyof CappuccinoHotShotQueryServiceRewardStateAPI =
-    keyof CappuccinoHotShotQueryServiceRewardStateAPI,
+  Method extends keyof HotShotQueryServiceRewardStateAPI =
+    keyof HotShotQueryServiceRewardStateAPI,
 > = WebWorkerRequest<
   'reward-state',
   Method,
-  Parameters<CappuccinoHotShotQueryServiceRewardStateAPI[Method]>
+  Parameters<HotShotQueryServiceRewardStateAPI[Method]>
 >;
 
 export class WebWorkerProxyRewardStateAPI {
-  private service: CappuccinoHotShotQueryServiceRewardStateAPI;
-  constructor(service: CappuccinoHotShotQueryServiceRewardStateAPI) {
+  private service: HotShotQueryServiceRewardStateAPI;
+  constructor(service: HotShotQueryServiceRewardStateAPI) {
     this.service = service;
   }
 

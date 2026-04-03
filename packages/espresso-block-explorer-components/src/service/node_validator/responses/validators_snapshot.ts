@@ -7,67 +7,59 @@ import {
   arrayValidatorCodec,
   Validator,
 } from '@/models/espresso/stake_table/validator';
-import CappuccinoNodeValidatorResponse from './node_validator_response';
+import NodeValidatorResponse from './node_validator_response';
 
 /**
- * Messages from the Cappuccino Node Validator take the form of:
+ * Messages from the Node Validator take the form of:
  * { "MessageType": MessageType }
  */
 
 /**
- * kCappuccinoValidatorsSnapshotType is the type string for the
- * CappuccinoValidatorsSnapshot class.
+ * kValidatorsSnapshotType is the type string for the
+ * ValidatorsSnapshot class.
  */
-export const kCappuccinoValidatorsSnapshotType = 'ValidatorsSnapshot' as const;
+export const kValidatorsSnapshotType = 'ValidatorsSnapshot' as const;
 
 /**
- * CappuccinoValidatorsSnapshot is a response from the Cappuccino node
+ * ValidatorsSnapshot is a response from the node
  * validator that contains a snapshot of the validators in the network.
  */
-export class CappuccinoValidatorsSnapshot extends CappuccinoNodeValidatorResponse {
-  readonly validators: Validator[];
-
-  constructor(validators: Validator[]) {
+export class ValidatorsSnapshot extends NodeValidatorResponse {
+  constructor(public readonly validators: Validator[]) {
     super();
-    this.validators = validators;
   }
 
   toJSON() {
-    return cappuccinoValidatorsSnapshotCodec.encode(this);
+    return validatorsSnapshotCodec.encode(this);
   }
 }
 
-class CappuccinoValidatorsSnapshotDecoder implements Converter<
+class ValidatorsSnapshotDecoder implements Converter<
   unknown,
-  CappuccinoValidatorsSnapshot
+  ValidatorsSnapshot
 > {
-  convert(input: unknown): CappuccinoValidatorsSnapshot {
-    assertRecordWithKeys(input, kCappuccinoValidatorsSnapshotType);
+  convert(input: unknown): ValidatorsSnapshot {
+    assertRecordWithKeys(input, kValidatorsSnapshotType);
 
-    const list = input[kCappuccinoValidatorsSnapshotType];
-    return new CappuccinoValidatorsSnapshot(arrayValidatorCodec.decode(list));
+    const list = input[kValidatorsSnapshotType];
+    return new ValidatorsSnapshot(arrayValidatorCodec.decode(list));
   }
 }
 
-class CappuccinoValidatorsSnapshotEncoder implements Converter<CappuccinoValidatorsSnapshot> {
-  convert(input: CappuccinoValidatorsSnapshot) {
+class ValidatorsSnapshotEncoder implements Converter<ValidatorsSnapshot> {
+  convert(input: ValidatorsSnapshot) {
     return {
-      [kCappuccinoValidatorsSnapshotType]: arrayValidatorCodec.encode(
-        input.validators,
-      ),
+      [kValidatorsSnapshotType]: arrayValidatorCodec.encode(input.validators),
     };
   }
 }
 
-class CappuccinoValidatorsSnapshotCodec extends TypeCheckingCodec<
-  CappuccinoValidatorsSnapshot,
-  ReturnType<
-    InstanceType<new () => CappuccinoValidatorsSnapshotEncoder>['convert']
-  >
+class ValidatorsSnapshotCodec extends TypeCheckingCodec<
+  ValidatorsSnapshot,
+  ReturnType<InstanceType<new () => ValidatorsSnapshotEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoValidatorsSnapshotEncoder();
-  readonly decoder = new CappuccinoValidatorsSnapshotDecoder();
+  readonly encoder = new ValidatorsSnapshotEncoder();
+  readonly decoder = new ValidatorsSnapshotDecoder();
 }
 
-export const cappuccinoValidatorsSnapshotCodec =
-  new CappuccinoValidatorsSnapshotCodec();
+export const validatorsSnapshotCodec = new ValidatorsSnapshotCodec();

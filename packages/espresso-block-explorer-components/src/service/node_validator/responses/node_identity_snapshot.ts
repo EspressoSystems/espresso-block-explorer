@@ -3,73 +3,61 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import CappuccinoNodeIdentity, {
-  listCappuccinoNodeIdentityCodec,
-} from '../node_identity';
-import CappuccinoNodeValidatorResponse from './node_validator_response';
+import NodeIdentity, { listNodeIdentityCodec } from '../node_identity';
+import NodeValidatorResponse from './node_validator_response';
 
 /**
- * Messages from the Cappuccino Node Validator take the form of:
+ * Messages from the Node Validator take the form of:
  * { "MessageType": MessageType }
  */
 
 /**
- * kCappuccinoNodeIdentitySnapshotType is the type string for the
- * CappuccinoNodeIdentitySnapshot class.
+ * kNodeIdentitySnapshotType is the type string for the
+ * NodeIdentitySnapshot class.
  */
-export const kCappuccinoNodeIdentitySnapshotType =
-  'NodeIdentitySnapshot' as const;
+export const kNodeIdentitySnapshotType = 'NodeIdentitySnapshot' as const;
 
 /**
- * CappuccinoNodeIdentitySnapshot is a response from the Cappuccino node
+ * NodeIdentitySnapshot is a response from the node
  * validator that contains a snapshot of the identities of all current known
  * nodes in the network.
  */
-export class CappuccinoNodeIdentitySnapshot extends CappuccinoNodeValidatorResponse {
-  readonly nodes: CappuccinoNodeIdentity[];
-
-  constructor(nodes: CappuccinoNodeIdentity[]) {
+export class NodeIdentitySnapshot extends NodeValidatorResponse {
+  constructor(public readonly nodes: NodeIdentity[]) {
     super();
-    this.nodes = nodes;
   }
 
   toJSON() {
-    return cappuccinoNodeIdentitySnapshotCodec.encode(this);
+    return nodeIdentitySnapshotCodec.encode(this);
   }
 }
 
-class CappuccinoNodeIdentitySnapshotDecoder implements Converter<
+class NodeIdentitySnapshotDecoder implements Converter<
   unknown,
-  CappuccinoNodeIdentitySnapshot
+  NodeIdentitySnapshot
 > {
-  convert(input: unknown): CappuccinoNodeIdentitySnapshot {
-    assertRecordWithKeys(input, kCappuccinoNodeIdentitySnapshotType);
+  convert(input: unknown): NodeIdentitySnapshot {
+    assertRecordWithKeys(input, kNodeIdentitySnapshotType);
 
-    const list = input[kCappuccinoNodeIdentitySnapshotType];
-    return new CappuccinoNodeIdentitySnapshot(
-      listCappuccinoNodeIdentityCodec.decode(list),
-    );
+    const list = input[kNodeIdentitySnapshotType];
+    return new NodeIdentitySnapshot(listNodeIdentityCodec.decode(list));
   }
 }
 
-class CappuccinoNodeIdentitySnapshotEncoder implements Converter<CappuccinoNodeIdentitySnapshot> {
-  convert(input: CappuccinoNodeIdentitySnapshot) {
+class NodeIdentitySnapshotEncoder implements Converter<NodeIdentitySnapshot> {
+  convert(input: NodeIdentitySnapshot) {
     return {
-      [kCappuccinoNodeIdentitySnapshotType]:
-        listCappuccinoNodeIdentityCodec.encode(input.nodes),
+      [kNodeIdentitySnapshotType]: listNodeIdentityCodec.encode(input.nodes),
     };
   }
 }
 
-class CappuccinoNodeIdentitySnapshotCodec extends TypeCheckingCodec<
-  CappuccinoNodeIdentitySnapshot,
-  ReturnType<
-    InstanceType<new () => CappuccinoNodeIdentitySnapshotEncoder>['convert']
-  >
+class NodeIdentitySnapshotCodec extends TypeCheckingCodec<
+  NodeIdentitySnapshot,
+  ReturnType<InstanceType<new () => NodeIdentitySnapshotEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoNodeIdentitySnapshotEncoder();
-  readonly decoder = new CappuccinoNodeIdentitySnapshotDecoder();
+  readonly encoder = new NodeIdentitySnapshotEncoder();
+  readonly decoder = new NodeIdentitySnapshotDecoder();
 }
 
-export const cappuccinoNodeIdentitySnapshotCodec =
-  new CappuccinoNodeIdentitySnapshotCodec();
+export const nodeIdentitySnapshotCodec = new NodeIdentitySnapshotCodec();

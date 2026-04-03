@@ -4,62 +4,55 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import {
-  CappuccinoExplorerBlockDetail,
-  cappuccinoExplorerBlockDetailCodec,
+  ExplorerBlockDetail,
+  explorerBlockDetailCodec,
 } from '@/service/hotshot_query_service';
-import CappuccinoNodeValidatorResponse from './node_validator_response';
+import NodeValidatorResponse from './node_validator_response';
 
-export const kCappuccinoLatestBlockType = 'LatestBlock' as const;
+export const kLatestBlockType = 'LatestBlock' as const;
 
 /**
- * CappuccinoLatestBlock is a response from the Cappuccino node
+ * LatestBlock is a response from the node
  * validator that contains the latest block that has been seen by the
  * node validator.
  */
-export class CappuccinoLatestBlock extends CappuccinoNodeValidatorResponse {
-  readonly latestBlock: CappuccinoExplorerBlockDetail;
+export class LatestBlock extends NodeValidatorResponse {
+  readonly latestBlock: ExplorerBlockDetail;
 
-  constructor(latestBlock: CappuccinoExplorerBlockDetail) {
+  constructor(latestBlock: ExplorerBlockDetail) {
     super();
     this.latestBlock = latestBlock;
   }
 
   toJSON() {
-    return cappuccinoLatestBlockCodec.encode(this);
+    return latestBlockCodec.encode(this);
   }
 }
 
-class CappuccinoLatestBlockDecoder implements Converter<
-  unknown,
-  CappuccinoLatestBlock
-> {
-  convert(input: unknown): CappuccinoLatestBlock {
-    assertRecordWithKeys(input, kCappuccinoLatestBlockType);
+class LatestBlockDecoder implements Converter<unknown, LatestBlock> {
+  convert(input: unknown): LatestBlock {
+    assertRecordWithKeys(input, kLatestBlockType);
 
-    return new CappuccinoLatestBlock(
-      cappuccinoExplorerBlockDetailCodec.decode(
-        input[kCappuccinoLatestBlockType],
-      ),
+    return new LatestBlock(
+      explorerBlockDetailCodec.decode(input[kLatestBlockType]),
     );
   }
 }
 
-class CappuccinoLatestBlockEncoder implements Converter<CappuccinoLatestBlock> {
-  convert(input: CappuccinoLatestBlock) {
+class LatestBlockEncoder implements Converter<LatestBlock> {
+  convert(input: LatestBlock) {
     return {
-      [kCappuccinoLatestBlockType]: cappuccinoExplorerBlockDetailCodec.encode(
-        input.latestBlock,
-      ),
+      [kLatestBlockType]: explorerBlockDetailCodec.encode(input.latestBlock),
     };
   }
 }
 
-class CappuccinoLatestBlockCodec extends TypeCheckingCodec<
-  CappuccinoLatestBlock,
-  ReturnType<InstanceType<new () => CappuccinoLatestBlockEncoder>['convert']>
+class LatestBlockCodec extends TypeCheckingCodec<
+  LatestBlock,
+  ReturnType<InstanceType<new () => LatestBlockEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoLatestBlockEncoder();
-  readonly decoder = new CappuccinoLatestBlockDecoder();
+  readonly encoder = new LatestBlockEncoder();
+  readonly decoder = new LatestBlockDecoder();
 }
 
-export const cappuccinoLatestBlockCodec = new CappuccinoLatestBlockCodec();
+export const latestBlockCodec = new LatestBlockCodec();

@@ -13,11 +13,11 @@ import {
   registerWebWorkerProxyResponseCodec,
   webWorkerProxyResponseCodec,
 } from '@/models/web_worker/web_worker_proxy_response_codec';
-import FakeDataCappuccinoNodeValidatorAPI from './implementations/fake_data';
-import ReplayDataCappuccinoNodeValidatorAPI, {
+import FakeDataNodeValidatorAPI from './implementations/fake_data';
+import ReplayDataNodeValidatorAPI, {
   HARFormat,
 } from './implementations/replay_data';
-import WebSocketDataCappuccinoNodeValidatorAPI from './implementations/websocket_data';
+import WebSocketDataNodeValidatorAPI from './implementations/websocket_data';
 import {
   kNodeValidatorRequestType,
   nodeValidatorServiceRequestCodec,
@@ -59,7 +59,7 @@ async function determineServiceImplementationFromReplayURL(
   const requestChannel = createBufferedChannel<WebWorkerProxyRequest>(1024);
   const responseChannel = createBufferedChannel<WebWorkerProxyResponse>(1024);
 
-  const replayService = new ReplayDataCappuccinoNodeValidatorAPI(
+  const replayService = new ReplayDataNodeValidatorAPI(
     requestChannel,
     responseChannel,
     capturedHAR,
@@ -81,7 +81,7 @@ async function determineServiceImplementationFromServiceURL(
     // Web Socket Implementation
     const requestChannel = createBufferedChannel<WebWorkerProxyRequest>(1024);
     const responseChannel = createBufferedChannel<WebWorkerProxyResponse>(1024);
-    const service = new WebSocketDataCappuccinoNodeValidatorAPI(
+    const service = new WebSocketDataNodeValidatorAPI(
       requestChannel,
       responseChannel,
       url,
@@ -132,7 +132,7 @@ async function determineServiceImplementationFromConfig(): Promise<WebWorkerNode
   const requestChannel = createBufferedChannel<WebWorkerProxyRequest>(1024);
   const responseChannel = createBufferedChannel<WebWorkerProxyResponse>(1024);
 
-  const fakeService = new FakeDataCappuccinoNodeValidatorAPI(
+  const fakeService = new FakeDataNodeValidatorAPI(
     requestChannel,
     responseChannel,
   );
@@ -229,34 +229,26 @@ export class WebWorkerProxy {
       // Out with the old
       this.stopPublishingResponses.complete(new Stop());
 
-      if (currentService instanceof FakeDataCappuccinoNodeValidatorAPI) {
+      if (currentService instanceof FakeDataNodeValidatorAPI) {
         currentService.responseStream.close();
-      } else if (
-        currentService instanceof ReplayDataCappuccinoNodeValidatorAPI
-      ) {
+      } else if (currentService instanceof ReplayDataNodeValidatorAPI) {
         // If the current service is a replay service, we need to stop it
         // We don't know if it is currently processing or not.
         currentService.responseStream.close();
-      } else if (
-        currentService instanceof WebSocketDataCappuccinoNodeValidatorAPI
-      ) {
+      } else if (currentService instanceof WebSocketDataNodeValidatorAPI) {
         // If the current service is a WebSocket service, we need to close it
         // We don't know if it is currently connected or not.
         currentService.responseStream.close();
       }
       // currentService.send(new WebSocketRequest(new WebSocketCommandClose()));
 
-      if (currentService instanceof FakeDataCappuccinoNodeValidatorAPI) {
+      if (currentService instanceof FakeDataNodeValidatorAPI) {
         currentService.requestStream.close();
-      } else if (
-        currentService instanceof ReplayDataCappuccinoNodeValidatorAPI
-      ) {
+      } else if (currentService instanceof ReplayDataNodeValidatorAPI) {
         // If the current service is a replay service, we need to stop it
         // We don't know if it is currently processing or not.
         currentService.requestStream.close();
-      } else if (
-        currentService instanceof WebSocketDataCappuccinoNodeValidatorAPI
-      ) {
+      } else if (currentService instanceof WebSocketDataNodeValidatorAPI) {
         // If the current service is a WebSocket service, we need to close it
         // We don't know if it is currently connected or not.
         currentService.requestStream.close();

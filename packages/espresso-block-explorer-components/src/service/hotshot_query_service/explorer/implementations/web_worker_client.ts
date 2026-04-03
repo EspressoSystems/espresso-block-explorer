@@ -1,52 +1,52 @@
 import { Codec } from '@/convert/codec/convert';
 import { AsyncRequestHelper } from '@/service/espresso_l1_validator_service/web_worker_types';
-import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer_api';
+import { HotShotQueryServiceExplorerAPI } from '../explorer_api';
 import {
-  CappuccinoExplorerGetBlockDetailRequest,
-  cappuccinoExplorerGetBlockDetailRequestCodec,
+  ExplorerGetBlockDetailRequest,
+  explorerGetBlockDetailRequestCodec,
 } from '../get_block_detail_request';
 import {
-  CappuccinoExplorerGetBlockDetailResponse,
-  cappuccinoExplorerGetBlockDetailResponseCodec,
+  ExplorerGetBlockDetailResponse,
+  explorerGetBlockDetailResponseCodec,
 } from '../get_block_detail_response';
 import {
-  CappuccinoExplorerGetBlockSummariesRequest,
-  cappuccinoExplorerGetBlockSummariesRequestCodec,
+  ExplorerGetBlockSummariesRequest,
+  explorerGetBlockSummariesRequestCodec,
 } from '../get_block_summaries_request';
 import {
-  CappuccinoExplorerGetBlockSummariesResponse,
-  cappuccinoExplorerGetBlockSummariesResponseCodec,
+  ExplorerGetBlockSummariesResponse,
+  explorerGetBlockSummariesResponseCodec,
 } from '../get_block_summaries_response';
 import {
-  CappuccinoExplorerGetExplorerSummaryResponse,
-  cappuccinoExplorerGetExplorerSummaryResponseCodec,
+  ExplorerGetExplorerSummaryResponse,
+  explorerGetExplorerSummaryResponseCodec,
 } from '../get_explorer_summary_response';
 import {
-  CappuccinoExplorerGetSearchResultRequest,
-  cappuccinoExplorerGetSearchResultRequestCodec,
+  ExplorerGetSearchResultRequest,
+  explorerGetSearchResultRequestCodec,
 } from '../get_search_result_request';
 import {
-  CappuccinoExplorerGetSearchResultResponse,
-  cappuccinoExplorerGetSearchResultResponseCodec,
+  ExplorerGetSearchResultResponse,
+  explorerGetSearchResultResponseCodec,
 } from '../get_search_result_response';
 import {
-  CappuccinoExplorerGetTransactionDetailRequest,
-  cappuccinoExplorerGetTransactionDetailRequestCodec,
+  ExplorerGetTransactionDetailRequest,
+  explorerGetTransactionDetailRequestCodec,
 } from '../get_transaction_detail_request';
 import {
-  CappuccinoExplorerGetTransactionDetailResponse,
-  cappuccinoExplorerGetTransactionDetailResponseCodec,
+  ExplorerGetTransactionDetailResponse,
+  explorerGetTransactionDetailResponseCodec,
 } from '../get_transaction_detail_response';
 import {
-  CappuccinoExplorerGetTransactionSummariesRequest,
-  cappuccinoExplorerGetTransactionSummariesRequestCodec,
+  ExplorerGetTransactionSummariesRequest,
+  explorerGetTransactionSummariesRequestCodec,
 } from '../get_transaction_summaries_request';
 import {
-  CappuccinoExplorerGetTransactionSummariesResponse,
-  cappuccinoExplorerGetTransactionSummariesResponseCodec,
+  ExplorerGetTransactionSummariesResponse,
+  explorerGetTransactionSummariesResponseCodec,
 } from '../get_transaction_summaries_response';
 
-export class WebWorkerClientBasedCappuccinoHotShotQueryServiceExplorerAPI implements CappuccinoHotShotQueryServiceExplorerAPI {
+export class WebWorkerClientBasedHotShotQueryServiceExplorerAPI implements HotShotQueryServiceExplorerAPI {
   private helper: AsyncRequestHelper;
   constructor(helper: AsyncRequestHelper) {
     this.helper = helper;
@@ -54,63 +54,63 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceExplorerAPI implem
 
   private async sendRequest<
     T,
-    Method extends keyof CappuccinoHotShotQueryServiceExplorerAPI =
-      keyof CappuccinoHotShotQueryServiceExplorerAPI,
+    Method extends keyof HotShotQueryServiceExplorerAPI =
+      keyof HotShotQueryServiceExplorerAPI,
     Param = unknown,
   >(codec: Codec<T, unknown>, method: Method, ...param: Param[]): Promise<T> {
     return this.helper.submitRequest<T>(codec, 'explorer', method, param);
   }
 
   async getBlockDetail(
-    request: CappuccinoExplorerGetBlockDetailRequest,
-  ): Promise<CappuccinoExplorerGetBlockDetailResponse> {
+    request: ExplorerGetBlockDetailRequest,
+  ): Promise<ExplorerGetBlockDetailResponse> {
     return await this.sendRequest(
-      cappuccinoExplorerGetBlockDetailResponseCodec,
+      explorerGetBlockDetailResponseCodec,
       'getBlockDetail',
-      cappuccinoExplorerGetBlockDetailRequestCodec.encode(request),
+      explorerGetBlockDetailRequestCodec.encode(request),
     );
   }
   async getBlockSummaries(
-    request: CappuccinoExplorerGetBlockSummariesRequest,
-  ): Promise<CappuccinoExplorerGetBlockSummariesResponse> {
+    request: ExplorerGetBlockSummariesRequest,
+  ): Promise<ExplorerGetBlockSummariesResponse> {
     return await this.sendRequest(
-      cappuccinoExplorerGetBlockSummariesResponseCodec,
+      explorerGetBlockSummariesResponseCodec,
       'getBlockSummaries',
-      cappuccinoExplorerGetBlockSummariesRequestCodec.encode(request),
+      explorerGetBlockSummariesRequestCodec.encode(request),
     );
   }
   async getTransactionDetail(
-    request: CappuccinoExplorerGetTransactionDetailRequest,
-  ): Promise<CappuccinoExplorerGetTransactionDetailResponse> {
+    request: ExplorerGetTransactionDetailRequest,
+  ): Promise<ExplorerGetTransactionDetailResponse> {
     return await this.sendRequest(
-      cappuccinoExplorerGetTransactionDetailResponseCodec,
+      explorerGetTransactionDetailResponseCodec,
       'getTransactionDetail',
-      cappuccinoExplorerGetTransactionDetailRequestCodec.encode(request),
+      explorerGetTransactionDetailRequestCodec.encode(request),
     );
   }
   async getTransactionSummaries(
-    request: CappuccinoExplorerGetTransactionSummariesRequest,
-  ): Promise<CappuccinoExplorerGetTransactionSummariesResponse> {
+    request: ExplorerGetTransactionSummariesRequest,
+  ): Promise<ExplorerGetTransactionSummariesResponse> {
     return await this.sendRequest(
-      cappuccinoExplorerGetTransactionSummariesResponseCodec,
+      explorerGetTransactionSummariesResponseCodec,
       'getTransactionSummaries',
-      cappuccinoExplorerGetTransactionSummariesRequestCodec.encode(request),
+      explorerGetTransactionSummariesRequestCodec.encode(request),
     );
   }
-  async getExplorerOverview(): Promise<CappuccinoExplorerGetExplorerSummaryResponse> {
+  async getExplorerOverview(): Promise<ExplorerGetExplorerSummaryResponse> {
     return await this.sendRequest(
-      cappuccinoExplorerGetExplorerSummaryResponseCodec,
+      explorerGetExplorerSummaryResponseCodec,
       'getExplorerOverview',
       null,
     );
   }
   async getSearchResult(
-    request: CappuccinoExplorerGetSearchResultRequest,
-  ): Promise<CappuccinoExplorerGetSearchResultResponse> {
+    request: ExplorerGetSearchResultRequest,
+  ): Promise<ExplorerGetSearchResultResponse> {
     return await this.sendRequest(
-      cappuccinoExplorerGetSearchResultResponseCodec,
+      explorerGetSearchResultResponseCodec,
       'getSearchResult',
-      cappuccinoExplorerGetSearchResultRequestCodec.encode(request),
+      explorerGetSearchResultRequestCodec.encode(request),
     );
   }
 }

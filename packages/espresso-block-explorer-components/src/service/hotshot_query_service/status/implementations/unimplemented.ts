@@ -1,14 +1,14 @@
 import UnimplementedError from '@/errors/unimplemented_error';
-import { CappuccinoHotShotQueryServiceStatusAPI } from '../status_api';
+import { HotShotQueryServiceStatusAPI } from '../status_api';
 
 /**
- * UnimplementedCappuccinoHotShotQueryServiceStatusAPI is a class that
- * implements the CappuccinoHotShotQueryServiceStatusAPI interface, but
+ * UnimplementedHotShotQueryServiceStatusAPI is a class that
+ * implements the HotShotQueryServiceStatusAPI interface, but
  * throws an UnimplementedError for all methods. This class is meant to be used
  * as a placeholder for the Status API, and should be replaced with a real
  * implementation.
  */
-export class UnimplementedCappuccinoHotShotQueryServiceStatusAPI implements CappuccinoHotShotQueryServiceStatusAPI {
+export class UnimplementedHotShotQueryServiceStatusAPI implements HotShotQueryServiceStatusAPI {
   async blockHeight(): Promise<number> {
     throw new UnimplementedError();
   }

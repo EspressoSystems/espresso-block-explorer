@@ -2,10 +2,10 @@
 
 import {
   NamespaceContext,
-  ProvideCappuccinoHotShotQueryServiceAPIContext,
+  ProvideHotShotQueryServiceAPIContext,
 } from 'espresso-block-explorer-components';
 import {
-  ProvideCappuccinoRollUpDetailDataSource,
+  ProvideRollUpDetailDataSource,
   RollUpPage,
 } from 'espresso-block-explorer-components/block-explorer';
 
@@ -20,11 +20,11 @@ export default function RollupClientComponent(
 ) {
   return (
     <NamespaceContext.Provider value={props.namespace}>
-      <ProvideCappuccinoHotShotQueryServiceAPIContext>
-        <ProvideCappuccinoRollUpDetailDataSource>
+      <ProvideHotShotQueryServiceAPIContext>
+        <ProvideRollUpDetailDataSource>
           <RollUpPage startAtBlock={props.startAtBlock} offset={props.offset} />
-        </ProvideCappuccinoRollUpDetailDataSource>
-      </ProvideCappuccinoHotShotQueryServiceAPIContext>
+        </ProvideRollUpDetailDataSource>
+      </ProvideHotShotQueryServiceAPIContext>
     </NamespaceContext.Provider>
   );
 }

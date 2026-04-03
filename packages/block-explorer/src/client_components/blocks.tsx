@@ -1,12 +1,9 @@
 'use client';
 
-import {
-  ProvideCappuccinoHotShotQueryServiceAPIContext,
-} from 'espresso-block-explorer-components';
-
+import { ProvideHotShotQueryServiceAPIContext } from 'espresso-block-explorer-components';
 import {
   BlocksPage,
-  ProvideCappuccinoBlocksSummaryDataSource,
+  ProvideBlocksSummaryDataSource,
 } from 'espresso-block-explorer-components/block-explorer';
 
 export interface BlocksClientComponentProps {
@@ -17,10 +14,10 @@ export default function BlocksClientComponent(
   props: BlocksClientComponentProps,
 ) {
   return (
-    <ProvideCappuccinoHotShotQueryServiceAPIContext>
-      <ProvideCappuccinoBlocksSummaryDataSource>
+    <ProvideHotShotQueryServiceAPIContext>
+      <ProvideBlocksSummaryDataSource>
         <BlocksPage startAtBlock={props.startAtBlock} />
-      </ProvideCappuccinoBlocksSummaryDataSource>
-    </ProvideCappuccinoHotShotQueryServiceAPIContext>
+      </ProvideBlocksSummaryDataSource>
+    </ProvideHotShotQueryServiceAPIContext>
   );
 }

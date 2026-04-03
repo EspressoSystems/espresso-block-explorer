@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import {
-  CappuccinoSummaryHistograms,
-  cappuccinoSummaryHistogramsCodec,
+  SummaryHistograms,
+  summaryHistogramsCodec,
 } from '../summary_histograms';
 
-describe('CappuccinoSummaryHistograms', () => {
+describe('SummaryHistograms', () => {
   it('should allow for the standard representation', () => {
-    const example = new CappuccinoSummaryHistograms(
+    const example = new SummaryHistograms(
       [1, 2, 3, 4, 5],
       [6, 7, 8, 9, 10],
       [11, 12, 13, 14, 15],
@@ -14,12 +14,8 @@ describe('CappuccinoSummaryHistograms', () => {
     );
 
     {
-      const encoded = JSON.stringify(
-        cappuccinoSummaryHistogramsCodec.encode(example),
-      );
-      const decoded = cappuccinoSummaryHistogramsCodec.decode(
-        JSON.parse(encoded),
-      );
+      const encoded = JSON.stringify(summaryHistogramsCodec.encode(example));
+      const decoded = summaryHistogramsCodec.decode(JSON.parse(encoded));
 
       expect(decoded).deep.equals(example);
 
@@ -31,7 +27,7 @@ describe('CappuccinoSummaryHistograms', () => {
   });
 
   it('should account for gaps in the data, and correct them', () => {
-    const example = new CappuccinoSummaryHistograms(
+    const example = new SummaryHistograms(
       [1, 2, 4, 5],
       [6, 7, 9, 10],
       [11, 12, 14, 15],
@@ -39,12 +35,8 @@ describe('CappuccinoSummaryHistograms', () => {
     );
 
     {
-      const encoded = JSON.stringify(
-        cappuccinoSummaryHistogramsCodec.encode(example),
-      );
-      const decoded = cappuccinoSummaryHistogramsCodec.decode(
-        JSON.parse(encoded),
-      );
+      const encoded = JSON.stringify(summaryHistogramsCodec.encode(example));
+      const decoded = summaryHistogramsCodec.decode(JSON.parse(encoded));
 
       expect(decoded).deep.equals(example);
 
@@ -56,7 +48,7 @@ describe('CappuccinoSummaryHistograms', () => {
   });
 
   it('should allow for nulls in the data', () => {
-    const example = new CappuccinoSummaryHistograms(
+    const example = new SummaryHistograms(
       [1, 2, null, 4, 5],
       [6, 7, null, 9, 10],
       [11, 12, null, 14, 15],
@@ -64,12 +56,8 @@ describe('CappuccinoSummaryHistograms', () => {
     );
 
     {
-      const encoded = JSON.stringify(
-        cappuccinoSummaryHistogramsCodec.encode(example),
-      );
-      const decoded = cappuccinoSummaryHistogramsCodec.decode(
-        JSON.parse(encoded),
-      );
+      const encoded = JSON.stringify(summaryHistogramsCodec.encode(example));
+      const decoded = summaryHistogramsCodec.decode(JSON.parse(encoded));
 
       expect(decoded).deep.equals(example);
 

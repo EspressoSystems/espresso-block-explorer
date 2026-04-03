@@ -15,30 +15,30 @@ import {
   takeWhileAsyncIterator,
 } from '@/functional/functional_async';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
-import { CappuccinoAPIBlock } from '../block';
+import { HotShotQueryServiceAvailabilityAPI } from '../availability_api';
+import { AvailabilityAPIBlock } from '../block';
 import {
-  CappuccinoAPIHeader,
-  CappuccinoAPIHeaderFields,
-  CappuccinoAPIHeaderImpl,
+  AvailabilityAPIHeader,
+  AvailabilityAPIHeaderFields,
+  AvailabilityAPIHeaderImpl,
 } from '../block_header';
-import { CappuccinoAPIV4HeaderImpl } from '../block_header_v4';
-import { CappuccinoBuilderSignature } from '../builder_signature';
-import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
-import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
-import { CappuccinoFeeInfo } from '../fee_info';
-import { CappuccinoL1Finalized } from '../l1_finalized';
-import { CappuccinoAPILeafResponse } from '../leaf_response';
+import { AvailabilityAPIV4HeaderImpl } from '../block_header_v4';
+import { AvailabilityBuilderSignature } from '../builder_signature';
+import { AvailabilityDerivedBlockSummary } from '../derived_block_summary';
+import { AvailabilityDerivedTransactionSummary } from '../derived_transaction_summary';
+import { AvailabilityFeeInfo } from '../fee_info';
+import { AvailabilityL1Finalized } from '../l1_finalized';
+import { AvailabilityAPILeafResponse } from '../leaf_response';
 import { LeafV0 } from '../leaf_v0';
-import { CappuccinoAPIMerkleTreeBranchProof } from '../merkle_tree_proof';
-import { CappuccinoNamespaceTable } from '../namespace_table';
-import { CappuccinoAPIPayload } from '../payload';
+import { AvailabilityAPIMerkleTreeBranchProof } from '../merkle_tree_proof';
+import { AvailabilityNamespaceTable } from '../namespace_table';
+import { AvailabilityAPIPayload } from '../payload';
 import { QuorumCertificateV1 } from '../quorum_certificate_v1';
 import { QuorumDataV1 } from '../quorum_data_v1';
-import { CappuccinoAPITransactionNMTEntry } from '../transaction_nmt_entry';
-import { CappuccinoAPITransactionProof } from '../transaction_proof';
-import { CappuccinoAPITransactionResponse } from '../transaction_response';
-import { CappuccinoVersion, WrappedVersion } from '../version';
+import { AvailabilityAPITransactionNMTEntry } from '../transaction_nmt_entry';
+import { AvailabilityAPITransactionProof } from '../transaction_proof';
+import { AvailabilityAPITransactionResponse } from '../transaction_response';
+import { AvailabilityVersion, WrappedVersion } from '../version';
 
 // type Generated<T> = T extends Generator<infer A> ? A : never;
 type AsyncGenerated<T> = T extends AsyncGenerator<infer A> ? A : never;
@@ -49,22 +49,26 @@ type GeneratedBlock = AsyncGenerated<
 
 function headerFromBlock(
   block: GeneratedBlock,
-): CappuccinoAPIHeader<CappuccinoAPIHeaderFields> {
-  return new CappuccinoAPIHeaderImpl(
-    new WrappedVersion(new CappuccinoVersion(0, 4)),
-    new CappuccinoAPIV4HeaderImpl(
+): AvailabilityAPIHeader<AvailabilityAPIHeaderFields> {
+  return new AvailabilityAPIHeaderImpl(
+    new WrappedVersion(new AvailabilityVersion(0, 4)),
+    new AvailabilityAPIV4HeaderImpl(
       block.height,
       block.time.valueOf() / 1000,
       block.time.valueOf(),
       Math.floor(block.height / 12) + 30_000_000,
-      new CappuccinoL1Finalized(0, '00', '00'),
+      new AvailabilityL1Finalized(0, '00', '00'),
       new TaggedBase64('PAYLOAD_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
       new TaggedBase64('BUILDER_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
-      new CappuccinoNamespaceTable(new ArrayBuffer(0)),
+      new AvailabilityNamespaceTable(new ArrayBuffer(0)),
       new TaggedBase64('MERKLE_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
       new TaggedBase64('MERKLE_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
-      new CappuccinoFeeInfo(new ArrayBuffer(0), new ArrayBuffer(0)),
-      new CappuccinoBuilderSignature(new ArrayBuffer(0), new ArrayBuffer(0), 0),
+      new AvailabilityFeeInfo(new ArrayBuffer(0), new ArrayBuffer(0)),
+      new AvailabilityBuilderSignature(
+        new ArrayBuffer(0),
+        new ArrayBuffer(0),
+        0,
+      ),
       new TaggedBase64('MERKLE_COMM', new Uint8Array([0, 0, 0, 0]).buffer),
       0n,
       null,
@@ -74,13 +78,13 @@ function headerFromBlock(
 
 async function convertBlockToCappuccinoBlock(
   block: GeneratedBlock,
-): Promise<CappuccinoAPIBlock> {
-  return new CappuccinoAPIBlock(
+): Promise<AvailabilityAPIBlock> {
+  return new AvailabilityAPIBlock(
     headerFromBlock(block),
-    new CappuccinoAPIPayload(
+    new AvailabilityAPIPayload(
       await collectAsyncIterator(
         mapAsyncIterable(block.transactions, async (txn) => {
-          return new CappuccinoAPITransactionNMTEntry(
+          return new AvailabilityAPITransactionNMTEntry(
             txn.tree.namespace,
             Array.from(new Uint8Array(txn.tree.data)),
           );
@@ -95,8 +99,8 @@ async function convertBlockToCappuccinoBlock(
 
 function convertBlockToBlockSummary(
   block: GeneratedBlock,
-): CappuccinoDerivedBlockSummary {
-  return new CappuccinoDerivedBlockSummary(
+): AvailabilityDerivedBlockSummary {
+  return new AvailabilityDerivedBlockSummary(
     headerFromBlock(block),
     new TaggedBase64('BLOCK', new Uint8Array([0, 0, 0, 0]).buffer),
     block.size,
@@ -107,18 +111,18 @@ function convertBlockToBlockSummary(
 
 function convertBlockToTransactionSummaries(
   block: GeneratedBlock,
-): AsyncIterable<CappuccinoDerivedTransactionSummary> {
+): AsyncIterable<AvailabilityDerivedTransactionSummary> {
   const step1 = block.transactions;
   const header = headerFromBlock(block);
 
   return mapAsyncIterable(
     step1,
     async (txn) =>
-      new CappuccinoDerivedTransactionSummary(
+      new AvailabilityDerivedTransactionSummary(
         txn.hash,
         header,
         txn.index,
-        new CappuccinoAPITransactionNMTEntry(
+        new AvailabilityAPITransactionNMTEntry(
           txn.tree.namespace,
           Array.from(new Uint8Array(txn.tree.data)),
         ),
@@ -128,23 +132,23 @@ function convertBlockToTransactionSummaries(
 
 async function* convertBlockToCappuccinoAPITransactionResponse(
   generatedBlock: GeneratedBlock,
-): AsyncIterable<CappuccinoAPITransactionResponse> {
+): AsyncIterable<AvailabilityAPITransactionResponse> {
   // convertBlockToCappuccinoBlock consumes the transactions iterator, which
   // we do not want.
   const header = headerFromBlock(generatedBlock);
   const step1 = generatedBlock.transactions;
 
   yield* mapAsyncIterable(step1, async (txn) => {
-    return new CappuccinoAPITransactionResponse(
-      new CappuccinoAPITransactionNMTEntry(
+    return new AvailabilityAPITransactionResponse(
+      new AvailabilityAPITransactionNMTEntry(
         txn.tree.namespace,
         Array.from(new Uint8Array(txn.tree.data)),
       ),
       new TaggedBase64('BLOCK', new Uint8Array([0, 0, 0, 0]).buffer),
-      new CappuccinoAPITransactionProof(
+      new AvailabilityAPITransactionProof(
         new TaggedBase64('POS', new Uint8Array([0, 0, 0, 0]).buffer),
         [
-          new CappuccinoAPIMerkleTreeBranchProof(
+          new AvailabilityAPIMerkleTreeBranchProof(
             new TaggedBase64('EMPTY', new Uint8Array([0, 0, 0, 0]).buffer),
             [],
           ),
@@ -156,11 +160,13 @@ async function* convertBlockToCappuccinoAPITransactionResponse(
   });
 }
 
-export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements CappuccinoHotShotQueryServiceAvailabilityAPI {
-  async getLeafFromHeight(height: number): Promise<CappuccinoAPILeafResponse> {
+export class FakeDataHotShotQueryServiceAvailabilityAPI implements HotShotQueryServiceAvailabilityAPI {
+  async getLeafFromHeight(
+    height: number,
+  ): Promise<AvailabilityAPILeafResponse> {
     const block = await this.getBlockFromHeight(height);
 
-    return new CappuccinoAPILeafResponse(
+    return new AvailabilityAPILeafResponse(
       new LeafV0(
         height,
         new QuorumCertificateV1(
@@ -196,7 +202,7 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements Cap
   async getTransactionFromHeightAndOffset(
     height: number,
     offset: number,
-  ): Promise<CappuccinoAPITransactionResponse> {
+  ): Promise<AvailabilityAPITransactionResponse> {
     const generatedBlock = await firstAsyncIterator(
       dropAsyncIterator(generateAllEspressoBlocks(), height),
     );
@@ -208,7 +214,7 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements Cap
   async getBlockSummaries(
     from: number,
     until: number,
-  ): Promise<CappuccinoDerivedBlockSummary[]> {
+  ): Promise<AvailabilityDerivedBlockSummary[]> {
     const step1 = dropAsyncIterator(generateAllEspressoBlocks(), from);
     const step2 = takeAsyncIterator(step1, until - from);
     const step3 = mapAsyncIterator(step2, async (block) =>
@@ -218,7 +224,7 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements Cap
     return await collectAsyncIterator(step3);
   }
 
-  async getBlockFromHeight(height: number): Promise<CappuccinoAPIBlock> {
+  async getBlockFromHeight(height: number): Promise<AvailabilityAPIBlock> {
     const step1 = dropAsyncIterator(generateAllEspressoBlocks(), height);
     const step2 = await firstAsyncIterator(step1);
 
@@ -242,7 +248,7 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements Cap
     height: number,
     offset: number,
     limit: number,
-  ): Promise<CappuccinoDerivedTransactionSummary[]> {
+  ): Promise<AvailabilityDerivedTransactionSummary[]> {
     // We can currently retrieve the individual transactions from the blocks
     // themselves.
 
@@ -257,7 +263,7 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements Cap
     height: number,
     offset: number,
     limit: number,
-  ): Promise<CappuccinoDerivedTransactionSummary[]> {
+  ): Promise<AvailabilityDerivedTransactionSummary[]> {
     // We can currently retrieve the individual transactions from the blocks
     // themselves.
 
@@ -271,7 +277,7 @@ export class FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI implements Cap
     return await collectAsyncIterator(step6);
   }
 
-  async getHeader(height: number): Promise<CappuccinoAPIHeader> {
+  async getHeader(height: number): Promise<AvailabilityAPIHeader> {
     const block = await this.getBlockFromHeight(height);
     return block.header;
   }

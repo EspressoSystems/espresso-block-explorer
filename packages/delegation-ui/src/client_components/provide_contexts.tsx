@@ -3,8 +3,8 @@
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import {
   EnvironmentBanner,
-  ProvideCappuccinoHotShotQueryServiceAPIContext,
-  ProvideCappuccinoNodeValidatorServiceAPIContext,
+  ProvideHotShotQueryServiceAPIContext,
+  ProvideNodeValidatorServiceAPIContext,
   ProvideDerivedDateTimeFormatters,
   ProvideDerivedNumberFormatters,
   ProvideESPTokenContract,
@@ -35,8 +35,8 @@ export default function DelegationUIContexts({
       <ProvideDerivedNumberFormatters>
         <ProvideDerivedDateTimeFormatters>
           <ProvideTickEverySecond>
-            <ProvideCappuccinoNodeValidatorServiceAPIContext>
-              <ProvideCappuccinoHotShotQueryServiceAPIContext>
+            <ProvideNodeValidatorServiceAPIContext>
+              <ProvideHotShotQueryServiceAPIContext>
                 <ProvideL1ValidatorServiceAPIContext>
                   <RainbowKitProvider>
                     <RainbowKitContextInjector>
@@ -55,8 +55,8 @@ export default function DelegationUIContexts({
                     </RainbowKitContextInjector>
                   </RainbowKitProvider>
                 </ProvideL1ValidatorServiceAPIContext>
-              </ProvideCappuccinoHotShotQueryServiceAPIContext>
-            </ProvideCappuccinoNodeValidatorServiceAPIContext>
+              </ProvideHotShotQueryServiceAPIContext>
+            </ProvideNodeValidatorServiceAPIContext>
           </ProvideTickEverySecond>
         </ProvideDerivedDateTimeFormatters>
       </ProvideDerivedNumberFormatters>

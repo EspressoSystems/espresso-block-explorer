@@ -14,7 +14,7 @@ import { WebSocketRequest } from '@/models/web_worker/web_socket/web_socket_requ
 import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
 import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
 import { webSocketStatusToWebWorkerProxyResponseConverter } from '@/models/web_worker/web_worker_proxy_response_codec';
-import CappuccinoNodeValidatorRequest, {
+import NodeValidatorRequest, {
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
@@ -24,8 +24,8 @@ import CappuccinoNodeValidatorRequest, {
   SubscribeVoters,
 } from '../requests/node_validator_request';
 import { NodeValidatorServiceRequest } from '../requests/node_validator_service_request';
-import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
-import { cappuccinoNodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
+import NodeValidatorResponse from '../responses/node_validator_response';
+import { nodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
 import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 
@@ -144,13 +144,13 @@ export interface HARWebSocketMessage {
 //   replay:https://example.com/captured.har
 //   replay:/node-validator-recording-1.har
 
-export default class ReplayDataCappuccinoNodeValidatorAPI implements WebWorkerNodeValidatorAPI {
+export default class ReplayDataNodeValidatorAPI implements WebWorkerNodeValidatorAPI {
   readonly responseStream: Channel<WebWorkerProxyRequest>;
   readonly requestStream: Channel<WebWorkerProxyResponse>;
   readonly capturedHAR: HARFormat;
 
   readonly lifecycleResponseSink: Sink<WebSocketStatus>;
-  readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
+  readonly nodeValidatorResponseSink: Sink<NodeValidatorResponse>;
 
   constructor(
     requestStream: Channel<WebWorkerProxyRequest>,
@@ -223,9 +223,7 @@ export default class ReplayDataCappuccinoNodeValidatorAPI implements WebWorkerNo
     }
   }
 
-  private async handleNodeValidatorRequest(
-    request: CappuccinoNodeValidatorRequest,
-  ) {
+  private async handleNodeValidatorRequest(request: NodeValidatorRequest) {
     if (request instanceof SubscribeLatestBlock) {
       await this.handleSubscribeLatestBlock();
       return;
@@ -297,7 +295,7 @@ export default class ReplayDataCappuccinoNodeValidatorAPI implements WebWorkerNo
 
       // Alright, let's decode the response and send it to the response stream
       try {
-        const response = cappuccinoNodeValidatorResponseCodec.decode(
+        const response = nodeValidatorResponseCodec.decode(
           JSON.parse(message.data),
         );
 

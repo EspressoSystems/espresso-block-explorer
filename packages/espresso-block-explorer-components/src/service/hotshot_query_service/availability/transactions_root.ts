@@ -7,35 +7,33 @@ import {
 import { numberArrayCodec } from '@/convert/codec/number';
 
 /**
- * CappuccinoTransactionsRoot represents the transactions root in the Cappuccino
- * API.
+ * AvailabilityTransactionsRoot represents the transactions root in the
+ * Availability API.
  */
-export class CappuccinoTransactionsRoot {
-  readonly root: number[];
-
-  constructor(root: number[]) {
-    this.root = root;
-  }
+export class AvailabilityTransactionsRoot {
+  constructor(public readonly root: number[]) {}
 
   toJSON() {
-    return cappuccinoTransactionsRootCodec.encode(this);
+    return availabilityTransactionsRootCodec.encode(this);
   }
 }
 
-export class CappuccinoTransactionsRootDecoder implements Converter<
+export class AvailabilityTransactionsRootDecoder implements Converter<
   unknown,
-  CappuccinoTransactionsRoot
+  AvailabilityTransactionsRoot
 > {
-  convert(input: unknown): CappuccinoTransactionsRoot {
+  convert(input: unknown): AvailabilityTransactionsRoot {
     assertRecordWithKeys(input, 'root');
 
-    return new CappuccinoTransactionsRoot(numberArrayCodec.decode(input.root));
+    return new AvailabilityTransactionsRoot(
+      numberArrayCodec.decode(input.root),
+    );
   }
 }
 
-export class CappuccinoTransactionsRootEncoder implements Converter<CappuccinoTransactionsRoot> {
-  convert(input: CappuccinoTransactionsRoot) {
-    assertInstanceOf(input, CappuccinoTransactionsRoot);
+export class AvailabilityTransactionsRootEncoder implements Converter<AvailabilityTransactionsRoot> {
+  convert(input: AvailabilityTransactionsRoot) {
+    assertInstanceOf(input, AvailabilityTransactionsRoot);
 
     return {
       root: numberArrayCodec.encode(input.root),
@@ -43,15 +41,15 @@ export class CappuccinoTransactionsRootEncoder implements Converter<CappuccinoTr
   }
 }
 
-export class CappuccinoTransactionsRootCodec extends TypeCheckingCodec<
-  CappuccinoTransactionsRoot,
+export class AvailabilityTransactionsRootCodec extends TypeCheckingCodec<
+  AvailabilityTransactionsRoot,
   ReturnType<
-    InstanceType<new () => CappuccinoTransactionsRootEncoder>['convert']
+    InstanceType<new () => AvailabilityTransactionsRootEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoTransactionsRootEncoder();
-  readonly decoder = new CappuccinoTransactionsRootDecoder();
+  readonly encoder = new AvailabilityTransactionsRootEncoder();
+  readonly decoder = new AvailabilityTransactionsRootDecoder();
 }
 
-export const cappuccinoTransactionsRootCodec =
-  new CappuccinoTransactionsRootCodec();
+export const availabilityTransactionsRootCodec =
+  new AvailabilityTransactionsRootCodec();

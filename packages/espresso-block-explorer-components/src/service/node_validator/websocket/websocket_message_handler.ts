@@ -1,23 +1,19 @@
 import { Sink } from '@/async/sink';
-import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
-import { cappuccinoNodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
+import NodeValidatorResponse from '../responses/node_validator_response';
+import { nodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
 
 export class WebSocketMessageHandler implements EventListenerObject {
-  private readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
+  private readonly nodeValidatorResponseSink: Sink<NodeValidatorResponse>;
 
-  constructor(
-    nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>,
-  ) {
+  constructor(nodeValidatorResponseSink: Sink<NodeValidatorResponse>) {
     this.nodeValidatorResponseSink = nodeValidatorResponseSink;
   }
 
   private decodeMessage(event: MessageEvent) {
-    return cappuccinoNodeValidatorResponseCodec.decode(
-      JSON.parse(event.data as string),
-    );
+    return nodeValidatorResponseCodec.decode(JSON.parse(event.data as string));
   }
 
-  private async relayMessage(message: CappuccinoNodeValidatorResponse) {
+  private async relayMessage(message: NodeValidatorResponse) {
     try {
       await this.nodeValidatorResponseSink.send(message);
     } catch (error) {

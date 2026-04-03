@@ -1,7 +1,7 @@
 import {
   CurrentStakeTableContext,
   CurrentValidatorsContext,
-} from '@/block_explorer/pages/cappuccino_node_validator_service_adapters';
+} from '@/block_explorer/pages/node_validator_service_adapters';
 import { DataContext } from '@/contexts/data_provider';
 import {
   generateAllNodeIdentityInformationData,

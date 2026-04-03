@@ -13,19 +13,19 @@ import {
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
 
-export abstract class CappuccinoExplorerGetTransactionSummariesTarget {
-  readonly limit: number;
-
-  constructor(limit: number) {
-    this.limit = limit;
-  }
+/**
+ * ExplorerGetTransactionSummariesTarget represents the target of a request to
+ * get transaction summaries from the explorer.
+ */
+export abstract class ExplorerGetTransactionSummariesTarget {
+  constructor(public readonly limit: number) {}
 
   static latest(limit: number) {
-    return new CappuccinoExplorerGetTransactionSummariesTargetLatest(limit);
+    return new ExplorerGetTransactionSummariesTargetLatest(limit);
   }
 
   static heightAndOffset(height: number, offset: number, limit: number) {
-    return new CappuccinoExplorerGetTransactionSummariesTargetHeightAndOffset(
+    return new ExplorerGetTransactionSummariesTargetHeightAndOffset(
       height,
       offset,
       limit,
@@ -33,28 +33,28 @@ export abstract class CappuccinoExplorerGetTransactionSummariesTarget {
   }
 
   static hash(hash: TaggedBase64, limit: number) {
-    return new CappuccinoExplorerGetTransactionSummariesTargetHash(hash, limit);
+    return new ExplorerGetTransactionSummariesTargetHash(hash, limit);
   }
 
   abstract convertURL(baseURL: URL): URL;
 
   toJSON() {
-    return cappuccinoExplorerGetTransactionSummariesTargetCodec.encode(this);
+    return explorerGetTransactionSummariesTargetCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesTargetDecoder implements Converter<
+class ExplorerGetTransactionSummariesTargetDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetTransactionSummariesTarget
+  ExplorerGetTransactionSummariesTarget
 > {
-  convert(input: unknown): CappuccinoExplorerGetTransactionSummariesTarget {
+  convert(input: unknown): ExplorerGetTransactionSummariesTarget {
     assertRecordWithKeys(input, 'limit');
 
     if (
       isRecord(input, 'height', isUnknown) &&
       isRecord(input, 'offset', isUnknown)
     ) {
-      return new CappuccinoExplorerGetTransactionSummariesTargetHeightAndOffset(
+      return new ExplorerGetTransactionSummariesTargetHeightAndOffset(
         numberCodec.decode(input.height),
         numberCodec.decode(input.offset),
         numberCodec.decode(input.limit),
@@ -62,37 +62,32 @@ class CappuccinoExplorerGetTransactionSummariesTargetDecoder implements Converte
     }
 
     if (isRecord(input, 'hash', isUnknown)) {
-      return new CappuccinoExplorerGetTransactionSummariesTargetHash(
+      return new ExplorerGetTransactionSummariesTargetHash(
         taggedBase64Codec.decode(input.hash),
         numberCodec.decode(input.limit),
       );
     }
 
-    return new CappuccinoExplorerGetTransactionSummariesTargetLatest(
+    return new ExplorerGetTransactionSummariesTargetLatest(
       numberCodec.decode(input.limit),
     );
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesTargetEncoder implements Converter<
-  CappuccinoExplorerGetTransactionSummariesTarget,
+class ExplorerGetTransactionSummariesTargetEncoder implements Converter<
+  ExplorerGetTransactionSummariesTarget,
   unknown
 > {
-  convert(input: CappuccinoExplorerGetTransactionSummariesTarget) {
-    assertInstanceOf(input, CappuccinoExplorerGetTransactionSummariesTarget);
+  convert(input: ExplorerGetTransactionSummariesTarget) {
+    assertInstanceOf(input, ExplorerGetTransactionSummariesTarget);
 
-    if (
-      input instanceof CappuccinoExplorerGetTransactionSummariesTargetLatest
-    ) {
+    if (input instanceof ExplorerGetTransactionSummariesTargetLatest) {
       return {
         limit: numberCodec.encode(input.limit),
       };
     }
 
-    if (
-      input instanceof
-      CappuccinoExplorerGetTransactionSummariesTargetHeightAndOffset
-    ) {
+    if (input instanceof ExplorerGetTransactionSummariesTargetHeightAndOffset) {
       return {
         height: numberCodec.encode(input.height),
         offset: numberCodec.encode(input.offset),
@@ -100,7 +95,7 @@ class CappuccinoExplorerGetTransactionSummariesTargetEncoder implements Converte
       };
     }
 
-    if (input instanceof CappuccinoExplorerGetTransactionSummariesTargetHash) {
+    if (input instanceof ExplorerGetTransactionSummariesTargetHash) {
       return {
         hash: taggedBase64Codec.encode(input.hash),
         limit: numberCodec.encode(input.limit),
@@ -111,20 +106,18 @@ class CappuccinoExplorerGetTransactionSummariesTargetEncoder implements Converte
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesTargetCodec extends Codec<
-  CappuccinoExplorerGetTransactionSummariesTarget,
+class ExplorerGetTransactionSummariesTargetCodec extends Codec<
+  ExplorerGetTransactionSummariesTarget,
   unknown
 > {
-  readonly encoder =
-    new CappuccinoExplorerGetTransactionSummariesTargetEncoder();
-  readonly decoder =
-    new CappuccinoExplorerGetTransactionSummariesTargetDecoder();
+  readonly encoder = new ExplorerGetTransactionSummariesTargetEncoder();
+  readonly decoder = new ExplorerGetTransactionSummariesTargetDecoder();
 }
 
-export const cappuccinoExplorerGetTransactionSummariesTargetCodec =
-  new CappuccinoExplorerGetTransactionSummariesTargetCodec();
+export const explorerGetTransactionSummariesTargetCodec =
+  new ExplorerGetTransactionSummariesTargetCodec();
 
-export class CappuccinoExplorerGetTransactionSummariesTargetLatest extends CappuccinoExplorerGetTransactionSummariesTarget {
+export class ExplorerGetTransactionSummariesTargetLatest extends ExplorerGetTransactionSummariesTarget {
   constructor(limit: number) {
     super(limit);
   }
@@ -134,14 +127,13 @@ export class CappuccinoExplorerGetTransactionSummariesTargetLatest extends Cappu
   }
 }
 
-export class CappuccinoExplorerGetTransactionSummariesTargetHeightAndOffset extends CappuccinoExplorerGetTransactionSummariesTarget {
-  readonly height: number;
-  readonly offset: number;
-
-  public constructor(height: number, offset: number, limit: number) {
+export class ExplorerGetTransactionSummariesTargetHeightAndOffset extends ExplorerGetTransactionSummariesTarget {
+  public constructor(
+    public readonly height: number,
+    public readonly offset: number,
+    limit: number,
+  ) {
     super(limit);
-    this.height = height;
-    this.offset = offset;
   }
 
   convertURL(baseURL: URL): URL {
@@ -152,12 +144,12 @@ export class CappuccinoExplorerGetTransactionSummariesTargetHeightAndOffset exte
   }
 }
 
-export class CappuccinoExplorerGetTransactionSummariesTargetHash extends CappuccinoExplorerGetTransactionSummariesTarget {
-  readonly hash: TaggedBase64;
-
-  public constructor(hash: TaggedBase64, limit: number) {
+export class ExplorerGetTransactionSummariesTargetHash extends ExplorerGetTransactionSummariesTarget {
+  public constructor(
+    public readonly hash: TaggedBase64,
+    limit: number,
+  ) {
     super(limit);
-    this.hash = hash;
   }
 
   convertURL(baseURL: URL): URL {

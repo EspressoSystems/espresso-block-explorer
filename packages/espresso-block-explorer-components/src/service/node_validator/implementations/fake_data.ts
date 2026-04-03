@@ -35,15 +35,15 @@ import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_requ
 import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
 import { webSocketStatusToWebWorkerProxyResponseConverter } from '@/models/web_worker/web_worker_proxy_response_codec';
 import {
-  CappuccinoAPIBitVec,
-  CappuccinoAPIBitVecHead,
-  CappuccinoAPIBitVecOrder,
-  CappuccinoExplorerBlockDetail,
-  CappuccinoSummaryHistograms,
+  BitVec,
+  BitVecHead,
+  BitVecOrder,
+  ExplorerBlockDetail,
+  SummaryHistograms,
 } from '@/service/hotshot_query_service';
-import CappuccinoNodeIdentity from '../node_identity';
-import CappuccinoLocationDetails from '../node_location_details';
-import CappuccinoNodeValidatorRequest, {
+import NodeIdentity from '../node_identity';
+import LocationDetails from '../node_location_details';
+import NodeValidatorRequest, {
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
@@ -55,22 +55,22 @@ import CappuccinoNodeValidatorRequest, {
   SubscribeVoters,
 } from '../requests/node_validator_request';
 import { NodeValidatorServiceRequest } from '../requests/node_validator_service_request';
-import { CappuccinoBlocksSnapshot } from '../responses/blocks_snapshot';
-import { CappuccinoHistogramSnapshot } from '../responses/histogram_snapshot';
-import { CappuccinoLatestBlock } from '../responses/latest_block';
-import { CappuccinoLatestStakeTable } from '../responses/latest_stake_table';
-import { CappuccinoLatestVoters } from '../responses/latest_voters';
-import { CappuccinoNodeIdentitySnapshot } from '../responses/node_identity_snapshot';
-import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
+import { BlocksSnapshot } from '../responses/blocks_snapshot';
+import { HistogramSnapshot } from '../responses/histogram_snapshot';
+import { LatestBlock } from '../responses/latest_block';
+import { LatestStakeTable } from '../responses/latest_stake_table';
+import { LatestVoters } from '../responses/latest_voters';
+import { NodeIdentitySnapshot } from '../responses/node_identity_snapshot';
+import NodeValidatorResponse from '../responses/node_validator_response';
 import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
-import { CappuccinoValidatorsSnapshot } from '../responses/validators_snapshot';
-import { CappuccinoVotersSnapshot } from '../responses/voters_snapshot';
+import { ValidatorsSnapshot } from '../responses/validators_snapshot';
+import { VotersSnapshot } from '../responses/voters_snapshot';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 
 function createBlockDetailFromGeneratedBlock(
   block: GeneratedEspressoBlock,
-): CappuccinoExplorerBlockDetail {
-  return new CappuccinoExplorerBlockDetail(
+): ExplorerBlockDetail {
+  return new ExplorerBlockDetail(
     block.hash,
     block.height,
     block.time,
@@ -84,14 +84,14 @@ function createBlockDetailFromGeneratedBlock(
 
 function convertGeneratedNodeIdentity(
   node: GeneratedNodeIdentityInformation,
-): CappuccinoNodeIdentity {
-  return new CappuccinoNodeIdentity(
+): NodeIdentity {
+  return new NodeIdentity(
     node.pubkey,
     node.name,
     null,
     node.company.name,
     new URL(node.company.website),
-    new CappuccinoLocationDetails(
+    new LocationDetails(
       new LatLng(
         new Latitude(new Degrees(node.location.coords[0])),
         new Longitude(new Degrees(node.location.coords[1])),
@@ -104,12 +104,12 @@ function convertGeneratedNodeIdentity(
   );
 }
 
-export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNodeValidatorAPI {
+export default class FakeDataNodeValidatorAPI implements WebWorkerNodeValidatorAPI {
   readonly responseStream: Channel<WebWorkerProxyResponse>;
   readonly requestStream: Channel<WebWorkerProxyRequest>;
 
   readonly lifecycleResponseSink: Sink<WebSocketStatus>;
-  readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
+  readonly nodeValidatorResponseSink: Sink<NodeValidatorResponse>;
 
   constructor(
     requestStream: Channel<WebWorkerProxyRequest>,
@@ -139,18 +139,17 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
   private prng: PseudoRandomNumberGenerator = new PseudoRandomNumberGenerator(
     getStartingSeed(),
   );
-  private latestBlock: CappuccinoExplorerBlockDetail =
+  private latestBlock: ExplorerBlockDetail =
     createBlockDetailFromGeneratedBlock(createGenesisEspressoBlock());
-  private latestBlocks =
-    createCircularBuffer<CappuccinoExplorerBlockDetail>(50);
-  private latestVoters = createCircularBuffer<CappuccinoAPIBitVec>(50);
+  private latestBlocks = createCircularBuffer<ExplorerBlockDetail>(50);
+  private latestVoters = createCircularBuffer<BitVec>(50);
   private histogramBlockTimeData = createCircularBuffer<number>(50);
   private histogramBlockSizeData = createCircularBuffer<number>(50);
   private histogramBlockTransactionData = createCircularBuffer<number>(50);
 
   private generateVotersFromBlockDetail(
-    blockDetail: CappuccinoExplorerBlockDetail,
-  ): CappuccinoAPIBitVec {
+    blockDetail: ExplorerBlockDetail,
+  ): BitVec {
     const prng = new PseudoRandomNumberGenerator(blockDetail.time.valueOf());
 
     // We want 2/3 + 1 voters to have voted. But we can just settle on
@@ -160,9 +159,9 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
 
     const votesVector = new Uint16Array(prng.fillBytes(numberVoteBitVec * 2));
 
-    const nextVoters = new CappuccinoAPIBitVec(
-      CappuccinoAPIBitVecOrder.lsb0,
-      new CappuccinoAPIBitVecHead(16, 0),
+    const nextVoters = new BitVec(
+      BitVecOrder.lsb0,
+      new BitVecHead(16, 0),
       numberNodes,
       Array.from(mapIterable(votesVector, (value) => BigInt(value))),
     );
@@ -173,7 +172,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
   private histogramBlockHeightData = createCircularBuffer<number>(50);
 
   private async updateBlockDetails(
-    blockDetail: CappuccinoExplorerBlockDetail,
+    blockDetail: ExplorerBlockDetail,
   ): Promise<void> {
     const previousBlock = this.latestBlock;
     const nextBlockTime =
@@ -197,16 +196,12 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
 
     // Publish the new block to the response stream.
     if (this.isSubscribedToLatestBlock) {
-      await this.nodeValidatorResponseSink.send(
-        new CappuccinoLatestBlock(blockDetail),
-      );
+      await this.nodeValidatorResponseSink.send(new LatestBlock(blockDetail));
     }
 
     // Publish thew new Voters to the response stream.
     if (this.isSubscribedToVoters) {
-      this.nodeValidatorResponseSink.send(
-        new CappuccinoLatestVoters(nextVoters),
-      );
+      this.nodeValidatorResponseSink.send(new LatestVoters(nextVoters));
     }
   }
 
@@ -219,11 +214,11 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
     }
 
     await this.nodeValidatorResponseSink.send(
-      new CappuccinoLatestBlock(this.latestBlock),
+      new LatestBlock(this.latestBlock),
     );
     await this.nodeValidatorResponseSink.send(
-      new CappuccinoHistogramSnapshot(
-        new CappuccinoSummaryHistograms(
+      new HistogramSnapshot(
+        new SummaryHistograms(
           Array.from(this.histogramBlockTimeData.immutableIterable()),
           Array.from(this.histogramBlockSizeData.immutableIterable()),
           Array.from(this.histogramBlockTransactionData.immutableIterable()),
@@ -232,9 +227,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
       ),
     );
     this.nodeValidatorResponseSink.send(
-      new CappuccinoNodeIdentitySnapshot(
-        nodeList.map(convertGeneratedNodeIdentity),
-      ),
+      new NodeIdentitySnapshot(nodeList.map(convertGeneratedNodeIdentity)),
     );
   }
 
@@ -296,9 +289,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
     }
   }
 
-  private async handleNodeValidatorRequest(
-    request: CappuccinoNodeValidatorRequest,
-  ) {
+  private async handleNodeValidatorRequest(request: NodeValidatorRequest) {
     if (request instanceof SubscribeLatestBlock) {
       await this.handleSubscribeLatestBlock();
       return;
@@ -406,9 +397,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
     await this.assertIsConnected();
 
     await this.nodeValidatorResponseSink.send(
-      new CappuccinoBlocksSnapshot(
-        Array.from(this.latestBlocks.immutableIterable()),
-      ),
+      new BlocksSnapshot(Array.from(this.latestBlocks.immutableIterable())),
     );
   }
 
@@ -416,8 +405,8 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
     await this.assertIsConnected();
 
     await this.nodeValidatorResponseSink.send(
-      new CappuccinoHistogramSnapshot(
-        new CappuccinoSummaryHistograms(
+      new HistogramSnapshot(
+        new SummaryHistograms(
           Array.from(this.histogramBlockTimeData.immutableIterable()),
           Array.from(this.histogramBlockSizeData.immutableIterable()),
           Array.from(this.histogramBlockTransactionData.immutableIterable()),
@@ -431,9 +420,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
     await this.assertIsConnected();
 
     await this.nodeValidatorResponseSink.send(
-      new CappuccinoNodeIdentitySnapshot(
-        nodeList.map(convertGeneratedNodeIdentity),
-      ),
+      new NodeIdentitySnapshot(nodeList.map(convertGeneratedNodeIdentity)),
     );
   }
 
@@ -441,9 +428,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
     await this.assertIsConnected();
 
     await this.nodeValidatorResponseSink.send(
-      new CappuccinoVotersSnapshot(
-        Array.from(this.latestVoters.immutableIterable()),
-      ),
+      new VotersSnapshot(Array.from(this.latestVoters.immutableIterable())),
     );
   }
 
@@ -451,7 +436,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
     await this.assertIsConnected();
 
     await this.nodeValidatorResponseSink.send(
-      new CappuccinoValidatorsSnapshot(
+      new ValidatorsSnapshot(
         nodeList.map((entry) => {
           const walletAddress = new WalletAddress(entry.address);
           return new Validator(
@@ -471,7 +456,7 @@ export default class FakeDataCappuccinoNodeValidatorAPI implements WebWorkerNode
     await this.assertIsConnected();
 
     await this.nodeValidatorResponseSink.send(
-      new CappuccinoLatestStakeTable(
+      new LatestStakeTable(
         nodeList.map(
           (entry) =>
             new StakeTableEntryWrapper(

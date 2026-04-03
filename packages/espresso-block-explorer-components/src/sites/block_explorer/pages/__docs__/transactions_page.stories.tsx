@@ -1,6 +1,7 @@
-import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
-import { ProvideTickEverySecond } from '@/contexts/now_provider';
 import { OverridePathResolver } from '@/block_explorer/contexts/path_resolver_provider';
+import { ProvideHotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
+import { ProvideTickEverySecond } from '@/contexts/now_provider';
+import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
 import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
@@ -15,8 +16,7 @@ import {
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { ProvideCappuccinoTransactionsSummaryDataSource } from '../cappuccino_hot_shot_query_service_adapters';
-import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
+import { ProvideTransactionsSummaryDataSource } from '../hot_shot_query_service_adapters';
 import { StoryBookPathResolver } from '../story_book_path_resolver';
 import TransactionsPage from '../transactions_page';
 
@@ -48,15 +48,15 @@ const Example: React.FC<ExampleProps> = ({
     <EnvironmentBanner />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideCappuccinoHotShotQueryServiceAPIContext>
-          <ProvideCappuccinoTransactionsSummaryDataSource>
+        <ProvideHotShotQueryServiceAPIContext>
+          <ProvideTransactionsSummaryDataSource>
             <TransactionsPage
               {...rest}
               startAtBlock={startAtBlock}
               offset={offset}
             />
-          </ProvideCappuccinoTransactionsSummaryDataSource>
-        </ProvideCappuccinoHotShotQueryServiceAPIContext>
+          </ProvideTransactionsSummaryDataSource>
+        </ProvideHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </StoryBookSpecifyEnvironment>

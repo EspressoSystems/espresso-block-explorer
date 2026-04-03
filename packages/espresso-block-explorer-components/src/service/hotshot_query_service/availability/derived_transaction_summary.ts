@@ -10,86 +10,79 @@ import {
   TaggedBase64,
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoAPIHeader, cappuccinoAPIHeaderCodec } from './block_header';
 import {
-  CappuccinoAPITransactionNMTEntry,
-  cappuccinoAPITransactionNMTEntryCodec,
+  AvailabilityAPIHeader,
+  availabilityAPIHeaderCodec,
+} from './block_header';
+import {
+  AvailabilityAPITransactionNMTEntry,
+  availabilityAPITransactionNMTEntryCodec,
 } from './transaction_nmt_entry';
 
 /**
- * CappuccinoDerivedTransactionSummary represents a Transaction summary that
- * is derived from other primitives in the Cappuccino API.
+ * AvailabilityDerivedTransactionSummary represents a Transaction summary that
+ * is derived from other primitives in the Availability API.
  */
-export class CappuccinoDerivedTransactionSummary {
-  readonly hash: TaggedBase64;
-  readonly header: CappuccinoAPIHeader;
-  readonly offset: number;
-  readonly transaction: CappuccinoAPITransactionNMTEntry;
-
+export class AvailabilityDerivedTransactionSummary {
   constructor(
-    hash: TaggedBase64,
-    header: CappuccinoAPIHeader,
-    offset: number,
-    transaction: CappuccinoAPITransactionNMTEntry,
-  ) {
-    this.hash = hash;
-    this.header = header;
-    this.offset = offset;
-    this.transaction = transaction;
-  }
+    public readonly hash: TaggedBase64,
+    public readonly header: AvailabilityAPIHeader,
+    public readonly offset: number,
+    public readonly transaction: AvailabilityAPITransactionNMTEntry,
+  ) {}
 
   toJSON() {
-    return cappuccinoDerivedTransactionSummaryCodec.encode(this);
+    return availabilityDerivedTransactionSummaryCodec.encode(this);
   }
 }
 
-export class CappuccinoDerivedTransactionSummaryDecoder implements Converter<
+export class AvailabilityDerivedTransactionSummaryDecoder implements Converter<
   unknown,
-  CappuccinoDerivedTransactionSummary
+  AvailabilityDerivedTransactionSummary
 > {
-  convert(input: unknown): CappuccinoDerivedTransactionSummary {
+  convert(input: unknown): AvailabilityDerivedTransactionSummary {
     assertRecordWithKeys(input, 'hash', 'header', 'offset', 'transaction');
 
-    return new CappuccinoDerivedTransactionSummary(
+    return new AvailabilityDerivedTransactionSummary(
       taggedBase64Codec.decode(input.hash),
-      cappuccinoAPIHeaderCodec.decode(input.header),
+      availabilityAPIHeaderCodec.decode(input.header),
       numberCodec.decode(input.offset),
-      cappuccinoAPITransactionNMTEntryCodec.decode(input.transaction),
+      availabilityAPITransactionNMTEntryCodec.decode(input.transaction),
     );
   }
 }
 
-export class CappuccinoDerivedTransactionSummaryEncoder implements Converter<CappuccinoDerivedTransactionSummary> {
-  convert(input: CappuccinoDerivedTransactionSummary) {
-    assertInstanceOf(input, CappuccinoDerivedTransactionSummary);
+export class AvailabilityDerivedTransactionSummaryEncoder implements Converter<AvailabilityDerivedTransactionSummary> {
+  convert(input: AvailabilityDerivedTransactionSummary) {
+    assertInstanceOf(input, AvailabilityDerivedTransactionSummary);
 
     return {
       hash: taggedBase64Codec.encode(input.hash),
-      header: cappuccinoAPIHeaderCodec.encode(input.header),
+      header: availabilityAPIHeaderCodec.encode(input.header),
       offset: numberCodec.encode(input.offset),
-      transaction: cappuccinoAPITransactionNMTEntryCodec.encode(
+      transaction: availabilityAPITransactionNMTEntryCodec.encode(
         input.transaction,
       ),
     };
   }
 }
 
-export class CappuccinoDerivedTransactionSummaryCodec extends TypeCheckingCodec<
-  CappuccinoDerivedTransactionSummary,
+export class AvailabilityDerivedTransactionSummaryCodec extends TypeCheckingCodec<
+  AvailabilityDerivedTransactionSummary,
   ReturnType<
     InstanceType<
-      new () => CappuccinoDerivedTransactionSummaryEncoder
+      new () => AvailabilityDerivedTransactionSummaryEncoder
     >['convert']
   >
 > {
-  readonly encoder = new CappuccinoDerivedTransactionSummaryEncoder();
-  readonly decoder = new CappuccinoDerivedTransactionSummaryDecoder();
+  readonly encoder = new AvailabilityDerivedTransactionSummaryEncoder();
+  readonly decoder = new AvailabilityDerivedTransactionSummaryDecoder();
 }
 
-export const cappuccinoDerivedTransactionSummaryCodec =
-  new CappuccinoDerivedTransactionSummaryCodec();
+export const availabilityDerivedTransactionSummaryCodec =
+  new AvailabilityDerivedTransactionSummaryCodec();
 
-export const listCappuccinoDerivedTransactionSummaryCodec = new ArrayCodec(
-  new ArrayDecoder(cappuccinoDerivedTransactionSummaryCodec),
-  new ArrayEncoder(cappuccinoDerivedTransactionSummaryCodec),
+export const listAvailabilityDerivedTransactionSummaryCodec = new ArrayCodec(
+  new ArrayDecoder(availabilityDerivedTransactionSummaryCodec),
+  new ArrayEncoder(availabilityDerivedTransactionSummaryCodec),
 );

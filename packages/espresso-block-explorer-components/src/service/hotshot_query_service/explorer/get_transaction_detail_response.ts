@@ -5,41 +5,41 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import {
-  CappuccinoExplorerTransactionDetail,
+  ExplorerTransactionDetail,
   cappuccinoExplorerTransactionDetailCodec,
 } from './transaction_detail';
 
-export class CappuccinoExplorerGetTransactionDetailResponse {
-  readonly transactionDetail: CappuccinoExplorerTransactionDetail;
-
-  constructor(transactionDetail: CappuccinoExplorerTransactionDetail) {
-    this.transactionDetail = transactionDetail;
-  }
+/**
+ * ExplorerGetTransactionDetailResponse is the response from the explorer API
+ * for the getTransactionDetail method.
+ */
+export class ExplorerGetTransactionDetailResponse {
+  constructor(public readonly transactionDetail: ExplorerTransactionDetail) {}
 
   toJSON() {
-    return cappuccinoExplorerGetTransactionDetailResponseCodec.encode(this);
+    return explorerGetTransactionDetailResponseCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetTransactionDetailResponseDecoder implements Converter<
+class ExplorerGetTransactionDetailResponseDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetTransactionDetailResponse
+  ExplorerGetTransactionDetailResponse
 > {
-  convert(input: unknown): CappuccinoExplorerGetTransactionDetailResponse {
+  convert(input: unknown): ExplorerGetTransactionDetailResponse {
     assertRecordWithKeys(input, 'transaction_detail');
 
-    return new CappuccinoExplorerGetTransactionDetailResponse(
+    return new ExplorerGetTransactionDetailResponse(
       cappuccinoExplorerTransactionDetailCodec.decode(input.transaction_detail),
     );
   }
 }
 
-class CappuccinoExplorerGetTransactionDetailResponseEncoder implements Converter<
-  CappuccinoExplorerGetTransactionDetailResponse,
+class ExplorerGetTransactionDetailResponseEncoder implements Converter<
+  ExplorerGetTransactionDetailResponse,
   unknown
 > {
-  convert(input: CappuccinoExplorerGetTransactionDetailResponse): unknown {
-    assertInstanceOf(input, CappuccinoExplorerGetTransactionDetailResponse);
+  convert(input: ExplorerGetTransactionDetailResponse): unknown {
+    assertInstanceOf(input, ExplorerGetTransactionDetailResponse);
 
     return {
       transaction_detail: cappuccinoExplorerTransactionDetailCodec.encode(
@@ -49,15 +49,13 @@ class CappuccinoExplorerGetTransactionDetailResponseEncoder implements Converter
   }
 }
 
-class CappuccinoExplorerGetTransactionDetailResponseCodec extends Codec<
-  CappuccinoExplorerGetTransactionDetailResponse,
+class ExplorerGetTransactionDetailResponseCodec extends Codec<
+  ExplorerGetTransactionDetailResponse,
   unknown
 > {
-  readonly encoder =
-    new CappuccinoExplorerGetTransactionDetailResponseEncoder();
-  readonly decoder =
-    new CappuccinoExplorerGetTransactionDetailResponseDecoder();
+  readonly encoder = new ExplorerGetTransactionDetailResponseEncoder();
+  readonly decoder = new ExplorerGetTransactionDetailResponseDecoder();
 }
 
-export const cappuccinoExplorerGetTransactionDetailResponseCodec =
-  new CappuccinoExplorerGetTransactionDetailResponseCodec();
+export const explorerGetTransactionDetailResponseCodec =
+  new ExplorerGetTransactionDetailResponseCodec();

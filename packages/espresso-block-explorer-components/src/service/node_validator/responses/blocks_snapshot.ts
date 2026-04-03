@@ -4,69 +4,62 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import {
-  CappuccinoExplorerBlockDetail,
-  cappuccinoExplorerBlockDetailArrayCodec,
+  ExplorerBlockDetail,
+  explorerBlockDetailArrayCodec,
 } from '@/service/hotshot_query_service';
-import CappuccinoNodeValidatorResponse from './node_validator_response';
+import NodeValidatorResponse from './node_validator_response';
 
 /**
- * Messages from the Cappuccino Node Validator take the form of:
+ * Messages from the Node Validator take the form of:
  * { "MessageType": MessageType }
  */
 
 /**
- * kCappuccinoBlocksSnapshotType is the type string for the
- * CappuccinoBlocksSnapshot class.
+ * kBlocksSnapshotType is the type string for the
+ * BlocksSnapshot class.
  */
-export const kCappuccinoBlocksSnapshotType = 'BlocksSnapshot' as const;
+export const kBlocksSnapshotType = 'BlocksSnapshot' as const;
 
 /**
- * CappuccinoBlocksSnapshot is a response from the Cappuccino node
+ * BlocksSnapshot is a response from the node
  * validator that contains a snapshot of the blocks in the network.
  */
-export class CappuccinoBlocksSnapshot extends CappuccinoNodeValidatorResponse {
-  readonly blocks: CappuccinoExplorerBlockDetail[];
+export class BlocksSnapshot extends NodeValidatorResponse {
+  readonly blocks: ExplorerBlockDetail[];
 
-  constructor(blocks: CappuccinoExplorerBlockDetail[]) {
+  constructor(blocks: ExplorerBlockDetail[]) {
     super();
     this.blocks = blocks;
   }
 
   toJSON() {
-    return cappuccinoBlocksSnapshotCodec.encode(this);
+    return blocksSnapshotCodec.encode(this);
   }
 }
 
-class CappuccinoBlocksSnapshotDecoder implements Converter<
-  unknown,
-  CappuccinoBlocksSnapshot
-> {
-  convert(input: unknown): CappuccinoBlocksSnapshot {
-    assertRecordWithKeys(input, kCappuccinoBlocksSnapshotType);
+class BlocksSnapshotDecoder implements Converter<unknown, BlocksSnapshot> {
+  convert(input: unknown): BlocksSnapshot {
+    assertRecordWithKeys(input, kBlocksSnapshotType);
 
-    const list = input[kCappuccinoBlocksSnapshotType];
-    return new CappuccinoBlocksSnapshot(
-      cappuccinoExplorerBlockDetailArrayCodec.decode(list),
-    );
+    const list = input[kBlocksSnapshotType];
+    return new BlocksSnapshot(explorerBlockDetailArrayCodec.decode(list));
   }
 }
 
-class CappuccinoBlocksSnapshotEncoder implements Converter<CappuccinoBlocksSnapshot> {
-  convert(input: CappuccinoBlocksSnapshot) {
+class BlocksSnapshotEncoder implements Converter<BlocksSnapshot> {
+  convert(input: BlocksSnapshot) {
     return {
-      [kCappuccinoBlocksSnapshotType]:
-        cappuccinoExplorerBlockDetailArrayCodec.encode(input.blocks),
+      [kBlocksSnapshotType]: explorerBlockDetailArrayCodec.encode(input.blocks),
     };
   }
 }
 
-class CappuccinoBlocksSnapshotCodec extends TypeCheckingCodec<
-  CappuccinoBlocksSnapshot,
-  ReturnType<InstanceType<new () => CappuccinoBlocksSnapshotEncoder>['convert']>
+class BlocksSnapshotCodec extends TypeCheckingCodec<
+  BlocksSnapshot,
+  ReturnType<InstanceType<new () => BlocksSnapshotEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoBlocksSnapshotEncoder();
-  readonly decoder = new CappuccinoBlocksSnapshotDecoder();
+  readonly encoder = new BlocksSnapshotEncoder();
+  readonly decoder = new BlocksSnapshotDecoder();
 }
 
-export const cappuccinoBlocksSnapshotCodec =
-  new CappuccinoBlocksSnapshotCodec();
+export const blocksSnapshotCodec = new BlocksSnapshotCodec();

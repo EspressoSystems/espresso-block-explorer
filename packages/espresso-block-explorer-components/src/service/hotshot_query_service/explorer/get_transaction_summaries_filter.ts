@@ -3,71 +3,72 @@ import { Codec, Converter, isRecord, isUnknown } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 import InvalidInputError from '@/errors/invalid_input_error';
 
-export abstract class CappuccinoExplorerGetTransactionSummariesFilter {
+/**
+ * ExplorerGetTransactionSummariesFilter is a filter for getting transaction
+ * summaries  from the explorer. It can be filtered by block, namespace, or no
+ * filter.
+ */
+export abstract class ExplorerGetTransactionSummariesFilter {
   constructor() {}
 
   static block(block: number) {
-    return new CappuccinoExplorerGetTransactionSummariesFilterBlock(block);
+    return new ExplorerGetTransactionSummariesFilterBlock(block);
   }
 
   static namespace(namespace: number) {
-    return new CappuccinoExplorerGetTransactionSummariesFilterNamespace(
-      namespace,
-    );
+    return new ExplorerGetTransactionSummariesFilterNamespace(namespace);
   }
 
   static none() {
-    return new CappuccinoExplorerGetTransactionSummariesFilterNone();
+    return new ExplorerGetTransactionSummariesFilterNone();
   }
 
   abstract convertURL(baseURL: URL): URL;
 
   toJSON() {
-    return cappuccinoExplorerGetTransactionSummariesFilterCodec.encode(this);
+    return explorerGetTransactionSummariesFilterCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesFilterDecoder implements Converter<
+class ExplorerGetTransactionSummariesFilterDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetTransactionSummariesFilter
+  ExplorerGetTransactionSummariesFilter
 > {
-  convert(input: unknown): CappuccinoExplorerGetTransactionSummariesFilter {
+  convert(input: unknown): ExplorerGetTransactionSummariesFilter {
     if (isRecord(input, 'block', isUnknown)) {
-      return new CappuccinoExplorerGetTransactionSummariesFilterBlock(
+      return new ExplorerGetTransactionSummariesFilterBlock(
         numberCodec.decode(input.block),
       );
     }
 
     if (isRecord(input, 'namespace', isUnknown)) {
-      return new CappuccinoExplorerGetTransactionSummariesFilterNamespace(
+      return new ExplorerGetTransactionSummariesFilterNamespace(
         numberCodec.decode(input.namespace),
       );
     }
 
-    return new CappuccinoExplorerGetTransactionSummariesFilterNone();
+    return new ExplorerGetTransactionSummariesFilterNone();
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesFilterEncoder implements Converter<
-  CappuccinoExplorerGetTransactionSummariesFilter,
+class ExplorerGetTransactionSummariesFilterEncoder implements Converter<
+  ExplorerGetTransactionSummariesFilter,
   unknown
 > {
-  convert(input: CappuccinoExplorerGetTransactionSummariesFilter) {
-    assertInstanceOf(input, CappuccinoExplorerGetTransactionSummariesFilter);
+  convert(input: ExplorerGetTransactionSummariesFilter) {
+    assertInstanceOf(input, ExplorerGetTransactionSummariesFilter);
 
-    if (input instanceof CappuccinoExplorerGetTransactionSummariesFilterNone) {
+    if (input instanceof ExplorerGetTransactionSummariesFilterNone) {
       return {};
     }
 
-    if (input instanceof CappuccinoExplorerGetTransactionSummariesFilterBlock) {
+    if (input instanceof ExplorerGetTransactionSummariesFilterBlock) {
       return {
         block: numberCodec.encode(input.block),
       };
     }
 
-    if (
-      input instanceof CappuccinoExplorerGetTransactionSummariesFilterNamespace
-    ) {
+    if (input instanceof ExplorerGetTransactionSummariesFilterNamespace) {
       return {
         namespace: numberCodec.encode(input.namespace),
       };
@@ -77,20 +78,18 @@ class CappuccinoExplorerGetTransactionSummariesFilterEncoder implements Converte
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesFilterCodec extends Codec<
-  CappuccinoExplorerGetTransactionSummariesFilter,
+class ExplorerGetTransactionSummariesFilterCodec extends Codec<
+  ExplorerGetTransactionSummariesFilter,
   unknown
 > {
-  readonly encoder =
-    new CappuccinoExplorerGetTransactionSummariesFilterEncoder();
-  readonly decoder =
-    new CappuccinoExplorerGetTransactionSummariesFilterDecoder();
+  readonly encoder = new ExplorerGetTransactionSummariesFilterEncoder();
+  readonly decoder = new ExplorerGetTransactionSummariesFilterDecoder();
 }
 
-export const cappuccinoExplorerGetTransactionSummariesFilterCodec =
-  new CappuccinoExplorerGetTransactionSummariesFilterCodec();
+export const explorerGetTransactionSummariesFilterCodec =
+  new ExplorerGetTransactionSummariesFilterCodec();
 
-export class CappuccinoExplorerGetTransactionSummariesFilterNone extends CappuccinoExplorerGetTransactionSummariesFilter {
+export class ExplorerGetTransactionSummariesFilterNone extends ExplorerGetTransactionSummariesFilter {
   constructor() {
     super();
   }
@@ -100,12 +99,9 @@ export class CappuccinoExplorerGetTransactionSummariesFilterNone extends Cappucc
   }
 }
 
-export class CappuccinoExplorerGetTransactionSummariesFilterBlock extends CappuccinoExplorerGetTransactionSummariesFilter {
-  readonly block: number;
-
-  public constructor(block: number) {
+export class ExplorerGetTransactionSummariesFilterBlock extends ExplorerGetTransactionSummariesFilter {
+  public constructor(public readonly block: number) {
     super();
-    this.block = block;
   }
 
   convertURL(baseURL: URL): URL {
@@ -113,12 +109,9 @@ export class CappuccinoExplorerGetTransactionSummariesFilterBlock extends Cappuc
   }
 }
 
-export class CappuccinoExplorerGetTransactionSummariesFilterNamespace extends CappuccinoExplorerGetTransactionSummariesFilter {
-  readonly namespace: number;
-
-  public constructor(namespace: number) {
+export class ExplorerGetTransactionSummariesFilterNamespace extends ExplorerGetTransactionSummariesFilter {
+  public constructor(public readonly namespace: number) {
     super();
-    this.namespace = namespace;
   }
 
   convertURL(baseURL: URL): URL {

@@ -1,18 +1,17 @@
 import { validateAndExpandResponse } from '@/async/fetch/response_validators';
 import { numberCodec } from '@/convert/codec/number';
-import { CappuccinoHotShotQueryServiceStatusAPI } from '../status_api';
+import { HotShotQueryServiceStatusAPI } from '../status_api';
 
-export class FetchBasedCappuccinoHotShotQueryServiceStatusAPI implements CappuccinoHotShotQueryServiceStatusAPI {
-  private readonly fetcher: typeof fetch;
-  private readonly baseURL: URL;
+export class FetchBasedHotShotQueryServiceStatusAPI implements HotShotQueryServiceStatusAPI {
   private readonly blockHeightURL: URL;
   private readonly blockHeightResponseValidator = validateAndExpandResponse(
     numberCodec.decoder,
   );
 
-  constructor(fetcher: typeof fetch, url: URL) {
-    this.fetcher = fetcher;
-    this.baseURL = url;
+  constructor(
+    private readonly fetcher: typeof fetch,
+    private readonly baseURL: URL,
+  ) {
     this.blockHeightURL = new URL('block-height', this.baseURL);
   }
 

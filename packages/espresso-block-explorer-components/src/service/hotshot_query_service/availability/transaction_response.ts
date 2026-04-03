@@ -10,49 +10,37 @@ import {
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
 import {
-  CappuccinoAPITransactionNMTEntry,
-  cappuccinoAPITransactionNMTEntryCodec,
+  AvailabilityAPITransactionNMTEntry,
+  availabilityAPITransactionNMTEntryCodec,
 } from './transaction_nmt_entry';
 import {
-  CappuccinoAPITransactionProof,
-  cappuccinoAPITransactionProofCodec,
+  AvailabilityAPITransactionProof,
+  availabilityAPITransactionProofCodec,
 } from './transaction_proof';
 
 /**
- * CappuccinoAPITransactionResponse represents a transaction response in the
- * Cappuccino API.
+ * AvailabilityAPITransactionResponse represents a transaction response in the
+ * Availability API.
  */
-export class CappuccinoAPITransactionResponse {
-  readonly transaction: CappuccinoAPITransactionNMTEntry;
-  readonly block_hash: TaggedBase64;
-  readonly proof: CappuccinoAPITransactionProof;
-  readonly height: number;
-  readonly hash: TaggedBase64;
-
+export class AvailabilityAPITransactionResponse {
   constructor(
-    transaction: CappuccinoAPITransactionNMTEntry,
-    block_hash: TaggedBase64,
-    proof: CappuccinoAPITransactionProof,
-    height: number,
-    hash: TaggedBase64,
-  ) {
-    this.transaction = transaction;
-    this.block_hash = block_hash;
-    this.proof = proof;
-    this.height = height;
-    this.hash = hash;
-  }
+    public readonly transaction: AvailabilityAPITransactionNMTEntry,
+    public readonly block_hash: TaggedBase64,
+    public readonly proof: AvailabilityAPITransactionProof,
+    public readonly height: number,
+    public readonly hash: TaggedBase64,
+  ) {}
 
   toJSON() {
-    return cappuccinoAPITransactionResponseCodec.encode(this);
+    return availabilityAPITransactionResponseCodec.encode(this);
   }
 }
 
-export class CappuccinoAPITransactionResponseDecoder implements Converter<
+export class AvailabilityAPITransactionResponseDecoder implements Converter<
   unknown,
-  CappuccinoAPITransactionResponse
+  AvailabilityAPITransactionResponse
 > {
-  convert(input: unknown): CappuccinoAPITransactionResponse {
+  convert(input: unknown): AvailabilityAPITransactionResponse {
     assertRecordWithKeys(
       input,
       'transaction',
@@ -62,41 +50,43 @@ export class CappuccinoAPITransactionResponseDecoder implements Converter<
       'hash',
     );
 
-    return new CappuccinoAPITransactionResponse(
-      cappuccinoAPITransactionNMTEntryCodec.decoder.convert(input.transaction),
+    return new AvailabilityAPITransactionResponse(
+      availabilityAPITransactionNMTEntryCodec.decoder.convert(
+        input.transaction,
+      ),
       taggedBase64Codec.decode(input.block_hash),
-      cappuccinoAPITransactionProofCodec.decoder.convert(input.proof),
+      availabilityAPITransactionProofCodec.decoder.convert(input.proof),
       numberCodec.decode(input.height),
       taggedBase64Codec.decode(input.hash),
     );
   }
 }
 
-export class CappuccinoAPITransactionResponseEncoder implements Converter<CappuccinoAPITransactionResponse> {
-  convert(input: CappuccinoAPITransactionResponse) {
-    assertInstanceOf(input, CappuccinoAPITransactionResponse);
+export class AvailabilityAPITransactionResponseEncoder implements Converter<AvailabilityAPITransactionResponse> {
+  convert(input: AvailabilityAPITransactionResponse) {
+    assertInstanceOf(input, AvailabilityAPITransactionResponse);
 
     return {
-      transaction: cappuccinoAPITransactionNMTEntryCodec.encode(
+      transaction: availabilityAPITransactionNMTEntryCodec.encode(
         input.transaction,
       ),
       block_hash: taggedBase64Codec.encode(input.block_hash),
-      proof: cappuccinoAPITransactionProofCodec.encode(input.proof),
+      proof: availabilityAPITransactionProofCodec.encode(input.proof),
       height: numberCodec.encode(input.height),
       hash: taggedBase64Codec.encode(input.hash),
     };
   }
 }
 
-export class CappuccinoAPITransactionResponseCodec extends TypeCheckingCodec<
-  CappuccinoAPITransactionResponse,
+export class AvailabilityAPITransactionResponseCodec extends TypeCheckingCodec<
+  AvailabilityAPITransactionResponse,
   ReturnType<
-    InstanceType<new () => CappuccinoAPITransactionResponseEncoder>['convert']
+    InstanceType<new () => AvailabilityAPITransactionResponseEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoAPITransactionResponseEncoder();
-  readonly decoder = new CappuccinoAPITransactionResponseDecoder();
+  readonly encoder = new AvailabilityAPITransactionResponseEncoder();
+  readonly decoder = new AvailabilityAPITransactionResponseDecoder();
 }
 
-export const cappuccinoAPITransactionResponseCodec =
-  new CappuccinoAPITransactionResponseCodec();
+export const availabilityAPITransactionResponseCodec =
+  new AvailabilityAPITransactionResponseCodec();

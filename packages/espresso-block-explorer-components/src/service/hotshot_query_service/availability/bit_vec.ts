@@ -9,17 +9,11 @@ import {
 import { numberCodec } from '@/convert/codec/number';
 import UnimplementedError from '@/errors/unimplemented_error';
 import { mapIterable } from '@/functional/functional';
-import {
-  CappuccinoAPIBitVecHead,
-  cappuccinoAPIBitVecHeadCodec,
-} from './bit_vec_head';
-import {
-  CappuccinoAPIBitVecOrder,
-  cappuccinoAPIBitVecOrderCodec,
-} from './bit_vec_order';
+import { BitVecHead, bitVecHeadCodec } from './bit_vec_head';
+import { BitVecOrder, bitVecOrderCodec } from './bit_vec_order';
 
 /**
- * CappuccinoAPIBitVec represents a bit vector in the Cappuccino API.
+ * BitVec represents a bit vector in the Availability API.
  * It contains the order, head, bits, and data of the bit vector.
  *
  * This BitVec implementation mirrors the cargo crate's implementation of
@@ -72,26 +66,16 @@ import {
  * to have more bits than we need. So we need a mechanism that indicates how
  * many of the bits to use. that's where the length comes into play.
  */
-export class CappuccinoAPIBitVec implements Iterable<boolean> {
-  readonly order: CappuccinoAPIBitVecOrder;
-  readonly head: CappuccinoAPIBitVecHead;
-  readonly bits: number;
-  readonly data: bigint[];
-
+export class BitVec implements Iterable<boolean> {
   constructor(
-    order: CappuccinoAPIBitVecOrder,
-    head: CappuccinoAPIBitVecHead,
-    bits: number,
-    data: bigint[],
-  ) {
-    this.order = order;
-    this.head = head;
-    this.bits = bits;
-    this.data = data;
-  }
+    public readonly order: BitVecOrder,
+    public readonly head: BitVecHead,
+    public readonly bits: number,
+    public readonly data: bigint[],
+  ) {}
 
   private getBitVecIndexIterable(): Iterable<BitVecIndex> {
-    if (this.order === CappuccinoAPIBitVecOrder.lsb0) {
+    if (this.order === BitVecOrder.lsb0) {
       return new Lsb0BitVecIndexIterable(this.head.width, this.bits);
     }
 
@@ -106,51 +90,48 @@ export class CappuccinoAPIBitVec implements Iterable<boolean> {
   }
 
   toJSON() {
-    return cappuccinoAPIBitVecCodec.encode(this);
+    return bitVecCodec.encode(this);
   }
 }
 
-export class CappuccinoAPIBitVecDecoder implements Converter<
-  unknown,
-  CappuccinoAPIBitVec
-> {
-  convert(input: unknown): CappuccinoAPIBitVec {
+export class BitVecDecoder implements Converter<unknown, BitVec> {
+  convert(input: unknown): BitVec {
     assertRecordWithKeys(input, 'order', 'head', 'bits', 'data');
 
-    return new CappuccinoAPIBitVec(
-      cappuccinoAPIBitVecOrderCodec.decode(input.order),
-      cappuccinoAPIBitVecHeadCodec.decode(input.head),
+    return new BitVec(
+      bitVecOrderCodec.decode(input.order),
+      bitVecHeadCodec.decode(input.head),
       numberCodec.decode(input.bits),
       bigintArrayCodec.decode(input.data),
     );
   }
 }
 
-export class CappuccinoAPIBitVecEncoder implements Converter<CappuccinoAPIBitVec> {
-  convert(input: CappuccinoAPIBitVec) {
-    assertInstanceOf(input, CappuccinoAPIBitVec);
+export class BitVecEncoder implements Converter<BitVec> {
+  convert(input: BitVec) {
+    assertInstanceOf(input, BitVec);
 
     return {
-      order: cappuccinoAPIBitVecOrderCodec.encode(input.order),
-      head: cappuccinoAPIBitVecHeadCodec.encode(input.head),
+      order: bitVecOrderCodec.encode(input.order),
+      head: bitVecHeadCodec.encode(input.head),
       bits: numberCodec.encode(input.bits),
       data: bigintArrayCodec.encode(input.data),
     };
   }
 }
 
-export class CappuccinoAPIBitVecCodec extends TypeCheckingCodec<
-  CappuccinoAPIBitVec,
-  ReturnType<InstanceType<new () => CappuccinoAPIBitVecEncoder>['convert']>
+export class BitVecCodec extends TypeCheckingCodec<
+  BitVec,
+  ReturnType<InstanceType<new () => BitVecEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoAPIBitVecEncoder();
-  readonly decoder = new CappuccinoAPIBitVecDecoder();
+  readonly encoder = new BitVecEncoder();
+  readonly decoder = new BitVecDecoder();
 }
 
-export const cappuccinoAPIBitVecCodec = new CappuccinoAPIBitVecCodec();
-export const cappuccinoAPIBitVecArrayCodec = new ArrayCodec(
-  new ArrayDecoder(cappuccinoAPIBitVecCodec),
-  new ArrayEncoder(cappuccinoAPIBitVecCodec),
+export const bitVecCodec = new BitVecCodec();
+export const bitVecArrayCodec = new ArrayCodec(
+  new ArrayDecoder(bitVecCodec),
+  new ArrayEncoder(bitVecCodec),
 );
 
 function readBitAtIndex(data: bigint[], index: BitVecIndex): boolean {

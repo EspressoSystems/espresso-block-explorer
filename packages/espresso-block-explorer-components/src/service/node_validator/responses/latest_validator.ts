@@ -7,25 +7,25 @@ import {
   Validator,
   validatorCodec,
 } from '@/models/espresso/stake_table/validator';
-import CappuccinoNodeValidatorResponse from './node_validator_response';
+import NodeValidatorResponse from './node_validator_response';
 
 /**
- * Messages from the Cappuccino Node Validator take the form of:
+ * Messages from the Node Validator take the form of:
  * { "MessageType": MessageType }
  */
 
 /**
- * kCappuccinoLatestValidatorType is the type string for the
- * CappuccinoLatestValidator class.
+ * kLatestValidatorType is the type string for the
+ * LatestValidator class.
  */
-export const kCappuccinoLatestValidatorType = 'LatestValidator' as const;
+export const kLatestValidatorType = 'LatestValidator' as const;
 
 /**
- * CappuccinoLatestValidator is a response from the Cappuccino node
+ * LatestValidator is a response from the node
  * validator that contains a real-time update for a Validator
  * in the network.
  */
-export class CappuccinoLatestValidator extends CappuccinoNodeValidatorResponse {
+export class LatestValidator extends NodeValidatorResponse {
   readonly validator: Validator;
 
   constructor(validator: Validator) {
@@ -34,40 +34,34 @@ export class CappuccinoLatestValidator extends CappuccinoNodeValidatorResponse {
   }
 
   toJSON() {
-    return cappuccinoLatestValidatorCodec.encode(this);
+    return latestValidatorCodec.encode(this);
   }
 }
 
-class CappuccinoLatestValidatorDecoder implements Converter<
-  unknown,
-  CappuccinoLatestValidator
-> {
-  convert(input: unknown): CappuccinoLatestValidator {
-    assertRecordWithKeys(input, kCappuccinoLatestValidatorType);
+class LatestValidatorDecoder implements Converter<unknown, LatestValidator> {
+  convert(input: unknown): LatestValidator {
+    assertRecordWithKeys(input, kLatestValidatorType);
 
-    return new CappuccinoLatestValidator(
-      validatorCodec.decode(input[kCappuccinoLatestValidatorType]),
+    return new LatestValidator(
+      validatorCodec.decode(input[kLatestValidatorType]),
     );
   }
 }
 
-class CappuccinoLatestValidatorEncoder implements Converter<CappuccinoLatestValidator> {
-  convert(input: CappuccinoLatestValidator) {
+class LatestValidatorEncoder implements Converter<LatestValidator> {
+  convert(input: LatestValidator) {
     return {
-      [kCappuccinoLatestValidatorType]: validatorCodec.encode(input.validator),
+      [kLatestValidatorType]: validatorCodec.encode(input.validator),
     };
   }
 }
 
-class CappuccinoLatestValidatorCodec extends TypeCheckingCodec<
-  CappuccinoLatestValidator,
-  ReturnType<
-    InstanceType<new () => CappuccinoLatestValidatorEncoder>['convert']
-  >
+class LatestValidatorCodec extends TypeCheckingCodec<
+  LatestValidator,
+  ReturnType<InstanceType<new () => LatestValidatorEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoLatestValidatorEncoder();
-  readonly decoder = new CappuccinoLatestValidatorDecoder();
+  readonly encoder = new LatestValidatorEncoder();
+  readonly decoder = new LatestValidatorDecoder();
 }
 
-export const cappuccinoLatestValidatorCodec =
-  new CappuccinoLatestValidatorCodec();
+export const latestValidatorCodec = new LatestValidatorCodec();

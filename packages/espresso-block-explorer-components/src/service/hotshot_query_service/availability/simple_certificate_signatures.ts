@@ -7,7 +7,7 @@ import {
   TaggedBase64,
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoAPIBitVec, cappuccinoAPIBitVecCodec } from './bit_vec';
+import { BitVec, bitVecCodec } from './bit_vec';
 
 /**
  * SimpleCertificateSignatures represents the signatures of a SimpleCertifcate.
@@ -15,9 +15,9 @@ import { CappuccinoAPIBitVec, cappuccinoAPIBitVecCodec } from './bit_vec';
  */
 export class SimpleCertificateSignatures {
   readonly signature: TaggedBase64;
-  readonly bitvec: CappuccinoAPIBitVec;
+  readonly bitvec: BitVec;
 
-  constructor(signature: TaggedBase64, bitvec: CappuccinoAPIBitVec) {
+  constructor(signature: TaggedBase64, bitvec: BitVec) {
     this.signature = signature;
     this.bitvec = bitvec;
   }
@@ -38,7 +38,7 @@ export class SimpleCertificateSignaturesDecoder implements Converter<
 
     return new SimpleCertificateSignatures(
       taggedBase64Codec.decode(input[0]),
-      cappuccinoAPIBitVecCodec.decode(input[1]),
+      bitVecCodec.decode(input[1]),
     );
   }
 }
@@ -49,7 +49,7 @@ export class SimpleCertificateSignaturesEncoder implements Converter<SimpleCerti
 
     return [
       taggedBase64Codec.encode(input.signature),
-      cappuccinoAPIBitVecCodec.encode(input.bitvec),
+      bitVecCodec.encode(input.bitvec),
     ];
   }
 }

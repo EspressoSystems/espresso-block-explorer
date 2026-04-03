@@ -20,7 +20,7 @@ import {
   LatestBlockProducersStreamContext,
 } from '@/block_explorer/components/page_sections/latest_block_producers/latest_block_producers_loader';
 import {
-  LatestBlock,
+  LatestBlockLocal,
   LatestBlockSummaryStreamContext,
 } from '@/block_explorer/components/page_sections/latest_block_summary/latest_block_summary_loader';
 import { NetworkTypesPieChartStreamContext } from '@/block_explorer/components/page_sections/network_types_pie_chart/network_types_pie_chart_loader';
@@ -36,13 +36,13 @@ import { BlockExplorerConfigContext } from '@/components/config/explorer';
 import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
 import { NodeIdentityInformationStreamContext } from '@/components/visual/geo_json/world_map_dots_population_resolver';
 import { PieChartEntry } from '@/components/visual/pie_chart/pie_chart';
-import { CappuccinoNodeValidatorServiceAPIContext } from '@/contexts/cappuccino_node_validator_service_api_context';
 import { DataContext } from '@/contexts/data_provider';
 import {
   ErrorCarry,
   ErrorJoiner,
   ErrorStreamContext,
 } from '@/contexts/error_provider';
+import { NodeValidatorServiceAPIContext } from '@/contexts/node_validator_service_api_context';
 import { WebSocketResponseStreamContext } from '@/contexts/web_socket_response_provider';
 import { preferNullOverEmptyString } from '@/convert/codec/string';
 import {
@@ -72,10 +72,10 @@ import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/
 import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
 import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';
 import { webSocketCommandToWebWorkerProxyRequestConverter } from '@/models/web_worker/web_worker_proxy_request_codec';
-import { CappuccinoAPIBitVec } from '@/service/hotshot_query_service/availability/bit_vec';
-import { CappuccinoExplorerBlockDetail } from '@/service/hotshot_query_service/explorer/block_detail';
-import CappuccinoNodeIdentity from '@/service/node_validator/node_identity';
-import CappuccinoNodeValidatorRequest, {
+import { BitVec } from '@/service/hotshot_query_service/availability/bit_vec';
+import { ExplorerBlockDetail } from '@/service/hotshot_query_service/explorer/block_detail';
+import NodeIdentity from '@/service/node_validator/node_identity';
+import NodeValidatorRequest, {
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
@@ -89,19 +89,19 @@ import CappuccinoNodeValidatorRequest, {
   SubscribeVoters,
 } from '@/service/node_validator/requests/node_validator_request';
 import { nodeValidatorRequestToWebWorkerProxyRequestConverter } from '@/service/node_validator/requests/node_validator_service_request';
-import { CappuccinoBlocksSnapshot } from '@/service/node_validator/responses/blocks_snapshot';
-import { CappuccinoHistogramSnapshot } from '@/service/node_validator/responses/histogram_snapshot';
-import { CappuccinoLatestBlock } from '@/service/node_validator/responses/latest_block';
-import { CappuccinoLatestNodeIdentity } from '@/service/node_validator/responses/latest_node_identity';
-import { CappuccinoLatestStakeTable } from '@/service/node_validator/responses/latest_stake_table';
-import { CappuccinoLatestValidator } from '@/service/node_validator/responses/latest_validator';
-import { CappuccinoLatestVoters } from '@/service/node_validator/responses/latest_voters';
-import { CappuccinoNodeIdentitySnapshot } from '@/service/node_validator/responses/node_identity_snapshot';
-import CappuccinoNodeValidatorResponse from '@/service/node_validator/responses/node_validator_response';
+import { BlocksSnapshot } from '@/service/node_validator/responses/blocks_snapshot';
+import { HistogramSnapshot } from '@/service/node_validator/responses/histogram_snapshot';
+import { LatestBlock } from '@/service/node_validator/responses/latest_block';
+import { LatestNodeIdentity } from '@/service/node_validator/responses/latest_node_identity';
+import { LatestStakeTable } from '@/service/node_validator/responses/latest_stake_table';
+import { LatestValidator } from '@/service/node_validator/responses/latest_validator';
+import { LatestVoters } from '@/service/node_validator/responses/latest_voters';
+import { NodeIdentitySnapshot } from '@/service/node_validator/responses/node_identity_snapshot';
+import NodeValidatorResponse from '@/service/node_validator/responses/node_validator_response';
 import { NodeValidatorServiceResponse } from '@/service/node_validator/responses/node_validator_service_response';
-import { CappuccinoStakeTableSnapshot } from '@/service/node_validator/responses/stake_table_snapshot';
-import { CappuccinoValidatorsSnapshot } from '@/service/node_validator/responses/validators_snapshot';
-import { CappuccinoVotersSnapshot } from '@/service/node_validator/responses/voters_snapshot';
+import { StakeTableSnapshot } from '@/service/node_validator/responses/stake_table_snapshot';
+import { ValidatorsSnapshot } from '@/service/node_validator/responses/validators_snapshot';
+import { VotersSnapshot } from '@/service/node_validator/responses/voters_snapshot';
 import { WebWorkerNodeValidatorAPI } from '@/service/node_validator/web_worker_proxy_api';
 import React from 'react';
 
@@ -137,12 +137,10 @@ async function publishHistogramUpdates(
 }
 
 /**
- * convertCappuccinoNodeIdentity converts a CappuccinoNodeIdentity into a
+ * convertNodeIdentity converts a NodeIdentity into a
  * NodeSummaryData object that can be used to populate the Node Summary Table.
  */
-function convertCappuccinoNodeIdentity(
-  node: CappuccinoNodeIdentity,
-): NodeSummaryData {
+function convertNodeIdentity(node: NodeIdentity): NodeSummaryData {
   return {
     publicKey: node.publicKey,
     name: preferNullOverEmptyString(node.name),
@@ -179,8 +177,8 @@ function sortPieChartLabelPercentagePairs(
  * returned from teh keyExtractor function.
  */
 function aggregateCountsForNodes(
-  nodes: CappuccinoNodeIdentity[],
-  keyExtractor: (node: CappuccinoNodeIdentity) => null | string,
+  nodes: NodeIdentity[],
+  keyExtractor: (node: NodeIdentity) => null | string,
 ): PieChartEntry[] {
   const counts = new Map<string, number>();
   for (const node of nodes) {
@@ -203,7 +201,7 @@ function aggregateCountsForNodes(
  * computeOperatingSystemsPieChartData is a helper function that will compute
  * the operating system pie chart data based on the nodes provided.
  */
-function computeOperatingSystemsPieChartData(nodes: CappuccinoNodeIdentity[]) {
+function computeOperatingSystemsPieChartData(nodes: NodeIdentity[]) {
   return aggregateCountsForNodes(nodes, (node) => node.operatingSystem);
 }
 
@@ -211,7 +209,7 @@ function computeOperatingSystemsPieChartData(nodes: CappuccinoNodeIdentity[]) {
  * computeCountriesPieChartData is a helper function that will compute the
  * countries pie chart data based on the nodes provided.
  */
-function computeCountriesPieChartData(nodes: CappuccinoNodeIdentity[]) {
+function computeCountriesPieChartData(nodes: NodeIdentity[]) {
   return aggregateCountsForNodes(
     nodes,
     (node) => node.location?.country ?? null,
@@ -222,7 +220,7 @@ function computeCountriesPieChartData(nodes: CappuccinoNodeIdentity[]) {
  * computeNetworkTypesPieChartData is a helper function that will compute the
  * network types pie chart data based on the nodes provided.
  */
-function computeNetworkTypesPieChartData(nodes: CappuccinoNodeIdentity[]) {
+function computeNetworkTypesPieChartData(nodes: NodeIdentity[]) {
   return aggregateCountsForNodes(nodes, (node) => node.networkType);
 }
 
@@ -230,7 +228,7 @@ function computeNetworkTypesPieChartData(nodes: CappuccinoNodeIdentity[]) {
  * computeNodeTypesPieChartData is a helper function that will compute the
  * node types pie chart data based on the nodes provided.
  */
-function computeNodeTypesPieChartData(nodes: CappuccinoNodeIdentity[]) {
+function computeNodeTypesPieChartData(nodes: NodeIdentity[]) {
   return aggregateCountsForNodes(nodes, (node) => node.nodeType);
 }
 
@@ -241,8 +239,8 @@ function computeNodeTypesPieChartData(nodes: CappuccinoNodeIdentity[]) {
  * represent the vote participation stats for each node.
  */
 function computeVoterParticipationStats(
-  nodes: CappuccinoNodeIdentity[],
-  bitVecs: Iterable<CappuccinoAPIBitVec>,
+  nodes: NodeIdentity[],
+  bitVecs: Iterable<BitVec>,
 ): NodeVoteParticipationStats[] {
   // Each BitVec should be the same number of entries as the nodes.
   const participantStats = Array.from(
@@ -275,7 +273,7 @@ function computeVoterParticipationStats(
  * LatestBlockProducer objects that represent the latest block producers.
  */
 function computeLatestBuilders(
-  blocks: Iterable<CappuccinoExplorerBlockDetail>,
+  blocks: Iterable<ExplorerBlockDetail>,
 ): LatestBlockProducer[] {
   const it = blocks[Symbol.iterator]();
   const results = foldRIterator(
@@ -341,7 +339,7 @@ const kTrailingHistorySamples = 50;
  * based on incoming data updates from the node validator service.
  */
 function createBridgeState() {
-  const latestBlocks = createCircularBuffer<CappuccinoExplorerBlockDetail>(
+  const latestBlocks = createCircularBuffer<ExplorerBlockDetail>(
     kTrailingHistorySamples + 1,
   );
   const blockHeightHistograms = createCircularBuffer<number>(
@@ -356,15 +354,15 @@ function createBridgeState() {
   const blockThroughputHistograms = createCircularBuffer<number>(
     kTrailingHistorySamples + 1,
   );
-  const votersBitVecs = createCircularBuffer<CappuccinoAPIBitVec>(
+  const votersBitVecs = createCircularBuffer<BitVec>(
     kTrailingHistorySamples + 1,
   );
-  const nodes: CappuccinoNodeIdentity[] = [];
+  const nodes: NodeIdentity[] = [];
   const validators: Map<string, Validator> = new Map();
   const stakeTable: Map<string, StakeTableEntryWrapper> = new Map();
 
   return {
-    lastBlock: null as null | CappuccinoLatestBlock,
+    lastBlock: null as null | LatestBlock,
     latestBlocks,
     blockHeightHistograms,
     blockTimeHistograms,
@@ -385,7 +383,7 @@ function createBridgeState() {
 async function bridgeLatestBlock(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  event: CappuccinoLatestBlock,
+  event: LatestBlock,
 ) {
   const previousBlock = state.lastBlock;
   state.lastBlock = event;
@@ -430,11 +428,11 @@ async function bridgeLatestBlock(
 async function bridgeBlocksSnapshot(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  event: CappuccinoBlocksSnapshot,
+  event: BlocksSnapshot,
 ) {
   for (const block of event.blocks) {
     const previousBlock = state.lastBlock?.latestBlock ?? null;
-    state.lastBlock = new CappuccinoLatestBlock(block);
+    state.lastBlock = new LatestBlock(block);
     state.latestBlocks.put(block);
     state.blockHeightHistograms.put(block.height);
     state.blockSizeHistograms.put(block.size);
@@ -478,7 +476,7 @@ async function bridgeBlocksSnapshot(
 async function bridgeHistogramSnapshot(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  event: CappuccinoHistogramSnapshot,
+  event: HistogramSnapshot,
 ) {
   for (const height of event.histograms.blockHeights) {
     state.blockHeightHistograms.put(height!);
@@ -517,7 +515,7 @@ async function bridgeHistogramSnapshot(
 async function bridgeNodeIdentitySnapshot(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  event: CappuccinoNodeIdentitySnapshot,
+  event: NodeIdentitySnapshot,
 ) {
   state.nodes = event.nodes;
 
@@ -525,7 +523,7 @@ async function bridgeNodeIdentitySnapshot(
   const countries = computeCountriesPieChartData(state.nodes);
   const networkTypes = computeNetworkTypesPieChartData(state.nodes);
   const nodeTypes = computeNodeTypesPieChartData(state.nodes);
-  const convertedNodes = state.nodes.map(convertCappuccinoNodeIdentity);
+  const convertedNodes = state.nodes.map(convertNodeIdentity);
 
   await Promise.all([
     streams.nodesSummary.publish(convertedNodes),
@@ -545,7 +543,7 @@ async function bridgeNodeIdentitySnapshot(
 async function bridgeLatestNodeIdentity(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  event: CappuccinoLatestNodeIdentity,
+  event: LatestNodeIdentity,
 ) {
   // Check to see if the incoming node already exists.
   const existingNodeIndex = state.nodes.findIndex(
@@ -565,7 +563,7 @@ async function bridgeLatestNodeIdentity(
   const countries = computeCountriesPieChartData(state.nodes);
   const networkTypes = computeNetworkTypesPieChartData(state.nodes);
   const nodeTypes = computeNodeTypesPieChartData(state.nodes);
-  const convertedNodes = state.nodes.map(convertCappuccinoNodeIdentity);
+  const convertedNodes = state.nodes.map(convertNodeIdentity);
 
   await Promise.all([
     streams.nodesSummary.publish(convertedNodes),
@@ -585,7 +583,7 @@ async function bridgeLatestNodeIdentity(
 async function bridgeVotersSnapshot(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  event: CappuccinoVotersSnapshot,
+  event: VotersSnapshot,
 ) {
   for (const voter of event.voters) {
     state.votersBitVecs.put(voter);
@@ -607,7 +605,7 @@ async function bridgeVotersSnapshot(
 async function bridgeLatestVoters(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  event: CappuccinoLatestVoters,
+  event: LatestVoters,
 ) {
   state.votersBitVecs.put(event.latestVoter);
 
@@ -622,7 +620,7 @@ async function bridgeLatestVoters(
 async function bridgeValidatorsSnapshot(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  event: CappuccinoValidatorsSnapshot,
+  event: ValidatorsSnapshot,
 ) {
   state.validators = new Map(
     mapIterable(
@@ -637,7 +635,7 @@ async function bridgeValidatorsSnapshot(
 async function bridgeLatestValidators(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  event: CappuccinoLatestValidator,
+  event: LatestValidator,
 ) {
   state.validators.set(
     event.validator.stakeTableKey.toString(),
@@ -650,7 +648,7 @@ async function bridgeLatestValidators(
 async function bridgeStakeTableSnapshot(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  event: CappuccinoStakeTableSnapshot,
+  event: StakeTableSnapshot,
 ) {
   state.stakeTable = new Map(
     mapIterable(
@@ -665,7 +663,7 @@ async function bridgeStakeTableSnapshot(
 async function bridgeLatestStakeTable(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  event: CappuccinoLatestStakeTable,
+  event: LatestStakeTable,
 ) {
   state.stakeTable = new Map(
     mapIterable(
@@ -685,49 +683,49 @@ async function bridgeLatestStakeTable(
 async function bridgeNodeValidatorResponse(
   state: ReturnType<typeof createBridgeState>,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
-  event: CappuccinoNodeValidatorResponse,
+  event: NodeValidatorResponse,
 ) {
-  if (event instanceof CappuccinoLatestBlock) {
+  if (event instanceof LatestBlock) {
     return bridgeLatestBlock(state, streams, event);
   }
 
-  if (event instanceof CappuccinoBlocksSnapshot) {
+  if (event instanceof BlocksSnapshot) {
     return bridgeBlocksSnapshot(state, streams, event);
   }
 
-  if (event instanceof CappuccinoHistogramSnapshot) {
+  if (event instanceof HistogramSnapshot) {
     return bridgeHistogramSnapshot(state, streams, event);
   }
 
-  if (event instanceof CappuccinoNodeIdentitySnapshot) {
+  if (event instanceof NodeIdentitySnapshot) {
     return bridgeNodeIdentitySnapshot(state, streams, event);
   }
 
-  if (event instanceof CappuccinoLatestNodeIdentity) {
+  if (event instanceof LatestNodeIdentity) {
     return bridgeLatestNodeIdentity(state, streams, event);
   }
 
-  if (event instanceof CappuccinoVotersSnapshot) {
+  if (event instanceof VotersSnapshot) {
     return bridgeVotersSnapshot(state, streams, event);
   }
 
-  if (event instanceof CappuccinoLatestVoters) {
+  if (event instanceof LatestVoters) {
     return bridgeLatestVoters(state, streams, event);
   }
 
-  if (event instanceof CappuccinoValidatorsSnapshot) {
+  if (event instanceof ValidatorsSnapshot) {
     return bridgeValidatorsSnapshot(state, streams, event);
   }
 
-  if (event instanceof CappuccinoLatestValidator) {
+  if (event instanceof LatestValidator) {
     return bridgeLatestValidators(state, streams, event);
   }
 
-  if (event instanceof CappuccinoStakeTableSnapshot) {
+  if (event instanceof StakeTableSnapshot) {
     return bridgeStakeTableSnapshot(state, streams, event);
   }
 
-  if (event instanceof CappuccinoLatestStakeTable) {
+  if (event instanceof LatestStakeTable) {
     return bridgeLatestStakeTable(state, streams, event);
   }
 }
@@ -743,7 +741,7 @@ async function handleWebSocketEvents(
   event: WebSocketResponse,
   streams: ReturnType<typeof createNodeValidatorSplitStreams>,
   webSocketCommandSink: Sink<WebSocketCommand>,
-  nodeValidatorRequestSink: Sink<CappuccinoNodeValidatorRequest>,
+  nodeValidatorRequestSink: Sink<NodeValidatorRequest>,
 ) {
   const status = event.status;
   if (status instanceof WebSocketStatusConnectionOpened) {
@@ -810,7 +808,7 @@ async function bridgeStreamIntoIndividualStreams(
   cancelCompleter: Completer<typeof kCancelStream>,
   nodeValidatorService: WebWorkerNodeValidatorAPI,
   webSocketCommandSink: Sink<WebSocketCommand>,
-  nodeValidatorRequestSink: Sink<CappuccinoNodeValidatorRequest>,
+  nodeValidatorRequestSink: Sink<NodeValidatorRequest>,
 ) {
   const state = createBridgeState();
   const it = nodeValidatorService.stream[Symbol.asyncIterator]();
@@ -897,7 +895,7 @@ async function startValidatorService(
  */
 function createNodeValidatorSplitStreams() {
   return {
-    latestBlockStream: createBufferedChannel<LatestBlock>(4),
+    latestBlockStream: createBufferedChannel<LatestBlockLocal>(4),
     blockTimeHistogramStream: createBufferedChannel<
       BlockTimeHistogramData & BlockSizeHistogramData
     >(4),
@@ -984,23 +982,21 @@ const DeriveCurrentValidatorsFromData: React.FC<React.PropsWithChildren> = (
   );
 };
 
-interface ProvideCappuccinoNodeValidatorStreamsProps {
+interface ProvideNodeValidatorStreamsProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
 /**
- * ProvideCappuccinoNodeValidatorStream is a React Context Provider that will
+ * ProvideNodeValidatorStream is a React Context Provider that will
  * setup the node validator state, and provide React Contexts to distribute
  * the underlying node validator data to the components on the Node Validator
  * Page.
  */
-export const ProvideCappuccinoNodeValidatorStreams: React.FC<
-  ProvideCappuccinoNodeValidatorStreamsProps
+export const ProvideNodeValidatorStreams: React.FC<
+  ProvideNodeValidatorStreamsProps
 > = (props) => {
   const explorerConfig = React.useContext(BlockExplorerConfigContext);
-  const nodeValidatorService = React.useContext(
-    CappuccinoNodeValidatorServiceAPIContext,
-  );
+  const nodeValidatorService = React.useContext(NodeValidatorServiceAPIContext);
   const streams = createNodeValidatorSplitStreams();
 
   React.useEffect(() => {

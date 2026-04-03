@@ -5,72 +5,64 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import {
-  CappuccinoExplorerGetTransactionSummariesFilter,
-  cappuccinoExplorerGetTransactionSummariesFilterCodec,
+  ExplorerGetTransactionSummariesFilter,
+  explorerGetTransactionSummariesFilterCodec,
 } from './get_transaction_summaries_filter';
 import {
-  CappuccinoExplorerGetTransactionSummariesTarget,
-  cappuccinoExplorerGetTransactionSummariesTargetCodec,
+  ExplorerGetTransactionSummariesTarget,
+  explorerGetTransactionSummariesTargetCodec,
 } from './get_transaction_summaries_target';
 
-export class CappuccinoExplorerGetTransactionSummariesRequest {
-  readonly target: CappuccinoExplorerGetTransactionSummariesTarget;
-  readonly filter: CappuccinoExplorerGetTransactionSummariesFilter;
-
+/**
+ * ExplorerGetTransactionSummariesRequest represents a request to get
+ * transaction summaries from the explorer.
+ */
+export class ExplorerGetTransactionSummariesRequest {
   constructor(
-    target: CappuccinoExplorerGetTransactionSummariesTarget,
-    filter: CappuccinoExplorerGetTransactionSummariesFilter,
-  ) {
-    this.target = target;
-    this.filter = filter;
-  }
+    public readonly target: ExplorerGetTransactionSummariesTarget,
+    public readonly filter: ExplorerGetTransactionSummariesFilter,
+  ) {}
 
   toJSON() {
-    return cappuccinoExplorerGetTransactionSummariesRequestCodec.encode(this);
+    return explorerGetTransactionSummariesRequestCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesRequestDecoder implements Converter<
+class ExplorerGetTransactionSummariesRequestDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetTransactionSummariesRequest
+  ExplorerGetTransactionSummariesRequest
 > {
-  convert(input: unknown): CappuccinoExplorerGetTransactionSummariesRequest {
+  convert(input: unknown): ExplorerGetTransactionSummariesRequest {
     assertRecordWithKeys(input, 'filter', 'target');
 
-    return new CappuccinoExplorerGetTransactionSummariesRequest(
-      cappuccinoExplorerGetTransactionSummariesTargetCodec.decode(input.target),
-      cappuccinoExplorerGetTransactionSummariesFilterCodec.decode(input.filter),
+    return new ExplorerGetTransactionSummariesRequest(
+      explorerGetTransactionSummariesTargetCodec.decode(input.target),
+      explorerGetTransactionSummariesFilterCodec.decode(input.filter),
     );
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesRequestEncoder implements Converter<
-  CappuccinoExplorerGetTransactionSummariesRequest,
+class ExplorerGetTransactionSummariesRequestEncoder implements Converter<
+  ExplorerGetTransactionSummariesRequest,
   unknown
 > {
-  convert(input: CappuccinoExplorerGetTransactionSummariesRequest) {
-    assertInstanceOf(input, CappuccinoExplorerGetTransactionSummariesRequest);
+  convert(input: ExplorerGetTransactionSummariesRequest) {
+    assertInstanceOf(input, ExplorerGetTransactionSummariesRequest);
 
     return {
-      filter: cappuccinoExplorerGetTransactionSummariesFilterCodec.encode(
-        input.filter,
-      ),
-      target: cappuccinoExplorerGetTransactionSummariesTargetCodec.encode(
-        input.target,
-      ),
+      filter: explorerGetTransactionSummariesFilterCodec.encode(input.filter),
+      target: explorerGetTransactionSummariesTargetCodec.encode(input.target),
     };
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesRequestCodec extends Codec<
-  CappuccinoExplorerGetTransactionSummariesRequest,
+class ExplorerGetTransactionSummariesRequestCodec extends Codec<
+  ExplorerGetTransactionSummariesRequest,
   unknown
 > {
-  readonly encoder =
-    new CappuccinoExplorerGetTransactionSummariesRequestEncoder();
-  readonly decoder =
-    new CappuccinoExplorerGetTransactionSummariesRequestDecoder();
+  readonly encoder = new ExplorerGetTransactionSummariesRequestEncoder();
+  readonly decoder = new ExplorerGetTransactionSummariesRequestDecoder();
 }
 
-export const cappuccinoExplorerGetTransactionSummariesRequestCodec =
-  new CappuccinoExplorerGetTransactionSummariesRequestCodec();
+export const explorerGetTransactionSummariesRequestCodec =
+  new ExplorerGetTransactionSummariesRequestCodec();

@@ -11,10 +11,13 @@ import {
   TaggedBase64,
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoAPIHeader, cappuccinoAPIHeaderCodec } from './block_header';
 import {
-  CappuccinoAPIPayload,
-  nullableCappuccinoAPIPayloadCodec,
+  AvailabilityAPIHeader,
+  availabilityAPIHeaderCodec,
+} from './block_header';
+import {
+  AvailabilityAPIPayload,
+  nullableAvailabilityAPIPayloadCodec,
 } from './payload';
 import {
   nullableQuorumCertificateV2Codec,
@@ -40,9 +43,9 @@ export class LeafV2 {
     public readonly justify_qc: QuorumCertificateV2,
     public readonly next_epoch_justify_qc: null | QuorumCertificateV2,
     public readonly parent_commitment: TaggedBase64,
-    public readonly block_header: CappuccinoAPIHeader,
+    public readonly block_header: AvailabilityAPIHeader,
     public readonly upgrade_certificate: null | UpgradeCertificateV1,
-    public readonly block_payload: null | CappuccinoAPIPayload,
+    public readonly block_payload: null | AvailabilityAPIPayload,
     public readonly view_change_evidence: null | ViewChangeEvidenceV2,
     public readonly next_drb_result: null | Uint8Array,
     public readonly with_epoch: boolean,
@@ -74,9 +77,9 @@ export class LeafV2Decoder implements Converter<unknown, LeafV2> {
       quorumCertificateV2Codec.decode(input.justify_qc),
       nullableQuorumCertificateV2Codec.decode(input.next_epoch_justify_qc),
       taggedBase64Codec.decode(input.parent_commitment),
-      cappuccinoAPIHeaderCodec.decode(input.block_header),
+      availabilityAPIHeaderCodec.decode(input.block_header),
       nullableUpgradeCertificateV1Codec.decode(input.upgrade_certificate),
-      nullableCappuccinoAPIPayloadCodec.decode(input.block_payload),
+      nullableAvailabilityAPIPayloadCodec.decode(input.block_payload),
       nullableViewChangeEvidenceV2Codec.decode(input.view_change_evidence),
       nullableUint8ArrayCodec.decode(input.next_drb_result),
       booleanCodec.decode(input.with_epoch),
@@ -95,11 +98,11 @@ export class LeafV2Encoder implements Converter<LeafV2> {
         input.next_epoch_justify_qc,
       ),
       parent_commitment: taggedBase64Codec.encode(input.parent_commitment),
-      block_header: cappuccinoAPIHeaderCodec.encode(input.block_header),
+      block_header: availabilityAPIHeaderCodec.encode(input.block_header),
       upgrade_certificate: nullableUpgradeCertificateV1Codec.encode(
         input.upgrade_certificate,
       ),
-      block_payload: nullableCappuccinoAPIPayloadCodec.encode(
+      block_payload: nullableAvailabilityAPIPayloadCodec.encode(
         input.block_payload,
       ),
       view_change_evidence: nullableViewChangeEvidenceV2Codec.encode(

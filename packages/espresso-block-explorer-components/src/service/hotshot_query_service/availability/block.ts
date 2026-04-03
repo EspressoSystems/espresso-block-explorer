@@ -9,43 +9,34 @@ import {
   TaggedBase64,
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoAPIHeader, cappuccinoAPIHeaderCodec } from './block_header';
-import { CappuccinoAPIPayload, cappuccinoAPIPayloadCodec } from './payload';
+import {
+  AvailabilityAPIHeader,
+  availabilityAPIHeaderCodec,
+} from './block_header';
+import { AvailabilityAPIPayload, availabilityAPIPayloadCodec } from './payload';
 
 /**
- * CappuccinoAPIBlock represents a block in the Cappuccino API.
+ * AvailabilityAPIBlock represents a block in the Availability API.
  */
-export class CappuccinoAPIBlock {
-  readonly header: CappuccinoAPIHeader;
-  readonly payload: CappuccinoAPIPayload;
-  readonly hash: TaggedBase64;
-  readonly size: number;
-  readonly numTransactions: number;
-
+export class AvailabilityAPIBlock {
   constructor(
-    header: CappuccinoAPIHeader,
-    payload: CappuccinoAPIPayload,
-    hash: TaggedBase64,
-    size: number,
-    numTransactions: number,
-  ) {
-    this.header = header;
-    this.payload = payload;
-    this.hash = hash;
-    this.size = size;
-    this.numTransactions = numTransactions;
-  }
+    public readonly header: AvailabilityAPIHeader,
+    public readonly payload: AvailabilityAPIPayload,
+    public readonly hash: TaggedBase64,
+    public readonly size: number,
+    public readonly numTransactions: number,
+  ) {}
 
   toJSON() {
-    return cappuccinoAPIBlockCodec.encode(this);
+    return availabilityAPIBlockCodec.encode(this);
   }
 }
 
-export class CappuccinoAPIBlockDecode implements Converter<
+export class AvailabilityAPIBlockDecode implements Converter<
   unknown,
-  CappuccinoAPIBlock
+  AvailabilityAPIBlock
 > {
-  convert(input: unknown): CappuccinoAPIBlock {
+  convert(input: unknown): AvailabilityAPIBlock {
     assertRecordWithKeys(
       input,
       'header',
@@ -55,9 +46,9 @@ export class CappuccinoAPIBlockDecode implements Converter<
       'num_transactions',
     );
 
-    return new CappuccinoAPIBlock(
-      cappuccinoAPIHeaderCodec.decode(input.header),
-      cappuccinoAPIPayloadCodec.decode(input.payload),
+    return new AvailabilityAPIBlock(
+      availabilityAPIHeaderCodec.decode(input.header),
+      availabilityAPIPayloadCodec.decode(input.payload),
       taggedBase64Codec.decode(input.hash),
       numberCodec.decode(input.size),
       numberCodec.decode(input.num_transactions),
@@ -65,16 +56,16 @@ export class CappuccinoAPIBlockDecode implements Converter<
   }
 }
 
-export class CappuccinoAPIBlockEncoder implements Converter<
-  CappuccinoAPIBlock,
+export class AvailabilityAPIBlockEncoder implements Converter<
+  AvailabilityAPIBlock,
   unknown
 > {
-  convert(input: CappuccinoAPIBlock): unknown {
-    assertInstanceOf(input, CappuccinoAPIBlock);
+  convert(input: AvailabilityAPIBlock): unknown {
+    assertInstanceOf(input, AvailabilityAPIBlock);
 
     return {
-      header: cappuccinoAPIHeaderCodec.encode(input.header),
-      payload: cappuccinoAPIPayloadCodec.encode(input.payload),
+      header: availabilityAPIHeaderCodec.encode(input.header),
+      payload: availabilityAPIPayloadCodec.encode(input.payload),
       hash: taggedBase64Codec.encode(input.hash),
       size: numberCodec.encode(input.size),
       num_transactions: numberCodec.encode(input.numTransactions),
@@ -82,12 +73,12 @@ export class CappuccinoAPIBlockEncoder implements Converter<
   }
 }
 
-export class CappuccinoAPIBlockCodec extends Codec<
-  CappuccinoAPIBlock,
+export class AvailabilityAPIBlockCodec extends Codec<
+  AvailabilityAPIBlock,
   unknown
 > {
-  readonly encoder = new CappuccinoAPIBlockEncoder();
-  readonly decoder = new CappuccinoAPIBlockDecode();
+  readonly encoder = new AvailabilityAPIBlockEncoder();
+  readonly decoder = new AvailabilityAPIBlockDecode();
 }
 
-export const cappuccinoAPIBlockCodec = new CappuccinoAPIBlockCodec();
+export const availabilityAPIBlockCodec = new AvailabilityAPIBlockCodec();

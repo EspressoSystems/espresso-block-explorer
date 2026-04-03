@@ -2,21 +2,21 @@ import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source/prng
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { describe, expect, it } from 'vitest';
 import {
-  CappuccinoExplorerGetTransactionDetailResponse,
-  cappuccinoExplorerGetTransactionDetailResponseCodec,
+  ExplorerGetTransactionDetailResponse,
+  explorerGetTransactionDetailResponseCodec,
 } from '../get_transaction_detail_response';
-import { CappuccinoExplorerTransactionDetail } from '../transaction_detail';
-import { CappuccinoExplorerTransactionDetailData } from '../transaction_detail_data';
-import { CappuccinoExplorerTransactionDetailDetails } from '../transaction_detail_details';
+import { ExplorerTransactionDetail } from '../transaction_detail';
+import { ExplorerTransactionDetailData } from '../transaction_detail_data';
+import { ExplorerTransactionDetailDetails } from '../transaction_detail_details';
 
 describe('CappuccinoExplorerGetTransactionDetailResponse', () => {
   const prng = new PseudoRandomNumberGenerator();
 
   {
     for (let i = 0; i < 10; i++) {
-      const response = new CappuccinoExplorerGetTransactionDetailResponse(
-        new CappuccinoExplorerTransactionDetail(
-          new CappuccinoExplorerTransactionDetailDetails(
+      const response = new ExplorerGetTransactionDetailResponse(
+        new ExplorerTransactionDetail(
+          new ExplorerTransactionDetailDetails(
             new TaggedBase64('COMMIT', prng.fillBytes(20)),
             prng.nextInt(),
             prng.nextFloat() > 0.5,
@@ -28,7 +28,7 @@ describe('CappuccinoExplorerGetTransactionDetailResponse', () => {
             [],
           ),
           [
-            new CappuccinoExplorerTransactionDetailData(
+            new ExplorerTransactionDetailData(
               prng.nextInt(),
               prng.fillBytes(120),
             ),
@@ -38,14 +38,12 @@ describe('CappuccinoExplorerGetTransactionDetailResponse', () => {
 
       it('should encode and decode to the same values', () => {
         expect(response.toJSON()).deep.equals(
-          cappuccinoExplorerGetTransactionDetailResponseCodec.encode(response),
+          explorerGetTransactionDetailResponseCodec.encode(response),
         );
 
         expect(
-          cappuccinoExplorerGetTransactionDetailResponseCodec.decode(
-            cappuccinoExplorerGetTransactionDetailResponseCodec.encode(
-              response,
-            ),
+          explorerGetTransactionDetailResponseCodec.decode(
+            explorerGetTransactionDetailResponseCodec.encode(response),
           ),
         ).deep.equals(response);
       });

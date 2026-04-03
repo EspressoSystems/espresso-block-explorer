@@ -16,58 +16,60 @@ import {
 } from '@/models/espresso/tagged_base64/tagged_base64';
 
 /**
- * CappuccinoAPIMerkleTreeProof represents a proof in the Merkle Tree.
+ * AvailabilityAPIMerkleTreeProof represents a proof in the Merkle Tree.
  */
-export abstract class CappuccinoAPIMerkleTreeProof {}
+export abstract class AvailabilityAPIMerkleTreeProof {}
 
 /**
- * CappuccinoAPIMerkleTreeEmptyProof represents an empty proof in the Merkle
+ * AvailabilityAPIMerkleTreeEmptyProof represents an empty proof in the Merkle
  * Tree.
  */
-export class CappuccinoAPIMerkleTreeEmptyProof extends CappuccinoAPIMerkleTreeProof {
+export class AvailabilityAPIMerkleTreeEmptyProof extends AvailabilityAPIMerkleTreeProof {
   toJSON() {
-    return cappuccinoAPIMerkleTreeEmptyProofCodec.encode(this);
+    return availabilityAPIMerkleTreeEmptyProofCodec.encode(this);
   }
 }
 
-export class CappuccinoAPIMerkleTreeEmptyProofDecoder implements Converter<
+export class AvailabilityAPIMerkleTreeEmptyProofDecoder implements Converter<
   unknown,
-  CappuccinoAPIMerkleTreeEmptyProof
+  AvailabilityAPIMerkleTreeEmptyProof
 > {
-  convert(input: unknown): CappuccinoAPIMerkleTreeEmptyProof {
+  convert(input: unknown): AvailabilityAPIMerkleTreeEmptyProof {
     if (!isString(input) || input !== 'Empty') {
       throw new InvalidInputError();
     }
 
-    return new CappuccinoAPIMerkleTreeEmptyProof();
+    return new AvailabilityAPIMerkleTreeEmptyProof();
   }
 }
 
-export class CappuccinoAPIMerkleTreeEmptyProofEncoder implements Converter<CappuccinoAPIMerkleTreeEmptyProof> {
-  convert(input: CappuccinoAPIMerkleTreeEmptyProof) {
-    assertInstanceOf(input, CappuccinoAPIMerkleTreeEmptyProof);
+export class AvailabilityAPIMerkleTreeEmptyProofEncoder implements Converter<AvailabilityAPIMerkleTreeEmptyProof> {
+  convert(input: AvailabilityAPIMerkleTreeEmptyProof) {
+    assertInstanceOf(input, AvailabilityAPIMerkleTreeEmptyProof);
 
     return 'Empty' as const;
   }
 }
 
-export class CappuccinoAPIMerkleTreeEmptyProofCodec extends TypeCheckingCodec<
-  CappuccinoAPIMerkleTreeEmptyProof,
+export class AvailabilityAPIMerkleTreeEmptyProofCodec extends TypeCheckingCodec<
+  AvailabilityAPIMerkleTreeEmptyProof,
   ReturnType<
-    InstanceType<new () => CappuccinoAPIMerkleTreeEmptyProofEncoder>['convert']
+    InstanceType<
+      new () => AvailabilityAPIMerkleTreeEmptyProofEncoder
+    >['convert']
   >
 > {
-  readonly encoder = new CappuccinoAPIMerkleTreeEmptyProofEncoder();
-  readonly decoder = new CappuccinoAPIMerkleTreeEmptyProofDecoder();
+  readonly encoder = new AvailabilityAPIMerkleTreeEmptyProofEncoder();
+  readonly decoder = new AvailabilityAPIMerkleTreeEmptyProofDecoder();
 }
 
-export const cappuccinoAPIMerkleTreeEmptyProofCodec =
-  new CappuccinoAPIMerkleTreeEmptyProofCodec();
+export const availabilityAPIMerkleTreeEmptyProofCodec =
+  new AvailabilityAPIMerkleTreeEmptyProofCodec();
 
 /**
- * CappuccinoAPIMerkleTreeLeafProof represents a leaf proof in the Merkle Tree.
+ * AvailabilityAPIMerkleTreeLeafProof represents a leaf proof in the Merkle Tree.
  */
-export class CappuccinoAPIMerkleTreeLeafProof extends CappuccinoAPIMerkleTreeProof {
+export class AvailabilityAPIMerkleTreeLeafProof extends AvailabilityAPIMerkleTreeProof {
   readonly value: TaggedBase64;
   readonly pos: TaggedBase64;
   readonly elem: TaggedBase64;
@@ -80,22 +82,22 @@ export class CappuccinoAPIMerkleTreeLeafProof extends CappuccinoAPIMerkleTreePro
   }
 
   toJSON() {
-    return cappuccinoAPIMerkleTreeLeafProofCodec.encode(this);
+    return availabilityAPIMerkleTreeLeafProofCodec.encode(this);
   }
 }
 
-export class CappuccinoAPIMerkleTreeLeafProofDecoder implements Converter<
+export class AvailabilityAPIMerkleTreeLeafProofDecoder implements Converter<
   unknown,
-  CappuccinoAPIMerkleTreeLeafProof
+  AvailabilityAPIMerkleTreeLeafProof
 > {
-  convert(input: unknown): CappuccinoAPIMerkleTreeLeafProof {
+  convert(input: unknown): AvailabilityAPIMerkleTreeLeafProof {
     assertRecordWithKeys(input, 'Leaf');
 
     const leaf = input.Leaf;
 
     assertRecordWithKeys(leaf, 'value', 'pos', 'elem');
 
-    return new CappuccinoAPIMerkleTreeLeafProof(
+    return new AvailabilityAPIMerkleTreeLeafProof(
       taggedBase64Codec.decode(leaf.value),
       taggedBase64Codec.decode(leaf.pos),
       taggedBase64Codec.decode(leaf.elem),
@@ -103,9 +105,9 @@ export class CappuccinoAPIMerkleTreeLeafProofDecoder implements Converter<
   }
 }
 
-export class CappuccinoAPIMerkleTreeLeafProofEncoder implements Converter<CappuccinoAPIMerkleTreeLeafProof> {
-  convert(input: CappuccinoAPIMerkleTreeLeafProof) {
-    assertInstanceOf(input, CappuccinoAPIMerkleTreeLeafProof);
+export class AvailabilityAPIMerkleTreeLeafProofEncoder implements Converter<AvailabilityAPIMerkleTreeLeafProof> {
+  convert(input: AvailabilityAPIMerkleTreeLeafProof) {
+    assertInstanceOf(input, AvailabilityAPIMerkleTreeLeafProof);
 
     return {
       Leaf: {
@@ -117,24 +119,24 @@ export class CappuccinoAPIMerkleTreeLeafProofEncoder implements Converter<Cappuc
   }
 }
 
-export class CappuccinoAPIMerkleTreeLeafProofCodec extends Codec<
-  CappuccinoAPIMerkleTreeLeafProof,
+export class AvailabilityAPIMerkleTreeLeafProofCodec extends Codec<
+  AvailabilityAPIMerkleTreeLeafProof,
   ReturnType<
-    InstanceType<new () => CappuccinoAPIMerkleTreeLeafProofEncoder>['convert']
+    InstanceType<new () => AvailabilityAPIMerkleTreeLeafProofEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoAPIMerkleTreeLeafProofEncoder();
-  readonly decoder = new CappuccinoAPIMerkleTreeLeafProofDecoder();
+  readonly encoder = new AvailabilityAPIMerkleTreeLeafProofEncoder();
+  readonly decoder = new AvailabilityAPIMerkleTreeLeafProofDecoder();
 }
 
-export const cappuccinoAPIMerkleTreeLeafProofCodec =
-  new CappuccinoAPIMerkleTreeLeafProofCodec();
+export const availabilityAPIMerkleTreeLeafProofCodec =
+  new AvailabilityAPIMerkleTreeLeafProofCodec();
 
 /**
- * CappuccinoAPIMerkleTreeForgottenSubTreeProof represents a forgotten subtree
+ * AvailabilityAPIMerkleTreeForgottenSubTreeProof represents a forgotten subtree
  * proof in the Merkle Tree.
  */
-export class CappuccinoAPIMerkleTreeForgottenSubTreeProof extends CappuccinoAPIMerkleTreeProof {
+export class AvailabilityAPIMerkleTreeForgottenSubTreeProof extends AvailabilityAPIMerkleTreeProof {
   readonly value: TaggedBase64;
 
   constructor(value: TaggedBase64) {
@@ -143,29 +145,29 @@ export class CappuccinoAPIMerkleTreeForgottenSubTreeProof extends CappuccinoAPIM
   }
 
   toJSON() {
-    return cappuccinoAPIMerkleTreeForgottenSubTreeProofCodec.encode(this);
+    return availabilityAPIMerkleTreeForgottenSubTreeProofCodec.encode(this);
   }
 }
 
-export class CappuccinoAPIMerkleTreeForgottenSubTreeProofDecoder implements Converter<
+export class AvailabilityAPIMerkleTreeForgottenSubTreeProofDecoder implements Converter<
   unknown,
-  CappuccinoAPIMerkleTreeForgottenSubTreeProof
+  AvailabilityAPIMerkleTreeForgottenSubTreeProof
 > {
-  convert(input: unknown): CappuccinoAPIMerkleTreeForgottenSubTreeProof {
+  convert(input: unknown): AvailabilityAPIMerkleTreeForgottenSubTreeProof {
     assertRecordWithKeys(input, 'ForgettenSubtree');
 
     const forgottenSubtree = input.ForgettenSubtree;
     assertRecordWithKeys(forgottenSubtree, 'value');
 
-    return new CappuccinoAPIMerkleTreeForgottenSubTreeProof(
+    return new AvailabilityAPIMerkleTreeForgottenSubTreeProof(
       taggedBase64Codec.decode(forgottenSubtree.value),
     );
   }
 }
 
-export class CappuccinoAPIMerkleTreeForgottenSubTreeProofEncoder implements Converter<CappuccinoAPIMerkleTreeForgottenSubTreeProof> {
-  convert(input: CappuccinoAPIMerkleTreeForgottenSubTreeProof) {
-    assertInstanceOf(input, CappuccinoAPIMerkleTreeForgottenSubTreeProof);
+export class AvailabilityAPIMerkleTreeForgottenSubTreeProofEncoder implements Converter<AvailabilityAPIMerkleTreeForgottenSubTreeProof> {
+  convert(input: AvailabilityAPIMerkleTreeForgottenSubTreeProof) {
+    assertInstanceOf(input, AvailabilityAPIMerkleTreeForgottenSubTreeProof);
 
     return {
       ForgettenSubtree: {
@@ -175,59 +177,61 @@ export class CappuccinoAPIMerkleTreeForgottenSubTreeProofEncoder implements Conv
   }
 }
 
-export class CappuccinoAPIMerkleTreeForgottenSubTreeProofCodec extends Codec<
-  CappuccinoAPIMerkleTreeForgottenSubTreeProof,
+export class AvailabilityAPIMerkleTreeForgottenSubTreeProofCodec extends Codec<
+  AvailabilityAPIMerkleTreeForgottenSubTreeProof,
   ReturnType<
     InstanceType<
-      new () => CappuccinoAPIMerkleTreeForgottenSubTreeProofEncoder
+      new () => AvailabilityAPIMerkleTreeForgottenSubTreeProofEncoder
     >['convert']
   >
 > {
-  readonly encoder = new CappuccinoAPIMerkleTreeForgottenSubTreeProofEncoder();
-  readonly decoder = new CappuccinoAPIMerkleTreeForgottenSubTreeProofDecoder();
+  readonly encoder =
+    new AvailabilityAPIMerkleTreeForgottenSubTreeProofEncoder();
+  readonly decoder =
+    new AvailabilityAPIMerkleTreeForgottenSubTreeProofDecoder();
 }
 
-export const cappuccinoAPIMerkleTreeForgottenSubTreeProofCodec =
-  new CappuccinoAPIMerkleTreeForgottenSubTreeProofCodec();
+export const availabilityAPIMerkleTreeForgottenSubTreeProofCodec =
+  new AvailabilityAPIMerkleTreeForgottenSubTreeProofCodec();
 
 /**
- * CappuccinoAPIMerkleTreeBranchProof represents a branch proof in the Merkle
+ * AvailabilityAPIMerkleTreeBranchProof represents a branch proof in the Merkle
  * Tree.
  */
-export class CappuccinoAPIMerkleTreeBranchProof extends CappuccinoAPIMerkleTreeProof {
+export class AvailabilityAPIMerkleTreeBranchProof extends AvailabilityAPIMerkleTreeProof {
   readonly value: TaggedBase64;
-  readonly children: CappuccinoAPIMerkleTreeProof[];
+  readonly children: AvailabilityAPIMerkleTreeProof[];
 
-  constructor(value: TaggedBase64, children: CappuccinoAPIMerkleTreeProof[]) {
+  constructor(value: TaggedBase64, children: AvailabilityAPIMerkleTreeProof[]) {
     super();
     this.value = value;
     this.children = children;
   }
 
   toJSON() {
-    return cappuccinoAPIMerkleTreeBranchProofCodec.encode(this);
+    return availabilityAPIMerkleTreeBranchProofCodec.encode(this);
   }
 }
 
-export class CappuccinoAPIMerkleTreeBranchProofDecoder implements Converter<
+export class AvailabilityAPIMerkleTreeBranchProofDecoder implements Converter<
   unknown,
-  CappuccinoAPIMerkleTreeBranchProof
+  AvailabilityAPIMerkleTreeBranchProof
 > {
-  convert(input: unknown): CappuccinoAPIMerkleTreeBranchProof {
+  convert(input: unknown): AvailabilityAPIMerkleTreeBranchProof {
     assertRecordWithKeys(input, 'Branch');
 
     const branch = input.Branch;
     assertRecordWithKeys(branch, 'value', 'children');
 
-    return new CappuccinoAPIMerkleTreeBranchProof(
+    return new AvailabilityAPIMerkleTreeBranchProof(
       taggedBase64Codec.decode(branch.value),
-      listCappuccinoAPIMerkleTreeProofCodec.decode(branch.children),
+      listAvailabilityAPIMerkleTreeProofCodec.decode(branch.children),
     );
   }
 }
 
-export class CappuccinoAPIMerkleTreeBranchProofEncoder implements Converter<
-  CappuccinoAPIMerkleTreeBranchProof,
+export class AvailabilityAPIMerkleTreeBranchProofEncoder implements Converter<
+  AvailabilityAPIMerkleTreeBranchProof,
   {
     readonly Branch: {
       readonly value: string;
@@ -235,98 +239,102 @@ export class CappuccinoAPIMerkleTreeBranchProofEncoder implements Converter<
     };
   }
 > {
-  convert(input: CappuccinoAPIMerkleTreeBranchProof): {
+  convert(input: AvailabilityAPIMerkleTreeBranchProof): {
     readonly Branch: { readonly value: string; readonly children: unknown[] };
   } {
-    assertInstanceOf(input, CappuccinoAPIMerkleTreeBranchProof);
+    assertInstanceOf(input, AvailabilityAPIMerkleTreeBranchProof);
 
     return {
       Branch: {
         value: taggedBase64Codec.encode(input.value),
-        children: listCappuccinoAPIMerkleTreeProofCodec.encode(input.children),
+        children: listAvailabilityAPIMerkleTreeProofCodec.encode(
+          input.children,
+        ),
       },
     };
   }
 }
 
-export class CappuccinoAPIMerkleTreeBranchProofCodec extends TypeCheckingCodec<
-  CappuccinoAPIMerkleTreeBranchProof,
+export class AvailabilityAPIMerkleTreeBranchProofCodec extends TypeCheckingCodec<
+  AvailabilityAPIMerkleTreeBranchProof,
   ReturnType<
-    InstanceType<new () => CappuccinoAPIMerkleTreeBranchProofEncoder>['convert']
+    InstanceType<
+      new () => AvailabilityAPIMerkleTreeBranchProofEncoder
+    >['convert']
   >
 > {
-  readonly encoder = new CappuccinoAPIMerkleTreeBranchProofEncoder();
-  readonly decoder = new CappuccinoAPIMerkleTreeBranchProofDecoder();
+  readonly encoder = new AvailabilityAPIMerkleTreeBranchProofEncoder();
+  readonly decoder = new AvailabilityAPIMerkleTreeBranchProofDecoder();
 }
 
-export const cappuccinoAPIMerkleTreeBranchProofCodec =
-  new CappuccinoAPIMerkleTreeBranchProofCodec();
+export const availabilityAPIMerkleTreeBranchProofCodec =
+  new AvailabilityAPIMerkleTreeBranchProofCodec();
 
-export class CappuccinoAPIMerkleTreeProofDecoder implements Converter<
+export class AvailabilityAPIMerkleTreeProofDecoder implements Converter<
   unknown,
-  CappuccinoAPIMerkleTreeProof
+  AvailabilityAPIMerkleTreeProof
 > {
-  convert(input: unknown): CappuccinoAPIMerkleTreeProof {
+  convert(input: unknown): AvailabilityAPIMerkleTreeProof {
     if (isRecord(input, 'Leaf', isUnknown)) {
-      return cappuccinoAPIMerkleTreeLeafProofCodec.decoder.convert(input);
+      return availabilityAPIMerkleTreeLeafProofCodec.decoder.convert(input);
     }
 
     if (isRecord(input, 'Branch', isUnknown)) {
-      return cappuccinoAPIMerkleTreeBranchProofCodec.decoder.convert(input);
+      return availabilityAPIMerkleTreeBranchProofCodec.decoder.convert(input);
     }
 
     if (isRecord(input, 'ForgettenSubtree', isUnknown)) {
-      return cappuccinoAPIMerkleTreeForgottenSubTreeProofCodec.decoder.convert(
+      return availabilityAPIMerkleTreeForgottenSubTreeProofCodec.decoder.convert(
         input,
       );
     }
 
     if (isString(input)) {
-      return cappuccinoAPIMerkleTreeEmptyProofCodec.decoder.convert(input);
+      return availabilityAPIMerkleTreeEmptyProofCodec.decoder.convert(input);
     }
 
     throw new InvalidInputError();
   }
 }
 
-export class CappuccinoAPIMerkleTreeProofEncoder implements Converter<CappuccinoAPIMerkleTreeProof> {
-  convert(input: CappuccinoAPIMerkleTreeProof) {
-    assertInstanceOf(input, CappuccinoAPIMerkleTreeProof);
+export class AvailabilityAPIMerkleTreeProofEncoder implements Converter<AvailabilityAPIMerkleTreeProof> {
+  convert(input: AvailabilityAPIMerkleTreeProof) {
+    assertInstanceOf(input, AvailabilityAPIMerkleTreeProof);
 
-    if (input instanceof CappuccinoAPIMerkleTreeLeafProof) {
-      return cappuccinoAPIMerkleTreeLeafProofCodec.encode(input);
+    if (input instanceof AvailabilityAPIMerkleTreeLeafProof) {
+      return availabilityAPIMerkleTreeLeafProofCodec.encode(input);
     }
 
-    if (input instanceof CappuccinoAPIMerkleTreeBranchProof) {
-      return cappuccinoAPIMerkleTreeBranchProofCodec.encode(input);
+    if (input instanceof AvailabilityAPIMerkleTreeBranchProof) {
+      return availabilityAPIMerkleTreeBranchProofCodec.encode(input);
     }
 
-    if (input instanceof CappuccinoAPIMerkleTreeForgottenSubTreeProof) {
-      return cappuccinoAPIMerkleTreeForgottenSubTreeProofCodec.encode(input);
+    if (input instanceof AvailabilityAPIMerkleTreeForgottenSubTreeProof) {
+      return availabilityAPIMerkleTreeForgottenSubTreeProofCodec.encode(input);
     }
 
-    if (input instanceof CappuccinoAPIMerkleTreeEmptyProof) {
-      return cappuccinoAPIMerkleTreeEmptyProofCodec.encode(input);
+    if (input instanceof AvailabilityAPIMerkleTreeEmptyProof) {
+      return availabilityAPIMerkleTreeEmptyProofCodec.encode(input);
     }
 
     throw new InvalidInputError();
   }
 }
 
-export class CappuccinoAPIMerkleTreeProofCodec extends TypeCheckingCodec<
-  CappuccinoAPIMerkleTreeProof,
+export class AvailabilityAPIMerkleTreeProofCodec extends TypeCheckingCodec<
+  AvailabilityAPIMerkleTreeProof,
   ReturnType<
-    InstanceType<new () => CappuccinoAPIMerkleTreeProofEncoder>['convert']
+    InstanceType<new () => AvailabilityAPIMerkleTreeProofEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoAPIMerkleTreeProofEncoder();
-  readonly decoder = new CappuccinoAPIMerkleTreeProofDecoder();
+  readonly encoder = new AvailabilityAPIMerkleTreeProofEncoder();
+  readonly decoder = new AvailabilityAPIMerkleTreeProofDecoder();
 }
 
-export const cappuccinoAPIMerkleTreeProofCodec =
-  new CappuccinoAPIMerkleTreeProofCodec();
+export const availabilityAPIMerkleTreeProofCodec =
+  new AvailabilityAPIMerkleTreeProofCodec();
 
-export const listCappuccinoAPIMerkleTreeProofCodec = new ArrayCodec(
-  new ArrayDecoder(cappuccinoAPIMerkleTreeProofCodec),
-  new ArrayEncoder(cappuccinoAPIMerkleTreeProofCodec),
+export const listAvailabilityAPIMerkleTreeProofCodec = new ArrayCodec(
+  new ArrayDecoder(availabilityAPIMerkleTreeProofCodec),
+  new ArrayEncoder(availabilityAPIMerkleTreeProofCodec),
 );

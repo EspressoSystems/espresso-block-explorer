@@ -16,46 +16,28 @@ import {
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
 
-export class CappuccinoExplorerBlockDetail {
-  readonly hash: TaggedBase64;
-  readonly height: number;
-  readonly time: Date;
-  readonly numTransactions: number;
-  readonly proposerID: ArrayBuffer[];
-  readonly feeRecipient: ArrayBuffer[];
-  readonly size: number;
-  readonly blockReward: MonetaryValue[];
-
+export class ExplorerBlockDetail {
   constructor(
-    hash: TaggedBase64,
-    height: number,
-    time: Date,
-    numTransactions: number,
-    proposerID: ArrayBuffer[],
-    feeRecipient: ArrayBuffer[],
-    size: number,
-    blockReward: MonetaryValue[],
-  ) {
-    this.hash = hash;
-    this.height = height;
-    this.time = time;
-    this.numTransactions = numTransactions;
-    this.proposerID = proposerID;
-    this.feeRecipient = feeRecipient;
-    this.size = size;
-    this.blockReward = blockReward;
-  }
+    public readonly hash: TaggedBase64,
+    public readonly height: number,
+    public readonly time: Date,
+    public readonly numTransactions: number,
+    public readonly proposerID: ArrayBuffer[],
+    public readonly feeRecipient: ArrayBuffer[],
+    public readonly size: number,
+    public readonly blockReward: MonetaryValue[],
+  ) {}
 
   toJSON() {
-    return cappuccinoExplorerBlockDetailCodec.encode(this);
+    return explorerBlockDetailCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerBlockDetailDecoder implements Converter<
+class ExplorerBlockDetailDecoder implements Converter<
   unknown,
-  CappuccinoExplorerBlockDetail
+  ExplorerBlockDetail
 > {
-  convert(input: unknown): CappuccinoExplorerBlockDetail {
+  convert(input: unknown): ExplorerBlockDetail {
     assertRecordWithKeys(
       input,
       'hash',
@@ -68,7 +50,7 @@ class CappuccinoExplorerBlockDetailDecoder implements Converter<
       'block_reward',
     );
 
-    return new CappuccinoExplorerBlockDetail(
+    return new ExplorerBlockDetail(
       taggedBase64Codec.decode(input.hash),
       numberCodec.decode(input.height),
       rfc3999DateCodec.decode(input.time),
@@ -81,12 +63,12 @@ class CappuccinoExplorerBlockDetailDecoder implements Converter<
   }
 }
 
-class CappuccinoExplorerBlockDetailEncoder implements Converter<
-  CappuccinoExplorerBlockDetail,
+class ExplorerBlockDetailEncoder implements Converter<
+  ExplorerBlockDetail,
   unknown
 > {
-  convert(input: CappuccinoExplorerBlockDetail): unknown {
-    assertInstanceOf(input, CappuccinoExplorerBlockDetail);
+  convert(input: ExplorerBlockDetail): unknown {
+    assertInstanceOf(input, ExplorerBlockDetail);
 
     return {
       hash: taggedBase64Codec.encode(input.hash),
@@ -105,17 +87,13 @@ class CappuccinoExplorerBlockDetailEncoder implements Converter<
   }
 }
 
-class CappuccinoExplorerBlockDetailCodec extends Codec<
-  CappuccinoExplorerBlockDetail,
-  unknown
-> {
-  readonly encoder = new CappuccinoExplorerBlockDetailEncoder();
-  readonly decoder = new CappuccinoExplorerBlockDetailDecoder();
+class ExplorerBlockDetailCodec extends Codec<ExplorerBlockDetail, unknown> {
+  readonly encoder = new ExplorerBlockDetailEncoder();
+  readonly decoder = new ExplorerBlockDetailDecoder();
 }
 
-export const cappuccinoExplorerBlockDetailCodec =
-  new CappuccinoExplorerBlockDetailCodec();
-export const cappuccinoExplorerBlockDetailArrayCodec = new ArrayCodec(
-  new ArrayDecoder(cappuccinoExplorerBlockDetailCodec),
-  new ArrayEncoder(cappuccinoExplorerBlockDetailCodec),
+export const explorerBlockDetailCodec = new ExplorerBlockDetailCodec();
+export const explorerBlockDetailArrayCodec = new ArrayCodec(
+  new ArrayDecoder(explorerBlockDetailCodec),
+  new ArrayEncoder(explorerBlockDetailCodec),
 );

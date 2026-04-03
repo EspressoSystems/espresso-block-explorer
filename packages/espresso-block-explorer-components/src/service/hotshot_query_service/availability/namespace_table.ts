@@ -7,35 +7,32 @@ import {
 } from '@/convert/codec/convert';
 
 /**
- * CappuccinoNamespaceTable represents the namespace table in the Cappuccino API.
+ * AvailabilityNamespaceTable represents the namespace table in the Availability API.
  */
-export class CappuccinoNamespaceTable {
-  readonly bytes: ArrayBuffer;
-  constructor(bytes: ArrayBuffer) {
-    this.bytes = bytes;
-  }
+export class AvailabilityNamespaceTable {
+  constructor(public readonly bytes: ArrayBuffer) {}
 
   toJSON() {
-    return cappuccinoNamespaceTableCodec.encode(this);
+    return availabilityNamespaceTableCodec.encode(this);
   }
 }
 
-class CappuccinoNamespaceTableDecoder implements Converter<
+class AvailabilityNamespaceTableDecoder implements Converter<
   unknown,
-  CappuccinoNamespaceTable
+  AvailabilityNamespaceTable
 > {
-  convert(input: unknown): CappuccinoNamespaceTable {
+  convert(input: unknown): AvailabilityNamespaceTable {
     assertRecordWithKeys(input, 'bytes');
 
-    return new CappuccinoNamespaceTable(
+    return new AvailabilityNamespaceTable(
       urlBase64ArrayBufferCodec.decode(input.bytes),
     );
   }
 }
 
-class CappuccinoNamespaceTableEncoder implements Converter<CappuccinoNamespaceTable> {
-  convert(input: CappuccinoNamespaceTable) {
-    assertInstanceOf(input, CappuccinoNamespaceTable);
+class AvailabilityNamespaceTableEncoder implements Converter<AvailabilityNamespaceTable> {
+  convert(input: AvailabilityNamespaceTable) {
+    assertInstanceOf(input, AvailabilityNamespaceTable);
 
     return {
       bytes: urlBase64ArrayBufferCodec.encode(input.bytes),
@@ -43,13 +40,15 @@ class CappuccinoNamespaceTableEncoder implements Converter<CappuccinoNamespaceTa
   }
 }
 
-class CappuccinoNamespaceTableCodec extends TypeCheckingCodec<
-  CappuccinoNamespaceTable,
-  ReturnType<InstanceType<new () => CappuccinoNamespaceTableEncoder>['convert']>
+class AvailabilityNamespaceTableCodec extends TypeCheckingCodec<
+  AvailabilityNamespaceTable,
+  ReturnType<
+    InstanceType<new () => AvailabilityNamespaceTableEncoder>['convert']
+  >
 > {
-  readonly encoder = new CappuccinoNamespaceTableEncoder();
-  readonly decoder = new CappuccinoNamespaceTableDecoder();
+  readonly encoder = new AvailabilityNamespaceTableEncoder();
+  readonly decoder = new AvailabilityNamespaceTableDecoder();
 }
 
-export const cappuccinoNamespaceTableCodec =
-  new CappuccinoNamespaceTableCodec();
+export const availabilityNamespaceTableCodec =
+  new AvailabilityNamespaceTableCodec();

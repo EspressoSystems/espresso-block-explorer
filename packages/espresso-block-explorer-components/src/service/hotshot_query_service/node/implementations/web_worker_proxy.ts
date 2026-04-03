@@ -2,21 +2,21 @@ import { numberCodec } from '@/convert/codec/number';
 import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
 import { activeValidatorsCodec } from '../active_validators';
-import { CappuccinoHotShotQueryServiceNodeAPI } from '../node_api';
+import { HotShotQueryServiceNodeAPI } from '../node_api';
 import { stakeTableCodec } from '../stake_table';
 
 export type NodeRequest<
-  Method extends keyof CappuccinoHotShotQueryServiceNodeAPI =
-    keyof CappuccinoHotShotQueryServiceNodeAPI,
+  Method extends keyof HotShotQueryServiceNodeAPI =
+    keyof HotShotQueryServiceNodeAPI,
 > = WebWorkerRequest<
   'node',
   Method,
-  Parameters<CappuccinoHotShotQueryServiceNodeAPI[Method]>
+  Parameters<HotShotQueryServiceNodeAPI[Method]>
 >;
 
 export class WebWorkerProxyNodeAPI {
-  private service: CappuccinoHotShotQueryServiceNodeAPI;
-  constructor(service: CappuccinoHotShotQueryServiceNodeAPI) {
+  private service: HotShotQueryServiceNodeAPI;
+  constructor(service: HotShotQueryServiceNodeAPI) {
     this.service = service;
   }
 

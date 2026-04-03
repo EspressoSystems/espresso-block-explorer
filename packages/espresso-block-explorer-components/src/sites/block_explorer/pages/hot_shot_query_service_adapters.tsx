@@ -7,8 +7,8 @@ import { RollUpSummaryAsyncRetrieverContext } from '@/block_explorer/components/
 import { TransactionDetailAsyncRetrieverContext } from '@/block_explorer/components/page_sections/transaction_detail_content/transaction_detail_loader';
 import { TransactionSummaryAsyncRetrieverContext } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
 import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { ErrorJoiner } from '@/contexts/error_provider';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import {
   mapAsyncIterable,
   timerAsyncIterable,
@@ -17,32 +17,30 @@ import { BlockSummaryEntry } from '@/models/block_explorer/block_summary';
 import { ExplorerSummaryEntry } from '@/models/block_explorer/explorer_summary';
 import { TransactionSummaryEntry } from '@/models/block_explorer/transaction_summary';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoExplorerGetBlockDetailRequest } from '@/service/hotshot_query_service/explorer/get_block_detail_request';
-import { CappuccinoExplorerGetBlockSummariesRequest } from '@/service/hotshot_query_service/explorer/get_block_summaries_request';
-import { CappuccinoExplorerGetExplorerSummaryResponse } from '@/service/hotshot_query_service/explorer/get_explorer_summary_response';
-import { CappuccinoExplorerGetTransactionDetailRequest } from '@/service/hotshot_query_service/explorer/get_transaction_detail_request';
-import { CappuccinoExplorerGetTransactionSummariesFilter } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_filter';
-import { CappuccinoExplorerGetTransactionSummariesRequest } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_request';
-import { CappuccinoExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_target';
+import { ExplorerGetBlockDetailRequest } from '@/service/hotshot_query_service/explorer/get_block_detail_request';
+import { ExplorerGetBlockSummariesRequest } from '@/service/hotshot_query_service/explorer/get_block_summaries_request';
+import { ExplorerGetExplorerSummaryResponse } from '@/service/hotshot_query_service/explorer/get_explorer_summary_response';
+import { ExplorerGetTransactionDetailRequest } from '@/service/hotshot_query_service/explorer/get_transaction_detail_request';
+import { ExplorerGetTransactionSummariesFilter } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_filter';
+import { ExplorerGetTransactionSummariesRequest } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_request';
+import { ExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_target';
 import React from 'react';
 
 // We need to create adapters between the HotShotQueryService and the
 // components that ultimately wish to consume them.
 
-export interface ProvideCappuccinoBlockDetailDataSourceProps {
+export interface ProvideBlockDetailDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
 /**
- * ProvideCappuccinoBlockDetailDataSource is a component that converts
- * the HotShot Query Service for Cappuccino into a BlockDetailAsyncRetriever.
+ * ProvideBlockDetailDataSource is a component that converts
+ * the HotShot Query Service into a BlockDetailAsyncRetriever.
  */
-export const ProvideCappuccinoBlockDetailDataSource: React.FC<
-  ProvideCappuccinoBlockDetailDataSourceProps
+export const ProvideBlockDetailDataSource: React.FC<
+  ProvideBlockDetailDataSourceProps
 > = (props) => {
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   return (
     <BlockDetailAsyncRetrieverContext.Provider
@@ -51,7 +49,7 @@ export const ProvideCappuccinoBlockDetailDataSource: React.FC<
         async retrieve(key: number) {
           const { blockDetail: block } =
             await hotShotQueryService.explorer.getBlockDetail(
-              CappuccinoExplorerGetBlockDetailRequest.height(key),
+              ExplorerGetBlockDetailRequest.height(key),
             );
 
           return {
@@ -70,21 +68,19 @@ export const ProvideCappuccinoBlockDetailDataSource: React.FC<
   );
 };
 
-export interface ProvideCappuccinoBlocksSummaryDataSourceProps {
+export interface ProvideBlocksSummaryDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
   blocksPerPage?: number;
 }
 
 /**
- * ProvideCappuccinoBlocksSummaryDataSource is a component that converts
- * the HotShot Query Service for Cappuccino into a BlockSummaryAsyncRetriever.
+ * ProvideBlocksSummaryDataSource is a component that converts
+ * the HotShot Query Service into a BlockSummaryAsyncRetriever.
  */
-export const ProvideCappuccinoBlocksSummaryDataSource: React.FC<
-  ProvideCappuccinoBlocksSummaryDataSourceProps
+export const ProvideBlocksSummaryDataSource: React.FC<
+  ProvideBlocksSummaryDataSourceProps
 > = ({ children, blocksPerPage: defaultBlocksPerPage = 20, ...rest }) => {
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   return (
     <BlockSummaryAsyncRetrieverContext.Provider
@@ -96,8 +92,8 @@ export const ProvideCappuccinoBlocksSummaryDataSource: React.FC<
 
           const request =
             startAtBlock === null
-              ? CappuccinoExplorerGetBlockSummariesRequest.latest(blocksPerPage)
-              : CappuccinoExplorerGetBlockSummariesRequest.from(
+              ? ExplorerGetBlockSummariesRequest.latest(blocksPerPage)
+              : ExplorerGetBlockSummariesRequest.from(
                   startAtBlock,
                   blocksPerPage,
                 );
@@ -123,26 +119,24 @@ export const ProvideCappuccinoBlocksSummaryDataSource: React.FC<
   );
 };
 
-export interface ProvideCappuccinoTransactionsSummaryDataSourceProps {
+export interface ProvideTransactionsSummaryDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
   transactionsPerPage?: number;
 }
 
 /**
- * ProvideCappuccinoTransactionsSummaryDataSource is a component that converts
- * the HotShot Query Service for Cappuccino into a
+ * ProvideTransactionsSummaryDataSource is a component that converts
+ * the HotShot Query Service into a
  * TransactionSummaryAsyncRetriever.
  */
-export const ProvideCappuccinoTransactionsSummaryDataSource: React.FC<
-  ProvideCappuccinoTransactionsSummaryDataSourceProps
+export const ProvideTransactionsSummaryDataSource: React.FC<
+  ProvideTransactionsSummaryDataSourceProps
 > = ({
   children,
   transactionsPerPage: defaultTransactionsPerPage = 20,
   ...rest
 }) => {
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   return (
     <TransactionSummaryAsyncRetrieverContext.Provider
@@ -155,22 +149,20 @@ export const ProvideCappuccinoTransactionsSummaryDataSource: React.FC<
             transactionsPerPage = defaultTransactionsPerPage,
           } = key;
 
-          let request: CappuccinoExplorerGetTransactionSummariesRequest;
+          let request: ExplorerGetTransactionSummariesRequest;
           if (startAtBlock === null || offset === null) {
-            request = new CappuccinoExplorerGetTransactionSummariesRequest(
-              CappuccinoExplorerGetTransactionSummariesTarget.latest(
-                transactionsPerPage,
-              ),
-              CappuccinoExplorerGetTransactionSummariesFilter.none(),
+            request = new ExplorerGetTransactionSummariesRequest(
+              ExplorerGetTransactionSummariesTarget.latest(transactionsPerPage),
+              ExplorerGetTransactionSummariesFilter.none(),
             );
           } else {
-            request = new CappuccinoExplorerGetTransactionSummariesRequest(
-              CappuccinoExplorerGetTransactionSummariesTarget.heightAndOffset(
+            request = new ExplorerGetTransactionSummariesRequest(
+              ExplorerGetTransactionSummariesTarget.heightAndOffset(
                 startAtBlock,
                 offset,
                 transactionsPerPage,
               ),
-              CappuccinoExplorerGetTransactionSummariesFilter.none(),
+              ExplorerGetTransactionSummariesFilter.none(),
             );
           }
 
@@ -193,16 +185,14 @@ export const ProvideCappuccinoTransactionsSummaryDataSource: React.FC<
   );
 };
 
-export const ProvideCappuccinoTransactionsForBlockSummaryDataSource: React.FC<
-  ProvideCappuccinoTransactionsSummaryDataSourceProps
+export const ProvideTransactionsForBlockSummaryDataSource: React.FC<
+  ProvideTransactionsSummaryDataSourceProps
 > = ({
   children,
   transactionsPerPage: defaultTransactionsPerPage = 20,
   ...rest
 }) => {
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   return (
     <TransactionSummaryAsyncRetrieverContext.Provider
@@ -215,26 +205,20 @@ export const ProvideCappuccinoTransactionsForBlockSummaryDataSource: React.FC<
             transactionsPerPage = defaultTransactionsPerPage,
           } = key;
 
-          let request: CappuccinoExplorerGetTransactionSummariesRequest;
+          let request: ExplorerGetTransactionSummariesRequest;
           if (startAtBlock === null || offset === null) {
-            request = new CappuccinoExplorerGetTransactionSummariesRequest(
-              CappuccinoExplorerGetTransactionSummariesTarget.latest(
-                transactionsPerPage,
-              ),
-              CappuccinoExplorerGetTransactionSummariesFilter.block(
-                startAtBlock,
-              ),
+            request = new ExplorerGetTransactionSummariesRequest(
+              ExplorerGetTransactionSummariesTarget.latest(transactionsPerPage),
+              ExplorerGetTransactionSummariesFilter.block(startAtBlock),
             );
           } else {
-            request = new CappuccinoExplorerGetTransactionSummariesRequest(
-              CappuccinoExplorerGetTransactionSummariesTarget.heightAndOffset(
+            request = new ExplorerGetTransactionSummariesRequest(
+              ExplorerGetTransactionSummariesTarget.heightAndOffset(
                 startAtBlock,
                 offset,
                 transactionsPerPage,
               ),
-              CappuccinoExplorerGetTransactionSummariesFilter.block(
-                startAtBlock,
-              ),
+              ExplorerGetTransactionSummariesFilter.block(startAtBlock),
             );
           }
 
@@ -257,21 +241,19 @@ export const ProvideCappuccinoTransactionsForBlockSummaryDataSource: React.FC<
   );
 };
 
-export interface ProvideCappuccinoTransactionDetailDataSourceProps {
+export interface ProvideTransactionDetailDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
 /**
- * ProvideCappuccinoTransactionDetailDataSource is a component that converts
- * the HotShot Query Service for Cappuccino into a
+ * ProvideTransactionDetailDataSource is a component that converts
+ * the HotShot Query Service into a
  * TransactionDetailAsyncRetriever.
  */
-export const ProvideCappuccinoTransactionDetailDataSource: React.FC<
-  ProvideCappuccinoTransactionDetailDataSourceProps
+export const ProvideTransactionDetailDataSource: React.FC<
+  ProvideTransactionDetailDataSourceProps
 > = (props) => {
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   return (
     <TransactionDetailAsyncRetrieverContext.Provider
@@ -280,11 +262,10 @@ export const ProvideCappuccinoTransactionDetailDataSource: React.FC<
         async retrieve(key) {
           const { height, offset } = key;
 
-          const request =
-            CappuccinoExplorerGetTransactionDetailRequest.heightAndOffset(
-              height,
-              offset,
-            );
+          const request = ExplorerGetTransactionDetailRequest.heightAndOffset(
+            height,
+            offset,
+          );
 
           const detailResponse =
             await hotShotQueryService.explorer.getTransactionDetail(request);
@@ -310,25 +291,23 @@ export const ProvideCappuccinoTransactionDetailDataSource: React.FC<
   );
 };
 
-export interface ProvideCappuccinoTransactionsSummaryDataSourceProps {
+export interface ProvideTransactionsSummaryDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
   transactionsPerPage?: number;
 }
 
 /**
- * ProvideCappuccinoRollUpDetailDataSource is a component that converts
- * the HotShot Query Service for Cappuccino into a RollUpDetailAsyncRetriever.
+ * ProvideRollUpDetailDataSource is a component that converts
+ * the HotShot Query Service into a RollUpDetailAsyncRetriever.
  */
-export const ProvideCappuccinoRollUpDetailDataSource: React.FC<
-  ProvideCappuccinoTransactionsSummaryDataSourceProps
+export const ProvideRollUpDetailDataSource: React.FC<
+  ProvideTransactionsSummaryDataSourceProps
 > = ({
   children,
   transactionsPerPage: defaultTransactionsPerPage = 20,
   ...rest
 }) => {
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   return (
     <RollUpDetailAsyncRetrieverContext.Provider
@@ -342,26 +321,20 @@ export const ProvideCappuccinoRollUpDetailDataSource: React.FC<
             transactionsPerPage = defaultTransactionsPerPage,
           } = key;
 
-          let request: CappuccinoExplorerGetTransactionSummariesRequest;
+          let request: ExplorerGetTransactionSummariesRequest;
           if (height === null || offset === null) {
-            request = new CappuccinoExplorerGetTransactionSummariesRequest(
-              CappuccinoExplorerGetTransactionSummariesTarget.latest(
-                transactionsPerPage,
-              ),
-              CappuccinoExplorerGetTransactionSummariesFilter.namespace(
-                namespace,
-              ),
+            request = new ExplorerGetTransactionSummariesRequest(
+              ExplorerGetTransactionSummariesTarget.latest(transactionsPerPage),
+              ExplorerGetTransactionSummariesFilter.namespace(namespace),
             );
           } else {
-            request = new CappuccinoExplorerGetTransactionSummariesRequest(
-              CappuccinoExplorerGetTransactionSummariesTarget.heightAndOffset(
+            request = new ExplorerGetTransactionSummariesRequest(
+              ExplorerGetTransactionSummariesTarget.heightAndOffset(
                 height,
                 offset,
                 transactionsPerPage,
               ),
-              CappuccinoExplorerGetTransactionSummariesFilter.namespace(
-                namespace,
-              ),
+              ExplorerGetTransactionSummariesFilter.namespace(namespace),
             );
           }
 
@@ -384,23 +357,19 @@ export const ProvideCappuccinoRollUpDetailDataSource: React.FC<
   );
 };
 
-export interface ProvideCappuccinoTransactionsSummaryDataSourceProps {
+export interface ProvideTransactionsSummaryDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
 export const kNumberOfSampleBlocks = 30;
 
 /**
- * ProvideCappuccinoRollUpsSummaryDataSource is a component that converts
- * the HotShot Query Service for Cappuccino into a RollUpSummaryAsyncRetriever.
+ * ProvideRollUpsSummaryDataSource is a component that converts
+ * the HotShot Query Service into a RollUpSummaryAsyncRetriever.
  */
-export const ProvideCappuccinoRollUpsSummaryDataSource: React.FC<
-  ProvideCappuccinoTransactionsSummaryDataSourceProps
+export const ProvideRollUpsSummaryDataSource: React.FC<
+  ProvideTransactionsSummaryDataSourceProps
 > = (props) => {
-  // const hotShotQueryService = React.useContext(
-  //   CappuccinoHotShotQueryServiceAPIContext,
-  // );
-
   return (
     <RollUpSummaryAsyncRetrieverContext.Provider
       {...props}
@@ -415,14 +384,12 @@ export const ProvideCappuccinoRollUpsSummaryDataSource: React.FC<
   );
 };
 
-interface ProvideCappuccinoLatestBlockDetailsProps {}
+interface ProvideLatestBlockDetailsProps {}
 
-export const ProvideCappuccinoLatestBlockDetails: React.FC<
-  ProvideCappuccinoLatestBlockDetailsProps
+export const ProvideLatestBlockDetails: React.FC<
+  ProvideLatestBlockDetailsProps
 > = (props) => {
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   return (
     <LatestBlockSummaryLoaderContext.Provider
@@ -447,7 +414,7 @@ export const ProvideCappuccinoLatestBlockDetails: React.FC<
 };
 
 export function transformExplorerSummaryResponse(
-  summaryResponse: CappuccinoExplorerGetExplorerSummaryResponse,
+  summaryResponse: ExplorerGetExplorerSummaryResponse,
 ): ExplorerSummaryEntry {
   const { explorerSummary } = summaryResponse;
 
@@ -503,16 +470,14 @@ export function transformExplorerSummaryResponse(
   } satisfies ExplorerSummaryEntry;
 }
 
-export interface ProvideCappuccinoExplorerSummaryAsyncStreamProps {
+export interface ProvideExplorerSummaryAsyncStreamProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
-export const ProvideCappuccinoExplorerSummaryAsyncStream: React.FC<
-  ProvideCappuccinoExplorerSummaryAsyncStreamProps
+export const ProvideExplorerSummaryAsyncStream: React.FC<
+  ProvideExplorerSummaryAsyncStreamProps
 > = ({ children }) => {
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   // Create a timer to refresh every two seconds.
   const timer = timerAsyncIterable(2000, true);
@@ -530,14 +495,12 @@ export const ProvideCappuccinoExplorerSummaryAsyncStream: React.FC<
   );
 };
 
-interface ProvideCappuccinoExplorerSummaryProps {}
+interface ProvideExplorerSummaryProps {}
 
-export const ProvideCappuccinoExplorerSummary: React.FC<
-  ProvideCappuccinoExplorerSummaryProps
-> = (props) => {
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+export const ProvideExplorerSummary: React.FC<ProvideExplorerSummaryProps> = (
+  props,
+) => {
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   return (
     <ExplorerSummaryLoaderContext.Provider

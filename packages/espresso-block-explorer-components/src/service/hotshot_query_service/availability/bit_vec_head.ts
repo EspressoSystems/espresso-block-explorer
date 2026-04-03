@@ -7,39 +7,33 @@ import {
 import { numberCodec } from '@/convert/codec/number';
 
 /**
- * CappuccinoAPIBitVecHead represents the head of a bit vector in the Cappuccino API.
+ * BitVecHead represents the head of a bit vector in the Availability API.
  */
-export class CappuccinoAPIBitVecHead {
-  readonly width: number;
-  readonly index: number;
-
-  constructor(width: number, index: number) {
-    this.width = width;
-    this.index = index;
-  }
+export class BitVecHead {
+  constructor(
+    public readonly width: number,
+    public readonly index: number,
+  ) {}
 
   toJSON() {
-    return cappuccinoAPIBitVecHeadCodec.encode(this);
+    return bitVecHeadCodec.encode(this);
   }
 }
 
-export class CappuccinoAPIBitVecHeadDecoder implements Converter<
-  unknown,
-  CappuccinoAPIBitVecHead
-> {
-  convert(input: unknown): CappuccinoAPIBitVecHead {
+export class BitVecHeadDecoder implements Converter<unknown, BitVecHead> {
+  convert(input: unknown): BitVecHead {
     assertRecordWithKeys(input, 'width', 'index');
 
-    return new CappuccinoAPIBitVecHead(
+    return new BitVecHead(
       numberCodec.decode(input.width),
       numberCodec.decode(input.index),
     );
   }
 }
 
-export class CappuccinoAPIBitVecHeadEncoder implements Converter<CappuccinoAPIBitVecHead> {
-  convert(input: CappuccinoAPIBitVecHead) {
-    assertInstanceOf(input, CappuccinoAPIBitVecHead);
+export class BitVecHeadEncoder implements Converter<BitVecHead> {
+  convert(input: BitVecHead) {
+    assertInstanceOf(input, BitVecHead);
 
     return {
       width: numberCodec.encode(input.width),
@@ -48,12 +42,12 @@ export class CappuccinoAPIBitVecHeadEncoder implements Converter<CappuccinoAPIBi
   }
 }
 
-export class CappuccinoAPIBitVecHeadCodec extends TypeCheckingCodec<
-  CappuccinoAPIBitVecHead,
-  ReturnType<InstanceType<new () => CappuccinoAPIBitVecHeadEncoder>['convert']>
+export class BitVecHeadCodec extends TypeCheckingCodec<
+  BitVecHead,
+  ReturnType<InstanceType<new () => BitVecHeadEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoAPIBitVecHeadEncoder();
-  readonly decoder = new CappuccinoAPIBitVecHeadDecoder();
+  readonly encoder = new BitVecHeadEncoder();
+  readonly decoder = new BitVecHeadDecoder();
 }
 
-export const cappuccinoAPIBitVecHeadCodec = new CappuccinoAPIBitVecHeadCodec();
+export const bitVecHeadCodec = new BitVecHeadCodec();

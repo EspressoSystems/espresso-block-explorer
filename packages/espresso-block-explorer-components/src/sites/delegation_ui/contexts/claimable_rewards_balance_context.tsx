@@ -1,7 +1,7 @@
 import { PromiseResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { DataContext } from '@/contexts/data_provider';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { neverPromise } from '@/functional/functional_async';
 import { HeightAndAddress } from '@/service/hotshot_query_service/reward_state/height_and_address';
 import React from 'react';
@@ -29,9 +29,7 @@ export const RetrieveEspressoClaimableRewardsBalance: React.FC<
   const espressoHeight = React.useContext(EspressoBlockHeightContext);
   const accountAddress = React.useContext(RainbowKitAccountAddressContext);
 
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   const currentBlockHeight =
     espressoHeight === undefined || espressoHeight === null || !accountAddress

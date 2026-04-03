@@ -3,67 +3,57 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import {
-  CappuccinoAPIBitVec,
-  cappuccinoAPIBitVecCodec,
-} from '@/service/hotshot_query_service';
-import CappuccinoNodeValidatorResponse from './node_validator_response';
+import { BitVec, bitVecCodec } from '@/service/hotshot_query_service';
+import NodeValidatorResponse from './node_validator_response';
 
 /**
- * Messages from the Cappuccino Node Validator take the form of:
+ * Messages from the Node Validator take the form of:
  * { "MessageType": MessageType }
  */
 
 /**
  */
-export const kCappuccinoLatestVotersType = 'LatestVoters' as const;
+export const kLatestVotersType = 'LatestVoters' as const;
 
 /**
- * CappuccinoLatestVoters is a response from the Cappuccino node
+ * LatestVoters is a response from the node
  * validator that contains a snapshot of the voters in the network.
  */
-export class CappuccinoLatestVoters extends CappuccinoNodeValidatorResponse {
-  readonly latestVoter: CappuccinoAPIBitVec;
+export class LatestVoters extends NodeValidatorResponse {
+  readonly latestVoter: BitVec;
 
-  constructor(latestVoter: CappuccinoAPIBitVec) {
+  constructor(latestVoter: BitVec) {
     super();
     this.latestVoter = latestVoter;
   }
 
   toJSON() {
-    return cappuccinoLatestVotersCodec.encode(this);
+    return latestVotersCodec.encode(this);
   }
 }
 
-class CappuccinoLatestVotersDecoder implements Converter<
-  unknown,
-  CappuccinoLatestVoters
-> {
-  convert(input: unknown): CappuccinoLatestVoters {
-    assertRecordWithKeys(input, kCappuccinoLatestVotersType);
+class LatestVotersDecoder implements Converter<unknown, LatestVoters> {
+  convert(input: unknown): LatestVoters {
+    assertRecordWithKeys(input, kLatestVotersType);
 
-    return new CappuccinoLatestVoters(
-      cappuccinoAPIBitVecCodec.decode(input[kCappuccinoLatestVotersType]),
-    );
+    return new LatestVoters(bitVecCodec.decode(input[kLatestVotersType]));
   }
 }
 
-class CappuccinoLatestVotersEncoder implements Converter<CappuccinoLatestVoters> {
-  convert(input: CappuccinoLatestVoters) {
+class LatestVotersEncoder implements Converter<LatestVoters> {
+  convert(input: LatestVoters) {
     return {
-      [kCappuccinoLatestVotersType]: cappuccinoAPIBitVecCodec.encode(
-        input.latestVoter,
-      ),
+      [kLatestVotersType]: bitVecCodec.encode(input.latestVoter),
     };
   }
 }
 
-class CappuccinoLatestVotersCodec extends TypeCheckingCodec<
-  CappuccinoLatestVoters,
-  ReturnType<InstanceType<new () => CappuccinoLatestVotersEncoder>['convert']>
+class LatestVotersCodec extends TypeCheckingCodec<
+  LatestVoters,
+  ReturnType<InstanceType<new () => LatestVotersEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoLatestVotersEncoder();
-  readonly decoder = new CappuccinoLatestVotersDecoder();
+  readonly encoder = new LatestVotersEncoder();
+  readonly decoder = new LatestVotersDecoder();
 }
 
-export const cappuccinoLatestVotersCodec = new CappuccinoLatestVotersCodec();
+export const latestVotersCodec = new LatestVotersCodec();

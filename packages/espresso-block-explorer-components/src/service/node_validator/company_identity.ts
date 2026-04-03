@@ -6,25 +6,22 @@ import {
 import { stringCodec } from '@/convert/codec/string';
 
 /**
- * CappuccinoCompanyIdentity represents the identity of a Cappuccino company.
+ * CompanyIdentity represents the identity of a company.
  * It contains information that pertains to the company running this node.
  */
-export default class CappuccinoCompanyIdentity {
-  readonly name: string;
-  readonly website: string;
-
-  constructor(name: string, website: string) {
-    this.name = name;
-    this.website = website;
-  }
+export default class CompanyIdentity {
+  constructor(
+    public readonly name: string,
+    public readonly website: string,
+  ) {}
 
   toJSON() {
-    return cappuccinoCompanyIdentityCodec.encode(this);
+    return companyIdentityCodec.encode(this);
   }
 }
 
-class CappuccinoCompanyIdentityEncoder implements Converter<CappuccinoCompanyIdentity> {
-  convert(input: CappuccinoCompanyIdentity) {
+class CompanyIdentityEncoder implements Converter<CompanyIdentity> {
+  convert(input: CompanyIdentity) {
     return {
       name: stringCodec.encode(input.name),
       website: stringCodec.encode(input.website),
@@ -32,24 +29,20 @@ class CappuccinoCompanyIdentityEncoder implements Converter<CappuccinoCompanyIde
   }
 }
 
-class CappuccinoCompanyIdentityDecoder implements Converter<
-  unknown,
-  CappuccinoCompanyIdentity
-> {
+class CompanyIdentityDecoder implements Converter<unknown, CompanyIdentity> {
   convert(input: unknown) {
     assertRecordWithKeys(input, 'name', 'website');
 
-    return new CappuccinoCompanyIdentity(
+    return new CompanyIdentity(
       stringCodec.decode(input.name),
       stringCodec.decode(input.website),
     );
   }
 }
 
-class CappuccinoCompanyIdentityCodec extends TypeCheckingCodec<CappuccinoCompanyIdentity> {
-  readonly encoder = new CappuccinoCompanyIdentityEncoder();
-  readonly decoder = new CappuccinoCompanyIdentityDecoder();
+class CompanyIdentityCodec extends TypeCheckingCodec<CompanyIdentity> {
+  readonly encoder = new CompanyIdentityEncoder();
+  readonly decoder = new CompanyIdentityDecoder();
 }
 
-export const cappuccinoCompanyIdentityCodec =
-  new CappuccinoCompanyIdentityCodec();
+export const companyIdentityCodec = new CompanyIdentityCodec();

@@ -5,62 +5,59 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import {
-  CappuccinoExplorerTransactionSummary,
-  cappuccinoExplorerTransactionSummaryArrayCodec,
+  ExplorerTransactionSummary,
+  explorerTransactionSummaryArrayCodec,
 } from './transaction_summary';
 
-export class CappuccinoExplorerGetTransactionSummariesResponse {
-  readonly transactionSummaries: CappuccinoExplorerTransactionSummary[];
-
-  constructor(transactionSummaries: CappuccinoExplorerTransactionSummary[]) {
-    this.transactionSummaries = transactionSummaries;
-  }
+/**
+ * ExplorerGetTransactionSummariesResponse is the response to a request to
+ * the Explorer API for transaction summaries.
+ */
+export class ExplorerGetTransactionSummariesResponse {
+  constructor(
+    public readonly transactionSummaries: ExplorerTransactionSummary[],
+  ) {}
 
   toJSON() {
-    return cappuccinoExplorerGetTransactionSummariesResponseCodec.encode(this);
+    return explorerGetTransactionSummariesResponseCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesResponseDecoder implements Converter<
+class ExplorerGetTransactionSummariesResponseDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetTransactionSummariesResponse
+  ExplorerGetTransactionSummariesResponse
 > {
-  convert(input: unknown): CappuccinoExplorerGetTransactionSummariesResponse {
+  convert(input: unknown): ExplorerGetTransactionSummariesResponse {
     assertRecordWithKeys(input, 'transaction_summaries');
 
-    return new CappuccinoExplorerGetTransactionSummariesResponse(
-      cappuccinoExplorerTransactionSummaryArrayCodec.decode(
-        input.transaction_summaries,
-      ),
+    return new ExplorerGetTransactionSummariesResponse(
+      explorerTransactionSummaryArrayCodec.decode(input.transaction_summaries),
     );
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesResponseEncoder implements Converter<
-  CappuccinoExplorerGetTransactionSummariesResponse,
+class ExplorerGetTransactionSummariesResponseEncoder implements Converter<
+  ExplorerGetTransactionSummariesResponse,
   unknown
 > {
-  convert(input: CappuccinoExplorerGetTransactionSummariesResponse): unknown {
-    assertInstanceOf(input, CappuccinoExplorerGetTransactionSummariesResponse);
+  convert(input: ExplorerGetTransactionSummariesResponse): unknown {
+    assertInstanceOf(input, ExplorerGetTransactionSummariesResponse);
 
     return {
-      transaction_summaries:
-        cappuccinoExplorerTransactionSummaryArrayCodec.encode(
-          input.transactionSummaries,
-        ),
+      transaction_summaries: explorerTransactionSummaryArrayCodec.encode(
+        input.transactionSummaries,
+      ),
     };
   }
 }
 
-class CappuccinoExplorerGetTransactionSummariesResponseCodec extends Codec<
-  CappuccinoExplorerGetTransactionSummariesResponse,
+class ExplorerGetTransactionSummariesResponseCodec extends Codec<
+  ExplorerGetTransactionSummariesResponse,
   unknown
 > {
-  readonly encoder =
-    new CappuccinoExplorerGetTransactionSummariesResponseEncoder();
-  readonly decoder =
-    new CappuccinoExplorerGetTransactionSummariesResponseDecoder();
+  readonly encoder = new ExplorerGetTransactionSummariesResponseEncoder();
+  readonly decoder = new ExplorerGetTransactionSummariesResponseDecoder();
 }
 
-export const cappuccinoExplorerGetTransactionSummariesResponseCodec =
-  new CappuccinoExplorerGetTransactionSummariesResponseCodec();
+export const explorerGetTransactionSummariesResponseCodec =
+  new ExplorerGetTransactionSummariesResponseCodec();

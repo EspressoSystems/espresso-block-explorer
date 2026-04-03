@@ -1,6 +1,6 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import InvalidTypeError from '@/errors/invalid_type_error';
-import CappuccinoNodeValidatorRequest, {
+import NodeValidatorRequest, {
   kRequestBlocksSnapshotValue,
   kRequestHistogramSnapshotValue,
   kRequestNodeIdentitySnapshotValue,
@@ -25,20 +25,20 @@ import CappuccinoNodeValidatorRequest, {
   SubscribeVoters,
 } from './node_validator_request';
 
-class CappuccinoNodeValidatorRequestEncoder implements Converter<
-  CappuccinoNodeValidatorRequest,
+class NodeValidatorRequestEncoder implements Converter<
+  NodeValidatorRequest,
   string
 > {
-  convert(input: CappuccinoNodeValidatorRequest): string {
+  convert(input: NodeValidatorRequest): string {
     return input.valueOf();
   }
 }
 
-class CappuccinoNodeValidatorRequestDecoder implements Converter<
+class NodeValidatorRequestDecoder implements Converter<
   unknown,
-  CappuccinoNodeValidatorRequest
+  NodeValidatorRequest
 > {
-  convert(input: unknown): CappuccinoNodeValidatorRequest {
+  convert(input: unknown): NodeValidatorRequest {
     if (typeof input !== 'string') {
       throw new InvalidTypeError(typeof input, 'string');
     }
@@ -68,20 +68,19 @@ class CappuccinoNodeValidatorRequestDecoder implements Converter<
         return new RequestStakeTableSnapshot();
 
       default:
-        throw new InvalidTypeError(input, 'CappuccinoNodeValidatorRequest');
+        throw new InvalidTypeError(input, 'NodeValidatorRequest');
     }
   }
 }
 
-class CappuccinoNodeValidatorRequestCodec extends TypeCheckingCodec<
-  CappuccinoNodeValidatorRequest,
+class NodeValidatorRequestCodec extends TypeCheckingCodec<
+  NodeValidatorRequest,
   string
 > {
-  readonly encoder: Converter<CappuccinoNodeValidatorRequest, string> =
-    new CappuccinoNodeValidatorRequestEncoder();
-  readonly decoder: Converter<string, CappuccinoNodeValidatorRequest> =
-    new CappuccinoNodeValidatorRequestDecoder();
+  readonly encoder: Converter<NodeValidatorRequest, string> =
+    new NodeValidatorRequestEncoder();
+  readonly decoder: Converter<string, NodeValidatorRequest> =
+    new NodeValidatorRequestDecoder();
 }
 
-export const cappuccinoNodeValidatorRequestCodec =
-  new CappuccinoNodeValidatorRequestCodec();
+export const nodeValidatorRequestCodec = new NodeValidatorRequestCodec();

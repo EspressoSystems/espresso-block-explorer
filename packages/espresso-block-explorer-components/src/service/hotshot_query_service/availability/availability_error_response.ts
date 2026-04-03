@@ -7,10 +7,10 @@ import {
 import { espressoErrorCodec } from '@/errors/registry';
 
 /**
- * CappuccinoAvailabilityErrorResponse is a response that is returned when an error
- * occurs while querying the Cappuccino Availability API.
+ * AvailabilityErrorResponse is a response that is returned when an error
+ * occurs while querying the Availability API.
  */
-export class CappuccinoAvailabilityErrorResponse {
+export class AvailabilityErrorResponse {
   readonly availability: unknown;
 
   constructor(availability: unknown) {
@@ -18,26 +18,26 @@ export class CappuccinoAvailabilityErrorResponse {
   }
 
   toJSON() {
-    return cappuccinoAvailabilityErrorResponseCodec.encode(this);
+    return availabilityErrorResponseCodec.encode(this);
   }
 }
 
-class CappuccinoAvailabilityErrorResponseDecoder implements Converter<
+class AvailabilityErrorResponseDecoder implements Converter<
   unknown,
-  CappuccinoAvailabilityErrorResponse
+  AvailabilityErrorResponse
 > {
-  convert(input: unknown): CappuccinoAvailabilityErrorResponse {
+  convert(input: unknown): AvailabilityErrorResponse {
     assertRecordWithKeys(input, 'Availability');
 
-    return new CappuccinoAvailabilityErrorResponse(
+    return new AvailabilityErrorResponse(
       espressoErrorCodec.decode(input.Availability),
     );
   }
 }
 
-class CappuccinoAvailabilityErrorResponseEncoder implements Converter<CappuccinoAvailabilityErrorResponse> {
-  convert(input: CappuccinoAvailabilityErrorResponse) {
-    assertInstanceOf(input, CappuccinoAvailabilityErrorResponse);
+class AvailabilityErrorResponseEncoder implements Converter<AvailabilityErrorResponse> {
+  convert(input: AvailabilityErrorResponse) {
+    assertInstanceOf(input, AvailabilityErrorResponse);
 
     return {
       Availability: espressoErrorCodec.encode(input.availability),
@@ -45,29 +45,27 @@ class CappuccinoAvailabilityErrorResponseEncoder implements Converter<Cappuccino
   }
 }
 
-class CappuccinoAvailabilityErrorResponseCodec extends TypeCheckingCodec<
-  CappuccinoAvailabilityErrorResponse,
+class AvailabilityErrorResponseCodec extends TypeCheckingCodec<
+  AvailabilityErrorResponse,
   ReturnType<
-    InstanceType<
-      new () => CappuccinoAvailabilityErrorResponseEncoder
-    >['convert']
+    InstanceType<new () => AvailabilityErrorResponseEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoAvailabilityErrorResponseEncoder();
-  readonly decoder = new CappuccinoAvailabilityErrorResponseDecoder();
+  readonly encoder = new AvailabilityErrorResponseEncoder();
+  readonly decoder = new AvailabilityErrorResponseDecoder();
 }
 
-export const cappuccinoAvailabilityErrorResponseCodec =
-  new CappuccinoAvailabilityErrorResponseCodec();
+export const availabilityErrorResponseCodec =
+  new AvailabilityErrorResponseCodec();
 
-class UnwrappedCappuccinoAvailabilityErrorResponseDecoder implements Converter<
+class UnwrappedAvailabilityErrorResponseDecoder implements Converter<
   unknown,
   unknown
 > {
   convert(input: unknown): unknown {
-    return cappuccinoAvailabilityErrorResponseCodec.decode(input).availability;
+    return availabilityErrorResponseCodec.decode(input).availability;
   }
 }
 
-export const unwrappedCappuccinoAvailabilityErrorResponseDecoder =
-  new UnwrappedCappuccinoAvailabilityErrorResponseDecoder();
+export const unwrappedAvailabilityErrorResponseDecoder =
+  new UnwrappedAvailabilityErrorResponseDecoder();

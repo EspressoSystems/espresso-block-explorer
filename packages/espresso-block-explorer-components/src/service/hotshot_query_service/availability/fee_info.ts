@@ -7,39 +7,36 @@ import {
 } from '@/convert/codec/convert';
 
 /**
- * CappuccinoFeeInfo represents the fee information in the Cappuccino API.
+ * AvailabilityFeeInfo represents the fee information in the Availability API.
  */
-export class CappuccinoFeeInfo {
-  public readonly account: ArrayBuffer;
-  public readonly amount: ArrayBuffer;
-
-  constructor(account: ArrayBuffer, amount: ArrayBuffer) {
-    this.account = account;
-    this.amount = amount;
-  }
+export class AvailabilityFeeInfo {
+  constructor(
+    public readonly account: ArrayBuffer,
+    public readonly amount: ArrayBuffer,
+  ) {}
 
   toJSON() {
-    return cappuccinoFeeInfoCodec.encode(this);
+    return availabilityFeeInfoCodec.encode(this);
   }
 }
 
-class CappuccinoFeeInfoDecoder implements Converter<
+class AvailabilityFeeInfoDecoder implements Converter<
   unknown,
-  CappuccinoFeeInfo
+  AvailabilityFeeInfo
 > {
-  convert(input: unknown): CappuccinoFeeInfo {
+  convert(input: unknown): AvailabilityFeeInfo {
     assertRecordWithKeys(input, 'account', 'amount');
 
-    return new CappuccinoFeeInfo(
+    return new AvailabilityFeeInfo(
       hexArrayBufferCodec.decode(input.account),
       hexArrayBufferCodec.decode(input.amount),
     );
   }
 }
 
-class CappuccinoFeeInfoEncoder implements Converter<CappuccinoFeeInfo> {
-  convert(input: CappuccinoFeeInfo) {
-    assertInstanceOf(input, CappuccinoFeeInfo);
+class AvailabilityFeeInfoEncoder implements Converter<AvailabilityFeeInfo> {
+  convert(input: AvailabilityFeeInfo) {
+    assertInstanceOf(input, AvailabilityFeeInfo);
 
     return {
       account: hexArrayBufferCodec.encode(input.account),
@@ -48,12 +45,12 @@ class CappuccinoFeeInfoEncoder implements Converter<CappuccinoFeeInfo> {
   }
 }
 
-class CappuccinoFeeInfoCodec extends TypeCheckingCodec<
-  CappuccinoFeeInfo,
-  ReturnType<InstanceType<new () => CappuccinoFeeInfoEncoder>['convert']>
+class AvailabilityFeeInfoCodec extends TypeCheckingCodec<
+  AvailabilityFeeInfo,
+  ReturnType<InstanceType<new () => AvailabilityFeeInfoEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoFeeInfoEncoder();
-  readonly decoder = new CappuccinoFeeInfoDecoder();
+  readonly encoder = new AvailabilityFeeInfoEncoder();
+  readonly decoder = new AvailabilityFeeInfoDecoder();
 }
 
-export const cappuccinoFeeInfoCodec = new CappuccinoFeeInfoCodec();
+export const availabilityFeeInfoCodec = new AvailabilityFeeInfoCodec();

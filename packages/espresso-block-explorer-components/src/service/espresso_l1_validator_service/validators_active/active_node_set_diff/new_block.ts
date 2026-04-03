@@ -5,8 +5,8 @@ import {
 } from '@/convert/codec/convert';
 import { numberArrayCodec, numberCodec } from '@/convert/codec/number';
 import {
-  CappuccinoAPIBitVec,
-  cappuccinoAPIBitVecCodec,
+  BitVec,
+  bitVecCodec,
 } from '@/service/hotshot_query_service/availability/bit_vec';
 import { ActiveNodeSetDiff } from './active_node_set_diff';
 
@@ -18,7 +18,7 @@ export class ActiveNodeSetDiffNewBlock extends ActiveNodeSetDiff {
   constructor(
     public readonly leaderIndex: number,
     public readonly failedLeaders: number[],
-    public readonly votersBitVec: CappuccinoAPIBitVec,
+    public readonly votersBitVec: BitVec,
   ) {
     super();
     Object.freeze(this);
@@ -42,7 +42,7 @@ class ActiveNodeSetDiffNewBlockJSONDecoder implements Converter<
     return new ActiveNodeSetDiffNewBlock(
       numberCodec.decode(input.leader),
       numberArrayCodec.decode(input.failed_leaders),
-      cappuccinoAPIBitVecCodec.decode(input.voters),
+      bitVecCodec.decode(input.voters),
     );
   }
 }
@@ -59,7 +59,7 @@ class ActiveNodeSetDiffNewBlockJSONEncoder implements Converter<
     return {
       leader: numberCodec.encode(input.leaderIndex),
       failed_leaders: numberArrayCodec.encode(input.failedLeaders),
-      voters: cappuccinoAPIBitVecCodec.encode(input.votersBitVec),
+      voters: bitVecCodec.encode(input.votersBitVec),
     };
   }
 }

@@ -1,36 +1,36 @@
 import UnimplementedError from '@/errors/unimplemented_error';
-import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer_api';
-import { CappuccinoExplorerGetBlockDetailResponse } from '../get_block_detail_response';
-import { CappuccinoExplorerGetBlockSummariesResponse } from '../get_block_summaries_response';
-import { CappuccinoExplorerGetExplorerSummaryResponse } from '../get_explorer_summary_response';
-import { CappuccinoExplorerGetSearchResultResponse } from '../get_search_result_response';
-import { CappuccinoExplorerGetTransactionDetailResponse } from '../get_transaction_detail_response';
-import { CappuccinoExplorerGetTransactionSummariesResponse } from '../get_transaction_summaries_response';
+import { HotShotQueryServiceExplorerAPI } from '../explorer_api';
+import { ExplorerGetBlockDetailResponse } from '../get_block_detail_response';
+import { ExplorerGetBlockSummariesResponse } from '../get_block_summaries_response';
+import { ExplorerGetExplorerSummaryResponse } from '../get_explorer_summary_response';
+import { ExplorerGetSearchResultResponse } from '../get_search_result_response';
+import { ExplorerGetTransactionDetailResponse } from '../get_transaction_detail_response';
+import { ExplorerGetTransactionSummariesResponse } from '../get_transaction_summaries_response';
 
 /**
- * UnimplementedCappuccinoHotShotQueryServiceExplorerAPI is a class that
- * implements the CappuccinoHotShotQueryServiceExplorerAPI interface, but
+ * UnimplementedHotShotQueryServiceExplorerAPI is a class that
+ * implements the HotShotQueryServiceExplorerAPI interface, but
  * throws an UnimplementedError for all methods. This class is meant to be used
  * as a placeholder for the Explorer API, and should be replaced with a real
  * implementation.
  */
-export class UnimplementedCappuccinoHotShotQueryServiceExplorerAPI implements CappuccinoHotShotQueryServiceExplorerAPI {
-  async getBlockDetail(): Promise<CappuccinoExplorerGetBlockDetailResponse> {
+export class UnimplementedHotShotQueryServiceExplorerAPI implements HotShotQueryServiceExplorerAPI {
+  async getBlockDetail(): Promise<ExplorerGetBlockDetailResponse> {
     throw new UnimplementedError();
   }
-  async getBlockSummaries(): Promise<CappuccinoExplorerGetBlockSummariesResponse> {
+  async getBlockSummaries(): Promise<ExplorerGetBlockSummariesResponse> {
     throw new UnimplementedError();
   }
-  async getTransactionDetail(): Promise<CappuccinoExplorerGetTransactionDetailResponse> {
+  async getTransactionDetail(): Promise<ExplorerGetTransactionDetailResponse> {
     throw new UnimplementedError();
   }
-  async getTransactionSummaries(): Promise<CappuccinoExplorerGetTransactionSummariesResponse> {
+  async getTransactionSummaries(): Promise<ExplorerGetTransactionSummariesResponse> {
     throw new UnimplementedError();
   }
-  async getExplorerOverview(): Promise<CappuccinoExplorerGetExplorerSummaryResponse> {
+  async getExplorerOverview(): Promise<ExplorerGetExplorerSummaryResponse> {
     throw new UnimplementedError();
   }
-  async getSearchResult(): Promise<CappuccinoExplorerGetSearchResultResponse> {
+  async getSearchResult(): Promise<ExplorerGetSearchResultResponse> {
     throw new UnimplementedError();
   }
 }

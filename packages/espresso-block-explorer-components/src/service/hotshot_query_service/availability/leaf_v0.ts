@@ -10,8 +10,11 @@ import {
   TaggedBase64,
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoAPIHeader, cappuccinoAPIHeaderCodec } from './block_header';
-import { CappuccinoAPIPayload, cappuccinoAPIPayloadCodec } from './payload';
+import {
+  AvailabilityAPIHeader,
+  availabilityAPIHeaderCodec,
+} from './block_header';
+import { AvailabilityAPIPayload, availabilityAPIPayloadCodec } from './payload';
 import {
   QuorumCertificateV1,
   quorumCertificateV1Codec,
@@ -32,8 +35,8 @@ export class LeafV0 {
     public readonly view_number: number,
     public readonly justify_qc: QuorumCertificateV1,
     public readonly parent_commitment: TaggedBase64,
-    public readonly block_header: CappuccinoAPIHeader,
-    public readonly block_payload: CappuccinoAPIPayload,
+    public readonly block_header: AvailabilityAPIHeader,
+    public readonly block_payload: AvailabilityAPIPayload,
     public readonly rejected: number[],
     public readonly timestamp: number,
     public readonly proposer_id: ArrayBuffer,
@@ -62,8 +65,8 @@ export class LeafV0Decoder implements Converter<unknown, LeafV0> {
       numberCodec.decode(input.view_number),
       quorumCertificateV1Codec.decode(input.justify_qc),
       taggedBase64Codec.decode(input.parent_commitment),
-      cappuccinoAPIHeaderCodec.decode(input.block_header),
-      cappuccinoAPIPayloadCodec.decode(input.block_payload),
+      availabilityAPIHeaderCodec.decode(input.block_header),
+      availabilityAPIPayloadCodec.decode(input.block_payload),
       numberArrayCodec.decode(input.rejected),
       numberCodec.decode(input.timestamp),
       hexArrayBufferCodec.decode(input.proposer_id),
@@ -79,8 +82,8 @@ export class LeafV0Encoder implements Converter<LeafV0> {
       view_number: numberCodec.encode(input.view_number),
       justify_qc: quorumCertificateV1Codec.encode(input.justify_qc),
       parent_commitment: taggedBase64Codec.encode(input.parent_commitment),
-      block_header: cappuccinoAPIHeaderCodec.encode(input.block_header),
-      block_payload: cappuccinoAPIPayloadCodec.encode(input.block_payload),
+      block_header: availabilityAPIHeaderCodec.encode(input.block_header),
+      block_payload: availabilityAPIPayloadCodec.encode(input.block_payload),
       rejected: numberArrayCodec.encode(input.rejected),
       timestamp: numberCodec.encode(input.timestamp),
       proposer_id: hexArrayBufferCodec.encode(input.proposer_id),

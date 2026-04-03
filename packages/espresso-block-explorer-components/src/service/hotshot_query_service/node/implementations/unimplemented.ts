@@ -1,9 +1,9 @@
 import UnimplementedError from '@/errors/unimplemented_error';
 import { ActiveValidators } from '../active_validators';
-import { CappuccinoHotShotQueryServiceNodeAPI } from '../node_api';
+import { HotShotQueryServiceNodeAPI } from '../node_api';
 import { StakeTable } from '../stake_table';
 
-export class UnimplementedCappuccinoHotShotQueryServiceNodeAPI implements CappuccinoHotShotQueryServiceNodeAPI {
+export class UnimplementedHotShotQueryServiceNodeAPI implements HotShotQueryServiceNodeAPI {
   getStakeTableForEpoch(): Promise<StakeTable> {
     throw new UnimplementedError();
   }

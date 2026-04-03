@@ -1,83 +1,81 @@
 import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
-import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer_api';
+import { HotShotQueryServiceExplorerAPI } from '../explorer_api';
 import {
-  CappuccinoExplorerGetBlockDetailRequest,
-  cappuccinoExplorerGetBlockDetailRequestCodec,
+  ExplorerGetBlockDetailRequest,
+  explorerGetBlockDetailRequestCodec,
 } from '../get_block_detail_request';
-import { cappuccinoExplorerGetBlockDetailResponseCodec } from '../get_block_detail_response';
+import { explorerGetBlockDetailResponseCodec } from '../get_block_detail_response';
 import {
-  CappuccinoExplorerGetBlockSummariesRequest,
-  cappuccinoExplorerGetBlockSummariesRequestCodec,
+  ExplorerGetBlockSummariesRequest,
+  explorerGetBlockSummariesRequestCodec,
 } from '../get_block_summaries_request';
-import { cappuccinoExplorerGetBlockSummariesResponseCodec } from '../get_block_summaries_response';
-import { cappuccinoExplorerGetExplorerSummaryResponseCodec } from '../get_explorer_summary_response';
+import { explorerGetBlockSummariesResponseCodec } from '../get_block_summaries_response';
+import { explorerGetExplorerSummaryResponseCodec } from '../get_explorer_summary_response';
 import {
-  CappuccinoExplorerGetSearchResultRequest,
-  cappuccinoExplorerGetSearchResultRequestCodec,
+  ExplorerGetSearchResultRequest,
+  explorerGetSearchResultRequestCodec,
 } from '../get_search_result_request';
-import { cappuccinoExplorerGetSearchResultResponseCodec } from '../get_search_result_response';
+import { explorerGetSearchResultResponseCodec } from '../get_search_result_response';
 import {
-  CappuccinoExplorerGetTransactionDetailRequest,
-  cappuccinoExplorerGetTransactionDetailRequestCodec,
+  ExplorerGetTransactionDetailRequest,
+  explorerGetTransactionDetailRequestCodec,
 } from '../get_transaction_detail_request';
-import { cappuccinoExplorerGetTransactionDetailResponseCodec } from '../get_transaction_detail_response';
+import { explorerGetTransactionDetailResponseCodec } from '../get_transaction_detail_response';
 import {
-  CappuccinoExplorerGetTransactionSummariesRequest,
-  cappuccinoExplorerGetTransactionSummariesRequestCodec,
+  ExplorerGetTransactionSummariesRequest,
+  explorerGetTransactionSummariesRequestCodec,
 } from '../get_transaction_summaries_request';
-import { cappuccinoExplorerGetTransactionSummariesResponseCodec } from '../get_transaction_summaries_response';
+import { explorerGetTransactionSummariesResponseCodec } from '../get_transaction_summaries_response';
 
 export type ExplorerRequest<
-  Method extends keyof CappuccinoHotShotQueryServiceExplorerAPI =
-    keyof CappuccinoHotShotQueryServiceExplorerAPI,
+  Method extends keyof HotShotQueryServiceExplorerAPI =
+    keyof HotShotQueryServiceExplorerAPI,
 > = WebWorkerRequest<
   'explorer',
   Method,
-  Parameters<CappuccinoHotShotQueryServiceExplorerAPI[Method]>
+  Parameters<HotShotQueryServiceExplorerAPI[Method]>
 >;
 
 export class WebWorkerProxyExplorerAPI {
-  private service: CappuccinoHotShotQueryServiceExplorerAPI;
-  constructor(service: CappuccinoHotShotQueryServiceExplorerAPI) {
+  private service: HotShotQueryServiceExplorerAPI;
+  constructor(service: HotShotQueryServiceExplorerAPI) {
     this.service = service;
   }
 
-  async getBlockDetail(request: CappuccinoExplorerGetBlockDetailRequest) {
-    return cappuccinoExplorerGetBlockDetailResponseCodec.encode(
+  async getBlockDetail(request: ExplorerGetBlockDetailRequest) {
+    return explorerGetBlockDetailResponseCodec.encode(
       await this.service.getBlockDetail(request),
     );
   }
 
-  async getBlockSummaries(request: CappuccinoExplorerGetBlockSummariesRequest) {
-    return cappuccinoExplorerGetBlockSummariesResponseCodec.encode(
+  async getBlockSummaries(request: ExplorerGetBlockSummariesRequest) {
+    return explorerGetBlockSummariesResponseCodec.encode(
       await this.service.getBlockSummaries(request),
     );
   }
 
-  async getTransactionDetail(
-    request: CappuccinoExplorerGetTransactionDetailRequest,
-  ) {
-    return cappuccinoExplorerGetTransactionDetailResponseCodec.encode(
+  async getTransactionDetail(request: ExplorerGetTransactionDetailRequest) {
+    return explorerGetTransactionDetailResponseCodec.encode(
       await this.service.getTransactionDetail(request),
     );
   }
 
   async getTransactionSummaries(
-    request: CappuccinoExplorerGetTransactionSummariesRequest,
+    request: ExplorerGetTransactionSummariesRequest,
   ) {
-    return cappuccinoExplorerGetTransactionSummariesResponseCodec.encode(
+    return explorerGetTransactionSummariesResponseCodec.encode(
       await this.service.getTransactionSummaries(request),
     );
   }
 
   async getExplorerOverview() {
-    return cappuccinoExplorerGetExplorerSummaryResponseCodec.encode(
+    return explorerGetExplorerSummaryResponseCodec.encode(
       await this.service.getExplorerOverview(),
     );
   }
 
-  async getSearchResult(request: CappuccinoExplorerGetSearchResultRequest) {
-    return cappuccinoExplorerGetSearchResultResponseCodec.encode(
+  async getSearchResult(request: ExplorerGetSearchResultRequest) {
+    return explorerGetSearchResultResponseCodec.encode(
       await this.service.getSearchResult(request),
     );
   }
@@ -86,33 +84,25 @@ export class WebWorkerProxyExplorerAPI {
     switch (request.method) {
       case 'getBlockDetail':
         return await this.getBlockDetail(
-          cappuccinoExplorerGetBlockDetailRequestCodec.decode(request.param[0]),
+          explorerGetBlockDetailRequestCodec.decode(request.param[0]),
         );
       case 'getBlockSummaries':
         return await this.getBlockSummaries(
-          cappuccinoExplorerGetBlockSummariesRequestCodec.decode(
-            request.param[0],
-          ),
+          explorerGetBlockSummariesRequestCodec.decode(request.param[0]),
         );
       case 'getTransactionDetail':
         return this.getTransactionDetail(
-          cappuccinoExplorerGetTransactionDetailRequestCodec.decode(
-            request.param[0],
-          ),
+          explorerGetTransactionDetailRequestCodec.decode(request.param[0]),
         );
       case 'getTransactionSummaries':
         return this.getTransactionSummaries(
-          cappuccinoExplorerGetTransactionSummariesRequestCodec.decode(
-            request.param[0],
-          ),
+          explorerGetTransactionSummariesRequestCodec.decode(request.param[0]),
         );
       case 'getExplorerOverview':
         return this.getExplorerOverview();
       case 'getSearchResult':
         return this.getSearchResult(
-          cappuccinoExplorerGetSearchResultRequestCodec.decode(
-            request.param[0],
-          ),
+          explorerGetSearchResultRequestCodec.decode(request.param[0]),
         );
     }
   }

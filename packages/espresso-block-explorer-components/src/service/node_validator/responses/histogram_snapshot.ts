@@ -4,72 +4,62 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import {
-  CappuccinoSummaryHistograms,
-  cappuccinoSummaryHistogramsCodec,
+  SummaryHistograms,
+  summaryHistogramsCodec,
 } from '@/service/hotshot_query_service/explorer/summary_histograms';
-import CappuccinoNodeValidatorResponse from './node_validator_response';
+import NodeValidatorResponse from './node_validator_response';
 
 /**
- * Messages from the Cappuccino Node Validator take the form of:
+ * Messages from the Node Validator take the form of:
  * { "MessageType": MessageType }
  */
 
 /**
- * kCappuccinoHistogramSnapshotType is the type string for the
- * CappuccinoHistogramSnapshot class.
+ * kHistogramSnapshotType is the type string for the HistogramSnapshot class.
  */
-export const kCappuccinoHistogramSnapshotType = 'HistogramSnapshot' as const;
+export const kHistogramSnapshotType = 'HistogramSnapshot' as const;
 
 /**
- * CappuccinoHistogramSnapshot is a response from the Cappuccino node
- * validator that contains a snapshot of the histograms in the network.
+ * HistogramSnapshot is a response from the node validator that contains a
+ * snapshot of the histograms in the network.
  */
-export class CappuccinoHistogramSnapshot extends CappuccinoNodeValidatorResponse {
-  readonly histograms: CappuccinoSummaryHistograms;
-
-  constructor(histograms: CappuccinoSummaryHistograms) {
+export class HistogramSnapshot extends NodeValidatorResponse {
+  constructor(public readonly histograms: SummaryHistograms) {
     super();
-    this.histograms = histograms;
   }
 
   toJSON() {
-    return cappuccinoHistogramSnapshotCodec.encode(this);
+    return histogramSnapshotCodec.encode(this);
   }
 }
 
-class CappuccinoHistogramSnapshotDecoder implements Converter<
+class HistogramSnapshotDecoder implements Converter<
   unknown,
-  CappuccinoHistogramSnapshot
+  HistogramSnapshot
 > {
-  convert(input: unknown): CappuccinoHistogramSnapshot {
-    assertRecordWithKeys(input, kCappuccinoHistogramSnapshotType);
+  convert(input: unknown): HistogramSnapshot {
+    assertRecordWithKeys(input, kHistogramSnapshotType);
 
-    return new CappuccinoHistogramSnapshot(
-      cappuccinoSummaryHistogramsCodec.decode(
-        input[kCappuccinoHistogramSnapshotType],
-      ),
+    return new HistogramSnapshot(
+      summaryHistogramsCodec.decode(input[kHistogramSnapshotType]),
     );
   }
 }
 
-class CappuccinoHistogramSnapshotEncoder implements Converter<CappuccinoHistogramSnapshot> {
-  convert(input: CappuccinoHistogramSnapshot) {
+class HistogramSnapshotEncoder implements Converter<HistogramSnapshot> {
+  convert(input: HistogramSnapshot) {
     return {
-      [kCappuccinoHistogramSnapshotType]:
-        cappuccinoSummaryHistogramsCodec.encode(input.histograms),
+      [kHistogramSnapshotType]: summaryHistogramsCodec.encode(input.histograms),
     };
   }
 }
 
-class CappuccinoHistogramSnapshotCodec extends TypeCheckingCodec<
-  CappuccinoHistogramSnapshot,
-  ReturnType<
-    InstanceType<new () => CappuccinoHistogramSnapshotEncoder>['convert']
-  >
+class HistogramSnapshotCodec extends TypeCheckingCodec<
+  HistogramSnapshot,
+  ReturnType<InstanceType<new () => HistogramSnapshotEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoHistogramSnapshotEncoder();
-  readonly decoder = new CappuccinoHistogramSnapshotDecoder();
+  readonly encoder = new HistogramSnapshotEncoder();
+  readonly decoder = new HistogramSnapshotDecoder();
 }
 
-export const cappuccinoHistogramSnapshotCodec =
-  new CappuccinoHistogramSnapshotCodec();
+export const histogramSnapshotCodec = new HistogramSnapshotCodec();

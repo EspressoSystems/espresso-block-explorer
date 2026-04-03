@@ -4,62 +4,62 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import {
-  CappuccinoAPITransactionNMTEntry,
-  arrayCappuccinoAPITransactionNMTEntryCodec,
-} from './transaction_nmt_entry';
 import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
+import {
+  AvailabilityAPITransactionNMTEntry,
+  arrayAvailabilityAPITransactionNMTEntryCodec,
+} from './transaction_nmt_entry';
 
 /**
- * CappuccinoAPIPayload represents the payload in the Cappuccino API.
+ * AvailabilityAPIPayload represents the payload in the Availability API.
  */
-export class CappuccinoAPIPayload {
-  readonly transaction_nmt: CappuccinoAPITransactionNMTEntry[];
-
-  constructor(transaction_nmt: CappuccinoAPITransactionNMTEntry[]) {
-    this.transaction_nmt = transaction_nmt;
-  }
+export class AvailabilityAPIPayload {
+  constructor(
+    public readonly transaction_nmt: AvailabilityAPITransactionNMTEntry[],
+  ) {}
 
   toJSON() {
-    return cappuccinoAPIPayloadCodec.encode(this);
+    return availabilityAPIPayloadCodec.encode(this);
   }
 }
 
-export class CappuccinoAPIPayloadDecoder implements Converter<
+export class AvailabilityAPIPayloadDecoder implements Converter<
   unknown,
-  CappuccinoAPIPayload
+  AvailabilityAPIPayload
 > {
-  convert(input: unknown): CappuccinoAPIPayload {
+  convert(input: unknown): AvailabilityAPIPayload {
     assertRecordWithKeys(input, 'transaction_nmt');
 
-    return new CappuccinoAPIPayload(
-      arrayCappuccinoAPITransactionNMTEntryCodec.decode(input.transaction_nmt),
+    return new AvailabilityAPIPayload(
+      arrayAvailabilityAPITransactionNMTEntryCodec.decode(
+        input.transaction_nmt,
+      ),
     );
   }
 }
 
-export class CappuccinoAPIPayloadEncoder implements Converter<CappuccinoAPIPayload> {
-  convert(input: CappuccinoAPIPayload) {
-    assertInstanceOf(input, CappuccinoAPIPayload);
+export class AvailabilityAPIPayloadEncoder implements Converter<AvailabilityAPIPayload> {
+  convert(input: AvailabilityAPIPayload) {
+    assertInstanceOf(input, AvailabilityAPIPayload);
 
     return {
-      transaction_nmt: arrayCappuccinoAPITransactionNMTEntryCodec.encode(
+      transaction_nmt: arrayAvailabilityAPITransactionNMTEntryCodec.encode(
         input.transaction_nmt,
       ),
     };
   }
 }
 
-export class CappuccinoAPIPayloadCodec extends TypeCheckingCodec<
-  CappuccinoAPIPayload,
-  ReturnType<InstanceType<new () => CappuccinoAPIPayloadEncoder>['convert']>
+export class AvailabilityAPIPayloadCodec extends TypeCheckingCodec<
+  AvailabilityAPIPayload,
+  ReturnType<InstanceType<new () => AvailabilityAPIPayloadEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoAPIPayloadEncoder();
-  readonly decoder = new CappuccinoAPIPayloadDecoder();
+  readonly encoder = new AvailabilityAPIPayloadEncoder();
+  readonly decoder = new AvailabilityAPIPayloadDecoder();
 }
 
-export const cappuccinoAPIPayloadCodec = new CappuccinoAPIPayloadCodec();
-export const nullableCappuccinoAPIPayloadCodec = new NullCodec(
-  new NullDecoder(cappuccinoAPIPayloadCodec),
-  new NullEncoder(cappuccinoAPIPayloadCodec),
+export const availabilityAPIPayloadCodec = new AvailabilityAPIPayloadCodec();
+export const nullableAvailabilityAPIPayloadCodec = new NullCodec(
+  new NullDecoder(availabilityAPIPayloadCodec),
+  new NullEncoder(availabilityAPIPayloadCodec),
 );

@@ -12,21 +12,21 @@ import { describe, it } from 'vitest';
 import { RequestNodeIdentitySnapshot } from '../../requests/node_validator_request';
 import { NodeValidatorServiceRequest } from '../../requests/node_validator_service_request';
 import {
-  CappuccinoNodeIdentitySnapshot,
-  cappuccinoNodeValidatorResponseCodec,
+  NodeIdentitySnapshot,
+  nodeValidatorResponseCodec,
   NodeValidatorServiceResponse,
 } from '../../responses';
 import { MockWebSocket } from '../../websocket/__test__/mock_web_socket.test';
 import { WebSocketInterface } from '../../websocket/websocket_interface';
-import WebSocketDataCappuccinoNodeValidatorAPI from '../websocket_data';
+import WebSocketDataNodeValidatorAPI from '../websocket_data';
 
-describe('WebSocketDataCappuccinoNodeValidatorAPI', () => {
+describe('WebSocketDataNodeValidatorAPI', () => {
   it('expected work flow', async () => {
     const wsCompleter = createCompleter<MockWebSocket>();
     const sendChannel = createBufferedChannel<string>(10);
     const closeChannel = createBufferedChannel<{}>(10);
 
-    const api = new WebSocketDataCappuccinoNodeValidatorAPI(
+    const api = new WebSocketDataNodeValidatorAPI(
       createBufferedChannel(10),
       createBufferedChannel(10),
       new URL('wss://example.com'),
@@ -115,13 +115,13 @@ describe('WebSocketDataCappuccinoNodeValidatorAPI', () => {
       );
 
       // Then we simulate the WebSocket receiving a response.
-      const responseToSend = new CappuccinoNodeIdentitySnapshot([]);
+      const responseToSend = new NodeIdentitySnapshot([]);
 
       expect(
         ws.dispatchEvent(
           new MessageEvent('message', {
             data: JSON.stringify(
-              cappuccinoNodeValidatorResponseCodec.encode(responseToSend),
+              nodeValidatorResponseCodec.encode(responseToSend),
             ),
           }),
         ),
@@ -135,9 +135,7 @@ describe('WebSocketDataCappuccinoNodeValidatorAPI', () => {
       );
 
       if (response instanceof NodeValidatorServiceResponse) {
-        expect(response.response).toBeInstanceOf(
-          CappuccinoNodeIdentitySnapshot,
-        );
+        expect(response.response).toBeInstanceOf(NodeIdentitySnapshot);
       }
     }
 
@@ -163,7 +161,7 @@ describe('WebSocketDataCappuccinoNodeValidatorAPI', () => {
     const wsChannel = createBufferedChannel<MockWebSocket>(10);
     const sendChannel = createBufferedChannel<string>(10);
 
-    const api = new WebSocketDataCappuccinoNodeValidatorAPI(
+    const api = new WebSocketDataNodeValidatorAPI(
       createBufferedChannel(10),
       createBufferedChannel(10),
       new URL('wss://example.com'),

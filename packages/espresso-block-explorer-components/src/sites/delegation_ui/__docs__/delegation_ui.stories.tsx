@@ -1,5 +1,5 @@
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
-import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
+import { ProvideHotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { ProvideTickEverySecond } from '@/contexts/now_provider';
 import { nullableBigintCodec } from '@/convert/codec/bigint';
 import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
@@ -101,13 +101,13 @@ export const Example: React.FC<ExampleProps> = ({
         <ProvideTickEverySecond>
           <ProvideClaimPortalIntentContext intent={intent}>
             <SpoofAccountAddress account={spoofAccountAddress}>
-              <ProvideCappuccinoHotShotQueryServiceAPIContext>
+              <ProvideHotShotQueryServiceAPIContext>
                 <ProvideL1ValidatorServiceAPIContext>
                   <L1ValidatorServiceMockInjection>
                     <DelegationUI {...rest} />
                   </L1ValidatorServiceMockInjection>
                 </ProvideL1ValidatorServiceAPIContext>
-              </ProvideCappuccinoHotShotQueryServiceAPIContext>
+              </ProvideHotShotQueryServiceAPIContext>
             </SpoofAccountAddress>
           </ProvideClaimPortalIntentContext>
         </ProvideTickEverySecond>
@@ -210,7 +210,7 @@ export const Decaf: Story = {
   args: {
     ...environmentArgsDecafWithContracts,
     l1ValidatorServiceURL:
-      'https://staking-api.decaf.testnet.espresso.network/v0/staking/',
+      'https://cache.decaf.testnet.espresso.network/v0/staking/',
   },
 };
 
@@ -218,7 +218,7 @@ export const Mainnet: Story = {
   args: {
     ...environmentArgsMainnetWithContracts,
     l1ValidatorServiceURL:
-      'https://staking-api.main.net.espresso.network/v0/staking/',
+      'https://cache.main.net.espresso.network/v0/staking/',
   },
 };
 

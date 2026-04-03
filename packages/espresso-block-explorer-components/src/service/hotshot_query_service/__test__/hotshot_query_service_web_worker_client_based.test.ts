@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { CappuccinoExplorerGetBlockDetailRequest } from '../explorer/get_block_detail_request';
-import { CappuccinoExplorerGetBlockSummariesRequest } from '../explorer/get_block_summaries_request';
-import { CappuccinoExplorerGetSearchResultRequest } from '../explorer/get_search_result_request';
-import { CappuccinoExplorerGetTransactionDetailRequest } from '../explorer/get_transaction_detail_request';
-import { CappuccinoExplorerGetTransactionSummariesFilter } from '../explorer/get_transaction_summaries_filter';
-import { CappuccinoExplorerGetTransactionSummariesRequest } from '../explorer/get_transaction_summaries_request';
-import { CappuccinoExplorerGetTransactionSummariesTarget } from '../explorer/get_transaction_summaries_target';
-import { WebWorkerClientBasedCappuccinoHotShotQueryService } from '../implementations/web_worker_client';
+import { ExplorerGetBlockDetailRequest } from '../explorer/get_block_detail_request';
+import { ExplorerGetBlockSummariesRequest } from '../explorer/get_block_summaries_request';
+import { ExplorerGetSearchResultRequest } from '../explorer/get_search_result_request';
+import { ExplorerGetTransactionDetailRequest } from '../explorer/get_transaction_detail_request';
+import { ExplorerGetTransactionSummariesFilter } from '../explorer/get_transaction_summaries_filter';
+import { ExplorerGetTransactionSummariesRequest } from '../explorer/get_transaction_summaries_request';
+import { ExplorerGetTransactionSummariesTarget } from '../explorer/get_transaction_summaries_target';
+import { WebWorkerClientBasedHotShotQueryService } from '../implementations/web_worker_client';
 
 describe('Web worker Client Based', () => {
   describe('Fake Data', { timeout: 10000 }, () => {
-    const client = new WebWorkerClientBasedCappuccinoHotShotQueryService();
+    const client = new WebWorkerClientBasedHotShotQueryService();
 
     describe('Status', () => {
       it('should resolve with data', async () => {
@@ -50,17 +50,17 @@ describe('Web worker Client Based', () => {
       it('should resolve with data', async () => {
         await expect(
           client.explorer.getBlockDetail(
-            CappuccinoExplorerGetBlockDetailRequest.latest(),
+            ExplorerGetBlockDetailRequest.latest(),
           ),
         ).resolves.not.toBeNull();
 
         const latestBlockResult = await client.explorer.getBlockDetail(
-          CappuccinoExplorerGetBlockDetailRequest.latest(),
+          ExplorerGetBlockDetailRequest.latest(),
         );
 
         await expect(
           client.explorer.getBlockDetail(
-            CappuccinoExplorerGetBlockDetailRequest.height(
+            ExplorerGetBlockDetailRequest.height(
               latestBlockResult.blockDetail.height,
             ),
           ),
@@ -68,13 +68,13 @@ describe('Web worker Client Based', () => {
 
         await expect(
           client.explorer.getBlockSummaries(
-            CappuccinoExplorerGetBlockSummariesRequest.latest(10),
+            ExplorerGetBlockSummariesRequest.latest(10),
           ),
         ).resolves.not.toBeNull();
 
         await expect(
           client.explorer.getBlockSummaries(
-            CappuccinoExplorerGetBlockSummariesRequest.from(
+            ExplorerGetBlockSummariesRequest.from(
               latestBlockResult.blockDetail.height,
               10,
             ),
@@ -83,14 +83,14 @@ describe('Web worker Client Based', () => {
 
         await expect(
           client.explorer.getTransactionDetail(
-            CappuccinoExplorerGetTransactionDetailRequest.heightAndOffset(
+            ExplorerGetTransactionDetailRequest.heightAndOffset(
               latestBlockResult.blockDetail.height,
               0,
             ),
           ),
         ).resolves.not.toBeNull();
         const latestTransaction = await client.explorer.getTransactionDetail(
-          CappuccinoExplorerGetTransactionDetailRequest.heightAndOffset(
+          ExplorerGetTransactionDetailRequest.heightAndOffset(
             latestBlockResult.blockDetail.height,
             0,
           ),
@@ -98,21 +98,21 @@ describe('Web worker Client Based', () => {
 
         await expect(
           client.explorer.getTransactionSummaries(
-            new CappuccinoExplorerGetTransactionSummariesRequest(
-              CappuccinoExplorerGetTransactionSummariesTarget.latest(10),
-              CappuccinoExplorerGetTransactionSummariesFilter.none(),
+            new ExplorerGetTransactionSummariesRequest(
+              ExplorerGetTransactionSummariesTarget.latest(10),
+              ExplorerGetTransactionSummariesFilter.none(),
             ),
           ),
         );
 
         await expect(
           client.explorer.getTransactionSummaries(
-            new CappuccinoExplorerGetTransactionSummariesRequest(
-              CappuccinoExplorerGetTransactionSummariesTarget.hash(
+            new ExplorerGetTransactionSummariesRequest(
+              ExplorerGetTransactionSummariesTarget.hash(
                 latestTransaction.transactionDetail.details.hash,
                 10,
               ),
-              CappuccinoExplorerGetTransactionSummariesFilter.namespace(
+              ExplorerGetTransactionSummariesFilter.namespace(
                 latestTransaction.transactionDetail.data[0].namespace,
               ),
             ),
@@ -121,13 +121,13 @@ describe('Web worker Client Based', () => {
 
         await expect(
           client.explorer.getTransactionSummaries(
-            new CappuccinoExplorerGetTransactionSummariesRequest(
-              CappuccinoExplorerGetTransactionSummariesTarget.heightAndOffset(
+            new ExplorerGetTransactionSummariesRequest(
+              ExplorerGetTransactionSummariesTarget.heightAndOffset(
                 latestTransaction.transactionDetail.details.height,
                 0,
                 10,
               ),
-              CappuccinoExplorerGetTransactionSummariesFilter.block(
+              ExplorerGetTransactionSummariesFilter.block(
                 latestTransaction.transactionDetail.details.height,
               ),
             ),
@@ -140,7 +140,7 @@ describe('Web worker Client Based', () => {
 
         await expect(
           client.explorer.getSearchResult(
-            new CappuccinoExplorerGetSearchResultRequest('BLOCK~'),
+            new ExplorerGetSearchResultRequest('BLOCK~'),
           ),
         ).resolves.not.toBeNull();
       });

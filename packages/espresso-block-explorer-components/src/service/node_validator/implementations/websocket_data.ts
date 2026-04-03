@@ -17,10 +17,10 @@ import {
   espressoErrorToWebWorkerProxyResponseConverter,
   webSocketStatusToWebWorkerProxyResponseConverter,
 } from '@/models/web_worker/web_worker_proxy_response_codec';
-import CappuccinoNodeValidatorRequest from '../requests/node_validator_request';
-import { cappuccinoNodeValidatorRequestCodec } from '../requests/node_validator_request_codec';
+import NodeValidatorRequest from '../requests/node_validator_request';
+import { nodeValidatorRequestCodec } from '../requests/node_validator_request_codec';
 import { NodeValidatorServiceRequest } from '../requests/node_validator_service_request';
-import CappuccinoNodeValidatorResponse from '../responses/node_validator_response';
+import NodeValidatorResponse from '../responses/node_validator_response';
 import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 import { WebSocketCloseHandler } from '../websocket/websocket_close_handler';
@@ -51,14 +51,14 @@ const RAPID_RECONNECT_PENALTY_MAX = 5000;
 //   wss://example.com/v0/
 //   ws://localhost:9000/v0/
 
-export default class WebSocketDataCappuccinoNodeValidatorAPI implements WebWorkerNodeValidatorAPI {
+export default class WebSocketDataNodeValidatorAPI implements WebWorkerNodeValidatorAPI {
   readonly responseStream: Channel<WebWorkerProxyResponse>;
   readonly requestStream: Channel<WebWorkerProxyRequest>;
   readonly serviceBaseURL: URL;
   readonly webSocketCreator: (url: URL) => WebSocketInterface;
 
   readonly lifecycleResponseSink: Sink<WebSocketStatus>;
-  readonly nodeValidatorResponseSink: Sink<CappuccinoNodeValidatorResponse>;
+  readonly nodeValidatorResponseSink: Sink<NodeValidatorResponse>;
   readonly errorResponseSink: Sink<unknown>;
   constructor(
     requestStream: Channel<WebWorkerProxyRequest>,
@@ -138,16 +138,12 @@ export default class WebSocketDataCappuccinoNodeValidatorAPI implements WebWorke
     }
   }
 
-  private async handleNodeValidatorRequest(
-    request: CappuccinoNodeValidatorRequest,
-  ) {
+  private async handleNodeValidatorRequest(request: NodeValidatorRequest) {
     this.assertConnected();
     const webSocket = this.webSocket!;
 
     // Every other message should be forwarded to the server.
-    webSocket.send(
-      JSON.stringify(cappuccinoNodeValidatorRequestCodec.encode(request)),
-    );
+    webSocket.send(JSON.stringify(nodeValidatorRequestCodec.encode(request)));
   }
 
   private assertConnected() {

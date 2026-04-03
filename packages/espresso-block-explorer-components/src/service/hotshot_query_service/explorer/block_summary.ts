@@ -13,40 +13,26 @@ import {
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
 
-export class CappuccinoExplorerBlockSummary {
-  readonly hash: TaggedBase64;
-  readonly height: number;
-  readonly proposerID: ArrayBuffer[];
-  readonly numTransactions: number;
-  readonly size: number;
-  readonly time: Date;
-
+export class ExplorerBlockSummary {
   constructor(
-    hash: TaggedBase64,
-    height: number,
-    proposerID: ArrayBuffer[],
-    numTransactions: number,
-    size: number,
-    time: Date,
-  ) {
-    this.hash = hash;
-    this.height = height;
-    this.proposerID = proposerID;
-    this.numTransactions = numTransactions;
-    this.size = size;
-    this.time = time;
-  }
+    public readonly hash: TaggedBase64,
+    public readonly height: number,
+    public readonly proposerID: ArrayBuffer[],
+    public readonly numTransactions: number,
+    public readonly size: number,
+    public readonly time: Date,
+  ) {}
 
   toJSON() {
-    return cappuccinoExplorerBlockSummaryCodec.encode(this);
+    return explorerBlockSummaryCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerBlockSummaryDecoder implements Converter<
+class ExplorerBlockSummaryDecoder implements Converter<
   unknown,
-  CappuccinoExplorerBlockSummary
+  ExplorerBlockSummary
 > {
-  convert(input: unknown): CappuccinoExplorerBlockSummary {
+  convert(input: unknown): ExplorerBlockSummary {
     assertRecordWithKeys(
       input,
       'hash',
@@ -57,7 +43,7 @@ class CappuccinoExplorerBlockSummaryDecoder implements Converter<
       'time',
     );
 
-    return new CappuccinoExplorerBlockSummary(
+    return new ExplorerBlockSummary(
       taggedBase64Codec.decode(input.hash),
       numberCodec.decode(input.height),
       backwardsCompatibleHexArrayBufferCodec.decode(input.proposer_id),
@@ -68,12 +54,12 @@ class CappuccinoExplorerBlockSummaryDecoder implements Converter<
   }
 }
 
-class CappuccinoExplorerBlockSummaryEncoder implements Converter<
-  CappuccinoExplorerBlockSummary,
+class ExplorerBlockSummaryEncoder implements Converter<
+  ExplorerBlockSummary,
   unknown
 > {
-  convert(input: CappuccinoExplorerBlockSummary): unknown {
-    assertInstanceOf(input, CappuccinoExplorerBlockSummary);
+  convert(input: ExplorerBlockSummary): unknown {
+    assertInstanceOf(input, ExplorerBlockSummary);
 
     return {
       hash: taggedBase64Codec.encode(input.hash),
@@ -88,18 +74,14 @@ class CappuccinoExplorerBlockSummaryEncoder implements Converter<
   }
 }
 
-class CappuccinoExplorerBlockSummaryCodec extends Codec<
-  CappuccinoExplorerBlockSummary,
-  unknown
-> {
-  readonly encoder = new CappuccinoExplorerBlockSummaryEncoder();
-  readonly decoder = new CappuccinoExplorerBlockSummaryDecoder();
+class ExplorerBlockSummaryCodec extends Codec<ExplorerBlockSummary, unknown> {
+  readonly encoder = new ExplorerBlockSummaryEncoder();
+  readonly decoder = new ExplorerBlockSummaryDecoder();
 }
 
-export const cappuccinoExplorerBlockSummaryCodec =
-  new CappuccinoExplorerBlockSummaryCodec();
+export const explorerBlockSummaryCodec = new ExplorerBlockSummaryCodec();
 
-export const cappuccinoExplorerBlockSummaryArrayCodec = new ArrayCodec(
-  new ArrayDecoder(cappuccinoExplorerBlockSummaryCodec),
-  new ArrayEncoder(cappuccinoExplorerBlockSummaryCodec),
+export const explorerBlockSummaryArrayCodec = new ArrayCodec(
+  new ArrayDecoder(explorerBlockSummaryCodec),
+  new ArrayEncoder(explorerBlockSummaryCodec),
 );

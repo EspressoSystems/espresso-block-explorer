@@ -4,58 +4,53 @@ import {
   Converter,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import {
-  CappuccinoExplorerBlockDetail,
-  cappuccinoExplorerBlockDetailCodec,
-} from './block_detail';
+import { ExplorerBlockDetail, explorerBlockDetailCodec } from './block_detail';
 
-export class CappuccinoExplorerGetBlockDetailResponse {
-  readonly blockDetail: CappuccinoExplorerBlockDetail;
-
-  constructor(blockDetail: CappuccinoExplorerBlockDetail) {
-    this.blockDetail = blockDetail;
-  }
+/**
+ * ExplorerGetBlockDetailResponse represents the response of the getBlockDetail
+ * request.
+ */
+export class ExplorerGetBlockDetailResponse {
+  constructor(public readonly blockDetail: ExplorerBlockDetail) {}
 
   toJSON() {
-    return cappuccinoExplorerGetBlockDetailResponseCodec.encode(this);
+    return explorerGetBlockDetailResponseCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetBlockDetailResponseDecoder implements Converter<
+class ExplorerGetBlockDetailResponseDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetBlockDetailResponse
+  ExplorerGetBlockDetailResponse
 > {
-  convert(input: unknown): CappuccinoExplorerGetBlockDetailResponse {
+  convert(input: unknown): ExplorerGetBlockDetailResponse {
     assertRecordWithKeys(input, 'block_detail');
 
-    return new CappuccinoExplorerGetBlockDetailResponse(
-      cappuccinoExplorerBlockDetailCodec.decode(input.block_detail),
+    return new ExplorerGetBlockDetailResponse(
+      explorerBlockDetailCodec.decode(input.block_detail),
     );
   }
 }
 
-class CappuccinoExplorerGetBlockDetailResponseEncoder implements Converter<
-  CappuccinoExplorerGetBlockDetailResponse,
+class ExplorerGetBlockDetailResponseEncoder implements Converter<
+  ExplorerGetBlockDetailResponse,
   unknown
 > {
-  convert(input: CappuccinoExplorerGetBlockDetailResponse): unknown {
-    assertInstanceOf(input, CappuccinoExplorerGetBlockDetailResponse);
+  convert(input: ExplorerGetBlockDetailResponse): unknown {
+    assertInstanceOf(input, ExplorerGetBlockDetailResponse);
 
     return {
-      block_detail: cappuccinoExplorerBlockDetailCodec.encode(
-        input.blockDetail,
-      ),
+      block_detail: explorerBlockDetailCodec.encode(input.blockDetail),
     };
   }
 }
 
-class CappuccinoExplorerGetBlockDetailResponseCodec extends Codec<
-  CappuccinoExplorerGetBlockDetailResponse,
+class ExplorerGetBlockDetailResponseCodec extends Codec<
+  ExplorerGetBlockDetailResponse,
   unknown
 > {
-  readonly encoder = new CappuccinoExplorerGetBlockDetailResponseEncoder();
-  readonly decoder = new CappuccinoExplorerGetBlockDetailResponseDecoder();
+  readonly encoder = new ExplorerGetBlockDetailResponseEncoder();
+  readonly decoder = new ExplorerGetBlockDetailResponseDecoder();
 }
 
-export const cappuccinoExplorerGetBlockDetailResponseCodec =
-  new CappuccinoExplorerGetBlockDetailResponseCodec();
+export const explorerGetBlockDetailResponseCodec =
+  new ExplorerGetBlockDetailResponseCodec();

@@ -9,33 +9,33 @@ import { numberCodec } from '@/convert/codec/number';
 import { StringCodec, stringCodec } from '@/convert/codec/string';
 import { latestConstant } from './constants';
 
-export abstract class CappuccinoExplorerGetBlockSummariesRequest {
-  readonly limit: number;
+/**
+ * ExplorerGetBlockSummariesRequest represents a request for the Block
+ * summaries submitted to the Explorer API.
+ */
+export abstract class ExplorerGetBlockSummariesRequest {
   abstract get from(): number | typeof latestConstant;
-
-  constructor(limit: number) {
-    this.limit = limit;
-  }
+  constructor(public readonly limit: number) {}
 
   public static latest(limit: number) {
-    return new CappuccinoExplorerGetBlockSummariesRequestLatest(limit);
+    return new ExplorerGetBlockSummariesRequestLatest(limit);
   }
 
   public static from(from: number, limit: number) {
-    return new CappuccinoExplorerGetBlockSummariesRequestFrom(from, limit);
+    return new ExplorerGetBlockSummariesRequestFrom(from, limit);
   }
 
   toJSON() {
-    return cappuccinoExplorerGetBlockSummariesRequestCodec.encode(this);
+    return explorerGetBlockSummariesRequestCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetBlockSummariesRequestEncoder implements Converter<
-  CappuccinoExplorerGetBlockSummariesRequest,
+class ExplorerGetBlockSummariesRequestEncoder implements Converter<
+  ExplorerGetBlockSummariesRequest,
   unknown
 > {
-  convert(input: CappuccinoExplorerGetBlockSummariesRequest) {
-    assertInstanceOf(input, CappuccinoExplorerGetBlockSummariesRequest);
+  convert(input: ExplorerGetBlockSummariesRequest) {
+    assertInstanceOf(input, ExplorerGetBlockSummariesRequest);
 
     if (isNumber(input.from)) {
       return {
@@ -53,38 +53,38 @@ class CappuccinoExplorerGetBlockSummariesRequestEncoder implements Converter<
   }
 }
 
-class CappuccinoExplorerGetBlockSummariesRequestDecoder implements Converter<
+class ExplorerGetBlockSummariesRequestDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetBlockSummariesRequest
+  ExplorerGetBlockSummariesRequest
 > {
-  convert(input: unknown): CappuccinoExplorerGetBlockSummariesRequest {
+  convert(input: unknown): ExplorerGetBlockSummariesRequest {
     assertRecordWithKeys(input, 'from', 'limit');
 
     if (input.from === latestConstant) {
-      return new CappuccinoExplorerGetBlockSummariesRequestLatest(
+      return new ExplorerGetBlockSummariesRequestLatest(
         numberCodec.decode(input.limit),
       );
     }
 
-    return new CappuccinoExplorerGetBlockSummariesRequestFrom(
+    return new ExplorerGetBlockSummariesRequestFrom(
       numberCodec.decode(input.from),
       numberCodec.decode(input.limit),
     );
   }
 }
 
-class CappuccinoExplorerGetBlockSummariesRequestCodec extends Codec<
-  CappuccinoExplorerGetBlockSummariesRequest,
+class ExplorerGetBlockSummariesRequestCodec extends Codec<
+  ExplorerGetBlockSummariesRequest,
   unknown
 > {
-  readonly encoder = new CappuccinoExplorerGetBlockSummariesRequestEncoder();
-  readonly decoder = new CappuccinoExplorerGetBlockSummariesRequestDecoder();
+  readonly encoder = new ExplorerGetBlockSummariesRequestEncoder();
+  readonly decoder = new ExplorerGetBlockSummariesRequestDecoder();
 }
 
-export const cappuccinoExplorerGetBlockSummariesRequestCodec =
-  new CappuccinoExplorerGetBlockSummariesRequestCodec();
+export const explorerGetBlockSummariesRequestCodec =
+  new ExplorerGetBlockSummariesRequestCodec();
 
-class CappuccinoExplorerGetBlockSummariesRequestLatest extends CappuccinoExplorerGetBlockSummariesRequest {
+class ExplorerGetBlockSummariesRequestLatest extends ExplorerGetBlockSummariesRequest {
   public constructor(limit: number) {
     super(limit);
   }
@@ -94,11 +94,11 @@ class CappuccinoExplorerGetBlockSummariesRequestLatest extends CappuccinoExplore
   }
 }
 
-export class CappuccinoExplorerGetBlockSummariesRequestFrom extends CappuccinoExplorerGetBlockSummariesRequest {
-  readonly from: number;
-
-  public constructor(from: number, limit: number) {
+export class ExplorerGetBlockSummariesRequestFrom extends ExplorerGetBlockSummariesRequest {
+  public constructor(
+    public readonly from: number,
+    limit: number,
+  ) {
     super(limit);
-    this.from = from;
   }
 }

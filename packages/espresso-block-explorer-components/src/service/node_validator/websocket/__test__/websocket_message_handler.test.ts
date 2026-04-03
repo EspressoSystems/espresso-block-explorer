@@ -1,7 +1,7 @@
 import { createBufferedChannel, createChannelToSink } from '@/async/channel';
 import { describe, it } from 'vitest';
-import { CappuccinoNodeIdentitySnapshot } from '../../responses';
-import { cappuccinoNodeValidatorResponseCodec } from '../../responses/node_validator_response_codec';
+import { NodeIdentitySnapshot } from '../../responses';
+import { nodeValidatorResponseCodec } from '../../responses/node_validator_response_codec';
 import { WebSocketMessageHandler } from '../websocket_message_handler';
 import { MockWebSocket } from './mock_web_socket.test';
 
@@ -15,10 +15,10 @@ describe('WebSocketMessageHandler', () => {
     // Add the event listener to the mock WebSocket
     ws.addEventListener('message', handler);
 
-    const nodeIdentities = new CappuccinoNodeIdentitySnapshot([]);
+    const nodeIdentities = new NodeIdentitySnapshot([]);
 
     const data = JSON.stringify(
-      cappuccinoNodeValidatorResponseCodec.encode(nodeIdentities),
+      nodeValidatorResponseCodec.encode(nodeIdentities),
     );
 
     // Create the event
@@ -29,8 +29,6 @@ describe('WebSocketMessageHandler', () => {
 
     const message = channel.poll();
 
-    await expect(message).resolves.toBeInstanceOf(
-      CappuccinoNodeIdentitySnapshot,
-    );
+    await expect(message).resolves.toBeInstanceOf(NodeIdentitySnapshot);
   });
 });

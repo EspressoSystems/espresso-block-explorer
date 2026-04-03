@@ -5,71 +5,63 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import {
-  CappuccinoExplorerTransactionDetailData,
-  cappuccinoExplorerTransactionDetailDataArrayCodec,
+  ExplorerTransactionDetailData,
+  explorerTransactionDetailDataArrayCodec,
 } from './transaction_detail_data';
 import {
-  CappuccinoExplorerTransactionDetailDetails,
-  cappuccinoExplorerTransactionDetailDetailsCodec,
+  ExplorerTransactionDetailDetails,
+  explorerTransactionDetailDetailsCodec,
 } from './transaction_detail_details';
 
-export class CappuccinoExplorerTransactionDetail {
-  readonly details: CappuccinoExplorerTransactionDetailDetails;
-  readonly data: CappuccinoExplorerTransactionDetailData[];
-
+/**
+ * ExplorerTransactionDetail is a class that represents the details of a
+ * transaction in the Explorer API.
+ */
+export class ExplorerTransactionDetail {
   constructor(
-    details: CappuccinoExplorerTransactionDetailDetails,
-    data: CappuccinoExplorerTransactionDetailData[],
-  ) {
-    this.details = details;
-    this.data = data;
-  }
+    public readonly details: ExplorerTransactionDetailDetails,
+    public readonly data: ExplorerTransactionDetailData[],
+  ) {}
 
   toJSON() {
     return cappuccinoExplorerTransactionDetailCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerTransactionDetailDecoder implements Converter<
+class ExplorerTransactionDetailDecoder implements Converter<
   unknown,
-  CappuccinoExplorerTransactionDetail
+  ExplorerTransactionDetail
 > {
-  convert(input: unknown): CappuccinoExplorerTransactionDetail {
+  convert(input: unknown): ExplorerTransactionDetail {
     assertRecordWithKeys(input, 'details', 'data');
 
-    return new CappuccinoExplorerTransactionDetail(
-      cappuccinoExplorerTransactionDetailDetailsCodec.decode(input.details),
-      cappuccinoExplorerTransactionDetailDataArrayCodec.decode(input.data),
+    return new ExplorerTransactionDetail(
+      explorerTransactionDetailDetailsCodec.decode(input.details),
+      explorerTransactionDetailDataArrayCodec.decode(input.data),
     );
   }
 }
 
-class CappuccinoExplorerTransactionDetailEncoder implements Converter<CappuccinoExplorerTransactionDetail> {
-  convert(input: CappuccinoExplorerTransactionDetail) {
-    assertInstanceOf(input, CappuccinoExplorerTransactionDetail);
+class ExplorerTransactionDetailEncoder implements Converter<ExplorerTransactionDetail> {
+  convert(input: ExplorerTransactionDetail) {
+    assertInstanceOf(input, ExplorerTransactionDetail);
 
     return {
-      details: cappuccinoExplorerTransactionDetailDetailsCodec.encode(
-        input.details,
-      ),
-      data: cappuccinoExplorerTransactionDetailDataArrayCodec.encode(
-        input.data,
-      ),
+      details: explorerTransactionDetailDetailsCodec.encode(input.details),
+      data: explorerTransactionDetailDataArrayCodec.encode(input.data),
     };
   }
 }
 
-class CappuccinoExplorerTransactionDetailCodec extends TypeCheckingCodec<
-  CappuccinoExplorerTransactionDetail,
+class ExplorerTransactionDetailCodec extends TypeCheckingCodec<
+  ExplorerTransactionDetail,
   ReturnType<
-    InstanceType<
-      new () => CappuccinoExplorerTransactionDetailEncoder
-    >['convert']
+    InstanceType<new () => ExplorerTransactionDetailEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoExplorerTransactionDetailEncoder();
-  readonly decoder = new CappuccinoExplorerTransactionDetailDecoder();
+  readonly encoder = new ExplorerTransactionDetailEncoder();
+  readonly decoder = new ExplorerTransactionDetailDecoder();
 }
 
 export const cappuccinoExplorerTransactionDetailCodec =
-  new CappuccinoExplorerTransactionDetailCodec();
+  new ExplorerTransactionDetailCodec();

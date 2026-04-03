@@ -3,17 +3,17 @@ import NotFoundError from '@/errors/not_found_error';
 import { firstAsyncIterable } from '@/functional/functional_async';
 import { TaggedBase64 } from '@/models/espresso';
 import { describe, expect, it } from 'vitest';
-import { FetchBasedCappuccinoHotShotQueryService } from '../../../implementations/remote_api';
-import { CappuccinoAvailabilityErrorResponse } from '../../availability_error_response';
-import { CappuccinoAPIBlock } from '../../block';
-import { CappuccinoAPIHeaderImpl } from '../../block_header';
-import { CappuccinoAPIV0HeaderFieldsImpl } from '../../block_header_v0';
-import { CappuccinoBuilderSignature } from '../../builder_signature';
-import { CappuccinoFeeInfo } from '../../fee_info';
-import { CappuccinoNamespaceTable } from '../../namespace_table';
-import { CappuccinoAPIPayload } from '../../payload';
-import { CappuccinoAPITransactionNMTEntry } from '../../transaction_nmt_entry';
-import { CappuccinoVersion, WrappedVersion } from '../../version';
+import { FetchBasedHotShotQueryService } from '../../../implementations/remote_api';
+import { AvailabilityErrorResponse } from '../../availability_error_response';
+import { AvailabilityAPIBlock } from '../../block';
+import { AvailabilityAPIHeaderImpl } from '../../block_header';
+import { AvailabilityAPIV0HeaderFieldsImpl } from '../../block_header_v0';
+import { AvailabilityBuilderSignature } from '../../builder_signature';
+import { AvailabilityFeeInfo } from '../../fee_info';
+import { AvailabilityNamespaceTable } from '../../namespace_table';
+import { AvailabilityAPIPayload } from '../../payload';
+import { AvailabilityAPITransactionNMTEntry } from '../../transaction_nmt_entry';
+import { AvailabilityVersion, WrappedVersion } from '../../version';
 
 /**
  * createFetcherWithResponse is a utility function used for testing that will
@@ -59,14 +59,14 @@ function createFetcherWithJSONResponse<V>(
   );
 }
 
-describe('HotShot Query Service - Cappuccino - Availability API', () => {
+describe('HotShot Query Service - Availability API', () => {
   describe('Mock', () => {
     describe('getBlockFromHeight', () => {
       it('should receive the request as expected', async () => {
-        const returnedValue = new CappuccinoAPIBlock(
-          new CappuccinoAPIHeaderImpl(
-            new WrappedVersion(new CappuccinoVersion(0, 1)),
-            new CappuccinoAPIV0HeaderFieldsImpl(
+        const returnedValue = new AvailabilityAPIBlock(
+          new AvailabilityAPIHeaderImpl(
+            new WrappedVersion(new AvailabilityVersion(0, 1)),
+            new AvailabilityAPIV0HeaderFieldsImpl(
               10,
               11,
               12,
@@ -79,7 +79,7 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
                 'BUILDER',
                 new Uint8Array([13, 14, 15, 16]).buffer,
               ),
-              new CappuccinoNamespaceTable(
+              new AvailabilityNamespaceTable(
                 new Uint8Array([17, 18, 19, 20]).buffer,
               ),
               new TaggedBase64(
@@ -87,19 +87,19 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
                 new Uint8Array([21, 22, 23, 24]).buffer,
               ),
               new TaggedBase64('FEE', new Uint8Array([25, 26, 27, 28]).buffer),
-              new CappuccinoFeeInfo(
+              new AvailabilityFeeInfo(
                 new Uint8Array([37, 38, 39, 40]).buffer,
                 new Uint8Array([41, 42, 43, 44]).buffer,
               ),
-              new CappuccinoBuilderSignature(
+              new AvailabilityBuilderSignature(
                 new Uint8Array([29, 30, 31, 32]).buffer,
                 new Uint8Array([33, 34, 35, 36]).buffer,
                 2,
               ),
             ),
           ),
-          new CappuccinoAPIPayload([
-            new CappuccinoAPITransactionNMTEntry(3, [45, 46, 47, 48]),
+          new AvailabilityAPIPayload([
+            new AvailabilityAPITransactionNMTEntry(3, [45, 46, 47, 48]),
           ]),
           new TaggedBase64(
             'BLOCK_SIGNATURE',
@@ -111,7 +111,7 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
 
         const requestChannel =
           createBufferedChannel<Parameters<typeof fetch>>(4);
-        const client = new FetchBasedCappuccinoHotShotQueryService(
+        const client = new FetchBasedHotShotQueryService(
           createFetcherWithJSONResponse(requestChannel, 200, returnedValue),
           new URL('https://example.com/v0/'),
         );
@@ -137,12 +137,12 @@ describe('HotShot Query Service - Cappuccino - Availability API', () => {
     });
 
     it('should throw an error when decodable', async () => {
-      const returnedValue = new CappuccinoAvailabilityErrorResponse(
+      const returnedValue = new AvailabilityErrorResponse(
         new NotFoundError('Block not found'),
       );
 
       const requestChannel = createBufferedChannel<Parameters<typeof fetch>>(4);
-      const client = new FetchBasedCappuccinoHotShotQueryService(
+      const client = new FetchBasedHotShotQueryService(
         createFetcherWithJSONResponse(requestChannel, 500, returnedValue),
         new URL('https://example.com/v0/'),
       );

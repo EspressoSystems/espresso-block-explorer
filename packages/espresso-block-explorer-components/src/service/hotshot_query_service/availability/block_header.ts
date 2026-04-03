@@ -4,109 +4,109 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import {
-  cappuccinoAPIV0HeaderCodec,
-  type CappuccinoAPIV0HeaderFields,
+  availabilityAPIV0HeaderCodec,
+  type AvailabilityAPIV0HeaderFields,
 } from './block_header_v0';
 import { WrappedVersion, wrappedVersionCodec } from './version';
 import {
-  AbstractCappuccinoAPIV2HeaderFields,
-  cappuccinoAPIV2HeaderFieldsCodec,
+  AbstractAvailabilityAPIV2HeaderFields,
+  availabilityAPIV2HeaderFieldsCodec,
 } from './block_header_v2';
 import {
-  AbstractCappuccinoAPIV4Header,
-  cappuccinoAPIV4HeaderCodec,
+  AbstractAvailabilityAPIV4Header,
+  availabilityAPIV4HeaderCodec,
 } from './block_header_v4';
 
-export interface CappuccinoAPIHeaderFields extends CappuccinoAPIV0HeaderFields {}
+export interface AvailabilityAPIHeaderFields extends AvailabilityAPIV0HeaderFields {}
 
-export interface CappuccinoAPIHeader<
-  F extends CappuccinoAPIHeaderFields = CappuccinoAPIHeaderFields,
+export interface AvailabilityAPIHeader<
+  F extends AvailabilityAPIHeaderFields = AvailabilityAPIHeaderFields,
 > {
   readonly fields: F;
   readonly version: WrappedVersion;
 }
 
-export class AbstractCappuccinoAPIHeader<
-  F extends CappuccinoAPIHeaderFields,
-> implements CappuccinoAPIHeader<F> {
+export class AbstractAvailabilityAPIHeader<
+  F extends AvailabilityAPIHeaderFields,
+> implements AvailabilityAPIHeader<F> {
   constructor(
     public readonly version: WrappedVersion,
     public readonly fields: F,
   ) {}
 }
 
-export class CappuccinoAPIHeaderImpl<
-  F extends CappuccinoAPIHeaderFields,
-> extends AbstractCappuccinoAPIHeader<F> {
+export class AvailabilityAPIHeaderImpl<
+  F extends AvailabilityAPIHeaderFields,
+> extends AbstractAvailabilityAPIHeader<F> {
   constructor(version: WrappedVersion, fields: F) {
     super(version, fields);
     Object.freeze(this);
   }
 }
 
-class CappuccinoAPIHeaderDecoder implements Converter<
+class AvailabilityAPIHeaderDecoder implements Converter<
   unknown,
-  CappuccinoAPIHeader<CappuccinoAPIHeaderFields>
+  AvailabilityAPIHeader<AvailabilityAPIHeaderFields>
 > {
-  convert(input: unknown): CappuccinoAPIHeader<CappuccinoAPIHeaderFields> {
+  convert(input: unknown): AvailabilityAPIHeader<AvailabilityAPIHeaderFields> {
     assertRecordWithKeys(input, 'version', 'fields');
 
     // Decode the version to determine how to decode the header
     const version = wrappedVersionCodec.decode(input.version);
 
     if (version.version.major === 0 && version.version.minor >= 4) {
-      return new CappuccinoAPIHeaderImpl(
+      return new AvailabilityAPIHeaderImpl(
         version,
-        cappuccinoAPIV4HeaderCodec.decode(input.fields),
+        availabilityAPIV4HeaderCodec.decode(input.fields),
       );
     }
 
     if (version.version.major === 0 && version.version.minor >= 2) {
-      return new CappuccinoAPIHeaderImpl(
+      return new AvailabilityAPIHeaderImpl(
         version,
-        cappuccinoAPIV2HeaderFieldsCodec.decode(input.fields),
+        availabilityAPIV2HeaderFieldsCodec.decode(input.fields),
       );
     }
 
-    return new CappuccinoAPIHeaderImpl(
+    return new AvailabilityAPIHeaderImpl(
       version,
-      cappuccinoAPIV0HeaderCodec.decode(input.fields),
+      availabilityAPIV0HeaderCodec.decode(input.fields),
     );
   }
 }
 
-class CappuccinoAPIHeaderEncoder implements Converter<
-  CappuccinoAPIHeader<CappuccinoAPIHeaderFields>,
+class AvailabilityAPIHeaderEncoder implements Converter<
+  AvailabilityAPIHeader<AvailabilityAPIHeaderFields>,
   unknown
 > {
-  convert(input: CappuccinoAPIHeader<CappuccinoAPIHeaderFields>): unknown {
-    if (input.fields instanceof AbstractCappuccinoAPIV4Header) {
+  convert(input: AvailabilityAPIHeader<AvailabilityAPIHeaderFields>): unknown {
+    if (input.fields instanceof AbstractAvailabilityAPIV4Header) {
       return {
         version: wrappedVersionCodec.encode(input.version),
-        fields: cappuccinoAPIV4HeaderCodec.encode(input.fields),
+        fields: availabilityAPIV4HeaderCodec.encode(input.fields),
       };
     }
 
-    if (input.fields instanceof AbstractCappuccinoAPIV2HeaderFields) {
+    if (input.fields instanceof AbstractAvailabilityAPIV2HeaderFields) {
       return {
         version: wrappedVersionCodec.encode(input.version),
-        fields: cappuccinoAPIV2HeaderFieldsCodec.encode(input.fields),
+        fields: availabilityAPIV2HeaderFieldsCodec.encode(input.fields),
       };
     }
 
     return {
       version: wrappedVersionCodec.encode(input.version),
-      fields: cappuccinoAPIV0HeaderCodec.encode(input.fields),
+      fields: availabilityAPIV0HeaderCodec.encode(input.fields),
     };
   }
 }
 
-class CappuccinoAPIHeaderCodec extends TypeCheckingCodec<
-  CappuccinoAPIHeader<CappuccinoAPIHeaderFields>,
+class AvailabilityAPIHeaderCodec extends TypeCheckingCodec<
+  AvailabilityAPIHeader<AvailabilityAPIHeaderFields>,
   unknown
 > {
-  public readonly encoder = new CappuccinoAPIHeaderEncoder();
-  public readonly decoder = new CappuccinoAPIHeaderDecoder();
+  public readonly encoder = new AvailabilityAPIHeaderEncoder();
+  public readonly decoder = new AvailabilityAPIHeaderDecoder();
 }
 
-export const cappuccinoAPIHeaderCodec = new CappuccinoAPIHeaderCodec();
+export const availabilityAPIHeaderCodec = new AvailabilityAPIHeaderCodec();

@@ -6,30 +6,29 @@ import {
 } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 
-export class CappuccinoGenesisOverview {
-  readonly rollups: number;
-  readonly transactions: number;
-  readonly blocks: number;
-
-  constructor(rollups: number, transactions: number, blocks: number) {
-    this.rollups = rollups;
-    this.transactions = transactions;
-    this.blocks = blocks;
-  }
+/**
+ * GenesisOverview represents the overview of the Espresso Chain, since its
+ * genesis.
+ *
+ * It is meant to hold statistics about the Espresso Chain.
+ */
+export class GenesisOverview {
+  constructor(
+    public readonly rollups: number,
+    public readonly transactions: number,
+    public readonly blocks: number,
+  ) {}
 
   toJSON() {
-    return cappuccinoGenesisOverviewCodec.encode(this);
+    return genesisOverviewCodec.encode(this);
   }
 }
 
-class CappuccinoGenesisOverviewDecoder implements Converter<
-  unknown,
-  CappuccinoGenesisOverview
-> {
-  convert(input: unknown): CappuccinoGenesisOverview {
+class GenesisOverviewDecoder implements Converter<unknown, GenesisOverview> {
+  convert(input: unknown): GenesisOverview {
     assertRecordWithKeys(input, 'rollups', 'transactions', 'blocks');
 
-    return new CappuccinoGenesisOverview(
+    return new GenesisOverview(
       numberCodec.decode(input.rollups),
       numberCodec.decode(input.transactions),
       numberCodec.decode(input.blocks),
@@ -37,9 +36,9 @@ class CappuccinoGenesisOverviewDecoder implements Converter<
   }
 }
 
-class CappuccinoGenesisOverviewEncoder implements Converter<CappuccinoGenesisOverview> {
-  convert(input: CappuccinoGenesisOverview) {
-    assertInstanceOf(input, CappuccinoGenesisOverview);
+class GenesisOverviewEncoder implements Converter<GenesisOverview> {
+  convert(input: GenesisOverview) {
+    assertInstanceOf(input, GenesisOverview);
 
     return {
       rollups: numberCodec.encode(input.rollups),
@@ -49,15 +48,12 @@ class CappuccinoGenesisOverviewEncoder implements Converter<CappuccinoGenesisOve
   }
 }
 
-class CappuccinoGenesisOverviewCodec extends TypeCheckingCodec<
-  CappuccinoGenesisOverview,
-  ReturnType<
-    InstanceType<new () => CappuccinoGenesisOverviewEncoder>['convert']
-  >
+class GenesisOverviewCodec extends TypeCheckingCodec<
+  GenesisOverview,
+  ReturnType<InstanceType<new () => GenesisOverviewEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoGenesisOverviewEncoder();
-  readonly decoder = new CappuccinoGenesisOverviewDecoder();
+  readonly encoder = new GenesisOverviewEncoder();
+  readonly decoder = new GenesisOverviewDecoder();
 }
 
-export const cappuccinoGenesisOverviewCodec =
-  new CappuccinoGenesisOverviewCodec();
+export const genesisOverviewCodec = new GenesisOverviewCodec();

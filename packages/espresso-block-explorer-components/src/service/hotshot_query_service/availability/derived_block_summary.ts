@@ -11,43 +11,34 @@ import {
   TaggedBase64,
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoAPIHeader, cappuccinoAPIHeaderCodec } from './block_header';
+import {
+  AvailabilityAPIHeader,
+  availabilityAPIHeaderCodec,
+} from './block_header';
 
 /**
- * CappuccinoDerivedBlockSummary represents a block summary in that is derived
- * from other primitives in the Cappuccino API.
+ AvailabilityDerivedBlockSummary represents a block summary in that is derived
+ * from other primitives in the Availability API.
  */
-export class CappuccinoDerivedBlockSummary {
-  readonly header: CappuccinoAPIHeader;
-  readonly hash: TaggedBase64;
-  readonly size: number;
-  readonly num_transactions: number;
-  readonly proposer_id: ArrayBuffer[];
-
+export class AvailabilityDerivedBlockSummary {
   constructor(
-    header: CappuccinoAPIHeader,
-    hash: TaggedBase64,
-    size: number,
-    num_transactions: number,
-    proposer_id: ArrayBuffer[],
-  ) {
-    this.header = header;
-    this.hash = hash;
-    this.size = size;
-    this.num_transactions = num_transactions;
-    this.proposer_id = proposer_id;
-  }
+    public readonly header: AvailabilityAPIHeader,
+    public readonly hash: TaggedBase64,
+    public readonly size: number,
+    public readonly num_transactions: number,
+    public readonly proposer_id: ArrayBuffer[],
+  ) {}
 
   toJSON() {
-    return cappuccinoDerivedBlockSummaryCodec.encode(this);
+    return availabilityDerivedBlockSummaryCodec.encode(this);
   }
 }
 
-export class CappuccinoDerivedBlockSummaryDecoder implements Converter<
+export class AvailabilityDerivedBlockSummaryDecoder implements Converter<
   unknown,
-  CappuccinoDerivedBlockSummary
+  AvailabilityDerivedBlockSummary
 > {
-  convert(input: unknown): CappuccinoDerivedBlockSummary {
+  convert(input: unknown): AvailabilityDerivedBlockSummary {
     assertRecordWithKeys(
       input,
       'header',
@@ -57,8 +48,8 @@ export class CappuccinoDerivedBlockSummaryDecoder implements Converter<
       'proposer_id',
     );
 
-    return new CappuccinoDerivedBlockSummary(
-      cappuccinoAPIHeaderCodec.decode(input.header),
+    return new AvailabilityDerivedBlockSummary(
+      availabilityAPIHeaderCodec.decode(input.header),
       taggedBase64Codec.decode(input.hash),
       numberCodec.decode(input.size),
       numberCodec.decode(input.num_transactions),
@@ -67,12 +58,12 @@ export class CappuccinoDerivedBlockSummaryDecoder implements Converter<
   }
 }
 
-export class CappuccinoDerivedBlockSummaryEncoder implements Converter<CappuccinoDerivedBlockSummary> {
-  convert(input: CappuccinoDerivedBlockSummary) {
-    assertInstanceOf(input, CappuccinoDerivedBlockSummary);
+export class AvailabilityDerivedBlockSummaryEncoder implements Converter<AvailabilityDerivedBlockSummary> {
+  convert(input: AvailabilityDerivedBlockSummary) {
+    assertInstanceOf(input, AvailabilityDerivedBlockSummary);
 
     return {
-      header: cappuccinoAPIHeaderCodec.encode(input.header),
+      header: availabilityAPIHeaderCodec.encode(input.header),
       hash: taggedBase64Codec.encode(input.hash),
       size: numberCodec.encode(input.size),
       num_transactions: numberCodec.encode(input.num_transactions),
@@ -83,20 +74,20 @@ export class CappuccinoDerivedBlockSummaryEncoder implements Converter<Cappuccin
   }
 }
 
-export class CappuccinoDerivedBlockSummaryCodec extends TypeCheckingCodec<
-  CappuccinoDerivedBlockSummary,
+export class AvailabilityDerivedBlockSummaryCodec extends TypeCheckingCodec<
+  AvailabilityDerivedBlockSummary,
   ReturnType<
-    InstanceType<new () => CappuccinoDerivedBlockSummaryEncoder>['convert']
+    InstanceType<new () => AvailabilityDerivedBlockSummaryEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoDerivedBlockSummaryEncoder();
-  readonly decoder = new CappuccinoDerivedBlockSummaryDecoder();
+  readonly encoder = new AvailabilityDerivedBlockSummaryEncoder();
+  readonly decoder = new AvailabilityDerivedBlockSummaryDecoder();
 }
 
-export const cappuccinoDerivedBlockSummaryCodec =
-  new CappuccinoDerivedBlockSummaryCodec();
+export const availabilityDerivedBlockSummaryCodec =
+  new AvailabilityDerivedBlockSummaryCodec();
 
-export const listCappuccinoDerivedBlockSummaryCodec = new ArrayCodec(
-  new ArrayDecoder(cappuccinoDerivedBlockSummaryCodec),
-  new ArrayEncoder(cappuccinoDerivedBlockSummaryCodec),
+export const listAvailabilityDerivedBlockSummaryCodec = new ArrayCodec(
+  new ArrayDecoder(availabilityDerivedBlockSummaryCodec),
+  new ArrayEncoder(availabilityDerivedBlockSummaryCodec),
 );

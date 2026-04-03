@@ -5,8 +5,8 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
-import { CappuccinoVersion, cappuccinoVersionCodec } from './version';
 import { uint8ArrayCodec } from '@/convert/codec/uint8_array';
+import { AvailabilityVersion, availabilityVersionCodec } from './version';
 
 /**
  * UpgradeProposalDataV1 is the data that is utilized when attempting to
@@ -15,8 +15,8 @@ import { uint8ArrayCodec } from '@/convert/codec/uint8_array';
  */
 export class UpgradeProposalDataV1 {
   constructor(
-    public readonly old_version: CappuccinoVersion,
-    public readonly new_version: CappuccinoVersion,
+    public readonly old_version: AvailabilityVersion,
+    public readonly new_version: AvailabilityVersion,
     public readonly decide_by: number,
     public readonly new_version_hash: Uint8Array,
     public readonly old_version_last_view: number,
@@ -44,8 +44,8 @@ export class UpgradePropsoalDataV1Decoder implements Converter<
     );
 
     return new UpgradeProposalDataV1(
-      cappuccinoVersionCodec.decode(input.old_version),
-      cappuccinoVersionCodec.decode(input.new_version),
+      availabilityVersionCodec.decode(input.old_version),
+      availabilityVersionCodec.decode(input.new_version),
       numberCodec.decode(input.decide_by),
       uint8ArrayCodec.decode(input.new_version_hash),
       numberCodec.decode(input.old_version_last_view),
@@ -59,8 +59,8 @@ export class UpgradeProposalDataV1Encoder implements Converter<UpgradeProposalDa
     assertInstanceOf(input, UpgradeProposalDataV1);
 
     return {
-      old_version: cappuccinoVersionCodec.encode(input.old_version),
-      new_version: cappuccinoVersionCodec.encode(input.new_version),
+      old_version: availabilityVersionCodec.encode(input.old_version),
+      new_version: availabilityVersionCodec.encode(input.new_version),
       decide_by: numberCodec.encode(input.decide_by),
       new_version_hash: uint8ArrayCodec.encode(input.new_version_hash),
       old_version_last_view: numberCodec.encode(input.old_version_last_view),

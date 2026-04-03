@@ -11,37 +11,38 @@ import { numberCodec } from '@/convert/codec/number';
 type NamespaceID = number;
 const namespaceIDCodec = numberCodec;
 
-export class CappuccinoExplorerTransactionDetailData {
-  readonly namespace: NamespaceID;
-  readonly payload: ArrayBuffer;
-
-  constructor(namespace: NamespaceID, payload: ArrayBuffer) {
-    this.namespace = namespace;
-    this.payload = payload;
-  }
+/**
+ * ExplorerTransactionDetailData represents the data associated with a
+ * transaction in the Explorer.
+ */
+export class ExplorerTransactionDetailData {
+  constructor(
+    public readonly namespace: NamespaceID,
+    public readonly payload: ArrayBuffer,
+  ) {}
 
   toJSON() {
-    return cappuccinoExplorerTransactionDetailDataCodec.encode(this);
+    return explorerTransactionDetailDataCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerTransactionDetailDataDecoder implements Converter<
+class ExplorerTransactionDetailDataDecoder implements Converter<
   unknown,
-  CappuccinoExplorerTransactionDetailData
+  ExplorerTransactionDetailData
 > {
-  convert(input: unknown): CappuccinoExplorerTransactionDetailData {
+  convert(input: unknown): ExplorerTransactionDetailData {
     assertRecordWithKeys(input, 'namespace', 'payload');
 
-    return new CappuccinoExplorerTransactionDetailData(
+    return new ExplorerTransactionDetailData(
       namespaceIDCodec.decode(input.namespace),
       stdBase64ArrayBufferCodec.decode(input.payload),
     );
   }
 }
 
-class CappuccinoExplorerTransactionDetailDataEncoder implements Converter<CappuccinoExplorerTransactionDetailData> {
-  convert(input: CappuccinoExplorerTransactionDetailData) {
-    assertInstanceOf(input, CappuccinoExplorerTransactionDetailData);
+class ExplorerTransactionDetailDataEncoder implements Converter<ExplorerTransactionDetailData> {
+  convert(input: ExplorerTransactionDetailData) {
+    assertInstanceOf(input, ExplorerTransactionDetailData);
 
     return {
       namespace: namespaceIDCodec.encode(input.namespace),
@@ -50,21 +51,19 @@ class CappuccinoExplorerTransactionDetailDataEncoder implements Converter<Cappuc
   }
 }
 
-class CappuccinoExplorerTransactionDetailDataCodec extends TypeCheckingCodec<
-  CappuccinoExplorerTransactionDetailData,
+class ExplorerTransactionDetailDataCodec extends TypeCheckingCodec<
+  ExplorerTransactionDetailData,
   ReturnType<
-    InstanceType<
-      new () => CappuccinoExplorerTransactionDetailDataEncoder
-    >['convert']
+    InstanceType<new () => ExplorerTransactionDetailDataEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoExplorerTransactionDetailDataEncoder();
-  readonly decoder = new CappuccinoExplorerTransactionDetailDataDecoder();
+  readonly encoder = new ExplorerTransactionDetailDataEncoder();
+  readonly decoder = new ExplorerTransactionDetailDataDecoder();
 }
 
-export const cappuccinoExplorerTransactionDetailDataCodec =
-  new CappuccinoExplorerTransactionDetailDataCodec();
-export const cappuccinoExplorerTransactionDetailDataArrayCodec = new ArrayCodec(
-  new ArrayDecoder(cappuccinoExplorerTransactionDetailDataCodec),
-  new ArrayEncoder(cappuccinoExplorerTransactionDetailDataCodec),
+export const explorerTransactionDetailDataCodec =
+  new ExplorerTransactionDetailDataCodec();
+export const explorerTransactionDetailDataArrayCodec = new ArrayCodec(
+  new ArrayDecoder(explorerTransactionDetailDataCodec),
+  new ArrayEncoder(explorerTransactionDetailDataCodec),
 );

@@ -1,5 +1,5 @@
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
-import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/implementations/fake_data';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
+import { FakeDataHotShotQueryService } from '@/service/hotshot_query_service/implementations/fake_data';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import {
@@ -14,11 +14,11 @@ interface ExampleProps {
 
 const Example: React.FC<ExampleProps> = (props) => {
   return (
-    <CappuccinoHotShotQueryServiceAPIContext.Provider
-      value={new FakeDataCappuccinoHotShotQueryService()}
+    <HotShotQueryServiceAPIContext.Provider
+      value={new FakeDataHotShotQueryService()}
     >
       <SearchInputComp {...props} />
-    </CappuccinoHotShotQueryServiceAPIContext.Provider>
+    </HotShotQueryServiceAPIContext.Provider>
   );
 };
 

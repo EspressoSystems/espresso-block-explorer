@@ -4,34 +4,35 @@ import { numberCodec } from '@/convert/codec/number';
 import { StringCodec, stringCodec } from '@/convert/codec/string';
 import { latestConstant } from './constants';
 
-export abstract class CappuccinoExplorerGetBlockDetailRequest {
-  readonly target: number | typeof latestConstant;
+/**
+ * ExplorerGetBlockDetailRequest represents the request to get the block detail
+ * in the various forms it can take.
+ *
+ * This acts an enumeration of the variations of the request and how
+ * they can be constructed with static methods.
+ */
+export abstract class ExplorerGetBlockDetailRequest {
+  constructor(public readonly target: number | typeof latestConstant) {}
 
-  constructor(target: number | typeof latestConstant) {
-    this.target = target;
+  public static latest(): ExplorerGetBlockDetailRequest {
+    return new ExplorerGetBlockDetailRequestLatest();
   }
 
-  public static latest(): CappuccinoExplorerGetBlockDetailRequest {
-    return new CappuccinoExplorerGetBlockDetailRequestLatest();
-  }
-
-  public static height(
-    target: number,
-  ): CappuccinoExplorerGetBlockDetailRequest {
-    return new CappuccinoExplorerGetBlockDetailRequestFrom(target);
+  public static height(target: number): ExplorerGetBlockDetailRequest {
+    return new ExplorerGetBlockDetailRequestFrom(target);
   }
 
   toJSON() {
-    return cappuccinoExplorerGetBlockDetailRequestCodec.encode(this);
+    return explorerGetBlockDetailRequestCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetBlockDetailRequestEncoder implements Converter<
-  CappuccinoExplorerGetBlockDetailRequest,
+class ExplorerGetBlockDetailRequestEncoder implements Converter<
+  ExplorerGetBlockDetailRequest,
   unknown
 > {
-  convert(input: CappuccinoExplorerGetBlockDetailRequest) {
-    assertInstanceOf(input, CappuccinoExplorerGetBlockDetailRequest);
+  convert(input: ExplorerGetBlockDetailRequest) {
+    assertInstanceOf(input, ExplorerGetBlockDetailRequest);
 
     if (typeof input.target === 'number') {
       return numberCodec.encode(input.target);
@@ -43,39 +44,37 @@ class CappuccinoExplorerGetBlockDetailRequestEncoder implements Converter<
   }
 }
 
-class CappuccinoExplorerGetBlockDetailRequestDecoder implements Converter<
+class ExplorerGetBlockDetailRequestDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetBlockDetailRequest
+  ExplorerGetBlockDetailRequest
 > {
-  convert(input: unknown): CappuccinoExplorerGetBlockDetailRequest {
+  convert(input: unknown): ExplorerGetBlockDetailRequest {
     if (input === latestConstant) {
-      return new CappuccinoExplorerGetBlockDetailRequestLatest();
+      return new ExplorerGetBlockDetailRequestLatest();
     }
 
-    return new CappuccinoExplorerGetBlockDetailRequestFrom(
-      numberCodec.decode(input),
-    );
+    return new ExplorerGetBlockDetailRequestFrom(numberCodec.decode(input));
   }
 }
 
-class CappuccinoExplorerGetBlockDetailRequestCodec extends Codec<
-  CappuccinoExplorerGetBlockDetailRequest,
+class ExplorerGetBlockDetailRequestCodec extends Codec<
+  ExplorerGetBlockDetailRequest,
   unknown
 > {
-  readonly encoder = new CappuccinoExplorerGetBlockDetailRequestEncoder();
-  readonly decoder = new CappuccinoExplorerGetBlockDetailRequestDecoder();
+  readonly encoder = new ExplorerGetBlockDetailRequestEncoder();
+  readonly decoder = new ExplorerGetBlockDetailRequestDecoder();
 }
 
-export const cappuccinoExplorerGetBlockDetailRequestCodec =
-  new CappuccinoExplorerGetBlockDetailRequestCodec();
+export const explorerGetBlockDetailRequestCodec =
+  new ExplorerGetBlockDetailRequestCodec();
 
-class CappuccinoExplorerGetBlockDetailRequestLatest extends CappuccinoExplorerGetBlockDetailRequest {
+class ExplorerGetBlockDetailRequestLatest extends ExplorerGetBlockDetailRequest {
   public constructor() {
     super(latestConstant);
   }
 }
 
-class CappuccinoExplorerGetBlockDetailRequestFrom extends CappuccinoExplorerGetBlockDetailRequest {
+class ExplorerGetBlockDetailRequestFrom extends ExplorerGetBlockDetailRequest {
   public constructor(target: number) {
     super(target);
   }

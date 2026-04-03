@@ -3,71 +3,57 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import {
-  CappuccinoAPIBitVec,
-  cappuccinoAPIBitVecArrayCodec,
-} from '@/service/hotshot_query_service';
-import CappuccinoNodeValidatorResponse from './node_validator_response';
+import { BitVec, bitVecArrayCodec } from '@/service/hotshot_query_service';
+import NodeValidatorResponse from './node_validator_response';
 
 /**
- * Messages from the Cappuccino Node Validator take the form of:
+ * Messages from the Node Validator take the form of:
  * { "MessageType": MessageType }
  */
 
 /**
- * kCappuccinoVotersSnapshotType is the type string for the
- * CappuccinoVotersSnapshot class.
+ * kVotersSnapshotType is the type string for the
+ * VotersSnapshot class.
  */
-export const kCappuccinoVotersSnapshotType = 'VotersSnapshot' as const;
+export const kVotersSnapshotType = 'VotersSnapshot' as const;
 
 /**
- * CappuccinoVotersSnapshot is a response from the Cappuccino node
+ * VotersSnapshot is a response from the node
  * validator that contains a snapshot of the voters in the network.
  */
-export class CappuccinoVotersSnapshot extends CappuccinoNodeValidatorResponse {
-  readonly voters: CappuccinoAPIBitVec[];
-
-  constructor(voters: CappuccinoAPIBitVec[]) {
+export class VotersSnapshot extends NodeValidatorResponse {
+  constructor(public readonly voters: BitVec[]) {
     super();
-    this.voters = voters;
   }
 
   toJSON() {
-    return cappuccinoVotersSnapshotCodec.encode(this);
+    return votersSnapshotCodec.encode(this);
   }
 }
 
-class CappuccinoVotersSnapshotDecoder implements Converter<
-  unknown,
-  CappuccinoVotersSnapshot
-> {
-  convert(input: unknown): CappuccinoVotersSnapshot {
-    assertRecordWithKeys(input, kCappuccinoVotersSnapshotType);
+class VotersSnapshotDecoder implements Converter<unknown, VotersSnapshot> {
+  convert(input: unknown): VotersSnapshot {
+    assertRecordWithKeys(input, kVotersSnapshotType);
 
-    const list = input[kCappuccinoVotersSnapshotType];
-    return new CappuccinoVotersSnapshot(
-      cappuccinoAPIBitVecArrayCodec.decode(list),
-    );
+    const list = input[kVotersSnapshotType];
+    return new VotersSnapshot(bitVecArrayCodec.decode(list));
   }
 }
 
-class CappuccinoVotersSnapshotEncoder implements Converter<CappuccinoVotersSnapshot> {
-  convert(input: CappuccinoVotersSnapshot) {
+class VotersSnapshotEncoder implements Converter<VotersSnapshot> {
+  convert(input: VotersSnapshot) {
     return {
-      [kCappuccinoVotersSnapshotType]: cappuccinoAPIBitVecArrayCodec.encode(
-        input.voters,
-      ),
+      [kVotersSnapshotType]: bitVecArrayCodec.encode(input.voters),
     };
   }
 }
 
-class CappuccinoVotersSnapshotCodec extends TypeCheckingCodec<
-  CappuccinoVotersSnapshot,
-  ReturnType<InstanceType<new () => CappuccinoVotersSnapshotEncoder>['convert']>
+class VotersSnapshotCodec extends TypeCheckingCodec<
+  VotersSnapshot,
+  ReturnType<InstanceType<new () => VotersSnapshotEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoVotersSnapshotEncoder();
-  readonly decoder = new CappuccinoVotersSnapshotDecoder();
+  readonly encoder = new VotersSnapshotEncoder();
+  readonly decoder = new VotersSnapshotDecoder();
 }
 
-export const cappuccinoVotersSnapshotCodec =
-  new CappuccinoVotersSnapshotCodec();
+export const votersSnapshotCodec = new VotersSnapshotCodec();

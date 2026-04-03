@@ -1,28 +1,28 @@
 import UnimplementedError from '@/errors/unimplemented_error';
-import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability/availability_api';
-import { FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability/implementations/fake_data';
-import { CappuccinoHotShotQueryServiceExplorerAPI } from '../explorer/explorer_api';
-import { FakeDataCappuccinoHotShotQueryServiceExplorerAPI } from '../explorer/implementations/fake_data';
-import { CappuccinoHotShotQueryService } from '../hot_shot_query_service_api';
-import { FakeDataCappuccinoHotShotQueryServiceNodeAPI } from '../node/implementations/fake_api';
-import { CappuccinoHotShotQueryServiceNodeAPI } from '../node/node_api';
-import { FakeDataCappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_state/implementations/fake_data';
-import { CappuccinoHotShotQueryServiceRewardStateAPI } from '../reward_state/reward_start_api';
-import { FakeDataCappuccinoHotShotQueryServiceStatusAPI } from '../status/implementations/fake_api';
-import { CappuccinoHotShotQueryServiceStatusAPI } from '../status/status_api';
+import { HotShotQueryServiceAvailabilityAPI } from '../availability/availability_api';
+import { FakeDataHotShotQueryServiceAvailabilityAPI } from '../availability/implementations/fake_data';
+import { HotShotQueryServiceExplorerAPI } from '../explorer/explorer_api';
+import { FakeDataHotShotQueryServiceExplorerAPI } from '../explorer/implementations/fake_data';
+import { HotShotQueryService } from '../hot_shot_query_service_api';
+import { FakeDataHotShotQueryServiceNodeAPI } from '../node/implementations/fake_api';
+import { HotShotQueryServiceNodeAPI } from '../node/node_api';
+import { FakeDataHotShotQueryServiceRewardStateAPI } from '../reward_state/implementations/fake_data';
+import { HotShotQueryServiceRewardStateAPI } from '../reward_state/reward_start_api';
+import { FakeDataHotShotQueryServiceStatusAPI } from '../status/implementations/fake_api';
+import { HotShotQueryServiceStatusAPI } from '../status/status_api';
 
-export class FakeDataCappuccinoHotShotQueryService implements CappuccinoHotShotQueryService {
-  public readonly availability: CappuccinoHotShotQueryServiceAvailabilityAPI &
-    CappuccinoHotShotQueryServiceAvailabilityAPI =
-    new FakeDataCappuccinoHotShotQueryServiceAvailabilityAPI();
-  public readonly status: CappuccinoHotShotQueryServiceStatusAPI =
-    new FakeDataCappuccinoHotShotQueryServiceStatusAPI();
-  public readonly explorer: CappuccinoHotShotQueryServiceExplorerAPI =
-    new FakeDataCappuccinoHotShotQueryServiceExplorerAPI();
-  public readonly rewardState: CappuccinoHotShotQueryServiceRewardStateAPI =
-    new FakeDataCappuccinoHotShotQueryServiceRewardStateAPI();
-  public readonly node: CappuccinoHotShotQueryServiceNodeAPI =
-    new FakeDataCappuccinoHotShotQueryServiceNodeAPI();
+export class FakeDataHotShotQueryService implements HotShotQueryService {
+  public readonly availability: HotShotQueryServiceAvailabilityAPI &
+    HotShotQueryServiceAvailabilityAPI =
+    new FakeDataHotShotQueryServiceAvailabilityAPI();
+  public readonly status: HotShotQueryServiceStatusAPI =
+    new FakeDataHotShotQueryServiceStatusAPI();
+  public readonly explorer: HotShotQueryServiceExplorerAPI =
+    new FakeDataHotShotQueryServiceExplorerAPI();
+  public readonly rewardState: HotShotQueryServiceRewardStateAPI =
+    new FakeDataHotShotQueryServiceRewardStateAPI();
+  public readonly node: HotShotQueryServiceNodeAPI =
+    new FakeDataHotShotQueryServiceNodeAPI();
 
   public async setURL(): Promise<boolean> {
     throw new UnimplementedError();

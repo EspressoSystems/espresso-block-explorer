@@ -7,70 +7,60 @@ import {
   arrayStakeTableEntryWrapperCodec,
   StakeTableEntryWrapper,
 } from '@/models/espresso/stake_table/stake_table_entry_wrapper';
-import CappuccinoNodeValidatorResponse from './node_validator_response';
+import NodeValidatorResponse from './node_validator_response';
 
 /**
- * Messages from the Cappuccino Node Validator take the form of:
+ * Messages from the Node Validator take the form of:
  * { "MessageType": MessageType }
  */
 
 /**
- * kCappuccinoLatestStakeTableType is the type string for the
- * CappuccinoLatestStakeTable class.
+ * kLatestStakeTableType is the type string for the
+ * LatestStakeTable class.
  */
-export const kCappuccinoLatestStakeTableType = 'LatestStakeTable' as const;
+export const kLatestStakeTableType = 'LatestStakeTable' as const;
 
 /**
- * CappuccinoLatestNodeIdentity is a response from the Cappuccino node
+ * LatestNodeIdentity is a response from the node
  * validator that contains a real-time update for the Stake Table
  * in the network.
  */
-export class CappuccinoLatestStakeTable extends CappuccinoNodeValidatorResponse {
-  readonly stakeTable: StakeTableEntryWrapper[];
-
-  constructor(stakeTable: StakeTableEntryWrapper[]) {
+export class LatestStakeTable extends NodeValidatorResponse {
+  constructor(public readonly stakeTable: StakeTableEntryWrapper[]) {
     super();
-    this.stakeTable = stakeTable;
   }
 
   toJSON() {
-    return cappuccinoLatestStakeTableCodec.encode(this);
+    return latestStakeTableCodec.encode(this);
   }
 }
 
-class CappuccinoLatestStakeTableDecoder implements Converter<
-  unknown,
-  CappuccinoLatestStakeTable
-> {
-  convert(input: unknown): CappuccinoLatestStakeTable {
-    assertRecordWithKeys(input, kCappuccinoLatestStakeTableType);
+class LatestStakeTableDecoder implements Converter<unknown, LatestStakeTable> {
+  convert(input: unknown): LatestStakeTable {
+    assertRecordWithKeys(input, kLatestStakeTableType);
 
-    return new CappuccinoLatestStakeTable(
-      arrayStakeTableEntryWrapperCodec.decode(
-        input[kCappuccinoLatestStakeTableType],
-      ),
+    return new LatestStakeTable(
+      arrayStakeTableEntryWrapperCodec.decode(input[kLatestStakeTableType]),
     );
   }
 }
 
-class CappuccinoLatestStakeTableEncoder implements Converter<CappuccinoLatestStakeTable> {
-  convert(input: CappuccinoLatestStakeTable) {
+class LatestStakeTableEncoder implements Converter<LatestStakeTable> {
+  convert(input: LatestStakeTable) {
     return {
-      [kCappuccinoLatestStakeTableType]:
-        arrayStakeTableEntryWrapperCodec.encode(input.stakeTable),
+      [kLatestStakeTableType]: arrayStakeTableEntryWrapperCodec.encode(
+        input.stakeTable,
+      ),
     };
   }
 }
 
-class CappuccinoLatestStakeTableCodec extends TypeCheckingCodec<
-  CappuccinoLatestStakeTable,
-  ReturnType<
-    InstanceType<new () => CappuccinoLatestStakeTableEncoder>['convert']
-  >
+class LatestStakeTableCodec extends TypeCheckingCodec<
+  LatestStakeTable,
+  ReturnType<InstanceType<new () => LatestStakeTableEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoLatestStakeTableEncoder();
-  readonly decoder = new CappuccinoLatestStakeTableDecoder();
+  readonly encoder = new LatestStakeTableEncoder();
+  readonly decoder = new LatestStakeTableDecoder();
 }
 
-export const cappuccinoLatestStakeTableCodec =
-  new CappuccinoLatestStakeTableCodec();
+export const latestStakeTableCodec = new LatestStakeTableCodec();

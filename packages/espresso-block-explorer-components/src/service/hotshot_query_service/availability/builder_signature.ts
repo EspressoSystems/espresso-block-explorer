@@ -8,33 +8,29 @@ import {
 import { numberCodec } from '@/convert/codec/number';
 
 /**
- * CappuccinoBuilderSignature represents the signature of a builder in the
- * Cappuccino API.
+ * AvailabilityBuilderSignature represents the signature of a builder in the
+ * Availability API.
  */
-export class CappuccinoBuilderSignature {
-  readonly r: ArrayBuffer;
-  readonly s: ArrayBuffer;
-  readonly v: number;
-
-  constructor(r: ArrayBuffer, s: ArrayBuffer, v: number) {
-    this.r = r;
-    this.s = s;
-    this.v = v;
-  }
+export class AvailabilityBuilderSignature {
+  constructor(
+    public readonly r: ArrayBuffer,
+    public readonly s: ArrayBuffer,
+    public readonly v: number,
+  ) {}
 
   toJSON() {
-    return cappuccinoBuilderSignatureCodec.encode(this);
+    return availabilityBuilderSignatureCodec.encode(this);
   }
 }
 
-class CappuccinoBuilderSignatureDecoder implements Converter<
+class AvailabilityBuilderSignatureDecoder implements Converter<
   unknown,
-  CappuccinoBuilderSignature
+  AvailabilityBuilderSignature
 > {
-  convert(input: unknown): CappuccinoBuilderSignature {
+  convert(input: unknown): AvailabilityBuilderSignature {
     assertRecordWithKeys(input, 'r', 's', 'v');
 
-    return new CappuccinoBuilderSignature(
+    return new AvailabilityBuilderSignature(
       hexArrayBufferCodec.decode(input.r),
       hexArrayBufferCodec.decode(input.s),
       numberCodec.decode(input.v),
@@ -42,9 +38,9 @@ class CappuccinoBuilderSignatureDecoder implements Converter<
   }
 }
 
-class CappuccinoBuilderSignatureEncoder implements Converter<CappuccinoBuilderSignature> {
-  convert(input: CappuccinoBuilderSignature) {
-    assertInstanceOf(input, CappuccinoBuilderSignature);
+class AvailabilityBuilderSignatureEncoder implements Converter<AvailabilityBuilderSignature> {
+  convert(input: AvailabilityBuilderSignature) {
+    assertInstanceOf(input, AvailabilityBuilderSignature);
 
     return {
       r: hexArrayBufferCodec.encode(input.r),
@@ -54,15 +50,15 @@ class CappuccinoBuilderSignatureEncoder implements Converter<CappuccinoBuilderSi
   }
 }
 
-class CappuccinoBuilderSignatureCodec extends TypeCheckingCodec<
-  CappuccinoBuilderSignature,
+class AvailabilityBuilderSignatureCodec extends TypeCheckingCodec<
+  AvailabilityBuilderSignature,
   ReturnType<
-    InstanceType<new () => CappuccinoBuilderSignatureEncoder>['convert']
+    InstanceType<new () => AvailabilityBuilderSignatureEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoBuilderSignatureEncoder();
-  readonly decoder = new CappuccinoBuilderSignatureDecoder();
+  readonly encoder = new AvailabilityBuilderSignatureEncoder();
+  readonly decoder = new AvailabilityBuilderSignatureDecoder();
 }
 
-export const cappuccinoBuilderSignatureCodec =
-  new CappuccinoBuilderSignatureCodec();
+export const availabilityBuilderSignatureCodec =
+  new AvailabilityBuilderSignatureCodec();

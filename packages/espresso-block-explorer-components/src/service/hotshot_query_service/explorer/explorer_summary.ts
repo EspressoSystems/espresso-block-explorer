@@ -4,58 +4,41 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
+import { ExplorerBlockDetail, explorerBlockDetailCodec } from './block_detail';
 import {
-  CappuccinoExplorerBlockDetail,
-  cappuccinoExplorerBlockDetailCodec,
-} from './block_detail';
-import {
-  CappuccinoExplorerBlockSummary,
-  cappuccinoExplorerBlockSummaryArrayCodec,
+  ExplorerBlockSummary,
+  explorerBlockSummaryArrayCodec,
 } from './block_summary';
+import { GenesisOverview, genesisOverviewCodec } from './genesis_overview';
 import {
-  CappuccinoGenesisOverview,
-  cappuccinoGenesisOverviewCodec,
-} from './genesis_overview';
-import {
-  CappuccinoSummaryHistograms,
-  cappuccinoSummaryHistogramsCodec,
+  SummaryHistograms,
+  summaryHistogramsCodec,
 } from './summary_histograms';
 import {
-  CappuccinoExplorerTransactionSummary,
-  cappuccinoExplorerTransactionSummaryArrayCodec,
+  ExplorerTransactionSummary,
+  explorerTransactionSummaryArrayCodec,
 } from './transaction_summary';
 
-export class CappuccinoExplorerSummary {
-  readonly latestBlock: CappuccinoExplorerBlockDetail;
-  readonly genesisOverview: CappuccinoGenesisOverview;
-  readonly latestBlocks: CappuccinoExplorerBlockSummary[];
-  readonly latestTransactions: CappuccinoExplorerTransactionSummary[];
-  readonly histograms: CappuccinoSummaryHistograms;
-
+/**
+ * ExplorerSummary is a class that represents the summary of the recent chain
+ * history, as a snapshot.
+ */
+export class ExplorerSummary {
   constructor(
-    latestBlock: CappuccinoExplorerBlockDetail,
-    genesisOverview: CappuccinoGenesisOverview,
-    latestBlocks: CappuccinoExplorerBlockSummary[],
-    latestTransactions: CappuccinoExplorerTransactionSummary[],
-    histograms: CappuccinoSummaryHistograms,
-  ) {
-    this.latestBlock = latestBlock;
-    this.genesisOverview = genesisOverview;
-    this.latestBlocks = latestBlocks;
-    this.latestTransactions = latestTransactions;
-    this.histograms = histograms;
-  }
+    public readonly latestBlock: ExplorerBlockDetail,
+    public readonly genesisOverview: GenesisOverview,
+    public readonly latestBlocks: ExplorerBlockSummary[],
+    public readonly latestTransactions: ExplorerTransactionSummary[],
+    public readonly histograms: SummaryHistograms,
+  ) {}
 
   toJSON() {
-    return cappuccinoExplorerSummaryCodec.encode(this);
+    return explorerSummaryCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerSummaryDecoder implements Converter<
-  unknown,
-  CappuccinoExplorerSummary
-> {
-  convert(input: unknown): CappuccinoExplorerSummary {
+class ExplorerSummaryDecoder implements Converter<unknown, ExplorerSummary> {
+  convert(input: unknown): ExplorerSummary {
     assertRecordWithKeys(
       input,
       'latest_block',
@@ -65,50 +48,38 @@ class CappuccinoExplorerSummaryDecoder implements Converter<
       'histograms',
     );
 
-    return new CappuccinoExplorerSummary(
-      cappuccinoExplorerBlockDetailCodec.decode(input.latest_block),
-      cappuccinoGenesisOverviewCodec.decode(input.genesis_overview),
-      cappuccinoExplorerBlockSummaryArrayCodec.decode(input.latest_blocks),
-      cappuccinoExplorerTransactionSummaryArrayCodec.decode(
-        input.latest_transactions,
-      ),
-      cappuccinoSummaryHistogramsCodec.decode(input.histograms),
+    return new ExplorerSummary(
+      explorerBlockDetailCodec.decode(input.latest_block),
+      genesisOverviewCodec.decode(input.genesis_overview),
+      explorerBlockSummaryArrayCodec.decode(input.latest_blocks),
+      explorerTransactionSummaryArrayCodec.decode(input.latest_transactions),
+      summaryHistogramsCodec.decode(input.histograms),
     );
   }
 }
 
-class CappuccinoExplorerSummaryEncoder implements Converter<CappuccinoExplorerSummary> {
-  convert(input: CappuccinoExplorerSummary) {
-    assertInstanceOf(input, CappuccinoExplorerSummary);
+class ExplorerSummaryEncoder implements Converter<ExplorerSummary> {
+  convert(input: ExplorerSummary) {
+    assertInstanceOf(input, ExplorerSummary);
 
     return {
-      latest_block: cappuccinoExplorerBlockDetailCodec.encode(
-        input.latestBlock,
+      latest_block: explorerBlockDetailCodec.encode(input.latestBlock),
+      genesis_overview: genesisOverviewCodec.encode(input.genesisOverview),
+      latest_blocks: explorerBlockSummaryArrayCodec.encode(input.latestBlocks),
+      latest_transactions: explorerTransactionSummaryArrayCodec.encode(
+        input.latestTransactions,
       ),
-      genesis_overview: cappuccinoGenesisOverviewCodec.encode(
-        input.genesisOverview,
-      ),
-      latest_blocks: cappuccinoExplorerBlockSummaryArrayCodec.encode(
-        input.latestBlocks,
-      ),
-      latest_transactions:
-        cappuccinoExplorerTransactionSummaryArrayCodec.encode(
-          input.latestTransactions,
-        ),
-      histograms: cappuccinoSummaryHistogramsCodec.encode(input.histograms),
+      histograms: summaryHistogramsCodec.encode(input.histograms),
     };
   }
 }
 
-class CappuccinoExplorerSummaryCodec extends TypeCheckingCodec<
-  CappuccinoExplorerSummary,
-  ReturnType<
-    InstanceType<new () => CappuccinoExplorerSummaryEncoder>['convert']
-  >
+class ExplorerSummaryCodec extends TypeCheckingCodec<
+  ExplorerSummary,
+  ReturnType<InstanceType<new () => ExplorerSummaryEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoExplorerSummaryEncoder();
-  readonly decoder = new CappuccinoExplorerSummaryDecoder();
+  readonly encoder = new ExplorerSummaryEncoder();
+  readonly decoder = new ExplorerSummaryDecoder();
 }
 
-export const cappuccinoExplorerSummaryCodec =
-  new CappuccinoExplorerSummaryCodec();
+export const explorerSummaryCodec = new ExplorerSummaryCodec();

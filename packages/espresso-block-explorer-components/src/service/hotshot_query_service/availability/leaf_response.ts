@@ -4,63 +4,60 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import { CappuccinoAPILeaf, cappuccinoAPILeafCodec } from './leaf';
+import { AvailabilityAPILeaf, availabilityAPILeafCodec } from './leaf';
 import {
   QuorumCertificateV1,
   quorumCertificateV1Codec,
 } from './quorum_certificate_v1';
 
 /**
- * CappuccinoAPILeafResponse represents a leaf response in the Cappuccino API.
+ * AvailabilityAPILeafResponse represents a leaf response in the Availability API.
  */
-export class CappuccinoAPILeafResponse {
-  readonly leaf: CappuccinoAPILeaf;
-  readonly qc: QuorumCertificateV1;
-
-  constructor(leaf: CappuccinoAPILeaf, qc: QuorumCertificateV1) {
-    this.leaf = leaf;
-    this.qc = qc;
-  }
+export class AvailabilityAPILeafResponse {
+  constructor(
+    public readonly leaf: AvailabilityAPILeaf,
+    public readonly qc: QuorumCertificateV1,
+  ) {}
 
   toJSON() {
-    return cappuccinoAPILeafResponseCodec.encode(this);
+    return availabilityAPILeafResponseCodec.encode(this);
   }
 }
 
-export class CappuccinoAPILeafResponseDecoder implements Converter<
+export class AvailabilityAPILeafResponseDecoder implements Converter<
   unknown,
-  CappuccinoAPILeafResponse
+  AvailabilityAPILeafResponse
 > {
-  convert(input: unknown): CappuccinoAPILeafResponse {
+  convert(input: unknown): AvailabilityAPILeafResponse {
     assertRecordWithKeys(input, 'leaf', 'qc');
 
-    return new CappuccinoAPILeafResponse(
-      cappuccinoAPILeafCodec.decode(input.leaf),
+    return new AvailabilityAPILeafResponse(
+      availabilityAPILeafCodec.decode(input.leaf),
       quorumCertificateV1Codec.decode(input.qc),
     );
   }
 }
 
-export class CappuccinoAPILeafResponseEncoder implements Converter<CappuccinoAPILeafResponse> {
-  convert(input: CappuccinoAPILeafResponse) {
-    assertInstanceOf(input, CappuccinoAPILeafResponse);
+export class AvailabilityAPILeafResponseEncoder implements Converter<AvailabilityAPILeafResponse> {
+  convert(input: AvailabilityAPILeafResponse) {
+    assertInstanceOf(input, AvailabilityAPILeafResponse);
 
     return {
-      leaf: cappuccinoAPILeafCodec.encode(input.leaf),
+      leaf: availabilityAPILeafCodec.encode(input.leaf),
       qc: quorumCertificateV1Codec.encode(input.qc),
     };
   }
 }
 
-export class CappuccinoAPILeafResponseCodec extends TypeCheckingCodec<
-  CappuccinoAPILeafResponse,
+export class AvailabilityAPILeafResponseCodec extends TypeCheckingCodec<
+  AvailabilityAPILeafResponse,
   ReturnType<
-    InstanceType<new () => CappuccinoAPILeafResponseEncoder>['convert']
+    InstanceType<new () => AvailabilityAPILeafResponseEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoAPILeafResponseEncoder();
-  readonly decoder = new CappuccinoAPILeafResponseDecoder();
+  readonly encoder = new AvailabilityAPILeafResponseEncoder();
+  readonly decoder = new AvailabilityAPILeafResponseDecoder();
 }
 
-export const cappuccinoAPILeafResponseCodec =
-  new CappuccinoAPILeafResponseCodec();
+export const availabilityAPILeafResponseCodec =
+  new AvailabilityAPILeafResponseCodec();

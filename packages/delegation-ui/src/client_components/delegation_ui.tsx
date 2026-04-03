@@ -4,7 +4,7 @@ import DelegationUIContexts from '@/client_components/provide_contexts';
 import ProvideContextsFromEnv from '@/client_components/provide_contexts_from_env';
 import {
   IntentCompletedCallbackContext,
-  ProvideCappuccinoHotShotQueryServiceAPIContext,
+  ProvideHotShotQueryServiceAPIContext,
 } from 'espresso-block-explorer-components';
 import {
   DelegationUI,
@@ -50,11 +50,11 @@ function DelegationUIClientContent() {
         router.replace(pathName);
       }}
     >
-      <ProvideCappuccinoHotShotQueryServiceAPIContext>
+      <ProvideHotShotQueryServiceAPIContext>
         <ProvideClaimPortalIntentContext intent={intent}>
           <DelegationUI />
         </ProvideClaimPortalIntentContext>
-      </ProvideCappuccinoHotShotQueryServiceAPIContext>
+      </ProvideHotShotQueryServiceAPIContext>
     </IntentCompletedCallbackContext.Provider>
   );
 }

@@ -15,40 +15,30 @@ import {
 type NamespaceID = number;
 const namespaceIDArrayCodec = numberArrayCodec;
 
-export class CappuccinoExplorerTransactionSummary {
-  readonly hash: TaggedBase64;
-  readonly rollups: NamespaceID[];
-  readonly height: number;
-  readonly time: Date;
-  readonly offset: number;
-  readonly numTransactions: number;
-
+/**
+ * ExplorerTransactionSummary is a class that represents the summary of a
+ * a single transaction within the Espresso Chain.
+ */
+export class ExplorerTransactionSummary {
   constructor(
-    hash: TaggedBase64,
-    rollups: NamespaceID[],
-    height: number,
-    time: Date,
-    offset: number,
-    numTransactions: number,
-  ) {
-    this.hash = hash;
-    this.rollups = rollups;
-    this.height = height;
-    this.time = time;
-    this.offset = offset;
-    this.numTransactions = numTransactions;
-  }
+    public readonly hash: TaggedBase64,
+    public readonly rollups: NamespaceID[],
+    public readonly height: number,
+    public readonly time: Date,
+    public readonly offset: number,
+    public readonly numTransactions: number,
+  ) {}
 
   toJSON() {
-    return cappuccinoExplorerTransactionSummaryCodec.encode(this);
+    return explorerTransactionSummaryCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerTransactionSummaryDecoder implements Converter<
+class ExplorerTransactionSummaryDecoder implements Converter<
   unknown,
-  CappuccinoExplorerTransactionSummary
+  ExplorerTransactionSummary
 > {
-  convert(input: unknown): CappuccinoExplorerTransactionSummary {
+  convert(input: unknown): ExplorerTransactionSummary {
     assertRecordWithKeys(
       input,
       'hash',
@@ -59,7 +49,7 @@ class CappuccinoExplorerTransactionSummaryDecoder implements Converter<
       'num_transactions',
     );
 
-    return new CappuccinoExplorerTransactionSummary(
+    return new ExplorerTransactionSummary(
       taggedBase64Codec.decode(input.hash),
       namespaceIDArrayCodec.decode(input.rollups),
       numberCodec.decode(input.height),
@@ -70,9 +60,9 @@ class CappuccinoExplorerTransactionSummaryDecoder implements Converter<
   }
 }
 
-class CappuccinoExplorerTransactionSummaryEncoder implements Converter<CappuccinoExplorerTransactionSummary> {
-  convert(input: CappuccinoExplorerTransactionSummary) {
-    assertInstanceOf(input, CappuccinoExplorerTransactionSummary);
+class ExplorerTransactionSummaryEncoder implements Converter<ExplorerTransactionSummary> {
+  convert(input: ExplorerTransactionSummary) {
+    assertInstanceOf(input, ExplorerTransactionSummary);
 
     return {
       hash: taggedBase64Codec.encode(input.hash),
@@ -85,21 +75,19 @@ class CappuccinoExplorerTransactionSummaryEncoder implements Converter<Cappuccin
   }
 }
 
-class CappuccinoExplorerTransactionSummaryCodec extends TypeCheckingCodec<
-  CappuccinoExplorerTransactionSummary,
+class ExplorerTransactionSummaryCodec extends TypeCheckingCodec<
+  ExplorerTransactionSummary,
   ReturnType<
-    InstanceType<
-      new () => CappuccinoExplorerTransactionSummaryEncoder
-    >['convert']
+    InstanceType<new () => ExplorerTransactionSummaryEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoExplorerTransactionSummaryEncoder();
-  readonly decoder = new CappuccinoExplorerTransactionSummaryDecoder();
+  readonly encoder = new ExplorerTransactionSummaryEncoder();
+  readonly decoder = new ExplorerTransactionSummaryDecoder();
 }
 
-export const cappuccinoExplorerTransactionSummaryCodec =
-  new CappuccinoExplorerTransactionSummaryCodec();
-export const cappuccinoExplorerTransactionSummaryArrayCodec = new ArrayCodec(
-  new ArrayDecoder(cappuccinoExplorerTransactionSummaryCodec),
-  new ArrayEncoder(cappuccinoExplorerTransactionSummaryCodec),
+export const explorerTransactionSummaryCodec =
+  new ExplorerTransactionSummaryCodec();
+export const explorerTransactionSummaryArrayCodec = new ArrayCodec(
+  new ArrayDecoder(explorerTransactionSummaryCodec),
+  new ArrayEncoder(explorerTransactionSummaryCodec),
 );

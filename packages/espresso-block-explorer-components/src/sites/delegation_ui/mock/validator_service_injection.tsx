@@ -1,4 +1,4 @@
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
 import { L1Methods } from '@/contracts/l1/l1_interface';
@@ -39,7 +39,7 @@ import { WalletDiffUndelegationWithdrawal } from '@/service/espresso_l1_validato
 import { WalletDiff } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/wallet_diff';
 import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
 import { WalletUpdate } from '@/service/espresso_l1_validator_service/wallet/wallet_update';
-import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
+import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
 import React from 'react';
 import { type Config } from 'wagmi';
 import { ESPTokenContractStateAction } from './esp_token_contract';
@@ -73,9 +73,7 @@ export const L1ValidatorServiceMockInjection: React.FC<
 > = ({ children }) => {
   const l1Methods = React.useContext(L1MethodsContext);
   const service = React.useContext(L1ValidatorServiceContext);
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   return (
     <L1ValidatorServiceContext.Provider
@@ -89,7 +87,7 @@ export const L1ValidatorServiceMockInjection: React.FC<
 function determineService(
   service: L1ValidatorService,
   l1Methods: null | L1Methods<Config, number>,
-  hotShotQueryService: CappuccinoHotShotQueryService,
+  hotShotQueryService: HotShotQueryService,
 ) {
   if (l1Methods instanceof MockL1MethodsImpl) {
     const newService = new MockValidatorService(
@@ -351,7 +349,7 @@ class MockStatefulValidatorsAllAPI implements ValidatorsAllAPI {
 class MockStatefulValidatorsActiveAPI implements ValidatorsActiveAPI {
   constructor(
     private readonly service: ValidatorsActiveAPI,
-    private readonly hotShotQueryService: CappuccinoHotShotQueryService,
+    private readonly hotShotQueryService: HotShotQueryService,
   ) {}
 
   async active(): Promise<ActiveNodeSetSnapshot> {
@@ -386,7 +384,7 @@ class MockValidatorService implements L1ValidatorService {
   constructor(
     l1Methods: MockL1MethodsImpl,
     service: L1ValidatorService,
-    hotShotQueryService: CappuccinoHotShotQueryService,
+    hotShotQueryService: HotShotQueryService,
   ) {
     this.l1Block = new MockL1BlockAPI(l1Methods);
     this.wallet = new MockStatefulWalletAPI(l1Methods);

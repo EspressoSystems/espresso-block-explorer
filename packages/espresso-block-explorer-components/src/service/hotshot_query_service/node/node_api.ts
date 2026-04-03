@@ -1,8 +1,8 @@
-import { HotShotQueryServiceNodeAPI } from '../types';
+import { IHotShotQueryServiceNodeAPI } from '../types';
 import { ActiveValidators } from './active_validators';
 import { StakeTable } from './stake_table';
 
-export interface CappuccinoHotShotQueryServiceNodeAPI extends HotShotQueryServiceNodeAPI<
+export interface HotShotQueryServiceNodeAPI extends IHotShotQueryServiceNodeAPI<
   StakeTable,
   ActiveValidators
 > {}

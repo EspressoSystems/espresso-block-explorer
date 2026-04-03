@@ -13,63 +13,43 @@ import {
   TaggedBase64,
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
-import CappuccinoLocationDetails, {
-  nullableCappuccinoLocationDetailsCodec,
+import LocationDetails, {
+  nullableLocationDetailsCodec,
 } from './node_location_details';
 
 /**
- * CappuccinoNodeIdentity represents the identity of a node in the
- * Cappuccino network. It only contains information that is expected to
+ * NodeIdentity represents the identity of a node in the
+ * Espress network. It only contains information that is expected to
  * be mostly static.  Any statistics or tracking of the node should reference
  * this node via its public key
  */
-export default class CappuccinoNodeIdentity {
-  readonly publicKey: TaggedBase64;
-  readonly name: null | string;
-  readonly publicURL: null | URL;
-  readonly company: null | string;
-  readonly companyWebsite: null | URL;
-  readonly location: null | CappuccinoLocationDetails;
-  readonly operatingSystem: null | string;
-  readonly nodeType: null | string;
-  readonly networkType: null | string;
-
+export default class NodeIdentity {
   constructor(
-    publicKey: TaggedBase64,
-    name: null | string,
-    publicURL: null | URL,
-    company: null | string,
-    companyWebsite: null | URL,
-    location: null | CappuccinoLocationDetails,
-    operatingSystem: null | string,
-    nodeType: null | string,
-    networkType: null | string,
-  ) {
-    this.publicKey = publicKey;
-    this.name = name;
-    this.publicURL = publicURL;
-    this.company = company;
-    this.companyWebsite = companyWebsite;
-    this.location = location;
-    this.operatingSystem = operatingSystem;
-    this.nodeType = nodeType;
-    this.networkType = networkType;
-  }
+    public readonly publicKey: TaggedBase64,
+    public readonly name: null | string,
+    public readonly publicURL: null | URL,
+    public readonly company: null | string,
+    public readonly companyWebsite: null | URL,
+    public readonly location: null | LocationDetails,
+    public readonly operatingSystem: null | string,
+    public readonly nodeType: null | string,
+    public readonly networkType: null | string,
+  ) {}
 
   toJSON() {
-    return cappuccinoNodeIdentityCodec.encode(this);
+    return nodeIdentityCodec.encode(this);
   }
 }
 
-class CappuccinoNodeIdentityEncoder implements Converter<CappuccinoNodeIdentity> {
-  convert(input: CappuccinoNodeIdentity) {
+class NodeIdentityEncoder implements Converter<NodeIdentity> {
+  convert(input: NodeIdentity) {
     return {
       public_key: taggedBase64Codec.encode(input.publicKey),
       name: nullableStringCodec.encode(input.name),
       public_url: nullableURLCodec.encode(input.publicURL),
       company: nullableStringCodec.encode(input.company),
       company_website: nullableURLCodec.encode(input.companyWebsite),
-      location: nullableCappuccinoLocationDetailsCodec.encode(input.location),
+      location: nullableLocationDetailsCodec.encode(input.location),
       operating_system: nullableStringCodec.encode(input.operatingSystem),
       node_type: nullableStringCodec.encode(input.nodeType),
       network_type: nullableStringCodec.encode(input.networkType),
@@ -77,10 +57,7 @@ class CappuccinoNodeIdentityEncoder implements Converter<CappuccinoNodeIdentity>
   }
 }
 
-class CappuccinoNodeIdentityDecoder implements Converter<
-  unknown,
-  CappuccinoNodeIdentity
-> {
+class NodeIdentityDecoder implements Converter<unknown, NodeIdentity> {
   convert(input: unknown) {
     assertRecordWithKeys(
       input,
@@ -94,13 +71,13 @@ class CappuccinoNodeIdentityDecoder implements Converter<
       'node_type',
       'network_type',
     );
-    return new CappuccinoNodeIdentity(
+    return new NodeIdentity(
       taggedBase64Codec.decode(input.public_key),
       preferNullOverEmptyString(nullableStringCodec.decode(input.name)),
       nullableURLCodec.decode(input.public_url),
       preferNullOverEmptyString(nullableStringCodec.decode(input.company)),
       nullableURLCodec.decode(input.company_website),
-      nullableCappuccinoLocationDetailsCodec.decode(input.location),
+      nullableLocationDetailsCodec.decode(input.location),
       preferNullOverEmptyString(
         nullableStringCodec.decode(input.operating_system),
       ),
@@ -110,13 +87,13 @@ class CappuccinoNodeIdentityDecoder implements Converter<
   }
 }
 
-class CappuccinoNodeIdentityCodec extends TypeCheckingCodec<CappuccinoNodeIdentity> {
-  readonly encoder = new CappuccinoNodeIdentityEncoder();
-  readonly decoder = new CappuccinoNodeIdentityDecoder();
+class NodeIdentityCodec extends TypeCheckingCodec<NodeIdentity> {
+  readonly encoder = new NodeIdentityEncoder();
+  readonly decoder = new NodeIdentityDecoder();
 }
 
-export const cappuccinoNodeIdentityCodec = new CappuccinoNodeIdentityCodec();
-export const listCappuccinoNodeIdentityCodec = new ArrayCodec(
-  new ArrayDecoder(cappuccinoNodeIdentityCodec),
-  new ArrayEncoder(cappuccinoNodeIdentityCodec),
+export const nodeIdentityCodec = new NodeIdentityCodec();
+export const listNodeIdentityCodec = new ArrayCodec(
+  new ArrayDecoder(nodeIdentityCodec),
+  new ArrayEncoder(nodeIdentityCodec),
 );

@@ -15,9 +15,10 @@ export const L1ValidatorServiceContext =
   );
 
 let singletonService: L1ValidatorService | null = null;
+
 /**
- * createWebWorkerCappuccinoHotShotQueryService returns a singleton instanceof
- * a CappuccinoHotShotQueryService implemented using Web Workers.
+ * createWebWorkerL1ValidatorService returns a singleton instanceof
+ * a L1ValidatorService implemented using Web Workers.
  */
 function createWebWorkerL1ValidatorService(
   l1ValidatorServiceURL: string | null | undefined,

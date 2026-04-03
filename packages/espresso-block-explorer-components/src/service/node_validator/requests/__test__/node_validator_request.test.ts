@@ -13,7 +13,7 @@ import {
   SubscribeValidators,
   SubscribeVoters,
 } from '../node_validator_request';
-import { cappuccinoNodeValidatorRequestCodec } from '../node_validator_request_codec';
+import { nodeValidatorRequestCodec } from '../node_validator_request_codec';
 
 describe('NodeValidatorRequest', () => {
   it('should JSON encode', () => {
@@ -50,11 +50,9 @@ describe('NodeValidatorRequest', () => {
       requestConstructors,
       (a, b) => [a, b] as const,
     )) {
-      expect(
-        cappuccinoNodeValidatorRequestCodec.encode(new constructor()),
-      ).toBe(string);
+      expect(nodeValidatorRequestCodec.encode(new constructor())).toBe(string);
 
-      expect(cappuccinoNodeValidatorRequestCodec.decode(string)).toBeInstanceOf(
+      expect(nodeValidatorRequestCodec.decode(string)).toBeInstanceOf(
         constructor,
       );
 

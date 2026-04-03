@@ -26,7 +26,11 @@ function sortGroup(a: HistogramGroup, b: HistogramGroup): number {
   return a.blockHeights - b.blockHeights;
 }
 
-export class CappuccinoSummaryHistograms {
+/**
+ * SummaryHistograms is a class that contains the histogram data for the
+ * summary information presented on the Block Explorer.
+ */
+export class SummaryHistograms {
   readonly blockTime: (null | number)[];
   readonly blockSize: (null | number)[];
   readonly blockTransactions: (null | number)[];
@@ -105,15 +109,15 @@ export class CappuccinoSummaryHistograms {
   }
 
   toJSON() {
-    return cappuccinoSummaryHistogramsCodec.encode(this);
+    return summaryHistogramsCodec.encode(this);
   }
 }
 
-class CappuccinoSummaryHistogramsDecoder implements Converter<
+class SummaryHistogramsDecoder implements Converter<
   unknown,
-  CappuccinoSummaryHistograms
+  SummaryHistograms
 > {
-  convert(input: unknown): CappuccinoSummaryHistograms {
+  convert(input: unknown): SummaryHistograms {
     assertRecordWithKeys(
       input,
       'block_time',
@@ -122,7 +126,7 @@ class CappuccinoSummaryHistogramsDecoder implements Converter<
       'block_heights',
     );
 
-    return new CappuccinoSummaryHistograms(
+    return new SummaryHistograms(
       nullableNumberArrayCodec.decode(input.block_time),
       nullableNumberArrayCodec.decode(input.block_size),
       nullableNumberArrayCodec.decode(input.block_transactions),
@@ -131,9 +135,9 @@ class CappuccinoSummaryHistogramsDecoder implements Converter<
   }
 }
 
-class CappuccinoSummaryHistogramsEncoder implements Converter<CappuccinoSummaryHistograms> {
-  convert(input: CappuccinoSummaryHistograms) {
-    assertInstanceOf(input, CappuccinoSummaryHistograms);
+class SummaryHistogramsEncoder implements Converter<SummaryHistograms> {
+  convert(input: SummaryHistograms) {
+    assertInstanceOf(input, SummaryHistograms);
 
     // Because we can store null data, but we don't want to encode null data,
     // we must filter out the nulls.
@@ -148,15 +152,12 @@ class CappuccinoSummaryHistogramsEncoder implements Converter<CappuccinoSummaryH
   }
 }
 
-class CappuccinoSummaryHistogramsCodec extends TypeCheckingCodec<
-  CappuccinoSummaryHistograms,
-  ReturnType<
-    InstanceType<new () => CappuccinoSummaryHistogramsEncoder>['convert']
-  >
+class SummaryHistogramsCodec extends TypeCheckingCodec<
+  SummaryHistograms,
+  ReturnType<InstanceType<new () => SummaryHistogramsEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoSummaryHistogramsEncoder();
-  readonly decoder = new CappuccinoSummaryHistogramsDecoder();
+  readonly encoder = new SummaryHistogramsEncoder();
+  readonly decoder = new SummaryHistogramsDecoder();
 }
 
-export const cappuccinoSummaryHistogramsCodec =
-  new CappuccinoSummaryHistogramsCodec();
+export const summaryHistogramsCodec = new SummaryHistogramsCodec();

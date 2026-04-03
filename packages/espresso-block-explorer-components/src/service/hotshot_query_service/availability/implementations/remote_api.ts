@@ -12,54 +12,55 @@ import {
   reverseAsyncIterator,
   takeAsyncIterator,
 } from '@/functional/functional_async';
-import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
-import { unwrappedCappuccinoAvailabilityErrorResponseDecoder } from '../availability_error_response';
-import { CappuccinoAPIBlock, cappuccinoAPIBlockCodec } from '../block';
-import { CappuccinoAPIHeader, cappuccinoAPIHeaderCodec } from '../block_header';
-import { CappuccinoDerivedBlockSummary } from '../derived_block_summary';
-import { CappuccinoDerivedTransactionSummary } from '../derived_transaction_summary';
+import { HotShotQueryServiceAvailabilityAPI } from '../availability_api';
+import { unwrappedAvailabilityErrorResponseDecoder } from '../availability_error_response';
+import { AvailabilityAPIBlock, availabilityAPIBlockCodec } from '../block';
 import {
-  CappuccinoAPILeafResponse,
-  cappuccinoAPILeafResponseCodec,
+  AvailabilityAPIHeader,
+  availabilityAPIHeaderCodec,
+} from '../block_header';
+import { AvailabilityDerivedBlockSummary } from '../derived_block_summary';
+import { AvailabilityDerivedTransactionSummary } from '../derived_transaction_summary';
+import {
+  AvailabilityAPILeafResponse,
+  availabilityAPILeafResponseCodec,
 } from '../leaf_response';
 import {
-  CappuccinoAPITransactionResponse,
-  cappuccinoAPITransactionResponseCodec,
+  AvailabilityAPITransactionResponse,
+  availabilityAPITransactionResponseCodec,
 } from '../transaction_response';
 import {
-  convertCappuccinoBlockAndLeafToBlockSummary,
-  convertCappuccinoLeafAndTransactionsToTransactionSummaries,
+  convertBlockAndLeafToBlockSummary,
+  convertLeafAndTransactionsToTransactionSummaries,
 } from '../transformers';
 
-export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements CappuccinoHotShotQueryServiceAvailabilityAPI {
-  private readonly fetcher: typeof fetch;
-  private readonly baseURL: URL;
+export class FetchBasedHotShotQueryServiceAvailabilityAPI implements HotShotQueryServiceAvailabilityAPI {
   private readonly catchErrorHandler = checkErrorAndExpandResponse(
-    unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+    unwrappedAvailabilityErrorResponseDecoder,
   );
   private readonly leafHandler = validateAndExpandResponse(
-    cappuccinoAPILeafResponseCodec.decoder,
-    unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+    availabilityAPILeafResponseCodec.decoder,
+    unwrappedAvailabilityErrorResponseDecoder,
   );
   private readonly transactionHandler = validateAndExpandResponse(
-    cappuccinoAPITransactionResponseCodec.decoder,
-    unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+    availabilityAPITransactionResponseCodec.decoder,
+    unwrappedAvailabilityErrorResponseDecoder,
   );
   private readonly blockHandler = validateAndExpandResponse(
-    cappuccinoAPIBlockCodec.decoder,
-    unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+    availabilityAPIBlockCodec.decoder,
+    unwrappedAvailabilityErrorResponseDecoder,
   );
   private readonly headerHandler = validateAndExpandResponse(
-    cappuccinoAPIHeaderCodec.decoder,
-    unwrappedCappuccinoAvailabilityErrorResponseDecoder,
+    availabilityAPIHeaderCodec.decoder,
+    unwrappedAvailabilityErrorResponseDecoder,
   );
 
-  constructor(fetcher: typeof fetch, url: URL) {
-    this.fetcher = fetcher;
-    this.baseURL = url;
-  }
+  constructor(
+    private readonly fetcher: typeof fetch,
+    private readonly baseURL: URL,
+  ) {}
 
-  getLeafFromHeight(height: number): Promise<CappuccinoAPILeafResponse> {
+  getLeafFromHeight(height: number): Promise<AvailabilityAPILeafResponse> {
     const url = new URL(`leaf/${height}`, this.baseURL);
     return this.fetcher(url).then(this.leafHandler, this.catchErrorHandler);
   }
@@ -67,7 +68,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
   getTransactionFromHeightAndOffset(
     height: number,
     index: number,
-  ): Promise<CappuccinoAPITransactionResponse> {
+  ): Promise<AvailabilityAPITransactionResponse> {
     const url = new URL(`transaction/${height}/${index}`, this.baseURL);
     return this.fetcher(url).then(
       this.transactionHandler,
@@ -78,7 +79,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
   async getBlockSummaries(
     from: number,
     until: number,
-  ): Promise<CappuccinoDerivedBlockSummary[]> {
+  ): Promise<AvailabilityDerivedBlockSummary[]> {
     // We do this the **slow** way because we need to deal with the difference
     // between APIs at the moment.
     //
@@ -92,12 +93,12 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
       ]),
     );
     const step3 = mapAsyncIterator(step2, ([block, leaf]) =>
-      convertCappuccinoBlockAndLeafToBlockSummary(block, leaf),
+      convertBlockAndLeafToBlockSummary(block, leaf),
     );
     return await collectAsyncIterator(step3);
   }
 
-  getBlockFromHeight(height: number): Promise<CappuccinoAPIBlock> {
+  getBlockFromHeight(height: number): Promise<AvailabilityAPIBlock> {
     const url = new URL(`block/${height}`, this.baseURL);
     return this.fetcher(url).then(this.blockHandler, this.catchErrorHandler);
   }
@@ -112,7 +113,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
     );
     const step3 = expandAsyncIterator(step2, (leaf) =>
       reverseAsyncIterator(
-        convertCappuccinoLeafAndTransactionsToTransactionSummaries(
+        convertLeafAndTransactionsToTransactionSummaries(
           leaf,
 
           mapAsyncIterator(
@@ -139,7 +140,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
     height: number,
     offset: number,
     limit: number,
-  ): Promise<CappuccinoDerivedTransactionSummary[]> {
+  ): Promise<AvailabilityDerivedTransactionSummary[]> {
     // We can currently retrieve the individual transactions from the blocks
     // themselves.
 
@@ -154,7 +155,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
     height: number,
     offset: number,
     limit: number,
-  ): Promise<CappuccinoDerivedTransactionSummary[]> {
+  ): Promise<AvailabilityDerivedTransactionSummary[]> {
     // We can currently retrieve the individual transactions from the blocks
     // themselves.
 
@@ -168,7 +169,7 @@ export class FetchBasedCappuccinoHotShotQueryServiceAvailabilityAPI implements C
     return await collectAsyncIterator(step6);
   }
 
-  async getHeader(height: number): Promise<CappuccinoAPIHeader> {
+  async getHeader(height: number): Promise<AvailabilityAPIHeader> {
     const url = new URL(`header/${height}`, this.baseURL);
     return this.fetcher(url).then(this.headerHandler, this.catchErrorHandler);
   }

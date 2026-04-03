@@ -9,62 +9,59 @@ import {
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
 import {
-  CappuccinoAPIMerkleTreeProof,
-  listCappuccinoAPIMerkleTreeProofCodec,
+  AvailabilityAPIMerkleTreeProof,
+  listAvailabilityAPIMerkleTreeProofCodec,
 } from './merkle_tree_proof';
 
 /**
- * CappuccinoAPITransactionProof represents a transaction proof in the
- * Cappuccino API.
+ * AvailabilityAPITransactionProof represents a transaction proof in the
+ * Availability API.
  */
-export class CappuccinoAPITransactionProof {
-  readonly pos: TaggedBase64;
-  readonly proof: CappuccinoAPIMerkleTreeProof[];
-
-  constructor(pos: TaggedBase64, proof: CappuccinoAPIMerkleTreeProof[]) {
-    this.pos = pos;
-    this.proof = proof;
-  }
+export class AvailabilityAPITransactionProof {
+  constructor(
+    public readonly pos: TaggedBase64,
+    public readonly proof: AvailabilityAPIMerkleTreeProof[],
+  ) {}
 
   toJSON() {
-    return cappuccinoAPITransactionProofCodec.encode(this);
+    return availabilityAPITransactionProofCodec.encode(this);
   }
 }
 
-export class CappuccinoAPITransactionProofDecoder implements Converter<
+export class AvailabilityAPITransactionProofDecoder implements Converter<
   unknown,
-  CappuccinoAPITransactionProof
+  AvailabilityAPITransactionProof
 > {
-  convert(input: unknown): CappuccinoAPITransactionProof {
+  convert(input: unknown): AvailabilityAPITransactionProof {
     assertRecordWithKeys(input, 'pos', 'proof');
 
-    return new CappuccinoAPITransactionProof(
+    return new AvailabilityAPITransactionProof(
       taggedBase64Codec.decode(input.pos),
-      listCappuccinoAPIMerkleTreeProofCodec.decode(input.proof),
+      listAvailabilityAPIMerkleTreeProofCodec.decode(input.proof),
     );
   }
 }
 
-export class CappuccinoAPITransactionProofEncoder implements Converter<CappuccinoAPITransactionProof> {
-  convert(input: CappuccinoAPITransactionProof) {
-    assertInstanceOf(input, CappuccinoAPITransactionProof);
+export class AvailabilityAPITransactionProofEncoder implements Converter<AvailabilityAPITransactionProof> {
+  convert(input: AvailabilityAPITransactionProof) {
+    assertInstanceOf(input, AvailabilityAPITransactionProof);
 
     return {
       pos: taggedBase64Codec.encode(input.pos),
-      proof: listCappuccinoAPIMerkleTreeProofCodec.encode(input.proof),
+      proof: listAvailabilityAPIMerkleTreeProofCodec.encode(input.proof),
     };
   }
 }
 
-export class CappuccinoAPITransactionProofCodec extends TypeCheckingCodec<
-  CappuccinoAPITransactionProof,
+export class AvailablityAPITransactionProofCodec extends TypeCheckingCodec<
+  AvailabilityAPITransactionProof,
   ReturnType<
-    InstanceType<new () => CappuccinoAPITransactionProofEncoder>['convert']
+    InstanceType<new () => AvailabilityAPITransactionProofEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoAPITransactionProofEncoder();
-  readonly decoder = new CappuccinoAPITransactionProofDecoder();
+  readonly encoder = new AvailabilityAPITransactionProofEncoder();
+  readonly decoder = new AvailabilityAPITransactionProofDecoder();
 }
 
-export const cappuccinoAPITransactionProofCodec =
-  new CappuccinoAPITransactionProofCodec();
+export const availabilityAPITransactionProofCodec =
+  new AvailablityAPITransactionProofCodec();

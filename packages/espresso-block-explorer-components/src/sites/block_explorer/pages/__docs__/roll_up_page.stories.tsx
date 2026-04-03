@@ -1,5 +1,5 @@
 import { OverridePathResolver } from '@/block_explorer/contexts/path_resolver_provider';
-import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
+import { ProvideHotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { ProvideTickEverySecond } from '@/contexts/now_provider';
 import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
 import { NamespaceContext } from '@/models/block_explorer/rollup_entry/contexts';
@@ -17,7 +17,7 @@ import {
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { ProvideCappuccinoRollUpDetailDataSource } from '../cappuccino_hot_shot_query_service_adapters';
+import { ProvideRollUpDetailDataSource } from '../hot_shot_query_service_adapters';
 import RollUpPage from '../roll_up_page';
 import { StoryBookPathResolver } from '../story_book_path_resolver';
 
@@ -47,13 +47,13 @@ const Example: React.FC<ExampleProps> = ({
     <EnvironmentBanner />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideCappuccinoHotShotQueryServiceAPIContext>
-          <ProvideCappuccinoRollUpDetailDataSource>
+        <ProvideHotShotQueryServiceAPIContext>
+          <ProvideRollUpDetailDataSource>
             <NamespaceContext.Provider value={namespace}>
               <RollUpPage {...rest} />
             </NamespaceContext.Provider>
-          </ProvideCappuccinoRollUpDetailDataSource>
-        </ProvideCappuccinoHotShotQueryServiceAPIContext>
+          </ProvideRollUpDetailDataSource>
+        </ProvideHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </StoryBookSpecifyEnvironment>

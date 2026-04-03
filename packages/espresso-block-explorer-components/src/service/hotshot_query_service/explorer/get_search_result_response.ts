@@ -5,57 +5,55 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import {
-  CappuccinoExplorerSearchResults,
-  cappuccinoExplorerSearchResultsCodec,
+  ExplorerSearchResults,
+  explorerSearchResultsCodec,
 } from './search_results';
 
-export class CappuccinoExplorerGetSearchResultResponse {
-  readonly searchResults: CappuccinoExplorerSearchResults;
-
-  constructor(searchResults: CappuccinoExplorerSearchResults) {
-    this.searchResults = searchResults;
-  }
+/**
+ * ExplorerGetSearchResultResponse is the response from the explorer when
+ * querying for search results.
+ */
+export class ExplorerGetSearchResultResponse {
+  constructor(public readonly searchResults: ExplorerSearchResults) {}
 
   toJSON() {
-    return cappuccinoExplorerGetSearchResultResponseCodec.encode(this);
+    return explorerGetSearchResultResponseCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetSearchResultResponseDecoder implements Converter<
+class ExplorerGetSearchResultResponseDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetSearchResultResponse
+  ExplorerGetSearchResultResponse
 > {
-  convert(input: unknown): CappuccinoExplorerGetSearchResultResponse {
+  convert(input: unknown): ExplorerGetSearchResultResponse {
     assertRecordWithKeys(input, 'search_results');
 
-    return new CappuccinoExplorerGetSearchResultResponse(
-      cappuccinoExplorerSearchResultsCodec.decode(input.search_results),
+    return new ExplorerGetSearchResultResponse(
+      explorerSearchResultsCodec.decode(input.search_results),
     );
   }
 }
 
-class CappuccinoExplorerGetSearchResultResponseEncoder implements Converter<
-  CappuccinoExplorerGetSearchResultResponse,
+class ExplorerGetSearchResultResponseEncoder implements Converter<
+  ExplorerGetSearchResultResponse,
   unknown
 > {
-  convert(input: CappuccinoExplorerGetSearchResultResponse): unknown {
-    assertInstanceOf(input, CappuccinoExplorerGetSearchResultResponse);
+  convert(input: ExplorerGetSearchResultResponse): unknown {
+    assertInstanceOf(input, ExplorerGetSearchResultResponse);
 
     return {
-      search_results: cappuccinoExplorerSearchResultsCodec.encode(
-        input.searchResults,
-      ),
+      search_results: explorerSearchResultsCodec.encode(input.searchResults),
     };
   }
 }
 
-class CappuccinoExplorerGetSearchResultResponseCodec extends Codec<
-  CappuccinoExplorerGetSearchResultResponse,
+class ExplorerGetSearchResultResponseCodec extends Codec<
+  ExplorerGetSearchResultResponse,
   unknown
 > {
-  readonly encoder = new CappuccinoExplorerGetSearchResultResponseEncoder();
-  readonly decoder = new CappuccinoExplorerGetSearchResultResponseDecoder();
+  readonly encoder = new ExplorerGetSearchResultResponseEncoder();
+  readonly decoder = new ExplorerGetSearchResultResponseDecoder();
 }
 
-export const cappuccinoExplorerGetSearchResultResponseCodec =
-  new CappuccinoExplorerGetSearchResultResponseCodec();
+export const explorerGetSearchResultResponseCodec =
+  new ExplorerGetSearchResultResponseCodec();

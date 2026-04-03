@@ -1,11 +1,9 @@
 import { validateAndExpandResponse } from '@/async/fetch/response_validators';
 import { ActiveValidators, activeValidatorsCodec } from '../active_validators';
-import { CappuccinoHotShotQueryServiceNodeAPI } from '../node_api';
+import { HotShotQueryServiceNodeAPI } from '../node_api';
 import { StakeTable, stakeTableCodec } from '../stake_table';
 
-export class FetchBasedCappuccinoHotShotQueryServiceNodeAPI implements CappuccinoHotShotQueryServiceNodeAPI {
-  private readonly fetcher: typeof fetch;
-  private readonly baseURL: URL;
+export class FetchBasedHotShotQueryServiceNodeAPI implements HotShotQueryServiceNodeAPI {
   private readonly stakeTableURL: URL;
   private readonly validatorsURL: URL;
   private readonly blockHeightResponseValidator = validateAndExpandResponse(
@@ -15,9 +13,10 @@ export class FetchBasedCappuccinoHotShotQueryServiceNodeAPI implements Cappuccin
     activeValidatorsCodec.decoder,
   );
 
-  constructor(fetcher: typeof fetch, url: URL) {
-    this.fetcher = fetcher;
-    this.baseURL = url;
+  constructor(
+    private readonly fetcher: typeof fetch,
+    private readonly baseURL: URL,
+  ) {
     this.stakeTableURL = new URL('stake-table/', this.baseURL);
     this.validatorsURL = new URL('validators/', this.baseURL);
   }

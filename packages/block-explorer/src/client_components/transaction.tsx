@@ -1,11 +1,9 @@
 'use client';
 
-import {
-  ProvideCappuccinoHotShotQueryServiceAPIContext,
-} from 'espresso-block-explorer-components';
+import { ProvideHotShotQueryServiceAPIContext } from 'espresso-block-explorer-components';
 import {
   BlockNumberContext,
-  ProvideCappuccinoTransactionDetailDataSource,
+  ProvideTransactionDetailDataSource,
   TransactionOffsetContext,
   TransactionPage,
 } from 'espresso-block-explorer-components/block-explorer';
@@ -21,11 +19,11 @@ export default function TransactionClientComponent(
   return (
     <BlockNumberContext.Provider value={props.height}>
       <TransactionOffsetContext.Provider value={props.offset}>
-        <ProvideCappuccinoHotShotQueryServiceAPIContext>
-          <ProvideCappuccinoTransactionDetailDataSource>
+        <ProvideHotShotQueryServiceAPIContext>
+          <ProvideTransactionDetailDataSource>
             <TransactionPage />
-          </ProvideCappuccinoTransactionDetailDataSource>
-        </ProvideCappuccinoHotShotQueryServiceAPIContext>
+          </ProvideTransactionDetailDataSource>
+        </ProvideHotShotQueryServiceAPIContext>
       </TransactionOffsetContext.Provider>
     </BlockNumberContext.Provider>
   );

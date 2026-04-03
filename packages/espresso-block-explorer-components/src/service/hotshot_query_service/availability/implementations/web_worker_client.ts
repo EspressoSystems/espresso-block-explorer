@@ -1,29 +1,32 @@
 import { Codec } from '@/convert/codec/convert';
 import { AsyncRequestHelper } from '@/service/espresso_l1_validator_service/web_worker_types';
-import { CappuccinoHotShotQueryServiceAvailabilityAPI } from '../availability_api';
-import { CappuccinoAPIBlock, cappuccinoAPIBlockCodec } from '../block';
-import { CappuccinoAPIHeader, cappuccinoAPIHeaderCodec } from '../block_header';
+import { HotShotQueryServiceAvailabilityAPI } from '../availability_api';
+import { AvailabilityAPIBlock, availabilityAPIBlockCodec } from '../block';
 import {
-  CappuccinoDerivedBlockSummary,
-  listCappuccinoDerivedBlockSummaryCodec,
+  AvailabilityAPIHeader,
+  availabilityAPIHeaderCodec,
+} from '../block_header';
+import {
+  AvailabilityDerivedBlockSummary,
+  listAvailabilityDerivedBlockSummaryCodec,
 } from '../derived_block_summary';
 import {
-  CappuccinoDerivedTransactionSummary,
-  listCappuccinoDerivedTransactionSummaryCodec,
+  AvailabilityDerivedTransactionSummary,
+  listAvailabilityDerivedTransactionSummaryCodec,
 } from '../derived_transaction_summary';
 import {
-  CappuccinoAPILeafResponse,
-  cappuccinoAPILeafResponseCodec,
+  AvailabilityAPILeafResponse,
+  availabilityAPILeafResponseCodec,
 } from '../leaf_response';
 import {
-  CappuccinoAPITransactionResponse,
-  cappuccinoAPITransactionResponseCodec,
+  AvailabilityAPITransactionResponse,
+  availabilityAPITransactionResponseCodec,
 } from '../transaction_response';
 
-export class WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI
+export class WebWorkerClientBasedHotShotQueryServiceAvailabilityAPI
   implements
-    CappuccinoHotShotQueryServiceAvailabilityAPI,
-    CappuccinoHotShotQueryServiceAvailabilityAPI
+    HotShotQueryServiceAvailabilityAPI,
+    HotShotQueryServiceAvailabilityAPI
 {
   private helper: AsyncRequestHelper;
   constructor(helper: AsyncRequestHelper) {
@@ -32,16 +35,18 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI
 
   private async sendRequest<
     T,
-    Method extends keyof CappuccinoHotShotQueryServiceAvailabilityAPI =
-      keyof CappuccinoHotShotQueryServiceAvailabilityAPI,
+    Method extends keyof HotShotQueryServiceAvailabilityAPI =
+      keyof HotShotQueryServiceAvailabilityAPI,
     Param = unknown,
   >(codec: Codec<T, unknown>, method: Method, ...args: Param[]): Promise<T> {
     return this.helper.submitRequest(codec, 'availability', method, args);
   }
 
-  async getLeafFromHeight(height: number): Promise<CappuccinoAPILeafResponse> {
+  async getLeafFromHeight(
+    height: number,
+  ): Promise<AvailabilityAPILeafResponse> {
     return await this.sendRequest(
-      cappuccinoAPILeafResponseCodec,
+      availabilityAPILeafResponseCodec,
       'getLeafFromHeight',
       height,
     );
@@ -50,9 +55,9 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI
   async getTransactionFromHeightAndOffset(
     height: number,
     index: number,
-  ): Promise<CappuccinoAPITransactionResponse> {
+  ): Promise<AvailabilityAPITransactionResponse> {
     return await this.sendRequest(
-      cappuccinoAPITransactionResponseCodec,
+      availabilityAPITransactionResponseCodec,
       'getTransactionFromHeightAndOffset',
       height,
       index,
@@ -62,18 +67,18 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI
   async getBlockSummaries(
     from: number,
     until: number,
-  ): Promise<CappuccinoDerivedBlockSummary[]> {
+  ): Promise<AvailabilityDerivedBlockSummary[]> {
     return await this.sendRequest(
-      listCappuccinoDerivedBlockSummaryCodec,
+      listAvailabilityDerivedBlockSummaryCodec,
       'getBlockSummaries',
       from,
       until,
     );
   }
 
-  async getBlockFromHeight(height: number): Promise<CappuccinoAPIBlock> {
+  async getBlockFromHeight(height: number): Promise<AvailabilityAPIBlock> {
     return await this.sendRequest(
-      cappuccinoAPIBlockCodec,
+      availabilityAPIBlockCodec,
       'getBlockFromHeight',
       height,
     );
@@ -83,9 +88,9 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI
     height: number,
     offset: number,
     limit: number,
-  ): Promise<CappuccinoDerivedTransactionSummary[]> {
+  ): Promise<AvailabilityDerivedTransactionSummary[]> {
     return await this.sendRequest(
-      listCappuccinoDerivedTransactionSummaryCodec,
+      listAvailabilityDerivedTransactionSummaryCodec,
       'getTransactionSummaryRange',
       height,
       offset,
@@ -98,9 +103,9 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI
     height: number,
     offset: number,
     limit: number,
-  ): Promise<CappuccinoDerivedTransactionSummary[]> {
+  ): Promise<AvailabilityDerivedTransactionSummary[]> {
     return await this.sendRequest(
-      listCappuccinoDerivedTransactionSummaryCodec,
+      listAvailabilityDerivedTransactionSummaryCodec,
       'getTransactionSummaryRangeForRollup',
       namespace,
       height,
@@ -109,9 +114,9 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceAvailabilityAPI
     );
   }
 
-  async getHeader(height: number): Promise<CappuccinoAPIHeader> {
+  async getHeader(height: number): Promise<AvailabilityAPIHeader> {
     return await this.sendRequest(
-      cappuccinoAPIHeaderCodec,
+      availabilityAPIHeaderCodec,
       'getHeader',
       height,
     );

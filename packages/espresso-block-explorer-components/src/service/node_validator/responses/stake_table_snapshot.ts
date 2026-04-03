@@ -7,68 +7,63 @@ import {
   arrayStakeTableEntryWrapperCodec,
   StakeTableEntryWrapper,
 } from '@/models/espresso/stake_table/stake_table_entry_wrapper';
-import CappuccinoNodeValidatorResponse from './node_validator_response';
+import NodeValidatorResponse from './node_validator_response';
 
 /**
- * Messages from the Cappuccino Node Validator take the form of:
+ * Messages from the Node Validator take the form of:
  * { "MessageType": MessageType }
  */
 
 /**
- * kCappuccinoStakeTableSnapshotType is the type string for the
- * CappuccinoStakeTableSnapshot class.
+ * kStakeTableSnapshotType is the type string for the
+ * StakeTableSnapshot class.
  */
-export const kCappuccinoStakeTableSnapshotType = 'StakeTableSnapshot' as const;
+export const kStakeTableSnapshotType = 'StakeTableSnapshot' as const;
 
 /**
- * CappuccinoStakeTableSnapshot is a response from the Cappuccino node
+ * StakeTableSnapshot is a response from the node
  * validator that contains a snapshot of the StakeTable in the network.
  */
-export class CappuccinoStakeTableSnapshot extends CappuccinoNodeValidatorResponse {
-  readonly stakeTable: StakeTableEntryWrapper[];
-
-  constructor(stakeTable: StakeTableEntryWrapper[]) {
+export class StakeTableSnapshot extends NodeValidatorResponse {
+  constructor(public readonly stakeTable: StakeTableEntryWrapper[]) {
     super();
-    this.stakeTable = stakeTable;
   }
 
   toJSON() {
-    return cappuccinoStakeTableSnapshotCodec.encode(this);
+    return stakeTableSnapshotCodec.encode(this);
   }
 }
 
-class CappuccinoStakeTableSnapshotDecoder implements Converter<
+class StakeTableSnapshotDecoder implements Converter<
   unknown,
-  CappuccinoStakeTableSnapshot
+  StakeTableSnapshot
 > {
-  convert(input: unknown): CappuccinoStakeTableSnapshot {
-    assertRecordWithKeys(input, kCappuccinoStakeTableSnapshotType);
+  convert(input: unknown): StakeTableSnapshot {
+    assertRecordWithKeys(input, kStakeTableSnapshotType);
 
-    const list = input[kCappuccinoStakeTableSnapshotType];
-    return new CappuccinoStakeTableSnapshot(
+    const list = input[kStakeTableSnapshotType];
+    return new StakeTableSnapshot(
       arrayStakeTableEntryWrapperCodec.decode(list),
     );
   }
 }
 
-class CappuccinoStakeTableSnapshotEncoder implements Converter<CappuccinoStakeTableSnapshot> {
-  convert(input: CappuccinoStakeTableSnapshot) {
+class StakeTableSnapshotEncoder implements Converter<StakeTableSnapshot> {
+  convert(input: StakeTableSnapshot) {
     return {
-      [kCappuccinoStakeTableSnapshotType]:
-        arrayStakeTableEntryWrapperCodec.encode(input.stakeTable),
+      [kStakeTableSnapshotType]: arrayStakeTableEntryWrapperCodec.encode(
+        input.stakeTable,
+      ),
     };
   }
 }
 
-class CappuccinoStakeTableSnapshotCodec extends TypeCheckingCodec<
-  CappuccinoStakeTableSnapshot,
-  ReturnType<
-    InstanceType<new () => CappuccinoStakeTableSnapshotEncoder>['convert']
-  >
+class StakeTableSnapshotCodec extends TypeCheckingCodec<
+  StakeTableSnapshot,
+  ReturnType<InstanceType<new () => StakeTableSnapshotEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoStakeTableSnapshotEncoder();
-  readonly decoder = new CappuccinoStakeTableSnapshotDecoder();
+  readonly encoder = new StakeTableSnapshotEncoder();
+  readonly decoder = new StakeTableSnapshotDecoder();
 }
 
-export const cappuccinoStakeTableSnapshotCodec =
-  new CappuccinoStakeTableSnapshotCodec();
+export const stakeTableSnapshotCodec = new StakeTableSnapshotCodec();

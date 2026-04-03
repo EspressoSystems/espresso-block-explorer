@@ -1,30 +1,30 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import ExpectedObjectWithKeyError from '@/convert/codec/expected_object_with_key_error';
+import UnimplementedError from '@/errors/unimplemented_error';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoAPIHeader } from './block_header';
+import { AvailabilityAPIHeader } from './block_header';
 import { LeafV0, leafV0Codec } from './leaf_v0';
 import { LeafV1, leafV1Codec } from './leaf_v1';
 import { LeafV2, leafV2Codec } from './leaf_v2';
-import { CappuccinoAPIPayload } from './payload';
+import { AvailabilityAPIPayload } from './payload';
 import { SimpleCertificate } from './simple_certificate';
-import UnimplementedError from '@/errors/unimplemented_error';
 
 /**
- * CappuccinoAPILeaf represents a leaf in the Cappuccino API.
+ * AvailabilityAPILeaf represents a leaf in the Availability API.
  */
-export interface CappuccinoAPILeaf {
+export interface AvailabilityAPILeaf {
   readonly view_number: number;
   readonly justify_qc: SimpleCertificate<unknown>;
   readonly parent_commitment: TaggedBase64;
-  readonly block_header: CappuccinoAPIHeader;
-  readonly block_payload: null | CappuccinoAPIPayload;
+  readonly block_header: AvailabilityAPIHeader;
+  readonly block_payload: null | AvailabilityAPIPayload;
 }
 
-export class CappuccinoAPILeafDecoder implements Converter<
+export class AvailabilityAPILeafDecoder implements Converter<
   unknown,
-  CappuccinoAPILeaf
+  AvailabilityAPILeaf
 > {
-  convert(input: unknown): CappuccinoAPILeaf {
+  convert(input: unknown): AvailabilityAPILeaf {
     try {
       return leafV2Codec.decode(input);
     } catch (err) {
@@ -49,8 +49,8 @@ export class CappuccinoAPILeafDecoder implements Converter<
   }
 }
 
-export class CappuccinoAPILeafEncoder implements Converter<CappuccinoAPILeaf> {
-  convert(input: CappuccinoAPILeaf) {
+export class AvailabilityAPILeafEncoder implements Converter<AvailabilityAPILeaf> {
+  convert(input: AvailabilityAPILeaf) {
     if (input instanceof LeafV2) {
       return leafV2Codec.encode(input);
     }
@@ -67,12 +67,12 @@ export class CappuccinoAPILeafEncoder implements Converter<CappuccinoAPILeaf> {
   }
 }
 
-export class CappuccinoAPILeafCodec extends TypeCheckingCodec<
-  CappuccinoAPILeaf,
-  ReturnType<InstanceType<new () => CappuccinoAPILeafEncoder>['convert']>
+export class AvailabilityAPILeafCodec extends TypeCheckingCodec<
+  AvailabilityAPILeaf,
+  ReturnType<InstanceType<new () => AvailabilityAPILeafEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoAPILeafEncoder();
-  readonly decoder = new CappuccinoAPILeafDecoder();
+  readonly encoder = new AvailabilityAPILeafEncoder();
+  readonly decoder = new AvailabilityAPILeafDecoder();
 }
 
-export const cappuccinoAPILeafCodec = new CappuccinoAPILeafCodec();
+export const availabilityAPILeafCodec = new AvailabilityAPILeafCodec();

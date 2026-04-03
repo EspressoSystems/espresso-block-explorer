@@ -12,49 +12,33 @@ import {
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
 
-export class CappuccinoExplorerTransactionDetailDetails {
-  readonly hash: TaggedBase64;
-  readonly height: number;
-  readonly blockConfirmed: boolean;
-  readonly offset: number;
-  readonly numTransactions: number;
-  readonly size: number;
-  readonly time: Date;
-  readonly sequencingFees: unknown[];
-  readonly feeDetails: unknown[];
-
+/**
+ * ExplorerTransactionDetailDetails represents the details of a
+ * transaction in the block explorer.
+ */
+export class ExplorerTransactionDetailDetails {
   constructor(
-    hash: TaggedBase64,
-    height: number,
-    blockConfirmed: boolean,
-    offset: number,
-    numTransactions: number,
-    size: number,
-    time: Date,
-    sequencingFees: unknown[],
-    feeDetails: unknown[],
-  ) {
-    this.hash = hash;
-    this.height = height;
-    this.blockConfirmed = blockConfirmed;
-    this.offset = offset;
-    this.numTransactions = numTransactions;
-    this.size = size;
-    this.time = time;
-    this.sequencingFees = sequencingFees;
-    this.feeDetails = feeDetails;
-  }
+    public readonly hash: TaggedBase64,
+    public readonly height: number,
+    public readonly blockConfirmed: boolean,
+    public readonly offset: number,
+    public readonly numTransactions: number,
+    public readonly size: number,
+    public readonly time: Date,
+    public readonly sequencingFees: unknown[],
+    public readonly feeDetails: unknown[],
+  ) {}
 
   toJSON() {
-    return cappuccinoExplorerTransactionDetailDetailsCodec.encode(this);
+    return explorerTransactionDetailDetailsCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerTransactionDetailDetailsDecoder implements Converter<
+class ExplorerTransactionDetailDetailsDecoder implements Converter<
   unknown,
-  CappuccinoExplorerTransactionDetailDetails
+  ExplorerTransactionDetailDetails
 > {
-  convert(input: unknown): CappuccinoExplorerTransactionDetailDetails {
+  convert(input: unknown): ExplorerTransactionDetailDetails {
     assertRecordWithKeys(
       input,
       'hash',
@@ -68,7 +52,7 @@ class CappuccinoExplorerTransactionDetailDetailsDecoder implements Converter<
       'fee_details',
     );
 
-    return new CappuccinoExplorerTransactionDetailDetails(
+    return new ExplorerTransactionDetailDetails(
       taggedBase64Codec.decode(input.hash),
       numberCodec.decode(input.height),
       booleanCodec.decode(input.block_confirmed),
@@ -84,9 +68,9 @@ class CappuccinoExplorerTransactionDetailDetailsDecoder implements Converter<
   }
 }
 
-class CappuccinoExplorerTransactionDetailDetailsEncoder implements Converter<CappuccinoExplorerTransactionDetailDetails> {
-  convert(input: CappuccinoExplorerTransactionDetailDetails) {
-    assertInstanceOf(input, CappuccinoExplorerTransactionDetailDetails);
+class ExplorerTransactionDetailDetailsEncoder implements Converter<ExplorerTransactionDetailDetails> {
+  convert(input: ExplorerTransactionDetailDetails) {
+    assertInstanceOf(input, ExplorerTransactionDetailDetails);
 
     return {
       hash: taggedBase64Codec.encode(input.hash),
@@ -104,17 +88,15 @@ class CappuccinoExplorerTransactionDetailDetailsEncoder implements Converter<Cap
   }
 }
 
-class CappuccinoExplorerTransactionDetailDetailsCodec extends TypeCheckingCodec<
-  CappuccinoExplorerTransactionDetailDetails,
+class ExplorerTransactionDetailDetailsCodec extends TypeCheckingCodec<
+  ExplorerTransactionDetailDetails,
   ReturnType<
-    InstanceType<
-      new () => CappuccinoExplorerTransactionDetailDetailsEncoder
-    >['convert']
+    InstanceType<new () => ExplorerTransactionDetailDetailsEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoExplorerTransactionDetailDetailsEncoder();
-  readonly decoder = new CappuccinoExplorerTransactionDetailDetailsDecoder();
+  readonly encoder = new ExplorerTransactionDetailDetailsEncoder();
+  readonly decoder = new ExplorerTransactionDetailDetailsDecoder();
 }
 
-export const cappuccinoExplorerTransactionDetailDetailsCodec =
-  new CappuccinoExplorerTransactionDetailDetailsCodec();
+export const explorerTransactionDetailDetailsCodec =
+  new ExplorerTransactionDetailDetailsCodec();

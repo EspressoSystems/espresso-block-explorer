@@ -12,38 +12,39 @@ import {
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
 
-export abstract class CappuccinoExplorerGetTransactionDetailRequest {
+/**
+ * ExplorerGetTransactionDetailRequest represents a request to get
+ * transaction details from the explorer.
+ */
+export abstract class ExplorerGetTransactionDetailRequest {
   static heightAndOffset(height: number, offset: number) {
-    return new CappuccinoExplorerGetTransactionDetailRequestHeightAndOffset(
+    return new ExplorerGetTransactionDetailRequestHeightAndOffset(
       height,
       offset,
     );
   }
 
   static hash(hash: TaggedBase64) {
-    return new CappuccinoExplorerGetTransactionDetailRequestHash(hash);
+    return new ExplorerGetTransactionDetailRequestHash(hash);
   }
 
   toJSON() {
-    return cappuccinoExplorerGetTransactionDetailRequestCodec.encode(this);
+    return explorerGetTransactionDetailRequestCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetTransactionDetailRequestEncoder implements Converter<CappuccinoExplorerGetTransactionDetailRequest> {
-  convert(input: CappuccinoExplorerGetTransactionDetailRequest) {
-    assertInstanceOf(input, CappuccinoExplorerGetTransactionDetailRequest);
+class ExplorerGetTransactionDetailRequestEncoder implements Converter<ExplorerGetTransactionDetailRequest> {
+  convert(input: ExplorerGetTransactionDetailRequest) {
+    assertInstanceOf(input, ExplorerGetTransactionDetailRequest);
 
-    if (
-      input instanceof
-      CappuccinoExplorerGetTransactionDetailRequestHeightAndOffset
-    ) {
+    if (input instanceof ExplorerGetTransactionDetailRequestHeightAndOffset) {
       return {
         height: numberCodec.encode(input.height),
         offset: numberCodec.encode(input.offset),
       } as const;
     }
 
-    if (input instanceof CappuccinoExplorerGetTransactionDetailRequestHash) {
+    if (input instanceof ExplorerGetTransactionDetailRequestHash) {
       return {
         hash: taggedBase64Codec.encode(input.hash),
       } as const;
@@ -53,23 +54,23 @@ class CappuccinoExplorerGetTransactionDetailRequestEncoder implements Converter<
   }
 }
 
-class CappuccinoExplorerGetTransactionDetailRequestDecoder implements Converter<
+class ExplorerGetTransactionDetailRequestDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetTransactionDetailRequest
+  ExplorerGetTransactionDetailRequest
 > {
-  convert(input: unknown): CappuccinoExplorerGetTransactionDetailRequest {
+  convert(input: unknown): ExplorerGetTransactionDetailRequest {
     if (
       isRecord(input, 'height', isUnknown) &&
       isRecord(input, 'offset', isUnknown)
     ) {
-      return new CappuccinoExplorerGetTransactionDetailRequestHeightAndOffset(
+      return new ExplorerGetTransactionDetailRequestHeightAndOffset(
         numberCodec.decode(input.height),
         numberCodec.decode(input.offset),
       );
     }
 
     if (isRecord(input, 'hash', isUnknown)) {
-      return new CappuccinoExplorerGetTransactionDetailRequestHash(
+      return new ExplorerGetTransactionDetailRequestHash(
         taggedBase64Codec.decode(input.hash),
       );
     }
@@ -78,38 +79,32 @@ class CappuccinoExplorerGetTransactionDetailRequestDecoder implements Converter<
   }
 }
 
-class CappuccinoExplorerGetTransactionDetailRequestCodec extends TypeCheckingCodec<
-  CappuccinoExplorerGetTransactionDetailRequest,
+class ExplorerGetTransactionDetailRequestCodec extends TypeCheckingCodec<
+  ExplorerGetTransactionDetailRequest,
   ReturnType<
     InstanceType<
-      new () => CappuccinoExplorerGetTransactionDetailRequestEncoder
+      new () => ExplorerGetTransactionDetailRequestEncoder
     >['convert']
   >
 > {
-  readonly encoder = new CappuccinoExplorerGetTransactionDetailRequestEncoder();
-  readonly decoder = new CappuccinoExplorerGetTransactionDetailRequestDecoder();
+  readonly encoder = new ExplorerGetTransactionDetailRequestEncoder();
+  readonly decoder = new ExplorerGetTransactionDetailRequestDecoder();
 }
 
-export const cappuccinoExplorerGetTransactionDetailRequestCodec =
-  new CappuccinoExplorerGetTransactionDetailRequestCodec();
+export const explorerGetTransactionDetailRequestCodec =
+  new ExplorerGetTransactionDetailRequestCodec();
 
-export class CappuccinoExplorerGetTransactionDetailRequestHeightAndOffset extends CappuccinoExplorerGetTransactionDetailRequest {
-  readonly height: number;
-  readonly offset: number;
-
-  public constructor(height: number, offset: number) {
+export class ExplorerGetTransactionDetailRequestHeightAndOffset extends ExplorerGetTransactionDetailRequest {
+  public constructor(
+    public readonly height: number,
+    public readonly offset: number,
+  ) {
     super();
-
-    this.height = height;
-    this.offset = offset;
   }
 }
 
-export class CappuccinoExplorerGetTransactionDetailRequestHash extends CappuccinoExplorerGetTransactionDetailRequest {
-  readonly hash: TaggedBase64;
-
-  public constructor(hash: TaggedBase64) {
+export class ExplorerGetTransactionDetailRequestHash extends ExplorerGetTransactionDetailRequest {
+  public constructor(public readonly hash: TaggedBase64) {
     super();
-    this.hash = hash;
   }
 }

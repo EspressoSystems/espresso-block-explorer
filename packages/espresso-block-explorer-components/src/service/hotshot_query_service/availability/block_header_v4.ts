@@ -12,47 +12,47 @@ import {
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
 import {
-  AbstractCappuccinoAPIV2HeaderFields,
-  CappuccinoAPIV2HeaderFields,
+  AbstractAvailabilityAPIV2HeaderFields,
+  AvailabilityAPIV2HeaderFields,
 } from './block_header_v2';
 import {
-  CappuccinoBuilderSignature,
-  cappuccinoBuilderSignatureCodec,
+  AvailabilityBuilderSignature,
+  availabilityBuilderSignatureCodec,
 } from './builder_signature';
-import { CappuccinoFeeInfo, cappuccinoFeeInfoCodec } from './fee_info';
+import { AvailabilityFeeInfo, availabilityFeeInfoCodec } from './fee_info';
 import {
-  CappuccinoL1Finalized,
-  nullableCappuccinoL1FinalizedCodec,
+  AvailabilityL1Finalized,
+  nullableAvailabilityL1FinalizedCodec,
 } from './l1_finalized';
 import {
-  CappuccinoNamespaceTable,
-  cappuccinoNamespaceTableCodec,
+  AvailabilityNamespaceTable,
+  availabilityNamespaceTableCodec,
 } from './namespace_table';
 
-export interface CappuccinoAPIV4Header extends CappuccinoAPIV2HeaderFields {
+export interface AvailabilityAPIV4Header extends AvailabilityAPIV2HeaderFields {
   readonly timestamp_millis: number;
   readonly reward_merkle_tree_root: TaggedBase64;
   readonly total_reward_distributed: bigint;
   readonly next_stake_table_hash: null | TaggedBase64;
 }
 
-export class AbstractCappuccinoAPIV4Header
-  extends AbstractCappuccinoAPIV2HeaderFields
-  implements CappuccinoAPIV4Header
+export class AbstractAvailabilityAPIV4Header
+  extends AbstractAvailabilityAPIV2HeaderFields
+  implements AvailabilityAPIV4Header
 {
   constructor(
     height: number,
     timestamp: number,
     public readonly timestamp_millis: number,
     l1_head: number,
-    l1_finalized: null | CappuccinoL1Finalized,
+    l1_finalized: null | AvailabilityL1Finalized,
     payload_commitment: TaggedBase64,
     builder_commitment: TaggedBase64,
-    ns_table: CappuccinoNamespaceTable,
+    ns_table: AvailabilityNamespaceTable,
     block_merkle_tree_root: TaggedBase64,
     fee_merkle_tree_root: TaggedBase64,
-    fee_info: CappuccinoFeeInfo,
-    builder_signature: CappuccinoBuilderSignature,
+    fee_info: AvailabilityFeeInfo,
+    builder_signature: AvailabilityBuilderSignature,
     public readonly reward_merkle_tree_root: TaggedBase64,
     public readonly total_reward_distributed: bigint,
     public readonly next_stake_table_hash: null | TaggedBase64,
@@ -72,27 +72,28 @@ export class AbstractCappuccinoAPIV4Header
     );
   }
   toJSON() {
-    return cappuccinoAPIV4HeaderCodec.encode(this);
+    return availabilityAPIV4HeaderCodec.encode(this);
   }
 }
 
 /**
- * CappuccinoAPIHeader represents the header of a block in the Cappuccino API.
+ * AvailabilityAPIV4HeaderImpl represents the header of a block in the
+ * Availability API.
  */
-export class CappuccinoAPIV4HeaderImpl extends AbstractCappuccinoAPIV4Header {
+export class AvailabilityAPIV4HeaderImpl extends AbstractAvailabilityAPIV4Header {
   constructor(
     height: number,
     timestamp: number,
     timestamp_millis: number,
     l1_head: number,
-    l1_finalized: null | CappuccinoL1Finalized,
+    l1_finalized: null | AvailabilityL1Finalized,
     payload_commitment: TaggedBase64,
     builder_commitment: TaggedBase64,
-    ns_table: CappuccinoNamespaceTable,
+    ns_table: AvailabilityNamespaceTable,
     block_merkle_tree_root: TaggedBase64,
     fee_merkle_tree_root: TaggedBase64,
-    fee_info: CappuccinoFeeInfo,
-    builder_signature: CappuccinoBuilderSignature,
+    fee_info: AvailabilityFeeInfo,
+    builder_signature: AvailabilityBuilderSignature,
     reward_merkle_tree_root: TaggedBase64,
     total_reward_distributed: bigint,
     next_stake_table_hash: null | TaggedBase64,
@@ -118,11 +119,11 @@ export class CappuccinoAPIV4HeaderImpl extends AbstractCappuccinoAPIV4Header {
   }
 }
 
-export class CappuccinoAPIV4HeaderDecoder implements Converter<
+export class AvailabilityAPIV4HeaderDecoder implements Converter<
   unknown,
-  CappuccinoAPIV4Header
+  AvailabilityAPIV4Header
 > {
-  convert(input: unknown): CappuccinoAPIV4Header {
+  convert(input: unknown): AvailabilityAPIV4Header {
     assertRecordWithKeys(
       input,
       'height',
@@ -142,19 +143,19 @@ export class CappuccinoAPIV4HeaderDecoder implements Converter<
       'next_stake_table_hash',
     );
 
-    return new CappuccinoAPIV4HeaderImpl(
+    return new AvailabilityAPIV4HeaderImpl(
       numberCodec.decode(input.height),
       numberCodec.decode(input.timestamp),
       numberCodec.decode(input.timestamp_millis),
       numberCodec.decode(input.l1_head),
-      nullableCappuccinoL1FinalizedCodec.decode(input.l1_finalized),
+      nullableAvailabilityL1FinalizedCodec.decode(input.l1_finalized),
       taggedBase64Codec.decode(input.payload_commitment),
       taggedBase64Codec.decode(input.builder_commitment),
-      cappuccinoNamespaceTableCodec.decode(input.ns_table),
+      availabilityNamespaceTableCodec.decode(input.ns_table),
       taggedBase64Codec.decode(input.block_merkle_tree_root),
       taggedBase64Codec.decode(input.fee_merkle_tree_root),
-      cappuccinoFeeInfoCodec.decode(input.fee_info),
-      cappuccinoBuilderSignatureCodec.decode(input.builder_signature),
+      availabilityFeeInfoCodec.decode(input.fee_info),
+      availabilityBuilderSignatureCodec.decode(input.builder_signature),
       taggedBase64Codec.decode(input.reward_merkle_tree_root),
       bigintCodec.decode(input.total_reward_distributed),
       nullableTaggedBase64Codec.decode(input.next_stake_table_hash),
@@ -162,31 +163,31 @@ export class CappuccinoAPIV4HeaderDecoder implements Converter<
   }
 }
 
-export class CappuccinoAPIV4HeaderEncoder implements Converter<CappuccinoAPIV4Header> {
-  convert(input: CappuccinoAPIV4Header) {
-    assertInstanceOf(input, CappuccinoAPIV4HeaderImpl);
+export class AvailabilityAPIV4HeaderEncoder implements Converter<AvailabilityAPIV4Header> {
+  convert(input: AvailabilityAPIV4Header) {
+    assertInstanceOf(input, AvailabilityAPIV4HeaderImpl);
 
     return {
       height: numberCodec.encode(input.height),
       timestamp: numberCodec.encode(input.timestamp),
       timestamp_millis: numberCodec.encode(input.timestamp_millis),
       l1_head: numberCodec.encode(input.l1_head),
-      l1_finalized: nullableCappuccinoL1FinalizedCodec.encode(
+      l1_finalized: nullableAvailabilityL1FinalizedCodec.encode(
         input.l1_finalized,
       ),
       payload_commitment: taggedBase64Codec.encode(input.payload_commitment),
       builder_commitment: taggedBase64Codec.encode(input.builder_commitment),
-      ns_table: cappuccinoNamespaceTableCodec.encode(input.ns_table),
+      ns_table: availabilityNamespaceTableCodec.encode(input.ns_table),
       block_merkle_tree_root: taggedBase64Codec.encode(
         input.block_merkle_tree_root,
       ),
       fee_merkle_tree_root: taggedBase64Codec.encode(
         input.fee_merkle_tree_root,
       ),
-      builder_signature: cappuccinoBuilderSignatureCodec.encode(
+      builder_signature: availabilityBuilderSignatureCodec.encode(
         input.builder_signature,
       ),
-      fee_info: cappuccinoFeeInfoCodec.encode(input.fee_info),
+      fee_info: availabilityFeeInfoCodec.encode(input.fee_info),
       reward_merkle_tree_root: taggedBase64Codec.encode(
         input.reward_merkle_tree_root,
       ),
@@ -200,12 +201,12 @@ export class CappuccinoAPIV4HeaderEncoder implements Converter<CappuccinoAPIV4He
   }
 }
 
-export class CappuccinoAPIV4HeaderCodec extends TypeCheckingCodec<
-  CappuccinoAPIV4Header,
-  ReturnType<InstanceType<new () => CappuccinoAPIV4HeaderEncoder>['convert']>
+export class AvailabilityAPIV4HeaderCodec extends TypeCheckingCodec<
+  AvailabilityAPIV4Header,
+  ReturnType<InstanceType<new () => AvailabilityAPIV4HeaderEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoAPIV4HeaderEncoder();
-  readonly decoder = new CappuccinoAPIV4HeaderDecoder();
+  readonly encoder = new AvailabilityAPIV4HeaderEncoder();
+  readonly decoder = new AvailabilityAPIV4HeaderDecoder();
 }
 
-export const cappuccinoAPIV4HeaderCodec = new CappuccinoAPIV4HeaderCodec();
+export const availabilityAPIV4HeaderCodec = new AvailabilityAPIV4HeaderCodec();

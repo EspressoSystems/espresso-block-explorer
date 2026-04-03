@@ -9,32 +9,28 @@ import { numberCodec } from '@/convert/codec/number';
 import { stringCodec } from '@/convert/codec/string';
 
 /**
- * CappuccinoL1Finalized represents the finalized block in the Cappuccino L1.
+ * AvailabilityL1Finalized represents the finalized block for an L1.
  */
-export class CappuccinoL1Finalized {
-  readonly number: number;
-  readonly timestamp: string;
-  readonly hash: string;
-
-  constructor(number: number, timestamp: string, hash: string) {
-    this.number = number;
-    this.timestamp = timestamp;
-    this.hash = hash;
-  }
+export class AvailabilityL1Finalized {
+  constructor(
+    public readonly number: number,
+    public readonly timestamp: string,
+    public readonly hash: string,
+  ) {}
 
   toJSON() {
-    return cappuccinoL1FinalizedCodec.encode(this);
+    return availabilityL1FinalizedCodec.encode(this);
   }
 }
 
-export class CappuccinoL1FinalizedDecoder implements Converter<
+export class AvailabilityL1FinalizedDecoder implements Converter<
   unknown,
-  CappuccinoL1Finalized
+  AvailabilityL1Finalized
 > {
-  convert(input: unknown): CappuccinoL1Finalized {
+  convert(input: unknown): AvailabilityL1Finalized {
     assertRecordWithKeys(input, 'number', 'timestamp', 'hash');
 
-    return new CappuccinoL1Finalized(
+    return new AvailabilityL1Finalized(
       numberCodec.decode(input.number),
       stringCodec.decode(input.timestamp),
       stringCodec.decode(input.hash),
@@ -42,9 +38,9 @@ export class CappuccinoL1FinalizedDecoder implements Converter<
   }
 }
 
-export class CappuccinoL1FinalizedEncoder implements Converter<CappuccinoL1Finalized> {
-  convert(input: CappuccinoL1Finalized) {
-    assertInstanceOf(input, CappuccinoL1Finalized);
+export class AvailabilityL1FinalizedEncoder implements Converter<AvailabilityL1Finalized> {
+  convert(input: AvailabilityL1Finalized) {
+    assertInstanceOf(input, AvailabilityL1Finalized);
 
     return {
       number: numberCodec.encode(input.number),
@@ -54,16 +50,16 @@ export class CappuccinoL1FinalizedEncoder implements Converter<CappuccinoL1Final
   }
 }
 
-export class CappuccinoL1FinalizedCodec extends TypeCheckingCodec<
-  CappuccinoL1Finalized,
-  ReturnType<InstanceType<new () => CappuccinoL1FinalizedEncoder>['convert']>
+export class AvailaibilityL1FinalizedCodec extends TypeCheckingCodec<
+  AvailabilityL1Finalized,
+  ReturnType<InstanceType<new () => AvailabilityL1FinalizedEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoL1FinalizedEncoder();
-  readonly decoder = new CappuccinoL1FinalizedDecoder();
+  readonly encoder = new AvailabilityL1FinalizedEncoder();
+  readonly decoder = new AvailabilityL1FinalizedDecoder();
 }
 
-export const cappuccinoL1FinalizedCodec = new CappuccinoL1FinalizedCodec();
-export const nullableCappuccinoL1FinalizedCodec = new NullCodec(
-  new NullDecoder(cappuccinoL1FinalizedCodec),
-  new NullEncoder(cappuccinoL1FinalizedCodec),
+export const availabilityL1FinalizedCodec = new AvailaibilityL1FinalizedCodec();
+export const nullableAvailabilityL1FinalizedCodec = new NullCodec(
+  new NullDecoder(availabilityL1FinalizedCodec),
+  new NullEncoder(availabilityL1FinalizedCodec),
 );

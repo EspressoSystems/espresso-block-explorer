@@ -5,57 +5,61 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import {
-  CappuccinoExplorerBlockSummary,
-  cappuccinoExplorerBlockSummaryArrayCodec,
+  ExplorerBlockSummary,
+  explorerBlockSummaryArrayCodec,
 } from './block_summary';
 
-export class CappuccinoExplorerGetBlockSummariesResponse {
-  readonly blockSummaries: CappuccinoExplorerBlockSummary[];
+/**
+ * ExplorerGetBlockSummariesResponse represents the successful response
+ * received from the Explorer API for a GetBlockSummariesRequest.
+ */
+export class ExplorerGetBlockSummariesResponse {
+  readonly blockSummaries: ExplorerBlockSummary[];
 
-  constructor(blockSummaries: CappuccinoExplorerBlockSummary[]) {
+  constructor(blockSummaries: ExplorerBlockSummary[]) {
     this.blockSummaries = blockSummaries;
   }
 
   toJSON() {
-    return cappuccinoExplorerGetBlockSummariesResponseCodec.encode(this);
+    return explorerGetBlockSummariesResponseCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetBlockSummariesResponseDecoder implements Converter<
+class ExplorerGetBlockSummariesResponseDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetBlockSummariesResponse
+  ExplorerGetBlockSummariesResponse
 > {
-  convert(input: unknown): CappuccinoExplorerGetBlockSummariesResponse {
+  convert(input: unknown): ExplorerGetBlockSummariesResponse {
     assertRecordWithKeys(input, 'block_summaries');
 
-    return new CappuccinoExplorerGetBlockSummariesResponse(
-      cappuccinoExplorerBlockSummaryArrayCodec.decode(input.block_summaries),
+    return new ExplorerGetBlockSummariesResponse(
+      explorerBlockSummaryArrayCodec.decode(input.block_summaries),
     );
   }
 }
 
-class CappuccinoExplorerGetBlockSummariesResponseEncoder implements Converter<
-  CappuccinoExplorerGetBlockSummariesResponse,
+class ExplorerGetBlockSummariesResponseEncoder implements Converter<
+  ExplorerGetBlockSummariesResponse,
   unknown
 > {
-  convert(input: CappuccinoExplorerGetBlockSummariesResponse): unknown {
-    assertInstanceOf(input, CappuccinoExplorerGetBlockSummariesResponse);
+  convert(input: ExplorerGetBlockSummariesResponse): unknown {
+    assertInstanceOf(input, ExplorerGetBlockSummariesResponse);
 
     return {
-      block_summaries: cappuccinoExplorerBlockSummaryArrayCodec.encode(
+      block_summaries: explorerBlockSummaryArrayCodec.encode(
         input.blockSummaries,
       ),
     };
   }
 }
 
-class CappuccinoExplorerGetBlockSummariesResponseCodec extends Codec<
-  CappuccinoExplorerGetBlockSummariesResponse,
+class ExplorerGetBlockSummariesResponseCodec extends Codec<
+  ExplorerGetBlockSummariesResponse,
   unknown
 > {
-  readonly encoder = new CappuccinoExplorerGetBlockSummariesResponseEncoder();
-  readonly decoder = new CappuccinoExplorerGetBlockSummariesResponseDecoder();
+  readonly encoder = new ExplorerGetBlockSummariesResponseEncoder();
+  readonly decoder = new ExplorerGetBlockSummariesResponseDecoder();
 }
 
-export const cappuccinoExplorerGetBlockSummariesResponseCodec =
-  new CappuccinoExplorerGetBlockSummariesResponseCodec();
+export const explorerGetBlockSummariesResponseCodec =
+  new ExplorerGetBlockSummariesResponseCodec();

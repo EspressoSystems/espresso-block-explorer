@@ -2,10 +2,10 @@ import { Codec } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 import { AsyncRequestHelper } from '@/service/espresso_l1_validator_service/web_worker_types';
 import { ActiveValidators, activeValidatorsCodec } from '../active_validators';
-import { CappuccinoHotShotQueryServiceNodeAPI } from '../node_api';
+import { HotShotQueryServiceNodeAPI } from '../node_api';
 import { StakeTable, stakeTableCodec } from '../stake_table';
 
-export class WebWorkerClientBasedCappuccinoHotShotQueryServiceNodeAPI implements CappuccinoHotShotQueryServiceNodeAPI {
+export class WebWorkerClientBasedHotShotQueryServiceNodeAPI implements HotShotQueryServiceNodeAPI {
   private helper: AsyncRequestHelper;
   constructor(helper: AsyncRequestHelper) {
     this.helper = helper;
@@ -29,9 +29,8 @@ export class WebWorkerClientBasedCappuccinoHotShotQueryServiceNodeAPI implements
 
   private async sendRequest<
     T,
-    Method extends
-      keyof WebWorkerClientBasedCappuccinoHotShotQueryServiceNodeAPI =
-      keyof WebWorkerClientBasedCappuccinoHotShotQueryServiceNodeAPI,
+    Method extends keyof WebWorkerClientBasedHotShotQueryServiceNodeAPI =
+      keyof WebWorkerClientBasedHotShotQueryServiceNodeAPI,
     Param = unknown,
   >(codec: Codec<T, unknown>, method: Method, ...args: Param[]): Promise<T> {
     return this.helper.submitRequest(codec, 'node', method, args);

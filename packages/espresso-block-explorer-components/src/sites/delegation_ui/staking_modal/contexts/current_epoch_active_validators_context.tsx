@@ -1,6 +1,6 @@
 import { PromiseResolver } from '@/components/data';
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { DataContext } from '@/contexts/data_provider';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { neverPromise } from '@/functional/functional_async';
 import { ActiveValidators } from '@/service/hotshot_query_service/node/active_validators';
 import React from 'react';
@@ -12,9 +12,7 @@ export const CurrentEpochActiveValidatorsContext =
 export const ProvideCurrentCurrentEpochActiveValidators: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
   const epoch = Number(React.useContext(EspressoCurrentEpochContext));
 
   const promise = React.useMemo(

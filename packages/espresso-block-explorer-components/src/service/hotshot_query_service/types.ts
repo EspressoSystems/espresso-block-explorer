@@ -25,7 +25,7 @@ export interface Leaf {}
 //
 // That being said, what we **need* might change over time.
 
-export interface HotShotQueryServiceAvailabilityAPI<
+export interface IHotShotQueryServiceAvailabilityAPI<
   Leaf,
   Header,
   Block,
@@ -49,11 +49,11 @@ export interface HotShotQueryServiceAvailabilityAPI<
 
 export type BlockHeightResponse = number;
 
-export interface HotShotQueryServiceStatusAPI {
+export interface IHotShotQueryServiceStatusAPI {
   blockHeight(): Promise<BlockHeightResponse>;
 }
 
-export interface HotShotQueryServiceExplorerAPI<
+export interface IHotShotQueryServiceExplorerAPI<
   GetBlockDetailRequest,
   GetBlockDetailResponse,
   GetBlockSummariesRequest,
@@ -87,7 +87,7 @@ export interface HotShotQueryServiceExplorerAPI<
   ): Promise<GetSearchResultResponse>;
 }
 
-export interface HotShotQueryServiceAvailabilityStreamsAPI<
+export interface IHotShotQueryServiceAvailabilityStreamsAPI<
   Leaf,
   Block,
   Header,
@@ -97,7 +97,7 @@ export interface HotShotQueryServiceAvailabilityStreamsAPI<
   streamHeaders(height: number): AsyncIterator<Header>;
 }
 
-export interface HotShotQueryServiceRewardStateAPI<RewardsClaimInput> {
+export interface IHotShotQueryServiceRewardStateAPI<RewardsClaimInput> {
   getLatestRewardBalance(address: string): Promise<null | bigint>;
   getLatestRewardClaimInput(address: string): Promise<null | RewardsClaimInput>;
 
@@ -109,7 +109,7 @@ export interface HotShotQueryServiceRewardStateAPI<RewardsClaimInput> {
   // getRewardClaimInput(address: string): Promise<null | bigint>;
 }
 
-export interface HotShotQueryServiceNodeAPI<StakeTable, Validators> {
+export interface IHotShotQueryServiceNodeAPI<StakeTable, Validators> {
   getStakeTableForEpoch(epoch: number): Promise<StakeTable>;
   getValidatorsAtEpoch(epoch: number): Promise<Validators>;
 }

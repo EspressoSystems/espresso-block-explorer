@@ -4,18 +4,18 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
-import CappuccinoNodeValidatorRequest from './node_validator_request';
-import { cappuccinoNodeValidatorRequestCodec } from './node_validator_request_codec';
+import NodeValidatorRequest from './node_validator_request';
+import { nodeValidatorRequestCodec } from './node_validator_request_codec';
 
 export const kNodeValidatorRequestType = 'NodeValidatorRequest' as const;
 
 export class NodeValidatorServiceRequest extends WebWorkerProxyRequest {
-  public readonly request: CappuccinoNodeValidatorRequest;
+  public readonly request: NodeValidatorRequest;
   get type() {
     return kNodeValidatorRequestType;
   }
 
-  constructor(request: CappuccinoNodeValidatorRequest) {
+  constructor(request: NodeValidatorRequest) {
     super();
     this.request = request;
   }
@@ -28,7 +28,7 @@ export class NodeValidatorServiceRequest extends WebWorkerProxyRequest {
 class NodeValidatorServiceRequestEncoder implements Converter<NodeValidatorServiceRequest> {
   convert(input: NodeValidatorServiceRequest) {
     return {
-      [kNodeValidatorRequestType]: cappuccinoNodeValidatorRequestCodec.encode(
+      [kNodeValidatorRequestType]: nodeValidatorRequestCodec.encode(
         input.request,
       ),
     };
@@ -43,9 +43,7 @@ class NodeValidatorServiceRequestDecoder implements Converter<
     assertRecordWithKeys(input, kNodeValidatorRequestType);
 
     return new NodeValidatorServiceRequest(
-      cappuccinoNodeValidatorRequestCodec.decode(
-        input[kNodeValidatorRequestType],
-      ),
+      nodeValidatorRequestCodec.decode(input[kNodeValidatorRequestType]),
     );
   }
 }
@@ -64,10 +62,10 @@ export const nodeValidatorServiceRequestCodec =
   new NodeValidatorServiceRequestCodec();
 
 class NodeValidatorRequestToWebWorkerProxyRequestConverter implements Converter<
-  CappuccinoNodeValidatorRequest,
+  NodeValidatorRequest,
   NodeValidatorServiceRequest
 > {
-  convert(input: CappuccinoNodeValidatorRequest) {
+  convert(input: NodeValidatorRequest) {
     return new NodeValidatorServiceRequest(input);
   }
 }

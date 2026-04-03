@@ -7,7 +7,7 @@ import {
   ExplorerRequest,
   WebWorkerProxyExplorerAPI,
 } from '../explorer/implementations/web_worker_proxy';
-import { CappuccinoHotShotQueryService } from '../hot_shot_query_service_api';
+import { HotShotQueryService } from '../hot_shot_query_service_api';
 import {
   NodeRequest,
   WebWorkerProxyNodeAPI,
@@ -28,7 +28,7 @@ export class WebWorkerProxyHotShotQueryService {
   public readonly rewardState: WebWorkerProxyRewardStateAPI;
   public readonly node: WebWorkerProxyNodeAPI;
 
-  constructor(service: CappuccinoHotShotQueryService) {
+  constructor(service: HotShotQueryService) {
     this.availability = new WebWorkerProxyAvailabilityAPI(service.availability);
     this.status = new WebWorkerProxyStatusAPI(service.status);
     this.explorer = new WebWorkerProxyExplorerAPI(service.explorer);

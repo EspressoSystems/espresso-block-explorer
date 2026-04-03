@@ -3,7 +3,7 @@ import CopyWalletAddress from '@/block_explorer/components/text/copy_wallet_addr
 import {
   CurrentStakeTableContext,
   CurrentValidatorsContext,
-} from '@/block_explorer/pages/cappuccino_node_validator_service_adapters';
+} from '@/block_explorer/pages/node_validator_service_adapters';
 import DataTable, {
   Alignment,
   DataTableRowContext,

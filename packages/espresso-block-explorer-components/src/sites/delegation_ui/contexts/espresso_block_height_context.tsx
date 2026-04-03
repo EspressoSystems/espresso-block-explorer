@@ -1,6 +1,6 @@
 import { PromiseResolver } from '@/components/data';
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { DataContext } from '@/contexts/data_provider';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { nullableBigintCodec } from '@/convert/codec/bigint';
 import React from 'react';
 import { EspressoRefreshTimestampContext } from './espresso_refresh_timestamp_context';
@@ -24,9 +24,7 @@ export const RetrieveEspressoBlockHeight: React.FC<React.PropsWithChildren> = ({
   // We'll refresh every time this timestamp updates
   React.useContext(EspressoRefreshTimestampContext);
 
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   const currentBlockHeight = hotShotQueryService.status.blockHeight();
 

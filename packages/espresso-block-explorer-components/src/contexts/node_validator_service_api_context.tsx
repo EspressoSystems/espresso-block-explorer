@@ -1,5 +1,5 @@
 import { createBufferedChannel } from '@/async/channel/buffered_channel';
-import FakeDataCappuccinoNodeValidatorAPI from '@/service/node_validator/implementations/fake_data';
+import FakeDataNodeValidatorAPI from '@/service/node_validator/implementations/fake_data';
 import { WebWorkerClientBasedNodeValidatorService } from '@/service/node_validator/node_validator_web_worker_client_based';
 import {
   UnimplementedWebWorkerNodeValidatorAPI,
@@ -7,29 +7,29 @@ import {
 } from '@/service/node_validator/web_worker_proxy_api';
 import React from 'react';
 
-export const CappuccinoNodeValidatorServiceAPIContext =
+export const NodeValidatorServiceAPIContext =
   React.createContext<WebWorkerNodeValidatorAPI>(
     new UnimplementedWebWorkerNodeValidatorAPI(),
   );
 
-interface ProvideCappuccinoNodeValidatorServiceAPIContextProps {
+interface ProvideNodeValidatorServiceAPIContextProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
 /**
- * ProvideCappuccinoNodeValidatorServiceAPIContext is a component that provides
- * a Cappuccino Node Validator Service API using a default implementation that
+ * ProvideNodeValidatorServiceAPIContext is a component that provides
+ * a Node Validator Service API using a default implementation that
  * is dependent on the environment that the code is being run within.
  */
-export const ProvideCappuccinoNodeValidatorServiceAPIContext: React.FC<
-  ProvideCappuccinoNodeValidatorServiceAPIContextProps
+export const ProvideNodeValidatorServiceAPIContext: React.FC<
+  ProvideNodeValidatorServiceAPIContextProps
 > = (props) => {
   return (
-    <CappuccinoNodeValidatorServiceAPIContext.Provider
-      value={createDefaultCappuccinoNodeValidatorService()}
+    <NodeValidatorServiceAPIContext.Provider
+      value={createDefaultNodeValidatorService()}
     >
       {props.children}
-    </CappuccinoNodeValidatorServiceAPIContext.Provider>
+    </NodeValidatorServiceAPIContext.Provider>
   );
 };
 
@@ -48,14 +48,14 @@ function createWebWorkerNodeValidatorService(): WebWorkerNodeValidatorAPI {
 }
 
 /**
- * createDefaultCappuccinoNodeValidatorService creates a default instance of a
+ * createDefaultNodeValidatorService creates a default instance of a
  * WebWorkerNodeValidatorAPI depending on the environment that the code is
  * being run within.
  *
  * If support for Web Workers is available, then a Web Worker based solution
  * will returned, otherwise, it will default ot a fake implementation.
  */
-function createDefaultCappuccinoNodeValidatorService(): WebWorkerNodeValidatorAPI {
+function createDefaultNodeValidatorService(): WebWorkerNodeValidatorAPI {
   if (
     (typeof window !== 'undefined' && 'Worker' in window) ||
     (typeof self !== 'undefined' && 'Worker' in self)
@@ -63,7 +63,7 @@ function createDefaultCappuccinoNodeValidatorService(): WebWorkerNodeValidatorAP
     return createWebWorkerNodeValidatorService();
   }
 
-  return new FakeDataCappuccinoNodeValidatorAPI(
+  return new FakeDataNodeValidatorAPI(
     createBufferedChannel(1024),
     createBufferedChannel(1024),
   );

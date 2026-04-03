@@ -1,20 +1,20 @@
 import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
 import { BlockHeightResponse } from '@/service/hotshot_query_service/types';
-import { CappuccinoHotShotQueryServiceStatusAPI } from '../status_api';
+import { HotShotQueryServiceStatusAPI } from '../status_api';
 
 export type StatusRequest<
-  Method extends keyof CappuccinoHotShotQueryServiceStatusAPI =
-    keyof CappuccinoHotShotQueryServiceStatusAPI,
+  Method extends keyof HotShotQueryServiceStatusAPI =
+    keyof HotShotQueryServiceStatusAPI,
 > = WebWorkerRequest<
   'status',
   Method,
-  Parameters<CappuccinoHotShotQueryServiceStatusAPI[Method]>
+  Parameters<HotShotQueryServiceStatusAPI[Method]>
 >;
 
-export class WebWorkerProxyStatusAPI implements CappuccinoHotShotQueryServiceStatusAPI {
-  private service: CappuccinoHotShotQueryServiceStatusAPI;
-  constructor(service: CappuccinoHotShotQueryServiceStatusAPI) {
+export class WebWorkerProxyStatusAPI implements HotShotQueryServiceStatusAPI {
+  private service: HotShotQueryServiceStatusAPI;
+  constructor(service: HotShotQueryServiceStatusAPI) {
     this.service = service;
   }
 

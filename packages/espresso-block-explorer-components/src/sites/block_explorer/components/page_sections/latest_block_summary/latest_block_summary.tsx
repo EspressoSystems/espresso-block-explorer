@@ -17,7 +17,7 @@ import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/labeled
 import { ExplorerSummaryProvider } from '../explorer_summary';
 import './latest_block_summary.css';
 import {
-  LatestBlock,
+  LatestBlockLocal,
   LatestBlockSummaryProvider,
 } from './latest_block_summary_loader';
 
@@ -131,7 +131,7 @@ export const LatestBlockSummaryPlaceholder: React.FC<
   );
 };
 
-interface LatestBlockSummaryContentProps { }
+interface LatestBlockSummaryContentProps {}
 export const LatestBlockSummaryContent: React.FC<
   LatestBlockSummaryContentProps
 > = (props) => {
@@ -163,7 +163,7 @@ export const LatestBlockSummaryAsyncHandler: React.FC<
   }
 
   return (
-    <LatestBlockSummaryProvider.Provider value={data as LatestBlock}>
+    <LatestBlockSummaryProvider.Provider value={data as LatestBlockLocal}>
       <LatestBlockSummaryContent {...props} />
     </LatestBlockSummaryProvider.Provider>
   );

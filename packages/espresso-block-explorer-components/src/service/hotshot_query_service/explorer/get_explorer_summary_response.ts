@@ -4,62 +4,55 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import {
-  CappuccinoExplorerSummary,
-  cappuccinoExplorerSummaryCodec,
-} from './explorer_summary';
+import { ExplorerSummary, explorerSummaryCodec } from './explorer_summary';
 
-export class CappuccinoExplorerGetExplorerSummaryResponse {
-  readonly explorerSummary: CappuccinoExplorerSummary;
-
-  constructor(explorerSummary: CappuccinoExplorerSummary) {
-    this.explorerSummary = explorerSummary;
-  }
+/**
+ * ExplorerGetExplorerSummaryResponse is a class that represents the
+ * response of the Explorer API for getting the explorer summary.
+ */
+export class ExplorerGetExplorerSummaryResponse {
+  constructor(public readonly explorerSummary: ExplorerSummary) {}
 
   toJSON() {
-    return cappuccinoExplorerGetExplorerSummaryResponseCodec.encode(this);
+    return explorerGetExplorerSummaryResponseCodec.encode(this);
   }
 }
 
-class CappuccinoExplorerGetExplorerSummaryResponseDecoder implements Converter<
+class ExplorerGetExplorerSummaryResponseDecoder implements Converter<
   unknown,
-  CappuccinoExplorerGetExplorerSummaryResponse
+  ExplorerGetExplorerSummaryResponse
 > {
-  convert(input: unknown): CappuccinoExplorerGetExplorerSummaryResponse {
+  convert(input: unknown): ExplorerGetExplorerSummaryResponse {
     assertRecordWithKeys(input, 'explorer_summary');
 
-    return new CappuccinoExplorerGetExplorerSummaryResponse(
-      cappuccinoExplorerSummaryCodec.decode(input.explorer_summary),
+    return new ExplorerGetExplorerSummaryResponse(
+      explorerSummaryCodec.decode(input.explorer_summary),
     );
   }
 }
 
-class CappuccinoExplorerGetExplorerSummaryResponseEncoder implements Converter<
-  CappuccinoExplorerGetExplorerSummaryResponse,
+class ExplorerGetExplorerSummaryResponseEncoder implements Converter<
+  ExplorerGetExplorerSummaryResponse,
   unknown
 > {
-  convert(input: CappuccinoExplorerGetExplorerSummaryResponse): unknown {
-    assertInstanceOf(input, CappuccinoExplorerGetExplorerSummaryResponse);
+  convert(input: ExplorerGetExplorerSummaryResponse): unknown {
+    assertInstanceOf(input, ExplorerGetExplorerSummaryResponse);
 
     return {
-      explorer_summary: cappuccinoExplorerSummaryCodec.encode(
-        input.explorerSummary,
-      ),
+      explorer_summary: explorerSummaryCodec.encode(input.explorerSummary),
     };
   }
 }
 
-class CappuccinoExplorerGetExplorerSummaryResponseCodec extends TypeCheckingCodec<
-  CappuccinoExplorerGetExplorerSummaryResponse,
+class ExplorerGetExplorerSummaryResponseCodec extends TypeCheckingCodec<
+  ExplorerGetExplorerSummaryResponse,
   ReturnType<
-    InstanceType<
-      new () => CappuccinoExplorerGetExplorerSummaryResponseEncoder
-    >['convert']
+    InstanceType<new () => ExplorerGetExplorerSummaryResponseEncoder>['convert']
   >
 > {
-  readonly encoder = new CappuccinoExplorerGetExplorerSummaryResponseEncoder();
-  readonly decoder = new CappuccinoExplorerGetExplorerSummaryResponseDecoder();
+  readonly encoder = new ExplorerGetExplorerSummaryResponseEncoder();
+  readonly decoder = new ExplorerGetExplorerSummaryResponseDecoder();
 }
 
-export const cappuccinoExplorerGetExplorerSummaryResponseCodec =
-  new CappuccinoExplorerGetExplorerSummaryResponseCodec();
+export const explorerGetExplorerSummaryResponseCodec =
+  new ExplorerGetExplorerSummaryResponseCodec();

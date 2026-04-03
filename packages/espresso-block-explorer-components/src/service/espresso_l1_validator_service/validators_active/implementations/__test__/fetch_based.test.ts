@@ -6,9 +6,9 @@ import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
 import { Ratio } from '@/service/espresso_l1_validator_service/common/ratio';
 import {
-  CappuccinoAPIBitVec,
-  CappuccinoAPIBitVecHead,
-  CappuccinoAPIBitVecOrder,
+  BitVec,
+  BitVecHead,
+  BitVecOrder,
 } from '@/service/hotshot_query_service';
 import { describe, expect, it } from 'vitest';
 import { EpochAndBlock } from '../../../common/epoch_and_block';
@@ -145,9 +145,9 @@ describe('FetchBasedValidatorsActiveAPI', () => {
           new ActiveNodeSetDiffNewBlock(
             prng.nextInt(),
             [prng.nextInt()],
-            new CappuccinoAPIBitVec(
-              CappuccinoAPIBitVecOrder.lsb0,
-              new CappuccinoAPIBitVecHead(8, 0),
+            new BitVec(
+              BitVecOrder.lsb0,
+              new BitVecHead(8, 0),
               16,
               Array.from(new BigUint64Array(prng.fillBytes(8))),
             ),

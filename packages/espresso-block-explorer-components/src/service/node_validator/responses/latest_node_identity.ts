@@ -3,74 +3,62 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import CappuccinoNodeIdentity, {
-  cappuccinoNodeIdentityCodec,
-} from '../node_identity';
-import CappuccinoNodeValidatorResponse from './node_validator_response';
+import NodeIdentity, { nodeIdentityCodec } from '../node_identity';
+import NodeValidatorResponse from './node_validator_response';
 
 /**
- * Messages from the Cappuccino Node Validator take the form of:
+ * Messages from the Node Validator take the form of:
  * { "MessageType": MessageType }
  */
 
 /**
- * kCappuccinoLatestNodeIdentityType is the type string for the
- * CappuccinoLatestNodeIdentity class.
+ * kLatestNodeIdentityType is the type string for the
+ * LatestNodeIdentity class.
  */
-export const kCappuccinoLatestNodeIdentityType = 'LatestNodeIdentity' as const;
+export const kLatestNodeIdentityType = 'LatestNodeIdentity' as const;
 
 /**
- * CappuccinoLatestNodeIdentity is a response from the Cappuccino node
+ * LatestNodeIdentity is a response from the node
  * validator that contains a real-time update for one of the Node
  * Identities in the network.
  */
-export class CappuccinoLatestNodeIdentity extends CappuccinoNodeValidatorResponse {
-  readonly nodeIdentity: CappuccinoNodeIdentity;
-
-  constructor(nodeIdentity: CappuccinoNodeIdentity) {
+export class LatestNodeIdentity extends NodeValidatorResponse {
+  constructor(public readonly nodeIdentity: NodeIdentity) {
     super();
-    this.nodeIdentity = nodeIdentity;
   }
 
   toJSON() {
-    return cappuccinoLatestNodeIdentityCodec.encode(this);
+    return latestNodeIdentityCodec.encode(this);
   }
 }
 
-class CappuccinoLatestNodeIdentityDecoder implements Converter<
+class LatestNodeIdentityDecoder implements Converter<
   unknown,
-  CappuccinoLatestNodeIdentity
+  LatestNodeIdentity
 > {
-  convert(input: unknown): CappuccinoLatestNodeIdentity {
-    assertRecordWithKeys(input, kCappuccinoLatestNodeIdentityType);
+  convert(input: unknown): LatestNodeIdentity {
+    assertRecordWithKeys(input, kLatestNodeIdentityType);
 
-    return new CappuccinoLatestNodeIdentity(
-      cappuccinoNodeIdentityCodec.decode(
-        input[kCappuccinoLatestNodeIdentityType],
-      ),
+    return new LatestNodeIdentity(
+      nodeIdentityCodec.decode(input[kLatestNodeIdentityType]),
     );
   }
 }
 
-class CappuccinoLatestNodeIdentityEncoder implements Converter<CappuccinoLatestNodeIdentity> {
-  convert(input: CappuccinoLatestNodeIdentity) {
+class LatestNodeIdentityEncoder implements Converter<LatestNodeIdentity> {
+  convert(input: LatestNodeIdentity) {
     return {
-      [kCappuccinoLatestNodeIdentityType]: cappuccinoNodeIdentityCodec.encode(
-        input.nodeIdentity,
-      ),
+      [kLatestNodeIdentityType]: nodeIdentityCodec.encode(input.nodeIdentity),
     };
   }
 }
 
-class CappuccinoLatestNodeIdentityCodec extends TypeCheckingCodec<
-  CappuccinoLatestNodeIdentity,
-  ReturnType<
-    InstanceType<new () => CappuccinoLatestNodeIdentityEncoder>['convert']
-  >
+class LatestNodeIdentityCodec extends TypeCheckingCodec<
+  LatestNodeIdentity,
+  ReturnType<InstanceType<new () => LatestNodeIdentityEncoder>['convert']>
 > {
-  readonly encoder = new CappuccinoLatestNodeIdentityEncoder();
-  readonly decoder = new CappuccinoLatestNodeIdentityDecoder();
+  readonly encoder = new LatestNodeIdentityEncoder();
+  readonly decoder = new LatestNodeIdentityDecoder();
 }
 
-export const cappuccinoLatestNodeIdentityCodec =
-  new CappuccinoLatestNodeIdentityCodec();
+export const latestNodeIdentityCodec = new LatestNodeIdentityCodec();
