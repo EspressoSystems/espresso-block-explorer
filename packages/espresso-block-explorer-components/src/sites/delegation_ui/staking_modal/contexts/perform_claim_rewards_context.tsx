@@ -5,7 +5,7 @@ import { L1Methods } from '@/contracts/l1/l1_interface';
 import { RewardClaimContract } from '@/contracts/reward_claim/reward_claim_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { neverAsyncIterable } from '@/functional/functional_async';
-import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
+import { RewardClaimInput } from '@/service/hotshot_query_service/reward_state/reward_claim_input';
 import React from 'react';
 import { type Config } from 'wagmi';
 import { type GetTransactionReceiptReturnType } from 'wagmi/actions';
