@@ -74,7 +74,7 @@ import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_res
 import { webSocketCommandToWebWorkerProxyRequestConverter } from '@/models/web_worker/web_worker_proxy_request_codec';
 import { CappuccinoAPIBitVec } from '@/service/hotshot_query_service/availability/bit_vec';
 import { CappuccinoExplorerBlockDetail } from '@/service/hotshot_query_service/explorer/block_detail';
-import CappuccinoNodeIdentity from '@/service/node_validator/cappuccino/node_identity';
+import CappuccinoNodeIdentity from '@/service/node_validator/node_identity';
 import CappuccinoNodeValidatorRequest, {
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
@@ -87,22 +87,22 @@ import CappuccinoNodeValidatorRequest, {
   SubscribeStakeTables,
   SubscribeValidators,
   SubscribeVoters,
-} from '@/service/node_validator/cappuccino/requests/node_validator_request';
-import { nodeValidatorRequestToWebWorkerProxyRequestConverter } from '@/service/node_validator/cappuccino/requests/node_validator_service_request';
-import { CappuccinoBlocksSnapshot } from '@/service/node_validator/cappuccino/responses/blocks_snapshot';
-import { CappuccinoHistogramSnapshot } from '@/service/node_validator/cappuccino/responses/histogram_snapshot';
-import { CappuccinoLatestBlock } from '@/service/node_validator/cappuccino/responses/latest_block';
-import { CappuccinoLatestNodeIdentity } from '@/service/node_validator/cappuccino/responses/latest_node_identity';
-import { CappuccinoLatestStakeTable } from '@/service/node_validator/cappuccino/responses/latest_stake_table';
-import { CappuccinoLatestValidator } from '@/service/node_validator/cappuccino/responses/latest_validator';
-import { CappuccinoLatestVoters } from '@/service/node_validator/cappuccino/responses/latest_voters';
-import { CappuccinoNodeIdentitySnapshot } from '@/service/node_validator/cappuccino/responses/node_identity_snapshot';
-import CappuccinoNodeValidatorResponse from '@/service/node_validator/cappuccino/responses/node_validator_response';
-import { NodeValidatorServiceResponse } from '@/service/node_validator/cappuccino/responses/node_validator_service_response';
-import { CappuccinoStakeTableSnapshot } from '@/service/node_validator/cappuccino/responses/stake_table_snapshot';
-import { CappuccinoValidatorsSnapshot } from '@/service/node_validator/cappuccino/responses/validators_snapshot';
-import { CappuccinoVotersSnapshot } from '@/service/node_validator/cappuccino/responses/voters_snapshot';
-import { WebWorkerNodeValidatorAPI } from '@/service/node_validator/cappuccino/web_worker_proxy_api';
+} from '@/service/node_validator/requests/node_validator_request';
+import { nodeValidatorRequestToWebWorkerProxyRequestConverter } from '@/service/node_validator/requests/node_validator_service_request';
+import { CappuccinoBlocksSnapshot } from '@/service/node_validator/responses/blocks_snapshot';
+import { CappuccinoHistogramSnapshot } from '@/service/node_validator/responses/histogram_snapshot';
+import { CappuccinoLatestBlock } from '@/service/node_validator/responses/latest_block';
+import { CappuccinoLatestNodeIdentity } from '@/service/node_validator/responses/latest_node_identity';
+import { CappuccinoLatestStakeTable } from '@/service/node_validator/responses/latest_stake_table';
+import { CappuccinoLatestValidator } from '@/service/node_validator/responses/latest_validator';
+import { CappuccinoLatestVoters } from '@/service/node_validator/responses/latest_voters';
+import { CappuccinoNodeIdentitySnapshot } from '@/service/node_validator/responses/node_identity_snapshot';
+import CappuccinoNodeValidatorResponse from '@/service/node_validator/responses/node_validator_response';
+import { NodeValidatorServiceResponse } from '@/service/node_validator/responses/node_validator_service_response';
+import { CappuccinoStakeTableSnapshot } from '@/service/node_validator/responses/stake_table_snapshot';
+import { CappuccinoValidatorsSnapshot } from '@/service/node_validator/responses/validators_snapshot';
+import { CappuccinoVotersSnapshot } from '@/service/node_validator/responses/voters_snapshot';
+import { WebWorkerNodeValidatorAPI } from '@/service/node_validator/web_worker_proxy_api';
 import React from 'react';
 
 /**

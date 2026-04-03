@@ -1,7 +1,7 @@
 import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
 import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
-import { NodeValidatorAPI } from '../types';
+import { NodeValidatorAPI } from './types';
 
 /**
  * WebWorkerNodeValidatorAPI is a type that represents the Node Validator API
