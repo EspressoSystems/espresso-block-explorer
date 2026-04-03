@@ -3,10 +3,10 @@ import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import { iota, mapIterable } from '@/functional/functional';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { CappuccinoExplorerTransactionSummary } from '@/service/hotshot_query_service';
-import { CappuccinoExplorerBlockSummary } from '@/service/hotshot_query_service/cappuccino/explorer/block_summary';
-import { CappuccinoExplorerGetSearchResultResponse } from '@/service/hotshot_query_service/cappuccino/explorer/get_search_result_response';
-import { CappuccinoExplorerSearchResults } from '@/service/hotshot_query_service/cappuccino/explorer/search_results';
-import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
+import { CappuccinoExplorerBlockSummary } from '@/service/hotshot_query_service/explorer/block_summary';
+import { CappuccinoExplorerGetSearchResultResponse } from '@/service/hotshot_query_service/explorer/get_search_result_response';
+import { CappuccinoExplorerSearchResults } from '@/service/hotshot_query_service/explorer/search_results';
+import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/implementations/fake_data';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import {

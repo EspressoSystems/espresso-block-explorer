@@ -39,7 +39,7 @@ import { WalletDiffUndelegationWithdrawal } from '@/service/espresso_l1_validato
 import { WalletDiff } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/wallet_diff';
 import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
 import { WalletUpdate } from '@/service/espresso_l1_validator_service/wallet/wallet_update';
-import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
+import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
 import React from 'react';
 import { type Config } from 'wagmi';
 import { ESPTokenContractStateAction } from './esp_token_contract';

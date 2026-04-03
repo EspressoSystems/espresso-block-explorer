@@ -1,4 +1,4 @@
-import { HotShotQueryServiceAvailabilityAPI } from '../../types';
+import { HotShotQueryServiceAvailabilityAPI } from '../types';
 import { CappuccinoAPIBlock } from './block';
 import { CappuccinoAPIHeader } from './block_header';
 import { CappuccinoDerivedBlockSummary } from './derived_block_summary';

@@ -4,8 +4,8 @@ import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_h
 import { DataContext } from '@/contexts/data_provider';
 import { ProofOfStakeReleasedContext } from '@/contexts/proof_of_stake_released_context';
 import { neverPromise } from '@/functional/functional_async';
-import { HeightAndAddress } from '@/service/hotshot_query_service/cappuccino/reward_state/height_and_address';
-import { RewardClaimInput } from '@/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
+import { HeightAndAddress } from '@/service/hotshot_query_service/reward_state/height_and_address';
+import { RewardClaimInput } from '@/service/hotshot_query_service/reward_state/reward_claim_input';
 import React from 'react';
 import { LightClientFinalizedStateContext } from './light_client_finalized_state_context';
 

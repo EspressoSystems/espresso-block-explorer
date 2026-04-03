@@ -7,7 +7,7 @@ import { numberArrayCodec, numberCodec } from '@/convert/codec/number';
 import {
   CappuccinoAPIBitVec,
   cappuccinoAPIBitVecCodec,
-} from '@/service/hotshot_query_service/cappuccino/availability/bit_vec';
+} from '@/service/hotshot_query_service/availability/bit_vec';
 import { ActiveNodeSetDiff } from './active_node_set_diff';
 
 /**

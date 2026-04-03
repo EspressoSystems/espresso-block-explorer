@@ -1,4 +1,4 @@
-import { HotShotQueryServiceExplorerAPI } from '../../types';
+import { HotShotQueryServiceExplorerAPI } from '../types';
 import { CappuccinoExplorerGetBlockDetailRequest } from './get_block_detail_request';
 import { CappuccinoExplorerGetBlockDetailResponse } from './get_block_detail_response';
 import { CappuccinoExplorerGetBlockSummariesRequest } from './get_block_summaries_request';

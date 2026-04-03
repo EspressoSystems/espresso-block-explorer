@@ -6,7 +6,7 @@ import {
 import {
   CappuccinoSummaryHistograms,
   cappuccinoSummaryHistogramsCodec,
-} from '@/service/hotshot_query_service/cappuccino/explorer/summary_histograms';
+} from '@/service/hotshot_query_service/explorer/summary_histograms';
 import CappuccinoNodeValidatorResponse from './node_validator_response';
 
 /**

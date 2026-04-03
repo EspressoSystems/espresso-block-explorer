@@ -1,4 +1,4 @@
-import { HotShotQueryServiceRewardStateAPI } from '../../types';
+import { HotShotQueryServiceRewardStateAPI } from '../types';
 import { RewardClaimInput } from './reward_claim_input';
 
 /**

@@ -17,13 +17,13 @@ import { BlockSummaryEntry } from '@/models/block_explorer/block_summary';
 import { ExplorerSummaryEntry } from '@/models/block_explorer/explorer_summary';
 import { TransactionSummaryEntry } from '@/models/block_explorer/transaction_summary';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoExplorerGetBlockDetailRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_block_detail_request';
-import { CappuccinoExplorerGetBlockSummariesRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_block_summaries_request';
-import { CappuccinoExplorerGetExplorerSummaryResponse } from '@/service/hotshot_query_service/cappuccino/explorer/get_explorer_summary_response';
-import { CappuccinoExplorerGetTransactionDetailRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_detail_request';
-import { CappuccinoExplorerGetTransactionSummariesFilter } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_filter';
-import { CappuccinoExplorerGetTransactionSummariesRequest } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_request';
-import { CappuccinoExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_service/cappuccino/explorer/get_transaction_summaries_target';
+import { CappuccinoExplorerGetBlockDetailRequest } from '@/service/hotshot_query_service/explorer/get_block_detail_request';
+import { CappuccinoExplorerGetBlockSummariesRequest } from '@/service/hotshot_query_service/explorer/get_block_summaries_request';
+import { CappuccinoExplorerGetExplorerSummaryResponse } from '@/service/hotshot_query_service/explorer/get_explorer_summary_response';
+import { CappuccinoExplorerGetTransactionDetailRequest } from '@/service/hotshot_query_service/explorer/get_transaction_detail_request';
+import { CappuccinoExplorerGetTransactionSummariesFilter } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_filter';
+import { CappuccinoExplorerGetTransactionSummariesRequest } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_request';
+import { CappuccinoExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_target';
 import React from 'react';
 
 // We need to create adapters between the HotShotQueryService and the

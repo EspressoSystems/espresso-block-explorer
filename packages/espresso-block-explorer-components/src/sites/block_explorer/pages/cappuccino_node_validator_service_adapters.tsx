@@ -72,8 +72,8 @@ import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/
 import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
 import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';
 import { webSocketCommandToWebWorkerProxyRequestConverter } from '@/models/web_worker/web_worker_proxy_request_codec';
-import { CappuccinoAPIBitVec } from '@/service/hotshot_query_service/cappuccino/availability/bit_vec';
-import { CappuccinoExplorerBlockDetail } from '@/service/hotshot_query_service/cappuccino/explorer/block_detail';
+import { CappuccinoAPIBitVec } from '@/service/hotshot_query_service/availability/bit_vec';
+import { CappuccinoExplorerBlockDetail } from '@/service/hotshot_query_service/explorer/block_detail';
 import CappuccinoNodeIdentity from '@/service/node_validator/cappuccino/node_identity';
 import CappuccinoNodeValidatorRequest, {
   RequestBlocksSnapshot,

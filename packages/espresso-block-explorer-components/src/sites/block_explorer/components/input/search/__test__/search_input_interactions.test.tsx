@@ -1,5 +1,5 @@
 import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
-import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
+import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/implementations/fake_data';
 import { act, render } from '@testing-library/react';
 import { describe, it } from 'vitest';
 import {

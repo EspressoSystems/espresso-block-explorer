@@ -7,8 +7,8 @@ import {
   EpochAndBlock,
 } from '@/service/espresso_l1_validator_service/common/epoch_and_block';
 import { CappuccinoAPIHeader } from '@/service/hotshot_query_service';
-import { AbstractCappuccinoAPIV4Header } from '@/service/hotshot_query_service/cappuccino/availability/block_header_v4';
-import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
+import { AbstractCappuccinoAPIV4Header } from '@/service/hotshot_query_service/availability/block_header_v4';
+import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
 import React from 'react';
 import { ActiveValidatorsContext } from './active_validators_context';
 import { BlocksPerEpochContext } from './blocks_per_epoch_context';

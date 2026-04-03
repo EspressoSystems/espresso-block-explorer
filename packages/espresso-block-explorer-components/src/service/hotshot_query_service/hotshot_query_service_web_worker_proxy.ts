@@ -4,13 +4,6 @@ import { createExtendedFetch } from '@/async/fetch/extended_fetch';
 import { EspressoError } from '@/errors/espresso_error';
 import UnimplementedError from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
-import {
-  webWorkerRequestCodec,
-  WebWorkerResponseError,
-  webWorkerResponseErrorCodec,
-  WebWorkerResponseSuccess,
-  webWorkerResponseSuccessCodec,
-} from '../web_worker_types';
 import { AvailabilityRequest } from './availability/implementations/web_worker_proxy';
 import { ExplorerRequest } from './explorer/implementations/web_worker_proxy';
 import { CappuccinoHotShotQueryService } from './hot_shot_query_service_api';
@@ -19,6 +12,13 @@ import { FetchBasedCappuccinoHotShotQueryService } from './implementations/remot
 import { WebWorkerProxyHotShotQueryService } from './implementations/web_worker_proxy';
 import { RewardStateRequest } from './reward_state/implementations/web_worker_proxy';
 import { StatusRequest } from './status/implementations/web_worker_proxy';
+import {
+  webWorkerRequestCodec,
+  WebWorkerResponseError,
+  webWorkerResponseErrorCodec,
+  WebWorkerResponseSuccess,
+  webWorkerResponseSuccessCodec,
+} from './web_worker_types';
 
 type Config = {
   hotshot_query_service_url: undefined | null | string;

@@ -16,7 +16,7 @@
  * Query Service that is deployed via a Sequencer.
  */
 
-import { HeightAndAddress } from './cappuccino/reward_state/height_and_address';
+import { HeightAndAddress } from './reward_state/height_and_address';
 
 export interface Leaf {}
 
