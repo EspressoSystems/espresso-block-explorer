@@ -4,7 +4,6 @@ import {
   assertRecordWithKeys,
   isRecordWithKeys,
 } from '@/convert/codec/convert';
-import { stringCodec } from '@/convert/codec/string';
 import { EspressoError } from './espresso_error';
 import NoCodecFoundError from './no_codec_found_error';
 
@@ -126,7 +125,12 @@ function convertErrors(dec: EspressoErrorDecoder, input: unknown): unknown[] {
 class EspressoErrorDecoder implements Converter<unknown, unknown> {
   convert(input: unknown): unknown {
     assertRecordWithKeys(input, 'code', 'message');
-    const code = stringCodec.decode(input.code);
+    if (typeof input.code !== 'string') {
+      throw new TypeError(
+        `unable to retrieve "code" from error, expected "string", received ${typeof input.code}`,
+      );
+    }
+    const code = input.code;
 
     switch (code) {
       case 'AggregateError':

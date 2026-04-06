@@ -5,6 +5,7 @@ import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { peerDependencies } from './package.json';
+import circularDependency from 'vite-plugin-circular-dependency';
 
 export default defineConfig({
   build: {
@@ -22,7 +23,11 @@ export default defineConfig({
     },
     cssCodeSplit: true,
     rollupOptions: {
-      external: [...Object.keys(peerDependencies)], // Defines external dependencies for Rollup bundling.
+      // Match peer deps and all their subpaths (e.g. viem/actions)
+      external: (id) =>
+        Object.keys(peerDependencies).some(
+          (dep) => id === dep || id.startsWith(`${dep}/`),
+        ),
       output: {
         // Customize asset filenames to ensure CSS files match their entry point names
         assetFileNames: ({ name }: { name?: string }) => {
@@ -31,6 +36,9 @@ export default defineConfig({
           }
           return 'assets/[name]-[hash][extname]';
         },
+        // Give shared chunks stable, predictable names (no hashes).
+        // Shared chunks only arise for source modules used by multiple entries.
+        chunkFileNames: '[name].js',
       },
     },
     // Disabling source maps due to memory issues in CI/CD pipelines.
@@ -68,6 +76,7 @@ export default defineConfig({
       tsconfigPath: 'tsconfig.build.json',
     }),
     tsconfigPaths(),
+    circularDependency(),
   ], // Uses the 'vite-plugin-dts' plugin for generating TypeScript declaration files (d.ts).
   test: {
     globals: true,
