@@ -1,6 +1,6 @@
 import { Codec } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
-import { AsyncRequestHelper } from '@/service/espresso_l1_validator_service/web_worker_types';
+import { AsyncRequestHelper } from '@/service/espresso_staking_api_service/web_worker_types';
 import { ActiveValidators, activeValidatorsCodec } from '../active_validators';
 import { HotShotQueryServiceNodeAPI } from '../node_api';
 import { StakeTable, stakeTableCodec } from '../stake_table';

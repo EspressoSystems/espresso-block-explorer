@@ -4,19 +4,19 @@ import { sleep } from '@/async/sleep';
 import { AsyncIterableResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { DataContext } from '@/contexts/data_provider';
-import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
+import { StakingAPIServiceContext } from '@/contexts/staking_api_service_context';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { compareArrayBuffer } from '@/functional/functional';
-import { EpochAndBlock } from '@/service/espresso_l1_validator_service/common/epoch_and_block';
-import { L1BlockID } from '@/service/espresso_l1_validator_service/common/l1_block_id';
-import { L1BlockInfo } from '@/service/espresso_l1_validator_service/common/l1_block_info';
-import { L1ValidatorService } from '@/service/espresso_l1_validator_service/l1_validator_service_api';
-import { ActiveNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_active/active_node_set_snapshot';
-import { applyActiveNodesUpdate } from '@/service/espresso_l1_validator_service/validators_active/apply_active_node_update';
-import { applyAllNodesUpdate } from '@/service/espresso_l1_validator_service/validators_all/apply_all_nodes_update';
-import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
-import { applyWalletSnapshotUpdates } from '@/service/espresso_l1_validator_service/wallet/apply_wallet_update';
-import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
+import { EpochAndBlock } from '@/service/espresso_staking_api_service/common/epoch_and_block';
+import { L1BlockID } from '@/service/espresso_staking_api_service/common/l1_block_id';
+import { L1BlockInfo } from '@/service/espresso_staking_api_service/common/l1_block_info';
+import { StakingAPIService } from '@/service/espresso_staking_api_service/staking_api_service';
+import { ActiveNodeSetSnapshot } from '@/service/espresso_staking_api_service/validators_active/active_node_set_snapshot';
+import { applyActiveNodesUpdate } from '@/service/espresso_staking_api_service/validators_active/apply_active_node_update';
+import { applyAllNodesUpdate } from '@/service/espresso_staking_api_service/validators_all/apply_all_nodes_update';
+import { FullNodeSetSnapshot } from '@/service/espresso_staking_api_service/validators_all/full_node_set_snapshot';
+import { applyWalletSnapshotUpdates } from '@/service/espresso_staking_api_service/wallet/apply_wallet_update';
+import { WalletSnapshot } from '@/service/espresso_staking_api_service/wallet/wallet_snapshot';
 import { isGoneError } from 'espresso-block-explorer-components';
 import React from 'react';
 import { ActiveValidatorsContext } from './contexts/active_validators_context';
@@ -167,15 +167,15 @@ const L1_BLOCK_ID_POLLING_RATE = 6_000; // in ms
  * is null, the latest L1 Block ID is fetched.
  */
 async function fetchNextL1BlockID(
-  l1ValidatorService: L1ValidatorService,
+  stakingAPIService: StakingAPIService,
   previousL1BlockID: null | L1BlockID,
 ) {
   try {
     if (!previousL1BlockID) {
-      return await l1ValidatorService.l1Block.getLatestBlock();
+      return await stakingAPIService.l1Block.getLatestBlock();
     }
 
-    return await l1ValidatorService.l1Block.getBlockForHeight(
+    return await stakingAPIService.l1Block.getBlockForHeight(
       previousL1BlockID.number + 1n,
     );
   } catch (err) {
@@ -192,7 +192,7 @@ async function fetchNextL1BlockID(
  * as they become available.
  */
 async function* l1BlocksIDStream(
-  l1ValidatorService: L1ValidatorService,
+  stakingaPIService: StakingAPIService,
   pollingInterval: number = L1_BLOCK_ID_POLLING_RATE,
 ) {
   let lastL1Block: null | L1BlockID = null;
@@ -201,7 +201,7 @@ async function* l1BlocksIDStream(
   while (true) {
     // TODO: We need to handle a `410` GONE here.
     const nextL1Block = await fetchNextL1BlockID(
-      l1ValidatorService,
+      stakingaPIService,
       lastL1Block,
     );
 
@@ -234,10 +234,10 @@ async function* l1BlocksIDStream(
  * L1 Block ID to its children.
  */
 const ProvideL1BlockID: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const l1ValidatorService = React.useContext(L1ValidatorServiceContext);
+  const stakingAPIService = React.useContext(StakingAPIServiceContext);
   const stream = React.useMemo(
-    () => l1BlocksIDStream(l1ValidatorService),
-    [l1ValidatorService],
+    () => l1BlocksIDStream(stakingAPIService),
+    [stakingAPIService],
   );
 
   return (
@@ -274,11 +274,11 @@ const ESPRESSO_BLOCK_HEIGHT_POLLING_RATE = 1_000; // in ms
  * for the provided L1 Block ID.
  */
 async function retrieveL1AllNodesSnapshot(
-  l1ValidatorService: L1ValidatorService,
+  stakingAPIService: StakingAPIService,
   l1BlockID: L1BlockID,
 ) {
   try {
-    return await l1ValidatorService.validatorsAll.snapshot(l1BlockID.hash);
+    return await stakingAPIService.validatorsAll.snapshot(l1BlockID.hash);
   } catch {
     return null;
   }
@@ -289,11 +289,11 @@ async function retrieveL1AllNodesSnapshot(
  * for the provided L1 Block ID.
  */
 async function retrieveL1AllNodesUpdates(
-  l1ValidatorService: L1ValidatorService,
+  stakingAPIService: StakingAPIService,
   l1BlockID: L1BlockID,
 ) {
   try {
-    return await l1ValidatorService.validatorsAll.updatesSince(l1BlockID.hash);
+    return await stakingAPIService.validatorsAll.updatesSince(l1BlockID.hash);
   } catch {
     return null;
   }
@@ -304,7 +304,7 @@ async function retrieveL1AllNodesUpdates(
  * as it is updated over time.
  */
 async function* allNodesStream(
-  l1ValidatorService: L1ValidatorService,
+  stakingAPIService: StakingAPIService,
   pollingInterval: number = MINIMUM_SLEEP_TIME,
 ) {
   let lastL1Block: null | L1BlockID = null;
@@ -334,7 +334,7 @@ async function* allNodesStream(
       l1Reorg !== ReorgCause.none
     ) {
       allNodes = await retrieveL1AllNodesSnapshot(
-        l1ValidatorService,
+        stakingAPIService,
         nextL1Block,
       );
       lastL1Block = nextL1Block;
@@ -342,7 +342,7 @@ async function* allNodesStream(
     }
 
     const updates = await retrieveL1AllNodesUpdates(
-      l1ValidatorService,
+      stakingAPIService,
       nextL1Block,
     );
 
@@ -382,11 +382,11 @@ async function* allNodesStream(
 const ProvideAllValidators: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const l1ValidatorService = React.useContext(L1ValidatorServiceContext);
+  const stakingAPIService = React.useContext(StakingAPIServiceContext);
   const l1Block = React.useContext(L1BlockIDContext);
   const stream = React.useMemo(
-    () => allNodesStream(l1ValidatorService),
-    [l1ValidatorService],
+    () => allNodesStream(stakingAPIService),
+    [stakingAPIService],
   );
 
   return (
@@ -419,10 +419,10 @@ const TransformDataToAllValidators: React.FC<React.PropsWithChildren> = ({
  * ActiveNodeSetSnapshot.
  */
 async function retrieveLatestActiveValidatorsSnapshot(
-  l1ValidatorService: L1ValidatorService,
+  stakingAPIService: StakingAPIService,
 ) {
   try {
-    return await l1ValidatorService.validatorsActive.active();
+    return await stakingAPIService.validatorsActive.active();
   } catch {
     return null;
   }
@@ -434,11 +434,11 @@ async function retrieveLatestActiveValidatorsSnapshot(
  * epochAndBlock.
  */
 async function retrieveUpdatesSinceLastActiveValidatorsSnapshot(
-  l1ValidatorService: L1ValidatorService,
+  stakingAPIService: StakingAPIService,
   epochAndBlock: EpochAndBlock,
 ) {
   try {
-    return await l1ValidatorService.validatorsActive.updatesSince(
+    return await stakingAPIService.validatorsActive.updatesSince(
       epochAndBlock.block + 1n,
     );
   } catch (err) {
@@ -455,7 +455,7 @@ async function retrieveUpdatesSinceLastActiveValidatorsSnapshot(
  * activeValidatorsStream provides a stream of ActiveNodeSetSnapshot updates.
  */
 async function* activeValidatorsStream(
-  l1ValidatorService: L1ValidatorService,
+  stakingAPIService: StakingAPIService,
   pollingInterval: number = ESPRESSO_BLOCK_HEIGHT_POLLING_RATE,
 ) {
   let activeNodes: null | ActiveNodeSetSnapshot = null;
@@ -463,7 +463,7 @@ async function* activeValidatorsStream(
   while (true) {
     if (!activeNodes) {
       activeNodes =
-        await retrieveLatestActiveValidatorsSnapshot(l1ValidatorService);
+        await retrieveLatestActiveValidatorsSnapshot(stakingAPIService);
     }
     yield activeNodes;
 
@@ -474,7 +474,7 @@ async function* activeValidatorsStream(
 
     const activeNodesUpdate =
       await retrieveUpdatesSinceLastActiveValidatorsSnapshot(
-        l1ValidatorService,
+        stakingAPIService,
         activeNodes.espressoBlock,
       );
 
@@ -517,10 +517,10 @@ async function* activeValidatorsStream(
 const ProvideActiveValidators: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const l1ValidatorService = React.useContext(L1ValidatorServiceContext);
+  const stakingAPIService = React.useContext(StakingAPIServiceContext);
   const stream = React.useMemo(
-    () => activeValidatorsStream(l1ValidatorService),
-    [l1ValidatorService],
+    () => activeValidatorsStream(stakingAPIService),
+    [stakingAPIService],
   );
   return (
     <AsyncIterableResolver asyncIterable={stream}>
@@ -561,7 +561,7 @@ const TransformDataToActiveValidators: React.FC<React.PropsWithChildren> = ({
  * for the provided L1 Block ID and active wallet address.
  */
 async function retrieveWalletSnapshot(
-  l1ValidatorService: L1ValidatorService,
+  stakingAPIService: StakingAPIService,
   l1BlockID: L1BlockID,
   activeWallet: null | `0x${string}`,
 ) {
@@ -571,7 +571,7 @@ async function retrieveWalletSnapshot(
 
   const address = hexArrayBufferCodec.decode(activeWallet);
   try {
-    return await l1ValidatorService.wallet.snapshot(address, l1BlockID.hash);
+    return await stakingAPIService.wallet.snapshot(address, l1BlockID.hash);
   } catch {
     // Catch the error, and return null.  We don't want to try forever, we
     // have some definite limits to the number of attempts.
@@ -584,13 +584,13 @@ async function retrieveWalletSnapshot(
  * updates for the provided L1 Block ID and active wallet address.
  */
 async function retrieveWalletUpdates(
-  l1ValidatorService: L1ValidatorService,
+  stakingAPIService: StakingAPIService,
   l1BlockID: L1BlockID,
   activeWallet: `0x${string}`,
 ) {
   try {
     const address = hexArrayBufferCodec.decode(activeWallet);
-    return await l1ValidatorService.wallet.updates(address, l1BlockID.hash);
+    return await stakingAPIService.wallet.updates(address, l1BlockID.hash);
   } catch {
     return null;
   }
@@ -601,7 +601,7 @@ async function retrieveWalletUpdates(
  * updates.
  */
 async function* activeWalletStateStream(
-  l1ValidatorService: L1ValidatorService,
+  stakingAPIService: StakingAPIService,
   pollingInterval: number = MINIMUM_SLEEP_TIME,
 ) {
   let [l1BlockID, activeAccount]: [null | L1BlockID, null | `0x${string}`] =
@@ -617,7 +617,7 @@ async function* activeWalletStateStream(
   // to be able to fetch the wallet state.  We may not have one, so we need
   // to contend with
   let walletSnapshot: null | WalletSnapshot = await retrieveWalletSnapshot(
-    l1ValidatorService,
+    stakingAPIService,
     l1BlockID,
     activeAccount,
   );
@@ -657,7 +657,7 @@ async function* activeWalletStateStream(
       l1Reorg !== ReorgCause.none
     ) {
       walletSnapshot = await retrieveWalletSnapshot(
-        l1ValidatorService,
+        stakingAPIService,
         nextL1BlockID,
         nextActiveAccount,
       );
@@ -680,7 +680,7 @@ async function* activeWalletStateStream(
 
     // Let's retrieve our updates
     const updates = await retrieveWalletUpdates(
-      l1ValidatorService,
+      stakingAPIService,
       nextL1BlockID,
       nextActiveAccount,
     );
@@ -723,13 +723,13 @@ async function* activeWalletStateStream(
 const ProvideActiveWalletSnapshot: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const l1ValidatorService = React.useContext(L1ValidatorServiceContext);
+  const stakingAPIService = React.useContext(StakingAPIServiceContext);
   const l1BlockID = React.useContext(L1BlockIDContext);
   const activeWallet = React.useContext(RainbowKitAccountAddressContext);
 
   const stream = React.useMemo(
-    () => activeWalletStateStream(l1ValidatorService),
-    [l1ValidatorService],
+    () => activeWalletStateStream(stakingAPIService),
+    [stakingAPIService],
   );
 
   return (

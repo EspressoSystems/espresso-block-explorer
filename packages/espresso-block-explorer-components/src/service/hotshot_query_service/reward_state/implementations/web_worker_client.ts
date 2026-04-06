@@ -1,7 +1,7 @@
 import { nullableBigintCodec } from '@/convert/codec/bigint';
 import { Codec } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import { AsyncRequestHelper } from '@/service/espresso_l1_validator_service/web_worker_types';
+import { AsyncRequestHelper } from '@/service/espresso_staking_api_service/web_worker_types';
 import { HeightAndAddress, heightAndAddressCodec } from '../height_and_address';
 import {
   nullableRewardClaimInputCodec,

@@ -1,10 +1,10 @@
 import { mapIterable } from '@/functional/functional';
-import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
+import { NodeMetadata } from '@/service/espresso_staking_api_service/common/node_metadata';
+import { NodeMetadataContent } from '@/service/espresso_staking_api_service/common/node_metadata_content';
+import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
+import { CuratedValidatorsMapContext } from 'delegation-ui';
 import React from 'react';
 import { FullNodeSetSnapshotContext } from './full_node_set_snapshot_context';
-import { CuratedValidatorsMapContext } from 'delegation-ui';
-import { NodeMetadataContent } from '@/service/espresso_l1_validator_service/common/node_metadata_content';
-import { NodeMetadata } from '@/service/espresso_l1_validator_service/common/node_metadata';
 
 /**
  * AllValidatorsContext provides a React Context

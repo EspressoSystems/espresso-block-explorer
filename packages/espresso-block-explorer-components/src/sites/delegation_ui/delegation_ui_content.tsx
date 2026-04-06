@@ -11,8 +11,8 @@ import {
   mapIterable,
   takeIterable,
 } from '@/functional/functional';
-import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
-import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
+import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
+import { WalletSnapshot } from '@/service/espresso_staking_api_service/wallet/wallet_snapshot';
 import React from 'react';
 import './colors.css';
 import {

@@ -3,14 +3,14 @@ import { createAutoRetryFetch } from '@/async/fetch/auto_retry_fetch';
 import { createExtendedFetch } from '@/async/fetch/extended_fetch';
 import { EspressoError } from '@/errors/espresso_error';
 import UnimplementedError from '@/errors/unimplemented_error';
-import { FakeDataL1ValidatorService } from './implementations/fake_data';
-import { FetchBasedL1ValidatorService } from './implementations/fetch_based';
+import { FakeDataStakingAPIService } from './implementations/fake_data';
+import { FetchBasedStakingAPIService } from './implementations/fetch_based';
 import {
   ProxyRequest,
-  WebWorkerL1ValidatorService,
+  WebWorkerStakingAPIService,
 } from './implementations/web_worker_proxy';
 import { L1BlockAPIRequest } from './l1_block/implementations/web_worker_proxy';
-import { L1ValidatorService } from './l1_validator_service_api';
+import { StakingAPIService } from './staking_api_service';
 import { ValidatorsActiveAPIRequest } from './validators_active/implementations/web_worker_proxy';
 import { ValidatorsActiveAllRequest } from './validators_all/implementations/web_worker_proxy';
 import {
@@ -27,7 +27,7 @@ import {
  * of the L1 Validator Service to use.
  */
 type Config = {
-  l1_validators_service_url: undefined | null | string;
+  staking_api_service_url: undefined | null | string;
 };
 
 /**
@@ -37,16 +37,16 @@ type PostMessageFunction = typeof postMessage;
 
 /**
  * determineServiceImplementationFromConfigFile determines the
- * L1ValidatorService implementation to use based on an external
+ * StakingAPIService implementation to use based on an external
  * configuration file.
  */
-async function determineServiceImplementationFromConfigFile(): Promise<L1ValidatorService> {
+async function determineServiceImplementationFromConfigFile(): Promise<StakingAPIService> {
   try {
     const response = await fetch('/config.json');
     const config: Config = await response.json();
-    if (config.l1_validators_service_url) {
-      const url = new URL(config.l1_validators_service_url);
-      return new FetchBasedL1ValidatorService(
+    if (config.staking_api_service_url) {
+      const url = new URL(config.staking_api_service_url);
+      return new FetchBasedStakingAPIService(
         createAutoRetryFetch({}, createExtendedFetch()),
         url,
       );
@@ -56,11 +56,11 @@ async function determineServiceImplementationFromConfigFile(): Promise<L1Validat
     // We ignore this error for now, and fallback to fake data.
   }
 
-  return new FakeDataL1ValidatorService();
+  return new FakeDataStakingAPIService();
 }
 
 async function determineService() {
-  return new WebWorkerL1ValidatorService(
+  return new WebWorkerStakingAPIService(
     await determineServiceImplementationFromConfigFile(),
   );
 }
@@ -72,7 +72,7 @@ async function determineService() {
  */
 export class WebWorkerProxy {
   // private config: Promise<Config>;
-  private service: Promise<WebWorkerL1ValidatorService>;
+  private service: Promise<WebWorkerStakingAPIService>;
   private postMessage: PostMessageFunction;
 
   private requestChannel: Channel<
@@ -93,7 +93,7 @@ export class WebWorkerProxy {
 
   /**
    * handleProxyRequest handles requests specific to the proxy itself.
-   * This is specific to methods that are not part of the L1ValidatorService
+   * This is specific to methods that are not part of the StakingAPIService
    * API, and only serve to configure the proxy itself.
    */
   async handleProxyRequest(request: ProxyRequest): Promise<boolean> {
@@ -104,8 +104,8 @@ export class WebWorkerProxy {
       }
 
       this.service = Promise.resolve(
-        new WebWorkerL1ValidatorService(
-          new FetchBasedL1ValidatorService(
+        new WebWorkerStakingAPIService(
+          new FetchBasedStakingAPIService(
             createAutoRetryFetch({}, createExtendedFetch()),
             new URL(url),
           ),

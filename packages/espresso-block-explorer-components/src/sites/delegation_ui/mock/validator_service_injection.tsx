@@ -1,6 +1,6 @@
 import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
-import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
+import { StakingAPIServiceContext } from '@/contexts/staking_api_service_context';
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { nodeList } from '@/data_source/fake_data_source';
@@ -16,29 +16,29 @@ import {
   mapIterable,
   singletonIterable,
 } from '@/functional/functional';
-import { Delegation } from '@/service/espresso_l1_validator_service/common/delegation';
-import { EpochAndBlock } from '@/service/espresso_l1_validator_service/common/epoch_and_block';
-import { L1BlockID } from '@/service/espresso_l1_validator_service/common/l1_block_id';
-import { L1BlockInfo } from '@/service/espresso_l1_validator_service/common/l1_block_info';
-import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
-import { Withdrawal } from '@/service/espresso_l1_validator_service/common/withdrawal';
-import { L1BlockAPI } from '@/service/espresso_l1_validator_service/l1_block/l1_block_api';
-import { L1ValidatorService } from '@/service/espresso_l1_validator_service/l1_validator_service_api';
-import { ActiveNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_active/active_node_set_snapshot';
-import { ActiveNodeSetUpdate } from '@/service/espresso_l1_validator_service/validators_active/active_node_set_update';
-import { ValidatorsActiveAPI } from '@/service/espresso_l1_validator_service/validators_active/validators_active_api';
-import { FullNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
-import { FullNodeSetUpdate } from '@/service/espresso_l1_validator_service/validators_all/full_node_set_update';
-import { ValidatorsAllAPI } from '@/service/espresso_l1_validator_service/validators_all/validators_all_api';
-import { WalletAPI } from '@/service/espresso_l1_validator_service/wallet/wallet_api';
-import { WalletDiffClaimedRewards } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/claimed_rewards';
-import { WalletDiffDelegatedToNode } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/delegated_to_node';
-import { WalletDiffNodeExitWithdrawal } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/node_exit_withdrawal';
-import { WalletDiffUndelegatedFromNode } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/undelegated_from_node';
-import { WalletDiffUndelegationWithdrawal } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/undelegation_withdrawal';
-import { WalletDiff } from '@/service/espresso_l1_validator_service/wallet/wallet_diff/wallet_diff';
-import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
-import { WalletUpdate } from '@/service/espresso_l1_validator_service/wallet/wallet_update';
+import { Delegation } from '@/service/espresso_staking_api_service/common/delegation';
+import { EpochAndBlock } from '@/service/espresso_staking_api_service/common/epoch_and_block';
+import { L1BlockID } from '@/service/espresso_staking_api_service/common/l1_block_id';
+import { L1BlockInfo } from '@/service/espresso_staking_api_service/common/l1_block_info';
+import { PendingWithdrawal } from '@/service/espresso_staking_api_service/common/pending_withdrawal';
+import { Withdrawal } from '@/service/espresso_staking_api_service/common/withdrawal';
+import { L1BlockAPI } from '@/service/espresso_staking_api_service/l1_block/l1_block_api';
+import { StakingAPIService } from '@/service/espresso_staking_api_service/staking_api_service';
+import { ActiveNodeSetSnapshot } from '@/service/espresso_staking_api_service/validators_active/active_node_set_snapshot';
+import { ActiveNodeSetUpdate } from '@/service/espresso_staking_api_service/validators_active/active_node_set_update';
+import { ValidatorsActiveAPI } from '@/service/espresso_staking_api_service/validators_active/validators_active_api';
+import { FullNodeSetSnapshot } from '@/service/espresso_staking_api_service/validators_all/full_node_set_snapshot';
+import { FullNodeSetUpdate } from '@/service/espresso_staking_api_service/validators_all/full_node_set_update';
+import { ValidatorsAllAPI } from '@/service/espresso_staking_api_service/validators_all/validators_all_api';
+import { WalletAPI } from '@/service/espresso_staking_api_service/wallet/wallet_api';
+import { WalletDiffClaimedRewards } from '@/service/espresso_staking_api_service/wallet/wallet_diff/claimed_rewards';
+import { WalletDiffDelegatedToNode } from '@/service/espresso_staking_api_service/wallet/wallet_diff/delegated_to_node';
+import { WalletDiffNodeExitWithdrawal } from '@/service/espresso_staking_api_service/wallet/wallet_diff/node_exit_withdrawal';
+import { WalletDiffUndelegatedFromNode } from '@/service/espresso_staking_api_service/wallet/wallet_diff/undelegated_from_node';
+import { WalletDiffUndelegationWithdrawal } from '@/service/espresso_staking_api_service/wallet/wallet_diff/undelegation_withdrawal';
+import { WalletDiff } from '@/service/espresso_staking_api_service/wallet/wallet_diff/wallet_diff';
+import { WalletSnapshot } from '@/service/espresso_staking_api_service/wallet/wallet_snapshot';
+import { WalletUpdate } from '@/service/espresso_staking_api_service/wallet/wallet_update';
 import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
 import React from 'react';
 import { type Config } from 'wagmi';
@@ -68,24 +68,24 @@ import {
 // This is a connection piece which may seem odd initially, but is valuable
 // for testing and development purposes.
 
-export const L1ValidatorServiceMockInjection: React.FC<
+export const StakingAPIServiceMockInjection: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
   const l1Methods = React.useContext(L1MethodsContext);
-  const service = React.useContext(L1ValidatorServiceContext);
+  const service = React.useContext(StakingAPIServiceContext);
   const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   return (
-    <L1ValidatorServiceContext.Provider
+    <StakingAPIServiceContext.Provider
       value={determineService(service, l1Methods, hotShotQueryService)}
     >
       {children}
-    </L1ValidatorServiceContext.Provider>
+    </StakingAPIServiceContext.Provider>
   );
 };
 
 function determineService(
-  service: L1ValidatorService,
+  service: StakingAPIService,
   l1Methods: null | L1Methods<Config, number>,
   hotShotQueryService: HotShotQueryService,
 ) {
@@ -376,14 +376,14 @@ class MockStatefulValidatorsActiveAPI implements ValidatorsActiveAPI {
   }
 }
 
-class MockValidatorService implements L1ValidatorService {
+class MockValidatorService implements StakingAPIService {
   public readonly l1Block: MockL1BlockAPI;
   public readonly wallet: MockStatefulWalletAPI;
   public readonly validatorsAll: MockStatefulValidatorsAllAPI;
   public readonly validatorsActive: MockStatefulValidatorsActiveAPI;
   constructor(
     l1Methods: MockL1MethodsImpl,
-    service: L1ValidatorService,
+    service: StakingAPIService,
     hotShotQueryService: HotShotQueryService,
   ) {
     this.l1Block = new MockL1BlockAPI(l1Methods);

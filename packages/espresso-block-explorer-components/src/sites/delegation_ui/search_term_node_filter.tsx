@@ -1,6 +1,6 @@
 import { TextEditingValue } from '@/components/input/text/types';
 import { filterIterable, mapIterable } from '@/functional/functional';
-import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
+import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
 
 /**
  * applySearchTermNodeFilter creates a filter function based on the search term.

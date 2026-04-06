@@ -3,8 +3,8 @@ import { Codec } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
 import { WebWorkerClientBasedL1BlockAPI } from '../l1_block/implementations/web_worker_client';
 import { L1BlockAPI } from '../l1_block/l1_block_api';
-import { L1ValidatorService } from '../l1_validator_service_api';
-import ProxyWorker from '../l1_validator_service_web_worker_api.js?worker';
+import ProxyWorker from '../staking_api_service_web_worker_api.js?worker';
+import { StakingAPIService } from '../staking_api_service';
 import { WebWorkerClientBasedValidatorsActiveAPI } from '../validators_active/implementations/web_worker_client';
 import { ValidatorsActiveAPI } from '../validators_active/validators_active_api';
 import { WebWorkerClientBasedValidatorsAllAPI } from '../validators_all/implementations/web_worker_client';
@@ -15,7 +15,7 @@ import { AsyncRequestHelper } from '../web_worker_types';
 
 /**
  * singletonWorker is a singleton instance of the Web Worker
- * used by the WebWorkerClientBasedL1ValidatorService.
+ * used by the WebWorkerClientBasedStakingAPIService.
  */
 let singletonWorker: null | Worker = null;
 
@@ -32,11 +32,11 @@ function createWorker(): Worker {
 }
 
 /**
- * WebWorkerClientBasedL1ValidatorService is an implementation of
- * L1ValidatorService that uses a Web Worker to communicate with the
+ * WebWorkerClientBasedStakingAPIService is an implementation of
+ * StakingAPIService that uses a Web Worker to communicate with the
  * Validator Service API.
  */
-export class WebWorkerClientBasedL1ValidatorService implements L1ValidatorService {
+export class WebWorkerClientBasedStakingAPIService implements StakingAPIService {
   public readonly l1Block: L1BlockAPI;
   public readonly validatorsAll: ValidatorsAllAPI;
   public readonly validatorsActive: ValidatorsActiveAPI;

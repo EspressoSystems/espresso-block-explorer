@@ -1,7 +1,7 @@
 import { booleanCodec } from '@/convert/codec/boolean';
 import { Codec } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import { AsyncRequestHelper } from '@/service/espresso_l1_validator_service/web_worker_types';
+import { AsyncRequestHelper } from '@/service/espresso_staking_api_service/web_worker_types';
 import { HotShotQueryServiceAvailabilityAPI } from '../availability/availability_api';
 import { WebWorkerClientBasedHotShotQueryServiceAvailabilityAPI } from '../availability/implementations/web_worker_client';
 import { HotShotQueryServiceExplorerAPI } from '../explorer/explorer_api';

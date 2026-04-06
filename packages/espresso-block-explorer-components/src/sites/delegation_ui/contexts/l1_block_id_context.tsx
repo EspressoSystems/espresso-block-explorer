@@ -1,7 +1,7 @@
 import { PromiseResolver } from '@/components/data';
 import { DataContext } from '@/contexts/data_provider';
-import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
-import { L1BlockID } from '@/service/espresso_l1_validator_service/common/l1_block_id';
+import { StakingAPIServiceContext } from '@/contexts/staking_api_service_context';
+import { L1BlockID } from '@/service/espresso_staking_api_service/common/l1_block_id';
 import React from 'react';
 
 /**
@@ -17,7 +17,7 @@ export const L1BlockIDContext = React.createContext<null | L1BlockID>(null);
 export const RetrieveLatestL1BlockID: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const l1DelegationAPI = React.useContext(L1ValidatorServiceContext);
+  const l1DelegationAPI = React.useContext(StakingAPIServiceContext);
   const latestL1BlockPromise = l1DelegationAPI.l1Block.getLatestBlock();
 
   return (

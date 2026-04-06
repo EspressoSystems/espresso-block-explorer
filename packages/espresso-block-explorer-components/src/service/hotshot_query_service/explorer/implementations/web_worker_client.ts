@@ -1,5 +1,5 @@
 import { Codec } from '@/convert/codec/convert';
-import { AsyncRequestHelper } from '@/service/espresso_l1_validator_service/web_worker_types';
+import { AsyncRequestHelper } from '@/service/espresso_staking_api_service/web_worker_types';
 import { HotShotQueryServiceExplorerAPI } from '../explorer_api';
 import {
   ExplorerGetBlockDetailRequest,

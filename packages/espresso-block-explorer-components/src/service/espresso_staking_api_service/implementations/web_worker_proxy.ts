@@ -3,7 +3,7 @@ import {
   L1BlockAPIRequest,
   WebWorkerProxyL1API,
 } from '../l1_block/implementations/web_worker_proxy';
-import { L1ValidatorService } from '../l1_validator_service_api';
+import { StakingAPIService } from '../staking_api_service';
 import {
   ValidatorsActiveAPIRequest,
   WebWorkerProxyValidatorsActiveAPI,
@@ -24,17 +24,17 @@ import { WebWorkerRequest } from '../web_worker_types';
 export type ProxyRequest = WebWorkerRequest<'proxy', 'set-url', [string]>;
 
 /**
- * WebWorkerL1ValidatorService is a proxy for the L1ValidatorService
+ * WebWorkerStakingAPIService is a proxy for the StakingAPIService
  * that forwards requests to the underlying service implementation, it
  * handles the routing of the requests to the specific API proxies.
  */
-export class WebWorkerL1ValidatorService {
+export class WebWorkerStakingAPIService {
   public readonly l1Block: WebWorkerProxyL1API;
   public readonly validatorsActive: WebWorkerProxyValidatorsActiveAPI;
   public readonly validatorsAll: WebWorkerProxyValidatorsAllAPI;
   public readonly wallet: WebWorkerProxyWalletAPI;
 
-  constructor(service: L1ValidatorService) {
+  constructor(service: StakingAPIService) {
     this.l1Block = new WebWorkerProxyL1API(service.l1Block);
     this.validatorsActive = new WebWorkerProxyValidatorsActiveAPI(
       service.validatorsActive,

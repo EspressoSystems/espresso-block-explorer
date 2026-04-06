@@ -1,6 +1,6 @@
 import Text from '@/components/text/text';
 import { emptyIterator, firstWhereIterable } from '@/functional/functional';
-import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
+import { PendingWithdrawal } from '@/service/espresso_staking_api_service/common/pending_withdrawal';
 import { WalletSnapshotContext } from 'delegation-ui';
 import React from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';

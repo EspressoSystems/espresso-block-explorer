@@ -5,10 +5,10 @@ import {
   compareIterables,
   mapIterable,
 } from '@/functional/functional';
-import { ActiveNodeSetEntry } from '@/service/espresso_l1_validator_service/common/active_node_set_entry';
-import { Delegation } from '@/service/espresso_l1_validator_service/common/delegation';
-import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
-import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
+import { ActiveNodeSetEntry } from '@/service/espresso_staking_api_service/common/active_node_set_entry';
+import { Delegation } from '@/service/espresso_staking_api_service/common/delegation';
+import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
+import { PendingWithdrawal } from '@/service/espresso_staking_api_service/common/pending_withdrawal';
 import {
   AllValidatorsContext,
   NodeAddressListContext,

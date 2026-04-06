@@ -1,7 +1,7 @@
 import UnimplementedError from '@/errors/unimplemented_error';
 import { FetchBasedL1BlockAPI } from '../l1_block/implementations/fetch_based';
 import { L1BlockAPI } from '../l1_block/l1_block_api';
-import { L1ValidatorService } from '../l1_validator_service_api';
+import { StakingAPIService } from '../staking_api_service';
 import { FetchBasedValidatorsActiveAPI } from '../validators_active/implementations/fetch_based';
 import { ValidatorsActiveAPI } from '../validators_active/validators_active_api';
 import { FetchBasedValidatorsAllAPI } from '../validators_all/implementations/fetch_based';
@@ -10,11 +10,11 @@ import { FetchBasedWalletAPI } from '../wallet/implementations/fetch_based';
 import { WalletAPI } from '../wallet/wallet_api';
 
 /**
- * FetchBasedL1ValidatorService is an implementation of L1ValidatorService
+ * FetchBasedStakingAPIService is an implementation of StakingAPIService
  * that uses the Fetch API to communicate with the Validator Service API as
  * an external service over HTTP REST requests.
  */
-export class FetchBasedL1ValidatorService implements L1ValidatorService {
+export class FetchBasedStakingAPIService implements StakingAPIService {
   public readonly l1Block: L1BlockAPI;
   public readonly validatorsAll: ValidatorsAllAPI;
   public readonly validatorsActive: ValidatorsActiveAPI;

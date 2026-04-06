@@ -4,13 +4,13 @@ import { ValidatorsAllAPI } from './validators_all/validators_all_api';
 import { WalletAPI } from './wallet/wallet_api';
 
 /**
- * L1ValidatorService is the main interface for communicating with the
- * Validator Service API.
+ * StakingAPIService is the main interface for communicating with the
+ * Staking API Service.
  *
  * The point of this service is to provide access to the state derived from
  * the L1 blockchain state.
  */
-export interface L1ValidatorService {
+export interface StakingAPIService {
   /**
    * l1Block provides access to L1 block data and related operations.
    */

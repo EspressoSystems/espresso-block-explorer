@@ -3,7 +3,7 @@ import { createAutoRetryFetch } from '@/async/fetch/auto_retry_fetch';
 import { createExtendedFetch } from '@/async/fetch/extended_fetch';
 import { EspressoError } from '@/errors/espresso_error';
 import UnimplementedError from '@/errors/unimplemented_error';
-import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
+import { WebWorkerRequest } from '@/service/espresso_staking_api_service/web_worker_types';
 import { AvailabilityRequest } from './availability/implementations/web_worker_proxy';
 import { ExplorerRequest } from './explorer/implementations/web_worker_proxy';
 import { HotShotQueryService } from './hot_shot_query_service_api';

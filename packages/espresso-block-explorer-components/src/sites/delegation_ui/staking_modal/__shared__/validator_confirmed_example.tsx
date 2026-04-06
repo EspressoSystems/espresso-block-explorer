@@ -5,7 +5,7 @@ import {
   ValidatorStatus,
 } from '@/contracts/stake_table/stake_table_interface';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
-import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
+import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
 import { RewardClaimInput } from '@/service/hotshot_query_service/reward_state/reward_claim_input';
 import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
 import { LifetimeClaimedRewardsContext } from '@/sites/delegation_ui/contexts/claimed_rewards_context';

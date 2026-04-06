@@ -1,6 +1,6 @@
 import { numberCodec } from '@/convert/codec/number';
 import UnimplementedError from '@/errors/unimplemented_error';
-import { WebWorkerRequest } from '@/service/espresso_l1_validator_service/web_worker_types';
+import { WebWorkerRequest } from '@/service/espresso_staking_api_service/web_worker_types';
 import { activeValidatorsCodec } from '../active_validators';
 import { HotShotQueryServiceNodeAPI } from '../node_api';
 import { stakeTableCodec } from '../stake_table';

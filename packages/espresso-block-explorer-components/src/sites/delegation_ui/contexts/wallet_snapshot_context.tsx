@@ -1,10 +1,10 @@
 import { PromiseResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { DataContext } from '@/contexts/data_provider';
-import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
+import { StakingAPIServiceContext } from '@/contexts/staking_api_service_context';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { neverPromise } from '@/functional/functional_async';
-import { WalletSnapshot } from '@/service/espresso_l1_validator_service/wallet/wallet_snapshot';
+import { WalletSnapshot } from '@/service/espresso_staking_api_service/wallet/wallet_snapshot';
 import React from 'react';
 import { L1BlockIDContext } from './l1_block_id_context';
 import { L1RefreshTimestampContext } from './l1_refresh_timestamp_context';
@@ -25,7 +25,7 @@ export const RetrieveWalletSnapshot: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   React.use(L1RefreshTimestampContext);
-  const l1DelegationAPI = React.useContext(L1ValidatorServiceContext);
+  const l1DelegationAPI = React.useContext(StakingAPIServiceContext);
   const l1BlockInfo = React.useContext(L1BlockIDContext);
   const walletAddress = React.useContext(RainbowKitAccountAddressContext);
 

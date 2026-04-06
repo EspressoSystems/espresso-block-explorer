@@ -4,8 +4,8 @@ import {
 } from '@/async/fetch/mock';
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { L1BlockInfo } from '@/service/espresso_l1_validator_service/common/l1_block_info';
-import { Ratio } from '@/service/espresso_l1_validator_service/common/ratio';
+import { L1BlockInfo } from '@/service/espresso_staking_api_service/common/l1_block_info';
+import { Ratio } from '@/service/espresso_staking_api_service/common/ratio';
 import { describe, expect, it } from 'vitest';
 import { NodeExit } from '../../../common/node_exit';
 import { NodeSetEntry } from '../../../common/node_set_entry';

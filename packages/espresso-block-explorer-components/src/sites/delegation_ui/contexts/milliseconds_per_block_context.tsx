@@ -5,7 +5,7 @@ import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service
 import {
   computeEpochByBlockAndBlocksPerEpoch,
   EpochAndBlock,
-} from '@/service/espresso_l1_validator_service/common/epoch_and_block';
+} from '@/service/espresso_staking_api_service/common/epoch_and_block';
 import { AvailabilityAPIHeader } from '@/service/hotshot_query_service';
 import { AbstractAvailabilityAPIV4Header } from '@/service/hotshot_query_service/availability/block_header_v4';
 import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
@@ -19,7 +19,7 @@ import { BlocksPerEpochContext } from './blocks_per_epoch_context';
  */
 export const MillisecondsPerBlockContext = React.createContext<number>(
   // Default to 6 seconds per block, which seems to be a safe base line.
-  6 * 1000,
+  1_500,
 );
 
 type MillisecondsPerBlockState = {
@@ -54,7 +54,7 @@ function determineStartBlock(
       ));
 
   if (result <= 0n) {
-    const fallback = endBlock - 50n;
+    const fallback = endBlock - 1000n;
     if (fallback <= 0n) {
       return 1n;
     }
@@ -64,7 +64,9 @@ function determineStartBlock(
   return result;
 }
 
-async function* streamMillisecondsPerBlockState(): AsyncGenerator<
+async function* streamMillisecondsPerBlockState(
+  pollingIntervalMs: number = SLEEP_TIME_MS,
+): AsyncGenerator<
   MillisecondsPerBlockState,
   unknown,
   ComputeMillisecondsPerBlockInput
@@ -85,7 +87,7 @@ async function* streamMillisecondsPerBlockState(): AsyncGenerator<
         input.epochAndBlock.epoch !== state.epochAndBlock.epoch) ||
       !input.blocksPerEpoch
     ) {
-      await sleep(SLEEP_TIME_MS);
+      await sleep(pollingIntervalMs);
       continue;
     }
 
@@ -113,7 +115,7 @@ async function* streamMillisecondsPerBlockState(): AsyncGenerator<
         state.endHeader = endHeader;
       } catch {
         // Unable to retrieve headers, try again later.
-        await sleep(SLEEP_TIME_MS / 4);
+        await sleep(pollingIntervalMs / 4);
       }
       continue;
     }
@@ -129,7 +131,7 @@ async function* streamMillisecondsPerBlockState(): AsyncGenerator<
         state.endHeader = endHeader;
       } catch {
         // Unable to retrieve header, try again later.
-        await sleep(SLEEP_TIME_MS / 4);
+        await sleep(pollingIntervalMs / 4);
       }
 
       continue;
@@ -149,14 +151,14 @@ async function* streamMillisecondsPerBlockState(): AsyncGenerator<
         state.startHeader = startHeader;
       } catch {
         // Unable to retrieve header, try again later.
-        await sleep(SLEEP_TIME_MS / 4);
+        await sleep(pollingIntervalMs / 4);
       }
       continue;
     }
 
-    // No need to retrieve more headers, none of our criteria dictates that we
+    // No need to retrieve more headers, none of our criteria dictate that we
     // need an update.
-    await sleep(SLEEP_TIME_MS);
+    await sleep(pollingIntervalMs);
   }
 }
 

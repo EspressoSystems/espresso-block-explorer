@@ -1,7 +1,7 @@
 import { PromiseResolver } from '@/components/data';
 import { DataContext } from '@/contexts/data_provider';
-import { L1ValidatorServiceContext } from '@/contexts/l1_validator_api_context';
-import { ActiveNodeSetSnapshot } from '@/service/espresso_l1_validator_service/validators_active/active_node_set_snapshot';
+import { StakingAPIServiceContext } from '@/contexts/staking_api_service_context';
+import { ActiveNodeSetSnapshot } from '@/service/espresso_staking_api_service/validators_active/active_node_set_snapshot';
 import React from 'react';
 
 /**
@@ -19,7 +19,7 @@ export const ActiveValidatorsContext =
 export const RetrieveActiveValidators: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const l1DelegationAPI = React.useContext(L1ValidatorServiceContext);
+  const l1DelegationAPI = React.useContext(StakingAPIServiceContext);
   const activeValidatorListPromise = l1DelegationAPI.validatorsActive.active();
 
   return (

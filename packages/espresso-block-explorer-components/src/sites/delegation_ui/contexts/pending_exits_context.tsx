@@ -1,5 +1,5 @@
 import { emptyIterator, mapIterable } from '@/functional/functional';
-import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
+import { PendingWithdrawal } from '@/service/espresso_staking_api_service/common/pending_withdrawal';
 import React from 'react';
 import { WalletSnapshotContext } from './wallet_snapshot_context';
 
