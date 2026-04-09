@@ -15,6 +15,7 @@ import {
 } from '@/higher_order';
 import React from 'react';
 
+import '../../styles/main.css';
 import './typography.css';
 
 /**

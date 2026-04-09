@@ -43,7 +43,7 @@ import './explorer_page.css';
 const Text300H2 = WithUiText300('h2');
 const EdgeShimmerDiv = WithLoadingShimmer('div');
 
-interface GuardedBlocksSummaryDataTableProps { }
+interface GuardedBlocksSummaryDataTableProps {}
 
 const GuardedBlocksSummaryDataTable: React.FC<
   GuardedBlocksSummaryDataTableProps
