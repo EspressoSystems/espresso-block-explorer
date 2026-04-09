@@ -14,8 +14,6 @@ export default defineConfig({
       entry: {
         'espresso-block-explorer-components':
           './src/espresso-block-explorer-components.ts', // Specifies the entry point for building the library.
-        'block-explorer': './src/block-explorer.ts',
-        'delegation-ui': './src/delegation-ui.ts',
       },
       name: 'espresso-block-explorer-components', // Sets the name of the generated library.
       fileName: (format, entryName) => `${entryName}.${format}.js`, // Generates the output file name based on the format.
@@ -36,9 +34,6 @@ export default defineConfig({
           }
           return 'assets/[name]-[hash][extname]';
         },
-        // Give shared chunks stable, predictable names (no hashes).
-        // Shared chunks only arise for source modules used by multiple entries.
-        chunkFileNames: '[name].js',
       },
     },
     // Disabling source maps due to memory issues in CI/CD pipelines.

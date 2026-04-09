@@ -64,10 +64,9 @@
       "import": "./dist/delegation-ui.es.js",
       "types": "./dist/src/delegation-ui.d.ts"
     },
+    "./espresso-block-explorer-components.css": "./dist/espresso-block-explorer-components.css",
     "./block-explorer.css": "./dist/block-explorer.css",
-    "./delegation-ui.css": "./dist/delegation-ui.css",
-    "./inscription.css": "./dist/inscription.css",
-    "./stake_table_v2_contract_context.css": "./dist/stake_table_v2_contract_context.css"
+    "./delegation-ui.css": "./dist/delegation-ui.css"
   },
   "name": "espresso-block-explorer-components",
   "peerDependencies": {
@@ -82,7 +81,7 @@
   },
   "scripts": {
     "bench": "vitest bench",
-    "build": "vite build && npm run copy-assets",
+    "build": "vite build && vite build --config vite.sites.config.mts && npm run copy-assets",
     "copy-assets": "npm run copy-assets:block-explorer && npm run copy-assets:delegation-ui",
     "copy-assets:block-explorer": "mkdir -p ../block-explorer/public/assets && cp dist/assets/*worker*.js ../block-explorer/public/assets/.",
     "copy-assets:delegation-ui": "mkdir -p ../delegation-ui/public/assets && cp dist/assets/*worker*.js ../delegation-ui/public/assets/.",
