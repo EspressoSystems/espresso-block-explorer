@@ -15,7 +15,7 @@ export type RawValidator = readonly [bigint, ValidatorStatus];
  */
 export type RawUndelegation = readonly [bigint, bigint];
 
-export class Validator {
+export class STValidator {
   constructor(
     public readonly stake: bigint,
     public readonly status: ValidatorStatus,
@@ -24,7 +24,7 @@ export class Validator {
   }
 
   static fromRaw(validator: RawValidator) {
-    return new Validator(validator[0], validator[1]);
+    return new STValidator(validator[0], validator[1]);
   }
 
   toJSON() {
@@ -66,7 +66,7 @@ export interface StakeTableContractReadOnly {
   lightClient(): Promise<`0x${string}`>;
   token(): Promise<`0x${string}`>;
 
-  validator(account: `0x${string}`): Promise<Validator>;
+  validator(account: `0x${string}`): Promise<STValidator>;
   blsKey(blsKeyHash: `0x${string}`): Promise<boolean>;
   validatorExit(validator: `0x${string}`): Promise<bigint>;
   delegation(

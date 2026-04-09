@@ -14,8 +14,8 @@ import { ESPTokenContract } from '@/contracts/esp_token/esp_token_interface';
 import {
   RawUndelegation,
   RawValidator,
+  STValidator,
   Undelegation,
-  Validator,
   ValidatorStatus,
 } from '@/contracts/stake_table/stake_table_interface';
 import {
@@ -575,9 +575,9 @@ export class MockStakeTableV2ContractImpl implements StakeTableV2Contract {
     return this.espToken.address;
   }
 
-  async validator(account: `0x${string}`): Promise<Validator> {
+  async validator(account: `0x${string}`): Promise<STValidator> {
     const result = this.state.validators.get(account) ?? [0n, 0];
-    return Validator.fromRaw(result);
+    return STValidator.fromRaw(result);
   }
 
   async blsKey(): Promise<boolean> {

@@ -11,8 +11,8 @@ import { readContract, writeContract } from 'wagmi/actions';
 import StakeTableAbi from './stake_table_abi';
 import {
   StakeTableContract,
+  STValidator,
   Undelegation,
-  Validator,
 } from './stake_table_interface';
 
 type StakeTableFunctionNames = ContractFunctionName<
@@ -79,7 +79,7 @@ export class StakeTableRemote implements StakeTableContract {
   async validator(account: `0x${string}`) {
     const result = await this.readContract('validators', [account]);
 
-    return Validator.fromRaw(result);
+    return STValidator.fromRaw(result);
   }
 
   async blsKey(blsKeyHash: `0x${string}`) {

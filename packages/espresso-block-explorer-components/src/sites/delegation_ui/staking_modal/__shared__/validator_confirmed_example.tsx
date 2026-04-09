@@ -1,7 +1,7 @@
 import { AsyncSnapshot } from '@/components/data/async_data/async_snapshot';
 import {
+  STValidator,
   Undelegation,
-  Validator,
   ValidatorStatus,
 } from '@/contracts/stake_table/stake_table_interface';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
@@ -131,7 +131,7 @@ export const ValidatorConfirmedExample: React.FC<
                                         >
                                           <ValidatorFromContractContext.Provider
                                             value={
-                                              new Validator(
+                                              new STValidator(
                                                 1_000_000_000_000_000_000_000n,
                                                 ValidatorStatus.active,
                                               )
