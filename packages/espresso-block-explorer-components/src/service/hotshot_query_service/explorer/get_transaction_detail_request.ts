@@ -6,7 +6,7 @@ import {
   isUnknown,
 } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
-import InvalidInputError from '@/errors/invalid_input_error';
+import { InvalidInputError } from '@/errors/invalid_input_error';
 import {
   TaggedBase64,
   taggedBase64Codec,

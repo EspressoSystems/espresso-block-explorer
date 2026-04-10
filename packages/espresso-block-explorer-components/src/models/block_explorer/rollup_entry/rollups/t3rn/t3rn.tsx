@@ -1,23 +1,23 @@
 import { AvatarLogo } from '../../avatar_logo';
 import { PreFedSrcAvatarLogoProps } from '../../higher_order';
-import T3rnLogoDark24x24_1x from './t3rn_logo_dark24x24@1x.png';
-import T3rnLogoDark24x24_2x from './t3rn_logo_dark24x24@2x.png';
-import T3rnLogoDark24x24_3x from './t3rn_logo_dark24x24@3x.png';
-import T3rnLogoDark32x32_1x from './t3rn_logo_dark32x32@1x.png';
-import T3rnLogoDark32x32_2x from './t3rn_logo_dark32x32@2x.png';
-import T3rnLogoDark32x32_3x from './t3rn_logo_dark32x32@3x.png';
-import T3rnLogoDark40x40_1x from './t3rn_logo_dark40x40@1x.png';
-import T3rnLogoDark40x40_2x from './t3rn_logo_dark40x40@2x.png';
-import T3rnLogoDark40x40_3x from './t3rn_logo_dark40x40@3x.png';
-import T3rnLogoLight24x24_1x from './t3rn_logo_light24x24@1x.png';
-import T3rnLogoLight24x24_2x from './t3rn_logo_light24x24@2x.png';
-import T3rnLogoLight24x24_3x from './t3rn_logo_light24x24@3x.png';
-import T3rnLogoLight32x32_1x from './t3rn_logo_light32x32@1x.png';
-import T3rnLogoLight32x32_2x from './t3rn_logo_light32x32@2x.png';
-import T3rnLogoLight32x32_3x from './t3rn_logo_light32x32@3x.png';
-import T3rnLogoLight40x40_1x from './t3rn_logo_light40x40@1x.png';
-import T3rnLogoLight40x40_2x from './t3rn_logo_light40x40@2x.png';
-import T3rnLogoLight40x40_3x from './t3rn_logo_light40x40@3x.png';
+import { default as T3rnLogoDark24x24_1x } from './t3rn_logo_dark24x24@1x.png';
+import { default as T3rnLogoDark24x24_2x } from './t3rn_logo_dark24x24@2x.png';
+import { default as T3rnLogoDark24x24_3x } from './t3rn_logo_dark24x24@3x.png';
+import { default as T3rnLogoDark32x32_1x } from './t3rn_logo_dark32x32@1x.png';
+import { default as T3rnLogoDark32x32_2x } from './t3rn_logo_dark32x32@2x.png';
+import { default as T3rnLogoDark32x32_3x } from './t3rn_logo_dark32x32@3x.png';
+import { default as T3rnLogoDark40x40_1x } from './t3rn_logo_dark40x40@1x.png';
+import { default as T3rnLogoDark40x40_2x } from './t3rn_logo_dark40x40@2x.png';
+import { default as T3rnLogoDark40x40_3x } from './t3rn_logo_dark40x40@3x.png';
+import { default as T3rnLogoLight24x24_1x } from './t3rn_logo_light24x24@1x.png';
+import { default as T3rnLogoLight24x24_2x } from './t3rn_logo_light24x24@2x.png';
+import { default as T3rnLogoLight24x24_3x } from './t3rn_logo_light24x24@3x.png';
+import { default as T3rnLogoLight32x32_1x } from './t3rn_logo_light32x32@1x.png';
+import { default as T3rnLogoLight32x32_2x } from './t3rn_logo_light32x32@2x.png';
+import { default as T3rnLogoLight32x32_3x } from './t3rn_logo_light32x32@3x.png';
+import { default as T3rnLogoLight40x40_1x } from './t3rn_logo_light40x40@1x.png';
+import { default as T3rnLogoLight40x40_2x } from './t3rn_logo_light40x40@2x.png';
+import { default as T3rnLogoLight40x40_3x } from './t3rn_logo_light40x40@3x.png';
 
 /**
  * T3rnLogo24 represents the T3rn Logo square at the size of 24x24

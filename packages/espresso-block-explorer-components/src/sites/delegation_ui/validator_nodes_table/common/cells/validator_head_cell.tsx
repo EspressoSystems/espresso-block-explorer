@@ -1,4 +1,4 @@
-import Text from '@/components/text/text';
+import { Text } from '@/components/text';
 
 /**
  * ValidatorHeadCell is the header cell for the Validator column in the

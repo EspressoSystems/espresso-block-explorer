@@ -1,7 +1,7 @@
 import { createBufferedChannel, createChannelToSink } from '@/async/channel';
 import { createCompleter } from '@/data_structures/async';
 import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
-import WebSocketStatus from '@/models/web_worker/web_socket/status/web_socket_status';
+import { default as WebSocketStatus } from '@/models/web_worker/web_socket/status/web_socket_status';
 import { describe, it } from 'vitest';
 import { WebSocketOpenHandler } from '../websocket_open_handler';
 import { MockWebSocket } from './mock_web_socket.test';

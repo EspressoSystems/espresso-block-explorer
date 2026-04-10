@@ -2,7 +2,7 @@ import { uint8ArrayToArrayBufferCodec } from '@/convert/codec/uint8_array';
 import { createBufferedDataView } from '@/convert/data_view/buffered_data_view';
 import { Endianess } from '@/convert/data_view/endianess';
 import { createRLPDeserializer } from '@/convert/rlp/rlp';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { default as MonetaryValue } from '@/models/block_explorer/monetary_value';
 
 /**
  * ETHHeader represents an Ethereum block header as defined within the

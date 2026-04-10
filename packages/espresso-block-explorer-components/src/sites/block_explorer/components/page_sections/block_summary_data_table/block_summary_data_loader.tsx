@@ -1,5 +1,5 @@
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
-import PromiseResolver from '@/components/data/async_data/promise_resolver';
+import { default as PromiseResolver } from '@/components/data/async_data/promise_resolver';
 import {
   DataTableSetStateContext,
   DataTableState,
@@ -7,16 +7,16 @@ import {
 } from '@/components/data/data_table/data_table';
 import { SortDirection } from '@/components/data/types';
 import { DataContext } from '@/contexts/data_provider';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { addClassToClassName } from '@/higher_order';
 import {
   BlockSummaryAsyncRetriever,
   BlockSummaryColumn,
   BlockSummaryEntry,
 } from '@/models/block_explorer/block_summary';
-import Text from '@/text/text';
-import React from 'react';
-import LabeledAnchorButton from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
+import { default as Text } from '@/text/text';
+import { default as React } from 'react';
+import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
 import { ExplorerSummaryProvider } from '../explorer_summary/explorer_summary_loader';
 
 export interface BlockSummary {

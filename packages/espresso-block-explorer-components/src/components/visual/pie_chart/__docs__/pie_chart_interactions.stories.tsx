@@ -1,7 +1,7 @@
 import { DataContext } from '@/contexts/data_provider';
 import { iota, mapIterator } from '@/functional/functional';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import {
   interactionExitHoverAll,
   interactionHoverOverIthSlice,

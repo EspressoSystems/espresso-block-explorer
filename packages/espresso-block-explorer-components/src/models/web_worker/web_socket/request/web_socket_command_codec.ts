@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import {
   kWebSocketCommandCloseType,
   WebSocketCommandClose,
@@ -15,7 +15,7 @@ import {
   WebSocketCommandSetURL,
   webSocketCommandSetURLCodec,
 } from './set_url';
-import WebSocketCommand from './web_socket_command';
+import { default as WebSocketCommand } from './web_socket_command';
 
 class WebSocketCommandDecoder implements Converter<unknown, WebSocketCommand> {
   convert(input: unknown): WebSocketCommand {

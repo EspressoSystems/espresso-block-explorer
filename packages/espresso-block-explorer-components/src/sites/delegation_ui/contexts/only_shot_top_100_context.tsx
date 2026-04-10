@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * OnlyShowTop100Context is a React context that holds a boolean value

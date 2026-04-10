@@ -4,7 +4,7 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import {
   TimeoutCertificateV2,
   timeoutCertificateV2Codec,

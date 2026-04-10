@@ -11,7 +11,7 @@ import { bigintCodec } from '@/convert/codec/bigint';
 import { createKeccakHash } from '@/crypto/keccak/family';
 import { nodeList } from '@/data_source/fake_data_source';
 import { foldRIterable } from '@/functional/functional';
-import React from 'react';
+import { default as React } from 'react';
 import { MockESPTokenContractGasEstimatorImpl } from './esp_token_contract_gas_estimator';
 import {
   MockContractStorage,

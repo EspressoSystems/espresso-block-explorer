@@ -5,7 +5,7 @@ import {
   assertRecordWithKeys,
   assertTypeCode,
 } from '@/convert/codec/convert';
-import GeoJSONFeature, { listGeoJSONFeatureCodec } from './feature';
+import { default as GeoJSONFeature, listGeoJSONFeatureCodec } from './feature';
 
 const kGeoJSONFeatureCollectionType = 'FeatureCollection' as const;
 

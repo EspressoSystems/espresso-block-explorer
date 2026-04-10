@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 import './pie_chart_section_title.css';
 
 export interface PieChartSectionTitleProps {

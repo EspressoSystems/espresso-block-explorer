@@ -1,9 +1,9 @@
 import { mercatorProjection } from '@/models/geo';
 import { GeodesicProjection } from '@/models/geo/projection/geodesic_projection';
-import Degrees from '@/models/geo/units/degrees';
-import DensityIndependentPoint from '@/models/geo/units/density_independent_point';
-import LatLng from '@/models/geo/units/lat_lng';
-import Radians from '@/models/geo/units/radians';
+import { default as Degrees } from '@/models/geo/units/degrees';
+import { default as DensityIndependentPoint } from '@/models/geo/units/density_independent_point';
+import { default as LatLng } from '@/models/geo/units/lat_lng';
+import { default as Radians } from '@/models/geo/units/radians';
 import {
   degreesToCoordinateSpaceProjection,
   gridCellCoordinateSpaceCenters,
@@ -11,7 +11,7 @@ import {
   mapWidth,
 } from '@/models/geo/world_map_grid/constants';
 import { NumberLike } from '@/models/numeric/numeric';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * MapGeodesicToCoordinateSpaceProjectionContext is a context that provides a

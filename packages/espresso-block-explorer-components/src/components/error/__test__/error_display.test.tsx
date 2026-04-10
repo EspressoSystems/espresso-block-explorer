@@ -1,9 +1,9 @@
 import { ErrorContext } from '@/contexts/error_provider';
-import BufferFullError from '@/errors/buffer_full_error';
-import FetchError from '@/errors/fetch_error';
-import UnimplementedError from '@/errors/unimplemented_error';
-import WebSocketError from '@/errors/web_socket_error';
-import WebWorkerErrorResponse from '@/errors/web_worker_error_response';
+import { default as BufferFullError } from '@/errors/buffer_full_error';
+import { FetchError } from '@/errors/fetch_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
+import { default as WebSocketError } from '@/errors/web_socket_error';
+import { WebWorkerErrorResponse } from '@/errors/web_worker_error_response';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';

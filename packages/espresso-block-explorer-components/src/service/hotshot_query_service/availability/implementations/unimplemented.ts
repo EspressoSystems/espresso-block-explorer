@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { HotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { AvailabilityAPIBlock } from '../block';
 import { AvailabilityAPIHeader } from '../block_header';

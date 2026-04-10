@@ -4,7 +4,7 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
-import NodeValidatorResponse from './node_validator_response';
+import { default as NodeValidatorResponse } from './node_validator_response';
 import { nodeValidatorResponseCodec } from './node_validator_response_codec';
 
 export const kNodeValidatorServiceResponseType =

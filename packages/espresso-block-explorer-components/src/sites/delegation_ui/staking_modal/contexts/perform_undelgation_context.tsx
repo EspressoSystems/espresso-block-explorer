@@ -1,10 +1,10 @@
-import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
+import { AsyncIterableResolver } from '@/components/data/async_data';
 import { AsyncSnapshot } from '@/components/data/async_data/async_snapshot';
 import { AsyncSnapshotContext } from '@/components/data/async_data/async_snapshot_context';
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { StakeTableContract } from '@/contracts/stake_table/stake_table_interface';
 import { neverAsyncIterable } from '@/functional/functional_async';
-import React from 'react';
+import { default as React } from 'react';
 import { type Config } from 'wagmi';
 import { type GetTransactionReceiptReturnType } from 'wagmi/actions';
 import {

@@ -17,9 +17,9 @@ import {
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import { ProvideNodeValidatorStreams } from '../node_validator_service_adapters';
-import NodesPage from '../nodes_page';
+import { default as NodesPage } from '../nodes_page';
 import { StoryBookPathResolver } from '../story_book_path_resolver';
 
 interface ExampleProps {

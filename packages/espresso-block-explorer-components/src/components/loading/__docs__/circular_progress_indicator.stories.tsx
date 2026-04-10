@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import CircularProgressIndicatorComp from '../circular_progress_indicator';
+import { default as CircularProgressIndicatorComp } from '../circular_progress_indicator';
 
 const Example: React.FC = () => (<CircularProgressIndicatorComp />);
 

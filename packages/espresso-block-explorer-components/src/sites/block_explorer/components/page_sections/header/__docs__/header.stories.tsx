@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
-import HeaderComp from '../header';
+import { default as React } from 'react';
+import { default as HeaderComp } from '../header';
 
 interface ExampleProps {}
 const Example: React.FC<ExampleProps> = (props) => <HeaderComp {...props} />;

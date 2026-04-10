@@ -22,14 +22,14 @@ import {
   Validator,
 } from '@/models/espresso';
 import { Degrees, Latitude, LatLng, Longitude } from '@/models/geo';
-import WalletAddress from '@/models/wallet_address/wallet_address';
+import { default as WalletAddress } from '@/models/wallet_address/wallet_address';
 import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
 import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
-import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
+import { default as WebSocketCommand } from '@/models/web_worker/web_socket/request/web_socket_command';
 import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
 import { WebSocketStatusConnectionConnecting } from '@/models/web_worker/web_socket/status/connecting';
 import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
-import WebSocketStatus from '@/models/web_worker/web_socket/status/web_socket_status';
+import { default as WebSocketStatus } from '@/models/web_worker/web_socket/status/web_socket_status';
 import { WebSocketRequest } from '@/models/web_worker/web_socket/web_socket_request';
 import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
 import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
@@ -41,9 +41,10 @@ import {
   ExplorerBlockDetail,
   SummaryHistograms,
 } from '@/service/hotshot_query_service';
-import NodeIdentity from '../node_identity';
-import LocationDetails from '../node_location_details';
-import NodeValidatorRequest, {
+import { default as NodeIdentity } from '../node_identity';
+import { default as LocationDetails } from '../node_location_details';
+import {
+  default as NodeValidatorRequest,
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
@@ -61,7 +62,7 @@ import { LatestBlock } from '../responses/latest_block';
 import { LatestStakeTable } from '../responses/latest_stake_table';
 import { LatestVoters } from '../responses/latest_voters';
 import { NodeIdentitySnapshot } from '../responses/node_identity_snapshot';
-import NodeValidatorResponse from '../responses/node_validator_response';
+import { default as NodeValidatorResponse } from '../responses/node_validator_response';
 import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
 import { ValidatorsSnapshot } from '../responses/validators_snapshot';
 import { VotersSnapshot } from '../responses/voters_snapshot';

@@ -2,8 +2,8 @@ import { assertInstanceOf } from '@/assert/assert';
 import { rawURLEncoding } from '@/convert/base64/base64';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
-import InvalidTaggedBase64EncodingError from '@/errors/invalid_tagged_base64_encoding_error';
-import InvalidTypeError from '@/errors/invalid_type_error';
+import { InvalidTaggedBase64EncodingError } from '@/errors/invalid_tagged_base64_encoding_error';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
 
 /**
  * TaggedBase64 is an implementation of the server side type of TaggedBase64.

@@ -1,9 +1,9 @@
 import { createBufferedChannel } from '@/async/channel/buffered_channel';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
+import { default as React } from 'react';
 import { describe, expect, it } from 'vitest';
-import AsyncIterableResolver from '../async_iterable_resolver';
+import { default as AsyncIterableResolver } from '../async_iterable_resolver';
 import { AsyncSnapshot, AsyncState } from '../async_snapshot';
 import { AsyncSnapshotContext } from '../async_snapshot_context';
 

@@ -5,7 +5,7 @@ import {
   StakeTableContractGasEstimator,
 } from '@/contracts/stake_table/stake_table_interface';
 import { StakeTableRemote } from '@/contracts/stake_table/stake_table_remote';
-import React from 'react';
+import { default as React } from 'react';
 import { useConfig } from 'wagmi';
 
 /**

@@ -1,5 +1,5 @@
-import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
-import React from 'react';
+import { default as AsyncIterableResolver } from '@/components/data/async_data/async_iterable_resolver';
+import { default as React } from 'react';
 import { DataContext } from './data_provider';
 import { ErrorContext, ErrorStreamContext } from './error_provider';
 

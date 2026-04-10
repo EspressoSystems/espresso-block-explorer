@@ -1,6 +1,6 @@
-import Delete1 from '@/components/visual/icons/sharp_line/delete_1';
-import React from 'react';
-import ButtonFlat from '../elements/buttons/button_flat';
+import { Delete1 } from '@/components/visual/icons/sharp_line';
+import { default as React } from 'react';
+import { ButtonFlat } from '../elements/buttons/button_flat';
 import './close_staking_modal.css';
 import { StakingModalCloseContext } from './contexts/staking_modal_close_context';
 

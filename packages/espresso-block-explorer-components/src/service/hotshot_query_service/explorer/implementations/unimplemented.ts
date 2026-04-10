@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { HotShotQueryServiceExplorerAPI } from '../explorer_api';
 import { ExplorerGetBlockDetailResponse } from '../get_block_detail_response';
 import { ExplorerGetBlockSummariesResponse } from '../get_block_summaries_response';

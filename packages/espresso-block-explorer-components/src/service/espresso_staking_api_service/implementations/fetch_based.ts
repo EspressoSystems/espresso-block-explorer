@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { FetchBasedL1BlockAPI } from '../l1_block/implementations/fetch_based';
 import { L1BlockAPI } from '../l1_block/l1_block_api';
 import { StakingAPIService } from '../staking_api_service';

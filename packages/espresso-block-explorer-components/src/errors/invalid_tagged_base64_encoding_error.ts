@@ -5,7 +5,7 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError, { BaseErrorEncoder } from './base_error';
+import { BaseError, BaseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kInvalidTaggedBase64EncodingErrorCode =
@@ -15,7 +15,7 @@ const kInvalidTaggedBase64EncodingErrorCode =
  * InvalidTaggedBase64EncodingError is an error that indicates that the
  * encountered string encoding of a supposed TaggedBase64 is invalid.
  */
-export default class InvalidTaggedBase64EncodingError extends BaseError {
+export class InvalidTaggedBase64EncodingError extends BaseError {
   constructor(message: string = 'invalid tagged base64 encoding') {
     super(message);
     Object.freeze(this);

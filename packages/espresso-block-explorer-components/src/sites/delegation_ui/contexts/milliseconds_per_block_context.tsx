@@ -9,7 +9,7 @@ import {
 import { AvailabilityAPIHeader } from '@/service/hotshot_query_service';
 import { AbstractAvailabilityAPIV4Header } from '@/service/hotshot_query_service/availability/block_header_v4';
 import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
-import React from 'react';
+import { default as React } from 'react';
 import { ActiveValidatorsContext } from './active_validators_context';
 import { BlocksPerEpochContext } from './blocks_per_epoch_context';
 

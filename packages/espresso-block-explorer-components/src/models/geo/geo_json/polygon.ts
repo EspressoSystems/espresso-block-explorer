@@ -6,13 +6,14 @@ import {
   assertTypeCode,
 } from '@/convert/codec/convert';
 import { Degrees } from '../units';
-import LatLng from '../units/lat_lng';
-import GeoJSONBoundingBox, {
+import { default as LatLng } from '../units/lat_lng';
+import {
+  default as GeoJSONBoundingBox,
   generateBoundingBoxFromBoundingBoxes,
 } from './bounding_box';
-import GeoJSONGeometry, { registerGeometryCodec } from './geometry';
-import GeoJSONMultiPoint from './multi_point';
-import GeoJSONPoint from './point';
+import { default as GeoJSONGeometry, registerGeometryCodec } from './geometry';
+import { default as GeoJSONMultiPoint } from './multi_point';
+import { default as GeoJSONPoint } from './point';
 import { listListGeoJSONPositionCodec } from './position';
 
 const kGeoJSONPolygonType = 'Polygon';

@@ -1,8 +1,8 @@
-import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
+import { default as AsyncIterableResolver } from '@/components/data/async_data/async_iterable_resolver';
 import { emptyAsyncIterable } from '@/functional/functional_async';
 import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
 import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';
-import React, { createContext } from 'react';
+import { default as React, createContext } from 'react';
 import { DataContext } from './data_provider';
 
 /**

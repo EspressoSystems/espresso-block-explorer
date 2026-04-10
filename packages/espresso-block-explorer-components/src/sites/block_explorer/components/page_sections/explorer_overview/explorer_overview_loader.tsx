@@ -1,7 +1,7 @@
 import { AsyncRetriever } from '@/async/async_retriever';
 import { DataContext } from '@/contexts/data_provider';
-import UnimplementedError from '@/errors/unimplemented_error';
-import React from 'react';
+import { UnimplementedError } from '@/errors/unimplemented_error';
+import { default as React } from 'react';
 import { ExplorerSummaryProvider } from '../explorer_summary/explorer_summary_loader';
 
 export interface ExplorerOverview {

@@ -1,4 +1,4 @@
-import ChannelClosedError from '@/errors/channel_closed_error';
+import { ChannelClosedError } from '@/errors/channel_closed_error';
 import { describe, expect, it } from 'vitest';
 import { createBufferedChannel } from '../buffered_channel';
 

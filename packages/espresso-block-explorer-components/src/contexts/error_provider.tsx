@@ -1,5 +1,5 @@
 import { emptyAsyncIterable } from '@/functional/functional_async';
-import React, { createContext } from 'react';
+import { default as React, createContext } from 'react';
 
 /**
  * ErrorContext is a React Context that is used to store and make available

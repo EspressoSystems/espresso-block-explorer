@@ -1,6 +1,6 @@
 import { Config } from 'wagmi';
 import { estimateContractGas } from '../l1/estimate_contract_gas';
-import EspTokenAbi from './esp_token_abi';
+import { default as EspTokenAbi } from './esp_token_abi';
 import { ESPTokenContractGasEstimator } from './esp_token_interface';
 
 /**

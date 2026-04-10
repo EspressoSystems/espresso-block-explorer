@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import InvalidInputError, {
+import {
+  InvalidInputError,
   invalidInputErrorCodec,
 } from '../invalid_input_error';
 import { espressoErrorCodec } from '../registry';

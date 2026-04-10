@@ -2,7 +2,7 @@ import { PromiseResolver } from '@/components/data';
 import { DataContext } from '@/contexts/data_provider';
 import { StakingAPIServiceContext } from '@/contexts/staking_api_service_context';
 import { L1BlockID } from '@/service/espresso_staking_api_service/common/l1_block_id';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * L1BlockIDContext defines a React Context for the current L1 Block ID.

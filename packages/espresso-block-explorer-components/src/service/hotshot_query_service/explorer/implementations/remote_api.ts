@@ -2,7 +2,7 @@ import {
   checkErrorAndExpandResponse,
   validateAndExpandResponse,
 } from '@/async/fetch/response_validators';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { HotShotQueryServiceExplorerAPI } from '../explorer_api';
 import { unwrappedExplorerErrorResponseDecoder } from '../explorer_error_response';
 import { ExplorerGetBlockDetailRequest } from '../get_block_detail_request';

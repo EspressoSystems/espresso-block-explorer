@@ -8,7 +8,7 @@ import {
 } from 'viem';
 import { Config } from 'wagmi';
 import { readContract, writeContract } from 'wagmi/actions';
-import ClaimRewardsAbi from './reward_claim_abi';
+import { default as ClaimRewardsAbi } from './reward_claim_abi';
 import { RewardClaimContract } from './reward_claim_interface';
 
 type ClaimRewardsReadContractFunctionNames = ContractFunctionName<

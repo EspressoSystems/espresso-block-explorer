@@ -3,8 +3,11 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import NodeIdentity, { listNodeIdentityCodec } from '../node_identity';
-import NodeValidatorResponse from './node_validator_response';
+import {
+  default as NodeIdentity,
+  listNodeIdentityCodec,
+} from '../node_identity';
+import { default as NodeValidatorResponse } from './node_validator_response';
 
 /**
  * Messages from the Node Validator take the form of:

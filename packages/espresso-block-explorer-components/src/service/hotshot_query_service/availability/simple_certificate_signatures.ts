@@ -2,7 +2,7 @@ import { assertInstanceOf } from '@/assert/assert';
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
 import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
 import { isUnknownArray } from '@/convert/codec/unknown';
-import InvalidTypeError from '@/errors/invalid_type_error';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
 import {
   TaggedBase64,
   taggedBase64Codec,

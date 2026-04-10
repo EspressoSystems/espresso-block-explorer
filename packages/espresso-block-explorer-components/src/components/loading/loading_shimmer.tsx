@@ -2,7 +2,7 @@ import {
   HigherOrderComponentWithClassNameProps,
   addClassNameToComponent,
 } from '@/higher_order';
-import React from 'react';
+import { default as React } from 'react';
 import './loading_shimmer.css';
 
 /**

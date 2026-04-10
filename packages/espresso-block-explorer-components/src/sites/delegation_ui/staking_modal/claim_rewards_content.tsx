@@ -1,7 +1,7 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import { addClassToClassName } from '@/components/higher_order';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
-import Text from '@/components/text/text';
+import { Text } from '@/components/text';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { RewardClaimContractContext } from '@/contexts/reward_claim_contract_context';
 import { extractContractFunctionRevertedError } from '@/contracts/error_helpers';
@@ -9,12 +9,12 @@ import {
   isAlreadyClaimedError,
   isInvalidAuthRootError,
 } from '@/contracts/reward_claim/error_helpers';
-import React from 'react';
+import { default as React } from 'react';
 import { LifetimeClaimedRewardsContext } from '../contexts/claimed_rewards_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
 import { EspressoRewardClaimInputContext } from '../contexts/reward_claim_input_context';
 import { ButtonProps } from '../elements/buttons/button_base';
-import ButtonLarge from '../elements/buttons/button_large';
+import { default as ButtonLarge } from '../elements/buttons/button_large';
 import { ClaimableRewardsOverviewArea } from './claimable_rewards_overview_area';
 import { ClaimableRewardsSummaryAndInteraction } from './claimable_rewards_summary_and_interaction';
 import { CloseStakingModalButton } from './close_staking_modal';

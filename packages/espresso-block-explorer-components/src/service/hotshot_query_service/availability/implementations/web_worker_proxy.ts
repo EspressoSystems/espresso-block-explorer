@@ -1,5 +1,5 @@
 import { numberCodec } from '@/convert/codec/number';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/hotshot_query_service/web_worker_types';
 import { HotShotQueryServiceAvailabilityAPI } from '../availability_api';
 import { availabilityAPIBlockCodec } from '../block';

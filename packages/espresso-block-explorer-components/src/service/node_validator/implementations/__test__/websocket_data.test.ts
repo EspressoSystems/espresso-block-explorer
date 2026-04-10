@@ -18,7 +18,7 @@ import {
 } from '../../responses';
 import { MockWebSocket } from '../../websocket/__test__/mock_web_socket.test';
 import { WebSocketInterface } from '../../websocket/websocket_interface';
-import WebSocketDataNodeValidatorAPI from '../websocket_data';
+import { default as WebSocketDataNodeValidatorAPI } from '../websocket_data';
 
 describe('WebSocketDataNodeValidatorAPI', () => {
   it('expected work flow', async () => {

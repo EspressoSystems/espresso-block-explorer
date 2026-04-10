@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import InvalidTaggedBase64EncodingError, {
+import {
+  InvalidTaggedBase64EncodingError,
   invalidTaggedBase64EncodingErrorCodec,
 } from '../invalid_tagged_base64_encoding_error';
 import { espressoErrorCodec } from '../registry';

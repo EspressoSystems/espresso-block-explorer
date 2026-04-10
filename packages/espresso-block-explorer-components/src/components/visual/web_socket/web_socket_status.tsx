@@ -1,10 +1,10 @@
 import { WebSocketResponseContext } from '@/contexts/web_socket_response_provider';
 import { addClassToClassName } from '@/higher_order';
-import Text from '@/components/text/text';
+import { Text } from '@/components/text';
 import { WebSocketStatusConnectionConnecting } from '@/models/web_worker/web_socket/status/connecting';
 import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
 import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';
-import React from 'react';
+import { default as React } from 'react';
 import './web_socket_status.css';
 
 export interface LifeCycleEventStatusProps {

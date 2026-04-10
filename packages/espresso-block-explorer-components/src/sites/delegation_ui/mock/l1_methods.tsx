@@ -7,7 +7,7 @@ import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { createKeccakHash } from '@/crypto/keccak/family';
 import { foldRIterable } from '@/functional/functional';
 import { fakeData } from '@/models/config/storybook/wagmi';
-import React from 'react';
+import { default as React } from 'react';
 import { type BlockTag } from 'viem';
 import {
   type EstimateFeesPerGasReturnType,

@@ -8,9 +8,9 @@ import {
   PseudoRandomNumberGenerator,
 } from '@/data_source/fake_data_source';
 import { filterIterable, mapIterable } from '@/functional/functional';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { default as MonetaryValue } from '@/models/block_explorer/monetary_value';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import { interactionsTypeValue } from '../__shared__/esp_input_shared';
 import { Example as ESPInputComponent } from '../__shared__/example';
 

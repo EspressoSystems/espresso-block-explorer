@@ -1,6 +1,6 @@
 import { type L1Methods } from '@/contracts/l1/l1_interface';
 import { RewardClaimContract } from '@/contracts/reward_claim/reward_claim_interface';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { RewardClaimInput } from '@/service/hotshot_query_service/reward_state/reward_claim_input';
 import { describe, expect, it, type Mock, vi } from 'vitest';
 import { type Config } from 'wagmi';

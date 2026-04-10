@@ -5,16 +5,17 @@ import { sleep } from '@/async/sleep';
 import { expandIterable, filterIterable } from '@/functional/functional';
 import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
 import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
-import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
+import { default as WebSocketCommand } from '@/models/web_worker/web_socket/request/web_socket_command';
 import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
 import { WebSocketStatusConnectionConnecting } from '@/models/web_worker/web_socket/status/connecting';
 import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
-import WebSocketStatus from '@/models/web_worker/web_socket/status/web_socket_status';
+import { default as WebSocketStatus } from '@/models/web_worker/web_socket/status/web_socket_status';
 import { WebSocketRequest } from '@/models/web_worker/web_socket/web_socket_request';
 import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
 import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
 import { webSocketStatusToWebWorkerProxyResponseConverter } from '@/models/web_worker/web_worker_proxy_response_codec';
-import NodeValidatorRequest, {
+import {
+  default as NodeValidatorRequest,
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
@@ -24,7 +25,7 @@ import NodeValidatorRequest, {
   SubscribeVoters,
 } from '../requests/node_validator_request';
 import { NodeValidatorServiceRequest } from '../requests/node_validator_service_request';
-import NodeValidatorResponse from '../responses/node_validator_response';
+import { default as NodeValidatorResponse } from '../responses/node_validator_response';
 import { nodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
 import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';

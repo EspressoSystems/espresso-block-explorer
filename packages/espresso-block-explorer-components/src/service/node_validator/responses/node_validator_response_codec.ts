@@ -3,7 +3,7 @@ import {
   TypeCheckingCodec,
   isRecordWithKeys,
 } from '@/convert/codec/convert';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import {
   BlocksSnapshot,
   blocksSnapshotCodec,
@@ -44,7 +44,7 @@ import {
   kNodeIdentitySnapshotType,
   nodeIdentitySnapshotCodec,
 } from './node_identity_snapshot';
-import NodeValidatorResponse from './node_validator_response';
+import { default as NodeValidatorResponse } from './node_validator_response';
 import {
   StakeTableSnapshot,
   kStakeTableSnapshotType,

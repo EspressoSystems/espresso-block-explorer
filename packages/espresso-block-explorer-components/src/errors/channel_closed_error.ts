@@ -5,7 +5,7 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError, { BaseErrorEncoder } from './base_error';
+import { BaseError, BaseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kChannelClosedErrorCode = 'ChannelClosedError';
@@ -14,7 +14,7 @@ const kChannelClosedErrorCode = 'ChannelClosedError';
  * ChannelClosedError is an error that indicates that the buffered channel
  * has been closed and can no longer be read from or written to.
  */
-export default class ChannelClosedError extends BaseError {
+export class ChannelClosedError extends BaseError {
   constructor(message: string = 'channel closed') {
     super(message);
     Object.freeze(this);

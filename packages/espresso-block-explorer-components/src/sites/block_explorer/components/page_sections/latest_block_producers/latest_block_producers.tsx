@@ -1,15 +1,15 @@
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
-import SummaryTableLabeledValue from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
+import { default as SummaryTableLabeledValue } from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
-import SkeletonContent from '@/components/loading/skeleton_content';
-import FullHexText from '@/components/text/full_hex_text';
+import { default as SkeletonContent } from '@/components/loading/skeleton_content';
+import { FullHexText } from '@/components/text';
 import { HistogramSectionTitle } from '@/components/visual/histogram/histogram_section_title/histogram_section_title';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
-import NumberText from '@/text/number_text';
-import Text from '@/text/text';
-import React from 'react';
+import { default as NumberText } from '@/text/number_text';
+import { default as Text } from '@/text/text';
+import { default as React } from 'react';
 import './latest_block_producers.css';
 import {
   LatestBlockProducer,

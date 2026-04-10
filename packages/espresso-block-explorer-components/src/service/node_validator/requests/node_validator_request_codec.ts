@@ -1,6 +1,6 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import InvalidTypeError from '@/errors/invalid_type_error';
-import NodeValidatorRequest, {
+import { InvalidTypeError } from '@/errors/invalid_type_error';
+import {
   kRequestBlocksSnapshotValue,
   kRequestHistogramSnapshotValue,
   kRequestNodeIdentitySnapshotValue,
@@ -12,6 +12,7 @@ import NodeValidatorRequest, {
   kSubscribeStakeTablesValue,
   kSubscribeValidatorsValue,
   kSubscribeVotersValue,
+  default as NodeValidatorRequest,
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,

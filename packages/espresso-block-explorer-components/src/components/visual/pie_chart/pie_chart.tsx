@@ -1,9 +1,9 @@
-import NumberText from '@/components/text/number_text';
+import { NumberText } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
-import React from 'react';
-import Text from '../../text/text';
+import { default as React } from 'react';
+import { default as Text } from '../../text/text';
 import { useSVGSize } from '../svg/hooks';
-import SVGPathBuilder from '../svg/svg_path_builder';
+import { default as SVGPathBuilder } from '../svg/svg_path_builder';
 import {
   SVGToolTipContentComponent,
   SVGToolTipDrawAreaHeight,

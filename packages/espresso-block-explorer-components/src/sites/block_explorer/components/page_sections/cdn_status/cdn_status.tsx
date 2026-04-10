@@ -1,7 +1,7 @@
 import { addClassToClassName } from '@/higher_order';
-import Heading2 from '@/block_explorer/components/layout/heading/heading2';
-import Text from '@/components/text/text';
-import React from 'react';
+import { default as Heading2 } from '@/block_explorer/components/layout/heading/heading2';
+import { Text } from '@/components/text';
+import { default as React } from 'react';
 import './cdn_status.css';
 
 interface CDNStatusProps {

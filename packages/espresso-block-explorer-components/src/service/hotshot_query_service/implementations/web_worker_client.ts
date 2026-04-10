@@ -7,7 +7,7 @@ import { WebWorkerClientBasedHotShotQueryServiceAvailabilityAPI } from '../avail
 import { HotShotQueryServiceExplorerAPI } from '../explorer/explorer_api';
 import { WebWorkerClientBasedHotShotQueryServiceExplorerAPI } from '../explorer/implementations/web_worker_client';
 import { HotShotQueryService } from '../hot_shot_query_service_api';
-import ProxyWorker from '../hotshot_query_service_web_worker_api.js?worker';
+import { default as ProxyWorker } from '../hotshot_query_service_web_worker_api.js?worker';
 import { WebWorkerClientBasedHotShotQueryServiceNodeAPI } from '../node/implementations/web_worker_client';
 import { HotShotQueryServiceNodeAPI } from '../node/node_api';
 import { WebWorkerClientBasedHotShotQueryServiceRewardStateAPI } from '../reward_state/implementations/web_worker_client';

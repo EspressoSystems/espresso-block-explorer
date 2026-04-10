@@ -1,6 +1,6 @@
 import { Now } from '@/contexts/now_provider';
-import Text from '@/components/text/text';
-import TimeLeftText from '@/components/text/time_left_text';
+import { Text } from '@/components/text';
+import { TimeLeftText } from '@/components/text';
 import { ModalContext } from '@/sites/delegation_ui/contexts/modal_context';
 import { NodeAddressContext } from '@/sites/delegation_ui/contexts/node_address_context';
 import { PendingUndelegationsContext } from '@/sites/delegation_ui/contexts/pending_undelegations_context';
@@ -9,8 +9,8 @@ import {
   SetValidatorSelectionContext,
   ValidatorConfirmedUndelegateWithdraw,
 } from '@/sites/delegation_ui/contexts/validator_selection_context';
-import ButtonLarge from '@/sites/delegation_ui/elements/buttons/button_large';
-import React from 'react';
+import { default as ButtonLarge } from '@/sites/delegation_ui/elements/buttons/button_large';
+import { default as React } from 'react';
 
 /**
  * PendingClaimActionsCell is a component that displays

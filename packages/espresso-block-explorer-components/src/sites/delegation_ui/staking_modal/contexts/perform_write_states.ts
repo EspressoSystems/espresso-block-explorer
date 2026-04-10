@@ -1,6 +1,6 @@
 import { sleep } from '@/async/sleep';
 import { L1Methods } from '@/contracts/l1/l1_interface';
-import BaseError from '@/errors/base_error';
+import { BaseError } from '@/errors/base_error';
 import { type Config } from 'wagmi';
 import { type GetTransactionReceiptReturnType } from 'wagmi/actions';
 

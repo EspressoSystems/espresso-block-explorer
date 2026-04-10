@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import ethereumBlockiesBase64 from 'ethereum-blockies-base64';
+import { default as ethereumBlockiesBase64 } from 'ethereum-blockies-base64';
 
 interface ExampleProps {
   address: string;

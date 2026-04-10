@@ -1,6 +1,6 @@
 import { mapIterable } from '@/functional/functional';
 import { ActiveNodeSetEntry } from '@/service/espresso_staking_api_service/common/active_node_set_entry';
-import React from 'react';
+import { default as React } from 'react';
 import { ActiveValidatorsContext } from './active_validators_context';
 
 /**

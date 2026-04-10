@@ -1,11 +1,11 @@
 import { createBufferedChannel } from '@/async/channel/buffered_channel';
-import FakeDataNodeValidatorAPI from '@/service/node_validator/implementations/fake_data';
+import { default as FakeDataNodeValidatorAPI } from '@/service/node_validator/implementations/fake_data';
 import { WebWorkerClientBasedNodeValidatorService } from '@/service/node_validator/node_validator_web_worker_client_based';
 import {
   UnimplementedWebWorkerNodeValidatorAPI,
   WebWorkerNodeValidatorAPI,
 } from '@/service/node_validator/web_worker_proxy_api';
-import React from 'react';
+import { default as React } from 'react';
 
 export const NodeValidatorServiceAPIContext =
   React.createContext<WebWorkerNodeValidatorAPI>(

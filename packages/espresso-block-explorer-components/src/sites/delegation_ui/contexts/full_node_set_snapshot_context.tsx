@@ -3,7 +3,7 @@ import { DataContext } from '@/contexts/data_provider';
 import { StakingAPIServiceContext } from '@/contexts/staking_api_service_context';
 import { neverPromise } from '@/functional/functional_async';
 import { FullNodeSetSnapshot } from '@/service/espresso_staking_api_service/validators_all/full_node_set_snapshot';
-import React from 'react';
+import { default as React } from 'react';
 import { L1BlockIDContext } from './l1_block_id_context';
 
 /**

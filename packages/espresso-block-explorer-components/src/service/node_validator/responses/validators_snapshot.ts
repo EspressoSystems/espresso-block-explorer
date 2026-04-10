@@ -7,7 +7,7 @@ import {
   arrayValidatorCodec,
   Validator,
 } from '@/models/espresso/stake_table/validator';
-import NodeValidatorResponse from './node_validator_response';
+import { default as NodeValidatorResponse } from './node_validator_response';
 
 /**
  * Messages from the Node Validator take the form of:

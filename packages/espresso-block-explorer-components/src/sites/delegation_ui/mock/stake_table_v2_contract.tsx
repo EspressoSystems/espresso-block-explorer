@@ -27,7 +27,7 @@ import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { bigintCodec } from '@/convert/codec/bigint';
 import { createKeccakHash } from '@/crypto/keccak';
 import { nodeList } from '@/data_source/fake_data_source';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import {
   appendIterables,
   dropIterable,
@@ -36,7 +36,7 @@ import {
   mapIterable,
   takeIterable,
 } from '@/functional/functional';
-import React from 'react';
+import { default as React } from 'react';
 import { MockESPTokenContractImpl } from './esp_token_contract';
 import {
   MockContractStorage,

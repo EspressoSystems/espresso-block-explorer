@@ -1,8 +1,8 @@
-import MoneyText from '@/components/text/money_text';
-import PercentageText from '@/components/text/percentage_text';
-import Text from '@/components/text/text';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import React from 'react';
+import { MoneyText } from '@/components/text';
+import { PercentageText } from '@/components/text';
+import { Text } from '@/components/text';
+import { MonetaryValue } from '@/models/block_explorer';
+import { default as React } from 'react';
 import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
 import { CurrentPendingUndelegationFromValidatorContext } from './contexts/current_pending_undelegation_from_validator_context';

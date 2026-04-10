@@ -1,7 +1,7 @@
-import MoneyText from '@/components/text/money_text';
-import Text from '@/components/text/text';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import React from 'react';
+import { MoneyText } from '@/components/text';
+import { Text } from '@/components/text';
+import { MonetaryValue } from '@/models/block_explorer';
+import { default as React } from 'react';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
 import { NoticeArea } from './notice_area';
 import { ValidatorDisplayArea } from './validator_display_area';

@@ -3,7 +3,7 @@ import { DataContext } from '@/contexts/data_provider';
 import { LightClientV2ContractContext } from '@/contexts/light_client_v2_contract_context';
 import { ProofOfStakeReleasedContext } from '@/contexts/proof_of_stake_released_context';
 import { neverPromise } from '@/functional/functional_async';
-import React from 'react';
+import { default as React } from 'react';
 import { ActiveValidatorsContext } from './active_validators_context';
 
 /**

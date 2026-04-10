@@ -16,7 +16,7 @@ import {
 import { StoryBookSpecifyEnvironmentAndContracts } from '@/models/config/storybook/storybook';
 import { nullableWalletAddressCodec } from '@/models/wallet_address/wallet_address';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import { ProvideStakingAPIServiceContext } from '../../../contexts/staking_api_service_context';
 import { delegationUIInteractions } from '../__shared__/delegation_ui_shared';
 import {
@@ -24,7 +24,7 @@ import {
   kIntentClaimAndStake,
   ProvideClaimPortalIntentContext,
 } from '../contexts/claim_portal_intent_context';
-import DelegationUI from '../delegation_ui';
+import { default as DelegationUI } from '../delegation_ui';
 import { StakingAPIServiceMockInjection } from '../mock/validator_service_injection';
 
 interface ExampleProps {

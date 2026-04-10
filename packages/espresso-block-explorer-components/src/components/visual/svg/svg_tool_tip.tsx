@@ -1,5 +1,5 @@
-import React from 'react';
-import SVGPathBuilder from './svg_path_builder';
+import { default as React } from 'react';
+import { default as SVGPathBuilder } from './svg_path_builder';
 import './svg_tooltip.css';
 
 const defaultTextBoxWidth = 100;

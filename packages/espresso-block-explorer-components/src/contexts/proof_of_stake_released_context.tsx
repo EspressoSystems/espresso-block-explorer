@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * ProofOfStakeReleasedContext is a React Context that dictates whether the

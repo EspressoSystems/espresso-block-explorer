@@ -1,17 +1,18 @@
-import GeoJSONFeatureCollection from '@/models/geo/geo_json/feature_collection';
-import GeoJSONMultiPolygon from '@/models/geo/geo_json/multi_polygon';
-import ChainProjection from '@/models/geo/projection/chain_projection';
-import CoordinateSpaceProjection from '@/models/geo/projection/coordinate_space_projection';
+import { default as GeoJSONFeatureCollection } from '@/models/geo/geo_json/feature_collection';
+import { default as GeoJSONMultiPolygon } from '@/models/geo/geo_json/multi_polygon';
+import { default as ChainProjection } from '@/models/geo/projection/chain_projection';
+import { default as CoordinateSpaceProjection } from '@/models/geo/projection/coordinate_space_projection';
 import { degreesRadiansProjection } from '@/models/geo/projection/degrees_radians_projection';
-import MercatorProjection, {
+import {
+  default as MercatorProjection,
   mercatorProjection,
 } from '@/models/geo/projection/mercator_projection';
-import DensityIndependentPoint from '@/models/geo/units/density_independent_point';
-import LatLng from '@/models/geo/units/lat_lng';
-import Latitude from '@/models/geo/units/latitude';
-import Longitude from '@/models/geo/units/longitude';
+import { default as DensityIndependentPoint } from '@/models/geo/units/density_independent_point';
+import { default as LatLng } from '@/models/geo/units/lat_lng';
+import { default as Latitude } from '@/models/geo/units/latitude';
+import { default as Longitude } from '@/models/geo/units/longitude';
 import { mapHeight, mapWidth } from '@/models/geo/world_map_grid/constants';
-import SVGPathBuilder from '../svg/svg_path_builder';
+import { default as SVGPathBuilder } from '../svg/svg_path_builder';
 
 interface GeoJSONViewProps {
   offsetX?: number;

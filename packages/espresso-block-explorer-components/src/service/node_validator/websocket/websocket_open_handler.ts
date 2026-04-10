@@ -1,7 +1,7 @@
 import { Sink } from '@/async/sink/sink';
 import { Completer } from '@/data_structures/async/completer/completer';
 import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
-import WebSocketStatus from '@/models/web_worker/web_socket/status/web_socket_status';
+import { default as WebSocketStatus } from '@/models/web_worker/web_socket/status/web_socket_status';
 import { WebSocketInterface } from './websocket_interface';
 
 export class WebSocketOpenHandler implements EventListenerObject {

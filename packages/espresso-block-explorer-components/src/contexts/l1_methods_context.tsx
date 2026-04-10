@@ -1,6 +1,6 @@
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { L1MethodsRemote } from '@/contracts/l1/l1_remote';
-import React from 'react';
+import { default as React } from 'react';
 import { type Config, useConfig } from 'wagmi';
 
 /**

@@ -1,9 +1,9 @@
-import MoneyText from '@/components/text/money_text';
-import PercentageText from '@/components/text/percentage_text';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { MoneyText } from '@/components/text';
+import { PercentageText } from '@/components/text';
+import { MonetaryValue } from '@/models/block_explorer';
 import { TotalStakeContext } from '@/sites/delegation_ui/contexts/total_stake_context';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * TotalStakeCell displays the stake amount for a validator node, along with its

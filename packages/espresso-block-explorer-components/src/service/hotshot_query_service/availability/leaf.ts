@@ -1,6 +1,6 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import ExpectedObjectWithKeyError from '@/convert/codec/expected_object_with_key_error';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { default as ExpectedObjectWithKeyError } from '@/convert/codec/expected_object_with_key_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { AvailabilityAPIHeader } from './block_header';
 import { LeafV0, leafV0Codec } from './leaf_v0';

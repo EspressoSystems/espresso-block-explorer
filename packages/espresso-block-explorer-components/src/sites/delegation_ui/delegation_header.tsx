@@ -1,5 +1,5 @@
-import EspressoLogoAndTitle from '@/visual/icons/espresso_logo_and_title';
-import React from 'react';
+import { EspressoLogoAndTitle } from '@/components/visual/icons';
+import { default as React } from 'react';
 import { ConnectWalletButton } from './connect_wallet_button';
 import './delegation_header.css';
 import { WrongNetworkCheck } from './wrong_network_check';

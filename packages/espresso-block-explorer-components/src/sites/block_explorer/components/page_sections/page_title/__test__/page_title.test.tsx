@@ -1,9 +1,9 @@
 import { Heading1 } from '@/block_explorer/components/layout/heading';
-import Text from '@/text/text';
+import { default as Text } from '@/text/text';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import PageTitle from '../page_title';
+import { default as PageTitle } from '../page_title';
 
 describe('Page Title', () => {
   it('should have the correct classes', () => {

@@ -4,7 +4,7 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import { WebWorkerProxyResponse } from '../web_worker_proxy_response';
-import WebSocketStatus from './status/web_socket_status';
+import { default as WebSocketStatus } from './status/web_socket_status';
 import { webSocketStatusCodec } from './status/web_socket_status_codec';
 
 /**

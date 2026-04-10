@@ -1,6 +1,6 @@
-import WalletAddress from '@/models/wallet_address/wallet_address';
+import { default as WalletAddress } from '@/models/wallet_address/wallet_address';
 import { describe, it } from 'vitest';
-import Inscription, { inscriptionCodec } from '../inscription';
+import { default as Inscription, inscriptionCodec } from '../inscription';
 
 describe('Inscription', () => {
   it('serialization and deserialization', () => {

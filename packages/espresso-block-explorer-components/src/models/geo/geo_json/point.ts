@@ -6,9 +6,9 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import { Degrees } from '../units';
-import LatLng from '../units/lat_lng';
-import GeoJSONBoundingBox from './bounding_box';
-import GeoJSONGeometry, { registerGeometryCodec } from './geometry';
+import { default as LatLng } from '../units/lat_lng';
+import { default as GeoJSONBoundingBox } from './bounding_box';
+import { default as GeoJSONGeometry, registerGeometryCodec } from './geometry';
 import { geoJSONPositionCodec } from './position';
 
 const kGeoJSONPointType = 'Point' as const;

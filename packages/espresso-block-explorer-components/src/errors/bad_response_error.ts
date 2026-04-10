@@ -5,7 +5,8 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseBadResponseError, {
+import {
+  BaseBadResponseError,
   BaseBadResponseErrorEncoder,
 } from './base_bad_response_error';
 import { registerCodec } from './registry';
@@ -16,7 +17,7 @@ const kBadResponseErrorCode = 'BadResponseError';
  * BadResponseError is a custom error that indicates that the result of a fetch
  * request was a Response that indicates a non-success.
  */
-export default class BadResponseError extends BaseBadResponseError {
+export class BadResponseError extends BaseBadResponseError {
   constructor(
     status: number,
     response: null | Response,

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import MissingElementError, {
+import {
+  MissingElementError,
   missingElementErrorCodec,
 } from '../missing_element_error';
 import { espressoErrorCodec } from '../registry';

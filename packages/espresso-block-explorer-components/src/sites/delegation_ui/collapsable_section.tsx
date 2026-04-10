@@ -1,7 +1,7 @@
 import { addClassToClassName } from '@/higher_order';
-import Text from '@/components/text/text';
-import ChevronDown from '@/components/visual/icons/sharp_line/chevron_down';
-import React from 'react';
+import { Text } from '@/components/text';
+import { ChevronDown } from '@/components/visual/icons/sharp_line';
+import { default as React } from 'react';
 import './collapsable_section.css';
 import {
   CollapseState,
@@ -9,7 +9,7 @@ import {
   ProvideCollapseState,
   SetCollapseStateContext,
 } from './contexts/collapse_context';
-import ButtonLarge from './elements/buttons/button_large';
+import { default as ButtonLarge } from './elements/buttons/button_large';
 
 export interface CollapsableSectionProps extends React.HTMLAttributes<HTMLDetailsElement> {
   initialState?: CollapseState;

@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import { default as React, createContext } from 'react';
 
 const CurrentNavDrawerStateContext = createContext(false);
 export { CurrentNavDrawerStateContext };

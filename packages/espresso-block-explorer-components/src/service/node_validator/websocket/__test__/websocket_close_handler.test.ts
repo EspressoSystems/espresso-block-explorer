@@ -1,8 +1,8 @@
 import { createBufferedChannel, createChannelToSink } from '@/async/channel';
 import { createCompleter } from '@/data_structures/async';
-import WebSocketError from '@/errors/web_socket_error';
+import { default as WebSocketError } from '@/errors/web_socket_error';
 import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
-import WebSocketStatus from '@/models/web_worker/web_socket/status/web_socket_status';
+import { default as WebSocketStatus } from '@/models/web_worker/web_socket/status/web_socket_status';
 import { describe, it } from 'vitest';
 import { WebSocketCloseHandler } from '../websocket_close_handler';
 import { MockWebSocket } from './mock_web_socket.test';

@@ -18,7 +18,7 @@ import { FullNodeSetSnapshot } from '@/service/espresso_staking_api_service/vali
 import { applyWalletSnapshotUpdates } from '@/service/espresso_staking_api_service/wallet/apply_wallet_update';
 import { WalletSnapshot } from '@/service/espresso_staking_api_service/wallet/wallet_snapshot';
 import { isGoneError } from 'espresso-block-explorer-components';
-import React from 'react';
+import { default as React } from 'react';
 import { ActiveValidatorsContext } from './contexts/active_validators_context';
 import { DeriveNodeSetFromFullNodeSetSnapshot } from './contexts/all_validators_context';
 import { EspressoBlockHeightContext } from './contexts/espresso_block_height_context';

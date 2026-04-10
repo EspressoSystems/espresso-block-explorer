@@ -2,9 +2,9 @@ import { uint8ArrayToArrayBufferCodec } from '@/convert/codec/uint8_array';
 import { createBufferedDataView } from '@/convert/data_view/buffered_data_view';
 import { Endianess } from '@/convert/data_view/endianess';
 import { createRLPDeserializer } from '@/convert/rlp/rlp';
-import UnimplementedError from '@/errors/unimplemented_error';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import WalletAddress from '@/models/wallet_address/wallet_address';
+import { UnimplementedError } from '@/errors/unimplemented_error';
+import { default as MonetaryValue } from '@/models/block_explorer/monetary_value';
+import { default as WalletAddress } from '@/models/wallet_address/wallet_address';
 import { EthTransaction, TxType } from '../ethereum/transaction';
 
 /**

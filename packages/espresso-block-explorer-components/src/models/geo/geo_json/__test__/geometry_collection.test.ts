@@ -1,15 +1,16 @@
 import { describe, it } from 'vitest';
-import Degrees from '../../units/degrees';
-import LatLng from '../../units/lat_lng';
-import Latitude from '../../units/latitude';
-import Longitude from '../../units/longitude';
-import GeoJSONGeometryCollection, {
+import { default as Degrees } from '../../units/degrees';
+import { default as LatLng } from '../../units/lat_lng';
+import { default as Latitude } from '../../units/latitude';
+import { default as Longitude } from '../../units/longitude';
+import {
+  default as GeoJSONGeometryCollection,
   geoJSONGeometryCollectionCodec,
 } from '../geometry_collection';
-import GeoJSONLineString from '../line_string';
-import GeoJSONMultiPoint from '../multi_point';
-import GeoJSONPoint from '../point';
-import GeoJSONPolygon from '../polygon';
+import { default as GeoJSONLineString } from '../line_string';
+import { default as GeoJSONMultiPoint } from '../multi_point';
+import { default as GeoJSONPoint } from '../point';
+import { default as GeoJSONPolygon } from '../polygon';
 
 describe('Geometry Collection', () => {
   describe('Codec', () => {

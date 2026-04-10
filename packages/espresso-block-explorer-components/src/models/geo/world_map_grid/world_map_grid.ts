@@ -9,8 +9,8 @@ import {
   mapIterable,
   zipWithIterable,
 } from '@/functional/functional';
-import DensityIndependentPoint from '../units/density_independent_point';
-import LatLng from '../units/lat_lng';
+import { default as DensityIndependentPoint } from '../units/density_independent_point';
+import { default as LatLng } from '../units/lat_lng';
 import { hitBitmapData } from './baked_map_data.generated';
 import { expandIntoBooleanArray } from './compress_into_bitmap';
 import { gridCellCoordinateSpaceCenters } from './constants';

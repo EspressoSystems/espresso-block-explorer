@@ -5,7 +5,8 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseBadResponseError, {
+import {
+  BaseBadResponseError,
   BaseBadResponseErrorEncoder,
 } from './base_bad_response_error';
 import { registerCodec } from './registry';
@@ -14,7 +15,7 @@ import { registerCodec } from './registry';
  * BadResponseServerError is a more specific BadResponse error that indicates
  * the nature of the failure was due to an error occurring on the server side.
  */
-export default class BadResponseServerError extends BaseBadResponseError {
+export class BadResponseServerError extends BaseBadResponseError {
   constructor(
     status: number,
     response: null | Response,

@@ -1,12 +1,12 @@
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
-import ValueLabeled from '@/block_explorer/components/layout/value_labeled/value_labeled';
+import { default as ValueLabeled } from '@/block_explorer/components/layout/value_labeled/value_labeled';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
-import SkeletonContent from '@/components/loading/skeleton_content';
+import { default as SkeletonContent } from '@/components/loading/skeleton_content';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
-import BytesPerSecondText from '@/text/bytes_per_second_text';
-import Text from '@/text/text';
+import { default as BytesPerSecondText } from '@/text/bytes_per_second_text';
+import { default as Text } from '@/text/text';
 import {
   HistogramDomain,
   HistogramRange,
@@ -20,7 +20,7 @@ import {
   SimpleHistogramPlaceholder,
 } from '@/visual/histogram/histogram_base/simple_histogram';
 import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_title/histogram_section_title';
-import React from 'react';
+import { default as React } from 'react';
 import { BlockThroughputHistogramData } from './block_throughput_histogram_data_loader';
 
 const CardNoPaddingWithShimmer = WithLoadingShimmer(CardNoPadding);

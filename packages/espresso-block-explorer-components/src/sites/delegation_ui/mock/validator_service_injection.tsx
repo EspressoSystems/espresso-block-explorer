@@ -4,8 +4,8 @@ import { StakingAPIServiceContext } from '@/contexts/staking_api_service_context
 import { L1Methods } from '@/contracts/l1/l1_interface';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { nodeList } from '@/data_source/fake_data_source';
-import BadResponseClientError from '@/errors/bad_response_client_error';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { BadResponseClientError } from '@/errors/bad_response_client_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import {
   appendIterables,
   compareArrayBuffer,
@@ -40,7 +40,7 @@ import { WalletDiff } from '@/service/espresso_staking_api_service/wallet/wallet
 import { WalletSnapshot } from '@/service/espresso_staking_api_service/wallet/wallet_snapshot';
 import { WalletUpdate } from '@/service/espresso_staking_api_service/wallet/wallet_update';
 import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
-import React from 'react';
+import { default as React } from 'react';
 import { type Config } from 'wagmi';
 import { ESPTokenContractStateAction } from './esp_token_contract';
 import {

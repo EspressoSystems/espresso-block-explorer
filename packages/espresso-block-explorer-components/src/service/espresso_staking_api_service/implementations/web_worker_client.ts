@@ -3,7 +3,7 @@ import { Codec } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
 import { WebWorkerClientBasedL1BlockAPI } from '../l1_block/implementations/web_worker_client';
 import { L1BlockAPI } from '../l1_block/l1_block_api';
-import ProxyWorker from '../staking_api_service_web_worker_api.js?worker';
+import { default as ProxyWorker } from '../staking_api_service_web_worker_api.js?worker';
 import { StakingAPIService } from '../staking_api_service';
 import { WebWorkerClientBasedValidatorsActiveAPI } from '../validators_active/implementations/web_worker_client';
 import { ValidatorsActiveAPI } from '../validators_active/validators_active_api';

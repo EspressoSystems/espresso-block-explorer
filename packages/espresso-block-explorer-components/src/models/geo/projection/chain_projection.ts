@@ -1,5 +1,5 @@
 import { NumberLike } from '../../numeric/numeric';
-import LatLng from '../units/lat_lng';
+import { default as LatLng } from '../units/lat_lng';
 import { GeodesicProjection } from './geodesic_projection';
 
 /**

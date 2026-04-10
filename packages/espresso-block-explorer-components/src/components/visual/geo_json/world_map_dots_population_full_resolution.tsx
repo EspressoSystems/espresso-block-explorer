@@ -6,8 +6,8 @@ import {
   gridCellRadius,
   mapWidth,
 } from '@/models/geo/world_map_grid/constants';
-import React from 'react';
-import Text from '../../text/text';
+import { default as React } from 'react';
+import { default as Text } from '../../text/text';
 import {
   SVGToolTipContentComponent,
   SVGToolTipDrawAreaHeight,

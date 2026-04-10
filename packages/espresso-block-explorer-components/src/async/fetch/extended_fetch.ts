@@ -1,8 +1,8 @@
-import BadResponseClientError from '@/errors/bad_response_client_error';
-import BadResponseError from '@/errors/bad_response_error';
-import BadResponseServerError from '@/errors/bad_response_server_error';
-import BaseError from '@/errors/base_error';
-import FetchError from '@/errors/fetch_error';
+import { BadResponseClientError } from '@/errors/bad_response_client_error';
+import { BadResponseError } from '@/errors/bad_response_error';
+import { BadResponseServerError } from '@/errors/bad_response_server_error';
+import { BaseError } from '@/errors/base_error';
+import { FetchError } from '@/errors/fetch_error';
 
 /**
  * createExtendedFetch is a function that creates a wrapper around the fetch

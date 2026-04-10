@@ -1,12 +1,12 @@
-import PromiseResolver from '@/components/data/async_data/promise_resolver';
+import { default as PromiseResolver } from '@/components/data/async_data/promise_resolver';
 import { DataContext } from '@/contexts/data_provider';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import {
   TransactionDetailAsyncRetriever,
   TransactionDetailEntry,
 } from '@/models/block_explorer/transaction_detail';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import React from 'react';
+import { default as React } from 'react';
 import { BlockNumberContext } from '../block_detail_content/block_detail_content_loader';
 import './transaction_detail_content.css';
 

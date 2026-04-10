@@ -1,5 +1,5 @@
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
-import Heading1 from '@/block_explorer/components/layout/heading/heading1';
+import { default as Heading1 } from '@/block_explorer/components/layout/heading/heading1';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
 import {
   BlockDetailsContent,
@@ -8,9 +8,9 @@ import {
   ProvideBlockDetails,
 } from '@/block_explorer/components/page_sections/block_detail_content/block_detail_content';
 import { BlockDetailsLoader } from '@/block_explorer/components/page_sections/block_detail_content/block_detail_content_loader';
-import Footer from '@/block_explorer/components/page_sections/footer/footer';
-import Header from '@/block_explorer/components/page_sections/header/header';
-import PageTitle from '@/block_explorer/components/page_sections/page_title/page_title';
+import { default as Footer } from '@/block_explorer/components/page_sections/footer/footer';
+import { default as Header } from '@/block_explorer/components/page_sections/header/header';
+import { default as PageTitle } from '@/block_explorer/components/page_sections/page_title/page_title';
 import {
   OverridePagePath,
   PageType,
@@ -19,8 +19,8 @@ import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
-import Text from '@/text/text';
-import React from 'react';
+import { default as Text } from '@/text/text';
+import { default as React } from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(CardNoPadding);
 const GuardBlockDetailsProps = WithLoadingShimmer(EdgeMarginCard);

@@ -1,8 +1,8 @@
 import { PageType } from '@/block_explorer/contexts/page_path_provider';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
-import Text from '@/text/text';
-import React from 'react';
-import NavLink from '../nav_link/nav_link';
+import { default as Text } from '@/text/text';
+import { default as React } from 'react';
+import { default as NavLink } from '../nav_link/nav_link';
 
 /**
  * MainNavLinks is a component that contains all of the main navigation links

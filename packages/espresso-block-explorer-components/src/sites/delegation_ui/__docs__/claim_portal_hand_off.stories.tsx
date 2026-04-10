@@ -6,7 +6,7 @@ import {
 } from '@/models/config/storybook/controls';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { kIntentClaimAndStake } from 'delegation-ui';
-import ExampleMeta, { Example } from './delegation_ui.stories';
+import { Example, default as ExampleMeta } from './delegation_ui.stories';
 
 const meta: Meta = {
   ...ExampleMeta,

@@ -2,7 +2,7 @@ import { PromiseResolver } from '@/components/data';
 import { DataContext } from '@/contexts/data_provider';
 import { StakingAPIServiceContext } from '@/contexts/staking_api_service_context';
 import { ActiveNodeSetSnapshot } from '@/service/espresso_staking_api_service/validators_active/active_node_set_snapshot';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * ActiveValidatorsContext provides a React Context

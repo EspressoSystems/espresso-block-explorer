@@ -1,15 +1,15 @@
-import Text from '@/components/text/text';
-import WalletAddressText from '@/components/text/wallet_address_text';
-import LinkShare2 from '@/components/visual/icons/sharp_line/link_share_2';
-import WalletAddress from '@/models/wallet_address/wallet_address';
-import React from 'react';
+import { Text } from '@/components/text';
+import { WalletAddressText } from '@/components/text';
+import { LinkShare2 } from '@/components/visual/icons/sharp_line';
+import { WalletAddress } from '@/models/wallet_address';
+import { default as React } from 'react';
 import { ConsensusMapContext } from '../contexts/consensus_map_context';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
 import { ActiveConsensusChip } from '../elements/chips/active_consensus_chip';
 import { InactiveConsensusChip } from '../elements/chips/inactive_consensus_chip';
 import { ValidatorImage24x24 } from '../elements/validator/validator_image';
 import { ValidatorName } from '../elements/validator/validator_name';
-import CopyWalletAddress from '../validator_nodes_table/common/cells/copy_wallet_address';
+import { default as CopyWalletAddress } from '../validator_nodes_table/common/cells/copy_wallet_address';
 import './validator_display_area.css';
 
 /**

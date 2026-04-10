@@ -1,6 +1,6 @@
-import PercentageText from '@/components/text/percentage_text';
-import Text from '@/components/text/text';
-import React from 'react';
+import { PercentageText } from '@/components/text';
+import { Text } from '@/components/text';
+import { default as React } from 'react';
 import { ActiveValidatorsContext } from './contexts/active_validators_context';
 import { MoreInfoElement } from './elements/tooltip/more_info';
 import { NetworkStatValue } from './network_stat_value';

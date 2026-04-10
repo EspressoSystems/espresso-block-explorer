@@ -8,7 +8,8 @@ import {
 } from '@/convert/codec/convert';
 import { rfc3999DateCodec } from '@/convert/codec/date';
 import { numberCodec } from '@/convert/codec/number';
-import MonetaryValue, {
+import {
+  default as MonetaryValue,
   monetaryValueArrayCodec,
 } from '@/models/block_explorer/monetary_value';
 import {

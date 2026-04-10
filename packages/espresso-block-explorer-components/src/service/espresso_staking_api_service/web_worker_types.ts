@@ -14,11 +14,11 @@ import {
   Completer,
   createCompleter,
 } from '@/data_structures/async/completer/completer';
-import InvalidInputError from '@/errors/invalid_input_error';
-import InvalidTypeError from '@/errors/invalid_type_error';
-import NoCompleterFoundForRequestID from '@/errors/no_completer_found_for_request_id';
+import { InvalidInputError } from '@/errors/invalid_input_error';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
+import { NoCompleterFoundForRequestID } from '@/errors/no_completer_found_for_request_id';
 import { espressoErrorCodec } from '@/errors/registry';
-import WebWorkerErrorResponse from '@/errors/web_worker_error_response';
+import { WebWorkerErrorResponse } from '@/errors/web_worker_error_response';
 
 /**
  * RequestID is a unique identifier for a request sent to a Web Worker.

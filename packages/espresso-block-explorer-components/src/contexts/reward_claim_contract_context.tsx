@@ -5,7 +5,7 @@ import {
   RewardClaimContractGasEstimator,
 } from '@/contracts/reward_claim/reward_claim_interface';
 import { RewardClaimRemote } from '@/contracts/reward_claim/reward_claim_remote';
-import React from 'react';
+import { default as React } from 'react';
 import { useConfig } from 'wagmi';
 
 /**

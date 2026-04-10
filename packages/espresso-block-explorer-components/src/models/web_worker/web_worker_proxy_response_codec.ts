@@ -4,15 +4,15 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import { EspressoError } from '@/errors/espresso_error';
-import InvalidTypeError from '@/errors/invalid_type_error';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { mapIterable } from '@/functional/functional';
 import {
   ErrorResponse,
   errorResponseCodec,
   kErrorResponseType,
 } from './error_response';
-import WebSocketStatus from './web_socket/status/web_socket_status';
+import { default as WebSocketStatus } from './web_socket/status/web_socket_status';
 import {
   kWebSocketResponseType,
   WebSocketResponse,

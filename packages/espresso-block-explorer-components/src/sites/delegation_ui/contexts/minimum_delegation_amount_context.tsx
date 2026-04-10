@@ -1,8 +1,8 @@
-import PromiseResolver from '@/components/data/async_data/promise_resolver';
+import { PromiseResolver } from '@/components/data/async_data';
 import { DataContext } from '@/contexts/data_provider';
 import { StakeTableV2ContractContext } from '@/contexts/stake_table_v2_contract_context';
 import { neverPromise } from '@/functional/functional_async';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * MinimumDelegationAmountContext defines a React Context for the minimum

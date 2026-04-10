@@ -2,7 +2,7 @@ import { DataContext } from '@/contexts/data_provider';
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import { iota, mapIterable } from '@/functional/functional';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import { BlockSummary } from '../block_summary_data_loader';
 import { BlockSummaryDataTable as BlockSummaryDataTableComponent } from '../block_summary_data_table';
 

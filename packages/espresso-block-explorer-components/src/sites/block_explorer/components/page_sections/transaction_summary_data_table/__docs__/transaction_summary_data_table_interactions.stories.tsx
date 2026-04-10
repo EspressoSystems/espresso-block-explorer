@@ -7,7 +7,7 @@ import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import { iota, mapIterable } from '@/functional/functional';
 import { TaggedBase64 } from '@/models/espresso';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import { TransactionSummary } from '../transaction_summary_data_loader';
 import { TransactionsSummaryDataTable as TransactionsSummaryDataTableComponent } from '../transaction_summary_data_table';
 

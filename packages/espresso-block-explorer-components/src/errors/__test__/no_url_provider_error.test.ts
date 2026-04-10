@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import NoURLProvidedError, {
+import {
+  NoURLProvidedError,
   noURLProvidedErrorCodec,
 } from '../no_url_provided_error';
 import { espressoErrorCodec } from '../registry';

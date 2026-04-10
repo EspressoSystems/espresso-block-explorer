@@ -1,14 +1,14 @@
-import Card from '@/block_explorer/components/layout/card/card';
-import ValueLabeled from '@/block_explorer/components/layout/value_labeled/value_labeled';
+import { default as Card } from '@/block_explorer/components/layout/card/card';
+import { default as ValueLabeled } from '@/block_explorer/components/layout/value_labeled/value_labeled';
 import { addClassToClassName } from '@/higher_order';
 import {
   NamespaceContext,
   RollUpEntryContext,
 } from '@/models/block_explorer/rollup_entry/contexts';
 import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
-import NumberText from '@/text/number_text';
-import Text from '@/text/text';
-import React from 'react';
+import { default as NumberText } from '@/text/number_text';
+import { default as Text } from '@/text/text';
+import { default as React } from 'react';
 import { EgressLink } from '../../../links/link/link';
 import './roll_up_info.css';
 

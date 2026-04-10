@@ -5,7 +5,8 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseBadResponseError, {
+import {
+  BaseBadResponseError,
   BaseBadResponseErrorEncoder,
 } from './base_bad_response_error';
 import { registerCodec } from './registry';
@@ -16,7 +17,7 @@ const kBadResponseClientErrorCode = 'BadResponseClientError';
  * BadResponseClientError is a more specific BadResponse error that indicates
  * the nature of the failure was due to a client submission error.
  */
-export default class BadResponseClientError extends BaseBadResponseError {
+export class BadResponseClientError extends BaseBadResponseError {
   constructor(
     status: number,
     response: null | Response,

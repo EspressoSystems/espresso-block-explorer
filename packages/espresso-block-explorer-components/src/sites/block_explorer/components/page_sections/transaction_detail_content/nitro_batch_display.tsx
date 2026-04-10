@@ -1,20 +1,20 @@
 import { assertNotNull } from '@/assert/assert';
 import { DateTimeText } from '@/components/text';
-import CopyWalletAddress from '@/block_explorer/components/text/copy_wallet_address';
-import WalletAddressText from '@/components/text/wallet_address_text';
+import { default as CopyWalletAddress } from '@/block_explorer/components/text/copy_wallet_address';
+import { WalletAddressText } from '@/components/text';
 import { uint8ArrayToArrayBufferCodec } from '@/convert/codec/uint8_array';
 import { createBufferedDataView, Endianess } from '@/convert/data_view';
 import { createRLPDeserializer } from '@/convert/rlp';
-import TableLabeledValue from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
+import { default as TableLabeledValue } from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
 import { isNitroIntegrationNamespace } from '@/models/block_explorer/rollup_entry/data';
 import {
   decodeNitroL1IncomingMessage,
   L1MessageType,
   NitroL1IncomingMessage,
 } from '@/service/abritrum_nitro/l1_incoming_message';
-import NumberText from '@/text/number_text';
-import Text from '@/text/text';
-import React from 'react';
+import { default as NumberText } from '@/text/number_text';
+import { default as Text } from '@/text/text';
+import { default as React } from 'react';
 import { TransactionDetailContext } from './transaction_detail_loader';
 import { HexDumpAndCopyButtons } from './copy_as';
 

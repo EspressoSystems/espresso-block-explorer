@@ -1,9 +1,9 @@
-import PercentageText from '@/components/text/percentage_text';
-import Text from '@/components/text/text';
+import { PercentageText } from '@/components/text';
+import { Text } from '@/components/text';
 import { RatioRational } from '@/service/espresso_staking_api_service/common/ratio';
 import { ConsensusMapContext } from '@/sites/delegation_ui/contexts/consensus_map_context';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
-import React from 'react';
+import { default as React } from 'react';
 import { RatioRationalText } from './rational_rate_text';
 
 /**

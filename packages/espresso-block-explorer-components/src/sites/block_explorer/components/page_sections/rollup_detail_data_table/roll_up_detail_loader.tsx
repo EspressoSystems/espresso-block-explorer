@@ -1,14 +1,14 @@
-import PromiseResolver from '@/components/data/async_data/promise_resolver';
+import { default as PromiseResolver } from '@/components/data/async_data/promise_resolver';
 import {
   DataTableState,
   DataTableStateContext,
 } from '@/components/data/data_table/data_table';
 import { SortDirection } from '@/components/data/types';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { RollUpDetailAsyncRetriever } from '@/models/block_explorer/rollup_detail';
 import { NamespaceContext } from '@/models/block_explorer/rollup_entry/contexts';
 import { TransactionSummaryColumn } from '@/models/block_explorer/transaction_summary';
-import React from 'react';
+import { default as React } from 'react';
 import { TransactionSummary } from '../transaction_summary_data_table/transaction_summary_data_loader';
 
 /**

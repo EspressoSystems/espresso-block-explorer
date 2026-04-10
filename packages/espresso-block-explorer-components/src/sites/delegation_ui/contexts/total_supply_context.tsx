@@ -2,7 +2,7 @@ import { DataContext } from '@/contexts/data_provider';
 import { PromiseResolver } from '@/components/data';
 import { AsyncSnapshot } from '@/components/data/async_data/async_snapshot';
 import { neverPromise } from '@/functional/functional_async';
-import React from 'react';
+import { default as React } from 'react';
 import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
 import { L1RefreshTimestampContext } from './l1_refresh_timestamp_context';
 

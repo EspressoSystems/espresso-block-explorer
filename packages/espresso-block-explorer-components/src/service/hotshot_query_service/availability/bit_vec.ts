@@ -7,7 +7,7 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { mapIterable } from '@/functional/functional';
 import { BitVecHead, bitVecHeadCodec } from './bit_vec_head';
 import { BitVecOrder, bitVecOrderCodec } from './bit_vec_order';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 import './error_display.css';
 
 export interface ErrorTitleProps {

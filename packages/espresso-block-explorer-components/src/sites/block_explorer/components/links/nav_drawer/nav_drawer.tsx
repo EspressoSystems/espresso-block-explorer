@@ -1,8 +1,8 @@
 import { WithUiText100 } from '@/block_explorer/components/typography/typography';
 import { CurrentNavDrawerStateContext } from '@/block_explorer/contexts/nav_drawer_state_provider';
-import React from 'react';
-import CloseNavDrawerButton from '../close_nav_drawer_button/close_nav_drawer_button';
-import MainNavLinks from '../main_nav_links/main_nav_links';
+import { default as React } from 'react';
+import { default as CloseNavDrawerButton } from '../close_nav_drawer_button/close_nav_drawer_button';
+import { default as MainNavLinks } from '../main_nav_links/main_nav_links';
 import './nav_drawer.css';
 
 const UIText100Nav = WithUiText100('nav');

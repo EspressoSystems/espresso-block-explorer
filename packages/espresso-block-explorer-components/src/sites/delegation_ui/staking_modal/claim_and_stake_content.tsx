@@ -6,10 +6,10 @@ import {
   RainbowKitChainContext,
   RainbowKitModalContext,
 } from '@/components/rainbowkit/contexts/contexts';
-import FullWalletAddressText from '@/components/text/full_wallet_address';
-import MoneyText from '@/components/text/money_text';
-import Text from '@/components/text/text';
-import CheckCircle from '@/components/visual/icons/sharp_line/check_circle';
+import { FullWalletAddressText } from '@/components/text';
+import { MoneyText } from '@/components/text';
+import { Text } from '@/components/text';
+import { CheckCircle } from '@/components/visual/icons/sharp_line';
 import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
 import { IntentCompletedCallbackContext } from '@/contexts/intent_completed_callback_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
@@ -20,9 +20,9 @@ import {
   foldRIterable,
   mapIterable,
 } from '@/functional/functional';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import WalletAddress from '@/models/wallet_address/wallet_address';
-import React from 'react';
+import { MonetaryValue } from '@/models/block_explorer';
+import { WalletAddress } from '@/models/wallet_address';
+import { default as React } from 'react';
 import { WagmiContext } from 'wagmi';
 import { ConnectWalletButton } from '../connect_wallet_button';
 import {
@@ -46,7 +46,7 @@ import {
 } from '../contexts/minimum_delegation_amount_context';
 import { NodeAddressContext } from '../contexts/node_address_context';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
-import ButtonLarge from '../elements/buttons/button_large';
+import { default as ButtonLarge } from '../elements/buttons/button_large';
 import { ValidatorName } from '../elements/validator/validator_name';
 import { ApproveButton } from './approve_button';
 import './claim_and_stake_content.css';

@@ -2,7 +2,7 @@ import { PromiseResolver } from '@/components/data';
 import { DataContext } from '@/contexts/data_provider';
 import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { nullableBigintCodec } from '@/convert/codec/bigint';
-import React from 'react';
+import { default as React } from 'react';
 import { EspressoRefreshTimestampContext } from './espresso_refresh_timestamp_context';
 
 /**

@@ -2,7 +2,7 @@ import { Channel, createBufferedChannel } from '@/async/channel';
 import { createAutoRetryFetch } from '@/async/fetch/auto_retry_fetch';
 import { createExtendedFetch } from '@/async/fetch/extended_fetch';
 import { EspressoError } from '@/errors/espresso_error';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { FakeDataStakingAPIService } from './implementations/fake_data';
 import { FetchBasedStakingAPIService } from './implementations/fetch_based';
 import {

@@ -5,7 +5,7 @@ import {
   LightClientContractGasEstimator,
 } from '@/contracts/light_client/light_client_interface';
 import { LightClientRemote } from '@/contracts/light_client/light_client_remote';
-import React from 'react';
+import { default as React } from 'react';
 import { useConfig } from 'wagmi';
 
 /**

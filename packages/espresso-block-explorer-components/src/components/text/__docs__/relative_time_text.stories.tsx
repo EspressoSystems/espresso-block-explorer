@@ -2,8 +2,8 @@ import { ProvideDerivedDateTimeFormatters } from '@/contexts/date_time_formatter
 import { OverrideLocale } from '@/contexts/locale_provider';
 import { ProvideTickEverySecond } from '@/contexts/now_provider';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
-import RelativeTimeSinceDateText from '../relative_time_since_date_text';
+import { default as React } from 'react';
+import { default as RelativeTimeSinceDateText } from '../relative_time_since_date_text';
 
 interface ExampleProps {
   locale: string;

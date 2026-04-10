@@ -7,7 +7,7 @@ import {
 import { Config } from 'wagmi';
 import { readContract } from 'wagmi/actions';
 import { ScalarField } from '../bn254/bn254_interface';
-import LightClientAbi from './light_client_abi';
+import { default as LightClientAbi } from './light_client_abi';
 import {
   LightClientContract,
   LightClientState,

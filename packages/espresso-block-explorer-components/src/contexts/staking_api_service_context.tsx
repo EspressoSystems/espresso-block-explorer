@@ -3,7 +3,7 @@ import { FakeDataStakingAPIService } from '@/service/espresso_staking_api_servic
 import { UnimplementedStakingAPIService } from '@/service/espresso_staking_api_service/implementations/unimplemented';
 import { WebWorkerClientBasedStakingAPIService } from '@/service/espresso_staking_api_service/implementations/web_worker_client';
 import { StakingAPIService } from '@/service/espresso_staking_api_service/staking_api_service';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * StakingAPIServiceContext provides a React Context

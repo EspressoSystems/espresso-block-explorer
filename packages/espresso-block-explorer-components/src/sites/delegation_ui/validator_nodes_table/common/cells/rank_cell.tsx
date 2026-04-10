@@ -1,7 +1,7 @@
-import NumberText from '@/components/text/number_text';
+import { NumberText } from '@/components/text';
 import { RankMapContext } from '@/sites/delegation_ui/contexts/rank_map_context';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * RankCell is a component that displays

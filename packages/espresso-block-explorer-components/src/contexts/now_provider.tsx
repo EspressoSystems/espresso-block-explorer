@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * Now is a context that is meant to provide the current Date, or some

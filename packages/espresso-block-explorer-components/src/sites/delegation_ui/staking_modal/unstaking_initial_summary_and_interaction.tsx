@@ -1,11 +1,11 @@
 import { addClassToClassName } from '@/higher_order';
 import { ESPInput } from '@/components/input/esp/esp_input';
 import { PercentageText } from '@/components/text';
-import MoneyText from '@/components/text/money_text';
-import Text from '@/components/text/text';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import React from 'react';
-import ButtonLarge from '../elements/buttons/button_large';
+import { MoneyText } from '@/components/text';
+import { Text } from '@/components/text';
+import { MonetaryValue } from '@/models/block_explorer';
+import { default as React } from 'react';
+import { default as ButtonLarge } from '../elements/buttons/button_large';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
 import {
   SetStakingAmountContext,

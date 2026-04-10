@@ -5,7 +5,7 @@ import {
   ESPTokenContractGasEstimator,
 } from '@/contracts/esp_token/esp_token_interface';
 import { ESPTokenRemote } from '@/contracts/esp_token/esp_token_remote';
-import React from 'react';
+import { default as React } from 'react';
 import { useConfig } from 'wagmi';
 
 /**

@@ -3,7 +3,7 @@ import {
   RainbowKitAccountAddressContext,
   RainbowKitModalContext,
 } from '@/components/rainbowkit';
-import Text from '@/components/text/text';
+import { Text } from '@/components/text';
 import { CurrentDelegationsContext } from '@/sites/delegation_ui/contexts/current_delegations_context';
 import { ModalContext } from '@/sites/delegation_ui/contexts/modal_context';
 import { PendingExitsContext } from '@/sites/delegation_ui/contexts/pending_exits_context';
@@ -14,12 +14,12 @@ import {
   ValidatorConfirmed,
   ValidatorConfirmedStake,
 } from '@/sites/delegation_ui/contexts/validator_selection_context';
-import ButtonLarge from '@/sites/delegation_ui/elements/buttons/button_large';
+import { default as ButtonLarge } from '@/sites/delegation_ui/elements/buttons/button_large';
 import { ExitedChip } from '@/sites/delegation_ui/elements/chips/exited_chip';
 import { ExitingChip } from '@/sites/delegation_ui/elements/chips/exiting_chip';
 import { UndelegatedChip } from '@/sites/delegation_ui/elements/chips/undelegated_chip';
 import { UndelegatingChip } from '@/sites/delegation_ui/elements/chips/undelegating_chip';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * ActionsCell is a table cell that represents the actions that a user

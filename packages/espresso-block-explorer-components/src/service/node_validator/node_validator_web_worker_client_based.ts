@@ -1,5 +1,5 @@
 import { Channel, createBufferedChannel } from '@/async/channel';
-import WebSocketError from '@/errors/web_socket_error';
+import { default as WebSocketError } from '@/errors/web_socket_error';
 import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
 import {
   registerWebWorkerProxyRequestCodec,
@@ -10,7 +10,7 @@ import {
   registerWebWorkerProxyResponseCodec,
   webWorkerProxyResponseCodec,
 } from '@/models/web_worker/web_worker_proxy_response_codec';
-import ProxyWorker from './node_validator_web_worker_api.js?worker';
+import { default as ProxyWorker } from './node_validator_web_worker_api.js?worker';
 import {
   kNodeValidatorRequestType,
   nodeValidatorServiceRequestCodec,

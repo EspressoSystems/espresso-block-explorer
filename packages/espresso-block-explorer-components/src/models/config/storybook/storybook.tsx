@@ -11,7 +11,7 @@ import { walletAddressCodec } from '@/models/wallet_address/wallet_address';
 import { FakeDataMockOverrides } from '@/sites/delegation_ui/mock/fake_data';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
+import { default as React } from 'react';
 import { WagmiProvider } from 'wagmi';
 import { Environment } from '../environment/environment';
 import { ExplorerConfig } from '../environment/explorer';

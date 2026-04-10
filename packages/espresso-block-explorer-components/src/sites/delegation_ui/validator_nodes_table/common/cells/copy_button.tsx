@@ -1,8 +1,8 @@
-import CheckCircle from '@/components/visual/icons/sharp_line/check_circle';
-import PathfinderTrim from '@/components/visual/icons/sharp_line/pathfinder_trim';
+import { CheckCircle } from '@/components/visual/icons/sharp_line';
+import { PathfinderTrim } from '@/components/visual/icons/sharp_line';
 import { Now } from '@/contexts/now_provider';
 import { addClassToClassName } from '@/higher_order';
-import React from 'react';
+import { default as React } from 'react';
 import './copy_button.css';
 
 export interface ButtonProps extends React.DetailedHTMLProps<

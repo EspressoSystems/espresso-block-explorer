@@ -3,15 +3,15 @@ import {
   mapIterable,
   zipWithIterable,
 } from '@/functional/functional';
-import DensityIndependentPoint from '@/models/geo/units/density_independent_point';
-import LatLng from '@/models/geo/units/lat_lng';
+import { default as DensityIndependentPoint } from '@/models/geo/units/density_independent_point';
+import { default as LatLng } from '@/models/geo/units/lat_lng';
 import {
   degreesToCoordinateSpaceProjection,
   gridCellRadius,
   mapWidth,
 } from '@/models/geo/world_map_grid/constants';
 import { hitMap } from '@/models/geo/world_map_grid/world_map_grid';
-import React from 'react';
+import { default as React } from 'react';
 import {
   MapCoordinateGridSpaceCentersContext,
   MapCoordinateSpaceRectContext,

@@ -1,6 +1,6 @@
 import { ValidatorImage24x24 } from '@/sites/delegation_ui/elements/validator/validator_image';
 import { ValidatorName } from '@/sites/delegation_ui/elements/validator/validator_name';
-import React from 'react';
+import { default as React } from 'react';
 import './combined_details_cell.css';
 import { HotShotConsensusCell } from './hot_shot_consensus_cell';
 import { RankCell } from './rank_cell';

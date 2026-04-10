@@ -1,6 +1,6 @@
 import { emptyIterator, foldRIterable } from '@/functional/functional';
 import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
-import React from 'react';
+import { default as React } from 'react';
 import { FullNodeSetSnapshotContext } from './full_node_set_snapshot_context';
 
 /**

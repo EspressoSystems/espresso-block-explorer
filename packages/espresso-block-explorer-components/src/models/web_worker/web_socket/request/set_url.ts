@@ -3,8 +3,8 @@ import {
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
-import InvalidTypeError from '@/errors/invalid_type_error';
-import WebSocketCommand from './web_socket_command';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
+import { default as WebSocketCommand } from './web_socket_command';
 
 export const kWebSocketCommandSetURLType = 'Set-Url' as const;
 

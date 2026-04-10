@@ -33,7 +33,7 @@ import {
 } from '@/block_explorer/components/page_sections/nodes_summary_data_table/nodes_summary_loader';
 import { OperatingSystemPieChartStreamContext } from '@/block_explorer/components/page_sections/operating_system_pie_chart/operating_system_pie_chart_loader';
 import { BlockExplorerConfigContext } from '@/components/config/explorer';
-import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
+import { default as AsyncIterableResolver } from '@/components/data/async_data/async_iterable_resolver';
 import { NodeIdentityInformationStreamContext } from '@/components/visual/geo_json/world_map_dots_population_resolver';
 import { PieChartEntry } from '@/components/visual/pie_chart/pie_chart';
 import { DataContext } from '@/contexts/data_provider';
@@ -67,15 +67,16 @@ import { ErrorResponse } from '@/models/web_worker/error_response';
 import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
 import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
 import { WebSocketCommandSetURL } from '@/models/web_worker/web_socket/request/set_url';
-import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
+import { default as WebSocketCommand } from '@/models/web_worker/web_socket/request/web_socket_command';
 import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
 import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
 import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';
 import { webSocketCommandToWebWorkerProxyRequestConverter } from '@/models/web_worker/web_worker_proxy_request_codec';
 import { BitVec } from '@/service/hotshot_query_service/availability/bit_vec';
 import { ExplorerBlockDetail } from '@/service/hotshot_query_service/explorer/block_detail';
-import NodeIdentity from '@/service/node_validator/node_identity';
-import NodeValidatorRequest, {
+import { default as NodeIdentity } from '@/service/node_validator/node_identity';
+import {
+  default as NodeValidatorRequest,
   RequestBlocksSnapshot,
   RequestHistogramSnapshot,
   RequestNodeIdentitySnapshot,
@@ -97,13 +98,13 @@ import { LatestStakeTable } from '@/service/node_validator/responses/latest_stak
 import { LatestValidator } from '@/service/node_validator/responses/latest_validator';
 import { LatestVoters } from '@/service/node_validator/responses/latest_voters';
 import { NodeIdentitySnapshot } from '@/service/node_validator/responses/node_identity_snapshot';
-import NodeValidatorResponse from '@/service/node_validator/responses/node_validator_response';
+import { default as NodeValidatorResponse } from '@/service/node_validator/responses/node_validator_response';
 import { NodeValidatorServiceResponse } from '@/service/node_validator/responses/node_validator_service_response';
 import { StakeTableSnapshot } from '@/service/node_validator/responses/stake_table_snapshot';
 import { ValidatorsSnapshot } from '@/service/node_validator/responses/validators_snapshot';
 import { VotersSnapshot } from '@/service/node_validator/responses/voters_snapshot';
 import { WebWorkerNodeValidatorAPI } from '@/service/node_validator/web_worker_proxy_api';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * publishHistogramUpdates is a helper function that will publish the updates

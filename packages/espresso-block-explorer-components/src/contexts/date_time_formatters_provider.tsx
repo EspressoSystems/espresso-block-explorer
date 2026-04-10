@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import { default as React, createContext, useContext } from 'react';
 import { CurrentLocale } from './locale_provider';
 
 /**

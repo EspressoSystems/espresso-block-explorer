@@ -13,7 +13,8 @@ import {
   TaggedBase64,
   taggedBase64Codec,
 } from '@/models/espresso/tagged_base64/tagged_base64';
-import LocationDetails, {
+import {
+  default as LocationDetails,
   nullableLocationDetailsCodec,
 } from './node_location_details';
 

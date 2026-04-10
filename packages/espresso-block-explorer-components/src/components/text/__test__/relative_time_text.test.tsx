@@ -3,7 +3,7 @@ import { Now } from '@/contexts/now_provider';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import RelativeTimeSinceDateText from '../relative_time_since_date_text';
+import { default as RelativeTimeSinceDateText } from '../relative_time_since_date_text';
 
 describe('Relative Time Text Component', () => {
   it('should format format', () => {

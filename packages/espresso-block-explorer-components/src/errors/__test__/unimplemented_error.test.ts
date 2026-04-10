@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import UnimplementedError, { unimplementedCodec } from '../unimplemented_error';
 import { espressoErrorCodec } from '../registry';
+import { unimplementedCodec, UnimplementedError } from '../unimplemented_error';
 
 describe('UnimplementedError', () => {
   describe('toJSON', () => {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import NoCompleterFoundForRequestID, {
+import {
+  NoCompleterFoundForRequestID,
   noCompleterFoundForRequestIDCodec,
 } from '../no_completer_found_for_request_id';
 import { espressoErrorCodec } from '../registry';

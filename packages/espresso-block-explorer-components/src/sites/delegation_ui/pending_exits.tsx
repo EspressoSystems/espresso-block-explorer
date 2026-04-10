@@ -1,8 +1,8 @@
-import Text from '@/components/text/text';
-import PadlockSquare2 from '@/components/visual/icons/sharp_line/padlock_square_2';
+import { Text } from '@/components/text';
+import { PadlockSquare2 } from '@/components/visual/icons/sharp_line';
 import { Now } from '@/contexts/now_provider';
 import { compareIterables } from '@/functional/functional';
-import React from 'react';
+import { default as React } from 'react';
 import { CollapsableHeader, CollapsableSection } from './collapsable_section';
 import { NodeAddressListContext } from './contexts/all_validators_context';
 import { CollapseState } from './contexts/collapse_context';

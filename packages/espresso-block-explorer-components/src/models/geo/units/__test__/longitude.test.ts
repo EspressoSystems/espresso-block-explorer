@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import Degrees from '../degrees';
-import Longitude from '../longitude';
+import { default as Degrees } from '../degrees';
+import { default as Longitude } from '../longitude';
 
 describe('Longitude', () => {
   describe('Degrees', () => {

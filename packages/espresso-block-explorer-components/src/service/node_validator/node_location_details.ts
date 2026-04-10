@@ -8,8 +8,11 @@ import {
   nullableStringCodec,
   preferNullOverEmptyString,
 } from '@/convert/codec/string';
-import Degrees from '@/models/geo/units/degrees';
-import LatLng, { nullableLatLngDegreesCodec } from '@/models/geo/units/lat_lng';
+import { default as Degrees } from '@/models/geo/units/degrees';
+import {
+  default as LatLng,
+  nullableLatLngDegreesCodec,
+} from '@/models/geo/units/lat_lng';
 
 /**
  * LocationDetails represents the location details of an Espresso

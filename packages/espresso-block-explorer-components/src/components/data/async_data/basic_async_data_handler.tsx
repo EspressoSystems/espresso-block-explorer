@@ -1,8 +1,8 @@
-import CircularProgressIndicator from '@/components/loading/circular_progress_indicator';
+import { default as CircularProgressIndicator } from '@/components/loading/circular_progress_indicator';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
-import Text from '@/text/text';
-import React from 'react';
+import { default as Text } from '@/text/text';
+import { default as React } from 'react';
 
 export interface BasicAsyncDataHandlerProps {
   children: React.ReactNode | React.ReactNode[];

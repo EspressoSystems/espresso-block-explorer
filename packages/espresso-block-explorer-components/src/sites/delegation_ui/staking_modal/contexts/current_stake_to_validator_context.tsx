@@ -8,7 +8,7 @@ import { neverPromise } from '@/functional/functional_async';
 import { Delegation } from '@/service/espresso_staking_api_service/common/delegation';
 import { ConfirmedValidatorContext } from '@/sites/delegation_ui/contexts/confirmed_valdiator_context';
 import { L1RefreshTimestampContext } from '@/sites/delegation_ui/contexts/l1_refresh_timestamp_context';
-import React from 'react';
+import { default as React } from 'react';
 
 export const CurrentStakeToValidatorContext = React.createContext<
   null | bigint

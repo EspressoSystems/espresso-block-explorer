@@ -1,5 +1,5 @@
 import { TextEditingValue } from '@/components/input/text/types';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * ProvideSearchFilter is a React context that provides the context

@@ -6,11 +6,11 @@ import {
 } from '@/data_source/fake_data_source/espresso/nodes';
 import { mapIterable } from '@/functional/functional';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import { ProjectionProvider } from '../projection_provider';
-import WorldMapAutoSizer from '../world_map_auto_sizer';
-import WorldMapDotsFullResolution from '../world_map_dots_full_resolution';
-import WorldMapDotsPopulationFullResolution from '../world_map_dots_population_full_resolution';
+import { default as WorldMapAutoSizer } from '../world_map_auto_sizer';
+import { default as WorldMapDotsFullResolution } from '../world_map_dots_full_resolution';
+import { default as WorldMapDotsPopulationFullResolution } from '../world_map_dots_population_full_resolution';
 import {
   DotPopulationStreamConsumer,
   NodeIdentityInformationStreamContext,

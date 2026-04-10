@@ -8,7 +8,7 @@ import {
   CircularBufferPutIntoFullBehaviors,
   createCircularBuffer,
 } from '@/data_structures/circular_buffer/circular_buffer';
-import ChannelClosedError from '@/errors/channel_closed_error';
+import { ChannelClosedError } from '@/errors/channel_closed_error';
 import { Channel } from './channel';
 
 /**

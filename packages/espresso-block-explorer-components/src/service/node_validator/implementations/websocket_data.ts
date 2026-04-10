@@ -3,13 +3,13 @@ import { createSinkWithConverter } from '@/async/sink/converted_sink';
 import { Sink } from '@/async/sink/sink';
 import { sleep } from '@/async/sleep';
 import { createCompleter } from '@/data_structures/async/completer/completer';
-import WebSocketError from '@/errors/web_socket_error';
+import { default as WebSocketError } from '@/errors/web_socket_error';
 import { WebSocketCommandClose } from '@/models/web_worker/web_socket/request/close';
 import { WebSocketCommandConnect } from '@/models/web_worker/web_socket/request/connect';
-import WebSocketCommand from '@/models/web_worker/web_socket/request/web_socket_command';
+import { default as WebSocketCommand } from '@/models/web_worker/web_socket/request/web_socket_command';
 import { WebSocketStatusConnectionClosed } from '@/models/web_worker/web_socket/status/closed';
 import { WebSocketStatusConnectionConnecting } from '@/models/web_worker/web_socket/status/connecting';
-import WebSocketStatus from '@/models/web_worker/web_socket/status/web_socket_status';
+import { default as WebSocketStatus } from '@/models/web_worker/web_socket/status/web_socket_status';
 import { WebSocketRequest } from '@/models/web_worker/web_socket/web_socket_request';
 import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
 import { WebWorkerProxyResponse } from '@/models/web_worker/web_worker_proxy_response';
@@ -17,10 +17,10 @@ import {
   espressoErrorToWebWorkerProxyResponseConverter,
   webSocketStatusToWebWorkerProxyResponseConverter,
 } from '@/models/web_worker/web_worker_proxy_response_codec';
-import NodeValidatorRequest from '../requests/node_validator_request';
+import { default as NodeValidatorRequest } from '../requests/node_validator_request';
 import { nodeValidatorRequestCodec } from '../requests/node_validator_request_codec';
 import { NodeValidatorServiceRequest } from '../requests/node_validator_service_request';
-import NodeValidatorResponse from '../responses/node_validator_response';
+import { default as NodeValidatorResponse } from '../responses/node_validator_response';
 import { nodeValidatorResponseToWebWorkerProxyResponseConverter } from '../responses/node_validator_service_response';
 import { WebWorkerNodeValidatorAPI } from '../web_worker_proxy_api';
 import { WebSocketCloseHandler } from '../websocket/websocket_close_handler';

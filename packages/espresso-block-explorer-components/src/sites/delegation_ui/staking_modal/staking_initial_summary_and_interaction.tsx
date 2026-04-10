@@ -1,12 +1,12 @@
 import { addClassToClassName } from '@/higher_order';
 import { ESPInput } from '@/components/input/esp/esp_input';
-import MoneyText from '@/components/text/money_text';
-import Text from '@/components/text/text';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import React from 'react';
+import { MoneyText } from '@/components/text';
+import { Text } from '@/components/text';
+import { MonetaryValue } from '@/models/block_explorer';
+import { default as React } from 'react';
 import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { MinimumDelegationAmountContext } from '../contexts/minimum_delegation_amount_context';
-import ButtonLarge from '../elements/buttons/button_large';
+import { default as ButtonLarge } from '../elements/buttons/button_large';
 import {
   SetStakingAmountContext,
   StakingAmountContext,

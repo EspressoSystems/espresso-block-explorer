@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/higher_order';
 import { WithUiText300 } from '@/block_explorer/components/typography/typography';
-import React from 'react';
+import { default as React } from 'react';
 import './histogram_section_title.css';
 
 export interface HistogramSectionTitleProps {

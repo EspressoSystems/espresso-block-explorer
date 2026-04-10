@@ -1,6 +1,6 @@
 import { Channel, createBufferedChannel } from '@/async/channel';
 import { Completer, createCompleter } from '@/data_structures/async';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { WebSocketCommandSetURL } from '@/models/web_worker/web_socket/request/set_url';
 import { WebSocketRequest } from '@/models/web_worker/web_socket/web_socket_request';
 import { WebWorkerProxyRequest } from '@/models/web_worker/web_worker_proxy_request';
@@ -13,11 +13,12 @@ import {
   registerWebWorkerProxyResponseCodec,
   webWorkerProxyResponseCodec,
 } from '@/models/web_worker/web_worker_proxy_response_codec';
-import FakeDataNodeValidatorAPI from './implementations/fake_data';
-import ReplayDataNodeValidatorAPI, {
+import { default as FakeDataNodeValidatorAPI } from './implementations/fake_data';
+import {
   HARFormat,
+  default as ReplayDataNodeValidatorAPI,
 } from './implementations/replay_data';
-import WebSocketDataNodeValidatorAPI from './implementations/websocket_data';
+import { default as WebSocketDataNodeValidatorAPI } from './implementations/websocket_data';
 import {
   kNodeValidatorRequestType,
   nodeValidatorServiceRequestCodec,

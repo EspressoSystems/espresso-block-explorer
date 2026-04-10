@@ -1,4 +1,5 @@
-import Card, {
+import {
+  default as Card,
   CardNoPadding,
 } from '@/block_explorer/components/layout/card/card';
 import { BlockSizeHistogram } from '@/block_explorer/components/page_sections/block_size_histogram/block_size_histogram';
@@ -10,8 +11,8 @@ import { BlockTimeHistogramStreamConsumer } from '@/block_explorer/components/pa
 import { CDNStatus } from '@/block_explorer/components/page_sections/cdn_status/cdn_status';
 import { CountriesPieChart } from '@/block_explorer/components/page_sections/countries_pie_chart/countries_pie_chart';
 import { CountriesPieChartStreamConsumer } from '@/block_explorer/components/page_sections/countries_pie_chart/countries_pie_chart_loader';
-import Footer from '@/block_explorer/components/page_sections/footer/footer';
-import Header from '@/block_explorer/components/page_sections/header/header';
+import { default as Footer } from '@/block_explorer/components/page_sections/footer/footer';
+import { default as Header } from '@/block_explorer/components/page_sections/header/header';
 import { LatestBlockProducersAsyncHandler } from '@/block_explorer/components/page_sections/latest_block_producers/latest_block_producers';
 import { LatestBlockProducersStreamConsumer } from '@/block_explorer/components/page_sections/latest_block_producers/latest_block_producers_loader';
 import { LatestBlockSummaryAsyncHandler } from '@/block_explorer/components/page_sections/latest_block_summary/latest_block_summary';
@@ -32,16 +33,15 @@ import {
   PageType,
 } from '@/block_explorer/contexts/page_path_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
-import { addClassToClassName } from '@/higher_order';
 import {
   RainbowKitAccountAddressContext,
   RainbowKitMountedContext,
 } from '@/components/rainbowkit/contexts/contexts';
-import Text from '@/components/text/text';
+import { Text } from '@/components/text';
 import { ProjectionProvider } from '@/components/visual/geo_json/projection_provider';
-import WorldMapAutoSizer from '@/components/visual/geo_json/world_map_auto_sizer';
-import WorldMapDotsFullResolution from '@/components/visual/geo_json/world_map_dots_full_resolution';
-import WorldMapDotsPopulationFullResolution from '@/components/visual/geo_json/world_map_dots_population_full_resolution';
+import { default as WorldMapAutoSizer } from '@/components/visual/geo_json/world_map_auto_sizer';
+import { default as WorldMapDotsFullResolution } from '@/components/visual/geo_json/world_map_dots_full_resolution';
+import { default as WorldMapDotsPopulationFullResolution } from '@/components/visual/geo_json/world_map_dots_population_full_resolution';
 import {
   DotPopulationStreamConsumer,
   NodeInformationToDotPopulation,
@@ -50,7 +50,8 @@ import { HistogramSectionTitle } from '@/components/visual/histogram/histogram_s
 import { WebSocketStatus } from '@/components/visual/web_socket/web_socket_status';
 import { ErrorStreamConsumer } from '@/contexts/error_stream_consumer';
 import { WebSocketResponseStreamConsumer } from '@/contexts/web_socket_response_provider';
-import React from 'react';
+import { addClassToClassName } from '@/higher_order';
+import { default as React } from 'react';
 import './node_validator.css';
 
 interface NodeValidatorLayoutProps {

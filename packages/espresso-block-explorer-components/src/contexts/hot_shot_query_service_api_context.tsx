@@ -3,7 +3,7 @@ import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_qu
 import { FakeDataHotShotQueryService } from '@/service/hotshot_query_service/implementations/fake_data';
 import { UnimplementedHotShotQueryService } from '@/service/hotshot_query_service/implementations/unimplemented';
 import { WebWorkerClientBasedHotShotQueryService } from '@/service/hotshot_query_service/implementations/web_worker_client';
-import React from 'react';
+import { default as React } from 'react';
 
 export const HotShotQueryServiceAPIContext =
   React.createContext<HotShotQueryService>(

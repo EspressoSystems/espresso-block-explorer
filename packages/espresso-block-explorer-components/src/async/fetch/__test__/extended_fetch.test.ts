@@ -5,10 +5,10 @@
 // The factory accepts an optional fetchFn parameter, so tests pass a vi.fn()
 // directly and never touch the global fetch or require any stubbing.
 
-import BadResponseClientError from '@/errors/bad_response_client_error';
-import BadResponseError from '@/errors/bad_response_error';
-import BadResponseServerError from '@/errors/bad_response_server_error';
-import FetchError from '@/errors/fetch_error';
+import { BadResponseClientError } from '@/errors/bad_response_client_error';
+import { BadResponseError } from '@/errors/bad_response_error';
+import { BadResponseServerError } from '@/errors/bad_response_server_error';
+import { FetchError } from '@/errors/fetch_error';
 import { describe, expect, it, vi } from 'vitest';
 import { createExtendedFetch } from '../extended_fetch';
 

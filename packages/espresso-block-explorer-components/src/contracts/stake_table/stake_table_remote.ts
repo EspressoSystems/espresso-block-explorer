@@ -8,7 +8,7 @@ import {
 } from 'viem';
 import { Config } from 'wagmi';
 import { readContract, writeContract } from 'wagmi/actions';
-import StakeTableAbi from './stake_table_abi';
+import { default as StakeTableAbi } from './stake_table_abi';
 import {
   StakeTableContract,
   STValidator,

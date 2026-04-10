@@ -4,7 +4,7 @@ import {
   Undelegation,
   ValidatorStatus,
 } from '@/contracts/stake_table/stake_table_interface';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { MonetaryValue } from '@/models/block_explorer';
 import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
 import { RewardClaimInput } from '@/service/hotshot_query_service/reward_state/reward_claim_input';
 import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
@@ -25,7 +25,7 @@ import {
 } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { WalletSnapshotContext } from '@/sites/delegation_ui/contexts/wallet_snapshot_context';
 import { FakeDataMockOverrides } from '@/sites/delegation_ui/mock/fake_data';
-import React from 'react';
+import { default as React } from 'react';
 import { DeriveNodeSetFromFullNodeSetSnapshot } from '../../contexts/all_validators_context';
 import { FullNodeSetSnapshotContext } from '../../contexts/full_node_set_snapshot_context';
 import { ClaimRewardsModalContent } from '../claim_rewards_content';

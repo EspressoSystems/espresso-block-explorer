@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { FakeDataL1BlockAPI } from '../l1_block/implementations/fake_data';
 import { StakingAPIService } from '../staking_api_service';
 import { FakeDataValidatorsActiveAPI } from '../validators_active/implementations/fake_data';

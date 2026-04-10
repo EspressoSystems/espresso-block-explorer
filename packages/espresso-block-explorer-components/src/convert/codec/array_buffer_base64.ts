@@ -1,4 +1,4 @@
-import InvalidTypeError from '@/errors/invalid_type_error';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
 import {
   Encoding,
   rawStdEncoding,

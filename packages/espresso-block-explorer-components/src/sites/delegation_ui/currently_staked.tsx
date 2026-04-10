@@ -1,10 +1,10 @@
-import PercentageText from '@/components/text/percentage_text';
-import Text from '@/components/text/text';
+import { PercentageText } from '@/components/text';
+import { Text } from '@/components/text';
 import { CurrentNumberFormatters } from '@/contexts/number_formatters_provider';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { MonetaryValue } from '@/models/block_explorer';
 import { TotalStakeContext } from '@/sites/delegation_ui/contexts/total_stake_context';
 import { TotalSupplyContext } from '@/sites/delegation_ui/contexts/total_supply_context';
-import React from 'react';
+import { default as React } from 'react';
 import { MoreInfoElement } from './elements/tooltip/more_info';
 import { NetworkStatValue } from './network_stat_value';
 

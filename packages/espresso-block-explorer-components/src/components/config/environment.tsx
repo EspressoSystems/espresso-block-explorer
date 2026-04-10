@@ -1,5 +1,5 @@
 import { Environment } from '@/models/config/environment/environment';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * EnvironmentContext provides the current environment configuration for the

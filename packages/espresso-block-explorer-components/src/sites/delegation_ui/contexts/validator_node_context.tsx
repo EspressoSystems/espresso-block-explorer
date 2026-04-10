@@ -1,7 +1,7 @@
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
 import { Ratio } from '@/service/espresso_staking_api_service/common/ratio';
-import React from 'react';
+import { default as React } from 'react';
 import { AllValidatorsContext } from './all_validators_context';
 import { NodeAddressContext } from './node_address_context';
 

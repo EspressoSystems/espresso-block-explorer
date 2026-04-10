@@ -1,4 +1,4 @@
-import ExpectedObjectWithKeyError from './expected_object_with_key_error';
+import { default as ExpectedObjectWithKeyError } from './expected_object_with_key_error';
 
 /**
  * a Converter is a simple contract that indicates that a member is able to

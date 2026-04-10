@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import Card from '../card/card';
+import { default as Card } from '../card/card';
 
 describe('Card Component', () => {
   it('should contain the name', () => {

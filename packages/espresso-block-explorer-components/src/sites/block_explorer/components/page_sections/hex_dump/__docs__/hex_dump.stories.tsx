@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
-import HexDumpComp from '../hex_dump';
+import { default as React } from 'react';
+import { default as HexDumpComp } from '../hex_dump';
 
 interface ExampleProps {
   numBytes: number;

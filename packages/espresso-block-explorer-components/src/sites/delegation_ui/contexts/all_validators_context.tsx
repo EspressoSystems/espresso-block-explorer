@@ -2,7 +2,7 @@ import { mapIterable } from '@/functional/functional';
 import { NodeMetadata } from '@/service/espresso_staking_api_service/common/node_metadata';
 import { NodeMetadataContent } from '@/service/espresso_staking_api_service/common/node_metadata_content';
 import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
-import React from 'react';
+import { default as React } from 'react';
 import { CuratedValidatorsMapContext } from './curated_validators_map_context';
 import { FullNodeSetSnapshotContext } from './full_node_set_snapshot_context';
 

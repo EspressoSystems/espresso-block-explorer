@@ -1,14 +1,14 @@
 import { AvatarLogo } from '../../avatar_logo';
 import { PreFedSrcAvatarLogoProps } from '../../higher_order';
-import RariLogo24x24_1x from './rari_logo24x24@1x.png';
-import RariLogo24x24_2x from './rari_logo24x24@2x.png';
-import RariLogo24x24_3x from './rari_logo24x24@3x.png';
-import RariLogo32x32_1x from './rari_logo32x32@1x.png';
-import RariLogo32x32_2x from './rari_logo32x32@2x.png';
-import RariLogo32x32_3x from './rari_logo32x32@3x.png';
-import RariLogo40x40_1x from './rari_logo40x40@1x.png';
-import RariLogo40x40_2x from './rari_logo40x40@2x.png';
-import RariLogo40x40_3x from './rari_logo40x40@3x.png';
+import { default as RariLogo24x24_1x } from './rari_logo24x24@1x.png';
+import { default as RariLogo24x24_2x } from './rari_logo24x24@2x.png';
+import { default as RariLogo24x24_3x } from './rari_logo24x24@3x.png';
+import { default as RariLogo32x32_1x } from './rari_logo32x32@1x.png';
+import { default as RariLogo32x32_2x } from './rari_logo32x32@2x.png';
+import { default as RariLogo32x32_3x } from './rari_logo32x32@3x.png';
+import { default as RariLogo40x40_1x } from './rari_logo40x40@1x.png';
+import { default as RariLogo40x40_2x } from './rari_logo40x40@2x.png';
+import { default as RariLogo40x40_3x } from './rari_logo40x40@3x.png';
 
 /**
  * RariLogo24 represents the Rari Logo square at the size of 24x24

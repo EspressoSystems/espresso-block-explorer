@@ -1,5 +1,5 @@
 import { addClassToClassName } from '@/higher_order';
-import React from 'react';
+import { default as React } from 'react';
 
 export interface AnchorButtonProps extends React.DetailedHTMLProps<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,

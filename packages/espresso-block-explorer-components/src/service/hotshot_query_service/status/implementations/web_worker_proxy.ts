@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { WebWorkerRequest } from '@/service/espresso_staking_api_service/web_worker_types';
 import { BlockHeightResponse } from '@/service/hotshot_query_service/types';
 import { HotShotQueryServiceStatusAPI } from '../status_api';

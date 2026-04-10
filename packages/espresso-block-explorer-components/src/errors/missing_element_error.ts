@@ -5,7 +5,7 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError, { BaseErrorEncoder } from './base_error';
+import { BaseError, BaseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kMissingElementErrorCode = 'MissingElementError';
@@ -15,7 +15,7 @@ const kMissingElementErrorCode = 'MissingElementError';
  * was not present.  This generally occurs when the collection lacks the
  * necessary number of elements.
  */
-export default class MissingElementError extends BaseError {
+export class MissingElementError extends BaseError {
   constructor(message: string = 'missing element') {
     super(message);
     Object.freeze(this);

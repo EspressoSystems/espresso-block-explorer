@@ -1,6 +1,6 @@
-import Text from '@/components/text/text';
+import { default as Text } from './text';
 import { CurrentDateTimeFormatters } from '@/contexts/date_time_formatters_provider';
-import React, { useContext } from 'react';
+import { default as React, useContext } from 'react';
 
 export interface RelativeTimeTextProps {
   durationInMilliseconds: number;

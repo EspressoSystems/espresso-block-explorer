@@ -17,10 +17,10 @@ import {
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import { ProvideTransactionDetailDataSource } from '../hot_shot_query_service_adapters';
 import { StoryBookPathResolver } from '../story_book_path_resolver';
-import TransactionPage from '../transaction_page';
+import { default as TransactionPage } from '../transaction_page';
 
 interface ExampleProps {
   environment: Environment;

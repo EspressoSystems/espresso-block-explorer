@@ -2,9 +2,9 @@
 
 import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer_base64';
 import { parseHexString } from '@/convert/hex';
-import Text from '@/text/text';
+import { default as Text } from '@/text/text';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import { HexDumpAndCopyButtons } from '../copy_as';
 import {
   extractNitroBatch,

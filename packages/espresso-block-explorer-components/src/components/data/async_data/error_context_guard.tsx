@@ -1,6 +1,6 @@
 import { ErrorDisplay } from '@/components/error/error_display';
 import { ErrorContext } from '@/contexts/error_provider';
-import React from 'react';
+import { default as React } from 'react';
 
 export interface ErrorContextGuardProps {
   children: React.ReactNode | React.ReactNode[];

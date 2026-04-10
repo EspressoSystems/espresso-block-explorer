@@ -11,9 +11,9 @@ import { CommissionPercent } from '@/models/espresso/stake_table/commission_perc
 import { StakeTableEntry } from '@/models/espresso/stake_table/stake_table_entry';
 import { StakeTableEntryWrapper } from '@/models/espresso/stake_table/stake_table_entry_wrapper';
 import { Validator } from '@/models/espresso/stake_table/validator';
-import WalletAddress from '@/models/wallet_address/wallet_address';
+import { default as WalletAddress } from '@/models/wallet_address/wallet_address';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import { NodesSummaryDataTable as NodesSummaryDataTableComponent } from '../nodes_summary_data_table';
 import { NodeSummaryData } from '../nodes_summary_loader';
 

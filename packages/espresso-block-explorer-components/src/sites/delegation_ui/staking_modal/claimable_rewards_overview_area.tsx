@@ -1,7 +1,7 @@
-import MoneyText from '@/components/text/money_text';
-import Text from '@/components/text/text';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import React from 'react';
+import { MoneyText } from '@/components/text';
+import { Text } from '@/components/text';
+import { MonetaryValue } from '@/models/block_explorer';
+import { default as React } from 'react';
 import { LifetimeClaimedRewardsContext } from '../contexts/claimed_rewards_context';
 import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { EspressoRewardClaimInputContext } from '../contexts/reward_claim_input_context';

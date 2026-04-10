@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import InvalidTypeError from '@/errors/invalid_type_error';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
 
 /**
  * BitVecOrder represents an enumeration of the BitVector's order.

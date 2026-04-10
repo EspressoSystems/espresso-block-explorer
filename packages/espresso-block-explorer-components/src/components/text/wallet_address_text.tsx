@@ -1,5 +1,5 @@
-import WalletAddress from '@/models/wallet_address/wallet_address';
-import React from 'react';
+import { default as WalletAddress } from '@/models/wallet_address/wallet_address';
+import { default as React } from 'react';
 
 export interface WalletAddressTextProps {
   value: WalletAddress;

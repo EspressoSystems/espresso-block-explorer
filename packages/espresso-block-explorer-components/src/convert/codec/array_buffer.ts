@@ -1,9 +1,9 @@
-import InvalidTypeError from '@/errors/invalid_type_error';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
+import { cloneArrayBuffer } from '../util/array_buffer';
 import { rawStdBase64ArrayBufferCodec } from './array_buffer_base64';
 import { hexArrayBufferCodec } from './array_buffer_hex';
-import { isNumber, Converter, TypeCheckingCodec } from './convert';
+import { Converter, isNumber, TypeCheckingCodec } from './convert';
 import { NullCodec, NullDecoder, NullEncoder } from './null';
-import { cloneArrayBuffer } from '../util/array_buffer';
 
 /**
  * ArrayBufferDecoder is a flexible decder that attempts to decode a variety

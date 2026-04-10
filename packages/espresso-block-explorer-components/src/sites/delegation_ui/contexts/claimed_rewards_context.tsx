@@ -3,7 +3,7 @@ import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { DataContext } from '@/contexts/data_provider';
 import { RewardClaimContractContext } from '@/contexts/reward_claim_contract_context';
 import { neverPromise } from '@/functional/functional_async';
-import React from 'react';
+import { default as React } from 'react';
 import { L1RefreshTimestampContext } from './l1_refresh_timestamp_context';
 
 /**

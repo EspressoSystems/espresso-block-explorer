@@ -7,7 +7,7 @@ import {
   ExplorerBlockDetail,
   explorerBlockDetailCodec,
 } from '@/service/hotshot_query_service';
-import NodeValidatorResponse from './node_validator_response';
+import { default as NodeValidatorResponse } from './node_validator_response';
 
 export const kLatestBlockType = 'LatestBlock' as const;
 

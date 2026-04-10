@@ -1,10 +1,10 @@
-import Text from '@/components/text/text';
-import WalletAddressText from '@/components/text/wallet_address_text';
+import { Text } from '@/components/text';
+import { WalletAddressText } from '@/components/text';
 import { addClassToClassName } from '@/higher_order';
-import WalletAddress from '@/models/wallet_address/wallet_address';
-import React from 'react';
+import { WalletAddress } from '@/models/wallet_address';
+import { default as React } from 'react';
 import { ValidatorNodeContext } from '../../contexts/validator_node_context';
-import CopyWalletAddress from '../../validator_nodes_table/common/cells/copy_wallet_address';
+import { default as CopyWalletAddress } from '../../validator_nodes_table/common/cells/copy_wallet_address';
 
 export interface ValidatorNameProps {
   className?: string;

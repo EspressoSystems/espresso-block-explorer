@@ -11,9 +11,9 @@
 //      configurable retry logic.  All tests use a vi.fn() mock for the
 //      underlying fetch so no real network requests are made.
 
-import BadResponseClientError from '@/errors/bad_response_client_error';
-import FetchError from '@/errors/fetch_error';
-import WebWorkerErrorResponse from '@/errors/web_worker_error_response';
+import { BadResponseClientError } from '@/errors/bad_response_client_error';
+import { FetchError } from '@/errors/fetch_error';
+import { WebWorkerErrorResponse } from '@/errors/web_worker_error_response';
 import { describe, expect, it, vi } from 'vitest';
 import {
   createAutoRetryFetch,

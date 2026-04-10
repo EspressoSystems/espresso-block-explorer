@@ -1,5 +1,5 @@
 import { addClassToClassName } from '@/components/higher_order';
-import React from 'react';
+import { default as React } from 'react';
 import './circular_progress_indicator.css';
 
 export interface CircularProgressIndicatorProps {

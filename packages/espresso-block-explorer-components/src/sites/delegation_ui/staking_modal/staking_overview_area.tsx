@@ -1,8 +1,8 @@
-import { MoneyTextFull } from '@/components/text/money_text_full';
-import PercentageText from '@/components/text/percentage_text';
-import Text from '@/components/text/text';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import React from 'react';
+import { MoneyTextFull } from '@/components/text';
+import { PercentageText } from '@/components/text';
+import { Text } from '@/components/text';
+import { MonetaryValue } from '@/models/block_explorer';
+import { default as React } from 'react';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
 import { ValidatorFromContractContext } from './contexts/validator_from_contract_context';

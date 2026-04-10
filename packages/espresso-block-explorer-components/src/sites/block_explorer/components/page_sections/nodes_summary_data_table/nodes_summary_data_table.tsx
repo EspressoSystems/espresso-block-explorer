@@ -1,11 +1,12 @@
-import CopyTaggedBase64 from '@/block_explorer/components/text/copy_tagged_base64';
-import CopyWalletAddress from '@/block_explorer/components/text/copy_wallet_address';
+import { default as CopyTaggedBase64 } from '@/block_explorer/components/text/copy_tagged_base64';
+import { default as CopyWalletAddress } from '@/block_explorer/components/text/copy_wallet_address';
 import {
   CurrentStakeTableContext,
   CurrentValidatorsContext,
 } from '@/block_explorer/pages/node_validator_service_adapters';
-import DataTable, {
+import {
   Alignment,
+  default as DataTable,
   DataTableRowContext,
   DataTableSetStateContext,
   DataTableState,
@@ -13,11 +14,14 @@ import DataTable, {
 } from '@/components/data/data_table/data_table';
 import { SortDirection } from '@/components/data/types';
 import { ErrorDisplay } from '@/components/error/error_display';
-import SkeletonContent from '@/components/loading/skeleton_content';
-import { MoneyText, NumberText } from '@/components/text';
-import PercentageText from '@/components/text/percentage_text';
-import TaggedBase64Text from '@/components/text/tagged_base64_text';
-import WalletAddressText from '@/components/text/wallet_address_text';
+import { default as SkeletonContent } from '@/components/loading/skeleton_content';
+import {
+  MoneyText,
+  NumberText,
+  PercentageText,
+  TaggedBase64Text,
+  WalletAddressText,
+} from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
@@ -26,12 +30,12 @@ import {
   foldRIterator,
   iota,
 } from '@/functional/functional';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { default as MonetaryValue } from '@/models/block_explorer/monetary_value';
 import { StakeTableEntryWrapper } from '@/models/espresso/stake_table/stake_table_entry_wrapper';
 import { Validator } from '@/models/espresso/stake_table/validator';
-import WalletAddress from '@/models/wallet_address/wallet_address';
-import Text from '@/text/text';
-import React from 'react';
+import { default as WalletAddress } from '@/models/wallet_address/wallet_address';
+import { default as Text } from '@/text/text';
+import { default as React } from 'react';
 import { EgressLink } from '../../links/link/link';
 import {
   NodeSummaryColumn,

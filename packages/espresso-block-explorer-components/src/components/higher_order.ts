@@ -9,7 +9,7 @@
  * added to other components.
  */
 
-import React from 'react';
+import { default as React } from 'react';
 
 export interface HigherOrderComponentWithClassNameProps {
   className?: string;

@@ -6,7 +6,8 @@ import {
 } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 import { stringCodec } from '@/convert/codec/string';
-import BaseBadResponseError, {
+import {
+  BaseBadResponseError,
   baseBadResponseErrorEncoder,
 } from './base_bad_response_error';
 import { registerCodec } from './registry';
@@ -18,7 +19,7 @@ const kResponseContentTypeIsNotApplicationJSONErrorCode =
  * BadResponseClientError is a more specific BadResponse error that indicates
  * the nature of the failure was due to a client submission error.
  */
-export default class ResponseContentTypeIsNotApplicationJSONError extends BaseBadResponseError {
+export class ResponseContentTypeIsNotApplicationJSONError extends BaseBadResponseError {
   public readonly haveHeaderType: string;
 
   constructor(

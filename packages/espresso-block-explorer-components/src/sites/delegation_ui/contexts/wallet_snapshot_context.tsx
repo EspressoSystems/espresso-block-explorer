@@ -5,7 +5,7 @@ import { StakingAPIServiceContext } from '@/contexts/staking_api_service_context
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { neverPromise } from '@/functional/functional_async';
 import { WalletSnapshot } from '@/service/espresso_staking_api_service/wallet/wallet_snapshot';
-import React from 'react';
+import { default as React } from 'react';
 import { L1BlockIDContext } from './l1_block_id_context';
 import { L1RefreshTimestampContext } from './l1_refresh_timestamp_context';
 

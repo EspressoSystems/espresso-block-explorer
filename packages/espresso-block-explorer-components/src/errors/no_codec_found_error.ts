@@ -2,7 +2,7 @@ import { breakpoint } from '@/assert/debugger';
 
 const kNoCodecFoundErrorCode = 'NoCodecFoundError';
 
-export default class NoCodecFoundError extends Error {
+export class NoCodecFoundError extends Error {
   readonly codec: string;
   constructor(
     codec: string,

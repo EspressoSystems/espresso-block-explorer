@@ -1,7 +1,7 @@
 import { breakpoint } from '@/assert/debugger';
 import { Config } from 'wagmi';
 import { estimateContractGas } from '../l1/estimate_contract_gas';
-import ClaimRewardsAbi from './reward_claim_abi';
+import { default as ClaimRewardsAbi } from './reward_claim_abi';
 import { RewardClaimContractGasEstimator } from './reward_claim_interface';
 
 /**

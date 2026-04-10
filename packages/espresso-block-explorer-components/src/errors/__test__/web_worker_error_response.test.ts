@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import UnimplementedError from '../unimplemented_error';
-import WebWorkerErrorResponse, {
+import { espressoErrorCodec } from '../registry';
+import { UnimplementedError } from '../unimplemented_error';
+import {
+  WebWorkerErrorResponse,
   webWorkerErrorResponseCodec,
 } from '../web_worker_error_response';
-import { espressoErrorCodec } from '../registry';
 
 describe('UnimplementedError', () => {
   describe('toJSON', () => {

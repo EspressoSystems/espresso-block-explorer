@@ -1,6 +1,10 @@
 import '@testing-library/jest-dom';
 import { describe, expect, it } from 'vitest';
-import LinkedList, { iterateLinkedList, pushLinkedList } from '../linked_list';
+import {
+  default as LinkedList,
+  iterateLinkedList,
+  pushLinkedList,
+} from '../linked_list';
 
 describe('LinkedList', () => {
   describe('iotaAsync', () => {

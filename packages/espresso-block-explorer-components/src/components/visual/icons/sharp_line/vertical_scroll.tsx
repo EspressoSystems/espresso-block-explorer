@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/higher_order';
-import React from 'react';
-import SharpIconBase from './sharp_icon_base';
+import { default as React } from 'react';
+import { default as SharpIconBase } from './sharp_icon_base';
 
 /**
  * VerticalScroll represents an icon indicating vertical scrolling.

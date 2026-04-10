@@ -5,12 +5,12 @@ import {
   assertErrorCode,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import BaseError, { baseErrorEncoder } from './base_error';
+import { BaseError, baseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kInvalidTypeErrorCode = 'InvalidTypeError';
 
-export default class InvalidTypeError extends BaseError {
+export class InvalidTypeError extends BaseError {
   readonly have: string;
   readonly want: string;
   constructor(

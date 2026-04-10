@@ -1,14 +1,15 @@
 import { describe, it } from 'vitest';
-import Degrees from '../../units/degrees';
-import LatLng from '../../units/lat_lng';
-import Latitude from '../../units/latitude';
-import Longitude from '../../units/longitude';
-import GeoJSONMultiPoint from '../multi_point';
-import GeoJSONMultiPolygon, {
+import { default as Degrees } from '../../units/degrees';
+import { default as LatLng } from '../../units/lat_lng';
+import { default as Latitude } from '../../units/latitude';
+import { default as Longitude } from '../../units/longitude';
+import { default as GeoJSONMultiPoint } from '../multi_point';
+import {
+  default as GeoJSONMultiPolygon,
   geoJSONMultiPolygonCodec,
 } from '../multi_polygon';
-import GeoJSONPoint from '../point';
-import GeoJSONPolygon from '../polygon';
+import { default as GeoJSONPoint } from '../point';
+import { default as GeoJSONPolygon } from '../polygon';
 
 describe('Multi Polygon', () => {
   describe('Codec', () => {

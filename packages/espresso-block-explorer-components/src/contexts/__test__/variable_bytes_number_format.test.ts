@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { describe, expect, it } from 'vitest';
-import VariableBytesNumberFormat from '../variable_bytes_number_format';
+import { default as VariableBytesNumberFormat } from '../variable_bytes_number_format';
 
 describe('VariableBytesNumberFormat', () => {
   describe('Basic Usage', () => {

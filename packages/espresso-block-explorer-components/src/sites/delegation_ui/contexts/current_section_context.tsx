@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * Sections enum defines the different sections available in the Delegation UI.

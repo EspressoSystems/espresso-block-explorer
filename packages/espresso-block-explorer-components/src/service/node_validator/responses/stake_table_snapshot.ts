@@ -7,7 +7,7 @@ import {
   arrayStakeTableEntryWrapperCodec,
   StakeTableEntryWrapper,
 } from '@/models/espresso/stake_table/stake_table_entry_wrapper';
-import NodeValidatorResponse from './node_validator_response';
+import { default as NodeValidatorResponse } from './node_validator_response';
 
 /**
  * Messages from the Node Validator take the form of:

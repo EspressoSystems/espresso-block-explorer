@@ -1,7 +1,7 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
-import Text from '@/components/text/text';
-import React from 'react';
-import ButtonLarge from '../elements/buttons/button_large';
+import { Text } from '@/components/text';
+import { default as React } from 'react';
+import { default as ButtonLarge } from '../elements/buttons/button_large';
 import { DelegateAsyncSnapshotContext } from './contexts/perform_delegation_context';
 import { PerformWriteTransactionStatus } from './contexts/perform_write_states';
 import { StakingModalCloseContext } from './contexts/staking_modal_close_context';

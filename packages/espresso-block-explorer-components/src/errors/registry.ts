@@ -5,7 +5,7 @@ import {
   isRecordWithKeys,
 } from '@/convert/codec/convert';
 import { EspressoError } from './espresso_error';
-import NoCodecFoundError from './no_codec_found_error';
+import { NoCodecFoundError } from './no_codec_found_error';
 
 const espressoErrorRegistry: Map<string, Codec<unknown, unknown>> = new Map();
 

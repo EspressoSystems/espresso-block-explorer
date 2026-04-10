@@ -1,9 +1,9 @@
-import MoneyText from '@/components/text/money_text';
-import Text from '@/components/text/text';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { MoneyText } from '@/components/text';
+import { Text } from '@/components/text';
+import { MonetaryValue } from '@/models/block_explorer';
 import { NodeAddressContext } from '@/sites/delegation_ui/contexts/node_address_context';
 import { PendingUndelegationsContext } from '@/sites/delegation_ui/contexts/pending_undelegations_context';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * StakedPendingUndelegationCell displays the amount staked to a validator node that is

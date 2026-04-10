@@ -1,12 +1,12 @@
 import { assertInstanceOf } from '@/assert/assert';
 import { Converter } from '@/convert/codec/convert';
-import BaseError, { baseErrorEncoder } from './base_error';
+import { BaseError, baseErrorEncoder } from './base_error';
 
 /**
  * BaseBadResponseError is this base error of all failures due to handling the
  * Response from a `fetch` request.
  *  */
-export default abstract class BaseBadResponseError extends BaseError {
+export abstract class BaseBadResponseError extends BaseError {
   readonly response: null | Response;
 
   readonly status: number;

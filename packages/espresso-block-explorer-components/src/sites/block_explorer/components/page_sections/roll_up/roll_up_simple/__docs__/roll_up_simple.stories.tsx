@@ -1,7 +1,7 @@
 import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
-import RollUpSimpleComp from '../roll_up_simple';
+import { default as React } from 'react';
+import { default as RollUpSimpleComp } from '../roll_up_simple';
 
 interface ExampleProps {
   namespace: number;

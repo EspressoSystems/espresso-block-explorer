@@ -26,11 +26,12 @@
  * functions to apply to many more Javascript types.
  */
 
-import LinkedList, {
+import {
+  default as LinkedList,
   iterateLinkedList,
   pushLinkedList,
 } from '@/data_structures/linked_list/linked_list';
-import MissingElementError from '@/errors/missing_element_error';
+import { MissingElementError } from '@/errors/missing_element_error';
 
 /**
  * yieldAll is a convenience function for converting an Iterator into

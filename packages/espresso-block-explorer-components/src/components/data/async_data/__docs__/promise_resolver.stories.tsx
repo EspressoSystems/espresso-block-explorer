@@ -1,12 +1,12 @@
-import CircularProgressIndicator from '@/components/loading/circular_progress_indicator';
-import NotFoundError from '@/errors/not_found_error';
+import { default as CircularProgressIndicator } from '@/components/loading/circular_progress_indicator';
+import { NotFoundError } from '@/errors/not_found_error';
 import { neverPromise } from '@/functional/functional_async';
-import Text from '@/text/text';
+import { default as Text } from '@/text/text';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import { AsyncState } from '../async_snapshot';
 import { AsyncSnapshotContext } from '../async_snapshot_context';
-import PromiseResolverComp from '../promise_resolver';
+import { default as PromiseResolverComp } from '../promise_resolver';
 
 async function sleep(milliseconds: number): Promise<void> {
   return new Promise((resolve) => {

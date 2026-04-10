@@ -3,8 +3,8 @@ import {
   RainbowKitAccountAddressContext,
   RainbowKitModalContext,
 } from '@/components/rainbowkit';
-import Text from '@/components/text/text';
-import Add1 from '@/components/visual/icons/sharp_line/add_1';
+import { Text } from '@/components/text';
+import { Add1 } from '@/components/visual/icons/sharp_line';
 import {
   compareIterables,
   filterIterable,
@@ -13,7 +13,7 @@ import {
 } from '@/functional/functional';
 import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
 import { WalletSnapshot } from '@/service/espresso_staking_api_service/wallet/wallet_snapshot';
-import React from 'react';
+import { default as React } from 'react';
 import './colors.css';
 import {
   AllValidatorsContext,
@@ -43,7 +43,7 @@ import {
 } from './contexts/validator_selection_context';
 import { WalletSnapshotContext } from './contexts/wallet_snapshot_context';
 import './delegation_ui_content.css';
-import ButtonLarge from './elements/buttons/button_large';
+import { default as ButtonLarge } from './elements/buttons/button_large';
 import { MyBalance } from './my_balance';
 import { NetworkStats } from './network_stats';
 import { OnlyTop100Filter } from './only_show_top_100_button';

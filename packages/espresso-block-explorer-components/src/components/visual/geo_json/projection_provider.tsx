@@ -1,18 +1,18 @@
 import { expandIterable, iota, mapIterable } from '@/functional/functional';
-import ChainProjection from '@/models/geo/projection/chain_projection';
-import CoordinateSpaceProjection from '@/models/geo/projection/coordinate_space_projection';
+import { default as ChainProjection } from '@/models/geo/projection/chain_projection';
+import { default as CoordinateSpaceProjection } from '@/models/geo/projection/coordinate_space_projection';
 import { degreesRadiansProjection } from '@/models/geo/projection/degrees_radians_projection';
-import DensityIndependentPoint from '@/models/geo/units/density_independent_point';
-import LatLng from '@/models/geo/units/lat_lng';
-import Latitude from '@/models/geo/units/latitude';
-import Longitude from '@/models/geo/units/longitude';
+import { default as DensityIndependentPoint } from '@/models/geo/units/density_independent_point';
+import { default as LatLng } from '@/models/geo/units/lat_lng';
+import { default as Latitude } from '@/models/geo/units/latitude';
+import { default as Longitude } from '@/models/geo/units/longitude';
 import {
   gridCellSize,
   mapWidth,
   numXCells,
   numYCells,
 } from '@/models/geo/world_map_grid/constants';
-import React from 'react';
+import { default as React } from 'react';
 import {
   MapCoordinateGridSpaceCentersContext,
   MapCoordinateSpaceRectContext,

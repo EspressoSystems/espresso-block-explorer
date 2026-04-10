@@ -7,7 +7,7 @@ import {
   SummaryHistograms,
   summaryHistogramsCodec,
 } from '@/service/hotshot_query_service/explorer/summary_histograms';
-import NodeValidatorResponse from './node_validator_response';
+import { default as NodeValidatorResponse } from './node_validator_response';
 
 /**
  * Messages from the Node Validator take the form of:

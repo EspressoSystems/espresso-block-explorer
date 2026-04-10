@@ -1,10 +1,10 @@
-import NumberText from '@/text/number_text';
-import Text from '@/text/text';
+import { default as NumberText } from '@/text/number_text';
+import { default as Text } from '@/text/text';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
-import PromiseResolver from '../../async_data/promise_resolver';
+import { default as React } from 'react';
+import { default as PromiseResolver } from '../../async_data/promise_resolver';
 import { SortDirection, reverseSortDir } from '../../types';
-import DataTableComp, {
+import {
   DataTableRowContext,
   DataTableSetStateContext,
   DataTableState,

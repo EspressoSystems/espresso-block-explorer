@@ -1,5 +1,5 @@
 import { foldRIterable } from '@/functional/functional';
-import React from 'react';
+import { default as React } from 'react';
 import { WalletSnapshotContext } from './wallet_snapshot_context';
 
 /**

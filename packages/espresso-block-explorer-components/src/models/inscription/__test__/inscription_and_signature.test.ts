@@ -1,7 +1,8 @@
-import WalletAddress from '@/models/wallet_address/wallet_address';
+import { default as WalletAddress } from '@/models/wallet_address/wallet_address';
 import { describe, it } from 'vitest';
-import Inscription from '../inscription';
-import InscriptionAndSignature, {
+import { default as Inscription } from '../inscription';
+import {
+  default as InscriptionAndSignature,
   inscriptionAndSignatureBincodeCodec,
   inscriptionAndSignatureCodec,
 } from '../inscription_and_signature';

@@ -8,7 +8,7 @@ import { ExplorerGetSearchResultResponse } from '@/service/hotshot_query_service
 import { ExplorerSearchResults } from '@/service/hotshot_query_service/explorer/search_results';
 import { FakeDataHotShotQueryService } from '@/service/hotshot_query_service/implementations/fake_data';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import {
   InitialSearchState,
   SearchInput as SearchInputComp,

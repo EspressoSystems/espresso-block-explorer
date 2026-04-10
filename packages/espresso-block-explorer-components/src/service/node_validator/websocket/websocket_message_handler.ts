@@ -1,5 +1,5 @@
 import { Sink } from '@/async/sink';
-import NodeValidatorResponse from '../responses/node_validator_response';
+import { default as NodeValidatorResponse } from '../responses/node_validator_response';
 import { nodeValidatorResponseCodec } from '../responses/node_validator_response_codec';
 
 export class WebSocketMessageHandler implements EventListenerObject {

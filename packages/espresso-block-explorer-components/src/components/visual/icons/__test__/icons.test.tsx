@@ -1,19 +1,19 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import ArrowLeft from '../arrow_left';
-import ArrowRight from '../arrow_right';
-import CheckCircleFilled from '../check_circle_filled';
-import ChevronDown from '../chevron_down';
-import ChevronUp from '../chevron_up';
-import DiscordIcon from '../discord_icon';
-import EspressoLogo from '../espresso_logo';
-import EspressoLogoAndTitle from '../espresso_logo_and_title';
-import InfoCircle from '../info_circle';
-import MediumIcon from '../medium_icon';
-import Menu from '../menu';
-import SearchGlass from '../search_glass';
-import TwitterIcon from '../twitter_icon';
+import { default as ArrowLeft } from '../arrow_left';
+import { default as ArrowRight } from '../arrow_right';
+import { default as CheckCircleFilled } from '../check_circle_filled';
+import { default as ChevronDown } from '../chevron_down';
+import { default as ChevronUp } from '../chevron_up';
+import { default as DiscordIcon } from '../discord_icon';
+import { default as EspressoLogo } from '../espresso_logo';
+import { default as EspressoLogoAndTitle } from '../espresso_logo_and_title';
+import { default as InfoCircle } from '../info_circle';
+import { default as MediumIcon } from '../medium_icon';
+import { default as Menu } from '../menu';
+import { default as SearchGlass } from '../search_glass';
+import { default as TwitterIcon } from '../twitter_icon';
 
 describe('Icons Test', () => {
   describe('ArrowLeft', () => {

@@ -5,3 +5,4 @@ export * from './geo';
 export * from './inscription';
 export * from './numeric';
 export * from './wallet_address';
+export * from './web_worker';
