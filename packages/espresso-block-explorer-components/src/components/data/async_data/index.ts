@@ -1,5 +1,5 @@
 export { default as AsyncIterableResolver } from './async_iterable_resolver';
-export { AsyncSnapshot } from './async_snapshot';
+export { AsyncSnapshot, AsyncState } from './async_snapshot';
 export { AsyncSnapshotContext } from './async_snapshot_context';
 export * from './basic_async_data_handler';
 export { default as ErrorContextGuard } from './error_context_guard';

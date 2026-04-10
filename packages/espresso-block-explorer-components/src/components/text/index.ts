@@ -7,6 +7,7 @@ export { default as FullTextHexText } from './full_hex_text';
 export { default as FullTaggedBase64Text } from './full_tagged_base64_text';
 export { default as HexText } from './hex_text';
 export { default as MoneyText } from './money_text';
+export { MoneyTextFull } from './money_text_full';
 export { default as NumberText } from './number_text';
 export { default as PercentageText } from './percentage_text';
 export { default as RelativeTimeSinceDateText } from './relative_time_since_date_text';

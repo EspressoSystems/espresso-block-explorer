@@ -1,6 +1,6 @@
 import { foldRIterable } from '@/functional/functional';
-import { WalletSnapshotContext } from 'delegation-ui';
 import React from 'react';
+import { WalletSnapshotContext } from './wallet_snapshot_context';
 
 /**
  * CurrentTotalPendingUndelegationAmountContext provides a React Context for

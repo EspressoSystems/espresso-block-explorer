@@ -22,7 +22,6 @@ import {
 } from '@/functional/functional';
 import MonetaryValue from '@/models/block_explorer/monetary_value';
 import WalletAddress from '@/models/wallet_address/wallet_address';
-import { ConfirmedValidatorContext } from 'delegation-ui';
 import React from 'react';
 import { WagmiContext } from 'wagmi';
 import { ConnectWalletButton } from '../connect_wallet_button';
@@ -35,6 +34,7 @@ import {
   kIntentClaimAndStake,
   SetClaimPortalIntentContext,
 } from '../contexts/claim_portal_intent_context';
+import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import {
   ESPBalanceAsyncSnapshotContext,
   ESPBalanceContext,

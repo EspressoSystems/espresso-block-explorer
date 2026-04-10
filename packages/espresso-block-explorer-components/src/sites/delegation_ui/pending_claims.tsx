@@ -2,10 +2,10 @@ import Text from '@/components/text/text';
 import PadlockSquare2 from '@/components/visual/icons/sharp_line/padlock_square_2';
 import { Now } from '@/contexts/now_provider';
 import { compareIterables } from '@/functional/functional';
-import { CollapseState } from 'delegation-ui';
 import React from 'react';
 import { CollapsableHeader, CollapsableSection } from './collapsable_section';
 import { NodeAddressListContext } from './contexts/all_validators_context';
+import { CollapseState } from './contexts/collapse_context';
 import { PendingUndelegationsContext } from './contexts/pending_undelegations_context';
 import './pending_claims.css';
 import {

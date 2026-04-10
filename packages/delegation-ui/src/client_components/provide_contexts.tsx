@@ -3,17 +3,17 @@
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import {
   EnvironmentBanner,
-  ProvideHotShotQueryServiceAPIContext,
-  ProvideNodeValidatorServiceAPIContext,
   ProvideDerivedDateTimeFormatters,
   ProvideDerivedNumberFormatters,
   ProvideESPTokenContract,
+  ProvideHotShotQueryServiceAPIContext,
   ProvideL1Methods,
-  ProvideL1ValidatorServiceAPIContext,
   ProvideLightClientV2Contract,
   ProvideNavigatorLanguage,
+  ProvideNodeValidatorServiceAPIContext,
   ProvideRewardClaimContract,
   ProvideStakeTableV2Contract,
+  ProvideStakingAPIServiceContext,
   ProvideTickEverySecond,
   RainbowKitContextInjector,
 } from 'espresso-block-explorer-components';
@@ -37,7 +37,7 @@ export default function DelegationUIContexts({
           <ProvideTickEverySecond>
             <ProvideNodeValidatorServiceAPIContext>
               <ProvideHotShotQueryServiceAPIContext>
-                <ProvideL1ValidatorServiceAPIContext>
+                <ProvideStakingAPIServiceContext>
                   <RainbowKitProvider>
                     <RainbowKitContextInjector>
                       <ProvideL1Methods>
@@ -54,7 +54,7 @@ export default function DelegationUIContexts({
                       </ProvideL1Methods>
                     </RainbowKitContextInjector>
                   </RainbowKitProvider>
-                </ProvideL1ValidatorServiceAPIContext>
+                </ProvideStakingAPIServiceContext>
               </ProvideHotShotQueryServiceAPIContext>
             </ProvideNodeValidatorServiceAPIContext>
           </ProvideTickEverySecond>

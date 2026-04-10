@@ -9,4 +9,4 @@ export type { NodeValidatorService } from './node_validator_service_api';
 export * from './node_validator_web_worker_client_based';
 export * from './requests';
 export * from './responses';
-export type { WebWorkerNodeValidatorAPI } from './web_worker_proxy_api';
+export * from './web_worker_proxy_api';

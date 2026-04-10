@@ -39,14 +39,6 @@ function createBreakpointExecutor(): breakpointExecutor {
   return new ReleaseBreakpointExecutor();
 }
 
-export function isProduction(): boolean {
-  return breakpointExecutor instanceof ReleaseBreakpointExecutor;
-}
-
-export function isDevelopment(): boolean {
-  return breakpointExecutor instanceof DebugBreakpointExecutor;
-}
-
 const breakpointExecutor = createBreakpointExecutor();
 
 /**

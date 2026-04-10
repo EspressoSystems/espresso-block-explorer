@@ -81,7 +81,7 @@
   },
   "scripts": {
     "bench": "vitest bench",
-    "build": "vite build && vite build --config vite.sites.config.mts && npm run copy-assets",
+    "build": "vite build && npm run copy-assets",
     "copy-assets": "npm run copy-assets:block-explorer && npm run copy-assets:delegation-ui",
     "copy-assets:block-explorer": "mkdir -p ../block-explorer/public/assets && cp dist/assets/*worker*.js ../block-explorer/public/assets/.",
     "copy-assets:delegation-ui": "mkdir -p ../delegation-ui/public/assets && cp dist/assets/*worker*.js ../delegation-ui/public/assets/.",
