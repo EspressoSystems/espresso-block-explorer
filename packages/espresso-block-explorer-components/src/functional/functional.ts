@@ -461,6 +461,16 @@ export function zipWithIterable<T, U, V>(
 }
 
 /**
+ * cycleIterable is a generator function that will emit the given Iterable
+ * in a loop forever.
+ */
+export function* cycleIterable<T>(ts: Iterable<T>): Generator<T> {
+  while (true) {
+    yield* ts;
+  }
+}
+
+/**
  * singletonIterable is a convenience function that creates an iterable
  * containing a single element.
  */
