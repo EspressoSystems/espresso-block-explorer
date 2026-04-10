@@ -1,5 +1,5 @@
 import { DataContext } from '@/contexts/data_provider';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { PieChartEntry, PieChartFromData } from '../pie_chart';
 

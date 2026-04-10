@@ -9,7 +9,7 @@ import { default as MediumIcon } from '@/visual/icons/medium_icon';
 import { default as Menu } from '@/visual/icons/menu';
 import { default as SearchGlass } from '@/visual/icons/search_glass';
 import { default as TwitterIcon } from '@/visual/icons/twitter_icon';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { default as IconAnchorButtonComp } from '../icon_anchor_button';
 

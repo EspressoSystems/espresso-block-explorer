@@ -3,7 +3,7 @@
 import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer_base64';
 import { parseHexString } from '@/convert/hex';
 import { default as Text } from '@/text/text';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { HexDumpAndCopyButtons } from '../copy_as';
 import {

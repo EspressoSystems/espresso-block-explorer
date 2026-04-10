@@ -8,7 +8,7 @@ import {
   geoJSONFeatureCollectionCodec,
 } from '@/models/geo/geo_json/feature_collection';
 import { mapHeight, mapWidth } from '@/models/geo/world_map_grid/constants';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { default as GeoJSONView } from '../geo_json_view';
 

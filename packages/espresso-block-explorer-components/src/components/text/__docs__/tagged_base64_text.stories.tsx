@@ -1,5 +1,5 @@
 import { TaggedBase64 as TaggedBase64Object } from '@/models/espresso/tagged_base64/tagged_base64';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { default as TaggedBase64Text } from '../tagged_base64_text';
 

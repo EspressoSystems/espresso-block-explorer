@@ -1,6 +1,6 @@
 import { DataContext } from '@/contexts/data_provider';
 import { dropIterator, inf, takeIterator } from '@/functional/functional';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { BlockSizeHistogram } from '../block_size_histogram';
 import { BlockSizeHistogramData } from '../block_size_histogram_data_loader';

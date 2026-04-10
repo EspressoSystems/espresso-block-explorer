@@ -1,6 +1,6 @@
 import { ProvideDerivedDateTimeFormatters } from '@/contexts/date_time_formatters_provider';
 import { OverrideLocale } from '@/contexts/locale_provider';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { default as TimeText } from '../time_text';
 

@@ -6,7 +6,7 @@ import { bigintCodec } from '@/convert/codec/bigint';
 import { mapIterable } from '@/functional/functional';
 import { stakeTableCodec } from '@/service/hotshot_query_service/node/stake_table';
 import { StakeTableEntry } from '@/service/hotshot_query_service/node/stake_table_entry';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { generateStakeBasedCDF } from '../randomized_committee';
 

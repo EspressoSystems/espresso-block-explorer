@@ -1,5 +1,5 @@
 import { geoJSONFeatureCollectionCodec } from '@/models/geo/geo_json/feature_collection';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { default as GeoJSONViewComp } from '../geo_json_view';
 

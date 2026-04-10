@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as ContainerLoading } from '../container_loading';
 
 const meta: Meta<typeof ContainerLoading> = {

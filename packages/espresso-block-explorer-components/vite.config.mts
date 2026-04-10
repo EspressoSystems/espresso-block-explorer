@@ -1,54 +1,12 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
 
-import { defineConfig, type Plugin } from 'vite';
+import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { peerDependencies } from './package.json';
 import circularDependency from 'vite-plugin-circular-dependency';
 
-/**
- * Externalizes shared library imports from site-specific source files.
- *
- * When a module inside src/sites/block_explorer/ or src/sites/delegation_ui/
- * imports something that resolves to outside those folders (but still within
- * src/), the import is redirected to the shared library entry at runtime
- * instead of being bundled again. This keeps each site bundle lean and
- * ensures shared code lives only in espresso-block-explorer-components.es.js.
- */
-function sharedExternalizer(): Plugin {
-  return {
-    name: 'shared-externalizer',
-    enforce: 'pre',
-    async resolveId(source, importer) {
-      if (!importer) return null;
-      if (source.startsWith('\0')) return null;
-
-      const importerInSite =
-        importer.includes('/src/sites/block_explorer/') ||
-        importer.includes('/src/sites/delegation_ui/');
-      if (!importerInSite) return null;
-
-      const resolved = await this.resolve(source, importer, { skipSelf: true });
-      if (!resolved || resolved.external) return null;
-
-      const { id } = resolved;
-      if (id.includes('/node_modules/')) return null;
-      if (id.endsWith('.css')) return null;
-
-      const resolvedInSite =
-        id.includes('/src/sites/block_explorer/') ||
-        id.includes('/src/sites/delegation_ui/');
-      if (resolvedInSite) return null;
-
-      if (id.includes('/src/')) {
-        return { id: 'espresso-block-explorer-components', external: true };
-      }
-
-      return null;
-    },
-  };
-}
 
 export default defineConfig({
   build: {
@@ -66,25 +24,37 @@ export default defineConfig({
     },
     cssCodeSplit: true,
     rollupOptions: {
-      // Match peer deps, all their subpaths (e.g. viem/actions), and the
-      // shared library virtual ID used by sharedExternalizer.
       external: (id) =>
-        id === 'espresso-block-explorer-components' ||
         Object.keys(peerDependencies).some(
           (dep) => id === dep || id.startsWith(`${dep}/`),
         ),
       output: {
-        // Customize asset filenames to ensure CSS files match their entry point names
+        // Remap CSS from manual chunks to the predictable entry-point names expected
+        // by package.json exports. Manual chunk names deliberately differ from entry
+        // names to avoid Rollup circular-chunk references (which break SSR evaluation
+        // order and cause TDZ errors at runtime).
         assetFileNames: ({ name }: { name?: string }) => {
-          if (name && name.endsWith('.css')) {
-            return '[name].[ext]';
-          }
+          if (name === 'shared-lib.css') return 'espresso-block-explorer-components.css';
+          if (name === 'block-explorer-site.css') return 'block-explorer.css';
+          if (name === 'delegation-ui-site.css') return 'delegation-ui.css';
+          if (name && name.endsWith('.css')) return '[name].[ext]';
           return 'assets/[name]-[hash][extname]';
         },
-        // Map the virtual shared-library ID to the actual output file.
-        paths: {
-          'espresso-block-explorer-components':
-            './espresso-block-explorer-components.es.js',
+        // Use non-entry names so manual chunks don't collide with entry chunk names.
+        // Return undefined for entry files so Rollup keeps them in their own chunks;
+        // this prevents the circular chunk reference caused by entry files being
+        // pulled into shared-lib and then importing back into the site chunks.
+        manualChunks(id) {
+          if (
+            id.endsWith('/src/block-explorer.ts') ||
+            id.endsWith('/src/delegation-ui.ts') ||
+            id.endsWith('/src/espresso-block-explorer-components.ts')
+          ) {
+            return undefined;
+          }
+          if (id.includes('/sites/delegation_ui/')) return 'delegation-ui-site';
+          if (id.includes('/sites/block_explorer/')) return 'block-explorer-site';
+          return 'shared-lib';
         },
       },
     },
@@ -119,7 +89,6 @@ export default defineConfig({
     ],
   },
   plugins: [
-    sharedExternalizer(),
     dts({
       tsconfigPath: 'tsconfig.build.json',
     }),

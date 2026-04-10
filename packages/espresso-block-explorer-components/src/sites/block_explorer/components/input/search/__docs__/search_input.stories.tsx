@@ -1,6 +1,6 @@
 import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { FakeDataHotShotQueryService } from '@/service/hotshot_query_service/implementations/fake_data';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import {
   InitialSearchState,

@@ -1,5 +1,5 @@
 import { Divider } from '@/block_explorer/components/layout/divider/divider';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { default as ArrowDownward } from '../arrow_downward';
 import { default as ArrowLeft } from '../arrow_left';

@@ -5,7 +5,7 @@ import {
   nodeList,
 } from '@/data_source/fake_data_source/espresso/nodes';
 import { mapIterable } from '@/functional/functional';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { ProjectionProvider } from '../projection_provider';
 import { default as WorldMapAutoSizer } from '../world_map_auto_sizer';

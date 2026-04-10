@@ -7,7 +7,7 @@ import { ExplorerBlockSummary } from '@/service/hotshot_query_service/explorer/b
 import { ExplorerGetSearchResultResponse } from '@/service/hotshot_query_service/explorer/get_search_result_response';
 import { ExplorerSearchResults } from '@/service/hotshot_query_service/explorer/search_results';
 import { FakeDataHotShotQueryService } from '@/service/hotshot_query_service/implementations/fake_data';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import {
   InitialSearchState,

@@ -2,7 +2,7 @@ import { default as CircularProgressIndicator } from '@/components/loading/circu
 import { NotFoundError } from '@/errors/not_found_error';
 import { neverPromise } from '@/functional/functional_async';
 import { default as Text } from '@/text/text';
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { AsyncState } from '../async_snapshot';
 import { AsyncSnapshotContext } from '../async_snapshot_context';
