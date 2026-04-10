@@ -1,4 +1,4 @@
-import { default as DiscordIcon } from '@/visual/icons/discord_icon';
+import { DiscordIcon } from '@/visual/icons';
 import { default as React } from 'react';
 import { default as SocialMediaIconLink } from './social_media_icon_link';
 

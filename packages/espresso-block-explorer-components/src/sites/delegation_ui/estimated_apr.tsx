@@ -1,5 +1,4 @@
-import { PercentageText } from '@/components/text';
-import { Text } from '@/components/text';
+import { PercentageText, Text } from '@/components/text';
 import { default as React } from 'react';
 import { ActiveValidatorsContext } from './contexts/active_validators_context';
 import { MoreInfoElement } from './elements/tooltip/more_info';

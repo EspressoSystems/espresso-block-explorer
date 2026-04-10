@@ -1,5 +1,4 @@
-import { MoneyText } from '@/components/text';
-import { Text } from '@/components/text';
+import { MoneyText, Text } from '@/components/text';
 import { MonetaryValue } from '@/models/block_explorer';
 import { ESPBalanceContext } from '@/sites/delegation_ui/contexts/esp_balance_context';
 import { default as React } from 'react';

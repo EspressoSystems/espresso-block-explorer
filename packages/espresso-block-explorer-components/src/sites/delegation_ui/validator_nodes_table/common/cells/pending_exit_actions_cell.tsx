@@ -1,6 +1,5 @@
+import { Text, TimeLeftText } from '@/components/text';
 import { Now } from '@/contexts/now_provider';
-import { Text } from '@/components/text';
-import { TimeLeftText } from '@/components/text';
 import { ModalContext } from '@/sites/delegation_ui/contexts/modal_context';
 import { NodeAddressContext } from '@/sites/delegation_ui/contexts/node_address_context';
 import { PendingExitsContext } from '@/sites/delegation_ui/contexts/pending_exits_context';

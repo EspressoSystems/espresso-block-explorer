@@ -2,12 +2,14 @@ import { Label } from '@/block_explorer/components/layout/label/label';
 import { default as TableLabeledValue } from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
 import { default as CopyTaggedBase64 } from '@/block_explorer/components/text/copy_tagged_base64';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
-import { default as SkeletonContent } from '@/components/loading/skeleton_content';
-import { default as ByteSizeText } from '@/text/byte_size_text';
-import { default as DateTimeText } from '@/text/date_time_text';
-import { default as FullTaggedBase64Text } from '@/text/full_tagged_base64_text';
-import { default as NumberText } from '@/text/number_text';
-import { default as Text } from '@/text/text';
+import { SkeletonContent } from '@/components/loading';
+import {
+  ByteSizeText,
+  DateTimeText,
+  FullTaggedBase64Text,
+  NumberText,
+  Text,
+} from '@/components/text';
 import { default as React } from 'react';
 import { InternalLink } from '../../links/link/link';
 import { BlockNumberContext } from '../block_detail_content/block_detail_content_loader';
@@ -76,7 +78,7 @@ export const TransactionDetailsContentPlaceholder: React.FC<
   );
 };
 
-interface TransactionDetailsContentProps { }
+interface TransactionDetailsContentProps {}
 
 /**
  * TransactionDetailsContent represents the Tabular data of the

@@ -39,15 +39,15 @@ import {
 } from '@/components/rainbowkit/contexts/contexts';
 import { Text } from '@/components/text';
 import { ProjectionProvider } from '@/components/visual/geo_json/projection_provider';
-import { default as WorldMapAutoSizer } from '@/components/visual/geo_json/world_map_auto_sizer';
-import { default as WorldMapDotsFullResolution } from '@/components/visual/geo_json/world_map_dots_full_resolution';
-import { default as WorldMapDotsPopulationFullResolution } from '@/components/visual/geo_json/world_map_dots_population_full_resolution';
+import { WorldMapAutoSizer } from '@/visual/geo_json';
+import { WorldMapDotsFullResolution } from '@/visual/geo_json';
+import { WorldMapDotsPopulationFullResolution } from '@/visual/geo_json';
 import {
   DotPopulationStreamConsumer,
   NodeInformationToDotPopulation,
 } from '@/components/visual/geo_json/world_map_dots_population_resolver';
 import { HistogramSectionTitle } from '@/components/visual/histogram/histogram_section_title/histogram_section_title';
-import { WebSocketStatus } from '@/components/visual/web_socket/web_socket_status';
+import { WebSocketStatusDisplay } from '@/components/visual/web_socket/web_socket_status';
 import { ErrorStreamConsumer } from '@/contexts/error_stream_consumer';
 import { WebSocketResponseStreamConsumer } from '@/contexts/web_socket_response_provider';
 import { addClassToClassName } from '@/higher_order';
@@ -112,7 +112,7 @@ const NodesPage: React.FC<NodesPageProps> = (props) => (
         This component displays the current Lifecycle state of the page.  It
         reflects what's happening with the underlying Web Socket connection.
         */}
-        <WebSocketStatus className="edge-margin" />
+        <WebSocketStatusDisplay className="edge-margin" />
 
         {/*
           This component displays any errors that have occurred while attempting

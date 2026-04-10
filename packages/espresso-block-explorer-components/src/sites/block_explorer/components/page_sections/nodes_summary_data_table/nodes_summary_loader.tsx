@@ -1,4 +1,4 @@
-import { default as AsyncIterableResolver } from '@/components/data/async_data/async_iterable_resolver';
+import { AsyncIterableResolver } from '@/components/data/async_data';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorCarry, ErrorJoiner } from '@/contexts/error_provider';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';

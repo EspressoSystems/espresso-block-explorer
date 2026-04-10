@@ -1,12 +1,10 @@
 import { default as TableLabeledValue } from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
-import { FullHexText } from '@/components/text';
+import { DateTimeText, FullHexText, Text } from '@/components/text';
 import { kInfiniteGardenNamespace } from '@/models/block_explorer/rollup_entry/data';
 import {
   default as InscriptionAndSignature,
   inscriptionAndSignatureBincodeCodec,
 } from '@/models/inscription/inscription_and_signature';
-import { default as DateTimeText } from '@/text/date_time_text';
-import { default as Text } from '@/text/text';
 import { default as React } from 'react';
 import { TransactionDetailContext } from './transaction_detail_loader';
 

@@ -1,5 +1,4 @@
-import { MoneyText } from '@/components/text';
-import { Text } from '@/components/text';
+import { MoneyText, Text } from '@/components/text';
 import { CurrentNumberFormatters } from '@/contexts/number_formatters_provider';
 import { MonetaryValue } from '@/models/block_explorer';
 import { default as React } from 'react';

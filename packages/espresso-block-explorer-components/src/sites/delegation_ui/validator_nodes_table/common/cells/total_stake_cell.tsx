@@ -1,5 +1,4 @@
-import { MoneyText } from '@/components/text';
-import { PercentageText } from '@/components/text';
+import { MoneyText, PercentageText } from '@/components/text';
 import { MonetaryValue } from '@/models/block_explorer';
 import { TotalStakeContext } from '@/sites/delegation_ui/contexts/total_stake_context';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';

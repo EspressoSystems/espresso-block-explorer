@@ -1,6 +1,6 @@
+import { Text } from '@/components/text';
 import { WebSocketResponseContext } from '@/contexts/web_socket_response_provider';
 import { addClassToClassName } from '@/higher_order';
-import { Text } from '@/components/text';
 import { WebSocketStatusConnectionConnecting } from '@/models/web_worker/web_socket/status/connecting';
 import { WebSocketStatusConnectionOpened } from '@/models/web_worker/web_socket/status/opened';
 import { WebSocketResponse } from '@/models/web_worker/web_socket/web_socket_response';
@@ -12,9 +12,11 @@ export interface LifeCycleEventStatusProps {
 }
 
 /**
- * WebSocketStatus is a component that renders the WebSocket status.
+ * WebSocketStatusDisplay is a component that renders the WebSocket status.
  */
-export const WebSocketStatus: React.FC<LifeCycleEventStatusProps> = (props) => {
+export const WebSocketStatusDisplay: React.FC<LifeCycleEventStatusProps> = (
+  props,
+) => {
   const webSocketResponse = React.useContext(WebSocketResponseContext);
 
   const children = getTextComponentForLifeCycleResponse(webSocketResponse);

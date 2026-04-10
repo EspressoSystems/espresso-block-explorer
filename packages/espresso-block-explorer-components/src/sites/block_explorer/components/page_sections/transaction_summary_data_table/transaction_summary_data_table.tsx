@@ -4,14 +4,16 @@ import {
   default as DataTable,
   DataTableRowContext,
 } from '@/components/data/data_table/data_table';
-import { default as SkeletonContent } from '@/components/loading/skeleton_content';
+import { SkeletonContent } from '@/components/loading';
+import {
+  DateTimeText,
+  NumberText,
+  TaggedBase64Text,
+  Text,
+} from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { iota } from '@/functional/functional';
 import { TransactionSummaryColumn } from '@/models/block_explorer/transaction_summary';
-import { default as DateTimeText } from '@/text/date_time_text';
-import { default as NumberText } from '@/text/number_text';
-import { default as TaggedBase64Text } from '@/text/tagged_base64_text';
-import { default as Text } from '@/text/text';
 import { default as React } from 'react';
 import { InternalLink } from '../../links/link/link';
 import { default as RollUpSimple } from '../roll_up/roll_up_simple/roll_up_simple';

@@ -1,8 +1,10 @@
-import { DateTimeText } from '@/components/text';
-import { HexText } from '@/components/text';
-import { MoneyText } from '@/components/text';
-import { NumberText } from '@/components/text';
-import { Text } from '@/components/text';
+import {
+  DateTimeText,
+  HexText,
+  MoneyText,
+  NumberText,
+  Text,
+} from '@/components/text';
 import { EthHeader } from '@/service/ethereum/header';
 import { EthTransaction } from '@/service/ethereum/transaction';
 import { default as React } from 'react';

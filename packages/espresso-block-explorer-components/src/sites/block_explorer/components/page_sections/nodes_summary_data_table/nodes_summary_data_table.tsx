@@ -14,12 +14,13 @@ import {
 } from '@/components/data/data_table/data_table';
 import { SortDirection } from '@/components/data/types';
 import { ErrorDisplay } from '@/components/error/error_display';
-import { default as SkeletonContent } from '@/components/loading/skeleton_content';
+import { SkeletonContent } from '@/components/loading';
 import {
   MoneyText,
   NumberText,
   PercentageText,
   TaggedBase64Text,
+  Text,
   WalletAddressText,
 } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
@@ -30,11 +31,10 @@ import {
   foldRIterator,
   iota,
 } from '@/functional/functional';
-import { default as MonetaryValue } from '@/models/block_explorer/monetary_value';
+import { MonetaryValue } from '@/models/block_explorer';
 import { StakeTableEntryWrapper } from '@/models/espresso/stake_table/stake_table_entry_wrapper';
 import { Validator } from '@/models/espresso/stake_table/validator';
-import { default as WalletAddress } from '@/models/wallet_address/wallet_address';
-import { default as Text } from '@/text/text';
+import { WalletAddress } from '@/models/wallet_address';
 import { default as React } from 'react';
 import { EgressLink } from '../../links/link/link';
 import {

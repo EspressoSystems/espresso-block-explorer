@@ -3,13 +3,12 @@ import {
   default as DataTable,
   DataTableRowContext,
 } from '@/components/data/data_table/data_table';
-import { default as SkeletonContent } from '@/components/loading/skeleton_content';
+import { SkeletonContent } from '@/components/loading';
+import { NumberText, Text } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { iota } from '@/functional/functional';
 import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
 import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
-import { default as NumberText } from '@/text/number_text';
-import { default as Text } from '@/text/text';
 import { default as React } from 'react';
 import { EgressLink, InternalLink } from '../../links/link/link';
 import { default as RollUpSimple } from '../roll_up/roll_up_simple/roll_up_simple';

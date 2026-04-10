@@ -1,7 +1,5 @@
 import { default as PromiseResolver } from '@/components/data/async_data/promise_resolver';
-import { FullTaggedBase64Text } from '@/components/text';
-import { NumberText } from '@/components/text';
-import { Text } from '@/components/text';
+import { FullTaggedBase64Text, NumberText, Text } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { bigintCodec } from '@/convert/codec/bigint';

@@ -1,8 +1,8 @@
+import { Text } from '@/components/text';
 import { Now } from '@/contexts/now_provider';
 import { stdBase64ArrayBufferCodec } from '@/convert/codec/array_buffer_base64';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { Converter } from '@/convert/codec/convert';
-import { default as Text } from '@/text/text';
 import { default as React } from 'react';
 import { default as LabeledButton } from '../../hid/buttons/labeled_button/labeled_button';
 import { default as HexDump } from '../hex_dump/hex_dump';

@@ -1,8 +1,6 @@
-import { addClassToClassName } from '@/higher_order';
 import { ESPInput } from '@/components/input/esp/esp_input';
-import { PercentageText } from '@/components/text';
-import { MoneyText } from '@/components/text';
-import { Text } from '@/components/text';
+import { MoneyText, PercentageText, Text } from '@/components/text';
+import { addClassToClassName } from '@/higher_order';
 import { MonetaryValue } from '@/models/block_explorer';
 import { default as React } from 'react';
 import { default as ButtonLarge } from '../elements/buttons/button_large';

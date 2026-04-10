@@ -1,6 +1,6 @@
-import { addClassToClassName } from '@/higher_order';
 import { default as Heading2 } from '@/block_explorer/components/layout/heading/heading2';
 import { Text } from '@/components/text';
+import { addClassToClassName } from '@/higher_order';
 import { default as React } from 'react';
 import './cdn_status.css';
 

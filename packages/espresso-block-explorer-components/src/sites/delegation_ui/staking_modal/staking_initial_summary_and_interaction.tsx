@@ -1,7 +1,6 @@
-import { addClassToClassName } from '@/higher_order';
 import { ESPInput } from '@/components/input/esp/esp_input';
-import { MoneyText } from '@/components/text';
-import { Text } from '@/components/text';
+import { MoneyText, Text } from '@/components/text';
+import { addClassToClassName } from '@/higher_order';
 import { MonetaryValue } from '@/models/block_explorer';
 import { default as React } from 'react';
 import { ESPBalanceContext } from '../contexts/esp_balance_context';

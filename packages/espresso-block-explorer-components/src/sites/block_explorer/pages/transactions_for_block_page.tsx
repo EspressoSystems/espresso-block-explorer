@@ -20,12 +20,11 @@ import {
 } from '@/block_explorer/contexts/page_path_provider';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
+import { NumberText, Text } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
-import { default as NumberText } from '@/text/number_text';
-import { default as Text } from '@/text/text';
 import { default as React } from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
@@ -65,7 +64,7 @@ const GuardedEdgeMarginTransactionsForBlockNavigation: React.FC = () => {
   );
 };
 
-interface GuardedTransactionsSummaryDataTableProps { }
+interface GuardedTransactionsSummaryDataTableProps {}
 
 /**
  * GuardedTransactionsSummaryDataTable is a component that guards rendering the

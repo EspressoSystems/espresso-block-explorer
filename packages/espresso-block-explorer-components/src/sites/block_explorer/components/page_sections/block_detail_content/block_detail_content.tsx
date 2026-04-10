@@ -2,19 +2,20 @@ import { Label } from '@/block_explorer/components/layout/label/label';
 import { default as TableLabeledValue } from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
 import { default as CopyHex } from '@/block_explorer/components/text/copy_hex';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
-import { default as SkeletonContent } from '@/components/loading/skeleton_content';
-import { RelativeTimeSinceDateText } from '@/components/text';
+import { SkeletonContent } from '@/components/loading';
+import {
+  ByteSizeText,
+  DateTimeText,
+  FullHexText,
+  NumberText,
+  RelativeTimeSinceDateText,
+  Text,
+} from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
+import { MonetaryValue } from '@/models/block_explorer';
 import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
-import { default as MonetaryValue } from '@/models/block_explorer/monetary_value';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { default as ByteSizeText } from '@/text/byte_size_text';
-import { default as DateTimeText } from '@/text/date_time_text';
-import { default as FullHexText } from '@/text/full_hex_text';
-import { default as NumberText } from '@/text/number_text';
-import { default as Text } from '@/text/text';
-import { default as ArrowLeft } from '@/visual/icons/arrow_left';
-import { default as ArrowRight } from '@/visual/icons/arrow_right';
+import { ArrowLeft, ArrowRight } from '@/visual/icons';
 import { default as React } from 'react';
 import { IconAnchorButton } from '../../hid/buttons';
 import { InternalLink } from '../../links/link/link';
@@ -142,7 +143,7 @@ export const BlockDetailsContentPlaceholder: React.FC<
   );
 };
 
-interface BlockDetailsContentProps { }
+interface BlockDetailsContentProps {}
 
 /**
  * BlockDetailsContext represents the component that displays all of the

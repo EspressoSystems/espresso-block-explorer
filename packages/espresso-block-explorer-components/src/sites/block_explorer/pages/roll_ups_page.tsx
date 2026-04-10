@@ -16,18 +16,17 @@ import {
 } from '@/block_explorer/contexts/page_path_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
+import { NumberText, Text } from '@/components/text';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
-import { default as NumberText } from '@/text/number_text';
-import { default as Text } from '@/text/text';
 import { default as React } from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 
-interface GuardedRollUpsSummaryDataTableProps { }
+interface GuardedRollUpsSummaryDataTableProps {}
 
 /**
  * GuardedRollUpsSummaryDataTable is a component that guards rendering the
@@ -63,7 +62,7 @@ const GuardedRollUpsSummaryDataTable: React.FC<
   );
 };
 
-interface RollUpsPageProps { }
+interface RollUpsPageProps {}
 
 /**
  * RollUpsPage is a component that renders the RollUps Page.

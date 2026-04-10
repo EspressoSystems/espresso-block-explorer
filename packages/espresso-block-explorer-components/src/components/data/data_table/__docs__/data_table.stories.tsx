@@ -5,6 +5,7 @@ import { default as React } from 'react';
 import { default as PromiseResolver } from '../../async_data/promise_resolver';
 import { SortDirection, reverseSortDir } from '../../types';
 import {
+  default as DataTableComp,
   DataTableRowContext,
   DataTableSetStateContext,
   DataTableState,

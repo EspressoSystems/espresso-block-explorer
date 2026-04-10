@@ -1,5 +1,4 @@
-import { PercentageText } from '@/components/text';
-import { Text } from '@/components/text';
+import { PercentageText, Text } from '@/components/text';
 import { CurrentNumberFormatters } from '@/contexts/number_formatters_provider';
 import { MonetaryValue } from '@/models/block_explorer';
 import { TotalStakeContext } from '@/sites/delegation_ui/contexts/total_stake_context';

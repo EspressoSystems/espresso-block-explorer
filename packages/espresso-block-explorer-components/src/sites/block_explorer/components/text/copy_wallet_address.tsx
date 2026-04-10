@@ -1,5 +1,5 @@
 import { addClassToClassName } from '@/higher_order';
-import { default as WalletAddress } from '@/models/wallet_address/wallet_address';
+import { WalletAddress } from '@/models/wallet_address';
 import { default as React } from 'react';
 import { default as CopyButton } from '../hid/buttons/copy_button/copy_button';
 import './inline.css';

@@ -1,5 +1,4 @@
-import { MoneyText } from '@/components/text';
-import { Text } from '@/components/text';
+import { MoneyText, Text } from '@/components/text';
 import { MonetaryValue } from '@/models/block_explorer';
 import { LifetimeClaimedRewardsContext } from '@/sites/delegation_ui/contexts/claimed_rewards_context';
 import { ModalContext } from '@/sites/delegation_ui/contexts/modal_context';

@@ -1,12 +1,11 @@
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { default as ValueLabeled } from '@/block_explorer/components/layout/value_labeled/value_labeled';
+import { SkeletonContent } from '@/components/loading';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
-import { default as SkeletonContent } from '@/components/loading/skeleton_content';
+import { Text, VariableByteSizeText } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
-import { default as Text } from '@/text/text';
-import { default as VariableByteSizeText } from '@/text/variable_byte_size_text';
 import {
   HistogramDomain,
   HistogramRange,

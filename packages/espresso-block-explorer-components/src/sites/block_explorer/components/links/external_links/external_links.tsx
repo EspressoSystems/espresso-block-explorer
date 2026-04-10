@@ -1,4 +1,4 @@
-import { default as Text } from '@/text/text';
+import { Text } from '@/components/text';
 import { default as React } from 'react';
 import { default as ExternalLink } from './external_link';
 

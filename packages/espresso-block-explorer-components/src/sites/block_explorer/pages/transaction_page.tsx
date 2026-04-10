@@ -21,7 +21,7 @@ import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
-import { default as Text } from '@/text/text';
+import { Text } from '@/components/text';
 import { default as React } from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(CardNoPadding);

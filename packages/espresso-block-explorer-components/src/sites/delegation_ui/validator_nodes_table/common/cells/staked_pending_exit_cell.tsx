@@ -1,5 +1,4 @@
-import { MoneyText } from '@/components/text';
-import { Text } from '@/components/text';
+import { MoneyText, Text } from '@/components/text';
 import { MonetaryValue } from '@/models/block_explorer';
 import { NodeAddressContext } from '@/sites/delegation_ui/contexts/node_address_context';
 import { PendingExitsContext } from '@/sites/delegation_ui/contexts/pending_exits_context';

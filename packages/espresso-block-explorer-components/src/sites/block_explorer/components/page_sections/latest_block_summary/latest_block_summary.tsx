@@ -2,16 +2,18 @@ import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { default as SummaryTableLabeledValue } from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
 import { default as SummaryValueLabeled } from '@/block_explorer/components/layout/summary_value_labeled/summary_value_labeled';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
+import { SkeletonContent } from '@/components/loading';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
-import { default as SkeletonContent } from '@/components/loading/skeleton_content';
-import { DurationInSecondsText } from '@/components/text';
+import {
+  ByteSizeText,
+  DurationInSecondsText,
+  NumberText,
+  Text,
+} from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { ExplorerSummaryEntry } from '@/models/block_explorer/explorer_summary';
-import { default as ByteSizeText } from '@/text/byte_size_text';
-import { default as NumberText } from '@/text/number_text';
-import { default as Text } from '@/text/text';
 import { default as React } from 'react';
 import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
 import { ExplorerSummaryProvider } from '../explorer_summary';

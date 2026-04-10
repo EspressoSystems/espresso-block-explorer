@@ -1,5 +1,4 @@
-import { MoneyText } from '@/components/text';
-import { Text } from '@/components/text';
+import { MoneyText, Text } from '@/components/text';
 import { WalletSnapshotContext } from '@/delegation_ui/contexts/wallet_snapshot_context';
 import { MonetaryValue } from '@/models/block_explorer';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';

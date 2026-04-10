@@ -5,8 +5,7 @@ import {
   Text,
   WalletAddressText,
 } from '@/components/text';
-import { CheckCircle } from '@/components/visual/icons/sharp_line';
-import { LinkShare2 } from '@/components/visual/icons/sharp_line';
+import { CheckCircle, LinkShare2 } from '@/components/visual/icons/sharp_line';
 import { filterIterable } from '@/functional/functional';
 import { MonetaryValue } from '@/models/block_explorer';
 import { WalletAddress } from '@/models/wallet_address';

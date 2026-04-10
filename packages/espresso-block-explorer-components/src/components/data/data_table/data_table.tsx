@@ -32,11 +32,11 @@ export const DataTableStateContext = React.createContext<
  */
 export const DataTableSetStateContext = React.createContext<
   React.Dispatch<React.SetStateAction<DataTableState<unknown>>>
->(() => { });
+>(() => {});
 
 const DataTableSortColumnContext = React.createContext<
   (column: unknown) => void
->(() => { });
+>(() => {});
 
 /**
  * DataTableRowContext is a Context that provides an individual row within

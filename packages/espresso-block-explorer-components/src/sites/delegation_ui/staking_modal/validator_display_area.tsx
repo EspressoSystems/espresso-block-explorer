@@ -1,5 +1,4 @@
-import { Text } from '@/components/text';
-import { WalletAddressText } from '@/components/text';
+import { Text, WalletAddressText } from '@/components/text';
 import { LinkShare2 } from '@/components/visual/icons/sharp_line';
 import { WalletAddress } from '@/models/wallet_address';
 import { default as React } from 'react';

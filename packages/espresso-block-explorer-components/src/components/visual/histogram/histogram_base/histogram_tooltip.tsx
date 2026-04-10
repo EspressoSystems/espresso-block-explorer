@@ -1,5 +1,4 @@
-import { NumberText } from '@/components/text';
-import { Text } from '@/components/text';
+import { NumberText, Text } from '@/components/text';
 import { default as React } from 'react';
 import {
   SVGIndicatorComponent,

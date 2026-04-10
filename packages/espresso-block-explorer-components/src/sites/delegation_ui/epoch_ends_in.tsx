@@ -1,9 +1,7 @@
-import { addClassToClassName } from '@/higher_order';
-import { NumberText } from '@/components/text';
-import { Text } from '@/components/text';
-import { TimeLeftText } from '@/components/text';
+import { NumberText, Text, TimeLeftText } from '@/components/text';
 import { CurrentNumberFormatters } from '@/contexts/number_formatters_provider';
 import { filterIterable } from '@/functional/functional';
+import { addClassToClassName } from '@/higher_order';
 import { ActiveValidatorsContext } from '@/sites/delegation_ui/contexts/active_validators_context';
 import { default as React } from 'react';
 import { BlocksPerEpochContext } from './contexts/blocks_per_epoch_context';

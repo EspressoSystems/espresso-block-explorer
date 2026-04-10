@@ -1,4 +1,4 @@
-import { default as PromiseResolver } from '@/components/data/async_data/promise_resolver';
+import { PromiseResolver } from '@/components/data/async_data';
 import { DataContext } from '@/contexts/data_provider';
 import { UnimplementedError } from '@/errors/unimplemented_error';
 import {

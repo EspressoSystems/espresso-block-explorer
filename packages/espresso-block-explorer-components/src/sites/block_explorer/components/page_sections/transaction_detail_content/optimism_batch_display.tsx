@@ -1,8 +1,13 @@
 import { default as TableLabeledValue } from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
 import { default as CopyWalletAddress } from '@/block_explorer/components/text/copy_wallet_address';
-import { DateTimeText } from '@/components/text';
-import { MoneyText } from '@/components/text';
-import { WalletAddressText } from '@/components/text';
+import {
+  DateTimeText,
+  HexText,
+  MoneyText,
+  NumberText,
+  Text,
+  WalletAddressText,
+} from '@/components/text';
 import { uint8ArrayToArrayBufferCodec } from '@/convert/codec/uint8_array';
 import { createBufferedDataView, Endianess } from '@/convert/data_view';
 import { createRLPDeserializer } from '@/convert/rlp';
@@ -20,9 +25,6 @@ import {
   decodeOptimismSingularBatch,
   OptimismSingularBatch,
 } from '@/service/optimism/singular_batch';
-import { default as HexText } from '@/text/hex_text';
-import { default as NumberText } from '@/text/number_text';
-import { default as Text } from '@/text/text';
 import { default as React } from 'react';
 import { default as CopyHex } from '../../text/copy_hex';
 import { HexDumpAndCopyButtons } from './copy_as';

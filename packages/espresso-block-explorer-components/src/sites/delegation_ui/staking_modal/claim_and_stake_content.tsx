@@ -6,9 +6,7 @@ import {
   RainbowKitChainContext,
   RainbowKitModalContext,
 } from '@/components/rainbowkit/contexts/contexts';
-import { FullWalletAddressText } from '@/components/text';
-import { MoneyText } from '@/components/text';
-import { Text } from '@/components/text';
+import { FullWalletAddressText, MoneyText, Text } from '@/components/text';
 import { CheckCircle } from '@/components/visual/icons/sharp_line';
 import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
 import { IntentCompletedCallbackContext } from '@/contexts/intent_completed_callback_context';

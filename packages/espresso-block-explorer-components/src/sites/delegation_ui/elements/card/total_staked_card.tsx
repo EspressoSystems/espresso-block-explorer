@@ -1,5 +1,4 @@
-import { MoneyText } from '@/components/text';
-import { Text } from '@/components/text';
+import { MoneyText, Text } from '@/components/text';
 import { CurrentTotalStakedContext } from '@/delegation_ui/contexts/current_total_staked_context';
 import { MonetaryValue } from '@/models/block_explorer';
 import { default as React } from 'react';

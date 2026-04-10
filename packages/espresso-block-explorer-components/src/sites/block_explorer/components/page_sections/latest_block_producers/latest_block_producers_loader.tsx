@@ -1,6 +1,6 @@
 import { AsyncRetriever } from '@/async/async_retriever';
-import { default as AsyncIterableResolver } from '@/components/data/async_data/async_iterable_resolver';
-import { default as PromiseResolver } from '@/components/data/async_data/promise_resolver';
+import { AsyncIterableResolver } from '@/components/data/async_data';
+import { PromiseResolver } from '@/components/data/async_data';
 import { ErrorCarry, ErrorJoiner } from '@/contexts/error_provider';
 import { UnimplementedError } from '@/errors/unimplemented_error';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';

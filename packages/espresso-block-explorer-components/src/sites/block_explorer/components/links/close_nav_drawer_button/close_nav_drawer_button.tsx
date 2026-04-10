@@ -1,5 +1,5 @@
 import { CurrentSetNavDrawerStateContext } from '@/block_explorer/contexts/nav_drawer_state_provider';
-import { default as Close } from '@/visual/icons/close';
+import { Close } from '@/visual/icons';
 import { default as React } from 'react';
 import { default as IconButton } from '../../hid/buttons/icon_button/icon_button';
 

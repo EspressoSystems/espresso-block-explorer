@@ -1,5 +1,5 @@
 import { CurrentSetNavDrawerStateContext } from '@/block_explorer/contexts/nav_drawer_state_provider';
-import { default as Menu } from '@/visual/icons/menu';
+import { Menu } from '@/visual/icons';
 import { default as React } from 'react';
 import { default as IconButton } from '../../hid/buttons/icon_button/icon_button';
 

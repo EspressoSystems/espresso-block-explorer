@@ -6,7 +6,7 @@ import { RollUpDetailAsyncRetrieverContext } from '@/block_explorer/components/p
 import { RollUpSummaryAsyncRetrieverContext } from '@/block_explorer/components/page_sections/rollups_summary_data_table/roll_ups_summary_loader';
 import { TransactionDetailAsyncRetrieverContext } from '@/block_explorer/components/page_sections/transaction_detail_content/transaction_detail_loader';
 import { TransactionSummaryAsyncRetrieverContext } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
-import { default as AsyncIterableResolver } from '@/components/data/async_data/async_iterable_resolver';
+import { AsyncIterableResolver } from '@/components/data/async_data';
 import { ErrorJoiner } from '@/contexts/error_provider';
 import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import {
