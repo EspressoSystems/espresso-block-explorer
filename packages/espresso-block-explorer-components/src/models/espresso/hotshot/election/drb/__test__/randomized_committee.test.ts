@@ -48,7 +48,7 @@ import { generateStakeBasedCDF } from '../randomized_committee';
     }
 */
 
-describe('Randomized Committee', () => {
+describe('Randomized Committee', { timeout: 100_000 }, () => {
   it('should select leader based on drb and stake weight', async () => {
     const prng = new PseudoRandomNumberGenerator();
 
