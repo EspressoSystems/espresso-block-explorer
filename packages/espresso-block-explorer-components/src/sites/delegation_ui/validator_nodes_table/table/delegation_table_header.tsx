@@ -16,6 +16,7 @@ import { SortIndicator } from './sort_indicator';
 
 export interface TableHeadingProps extends React.PropsWithChildren {
   sortable?: boolean;
+  align?: 'left' | 'right' | 'center';
 }
 
 /**
@@ -25,6 +26,7 @@ export interface TableHeadingProps extends React.PropsWithChildren {
  */
 export const TableHeading: React.FC<TableHeadingProps> = ({
   sortable,
+  align,
   children,
 }) => {
   const { sortBy: toggleSort } = React.useContext(TableSortControlsContext);
@@ -32,7 +34,7 @@ export const TableHeading: React.FC<TableHeadingProps> = ({
   const cellType = React.useContext(TableColumnSortByContext);
   if (!sortable || !cellType) {
     return (
-      <th>
+      <th align={align}>
         <div>{children}</div>
       </th>
     );
@@ -41,6 +43,7 @@ export const TableHeading: React.FC<TableHeadingProps> = ({
   return (
     <th
       className="sortable"
+      align={align}
       data-sort-column={sortBy === cellType ? sortDirection : undefined}
       onClick={() => toggleSort(cellType)}
     >
@@ -66,22 +69,22 @@ export const DelegationTableHeader: React.FC = () => {
           </TableHeading>
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.totalStake}>
-          <TableHeading sortable>
+          <TableHeading sortable align="right">
             <TotalStakeHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.fee}>
-          <TableHeading sortable>
+          <TableHeading sortable align="right">
             <FeeHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.missedSlots}>
-          <TableHeading sortable>
+          <TableHeading sortable align="right">
             <MissedSlotsHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.myStake}>
-          <TableHeading sortable>
+          <TableHeading sortable align="right">
             <MyStakeHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>

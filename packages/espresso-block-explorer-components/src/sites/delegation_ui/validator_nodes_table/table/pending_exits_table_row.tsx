@@ -20,16 +20,16 @@ export const PendingExitsNodeValidatorTableRow: React.FC = () => {
       <td>
         <NodeNameCell />
       </td>
-      <td>
+      <td align="right">
         <StakedPendingExitCell />
       </td>
-      <td>
+      <td align="right">
         <FeeCell />
       </td>
-      <td>
+      <td align="right">
         <MissedSlotsCell />
       </td>
-      <td>
+      <td align="right">
         <MyStakeCell />
       </td>
       <td>

@@ -20,16 +20,16 @@ export const NodeValidatorTableRow: React.FC = () => {
       <td>
         <NodeNameCell />
       </td>
-      <td>
+      <td align="right">
         <TotalStakeCell />
       </td>
-      <td>
+      <td align="right">
         <FeeCell />
       </td>
-      <td>
+      <td align="right">
         <MissedSlotsCell />
       </td>
-      <td>
+      <td align="right">
         <MyStakeCell />
       </td>
       <td>
