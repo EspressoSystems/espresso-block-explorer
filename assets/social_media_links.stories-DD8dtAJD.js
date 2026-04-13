@@ -1,0 +1,12 @@
+import{j as e}from"./iframe-CRN6ir_k.js";import{S as a}from"./social_media_links-Cdo09nV1.js";import"./preload-helper-PPVm8Dsz.js";import"./higher_order-BJoFsnsT.js";import"./x_icon-CeOMdX2y.js";import"./chevron_up-BIFMo3iJ.js";import"./twitter_icon-BMz0LQWW.js";import"./vertical_scroll-BFk-ygDy.js";import"./link-CUJ-dmn5.js";const t=r=>e.jsx(a,{...r}),f={title:"Block Explorer/Components/Links/Social Media/Links",component:t},o={args:{},parameters:{backgrounds:{default:"Footer",values:[{name:"Footer",value:"#451f17ff"}]}}};o.parameters={...o.parameters,docs:{...o.parameters?.docs,source:{originalSource:`{
+  args: {},
+  parameters: {
+    backgrounds: {
+      default: 'Footer',
+      values: [{
+        name: 'Footer',
+        value: '#451f17ff'
+      }]
+    }
+  }
+}`,...o.parameters?.docs?.source}}};const k=["Links"];export{o as Links,k as __namedExportsOrder,f as default};
