@@ -1,7 +1,7 @@
-import Text from '@/text/text';
+import { default as Text } from '@/text/text';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
+import { default as React } from 'react';
 import { describe, expect, it } from 'vitest';
 import {
   EgressLink,

@@ -1,6 +1,6 @@
 import { TextEditing } from '@/components/input/text/text';
-import MagnifyingGlass from '@/components/visual/icons/sharp_line/magnifying_glass';
-import React from 'react';
+import { MagnifyingGlass } from '@/components/visual/icons/sharp_line';
+import { default as React } from 'react';
 import {
   SearchFilterContext,
   SetSearchFilterContext,

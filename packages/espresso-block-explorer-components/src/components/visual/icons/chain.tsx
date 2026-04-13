@@ -1,5 +1,5 @@
-import React from 'react';
-import SVGIconBase from './svg_icon_base';
+import { default as React } from 'react';
+import { default as SVGIconBase } from './svg_icon_base';
 
 /**
  * Chain is an icon used to represent a blockchain or chain link.

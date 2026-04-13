@@ -1,7 +1,7 @@
 {
   "hotshot_query_service_url": "https://query.decaf.testnet.espresso.network/v0/",
   "node_validator_service_url": "wss://nv.decaf.testnet.espresso.network/v0/",
-  "l1_validators_service_url": "https://staking-api.decaf.testnet.espresso.network/v0/staking/",
+  "staking_api_service_url": "https://staking-api.decaf.testnet.espresso.network/v0/staking/",
   "ENVIRONMENT_NAME": "decaf",
   "CONTRACT_ADDRESS_STAKE_TABLE": "0x40304fbe94d5e7d1492dd90c53a2d63e8506a037",
   "CONTRACT_ADDRESS_ESP_TOKEN": "0xb3e655a030e2e34a18b72757b40be086a8f43f3b",

@@ -1,9 +1,8 @@
 import { breakpoint } from '@/assert/debugger';
-import { stringCodec } from '@/convert/codec/string';
 
 const kNoCodecFoundErrorCode = 'NoCodecFoundError';
 
-export default class NoCodecFoundError extends Error {
+export class NoCodecFoundError extends Error {
   readonly codec: string;
   constructor(
     codec: string,
@@ -19,9 +18,9 @@ export default class NoCodecFoundError extends Error {
     // This cannot reuse existing codecs as it would cause a circular
     // dependency.
     return {
-      code: stringCodec.encode(NoCodecFoundError.name),
-      message: stringCodec.encode(this.message),
-      codec: stringCodec.encode(this.codec),
+      code: 'NoCodecFoundError',
+      message: this.message,
+      codec: this.codec,
     };
   }
 

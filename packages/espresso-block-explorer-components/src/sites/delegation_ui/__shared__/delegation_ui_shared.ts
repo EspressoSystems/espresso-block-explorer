@@ -1,5 +1,5 @@
 import { act, getByText } from '@testing-library/react';
-import userEvent, { UserEvent } from '@testing-library/user-event';
+import { default as userEvent, UserEvent } from '@testing-library/user-event';
 import { StepFunction } from 'storybook/internal/csf';
 import {
   expect,

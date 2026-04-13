@@ -11,7 +11,7 @@ cat >"${STATIC_DIR}/config.json" <<ENDOFCONFIG
   "ENVIRONMENT_NAME": "${ENVIRONMENT_NAME:-mainnet}",
   "hotshot_query_service_url": "${QUERY_SERVICE_URI:-https://cache.main.net.espresso.network/v0/}",
   "node_validator_service_url": "${NODE_VALIDATOR_URI:-wss://nv.main.net.espresso.network/v0/}",
-  "l1_validators_service_url": "${STAKING_UI_SERVICE_URI:-https://cache.main.net.espresso.network/v0/staking/}",
+  "staking_api_service_url": "${STAKING_UI_SERVICE_URI:-https://cache.main.net.espresso.network/v0/staking/}",
   "CONTRACT_ADDRESS_STAKE_TABLE": "${CONTRACT_ADDRESS_STAKE_TABLE:-}",
   "CONTRACT_ADDRESS_ESP_TOKEN": "${CONTRACT_ADDRESS_ESP_TOKEN:-}",
   "CONTRACT_ADDRESS_REWARD_CLAIM": "${CONTRACT_ADDRESS_REWARD_CLAIM:-}",

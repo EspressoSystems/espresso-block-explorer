@@ -1,5 +1,5 @@
-import SkeletonContent from '@/components/loading/skeleton_content';
-import React from 'react';
+import { default as SkeletonContent } from '@/components/loading/skeleton_content';
+import { default as React } from 'react';
 import { useSVGSize } from '../../svg/hooks';
 import { AffineTransform } from './affine_transform';
 import {

@@ -1,5 +1,5 @@
 import { L1Methods } from '@/contracts/l1/l1_interface';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { FormattedTransactionReceipt } from 'viem';
 import { describe, expect, it, type Mock, vi } from 'vitest';
 import { Config } from 'wagmi';

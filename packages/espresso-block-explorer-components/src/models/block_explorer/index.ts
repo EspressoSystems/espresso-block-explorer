@@ -2,6 +2,7 @@ export * from './block_detail';
 export * from './block_summary';
 export * from './currency_code';
 export * from './explorer_summary';
+export { default as MonetaryValue } from './monetary_value';
 export * from './monetary_value';
 export * from './rollup_detail';
 export * from './rollup_entry';

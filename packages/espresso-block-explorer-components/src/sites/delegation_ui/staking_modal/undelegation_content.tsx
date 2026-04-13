@@ -1,13 +1,13 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import { addClassToClassName } from '@/components/higher_order';
-import Text from '@/components/text/text';
+import { Text } from '@/components/text';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
-import React from 'react';
+import { default as React } from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { ValidatorConfirmedUndelegateConfirm } from '../contexts/validator_selection_context';
 import { ButtonProps } from '../elements/buttons/button_base';
-import ButtonLarge from '../elements/buttons/button_large';
+import { default as ButtonLarge } from '../elements/buttons/button_large';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { CurrentStakeToValidatorContext } from './contexts/current_stake_to_validator_context';
 import { UndelegateAsyncSnapshotContext } from './contexts/perform_undelgation_context';

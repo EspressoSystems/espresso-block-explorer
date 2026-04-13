@@ -1,5 +1,5 @@
-import ArrowRight from '@/visual/icons/arrow_right';
-import React, { useState } from 'react';
+import { ArrowRight } from '@/visual/icons';
+import { default as React, useState } from 'react';
 import { IconButton } from '../../hid/buttons';
 import './news_letter_sign_up.css';
 

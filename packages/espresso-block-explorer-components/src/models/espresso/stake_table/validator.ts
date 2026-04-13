@@ -8,7 +8,8 @@ import {
 } from '@/convert/codec/convert';
 import { MapObjectCodec } from '@/convert/codec/map';
 import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
-import WalletAddress, {
+import {
+  default as WalletAddress,
   walletAddressCodec,
 } from '@/models/wallet_address/wallet_address';
 import { TaggedBase64, taggedBase64Codec } from '../tagged_base64';

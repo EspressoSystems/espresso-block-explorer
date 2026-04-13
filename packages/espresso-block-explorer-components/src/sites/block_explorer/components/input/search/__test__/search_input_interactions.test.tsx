@@ -1,5 +1,5 @@
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
-import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
+import { FakeDataHotShotQueryService } from '@/service/hotshot_query_service/implementations/fake_data';
 import { act, render } from '@testing-library/react';
 import { describe, it } from 'vitest';
 import {
@@ -27,11 +27,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await getSearchBar(searchInput.container);
@@ -41,11 +41,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await interactionSelectSearchBar(searchInput.container);
@@ -55,11 +55,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await interactionSelectSearchBar(searchInput.container);
@@ -73,11 +73,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await interactionSelectSearchBar(searchInput.container);
@@ -93,11 +93,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await interactionSelectSearchBar(searchInput.container);
@@ -116,11 +116,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await interactionSelectSearchBar(searchInput.container);
@@ -139,11 +139,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await interactionSelectSearchBar(searchInput.container);
@@ -156,11 +156,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await interactionSelectSearchBar(searchInput.container);
@@ -173,11 +173,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await interactionSelectSearchBar(searchInput.container);
@@ -191,11 +191,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await interactionSelectSearchBar(searchInput.container);
@@ -207,11 +207,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await interactionSelectSearchBar(searchInput.container);
@@ -225,11 +225,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await interactionSelectSearchBar(searchInput.container);
@@ -244,11 +244,11 @@ describe('Search Input Interactions', () => {
     const location = new MockLocation();
     const searchInput = await act(() =>
       render(
-        <CappuccinoHotShotQueryServiceAPIContext.Provider
-          value={new FakeDataCappuccinoHotShotQueryService()}
+        <HotShotQueryServiceAPIContext.Provider
+          value={new FakeDataHotShotQueryService()}
         >
           <SearchInput initialState={{ location }} />
-        </CappuccinoHotShotQueryServiceAPIContext.Provider>,
+        </HotShotQueryServiceAPIContext.Provider>,
       ),
     );
     await interactionSelectSearchBar(searchInput.container);

@@ -1,9 +1,9 @@
 import { PromiseResolver } from '@/components/data';
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { DataContext } from '@/contexts/data_provider';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { neverPromise } from '@/functional/functional_async';
-import { StakeTable } from '@/service/hotshot_query_service/cappuccino/node/stake_table';
-import React from 'react';
+import { StakeTable } from '@/service/hotshot_query_service/node/stake_table';
+import { default as React } from 'react';
 import { ActiveValidatorsContext } from '../../contexts/active_validators_context';
 
 export const CurrentStakeTableContext = React.createContext<null | StakeTable>(
@@ -13,9 +13,7 @@ export const CurrentStakeTableContext = React.createContext<null | StakeTable>(
 export const ProvideCurrentStakeTable: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
   const activeValidators = React.useContext(ActiveValidatorsContext);
 
   const promise =

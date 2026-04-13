@@ -1,19 +1,22 @@
-import CopyTaggedBase64 from '@/block_explorer/components/text/copy_tagged_base64';
+import { default as CopyTaggedBase64 } from '@/block_explorer/components/text/copy_tagged_base64';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
-import DataTable, {
+import {
+  default as DataTable,
   DataTableRowContext,
 } from '@/components/data/data_table/data_table';
-import SkeletonContent from '@/components/loading/skeleton_content';
+import { SkeletonContent } from '@/components/loading';
+import {
+  DateTimeText,
+  NumberText,
+  TaggedBase64Text,
+  Text,
+} from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { iota } from '@/functional/functional';
 import { TransactionSummaryColumn } from '@/models/block_explorer/transaction_summary';
-import DateTimeText from '@/text/date_time_text';
-import NumberText from '@/text/number_text';
-import TaggedBase64Text from '@/text/tagged_base64_text';
-import Text from '@/text/text';
-import React from 'react';
+import { default as React } from 'react';
 import { InternalLink } from '../../links/link/link';
-import RollUpSimple from '../roll_up/roll_up_simple/roll_up_simple';
+import { default as RollUpSimple } from '../roll_up/roll_up_simple/roll_up_simple';
 import { TransactionSummary } from './transaction_summary_data_loader';
 
 /**

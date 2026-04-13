@@ -5,9 +5,9 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError from './base_error';
+import { BaseError } from './base_error';
 import { registerCodec } from './registry';
-import UnimplementedError from './unimplemented_error';
+import { UnimplementedError } from './unimplemented_error';
 
 const kQueryErrorCode = 'QUERY_ERROR';
 
@@ -16,7 +16,7 @@ const kQueryErrorCode = 'QUERY_ERROR';
  * Query Service.  Specifically it indicates an issue with retrieving, or
  * generally interacting with the database.
  */
-export default class QueryError extends BaseError {
+export class QueryError extends BaseError {
   public readonly error: QuerySubError;
 
   constructor(error: QuerySubError, message: string = 'missing element') {

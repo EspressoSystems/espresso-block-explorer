@@ -3,15 +3,10 @@ import {
   determineEnvironmentFromVariable,
   type EnvironmentConfig,
 } from '@/helpers/read_from_env';
+import 'espresso-block-explorer-components/espresso-block-explorer-components.css';
 import 'espresso-block-explorer-components/block-explorer.css';
 import React from 'react';
 import './globals.css';
-// Growing pains... It's unclear why these css file code splits are occurring.
-// After spending some time to resolve / determine them without success, we're
-// just adopting them for now until we can figure out how to resolve them
-// at a later time.
-import 'espresso-block-explorer-components/inscription.css';
-import 'espresso-block-explorer-components/stake_table_v2_contract_context.css';
 
 // Force dynamic rendering to ensure environment variables are read at runtime
 export const dynamic = 'force-dynamic';

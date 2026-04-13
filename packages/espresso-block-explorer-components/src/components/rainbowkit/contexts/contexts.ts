@@ -1,5 +1,5 @@
 import { AuthenticationStatus, ConnectButton } from '@rainbow-me/rainbowkit';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * ModalContextValue represents the interactions with RainbowKit's modal system.

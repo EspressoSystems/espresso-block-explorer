@@ -1,8 +1,8 @@
 import { NumberLike } from '../../numeric/numeric';
-import Degrees from '../units/degrees';
-import LatLng from '../units/lat_lng';
+import { default as Degrees } from '../units/degrees';
+import { default as LatLng } from '../units/lat_lng';
 import { default as Latitude, default as Longitude } from '../units/latitude';
-import Radians from '../units/radians';
+import { default as Radians } from '../units/radians';
 import { degreesRadiansProjection } from './degrees_radians_projection';
 import { GeodesicProjection } from './geodesic_projection';
 

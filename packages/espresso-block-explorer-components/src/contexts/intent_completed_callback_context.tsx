@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * IntentCompletedCallbackContext is a React context that provides a callback

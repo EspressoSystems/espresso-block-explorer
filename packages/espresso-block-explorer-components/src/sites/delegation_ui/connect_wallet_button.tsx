@@ -2,15 +2,14 @@ import {
   RainbowKitAccountAddressContext,
   RainbowKitModalContext,
 } from '@/components/rainbowkit/contexts/contexts';
-import Text from '@/components/text/text';
-import WalletAddressText from '@/components/text/wallet_address_text';
-import Add1 from '@/components/visual/icons/sharp_line/add_1';
-import DownloadTray from '@/components/visual/icons/sharp_line/download_tray';
+import { Text, WalletAddressText } from '@/components/text';
+import { DownloadTray } from '@/components/visual/icons/sharp_line';
+import { Add1 } from '@/components/visual/icons/sharp_line';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
-import WalletAddress from '@/models/wallet_address/wallet_address';
-import React from 'react';
+import { WalletAddress } from '@/models/wallet_address';
+import { default as React } from 'react';
 import './connect_wallet_button.css';
-import ButtonLarge from './elements/buttons/button_large';
+import { default as ButtonLarge } from './elements/buttons/button_large';
 
 /**
  * ConnectWalletButton is a button that will open the RainbowKit Wallet Connect

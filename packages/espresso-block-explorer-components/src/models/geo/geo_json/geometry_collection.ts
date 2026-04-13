@@ -5,10 +5,12 @@ import {
   assertRecordWithKeys,
   assertTypeCode,
 } from '@/convert/codec/convert';
-import GeoJSONBoundingBox, {
+import {
+  default as GeoJSONBoundingBox,
   generateBoundingBoxFromBoundingBoxes,
 } from './bounding_box';
-import GeoJSONGeometry, {
+import {
+  default as GeoJSONGeometry,
   listGeoJsonGeometryCodec,
   registerGeometryCodec,
 } from './geometry';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 import { TaggedBase64TextProps } from './tagged_base64_text';
 import './inline.css';
 

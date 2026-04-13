@@ -1,8 +1,8 @@
 import { filterIterable, lastIterable } from '@/functional/functional';
 import { walletAddressCodec } from '@/models/wallet_address';
-import { NodeSetEntry } from '@/service/espresso_l1_validator_service/common/node_set_entry';
-import ethereumBlockiesBase64 from 'ethereum-blockies-base64';
-import React from 'react';
+import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
+import { default as ethereumBlockiesBase64 } from 'ethereum-blockies-base64';
+import { default as React } from 'react';
 import { NodeAddressContext } from '../../contexts/node_address_context';
 import { ValidatorNodeContext } from '../../contexts/validator_node_context';
 import './validator_image.css';

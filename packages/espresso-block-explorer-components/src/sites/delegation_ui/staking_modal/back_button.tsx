@@ -1,6 +1,6 @@
-import Text from '@/components/text/text';
-import React from 'react';
-import ButtonFlat from '../elements/buttons/button_flat';
+import { Text } from '@/components/text';
+import { default as React } from 'react';
+import { ButtonFlat } from '../elements/buttons/button_flat';
 import './back_button.css';
 import { StakingModalHistoryControlsContext } from './contexts/staking_modal_history_context';
 

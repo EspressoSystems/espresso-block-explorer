@@ -1,8 +1,8 @@
 import { Meta } from '@storybook/react-vite';
-import { MoneyTextFull } from '@/components/text/money_text_full';
+import { MoneyTextFull } from '@/components/text';
 import { bigintCodec } from '@/convert/codec/bigint';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import React from 'react';
+import { default as MonetaryValue } from '@/models/block_explorer/monetary_value';
+import { default as React } from 'react';
 import { ESPInput } from '../esp_input';
 
 export interface ExampleProps {
@@ -66,12 +66,10 @@ export const Example: React.FC<ExampleProps> = (props) => {
 
 export const exampleMeta: Meta<typeof Example> = {
   component: Example,
-  args: {
-  },
+  args: {},
   argTypes: {
     initialValue: {
       type: 'string',
     },
   },
 };
-

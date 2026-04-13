@@ -5,7 +5,7 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError, { BaseErrorEncoder } from './base_error';
+import { BaseError, BaseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kInvalidHexStringErrorCode = 'InvalidHexStringError';
@@ -14,7 +14,7 @@ const kInvalidHexStringErrorCode = 'InvalidHexStringError';
  * InvalidHexStringError is an error that indicates that the hex string provided
  * is invalid as it doesn't meet the requirements of a hex encoded string.
  */
-export default class InvalidHexStringError extends BaseError {
+export class InvalidHexStringError extends BaseError {
   constructor(message: string = 'invalid hex string') {
     super(message);
     Object.freeze(this);

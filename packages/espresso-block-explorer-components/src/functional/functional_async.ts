@@ -1,10 +1,11 @@
 import { sleep } from '@/async/sleep';
-import LinkedList, {
+import {
+  default as LinkedList,
   iterateLinkedList,
   pushLinkedList,
 } from '@/data_structures/linked_list/linked_list';
-import MissingElementError from '@/errors/missing_element_error';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { MissingElementError } from '@/errors/missing_element_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { iota } from './functional';
 
 export async function* convertIteratorToAsyncIterator<T>(

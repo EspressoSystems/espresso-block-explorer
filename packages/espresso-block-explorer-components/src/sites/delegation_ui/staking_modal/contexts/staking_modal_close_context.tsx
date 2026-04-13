@@ -3,7 +3,7 @@ import {
   NoValidatorSelected,
   SetValidatorSelectionContext,
 } from '@/sites/delegation_ui/contexts/validator_selection_context';
-import React from 'react';
+import { default as React } from 'react';
 import { StakingModalHistoryControlsContext } from './staking_modal_history_context';
 
 /**

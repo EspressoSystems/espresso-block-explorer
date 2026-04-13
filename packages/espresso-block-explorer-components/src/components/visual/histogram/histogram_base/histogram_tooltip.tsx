@@ -1,6 +1,5 @@
-import { NumberText } from '@/components/text';
-import Text from '@/components/text/text';
-import React from 'react';
+import { NumberText, Text } from '@/components/text';
+import { default as React } from 'react';
 import {
   SVGIndicatorComponent,
   SVGToolTipContentComponent,

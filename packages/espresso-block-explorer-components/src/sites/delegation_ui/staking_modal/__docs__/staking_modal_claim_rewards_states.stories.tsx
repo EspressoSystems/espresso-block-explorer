@@ -22,7 +22,7 @@ import {
   PerformWriteTransactionWaiting,
   TransactionReverted,
 } from '../contexts/perform_write_states';
-import RewardClaimAbi from '@/contracts/reward_claim/reward_claim_abi';
+import { default as RewardClaimAbi } from '@/contracts/reward_claim/reward_claim_abi';
 import '../staking_modal.css';
 import {
   ContractFunctionExecutionError,

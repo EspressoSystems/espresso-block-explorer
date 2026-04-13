@@ -2,9 +2,9 @@ import { OverrideLocale } from '@/contexts/locale_provider';
 import { ProvideDerivedNumberFormatters } from '@/contexts/number_formatters_provider';
 import { bigintCodec } from '@/convert/codec/bigint';
 import { currencyCodeCodec } from '@/models/block_explorer/currency_code';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as MonetaryValue } from '@/models/block_explorer/monetary_value';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
+import { default as React } from 'react';
 import { MoneyTextFull } from '../money_text_full';
 
 interface ExampleProps {

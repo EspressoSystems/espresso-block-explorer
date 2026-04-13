@@ -1,11 +1,11 @@
-import PromiseResolver from '@/components/data/async_data/promise_resolver';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { PromiseResolver } from '@/components/data/async_data';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import {
   BlockDetailAsyncRetriever,
   BlockDetailEntry,
 } from '@/models/block_explorer/block_detail';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import React from 'react';
+import { default as React } from 'react';
 import './block_detail_content.css';
 
 export const BlockNumberContext = React.createContext(0);

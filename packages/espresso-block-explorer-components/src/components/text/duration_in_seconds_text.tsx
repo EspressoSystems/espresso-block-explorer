@@ -1,5 +1,5 @@
 import { CurrentDateTimeFormatters } from '@/contexts/date_time_formatters_provider';
-import React, { useContext } from 'react';
+import { default as React, useContext } from 'react';
 
 export interface DurationInSecondsTextProps {
   durationInMilliseconds: number;

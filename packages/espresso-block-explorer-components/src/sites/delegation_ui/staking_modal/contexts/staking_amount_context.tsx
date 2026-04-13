@@ -1,5 +1,5 @@
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import React from 'react';
+import { MonetaryValue } from '@/models/block_explorer';
+import { default as React } from 'react';
 
 export const StakingAmountContext = React.createContext<null | MonetaryValue>(
   null,

@@ -1,5 +1,5 @@
-import Text from '@/components/text/text';
-import React from 'react';
+import { Text } from '@/components/text';
+import { default as React } from 'react';
 
 /**
  * EnvironmentBannerDecaf is a React component that displays a banner to sit at

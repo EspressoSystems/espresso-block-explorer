@@ -8,7 +8,7 @@ import {
 } from '@/convert/codec/convert';
 import { numberCodec } from '@/convert/codec/number';
 import { stringCodec } from '@/convert/codec/string';
-import InvalidInputError from '@/errors/invalid_input_error';
+import { InvalidInputError } from '@/errors/invalid_input_error';
 import { espressoErrorCodec } from '@/errors/registry';
 
 export type RequestID = number;

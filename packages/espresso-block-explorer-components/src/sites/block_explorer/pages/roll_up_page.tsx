@@ -1,11 +1,11 @@
-import Card from '@/block_explorer/components/layout/card/card';
-import Heading1 from '@/block_explorer/components/layout/heading/heading1';
+import { default as Card } from '@/block_explorer/components/layout/card/card';
+import { default as Heading1 } from '@/block_explorer/components/layout/heading/heading1';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
-import Footer from '@/block_explorer/components/page_sections/footer/footer';
-import Header from '@/block_explorer/components/page_sections/header/header';
-import PageTitle from '@/block_explorer/components/page_sections/page_title/page_title';
-import RollUpInfo from '@/block_explorer/components/page_sections/roll_up/roll_up_info/roll_up_info';
-import RollUpTitle from '@/block_explorer/components/page_sections/roll_up/roll_up_title/roll_up_title';
+import { default as Footer } from '@/block_explorer/components/page_sections/footer/footer';
+import { default as Header } from '@/block_explorer/components/page_sections/header/header';
+import { default as PageTitle } from '@/block_explorer/components/page_sections/page_title/page_title';
+import { default as RollUpInfo } from '@/block_explorer/components/page_sections/roll_up/roll_up_info/roll_up_info';
+import { default as RollUpTitle } from '@/block_explorer/components/page_sections/roll_up/roll_up_title/roll_up_title';
 import {
   RollUpDetailDataTable,
   RollUpDetailDataTablePlaceholder,
@@ -20,7 +20,7 @@ import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { NamespaceContext } from '@/models/block_explorer/rollup_entry/contexts';
-import React from 'react';
+import { default as React } from 'react';
 
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginRollUpInfo = WithEdgeMargin(RollUpInfo);

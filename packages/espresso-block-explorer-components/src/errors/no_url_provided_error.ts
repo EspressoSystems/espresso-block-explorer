@@ -5,12 +5,12 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError, { BaseErrorEncoder } from './base_error';
+import { BaseError, BaseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kNoURLProvidedErrorCode = 'NoURLProvidedError';
 
-export default class NoURLProvidedError extends BaseError {
+export class NoURLProvidedError extends BaseError {
   constructor(message: string = 'no url provided') {
     super(message);
     Object.freeze(this);

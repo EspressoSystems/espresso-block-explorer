@@ -1,7 +1,7 @@
-import React from 'react';
+import { default as React } from 'react';
 import { AsyncSnapshot, AsyncState } from './async_snapshot';
 import { AsyncSnapshotContext } from './async_snapshot_context';
-import ProvideAsyncStates from './provide_async_states';
+import { default as ProvideAsyncStates } from './provide_async_states';
 
 export interface PromiseBuilderProps<T> {
   promise: Promise<T>;

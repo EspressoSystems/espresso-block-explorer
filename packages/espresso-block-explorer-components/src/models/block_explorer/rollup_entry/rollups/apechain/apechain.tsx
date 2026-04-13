@@ -1,14 +1,14 @@
 import { AvatarLogo } from '../../avatar_logo';
 import { PreFedSrcAvatarLogoProps } from '../../higher_order';
-import ApechainLogo24x24_1x from './apechain_logo24x24@1x.png';
-import ApechainLogo24x24_2x from './apechain_logo24x24@2x.png';
-import ApechainLogo24x24_3x from './apechain_logo24x24@3x.png';
-import ApechainLogo32x32_1x from './apechain_logo32x32@1x.png';
-import ApechainLogo32x32_2x from './apechain_logo32x32@2x.png';
-import ApechainLogo32x32_3x from './apechain_logo32x32@3x.png';
-import ApechainLogo40x40_1x from './apechain_logo40x40@1x.png';
-import ApechainLogo40x40_2x from './apechain_logo40x40@2x.png';
-import ApechainLogo40x40_3x from './apechain_logo40x40@3x.png';
+import { default as ApechainLogo24x24_1x } from './apechain_logo24x24@1x.png';
+import { default as ApechainLogo24x24_2x } from './apechain_logo24x24@2x.png';
+import { default as ApechainLogo24x24_3x } from './apechain_logo24x24@3x.png';
+import { default as ApechainLogo32x32_1x } from './apechain_logo32x32@1x.png';
+import { default as ApechainLogo32x32_2x } from './apechain_logo32x32@2x.png';
+import { default as ApechainLogo32x32_3x } from './apechain_logo32x32@3x.png';
+import { default as ApechainLogo40x40_1x } from './apechain_logo40x40@1x.png';
+import { default as ApechainLogo40x40_2x } from './apechain_logo40x40@2x.png';
+import { default as ApechainLogo40x40_3x } from './apechain_logo40x40@3x.png';
 
 /**
  * ApeChainLogo24 represents the ApeChain Logo square at the size of 24x24

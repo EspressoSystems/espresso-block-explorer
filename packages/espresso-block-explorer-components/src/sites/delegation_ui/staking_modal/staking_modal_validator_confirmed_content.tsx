@@ -1,5 +1,5 @@
 import { assert } from '@/assert/assert';
-import React from 'react';
+import { default as React } from 'react';
 import {
   ValidatorConfirmed,
   ValidatorConfirmedExitWithdraw,

@@ -1,7 +1,7 @@
 import { SetData } from '@/contexts/data_provider';
 import { SetError } from '@/contexts/error_provider';
 import { SetLoading } from '@/contexts/loading_provider';
-import React from 'react';
+import { default as React } from 'react';
 import { AsyncState } from './async_snapshot';
 import { AsyncSnapshotContext } from './async_snapshot_context';
 

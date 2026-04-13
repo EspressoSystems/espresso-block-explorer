@@ -1,6 +1,6 @@
-import InvalidTypeError from '@/errors/invalid_type_error';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
 import { describe, expect, it } from 'vitest';
-import Radians, { radiansCodec } from '../radians';
+import { default as Radians, radiansCodec } from '../radians';
 
 describe('Radians', () => {
   describe('numeric', () => {

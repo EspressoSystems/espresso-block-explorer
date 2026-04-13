@@ -1,6 +1,6 @@
 import { CurrentNumberFormatters } from '@/contexts/number_formatters_provider';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import React from 'react';
+import { default as MonetaryValue } from '@/models/block_explorer/monetary_value';
+import { default as React } from 'react';
 import './inline.css';
 
 export interface MoneyTextProps {

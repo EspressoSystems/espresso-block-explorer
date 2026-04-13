@@ -1,6 +1,6 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import FullHexText from '../full_hex_text';
+import { default as React } from 'react';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
+import { default as FullHexText } from '../full_hex_text';
 
 interface ExampleProps {
   hex: number[];

@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/higher_order';
-import React from 'react';
-import ButtonLarge from './button_large';
+import { default as React } from 'react';
+import { default as ButtonLarge } from './button_large';
 import './segmented_button.css';
 
 /**

@@ -1,14 +1,14 @@
 import { ESPSymbol } from '@/components/visual/currency/esp_symbol';
 import { CurrentNumberFormatters } from '@/contexts/number_formatters_provider';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import {
   expandIterable,
   filterIterable,
   mapIterable,
 } from '@/functional/functional';
 import { ESP } from '@/models/block_explorer/currency_code';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import React from 'react';
+import { default as MonetaryValue } from '@/models/block_explorer/monetary_value';
+import { default as React } from 'react';
 import {
   isArabicNumeralKey,
   shouldIgnoreKeyDownEventForEditing,

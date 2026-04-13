@@ -8,7 +8,7 @@ import {
 } from 'viem';
 import { Config } from 'wagmi';
 import { readContract, writeContract } from 'wagmi/actions';
-import EspTokenAbi from './esp_token_abi';
+import { default as EspTokenAbi } from './esp_token_abi';
 import { ESPTokenContract } from './esp_token_interface';
 
 type ESPTokenReadContractFunctionNames = ContractFunctionName<

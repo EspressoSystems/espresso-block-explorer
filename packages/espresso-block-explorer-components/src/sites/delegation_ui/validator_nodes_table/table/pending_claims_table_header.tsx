@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 import { ActionsHeadCell } from '../common/cells/actions_head_cell';
 import { FeeHeadCell } from '../common/cells/fee_head_cell';
 import { HotShotConsensusHeadCell } from '../common/cells/hot_shot_consensus_head_cell';

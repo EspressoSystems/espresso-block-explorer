@@ -1,14 +1,14 @@
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import { iota, mapIterable } from '@/functional/functional';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { CappuccinoExplorerTransactionSummary } from '@/service/hotshot_query_service';
-import { CappuccinoExplorerBlockSummary } from '@/service/hotshot_query_service/cappuccino/explorer/block_summary';
-import { CappuccinoExplorerGetSearchResultResponse } from '@/service/hotshot_query_service/cappuccino/explorer/get_search_result_response';
-import { CappuccinoExplorerSearchResults } from '@/service/hotshot_query_service/cappuccino/explorer/search_results';
-import { FakeDataCappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/implementations/fake_data';
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { ExplorerTransactionSummary } from '@/service/hotshot_query_service';
+import { ExplorerBlockSummary } from '@/service/hotshot_query_service/explorer/block_summary';
+import { ExplorerGetSearchResultResponse } from '@/service/hotshot_query_service/explorer/get_search_result_response';
+import { ExplorerSearchResults } from '@/service/hotshot_query_service/explorer/search_results';
+import { FakeDataHotShotQueryService } from '@/service/hotshot_query_service/implementations/fake_data';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
+import { default as React } from 'react';
 import {
   InitialSearchState,
   SearchInput as SearchInputComp,
@@ -21,11 +21,11 @@ interface ExampleProps {
 
 const Example: React.FC<ExampleProps> = (props) => {
   return (
-    <CappuccinoHotShotQueryServiceAPIContext.Provider
-      value={new FakeDataCappuccinoHotShotQueryService()}
+    <HotShotQueryServiceAPIContext.Provider
+      value={new FakeDataHotShotQueryService()}
     >
       <SearchInputComp {...props} />
-    </CappuccinoHotShotQueryServiceAPIContext.Provider>
+    </HotShotQueryServiceAPIContext.Provider>
   );
 };
 
@@ -51,7 +51,7 @@ const fakeBlockSearchResults = Array.from(
   mapIterable(
     iota(10),
     () =>
-      new CappuccinoExplorerBlockSummary(
+      new ExplorerBlockSummary(
         new TaggedBase64('BLOCK', rng.fillBytes(32)),
         rng.nextInt(),
         [rng.fillBytes(32)],
@@ -66,7 +66,7 @@ const fakeTransactionSearchResults = Array.from(
   mapIterable(
     iota(10),
     () =>
-      new CappuccinoExplorerTransactionSummary(
+      new ExplorerTransactionSummary(
         new TaggedBase64('COMMIT', rng.fillBytes(32)),
         [rng.nextInt()],
         rng.nextInt(),
@@ -84,8 +84,8 @@ export const NoSearchResults: Story = {
       query: 'SOMETHING',
       rawQuery: 'something',
       searchResultsQuery: 'SOMETHING',
-      searchResults: new CappuccinoExplorerGetSearchResultResponse(
-        new CappuccinoExplorerSearchResults([], []),
+      searchResults: new ExplorerGetSearchResultResponse(
+        new ExplorerSearchResults([], []),
       ),
     },
   },
@@ -98,8 +98,8 @@ export const BlockSearchResults: Story = {
       query: 'BLOCK~',
       rawQuery: 'block~',
       searchResultsQuery: 'BLOCK~',
-      searchResults: new CappuccinoExplorerGetSearchResultResponse(
-        new CappuccinoExplorerSearchResults(fakeBlockSearchResults, []),
+      searchResults: new ExplorerGetSearchResultResponse(
+        new ExplorerSearchResults(fakeBlockSearchResults, []),
       ),
     },
   },
@@ -112,8 +112,8 @@ export const BlockSearchResultsSelectedFirst: Story = {
       query: 'BLOCK~',
       rawQuery: 'block~',
       searchResultsQuery: 'BLOCK~',
-      searchResults: new CappuccinoExplorerGetSearchResultResponse(
-        new CappuccinoExplorerSearchResults(fakeBlockSearchResults, []),
+      searchResults: new ExplorerGetSearchResultResponse(
+        new ExplorerSearchResults(fakeBlockSearchResults, []),
       ),
       offset: 0,
     },
@@ -127,8 +127,8 @@ export const TransactionSearchResults: Story = {
       query: 'COMMIT~',
       rawQuery: 'commit~',
       searchResultsQuery: 'COMMIT~',
-      searchResults: new CappuccinoExplorerGetSearchResultResponse(
-        new CappuccinoExplorerSearchResults([], fakeTransactionSearchResults),
+      searchResults: new ExplorerGetSearchResultResponse(
+        new ExplorerSearchResults([], fakeTransactionSearchResults),
       ),
     },
   },
@@ -141,8 +141,8 @@ export const TransactionSearchResultsSelectedFirst: Story = {
       query: 'COMMIT~',
       rawQuery: 'commit~',
       searchResultsQuery: 'COMMIT~',
-      searchResults: new CappuccinoExplorerGetSearchResultResponse(
-        new CappuccinoExplorerSearchResults([], fakeTransactionSearchResults),
+      searchResults: new ExplorerGetSearchResultResponse(
+        new ExplorerSearchResults([], fakeTransactionSearchResults),
       ),
       offset: 0,
     },

@@ -14,7 +14,7 @@ import {
   ValidatorSelectionEnum,
 } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { default as React } from 'react';
 import { FullNodeSetSnapshotContext } from '../../contexts/full_node_set_snapshot_context';
 import {
   activeValidatorSet,

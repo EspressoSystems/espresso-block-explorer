@@ -1,13 +1,13 @@
-import PromiseResolver from '@/components/data/async_data/promise_resolver';
+import { PromiseResolver } from '@/components/data/async_data';
 import {
   DataTableState,
   DataTableStateContext,
 } from '@/components/data/data_table/data_table';
 import { SortDirection } from '@/components/data/types';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
 import { RollUpSummaryAsyncRetriever } from '@/models/block_explorer/rollup_summary';
-import React from 'react';
+import { default as React } from 'react';
 
 export interface RollUpSummary {
   namespace: number;

@@ -1,10 +1,9 @@
-import MoneyText from '@/components/text/money_text';
-import Text from '@/components/text/text';
+import { MoneyText, Text } from '@/components/text';
 import { WalletSnapshotContext } from '@/delegation_ui/contexts/wallet_snapshot_context';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
+import { MonetaryValue } from '@/models/block_explorer';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import { RainbowKitAccountAddressContext } from 'espresso-block-explorer-components';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * MyStakeCell displays the percentage of missed slots for a validator.

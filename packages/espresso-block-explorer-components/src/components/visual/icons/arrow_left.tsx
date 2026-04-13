@@ -1,5 +1,5 @@
-import React from 'react';
-import SVGIconBase from './svg_icon_base';
+import { default as React } from 'react';
+import { default as SVGIconBase } from './svg_icon_base';
 
 /**
  * ArrowLeft represents an arrow pointing to the left.

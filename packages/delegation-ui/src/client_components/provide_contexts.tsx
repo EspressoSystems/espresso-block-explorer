@@ -3,17 +3,17 @@
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import {
   EnvironmentBanner,
-  ProvideCappuccinoHotShotQueryServiceAPIContext,
-  ProvideCappuccinoNodeValidatorServiceAPIContext,
   ProvideDerivedDateTimeFormatters,
   ProvideDerivedNumberFormatters,
   ProvideESPTokenContract,
+  ProvideHotShotQueryServiceAPIContext,
   ProvideL1Methods,
-  ProvideL1ValidatorServiceAPIContext,
   ProvideLightClientV2Contract,
   ProvideNavigatorLanguage,
+  ProvideNodeValidatorServiceAPIContext,
   ProvideRewardClaimContract,
   ProvideStakeTableV2Contract,
+  ProvideStakingAPIServiceContext,
   ProvideTickEverySecond,
   RainbowKitContextInjector,
 } from 'espresso-block-explorer-components';
@@ -35,9 +35,9 @@ export default function DelegationUIContexts({
       <ProvideDerivedNumberFormatters>
         <ProvideDerivedDateTimeFormatters>
           <ProvideTickEverySecond>
-            <ProvideCappuccinoNodeValidatorServiceAPIContext>
-              <ProvideCappuccinoHotShotQueryServiceAPIContext>
-                <ProvideL1ValidatorServiceAPIContext>
+            <ProvideNodeValidatorServiceAPIContext>
+              <ProvideHotShotQueryServiceAPIContext>
+                <ProvideStakingAPIServiceContext>
                   <RainbowKitProvider>
                     <RainbowKitContextInjector>
                       <ProvideL1Methods>
@@ -54,9 +54,9 @@ export default function DelegationUIContexts({
                       </ProvideL1Methods>
                     </RainbowKitContextInjector>
                   </RainbowKitProvider>
-                </ProvideL1ValidatorServiceAPIContext>
-              </ProvideCappuccinoHotShotQueryServiceAPIContext>
-            </ProvideCappuccinoNodeValidatorServiceAPIContext>
+                </ProvideStakingAPIServiceContext>
+              </ProvideHotShotQueryServiceAPIContext>
+            </ProvideNodeValidatorServiceAPIContext>
           </ProvideTickEverySecond>
         </ProvideDerivedDateTimeFormatters>
       </ProvideDerivedNumberFormatters>

@@ -1,8 +1,7 @@
-import MoneyText from '@/components/text/money_text';
-import Text from '@/components/text/text';
+import { MoneyText, Text } from '@/components/text';
 import { CurrentNumberFormatters } from '@/contexts/number_formatters_provider';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import React from 'react';
+import { MonetaryValue } from '@/models/block_explorer';
+import { default as React } from 'react';
 import { EstimatedContractGasContext } from './contexts/estimate_contract_gas_context';
 import { EstimatedFeesPerGasContext } from './contexts/estimated_fees_per_gas_context';
 import { LabelValueSplit } from './label_value_split';

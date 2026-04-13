@@ -2,9 +2,9 @@ import {
   OverridePagePath,
   PageType,
 } from '@/block_explorer/contexts/page_path_provider';
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
-import NavBarComp from '../nav_bar';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
+import { default as React } from 'react';
+import { default as NavBarComp } from '../nav_bar';
 
 interface ExampleProps {}
 

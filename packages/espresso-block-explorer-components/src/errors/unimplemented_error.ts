@@ -6,7 +6,7 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError, { BaseErrorEncoder } from './base_error';
+import { BaseError, BaseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kUnimplementedErrorCode = 'UnimplementedError';
@@ -15,7 +15,7 @@ const kUnimplementedErrorCode = 'UnimplementedError';
  * Unimplemented is an error that indicates the logic for this code has not
  * yet been implemented.  It is meant to be a placeholder error.
  */
-export default class UnimplementedError extends BaseError {
+export class UnimplementedError extends BaseError {
   constructor(message: string = 'unimplemented') {
     super(message);
     Object.freeze(this);

@@ -1,7 +1,7 @@
 import { composeStories } from '@storybook/react-vite';
 import '@testing-library/jest-dom';
 import { act, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { default as userEvent } from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import * as stories from '../__docs__/explorer_page.stories';
 

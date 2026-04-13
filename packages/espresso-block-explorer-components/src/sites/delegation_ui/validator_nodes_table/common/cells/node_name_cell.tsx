@@ -1,6 +1,6 @@
 import { ValidatorImage14x14 } from '@/sites/delegation_ui/elements/validator/validator_image';
 import { ValidatorName } from '@/sites/delegation_ui/elements/validator/validator_name';
-import React from 'react';
+import { default as React } from 'react';
 import './node_name_cell.css';
 
 /**

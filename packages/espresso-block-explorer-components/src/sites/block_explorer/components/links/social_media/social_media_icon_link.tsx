@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 import { EgressLink } from '../link/link';
 import './social_media_icon_link.css';
 

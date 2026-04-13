@@ -1,5 +1,6 @@
 import { addClassToClassName } from '@/higher_order';
-import AnchorButton, {
+import {
+  default as AnchorButton,
   AnchorButtonProps,
 } from '../anchor_button/anchor_button';
 

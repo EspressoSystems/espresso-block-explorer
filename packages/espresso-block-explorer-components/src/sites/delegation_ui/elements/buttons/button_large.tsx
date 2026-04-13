@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/higher_order';
-import React from 'react';
-import ButtonBase, { ButtonProps } from './button_base';
+import { default as React } from 'react';
+import { default as ButtonBase, ButtonProps } from './button_base';
 
 /**
  * ButtonLarge is a wrapper around ButtonBase that adds the 'btn-large' class

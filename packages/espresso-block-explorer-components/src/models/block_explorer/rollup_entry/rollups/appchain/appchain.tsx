@@ -1,14 +1,14 @@
 import { AvatarLogo } from '../../avatar_logo';
 import { PreFedSrcAvatarLogoProps } from '../../higher_order';
-import AppchainLogo24x24_1x from './appchain_logo24x24@1x.png';
-import AppchainLogo24x24_2x from './appchain_logo24x24@2x.png';
-import AppchainLogo24x24_3x from './appchain_logo24x24@3x.png';
-import AppchainLogo32x32_1x from './appchain_logo32x32@1x.png';
-import AppchainLogo32x32_2x from './appchain_logo32x32@2x.png';
-import AppchainLogo32x32_3x from './appchain_logo32x32@3x.png';
-import AppchainLogo40x40_1x from './appchain_logo40x40@1x.png';
-import AppchainLogo40x40_2x from './appchain_logo40x40@2x.png';
-import AppchainLogo40x40_3x from './appchain_logo40x40@3x.png';
+import { default as AppchainLogo24x24_1x } from './appchain_logo24x24@1x.png';
+import { default as AppchainLogo24x24_2x } from './appchain_logo24x24@2x.png';
+import { default as AppchainLogo24x24_3x } from './appchain_logo24x24@3x.png';
+import { default as AppchainLogo32x32_1x } from './appchain_logo32x32@1x.png';
+import { default as AppchainLogo32x32_2x } from './appchain_logo32x32@2x.png';
+import { default as AppchainLogo32x32_3x } from './appchain_logo32x32@3x.png';
+import { default as AppchainLogo40x40_1x } from './appchain_logo40x40@1x.png';
+import { default as AppchainLogo40x40_2x } from './appchain_logo40x40@2x.png';
+import { default as AppchainLogo40x40_3x } from './appchain_logo40x40@3x.png';
 
 /**
  * AppChainLogo24 represents the AppChain Logo square at the size of 24x24

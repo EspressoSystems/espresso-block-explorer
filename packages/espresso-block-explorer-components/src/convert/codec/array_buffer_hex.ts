@@ -1,4 +1,4 @@
-import InvalidTypeError from '@/errors/invalid_type_error';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
 import { encodeNumberIterableToHexits, parseHexString } from '../hex/hex';
 import { ArrayCodec, ArrayDecoder, ArrayEncoder } from './array';
 import { Converter, TypeCheckingCodec } from './convert';

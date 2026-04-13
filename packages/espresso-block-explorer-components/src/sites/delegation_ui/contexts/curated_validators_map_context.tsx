@@ -1,6 +1,6 @@
-import { NodeMetadataContent } from '@/service/espresso_l1_validator_service/common/node_metadata_content';
 import { mapIterable } from '@/functional/functional';
-import React from 'react';
+import { NodeMetadataContent } from '@/service/espresso_staking_api_service/common/node_metadata_content';
+import { default as React } from 'react';
 
 // This is curated information collected from Node Operators directly.
 // It has been collected and colated here:

@@ -1,9 +1,9 @@
-import LabeledAnchorButton from '@/block_explorer/components/hid/buttons/labeled_anchor_button/labeled_anchor_button';
+import { default as LabeledAnchorButton } from '@/block_explorer/components/hid/buttons/labeled_anchor_button/labeled_anchor_button';
 import { SearchInput } from '@/block_explorer/components/input/search/search_input';
-import Card from '@/block_explorer/components/layout/card/card';
-import Heading1 from '@/block_explorer/components/layout/heading/heading1';
+import { default as Card } from '@/block_explorer/components/layout/card/card';
+import { default as Heading1 } from '@/block_explorer/components/layout/heading/heading1';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
-import SummaryTableLabeledValue from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
+import { default as SummaryTableLabeledValue } from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
 import { BlockSizeHistogram } from '@/block_explorer/components/page_sections/block_size_histogram/block_size_histogram';
 import { BlockSummaryDataFromStreamLoader } from '@/block_explorer/components/page_sections/block_summary_data_table/block_summary_data_loader';
 import {
@@ -15,11 +15,11 @@ import { BlockTimeHistogram } from '@/block_explorer/components/page_sections/bl
 import { HistogramDataLoader } from '@/block_explorer/components/page_sections/block_time_histogram/block_time_histogram_data_loader';
 import { ExplorerOverviewAsyncHandler } from '@/block_explorer/components/page_sections/explorer_overview/explorer_overview';
 import { ExplorerOverviewLoader } from '@/block_explorer/components/page_sections/explorer_overview/explorer_overview_loader';
-import Footer from '@/block_explorer/components/page_sections/footer/footer';
-import Header from '@/block_explorer/components/page_sections/header/header';
+import { default as Footer } from '@/block_explorer/components/page_sections/footer/footer';
+import { default as Header } from '@/block_explorer/components/page_sections/header/header';
 import { LatestBlockSummaryAsyncHandler } from '@/block_explorer/components/page_sections/latest_block_summary/latest_block_summary';
 import { LatestBlockSummaryDataLoader } from '@/block_explorer/components/page_sections/latest_block_summary/latest_block_summary_loader';
-import PageTitle from '@/block_explorer/components/page_sections/page_title/page_title';
+import { default as PageTitle } from '@/block_explorer/components/page_sections/page_title/page_title';
 import { TransactionSummaryDataFromStreamLoader } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
 import {
   TransactionsSummaryDataTable,
@@ -36,14 +36,14 @@ import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { addClassToClassName } from '@/higher_order';
-import Text from '@/text/text';
-import React from 'react';
+import { Text } from '@/components/text';
+import { default as React } from 'react';
 import './explorer_page.css';
 
 const Text300H2 = WithUiText300('h2');
 const EdgeShimmerDiv = WithLoadingShimmer('div');
 
-interface GuardedBlocksSummaryDataTableProps { }
+interface GuardedBlocksSummaryDataTableProps {}
 
 const GuardedBlocksSummaryDataTable: React.FC<
   GuardedBlocksSummaryDataTableProps

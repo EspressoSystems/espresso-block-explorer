@@ -1,6 +1,6 @@
-import ChevronDown from '@/components/visual/icons/sharp_line/chevron_down';
-import VerticalScroll from '@/components/visual/icons/sharp_line/vertical_scroll';
-import React from 'react';
+import { ChevronDown } from '@/components/visual/icons/sharp_line';
+import { VerticalScroll } from '@/components/visual/icons/sharp_line';
+import { default as React } from 'react';
 import {
   TableColumnSortByContext,
   TableSortStateContext,

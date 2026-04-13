@@ -1,6 +1,6 @@
-import Text from '@/components/text/text';
+import { Text } from '@/components/text';
 import { MoreInfoElement } from '@/sites/delegation_ui/elements/tooltip/more_info';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * MyStakeHeadCell is the header cell for the My Stake column in the

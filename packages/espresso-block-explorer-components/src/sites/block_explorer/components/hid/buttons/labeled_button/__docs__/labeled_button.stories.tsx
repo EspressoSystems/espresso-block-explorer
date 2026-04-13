@@ -1,7 +1,7 @@
-import Text from '@/text/text';
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
-import LabeledButtonComp from '../labeled_button';
+import { default as Text } from '@/text/text';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
+import { default as React } from 'react';
+import { default as LabeledButtonComp } from '../labeled_button';
 
 interface ExampleProps {
   label: string;

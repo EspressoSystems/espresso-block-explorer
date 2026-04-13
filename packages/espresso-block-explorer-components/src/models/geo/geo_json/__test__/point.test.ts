@@ -1,9 +1,9 @@
 import { describe, it } from 'vitest';
-import Degrees from '../../units/degrees';
-import LatLng from '../../units/lat_lng';
-import Latitude from '../../units/latitude';
-import Longitude from '../../units/longitude';
-import GeoJSONPoint, { geoJSONPointCodec } from '../point';
+import { default as Degrees } from '../../units/degrees';
+import { default as LatLng } from '../../units/lat_lng';
+import { default as Latitude } from '../../units/latitude';
+import { default as Longitude } from '../../units/longitude';
+import { default as GeoJSONPoint, geoJSONPointCodec } from '../point';
 
 describe('Point', () => {
   describe('Codec', () => {

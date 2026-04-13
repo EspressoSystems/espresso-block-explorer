@@ -1,14 +1,15 @@
 import { expandIterable, iota, mapIterable } from '@/functional/functional';
-import ChainProjection from '../projection/chain_projection';
-import CoordinateSpaceProjection from '../projection/coordinate_space_projection';
+import { default as ChainProjection } from '../projection/chain_projection';
+import { default as CoordinateSpaceProjection } from '../projection/coordinate_space_projection';
 import { degreesRadiansProjection } from '../projection/degrees_radians_projection';
-import MercatorProjection, {
+import {
+  default as MercatorProjection,
   mercatorProjection,
 } from '../projection/mercator_projection';
-import DensityIndependentPoint from '../units/density_independent_point';
-import LatLng from '../units/lat_lng';
-import Latitude from '../units/latitude';
-import Longitude from '../units/longitude';
+import { default as DensityIndependentPoint } from '../units/density_independent_point';
+import { default as LatLng } from '../units/lat_lng';
+import { default as Latitude } from '../units/latitude';
+import { default as Longitude } from '../units/longitude';
 
 /**
  * The visual design of the World Map calls for a map of the world whose land

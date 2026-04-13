@@ -16,8 +16,8 @@ import {
   StateHistoryCommitment,
 } from '@/contracts/light_client/light_client_interface';
 import { LightClientV2Contract } from '@/contracts/light_client_v2/light_client_v2_interface';
-import UnimplementedError from '@/errors/unimplemented_error';
-import React from 'react';
+import { UnimplementedError } from '@/errors/unimplemented_error';
+import { default as React } from 'react';
 import {
   MockContractStorage,
   MockL1MethodsImpl,

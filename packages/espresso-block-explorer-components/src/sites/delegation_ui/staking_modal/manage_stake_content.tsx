@@ -1,14 +1,14 @@
-import Text from '@/components/text/text';
+import { Text } from '@/components/text';
 import { emptyIterator, firstWhereIterable } from '@/functional/functional';
-import { PendingWithdrawal } from '@/service/espresso_l1_validator_service/common/pending_withdrawal';
-import { WalletSnapshotContext } from 'delegation-ui';
-import React from 'react';
+import { PendingWithdrawal } from '@/service/espresso_staking_api_service/common/pending_withdrawal';
+import { default as React } from 'react';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import {
   ValidatorConfirmedStake,
   ValidatorConfirmedUndelegate,
 } from '../contexts/validator_selection_context';
-import ButtonLarge from '../elements/buttons/button_large';
+import { WalletSnapshotContext } from '../contexts/wallet_snapshot_context';
+import { default as ButtonLarge } from '../elements/buttons/button_large';
 import { CloseStakingModalButton } from './close_staking_modal';
 import { StakingModalHistoryControlsContext } from './contexts/staking_modal_history_context';
 import './manage_stake_content.css';

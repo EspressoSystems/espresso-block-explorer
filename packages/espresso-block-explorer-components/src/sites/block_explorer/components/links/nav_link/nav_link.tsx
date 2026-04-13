@@ -2,7 +2,7 @@ import {
   CurrentPagePathContext,
   PageType,
 } from '@/block_explorer/contexts/page_path_provider';
-import React from 'react';
+import { default as React } from 'react';
 import { InternalLink } from '../link/link';
 import './nav_link.css';
 

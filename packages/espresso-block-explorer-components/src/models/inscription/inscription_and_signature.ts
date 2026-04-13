@@ -15,8 +15,9 @@ import {
 import { uint8ArrayToArrayBufferCodec } from '@/convert/codec/uint8_array';
 import { createBufferedDataView } from '@/convert/data_view/buffered_data_view';
 import { Endianess } from '@/convert/data_view/endianess';
-import Inscription, {
+import {
   deserializeBincodeInscription,
+  default as Inscription,
   inscriptionCodec,
   serializeBincodeInscription,
 } from './inscription';

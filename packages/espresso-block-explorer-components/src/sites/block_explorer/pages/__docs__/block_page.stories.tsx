@@ -1,7 +1,8 @@
-import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
 import { BlockNumberContext } from '@/block_explorer/components/page_sections/block_detail_content/block_detail_content_loader';
-import { ProvideTickEverySecond } from '@/contexts/now_provider';
 import { OverridePathResolver } from '@/block_explorer/contexts/path_resolver_provider';
+import { ProvideHotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
+import { ProvideTickEverySecond } from '@/contexts/now_provider';
+import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
 import { Environment } from '@/models/config/environment/environment';
 import {
   environmentArgsDecaf,
@@ -15,10 +16,9 @@ import {
 } from '@/models/config/storybook/controls';
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
-import BlockPage from '../block_page';
-import { ProvideCappuccinoBlockDetailDataSource } from '../cappuccino_hot_shot_query_service_adapters';
-import { ProvideCappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
+import { default as React } from 'react';
+import { default as BlockPage } from '../block_page';
+import { ProvideBlockDetailDataSource } from '../hot_shot_query_service_adapters';
 import { StoryBookPathResolver } from '../story_book_path_resolver';
 
 interface ExampleProps {
@@ -47,13 +47,13 @@ const Example: React.FC<ExampleProps> = ({
     <EnvironmentBanner />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
-        <ProvideCappuccinoHotShotQueryServiceAPIContext>
+        <ProvideHotShotQueryServiceAPIContext>
           <BlockNumberContext.Provider value={block}>
-            <ProvideCappuccinoBlockDetailDataSource>
+            <ProvideBlockDetailDataSource>
               <BlockPage {...rest} />
-            </ProvideCappuccinoBlockDetailDataSource>
+            </ProvideBlockDetailDataSource>
           </BlockNumberContext.Provider>
-        </ProvideCappuccinoHotShotQueryServiceAPIContext>
+        </ProvideHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>
   </StoryBookSpecifyEnvironment>

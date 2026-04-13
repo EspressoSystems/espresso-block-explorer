@@ -1,17 +1,17 @@
-import ArrowLeft from '@/visual/icons/arrow_left';
-import ArrowRight from '@/visual/icons/arrow_right';
-import CheckCircleFilled from '@/visual/icons/check_circle_filled';
-import ChevronDown from '@/visual/icons/chevron_down';
-import ChevronUp from '@/visual/icons/chevron_up';
-import DiscordIcon from '@/visual/icons/discord_icon';
-import InfoCircle from '@/visual/icons/info_circle';
-import MediumIcon from '@/visual/icons/medium_icon';
-import Menu from '@/visual/icons/menu';
-import SearchGlass from '@/visual/icons/search_glass';
-import TwitterIcon from '@/visual/icons/twitter_icon';
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
-import IconAnchorButtonComp from '../icon_anchor_button';
+import { default as ArrowLeft } from '@/visual/icons/arrow_left';
+import { default as ArrowRight } from '@/visual/icons/arrow_right';
+import { default as CheckCircleFilled } from '@/visual/icons/check_circle_filled';
+import { default as ChevronDown } from '@/visual/icons/chevron_down';
+import { default as ChevronUp } from '@/visual/icons/chevron_up';
+import { default as DiscordIcon } from '@/visual/icons/discord_icon';
+import { default as InfoCircle } from '@/visual/icons/info_circle';
+import { default as MediumIcon } from '@/visual/icons/medium_icon';
+import { default as Menu } from '@/visual/icons/menu';
+import { default as SearchGlass } from '@/visual/icons/search_glass';
+import { default as TwitterIcon } from '@/visual/icons/twitter_icon';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
+import { default as React } from 'react';
+import { default as IconAnchorButtonComp } from '../icon_anchor_button';
 
 interface ExampleProps {
   href: string;

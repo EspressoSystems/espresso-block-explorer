@@ -6,9 +6,9 @@ import {
   isString,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
-import InvalidTypeError from '@/errors/invalid_type_error';
-import NoCodecFoundError from '@/errors/no_codec_found_error';
-import GeoJSONBoundingBox from './bounding_box';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
+import { NoCodecFoundError } from '@/errors/no_codec_found_error';
+import { default as GeoJSONBoundingBox } from './bounding_box';
 
 /**
  * GeoJSONGeometry is a parent class of the different types of geometries

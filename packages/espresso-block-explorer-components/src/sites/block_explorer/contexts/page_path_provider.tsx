@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import { default as React, createContext } from 'react';
 
 /**
  * PageType represents the different page types we are expecting to be on.

@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 import { AffineTransform } from './affine_transform';
 import { DataStatistics } from './data_statistics';
 import {

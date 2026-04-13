@@ -1,17 +1,20 @@
-import CopyHex from '@/block_explorer/components/text/copy_hex';
+import { default as CopyHex } from '@/block_explorer/components/text/copy_hex';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
-import DataTable, {
+import {
+  default as DataTable,
   DataTableRowContext,
 } from '@/components/data/data_table/data_table';
-import SkeletonContent from '@/components/loading/skeleton_content';
+import { SkeletonContent } from '@/components/loading';
+import {
+  ByteSizeText,
+  DateTimeText,
+  HexText,
+  NumberText,
+} from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { iota } from '@/functional/functional';
 import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
-import ByteSizeText from '@/text/byte_size_text';
-import DateTimeText from '@/text/date_time_text';
-import HexText from '@/text/hex_text';
-import NumberText from '@/text/number_text';
-import React from 'react';
+import { default as React } from 'react';
 import { InternalLink } from '../../links/link/link';
 import { BlockSummary } from './block_summary_data_loader';
 

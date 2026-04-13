@@ -1,21 +1,22 @@
 import { Label } from '@/block_explorer/components/layout/label/label';
-import TableLabeledValue from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
-import CopyHex from '@/block_explorer/components/text/copy_hex';
+import { default as TableLabeledValue } from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
+import { default as CopyHex } from '@/block_explorer/components/text/copy_hex';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
-import SkeletonContent from '@/components/loading/skeleton_content';
-import RelativeTimeSinceDateText from '@/components/text/relative_time_since_date_text';
+import { SkeletonContent } from '@/components/loading';
+import {
+  ByteSizeText,
+  DateTimeText,
+  FullHexText,
+  NumberText,
+  RelativeTimeSinceDateText,
+  Text,
+} from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
+import { MonetaryValue } from '@/models/block_explorer';
 import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import ByteSizeText from '@/text/byte_size_text';
-import DateTimeText from '@/text/date_time_text';
-import FullHexText from '@/text/full_hex_text';
-import NumberText from '@/text/number_text';
-import Text from '@/text/text';
-import ArrowLeft from '@/visual/icons/arrow_left';
-import ArrowRight from '@/visual/icons/arrow_right';
-import React from 'react';
+import { ArrowLeft, ArrowRight } from '@/visual/icons';
+import { default as React } from 'react';
 import { IconAnchorButton } from '../../hid/buttons';
 import { InternalLink } from '../../links/link/link';
 import './block_detail_content.css';
@@ -142,7 +143,7 @@ export const BlockDetailsContentPlaceholder: React.FC<
   );
 };
 
-interface BlockDetailsContentProps { }
+interface BlockDetailsContentProps {}
 
 /**
  * BlockDetailsContext represents the component that displays all of the

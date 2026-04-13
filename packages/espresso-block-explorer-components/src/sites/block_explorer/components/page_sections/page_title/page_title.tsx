@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/higher_order';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin';
-import React from 'react';
+import { default as React } from 'react';
 import './page_title.css';
 
 export interface PageTitleProps {

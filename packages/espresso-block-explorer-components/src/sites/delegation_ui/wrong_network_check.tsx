@@ -2,10 +2,10 @@ import {
   RainbowKitChainContext,
   RainbowKitModalContext,
 } from '@/components/rainbowkit';
-import Text from '@/components/text/text';
-import React from 'react';
+import { Text } from '@/components/text';
+import { default as React } from 'react';
 import { WagmiContext } from 'wagmi';
-import ButtonLarge from './elements/buttons/button_large';
+import { default as ButtonLarge } from './elements/buttons/button_large';
 import './wrong_network_check.css';
 
 /**

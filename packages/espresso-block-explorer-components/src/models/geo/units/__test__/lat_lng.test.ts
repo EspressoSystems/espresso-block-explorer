@@ -1,9 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import Degrees from '../degrees';
-import LatLng, { latLngDegreesCodec, latLngRadiansCodec } from '../lat_lng';
-import Latitude from '../latitude';
-import Longitude from '../longitude';
-import Radians from '../radians';
+import { default as Degrees } from '../degrees';
+import {
+  default as LatLng,
+  latLngDegreesCodec,
+  latLngRadiansCodec,
+} from '../lat_lng';
+import { default as Latitude } from '../latitude';
+import { default as Longitude } from '../longitude';
+import { default as Radians } from '../radians';
 
 describe('LatLng', () => {
   describe('Degrees', () => {

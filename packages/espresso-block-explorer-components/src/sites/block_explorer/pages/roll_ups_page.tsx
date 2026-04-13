@@ -1,10 +1,10 @@
-import Card from '@/block_explorer/components/layout/card/card';
-import Heading1 from '@/block_explorer/components/layout/heading/heading1';
+import { default as Card } from '@/block_explorer/components/layout/card/card';
+import { default as Heading1 } from '@/block_explorer/components/layout/heading/heading1';
 import { Label } from '@/block_explorer/components/layout/label/label';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
-import Footer from '@/block_explorer/components/page_sections/footer/footer';
-import Header from '@/block_explorer/components/page_sections/header/header';
-import PageTitle from '@/block_explorer/components/page_sections/page_title/page_title';
+import { default as Footer } from '@/block_explorer/components/page_sections/footer/footer';
+import { default as Header } from '@/block_explorer/components/page_sections/header/header';
+import { default as PageTitle } from '@/block_explorer/components/page_sections/page_title/page_title';
 import {
   RollUpsSummaryDataTable,
   RollUpsSummaryDataTablePlaceholder,
@@ -16,18 +16,17 @@ import {
 } from '@/block_explorer/contexts/page_path_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
+import { NumberText, Text } from '@/components/text';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
-import NumberText from '@/text/number_text';
-import Text from '@/text/text';
-import React from 'react';
+import { default as React } from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 
-interface GuardedRollUpsSummaryDataTableProps { }
+interface GuardedRollUpsSummaryDataTableProps {}
 
 /**
  * GuardedRollUpsSummaryDataTable is a component that guards rendering the
@@ -63,7 +62,7 @@ const GuardedRollUpsSummaryDataTable: React.FC<
   );
 };
 
-interface RollUpsPageProps { }
+interface RollUpsPageProps {}
 
 /**
  * RollUpsPage is a component that renders the RollUps Page.

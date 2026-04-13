@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 import { ProvideCurrentStakeToValidator } from './contexts/current_stake_to_validator_context';
 import { ProvideClaimValidatorExitAsyncIterableContext } from './contexts/perfom_claim_validator_exit_context';
 import { ProvideApproveAsyncIterableContext } from './contexts/perform_approve_delegation_context';

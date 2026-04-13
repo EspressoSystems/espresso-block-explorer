@@ -1,24 +1,24 @@
 'use client';
 
 import {
-  ProvideCappuccinoHotShotQueryServiceAPIContext,
-  ProvideCappuccinoNodeValidatorServiceAPIContext
+  ProvideHotShotQueryServiceAPIContext,
+  ProvideNodeValidatorServiceAPIContext,
 } from 'espresso-block-explorer-components';
 import {
   NodesPage,
-  ProvideCappuccinoNodeValidatorStreams,
+  ProvideNodeValidatorStreams,
 } from 'espresso-block-explorer-components/block-explorer';
 
-export interface NodesClientComponentProps { }
+export interface NodesClientComponentProps {}
 
 export default function NodesClientComponent() {
   return (
-    <ProvideCappuccinoNodeValidatorServiceAPIContext>
-      <ProvideCappuccinoHotShotQueryServiceAPIContext>
-        <ProvideCappuccinoNodeValidatorStreams>
+    <ProvideNodeValidatorServiceAPIContext>
+      <ProvideHotShotQueryServiceAPIContext>
+        <ProvideNodeValidatorStreams>
           <NodesPage />
-        </ProvideCappuccinoNodeValidatorStreams>
-      </ProvideCappuccinoHotShotQueryServiceAPIContext>
-    </ProvideCappuccinoNodeValidatorServiceAPIContext>
+        </ProvideNodeValidatorStreams>
+      </ProvideHotShotQueryServiceAPIContext>
+    </ProvideNodeValidatorServiceAPIContext>
   );
 }

@@ -1,6 +1,6 @@
 import { emptyIterator, mapIterable } from '@/functional/functional';
-import { Delegation } from '@/service/espresso_l1_validator_service/common/delegation';
-import React from 'react';
+import { Delegation } from '@/service/espresso_staking_api_service/common/delegation';
+import { default as React } from 'react';
 import { WalletSnapshotContext } from './wallet_snapshot_context';
 
 /**

@@ -1,8 +1,7 @@
-import Text from '@/components/text/text';
-import { PercentageText } from '@/components/text';
+import { PercentageText, Text } from '@/components/text';
 import { CurrentNumberFormatters } from '@/contexts/number_formatters_provider';
-import { RatioRational } from '@/service/espresso_l1_validator_service/common/ratio';
-import React from 'react';
+import { RatioRational } from '@/service/espresso_staking_api_service/common/ratio';
+import { default as React } from 'react';
 
 export interface RatioRationalText {
   rate: RatioRational;

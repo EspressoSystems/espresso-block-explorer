@@ -6,7 +6,7 @@ import {
 } from '@/models/config/storybook/controls';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { kIntentClaimAndStake } from 'delegation-ui';
-import ExampleMeta, { Example } from './delegation_ui.stories';
+import { Example, default as ExampleMeta } from './delegation_ui.stories';
 
 const meta: Meta = {
   ...ExampleMeta,
@@ -20,7 +20,7 @@ export const Decaf: Story = {
   args: {
     ...environmentArgsDecafWithContracts,
     intentType: kIntentClaimAndStake,
-    l1ValidatorServiceURL:
+    stakingAPIServiceURL:
       'https://staking-api.decaf.testnet.espresso.network/v0/staking/',
   },
 };
@@ -29,7 +29,7 @@ export const Mainnet: Story = {
   args: {
     ...environmentArgsMainnetWithContracts,
     intentType: kIntentClaimAndStake,
-    l1ValidatorServiceURL:
+    stakingAPIServiceURL:
       'https://staking-api.main.net.espresso.network/v0/staking/',
   },
 };
@@ -45,6 +45,6 @@ export const LocalDevNet: Story = {
   args: {
     ...environmentArgsLocalDevNetWithContracts,
     intentType: kIntentClaimAndStake,
-    l1ValidatorServiceURL: 'http://localhost:8080/v0/staking/',
+    stakingAPIServiceURL: 'http://localhost:8080/v0/staking/',
   },
 };

@@ -1,4 +1,4 @@
-import Text from '@/components/text/text';
+import { Text } from '@/components/text';
 import { ConsensusChip } from './consensus_chip';
 
 export const ExitingChip: React.FC = () => {

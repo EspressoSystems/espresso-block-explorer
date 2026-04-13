@@ -1,5 +1,5 @@
 import { EspressoAddresses } from '@/models/config/environment/espresso';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * EspressoConfigContext provides the current Espresso configuration for the

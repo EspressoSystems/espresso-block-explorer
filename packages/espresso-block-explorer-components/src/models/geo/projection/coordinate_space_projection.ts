@@ -1,10 +1,10 @@
 import { AffineTransform } from '@/components/visual/histogram/histogram_base/affine_transform';
 import { NumberLike } from '../../numeric/numeric';
-import DensityIndependentPoint from '../units/density_independent_point';
-import LatLng from '../units/lat_lng';
-import Latitude from '../units/latitude';
-import Longitude from '../units/longitude';
-import Radians from '../units/radians';
+import { default as DensityIndependentPoint } from '../units/density_independent_point';
+import { default as LatLng } from '../units/lat_lng';
+import { default as Latitude } from '../units/latitude';
+import { default as Longitude } from '../units/longitude';
+import { default as Radians } from '../units/radians';
 import { GeodesicProjection } from './geodesic_projection';
 
 /**

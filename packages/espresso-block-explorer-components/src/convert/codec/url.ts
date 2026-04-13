@@ -1,4 +1,4 @@
-import InvalidTypeError from '@/errors/invalid_type_error';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
 import { Converter, TypeCheckingCodec, isString } from './convert';
 import { NullCodec, NullDecoder, NullEncoder } from './null';
 import { OptionalCodec, OptionalDecoder, OptionalEncoder } from './optional';

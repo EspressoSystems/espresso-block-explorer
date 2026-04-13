@@ -1,10 +1,10 @@
 import { PromiseResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { DataContext } from '@/contexts/data_provider';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { neverPromise } from '@/functional/functional_async';
-import { HeightAndAddress } from '@/service/hotshot_query_service/cappuccino/reward_state/height_and_address';
-import React from 'react';
+import { HeightAndAddress } from '@/service/hotshot_query_service/reward_state/height_and_address';
+import { default as React } from 'react';
 import { EspressoBlockHeightContext } from './espresso_block_height_context';
 import { EspressoRefreshTimestampContext } from './espresso_refresh_timestamp_context';
 
@@ -29,9 +29,7 @@ export const RetrieveEspressoClaimableRewardsBalance: React.FC<
   const espressoHeight = React.useContext(EspressoBlockHeightContext);
   const accountAddress = React.useContext(RainbowKitAccountAddressContext);
 
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   const currentBlockHeight =
     espressoHeight === undefined || espressoHeight === null || !accountAddress

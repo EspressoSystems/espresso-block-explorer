@@ -1,13 +1,15 @@
-import DateTimeText from '@/components/text/date_time_text';
-import HexText from '@/components/text/hex_text';
-import MoneyText from '@/components/text/money_text';
-import NumberText from '@/components/text/number_text';
-import Text from '@/components/text/text';
+import {
+  DateTimeText,
+  HexText,
+  MoneyText,
+  NumberText,
+  Text,
+} from '@/components/text';
 import { EthHeader } from '@/service/ethereum/header';
 import { EthTransaction } from '@/service/ethereum/transaction';
-import React from 'react';
-import TableLabeledValue from '../../layout/table_labeled_value/table_labeled_value';
-import CopyHex from '../../text/copy_hex';
+import { default as React } from 'react';
+import { default as TableLabeledValue } from '../../layout/table_labeled_value/table_labeled_value';
+import { default as CopyHex } from '../../text/copy_hex';
 
 /**
  * EthHeaderContext provides a React context for an Ethereum block header.

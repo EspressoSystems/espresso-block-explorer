@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import {
   kWebSocketStatusConnectionClosedType,
   WebSocketStatusConnectionClosed,
@@ -15,7 +15,7 @@ import {
   WebSocketStatusConnectionOpened,
   webSocketStatusConnectionOpenedCodec,
 } from './opened';
-import WebSocketStatus from './web_socket_status';
+import { default as WebSocketStatus } from './web_socket_status';
 
 class WebSocketStatusDecoder implements Converter<unknown, WebSocketStatus> {
   convert(input: unknown): WebSocketStatus {

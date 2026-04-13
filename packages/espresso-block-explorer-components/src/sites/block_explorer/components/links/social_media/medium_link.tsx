@@ -1,6 +1,6 @@
-import MediumIcon from '@/visual/icons/medium_icon';
-import React from 'react';
-import SocialMediaIconLink from './social_media_icon_link';
+import { MediumIcon } from '@/visual/icons';
+import { default as React } from 'react';
+import { default as SocialMediaIconLink } from './social_media_icon_link';
 
 /**
  * MediumLink is an Icon Link to the Espresso Systems Medium Account

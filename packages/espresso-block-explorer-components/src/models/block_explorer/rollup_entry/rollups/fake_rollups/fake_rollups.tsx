@@ -1,13 +1,13 @@
 import { AvatarLogo } from '../../avatar_logo';
 import { PreFedSrcAvatarLogoProps } from '../../higher_order';
-import AltLayerLogo from './alt_layer_logo.png';
-import ArbitrumLogo from './arbitrum_logo.png';
-import CalderaLogo from './caldera_logo.png';
-import EigenLayerLogo from './eigen_layer_logo.png';
-import OpStackLogo from './op_stack_logo.png';
-import PolygonLogo from './polygon_logo.png';
-import SpireLogo from './spire_logo.png';
-import VistaraLogo from './vistara_logo.png';
+import { default as AltLayerLogo } from './alt_layer_logo.png';
+import { default as ArbitrumLogo } from './arbitrum_logo.png';
+import { default as CalderaLogo } from './caldera_logo.png';
+import { default as EigenLayerLogo } from './eigen_layer_logo.png';
+import { default as OpStackLogo } from './op_stack_logo.png';
+import { default as PolygonLogo } from './polygon_logo.png';
+import { default as SpireLogo } from './spire_logo.png';
+import { default as VistaraLogo } from './vistara_logo.png';
 
 /**
  * AltLayerAvatarLogo represents the Alt Layer Logo

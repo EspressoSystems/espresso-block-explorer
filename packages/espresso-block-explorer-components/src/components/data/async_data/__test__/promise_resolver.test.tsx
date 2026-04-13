@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
 import { act, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
+import { default as React } from 'react';
 import { describe, expect, it } from 'vitest';
 import { AsyncSnapshot, AsyncState } from '../async_snapshot';
 import { AsyncSnapshotContext } from '../async_snapshot_context';
-import PromiseResolver from '../promise_resolver';
+import { default as PromiseResolver } from '../promise_resolver';
 
 describe('Promise Resolver Component', () => {
   it('Resolves Successfully', async () => {

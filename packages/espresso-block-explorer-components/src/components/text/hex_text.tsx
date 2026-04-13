@@ -1,5 +1,5 @@
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
-import React from 'react';
+import { default as React } from 'react';
 import './inline.css';
 
 export interface HexTextProps {

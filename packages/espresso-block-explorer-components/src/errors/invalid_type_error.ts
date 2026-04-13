@@ -5,13 +5,12 @@ import {
   assertErrorCode,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
-import { stringCodec } from '@/convert/codec/string';
-import BaseError, { baseErrorEncoder } from './base_error';
+import { BaseError, baseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kInvalidTypeErrorCode = 'InvalidTypeError';
 
-export default class InvalidTypeError extends BaseError {
+export class InvalidTypeError extends BaseError {
   readonly have: string;
   readonly want: string;
   constructor(
@@ -38,11 +37,17 @@ class InvalidTypeErrorDecoder implements Converter<unknown, InvalidTypeError> {
   convert(input: unknown): InvalidTypeError {
     assertRecordWithKeys(input, 'code', 'have', 'want', 'message');
     assertErrorCode(input, kInvalidTypeErrorCode);
-    return new InvalidTypeError(
-      stringCodec.decode(input.have),
-      stringCodec.decode(input.want),
-      stringCodec.decode(input.message),
-    );
+    if (typeof input.have !== 'string') {
+      throw new InvalidTypeError(typeof input.have, 'string');
+    }
+    if (typeof input.want !== 'string') {
+      throw new InvalidTypeError(typeof input.want, 'string');
+    }
+    if (typeof input.message !== 'string') {
+      throw new InvalidTypeError(typeof input.message, 'string');
+    }
+
+    return new InvalidTypeError(input.have, input.want, input.message);
   }
 }
 
@@ -51,8 +56,8 @@ class InvalidTypeErrorEncoder implements Converter<InvalidTypeError> {
     assertInstanceOf(input, InvalidTypeError);
     return {
       ...baseErrorEncoder.convert(input),
-      have: stringCodec.encode(input.have),
-      want: stringCodec.encode(input.want),
+      want: input.want,
+      have: input.have,
     };
   }
 }

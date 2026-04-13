@@ -3,7 +3,7 @@ import { ProvideDerivedNumberFormatters } from '@/contexts/number_formatters_pro
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import NumberText from '../number_text';
+import { default as NumberText } from '../number_text';
 
 describe('Number Text Component', () => {
   it('Should format the value passed to it an a Locale standard way', () => {

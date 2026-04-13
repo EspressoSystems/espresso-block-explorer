@@ -1,5 +1,5 @@
-import Text from '@/components/text/text';
-import React from 'react';
+import { Text } from '@/components/text';
+import { default as React } from 'react';
 import { RetrieveMinimumDelegationAmount } from '../contexts/minimum_delegation_amount_context';
 import { ValidatorName } from '../elements/validator/validator_name';
 import { ApproveButton } from './approve_button';

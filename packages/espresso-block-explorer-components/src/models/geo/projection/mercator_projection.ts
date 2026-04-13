@@ -1,9 +1,9 @@
 import { NumberLike, greaterThan, lessThan } from '../../numeric/numeric';
-import Degrees from '../units/degrees';
-import LatLng from '../units/lat_lng';
-import Latitude from '../units/latitude';
-import Longitude from '../units/longitude';
-import Radians from '../units/radians';
+import { default as Degrees } from '../units/degrees';
+import { default as LatLng } from '../units/lat_lng';
+import { default as Latitude } from '../units/latitude';
+import { default as Longitude } from '../units/longitude';
+import { default as Radians } from '../units/radians';
 import { degreesRadiansProjection } from './degrees_radians_projection';
 import { GeodesicProjection } from './geodesic_projection';
 

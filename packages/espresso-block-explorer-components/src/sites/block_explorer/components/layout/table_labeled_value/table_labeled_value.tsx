@@ -1,7 +1,7 @@
 import { Label } from '@/block_explorer/components/layout/label/label';
 import { addClassToClassName } from '@/higher_order';
 import { WithUiSmall } from '@/block_explorer/components/typography/typography';
-import React from 'react';
+import { default as React } from 'react';
 import './table_labeled_value.css';
 
 const DivTextSmall = WithUiSmall('div');

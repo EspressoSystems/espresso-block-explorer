@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import NotFoundError, {
+import {
+  NotFoundError,
   notFoundKeyUnknownErrorCodec,
 } from '../not_found_error';
 import { espressoErrorCodec } from '../registry';

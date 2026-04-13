@@ -1,6 +1,5 @@
+import { Text, TimeLeftText } from '@/components/text';
 import { Now } from '@/contexts/now_provider';
-import Text from '@/components/text/text';
-import TimeLeftText from '@/components/text/time_left_text';
 import { ModalContext } from '@/sites/delegation_ui/contexts/modal_context';
 import { NodeAddressContext } from '@/sites/delegation_ui/contexts/node_address_context';
 import { PendingExitsContext } from '@/sites/delegation_ui/contexts/pending_exits_context';
@@ -9,8 +8,8 @@ import {
   SetValidatorSelectionContext,
   ValidatorConfirmedExitWithdraw,
 } from '@/sites/delegation_ui/contexts/validator_selection_context';
-import ButtonLarge from '@/sites/delegation_ui/elements/buttons/button_large';
-import React from 'react';
+import { default as ButtonLarge } from '@/sites/delegation_ui/elements/buttons/button_large';
+import { default as React } from 'react';
 
 /**
  * PendingExitActionsCell is a component that displays

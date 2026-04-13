@@ -7,7 +7,7 @@ import {
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
 import { unknownCodec } from '@/convert/codec/unknown';
-import BaseError, { baseErrorEncoder } from './base_error';
+import { BaseError, baseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kNotFoundErrorCode = 'NotFoundError';
@@ -16,7 +16,7 @@ const kNotFoundErrorCode = 'NotFoundError';
  * NotFoundError is an error that indicates that the resource for the specified
  * key was unable to be found.
  */
-export default class NotFoundError<Key = unknown> extends BaseError {
+export class NotFoundError<Key = unknown> extends BaseError {
   readonly key: Key;
 
   constructor(key: Key, message: string = `Not Found: ${key}`) {

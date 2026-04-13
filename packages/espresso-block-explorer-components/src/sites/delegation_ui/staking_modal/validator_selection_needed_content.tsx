@@ -1,14 +1,15 @@
 import { assert } from '@/assert/assert';
-import MoneyText from '@/components/text/money_text';
-import PercentageText from '@/components/text/percentage_text';
-import Text from '@/components/text/text';
-import WalletAddressText from '@/components/text/wallet_address_text';
-import CheckCircle from '@/components/visual/icons/sharp_line/check_circle';
-import LinkShare2 from '@/components/visual/icons/sharp_line/link_share_2';
+import {
+  MoneyText,
+  PercentageText,
+  Text,
+  WalletAddressText,
+} from '@/components/text';
+import { CheckCircle, LinkShare2 } from '@/components/visual/icons/sharp_line';
 import { filterIterable } from '@/functional/functional';
-import MonetaryValue from '@/models/block_explorer/monetary_value';
-import WalletAddress from '@/models/wallet_address/wallet_address';
-import React from 'react';
+import { MonetaryValue } from '@/models/block_explorer';
+import { WalletAddress } from '@/models/wallet_address';
+import { default as React } from 'react';
 import {
   AllValidatorsContext,
   NodeAddressListContext,
@@ -28,7 +29,7 @@ import {
   ValidatorSelected,
   ValidatorSelectionContext,
 } from '../contexts/validator_selection_context';
-import ButtonLarge from '../elements/buttons/button_large';
+import { default as ButtonLarge } from '../elements/buttons/button_large';
 import { applySearchTermNodeFilter } from '../search_term_node_filter';
 import { SearchValidator } from '../search_validator';
 import { NodeNameCell } from '../validator_nodes_table/common/cells/node_name_cell';

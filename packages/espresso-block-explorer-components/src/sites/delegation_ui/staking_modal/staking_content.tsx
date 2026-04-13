@@ -1,5 +1,5 @@
 import { addClassToClassName } from '@/components/higher_order';
-import React from 'react';
+import { default as React } from 'react';
 
 export type StakingContentProps = React.PropsWithChildren & {
   className?: string;

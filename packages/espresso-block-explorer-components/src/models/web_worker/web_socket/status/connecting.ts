@@ -1,6 +1,6 @@
 import { Converter, TypeCheckingCodec } from '@/convert/codec/convert';
-import InvalidTypeError from '@/errors/invalid_type_error';
-import WebSocketStatus from './web_socket_status';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
+import { default as WebSocketStatus } from './web_socket_status';
 
 /**
  * kWebSocketStatusConnectionConnectingType is the type string for the

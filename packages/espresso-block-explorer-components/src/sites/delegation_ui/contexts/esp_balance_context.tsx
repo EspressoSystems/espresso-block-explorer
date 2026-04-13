@@ -4,7 +4,7 @@ import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { DataContext } from '@/contexts/data_provider';
 import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
 import { neverPromise } from '@/functional/functional_async';
-import React from 'react';
+import { default as React } from 'react';
 import { L1RefreshTimestampContext } from './l1_refresh_timestamp_context';
 
 export const ESPBalanceContext = React.createContext<bigint>(0n);

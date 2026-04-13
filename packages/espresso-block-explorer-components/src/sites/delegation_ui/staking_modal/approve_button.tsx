@@ -1,14 +1,14 @@
 import { AsyncState } from '@/components/data/async_data/async_snapshot';
 import { addClassToClassName } from '@/components/higher_order';
-import Text from '@/components/text/text';
+import { Text } from '@/components/text';
 import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
-import { ESPBalanceContext } from 'delegation-ui';
-import React from 'react';
+import { default as React } from 'react';
+import { ESPBalanceContext } from '../contexts/esp_balance_context';
 import { SetL1RefreshTimestampContext } from '../contexts/l1_refresh_timestamp_context';
 import { ButtonProps } from '../elements/buttons/button_base';
-import ButtonLarge from '../elements/buttons/button_large';
+import { default as ButtonLarge } from '../elements/buttons/button_large';
 import { CurrentAllowanceToStakeTableContext } from './contexts/current_allowance_context';
 import {
   ApproveAsyncSnapshotContext,

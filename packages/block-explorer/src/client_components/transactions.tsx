@@ -1,12 +1,10 @@
 'use client';
 
+import { ProvideHotShotQueryServiceAPIContext } from 'espresso-block-explorer-components';
 import {
-  ProvideCappuccinoHotShotQueryServiceAPIContext,
-} from 'espresso-block-explorer-components';
-import {
-  ProvideCappuccinoBlockDetailDataSource,
-  ProvideCappuccinoTransactionsForBlockSummaryDataSource,
-  ProvideCappuccinoTransactionsSummaryDataSource,
+  ProvideBlockDetailDataSource,
+  ProvideTransactionsForBlockSummaryDataSource,
+  ProvideTransactionsSummaryDataSource,
   TransactionsForBlockPage,
   TransactionsPage,
 } from 'espresso-block-explorer-components/block-explorer';
@@ -24,21 +22,21 @@ export default function TransactionsClientComponent({
 }: TransactionsClientComponentProps) {
   if (block !== undefined) {
     return (
-      <ProvideCappuccinoHotShotQueryServiceAPIContext>
-        <ProvideCappuccinoTransactionsForBlockSummaryDataSource>
-          <ProvideCappuccinoBlockDetailDataSource>
+      <ProvideHotShotQueryServiceAPIContext>
+        <ProvideTransactionsForBlockSummaryDataSource>
+          <ProvideBlockDetailDataSource>
             <TransactionsForBlockPage block={block} offset={offset} />
-          </ProvideCappuccinoBlockDetailDataSource>
-        </ProvideCappuccinoTransactionsForBlockSummaryDataSource>
-      </ProvideCappuccinoHotShotQueryServiceAPIContext>
+          </ProvideBlockDetailDataSource>
+        </ProvideTransactionsForBlockSummaryDataSource>
+      </ProvideHotShotQueryServiceAPIContext>
     );
   }
 
   return (
-    <ProvideCappuccinoHotShotQueryServiceAPIContext>
-      <ProvideCappuccinoTransactionsSummaryDataSource>
+    <ProvideHotShotQueryServiceAPIContext>
+      <ProvideTransactionsSummaryDataSource>
         <TransactionsPage startAtBlock={startAtBlock} offset={offset} />
-      </ProvideCappuccinoTransactionsSummaryDataSource>
-    </ProvideCappuccinoHotShotQueryServiceAPIContext>
+      </ProvideTransactionsSummaryDataSource>
+    </ProvideHotShotQueryServiceAPIContext>
   );
 }

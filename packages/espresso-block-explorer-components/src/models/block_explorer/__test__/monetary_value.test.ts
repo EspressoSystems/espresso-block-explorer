@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { USD } from '../currency_code';
-import MonetaryValue, { iso427MonetaryValueCodec } from '../monetary_value';
+import {
+  default as MonetaryValue,
+  iso427MonetaryValueCodec,
+} from '../monetary_value';
 
 describe('Monetary Value', () => {
   describe('codec', () => {

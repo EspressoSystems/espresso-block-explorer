@@ -2,13 +2,13 @@ import { PromiseResolver } from '@/components/data';
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import { DataContext } from '@/contexts/data_provider';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
+import { WalletSnapshotContext } from '@/delegation_ui/contexts/wallet_snapshot_context';
 import { emptyIterator, firstWhereIterable } from '@/functional/functional';
 import { neverPromise } from '@/functional/functional_async';
-import { Delegation } from '@/service/espresso_l1_validator_service/common/delegation';
+import { Delegation } from '@/service/espresso_staking_api_service/common/delegation';
 import { ConfirmedValidatorContext } from '@/sites/delegation_ui/contexts/confirmed_valdiator_context';
 import { L1RefreshTimestampContext } from '@/sites/delegation_ui/contexts/l1_refresh_timestamp_context';
-import { WalletSnapshotContext } from 'delegation-ui';
-import React from 'react';
+import { default as React } from 'react';
 
 export const CurrentStakeToValidatorContext = React.createContext<
   null | bigint

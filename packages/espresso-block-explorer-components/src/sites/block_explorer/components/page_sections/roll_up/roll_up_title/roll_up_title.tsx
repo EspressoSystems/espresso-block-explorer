@@ -1,10 +1,9 @@
+import { NumberText, Text } from '@/components/text';
 import { addClassToClassName } from '@/higher_order';
 import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
-import NumberText from '@/text/number_text';
-import Text from '@/text/text';
-import React from 'react';
-import RollUpName from '../roll_up_simple/roll_up_name';
-import RollUpAvatar40 from './roll_up_avatar40';
+import { default as React } from 'react';
+import { default as RollUpName } from '../roll_up_simple/roll_up_name';
+import { default as RollUpAvatar40 } from './roll_up_avatar40';
 import './roll_up_title.css';
 
 export interface RollUpTitleProps {

@@ -5,7 +5,7 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError, { BaseErrorEncoder } from './base_error';
+import { BaseError, BaseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kFetchErrorCode = 'FetchError';
@@ -17,7 +17,7 @@ const kFetchErrorCode = 'FetchError';
  * class of error accounts for io errors, bad urls, or other user submission
  * failures that prevents the server from being reached.
  */
-export default class FetchError extends BaseError {
+export class FetchError extends BaseError {
   cause: unknown;
 
   constructor(

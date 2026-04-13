@@ -2,7 +2,7 @@ import {
   HigherOrderComponentWithClassNameProps,
   addClassToClassName,
 } from '@/higher_order';
-import React from 'react';
+import { default as React } from 'react';
 import './card.css';
 
 export interface CardProps extends HigherOrderComponentWithClassNameProps {}

@@ -1,4 +1,4 @@
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { uint8ArrayToArrayBufferCodec } from '../codec/uint8_array';
 import { Endianess } from './endianess';
 

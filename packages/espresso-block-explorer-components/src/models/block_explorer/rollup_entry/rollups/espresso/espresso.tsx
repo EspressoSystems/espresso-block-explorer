@@ -1,4 +1,4 @@
-import EspressoLogo from '@/components/visual/icons/espresso_logo';
+import { EspressoLogo } from '@/components/visual/icons';
 import { AvatarLogo } from '../../avatar_logo';
 import { PreFedSrcAvatarLogoProps } from '../../higher_order';
 

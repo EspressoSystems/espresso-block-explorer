@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { assert, isDevelopment, isProduction } from '../assert';
+import { assert } from '../assert';
+import { isDevelopment, isProduction } from '../helpers';
 
 describe('Assert', () => {
   describe('Production', () => {

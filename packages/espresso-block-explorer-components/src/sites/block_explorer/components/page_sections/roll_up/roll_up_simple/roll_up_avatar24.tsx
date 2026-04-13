@@ -6,7 +6,7 @@ import {
 } from '@/models/block_explorer/rollup_entry/higher_order';
 import { EspressoAvatarLogo } from '@/models/block_explorer/rollup_entry/rollups/espresso/espresso';
 import { RollUpEntry } from '@/models/block_explorer/rollup_entry/types';
-import React from 'react';
+import { default as React } from 'react';
 
 export interface RollUpAvatar24Props {
   entry: RollUpEntry;

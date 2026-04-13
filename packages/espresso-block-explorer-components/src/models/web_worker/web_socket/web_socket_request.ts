@@ -4,7 +4,7 @@ import {
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
 import { WebWorkerProxyRequest } from '../web_worker_proxy_request';
-import WebSocketCommand from './request/web_socket_command';
+import { default as WebSocketCommand } from './request/web_socket_command';
 import { webSocketCommandCodec } from './request/web_socket_command_codec';
 
 /**

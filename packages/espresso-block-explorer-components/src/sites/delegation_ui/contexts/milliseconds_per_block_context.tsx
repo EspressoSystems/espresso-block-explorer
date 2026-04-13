@@ -1,15 +1,15 @@
 import { sleep } from '@/async/sleep';
 import { AsyncIterableResolver } from '@/components/data';
-import { CappuccinoHotShotQueryServiceAPIContext } from '@/contexts/cappuccino_hot_shot_query_service_api_context';
 import { DataContext } from '@/contexts/data_provider';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import {
   computeEpochByBlockAndBlocksPerEpoch,
   EpochAndBlock,
-} from '@/service/espresso_l1_validator_service/common/epoch_and_block';
-import { CappuccinoAPIHeader } from '@/service/hotshot_query_service';
-import { AbstractCappuccinoAPIV4Header } from '@/service/hotshot_query_service/cappuccino/availability/block_header_v4';
-import { CappuccinoHotShotQueryService } from '@/service/hotshot_query_service/cappuccino/hot_shot_query_service_api';
-import React from 'react';
+} from '@/service/espresso_staking_api_service/common/epoch_and_block';
+import { AvailabilityAPIHeader } from '@/service/hotshot_query_service';
+import { AbstractAvailabilityAPIV4Header } from '@/service/hotshot_query_service/availability/block_header_v4';
+import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
+import { default as React } from 'react';
 import { ActiveValidatorsContext } from './active_validators_context';
 import { BlocksPerEpochContext } from './blocks_per_epoch_context';
 
@@ -19,17 +19,17 @@ import { BlocksPerEpochContext } from './blocks_per_epoch_context';
  */
 export const MillisecondsPerBlockContext = React.createContext<number>(
   // Default to 6 seconds per block, which seems to be a safe base line.
-  6 * 1000,
+  1_500,
 );
 
 type MillisecondsPerBlockState = {
   epochAndBlock: null | EpochAndBlock;
-  startHeader: null | CappuccinoAPIHeader;
-  endHeader: null | CappuccinoAPIHeader;
+  startHeader: null | AvailabilityAPIHeader;
+  endHeader: null | AvailabilityAPIHeader;
 };
 
 type ComputeMillisecondsPerBlockInput = {
-  hotShotQueryService: null | CappuccinoHotShotQueryService;
+  hotShotQueryService: null | HotShotQueryService;
   epochAndBlock: null | EpochAndBlock;
   blocksPerEpoch: null | bigint;
 };
@@ -54,7 +54,7 @@ function determineStartBlock(
       ));
 
   if (result <= 0n) {
-    const fallback = endBlock - 50n;
+    const fallback = endBlock - 1000n;
     if (fallback <= 0n) {
       return 1n;
     }
@@ -64,7 +64,9 @@ function determineStartBlock(
   return result;
 }
 
-async function* streamMillisecondsPerBlockState(): AsyncGenerator<
+async function* streamMillisecondsPerBlockState(
+  pollingIntervalMs: number = SLEEP_TIME_MS,
+): AsyncGenerator<
   MillisecondsPerBlockState,
   unknown,
   ComputeMillisecondsPerBlockInput
@@ -85,7 +87,7 @@ async function* streamMillisecondsPerBlockState(): AsyncGenerator<
         input.epochAndBlock.epoch !== state.epochAndBlock.epoch) ||
       !input.blocksPerEpoch
     ) {
-      await sleep(SLEEP_TIME_MS);
+      await sleep(pollingIntervalMs);
       continue;
     }
 
@@ -113,7 +115,7 @@ async function* streamMillisecondsPerBlockState(): AsyncGenerator<
         state.endHeader = endHeader;
       } catch {
         // Unable to retrieve headers, try again later.
-        await sleep(SLEEP_TIME_MS / 4);
+        await sleep(pollingIntervalMs / 4);
       }
       continue;
     }
@@ -129,7 +131,7 @@ async function* streamMillisecondsPerBlockState(): AsyncGenerator<
         state.endHeader = endHeader;
       } catch {
         // Unable to retrieve header, try again later.
-        await sleep(SLEEP_TIME_MS / 4);
+        await sleep(pollingIntervalMs / 4);
       }
 
       continue;
@@ -149,14 +151,14 @@ async function* streamMillisecondsPerBlockState(): AsyncGenerator<
         state.startHeader = startHeader;
       } catch {
         // Unable to retrieve header, try again later.
-        await sleep(SLEEP_TIME_MS / 4);
+        await sleep(pollingIntervalMs / 4);
       }
       continue;
     }
 
-    // No need to retrieve more headers, none of our criteria dictates that we
+    // No need to retrieve more headers, none of our criteria dictate that we
     // need an update.
-    await sleep(SLEEP_TIME_MS);
+    await sleep(pollingIntervalMs);
   }
 }
 
@@ -165,9 +167,7 @@ export const ComputeMillisecondsPerBlock: React.FC<React.PropsWithChildren> = ({
 }) => {
   const epochAndBlock =
     React.useContext(ActiveValidatorsContext)?.espressoBlock ?? null;
-  const hotShotQueryService = React.useContext(
-    CappuccinoHotShotQueryServiceAPIContext,
-  );
+  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
   const blocksPerEpoch = React.useContext(BlocksPerEpochContext);
 
   const asyncIterable = React.useMemo(
@@ -197,8 +197,8 @@ function computeMillisecondsPerBlock(
   }
 
   if (
-    data.endHeader.fields instanceof AbstractCappuccinoAPIV4Header &&
-    data.startHeader.fields instanceof AbstractCappuccinoAPIV4Header
+    data.endHeader.fields instanceof AbstractAvailabilityAPIV4Header &&
+    data.startHeader.fields instanceof AbstractAvailabilityAPIV4Header
   ) {
     return (
       (data.endHeader.fields.timestamp_millis -

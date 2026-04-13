@@ -1,14 +1,14 @@
 import { AvatarLogo } from '../../avatar_logo';
 import { PreFedSrcAvatarLogoProps } from '../../higher_order';
-import LogxLogo24x24_1x from './logx_logo24x24@1x.png';
-import LogxLogo24x24_2x from './logx_logo24x24@2x.png';
-import LogxLogo24x24_3x from './logx_logo24x24@3x.png';
-import LogxLogo32x32_1x from './logx_logo32x32@1x.png';
-import LogxLogo32x32_2x from './logx_logo32x32@2x.png';
-import LogxLogo32x32_3x from './logx_logo32x32@3x.png';
-import LogxLogo40x40_1x from './logx_logo40x40@1x.png';
-import LogxLogo40x40_2x from './logx_logo40x40@2x.png';
-import LogxLogo40x40_3x from './logx_logo40x40@3x.png';
+import { default as LogxLogo24x24_1x } from './logx_logo24x24@1x.png';
+import { default as LogxLogo24x24_2x } from './logx_logo24x24@2x.png';
+import { default as LogxLogo24x24_3x } from './logx_logo24x24@3x.png';
+import { default as LogxLogo32x32_1x } from './logx_logo32x32@1x.png';
+import { default as LogxLogo32x32_2x } from './logx_logo32x32@2x.png';
+import { default as LogxLogo32x32_3x } from './logx_logo32x32@3x.png';
+import { default as LogxLogo40x40_1x } from './logx_logo40x40@1x.png';
+import { default as LogxLogo40x40_2x } from './logx_logo40x40@2x.png';
+import { default as LogxLogo40x40_3x } from './logx_logo40x40@3x.png';
 
 /**
  * LogXLogo24 represents the LogX Logo square at the size of 24x24

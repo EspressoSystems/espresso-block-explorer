@@ -1,7 +1,7 @@
 import { DataContext } from '@/contexts/data_provider';
 import { iota } from '@/functional/functional';
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
+import { default as React } from 'react';
 import {
   interactionHoverOverIthBar,
   interactionUnhoverAll,

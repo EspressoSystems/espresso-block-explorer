@@ -10,8 +10,8 @@ import { RewardClaimContract } from '@/contracts/reward_claim/reward_claim_inter
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { bigintCodec } from '@/convert/codec/bigint';
 import { createKeccakHash } from '@/crypto/keccak/family';
-import UnimplementedError from '@/errors/unimplemented_error';
-import React from 'react';
+import { UnimplementedError } from '@/errors/unimplemented_error';
+import { default as React } from 'react';
 import { MockESPTokenContractImpl } from './esp_token_contract';
 import {
   MockContractStorage,

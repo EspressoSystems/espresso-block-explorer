@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 import { ClaimPortalIntentContext } from '../contexts/claim_portal_intent_context';
 import { ConfirmedValidatorContext } from '../contexts/confirmed_valdiator_context';
 import { ModalContext } from '../contexts/modal_context';

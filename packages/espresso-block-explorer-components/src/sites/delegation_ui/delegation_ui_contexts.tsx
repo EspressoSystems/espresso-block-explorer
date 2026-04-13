@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 import './colors.css';
 import { RetrieveBlocksPerEpoch } from './contexts/blocks_per_epoch_context';
 import { RetrieveLifetimeClaimedRewards } from './contexts/claimed_rewards_context';

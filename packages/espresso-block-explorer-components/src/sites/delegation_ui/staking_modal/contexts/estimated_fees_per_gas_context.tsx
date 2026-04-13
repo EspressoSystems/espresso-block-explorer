@@ -3,7 +3,7 @@ import { DataContext } from '@/contexts/data_provider';
 import { L1MethodsContext } from '@/contexts/l1_methods_context';
 import { neverPromise } from '@/functional/functional_async';
 import { L1RefreshTimestampContext } from '@/sites/delegation_ui/contexts/l1_refresh_timestamp_context';
-import React from 'react';
+import { default as React } from 'react';
 import { type EstimateFeesPerGasReturnType } from 'viem/actions';
 
 export const EstimatedFeesPerGasContext =

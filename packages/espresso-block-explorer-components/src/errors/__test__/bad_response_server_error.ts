@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import BadResponseServerError, {
+import {
+  BadResponseServerError,
   badResponseServerErrorCodec,
 } from '../bad_response_server_error';
 import { espressoErrorCodec } from '../registry';

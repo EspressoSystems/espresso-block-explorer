@@ -5,12 +5,12 @@ import {
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
-import BaseError, { baseErrorEncoder } from './base_error';
+import { BaseError, baseErrorEncoder } from './base_error';
 import { espressoErrorCodec, registerCodec } from './registry';
 
 const kWebWorkerErrorResponseCode = 'WebWorkerErrorResponse';
 
-export default class WebWorkerErrorResponse extends BaseError {
+export class WebWorkerErrorResponse extends BaseError {
   readonly error: unknown;
   constructor(error: unknown, message: string = 'error in web worker') {
     super(message);

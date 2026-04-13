@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import ResponseContentTypeIsNotApplicationJSONError, {
+import { espressoErrorCodec } from '../registry';
+import {
+  ResponseContentTypeIsNotApplicationJSONError,
   responseContentTypeIsNotApplicationJSONErrorCodec,
 } from '../response_content_type_is_not_application_json_error';
-import { espressoErrorCodec } from '../registry';
 
 describe('ResponseContentTypeIsNotApplicationJSONError', () => {
   describe('toJSON', () => {

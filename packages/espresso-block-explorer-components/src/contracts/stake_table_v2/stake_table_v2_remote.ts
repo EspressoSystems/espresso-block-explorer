@@ -9,7 +9,7 @@ import {
 import { Config } from 'wagmi';
 import { readContract, writeContract } from 'wagmi/actions';
 import { StakeTableRemote } from '../stake_table/stake_table_remote';
-import StakeTableV2Abi from './stake_table_v2_abi';
+import { default as StakeTableV2Abi } from './stake_table_v2_abi';
 import {
   StakeTableV2Contract,
   UndelegationInfo,

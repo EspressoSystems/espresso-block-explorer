@@ -3,7 +3,7 @@
 import { EnvironmentContext } from '@/components/config/environment';
 import { EspressoConfigContext } from '@/components/config/espresso';
 import { Environment } from '@/models/config/environment/environment';
-import React from 'react';
+import { default as React } from 'react';
 import { MockESPTokenContract } from './esp_token_contract';
 import { MockL1Methods, ProvideAutoAdvanceL1Methods } from './l1_methods';
 import { MockLightClientV2Contract } from './light_client_contract';

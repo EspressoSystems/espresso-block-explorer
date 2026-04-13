@@ -3,10 +3,10 @@ import {
   Converter,
   TypeCheckingCodec,
 } from '@/convert/codec/convert';
-import InvalidTypeError from '@/errors/invalid_type_error';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { InvalidTypeError } from '@/errors/invalid_type_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { mapIterable } from '@/functional/functional';
-import WebSocketCommand from './web_socket/request/web_socket_command';
+import { default as WebSocketCommand } from './web_socket/request/web_socket_command';
 import {
   kWebSocketRequestType,
   WebSocketRequest,

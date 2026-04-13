@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import InvalidStringValueError, {
+import {
+  InvalidStringValueError,
   invalidTypeErrorCodec,
 } from '../invalid_string_value_error';
 import { espressoErrorCodec } from '../registry';

@@ -7,12 +7,12 @@ import {
 } from '@/convert/codec/convert';
 import { stringCodec } from '@/convert/codec/string';
 import { unknownCodec } from '@/convert/codec/unknown';
-import BaseError, { baseErrorEncoder } from './base_error';
+import { BaseError, baseErrorEncoder } from './base_error';
 import { registerCodec } from './registry';
 
 const kNoCompleterFoundForRequestIDCode = 'NoCompleterFoundForRequestID';
 
-export default class NoCompleterFoundForRequestID<
+export class NoCompleterFoundForRequestID<
   RequestID = unknown,
 > extends BaseError {
   readonly requestID: RequestID;

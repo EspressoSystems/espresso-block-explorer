@@ -1,10 +1,10 @@
 import { AsyncRetriever } from '@/async/async_retriever';
-import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
+import { AsyncIterableResolver } from '@/components/data/async_data';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorCarry, ErrorJoiner } from '@/contexts/error_provider';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';
-import React from 'react';
+import { default as React } from 'react';
 import { ExplorerSummaryProvider } from '../explorer_summary/explorer_summary_loader';
 
 /**

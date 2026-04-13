@@ -26,11 +26,12 @@
  * functions to apply to many more Javascript types.
  */
 
-import LinkedList, {
+import {
+  default as LinkedList,
   iterateLinkedList,
   pushLinkedList,
 } from '@/data_structures/linked_list/linked_list';
-import MissingElementError from '@/errors/missing_element_error';
+import { MissingElementError } from '@/errors/missing_element_error';
 
 /**
  * yieldAll is a convenience function for converting an Iterator into
@@ -457,6 +458,16 @@ export function zipWithIterable<T, U, V>(
   zipper: (t: T, u: U) => V,
 ): Generator<V> {
   return zipWithIterator(ts[Symbol.iterator](), us[Symbol.iterator](), zipper);
+}
+
+/**
+ * cycleIterable is a generator function that will emit the given Iterable
+ * in a loop forever.
+ */
+export function* cycleIterable<T>(ts: Iterable<T>): Generator<T> {
+  while (true) {
+    yield* ts;
+  }
 }
 
 /**

@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import React from 'react';
+import { default as React } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { PathResolver } from '../path_resolver';
+import { type PathResolver } from '../path_resolver';
 import {
   OverridePathResolver,
   PathResolverContext,

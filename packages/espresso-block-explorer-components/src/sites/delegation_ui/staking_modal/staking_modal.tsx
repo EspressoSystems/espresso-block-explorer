@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 import { DialogModal } from '../contexts/modal_context';
 import { ProvideStakingModalClose } from './contexts/staking_modal_close_context';
 import { ProvideStakingHistory } from './contexts/staking_modal_history_context';

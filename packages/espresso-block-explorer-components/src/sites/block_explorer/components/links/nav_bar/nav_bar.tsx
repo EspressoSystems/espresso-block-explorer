@@ -1,9 +1,9 @@
 import { ProvideCurrentNavDrawerState } from '@/block_explorer/contexts/nav_drawer_state_provider';
 import { addClassToClassName } from '@/higher_order';
-import React from 'react';
-import MainNavLinks from '../main_nav_links/main_nav_links';
-import NavDrawer from '../nav_drawer/nav_drawer';
-import OpenNavDrawerButton from '../open_nav_drawer_button/open_nav_drawer_button';
+import { default as React } from 'react';
+import { default as MainNavLinks } from '../main_nav_links/main_nav_links';
+import { default as NavDrawer } from '../nav_drawer/nav_drawer';
+import { default as OpenNavDrawerButton } from '../open_nav_drawer_button/open_nav_drawer_button';
 import './nav_bar.css';
 
 export interface NavBarProps {

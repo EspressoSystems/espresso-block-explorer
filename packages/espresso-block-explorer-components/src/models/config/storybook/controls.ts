@@ -51,7 +51,7 @@ export const nodeValidatorWebSocketURLControlArgType = {
     'Node Validator WebSocket URL (starting with ws:// or wss://, ending with the version. Eg. ws://localhost:9000/v0/)',
 } as const;
 
-export const l1ValidatorServiceURLControlArgType = {
+export const stakingAPIServiceServiceURLControlArgType = {
   control: { type: 'text' },
   description:
     'L1 Validator Service URL (starting with http:// or https://, ending with the version. Eg: http://localhost:9100/v0/)',
@@ -68,8 +68,8 @@ export const environmentArgTypes = {
   nodeValidatorWebSocketURL: nodeValidatorWebSocketURLControlArgType,
 } as const;
 
-export const environmentArgsTypesL1ValidatorService = {
-  l1ValidatorServiceURL: l1ValidatorServiceURLControlArgType,
+export const environmentArgsTypesStakingAPIService = {
+  stakingAPIServiceURL: stakingAPIServiceServiceURLControlArgType,
 };
 
 export const environmentArgTypesWithContracts = {

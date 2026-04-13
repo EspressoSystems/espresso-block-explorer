@@ -2,7 +2,7 @@ import { assertNotNull } from '@/assert/assert';
 import { uint8ArrayToArrayBufferCodec } from '@/convert/codec/uint8_array';
 import { createBufferedDataView, Endianess } from '@/convert/data_view';
 import { createRLPDeserializer } from '@/convert/rlp';
-import WalletAddress from '@/models/wallet_address/wallet_address';
+import { default as WalletAddress } from '@/models/wallet_address/wallet_address';
 
 /**
  * L1MessageType represents the type of an L1 message.

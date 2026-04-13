@@ -1,6 +1,6 @@
 import { NodeAddressListContext } from '@/sites/delegation_ui/contexts/all_validators_context';
 import { ProvideValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
-import React from 'react';
+import { default as React } from 'react';
 import { NodeAddressContext } from '../../contexts/node_address_context';
 import '../table.css';
 import { PendingClaimsDelegationTableHeader } from './pending_claims_table_header';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 import './colors.css';
 import { DelegationHeader } from './delegation_header';
 import './delegation_ui.css';

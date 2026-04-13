@@ -23,14 +23,15 @@ import {
   foldRIterator,
   mapIterable,
 } from '@/functional/functional';
-import fs from 'node:fs';
-import GeoJSONFeatureCollection, {
+import { default as fs } from 'node:fs';
+import {
+  default as GeoJSONFeatureCollection,
   geoJSONFeatureCollectionCodec,
 } from '../../geo_json/feature_collection';
-import GeoJSONMultiPolygon from '../../geo_json/multi_polygon';
-import Degrees from '../../units/degrees';
-import LatLng from '../../units/lat_lng';
-import Latitude from '../../units/latitude';
+import { default as GeoJSONMultiPolygon } from '../../geo_json/multi_polygon';
+import { default as Degrees } from '../../units/degrees';
+import { default as LatLng } from '../../units/lat_lng';
+import { default as Latitude } from '../../units/latitude';
 import { createEdgeFunction } from '../../winding_number/edge_function';
 import { sundaysWindingAlgorithm } from '../../winding_number/sunday';
 import { compressIntoBitMap } from '../compress_into_bitmap';

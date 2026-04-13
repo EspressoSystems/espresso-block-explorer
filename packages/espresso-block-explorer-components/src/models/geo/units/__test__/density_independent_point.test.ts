@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import DensityIndependentPoint from '../density_independent_point';
+import { default as DensityIndependentPoint } from '../density_independent_point';
 
 describe('DensityIndependentPoint', () => {
   describe('numeric', () => {

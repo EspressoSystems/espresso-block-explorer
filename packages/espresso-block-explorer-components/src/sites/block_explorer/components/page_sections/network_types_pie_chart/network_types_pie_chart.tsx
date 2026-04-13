@@ -1,4 +1,4 @@
-import NumberText from '@/components/text/number_text';
+import { NumberText, Text } from '@/components/text';
 import {
   PieChart,
   PieChartEntry,
@@ -8,8 +8,7 @@ import {
 import { PieChartSectionTitle } from '@/components/visual/pie_chart/pie_chart_section_title/pie_chart_section_title';
 import { DataContext } from '@/contexts/data_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
-import Text from '@/text/text';
-import React from 'react';
+import { default as React } from 'react';
 
 const LabelValue: React.FC<PieChartLabelProps> = (props) => {
   return (

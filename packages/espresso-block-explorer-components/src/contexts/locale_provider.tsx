@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import { default as React, createContext } from 'react';
 
 /**
  * LocaleProvider is a Context that provides the current locale that has been

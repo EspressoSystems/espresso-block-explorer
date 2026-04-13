@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import InvalidHexStringError, {
+import {
+  InvalidHexStringError,
   invalidHexStringErrorCodec,
 } from '../invalid_hex_string_error';
 import { espressoErrorCodec } from '../registry';

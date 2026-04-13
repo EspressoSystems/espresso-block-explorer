@@ -38,6 +38,7 @@
     "typescript": "^5.3.3",
     "viem": "^2.30.6",
     "vite": "^7.1.11",
+    "vite-plugin-circular-dependency": "^0.5.0",
     "vite-plugin-dts": "^4",
     "vite-tsconfig-paths": "^5",
     "vitest": "^4.0.14",
@@ -63,10 +64,9 @@
       "import": "./dist/delegation-ui.es.js",
       "types": "./dist/src/delegation-ui.d.ts"
     },
+    "./espresso-block-explorer-components.css": "./dist/espresso-block-explorer-components.css",
     "./block-explorer.css": "./dist/block-explorer.css",
-    "./delegation-ui.css": "./dist/delegation-ui.css",
-    "./inscription.css": "./dist/inscription.css",
-    "./stake_table_v2_contract_context.css": "./dist/stake_table_v2_contract_context.css"
+    "./delegation-ui.css": "./dist/delegation-ui.css"
   },
   "name": "espresso-block-explorer-components",
   "peerDependencies": {

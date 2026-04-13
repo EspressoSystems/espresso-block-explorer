@@ -1,5 +1,5 @@
 import { ExplorerConfig } from '@/models/config/environment/explorer';
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * BlockExplorerConfigContext provides the current Block Explorer

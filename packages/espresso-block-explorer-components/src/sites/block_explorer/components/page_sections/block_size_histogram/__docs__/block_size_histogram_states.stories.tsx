@@ -2,8 +2,8 @@ import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { iota, mapIterator } from '@/functional/functional';
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { type Meta, type StoryObj } from '@storybook/react-vite';
+import { default as React } from 'react';
 import { BlockSizeHistogram } from '../block_size_histogram';
 import { BlockSizeHistogramData } from '../block_size_histogram_data_loader';
 

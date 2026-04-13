@@ -1,9 +1,12 @@
 import { describe, it } from 'vitest';
-import Degrees from '../../units/degrees';
-import LatLng from '../../units/lat_lng';
-import Latitude from '../../units/latitude';
-import Longitude from '../../units/longitude';
-import GeoJSONLineString, { geoJSONLineStringCodec } from '../line_string';
+import { default as Degrees } from '../../units/degrees';
+import { default as LatLng } from '../../units/lat_lng';
+import { default as Latitude } from '../../units/latitude';
+import { default as Longitude } from '../../units/longitude';
+import {
+  default as GeoJSONLineString,
+  geoJSONLineStringCodec,
+} from '../line_string';
 
 describe('Line String', () => {
   describe('Codec', () => {

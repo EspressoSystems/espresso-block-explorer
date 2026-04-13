@@ -1,14 +1,14 @@
 import { EnvironmentContext } from '@/components/config/environment';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
-import UnimplementedError from '@/errors/unimplemented_error';
+import { UnimplementedError } from '@/errors/unimplemented_error';
 import {
   ExplorerSummaryAsyncRetriever,
   ExplorerSummaryEntry,
 } from '@/models/block_explorer/explorer_summary';
 import { Environment } from '@/models/config/environment/environment';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import React from 'react';
+import { default as React } from 'react';
 
 export const ExplorerSummaryLoaderContext =
   React.createContext<ExplorerSummaryAsyncRetriever>({

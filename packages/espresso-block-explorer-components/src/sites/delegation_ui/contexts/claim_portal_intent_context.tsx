@@ -1,8 +1,9 @@
 import { bigintCodec } from '@/convert/codec/bigint';
-import WalletAddress, {
+import {
+  default as WalletAddress,
   walletAddressCodec,
 } from '@/models/wallet_address/wallet_address';
-import React from 'react';
+import { default as React } from 'react';
 
 export const kIntentClaimAndStake = 'claim-and-stake';
 

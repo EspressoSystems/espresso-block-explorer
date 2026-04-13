@@ -1,4 +1,4 @@
-import Text from '@/components/text/text';
+import { Text } from '@/components/text';
 
 /**
  * RankHeadCell is the header cell for the Rank column in the validator table.

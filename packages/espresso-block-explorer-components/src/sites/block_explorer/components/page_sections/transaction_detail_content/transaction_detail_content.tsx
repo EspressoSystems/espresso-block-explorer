@@ -1,17 +1,19 @@
 import { Label } from '@/block_explorer/components/layout/label/label';
-import TableLabeledValue from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
-import CopyTaggedBase64 from '@/block_explorer/components/text/copy_tagged_base64';
+import { default as TableLabeledValue } from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
+import { default as CopyTaggedBase64 } from '@/block_explorer/components/text/copy_tagged_base64';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
-import SkeletonContent from '@/components/loading/skeleton_content';
-import ByteSizeText from '@/text/byte_size_text';
-import DateTimeText from '@/text/date_time_text';
-import FullTaggedBase64Text from '@/text/full_tagged_base64_text';
-import NumberText from '@/text/number_text';
-import Text from '@/text/text';
-import React from 'react';
+import { SkeletonContent } from '@/components/loading';
+import {
+  ByteSizeText,
+  DateTimeText,
+  FullTaggedBase64Text,
+  NumberText,
+  Text,
+} from '@/components/text';
+import { default as React } from 'react';
 import { InternalLink } from '../../links/link/link';
 import { BlockNumberContext } from '../block_detail_content/block_detail_content_loader';
-import RollUpSimple from '../roll_up/roll_up_simple/roll_up_simple';
+import { default as RollUpSimple } from '../roll_up/roll_up_simple/roll_up_simple';
 import { HexDumpAndCopyButtons } from './copy_as';
 import { InfiniteGardenDisplay } from './infinite_garden_display';
 import { NitroBatchDetectAndDisplay } from './nitro_batch_display';
@@ -76,7 +78,7 @@ export const TransactionDetailsContentPlaceholder: React.FC<
   );
 };
 
-interface TransactionDetailsContentProps { }
+interface TransactionDetailsContentProps {}
 
 /**
  * TransactionDetailsContent represents the Tabular data of the

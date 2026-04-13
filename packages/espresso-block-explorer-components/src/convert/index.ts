@@ -3,4 +3,5 @@ export * from './bincode';
 export * from './codec';
 export * from './data_view';
 export * from './hex';
+export * from './rlp';
 export * from './serialization';

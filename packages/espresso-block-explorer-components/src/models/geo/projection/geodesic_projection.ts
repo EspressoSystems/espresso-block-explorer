@@ -1,5 +1,5 @@
 import { NumberLike } from '../../numeric/numeric';
-import LatLng from '../units/lat_lng';
+import { default as LatLng } from '../units/lat_lng';
 
 /**
  * GeodesicProjection is an interface that represents a geodesic projection

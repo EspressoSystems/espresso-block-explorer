@@ -1,7 +1,7 @@
 import { Config } from 'wagmi';
 import { estimateContractGas } from '../l1/estimate_contract_gas';
 import { StakeTableContractGasEstimatorRemote } from '../stake_table/stake_table_gas_estimator_remote';
-import StakeTableV2Abi from './stake_table_v2_abi';
+import { default as StakeTableV2Abi } from './stake_table_v2_abi';
 import { StakeTableV2ContractGasEstimator } from './stake_table_v2_interface';
 
 /**

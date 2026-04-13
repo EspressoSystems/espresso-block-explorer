@@ -1,4 +1,4 @@
-import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
+import { default as AsyncIterableResolver } from '@/components/data/async_data/async_iterable_resolver';
 import { ErrorCarry, ErrorJoiner } from '@/contexts/error_provider';
 import {
   filterIterable,
@@ -13,15 +13,15 @@ import {
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
 import { Latitude, Longitude } from '@/models/geo';
 import { generateBoundingBoxFromMinMaxes } from '@/models/geo/geo_json/bounding_box';
-import Degrees from '@/models/geo/units/degrees';
-import DensityIndependentPoint from '@/models/geo/units/density_independent_point';
-import LatLng from '@/models/geo/units/lat_lng';
+import { default as Degrees } from '@/models/geo/units/degrees';
+import { default as DensityIndependentPoint } from '@/models/geo/units/density_independent_point';
+import { default as LatLng } from '@/models/geo/units/lat_lng';
 import {
   degreesToCoordinateSpaceProjection,
   gridCellCoordinateSpaceCenters,
   gridCellSize,
 } from '@/models/geo/world_map_grid/constants';
-import React from 'react';
+import { default as React } from 'react';
 
 export interface NodeSummaryData {
   publicKey: TaggedBase64;

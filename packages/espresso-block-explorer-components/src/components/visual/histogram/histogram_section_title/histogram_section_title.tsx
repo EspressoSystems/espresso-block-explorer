@@ -1,6 +1,5 @@
-import { addClassToClassName } from '@/higher_order';
-import { WithUiText300 } from '@/block_explorer/components/typography/typography';
-import React from 'react';
+import { addClassNameToComponent, addClassToClassName } from '@/higher_order';
+import { default as React } from 'react';
 import './histogram_section_title.css';
 
 export interface HistogramSectionTitleProps {
@@ -8,7 +7,7 @@ export interface HistogramSectionTitleProps {
   children: [React.ReactNode, React.ReactNode];
 }
 
-const UiText300H2 = WithUiText300('h2');
+const UiText300H2 = addClassNameToComponent('h2', 'type--ui--text-300');
 
 /**
  * HistogramSectionTitle is a title element that is displayed above a histogram.

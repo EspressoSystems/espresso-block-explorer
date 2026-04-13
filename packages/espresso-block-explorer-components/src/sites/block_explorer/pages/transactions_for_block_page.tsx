@@ -1,14 +1,14 @@
-import Card from '@/block_explorer/components/layout/card/card';
-import Heading1 from '@/block_explorer/components/layout/heading/heading1';
+import { default as Card } from '@/block_explorer/components/layout/card/card';
+import { default as Heading1 } from '@/block_explorer/components/layout/heading/heading1';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
 import { InternalLink } from '@/block_explorer/components/links/link/link';
 import {
   BlockDetailsLoader,
   BlockNumberContext,
 } from '@/block_explorer/components/page_sections/block_detail_content/block_detail_content_loader';
-import Footer from '@/block_explorer/components/page_sections/footer/footer';
-import Header from '@/block_explorer/components/page_sections/header/header';
-import PageTitle from '@/block_explorer/components/page_sections/page_title/page_title';
+import { default as Footer } from '@/block_explorer/components/page_sections/footer/footer';
+import { default as Header } from '@/block_explorer/components/page_sections/header/header';
+import { default as PageTitle } from '@/block_explorer/components/page_sections/page_title/page_title';
 import { TransactionSummaryDataLoader } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
 import {
   TransactionsSummaryDataTable,
@@ -20,13 +20,12 @@ import {
 } from '@/block_explorer/contexts/page_path_provider';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
+import { NumberText, Text } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
-import NumberText from '@/text/number_text';
-import Text from '@/text/text';
-import React from 'react';
+import { default as React } from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
@@ -65,7 +64,7 @@ const GuardedEdgeMarginTransactionsForBlockNavigation: React.FC = () => {
   );
 };
 
-interface GuardedTransactionsSummaryDataTableProps { }
+interface GuardedTransactionsSummaryDataTableProps {}
 
 /**
  * GuardedTransactionsSummaryDataTable is a component that guards rendering the

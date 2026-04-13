@@ -1,17 +1,17 @@
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
-import DataTable, {
+import {
+  default as DataTable,
   DataTableRowContext,
 } from '@/components/data/data_table/data_table';
-import SkeletonContent from '@/components/loading/skeleton_content';
+import { SkeletonContent } from '@/components/loading';
+import { NumberText, Text } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { iota } from '@/functional/functional';
 import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
 import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
-import NumberText from '@/text/number_text';
-import Text from '@/text/text';
-import React from 'react';
+import { default as React } from 'react';
 import { EgressLink, InternalLink } from '../../links/link/link';
-import RollUpSimple from '../roll_up/roll_up_simple/roll_up_simple';
+import { default as RollUpSimple } from '../roll_up/roll_up_simple/roll_up_simple';
 import { RollUpSummary } from './roll_ups_summary_loader';
 
 /**

@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * EnvironmentBannerWater is a React component that displays a banner to sit at

@@ -5,7 +5,7 @@ import { ESPTokenContractContext } from '@/contexts/esp_token_contract_context';
 import { StakeTableContractContext } from '@/contexts/stake_table_contract_context';
 import { neverPromise } from '@/functional/functional_async';
 import { L1RefreshTimestampContext } from '@/sites/delegation_ui/contexts/l1_refresh_timestamp_context';
-import React from 'react';
+import { default as React } from 'react';
 
 export const CurrentAllowanceToStakeTableContext = React.createContext<
   null | bigint

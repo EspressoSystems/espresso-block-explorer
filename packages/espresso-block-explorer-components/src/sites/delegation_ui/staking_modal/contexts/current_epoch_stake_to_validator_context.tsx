@@ -1,6 +1,6 @@
 import { RainbowKitAccountAddressContext } from '@/components/rainbowkit/contexts/contexts';
 import { ConfirmedValidatorContext } from '@/sites/delegation_ui/contexts/confirmed_valdiator_context';
-import React from 'react';
+import { default as React } from 'react';
 import { CurrentEpochActiveValidatorsContext } from './current_epoch_active_validators_context';
 
 export const CurrentEpochStakeToValidatorContext = React.createContext<

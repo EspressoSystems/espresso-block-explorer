@@ -1,6 +1,6 @@
 import { Now } from '@/contexts/now_provider';
-import React, { useContext } from 'react';
-import RelativeTimeText from './relative_time_text';
+import { default as React, useContext } from 'react';
+import { default as RelativeTimeText } from './relative_time_text';
 
 export interface RelativeTimeSinceDateTextProps {
   date: Date;

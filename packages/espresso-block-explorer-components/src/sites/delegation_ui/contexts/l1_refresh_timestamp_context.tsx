@@ -1,4 +1,4 @@
-import React from 'react';
+import { default as React } from 'react';
 
 /**
  * L1RefreshTimestampContext defines a React Context for the current

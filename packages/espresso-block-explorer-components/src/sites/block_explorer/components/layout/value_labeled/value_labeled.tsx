@@ -1,6 +1,6 @@
 import { addClassToClassName } from '@/higher_order';
 import { WithUiText600 } from '@/block_explorer/components/typography/typography';
-import React from 'react';
+import { default as React } from 'react';
 import { Label } from '../label/label';
 import './value_labeled.css';
 

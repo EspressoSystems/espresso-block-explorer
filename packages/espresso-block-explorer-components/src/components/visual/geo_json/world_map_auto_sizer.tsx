@@ -1,5 +1,5 @@
-import DensityIndependentPoint from '@/models/geo/units/density_independent_point';
-import React from 'react';
+import { default as DensityIndependentPoint } from '@/models/geo/units/density_independent_point';
+import { default as React } from 'react';
 import { useSVGSize } from '../svg/hooks';
 import { CoordinateRectangle, MapCoordinateSpaceRectContext } from './contexts';
 

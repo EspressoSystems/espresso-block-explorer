@@ -7,7 +7,7 @@ import { readContract } from 'wagmi/actions';
 import { ScalarField } from '../bn254/bn254_interface';
 import { StakeTableState } from '../light_client/light_client_interface';
 import { LightClientRemote } from '../light_client/light_client_remote';
-import LightClientV2Abi from './light_client_v2_abi';
+import { default as LightClientV2Abi } from './light_client_v2_abi';
 import { LightClientV2Contract } from './light_client_v2_interface';
 
 type LightClientV2FunctionNames = ContractFunctionName<
