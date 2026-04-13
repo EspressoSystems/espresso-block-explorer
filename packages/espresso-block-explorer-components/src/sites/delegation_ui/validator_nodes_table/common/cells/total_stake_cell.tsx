@@ -30,10 +30,12 @@ const PaddedLeadingPercentage: React.FC<PercentageTextProps> = ({
 
   if (singleNodeOver10 && percentage < 0.1) {
     // We have a validator with over 10% stake.
-    <>
-      &nbsp;
-      <PercentageText percentage={percentage} />
-    </>;
+    return (
+      <>
+        &nbsp;
+        <PercentageText percentage={percentage} />
+      </>
+    );
   }
 
   return <PercentageText percentage={percentage} />;
