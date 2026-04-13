@@ -1,3 +1,4 @@
+import { sleep } from '@/async/sleep';
 import { BlockDetailAsyncRetrieverContext } from '@/block_explorer/components/page_sections/block_detail_content/block_detail_content_loader';
 import { BlockSummaryAsyncRetrieverContext } from '@/block_explorer/components/page_sections/block_summary_data_table/block_summary_data_loader';
 import { ExplorerSummaryLoaderContext } from '@/block_explorer/components/page_sections/explorer_summary/explorer_summary_loader';
@@ -9,10 +10,6 @@ import { TransactionSummaryAsyncRetrieverContext } from '@/block_explorer/compon
 import { AsyncIterableResolver } from '@/components/data/async_data';
 import { ErrorJoiner } from '@/contexts/error_provider';
 import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
-import {
-  mapAsyncIterable,
-  timerAsyncIterable,
-} from '@/functional/functional_async';
 import { BlockSummaryEntry } from '@/models/block_explorer/block_summary';
 import { ExplorerSummaryEntry } from '@/models/block_explorer/explorer_summary';
 import { TransactionSummaryEntry } from '@/models/block_explorer/transaction_summary';
@@ -24,6 +21,7 @@ import { ExplorerGetTransactionDetailRequest } from '@/service/hotshot_query_ser
 import { ExplorerGetTransactionSummariesFilter } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_filter';
 import { ExplorerGetTransactionSummariesRequest } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_request';
 import { ExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_target';
+import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
 import { default as React } from 'react';
 
 // We need to create adapters between the HotShotQueryService and the
@@ -474,19 +472,66 @@ export interface ProvideExplorerSummaryAsyncStreamProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * EXPLORER_SUMMARY_POLLING_INTERVAL_MS is the internval, in milliseconds,
+ * that the explorer summary will be retrieved in if a newer entry is not
+ * found in the previous attempt.
+ */
+const EXPLORER_SUMMARY_POLLING_INTERVAL_MS = 500; // 500ms
+
+/**
+ * explorerOverviewStream is an async generator that yields the latest
+ * explorer summary whenever an update is available.  It will not yield any
+ * iteration should one not be available.
+ *
+ * NOTE: There is potential for the latest explorer summary to yield a result
+ * that is in the past due to communicating with multiple nodes that are not
+ * guanteed to be in sync.  This is expected to be handled so that only
+ * new events are present.
+ *
+ * NOTE: due to processing speeds, polling intervals, and server-side cache
+ * duration, it is entirely possible for us to skip blocks.
+ */
+async function* explorerOverviewStream(service: HotShotQueryService) {
+  let lastExplorerOverview: null | ExplorerSummaryEntry = null;
+  while (true) {
+    try {
+      const next = transformExplorerSummaryResponse(
+        await service.explorer.getExplorerOverview(),
+      );
+      if (
+        lastExplorerOverview &&
+        next.latestBlock.height <= lastExplorerOverview.latestBlock.height
+      ) {
+        // This is not a block that is newer than the preivous block.
+        await sleep(EXPLORER_SUMMARY_POLLING_INTERVAL_MS);
+        continue;
+      }
+
+      lastExplorerOverview = next;
+      yield next;
+    } catch (err: unknown) {
+      // We encountered an error. Depending on the error, we may want to do
+      // specific things for specific errors.  But in general, in order to
+      // prevent the page from halting, we'll want to cotinue as if nothing
+      // is wrong.
+      console.error(
+        'encountered error attempting to retrieve explorer summary',
+        err,
+      );
+
+      await sleep(EXPLORER_SUMMARY_POLLING_INTERVAL_MS);
+    }
+  }
+}
+
 export const ProvideExplorerSummaryAsyncStream: React.FC<
   ProvideExplorerSummaryAsyncStreamProps
 > = ({ children }) => {
   const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   // Create a timer to refresh every two seconds.
-  const timer = timerAsyncIterable(2000, true);
-  const explorerSummaryStream = mapAsyncIterable(timer, async () => {
-    const summaryResponse =
-      await hotShotQueryService.explorer.getExplorerOverview();
-
-    return transformExplorerSummaryResponse(summaryResponse);
-  });
+  const explorerSummaryStream = explorerOverviewStream(hotShotQueryService);
 
   return (
     <AsyncIterableResolver asyncIterable={explorerSummaryStream}>
