@@ -1,10 +1,17 @@
 import { Text } from '@/components/text';
 import { PadlockSquare2 } from '@/components/visual/icons/sharp_line';
 import { Now } from '@/contexts/now_provider';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { compareIterables } from '@/functional/functional';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
+import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
+import { RatioRational } from '@/service/espresso_staking_api_service/common/ratio';
 import { default as React } from 'react';
 import { CollapsableHeader, CollapsableSection } from './collapsable_section';
-import { NodeAddressListContext } from './contexts/all_validators_context';
+import {
+  AllValidatorsContext,
+  NodeAddressListContext,
+} from './contexts/all_validators_context';
 import { CollapseState } from './contexts/collapse_context';
 import { PendingExitsContext } from './contexts/pending_exits_context';
 import './pending_exits.css';
@@ -59,8 +66,56 @@ const FilterToAvailablePendingExits: React.FC<React.PropsWithChildren> = ({
 
   return (
     <NodeAddressListContext.Provider value={pendingExitsList}>
-      {children}
+      <EnsureValidatorEntries>{children}</EnsureValidatorEntries>
     </NodeAddressListContext.Provider>
+  );
+};
+
+/**
+ * EnsureValidatorEntries is a component that ensures that we have entries
+ * present in the `AllValidatorsContext` for validator entries that might
+ * be missing.
+ *
+ * This is specifically to account for the Pending Exits, which will no longer
+ * have a nodes entry in the `AllValidatorsContext` since they have exited,
+ * but we still want to present the relevant information to the user.
+ */
+const EnsureValidatorEntries: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const allValidators = React.useContext(AllValidatorsContext);
+  const nodeAddressList = React.useContext(NodeAddressListContext);
+
+  const nextAllValidators = React.useMemo(() => {
+    const next = new Map(allValidators);
+
+    for (const address of nodeAddressList) {
+      const found = next.get(address);
+      if (found) {
+        // Already present, ignore
+        continue;
+      }
+
+      // We need to create a placeholder for the validator
+      next.set(
+        address,
+        new NodeSetEntry(
+          hexArrayBufferCodec.decode(address),
+          new TaggedBase64('', new ArrayBuffer(0)),
+          0n,
+          new RatioRational(0n, 1n),
+          null,
+        ),
+      );
+    }
+
+    return next;
+  }, [allValidators, nodeAddressList]);
+
+  return (
+    <AllValidatorsContext.Provider value={nextAllValidators}>
+      {children}
+    </AllValidatorsContext.Provider>
   );
 };
 
