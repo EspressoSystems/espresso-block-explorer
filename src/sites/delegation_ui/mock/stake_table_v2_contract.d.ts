@@ -1,5 +1,5 @@
 import { ESPTokenContract } from '../../../contracts/esp_token/esp_token_interface';
-import { RawUndelegation, RawValidator, Undelegation, Validator } from '../../../contracts/stake_table/stake_table_interface';
+import { RawUndelegation, RawValidator, STValidator, Undelegation } from '../../../contracts/stake_table/stake_table_interface';
 import { CommissionTracking, StakeTableV2Contract, UndelegationInfo } from '../../../contracts/stake_table_v2/stake_table_v2_interface';
 import { default as React } from 'react';
 import { MockContractStorage, MockL1MethodsImpl, UnderlyingTransaction } from './l1_methods';
@@ -145,7 +145,7 @@ export declare class MockStakeTableV2ContractImpl implements StakeTableV2Contrac
     commissionTracking(validator: `0x${string}`): Promise<CommissionTracking>;
     lightClient(): Promise<`0x${string}`>;
     token(): Promise<`0x${string}`>;
-    validator(account: `0x${string}`): Promise<Validator>;
+    validator(account: `0x${string}`): Promise<STValidator>;
     blsKey(): Promise<boolean>;
     validatorExit(validator: `0x${string}`): Promise<bigint>;
     delegation(validator: `0x${string}`, delegator: `0x${string}`): Promise<bigint>;

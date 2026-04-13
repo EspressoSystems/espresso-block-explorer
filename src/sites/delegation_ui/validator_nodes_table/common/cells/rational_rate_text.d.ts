@@ -1,4 +1,4 @@
-import { RatioRational } from '../../../../../../../../../../../../../src/service/espresso_l1_validator_service/common/ratio';
+import { RatioRational } from '../../../../../../../../../../../../../src/service/espresso_staking_api_service/common/ratio';
 import { default as React } from 'react';
 export interface RatioRationalText {
     rate: RatioRational;

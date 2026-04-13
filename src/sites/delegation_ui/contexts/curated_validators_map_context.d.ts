@@ -1,4 +1,4 @@
-import { NodeMetadataContent } from '../../../../../../../../../../../src/service/espresso_l1_validator_service/common/node_metadata_content';
+import { NodeMetadataContent } from '../../../../../../../../../../../src/service/espresso_staking_api_service/common/node_metadata_content';
 import { default as React } from 'react';
 /**
  * CuratedValidatorsMapContext provides a React for a curated list of

@@ -1,10 +1,10 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseError } from './base_error';
+import { BaseError } from './base_error';
 /**
  * InvalidTaggedBase64EncodingError is an error that indicates that the
  * encountered string encoding of a supposed TaggedBase64 is invalid.
  */
-export default class InvalidTaggedBase64EncodingError extends BaseError {
+export declare class InvalidTaggedBase64EncodingError extends BaseError {
     constructor(message?: string);
     toJSON(): unknown;
     get code(): string;

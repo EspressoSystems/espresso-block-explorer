@@ -1,4 +1,4 @@
-import { Delegation } from '../../../../../../../../../../../src/service/espresso_l1_validator_service/common/delegation';
+import { Delegation } from '../../../../../../../../../../../src/service/espresso_staking_api_service/common/delegation';
 import { default as React } from 'react';
 /**
  * CurrentDelegationsContext provides a React Context

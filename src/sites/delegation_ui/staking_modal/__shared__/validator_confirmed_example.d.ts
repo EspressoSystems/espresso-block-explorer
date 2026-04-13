@@ -1,6 +1,6 @@
 import { AsyncSnapshot } from '../../../../../../../../../../../../src/components/data/async_data/async_snapshot';
 import { Undelegation } from '../../../../contracts/stake_table/stake_table_interface';
-import { NodeSetEntry } from '../../../../../../../../../../../../src/service/espresso_l1_validator_service/common/node_set_entry';
+import { NodeSetEntry } from '../../../../../../../../../../../../src/service/espresso_staking_api_service/common/node_set_entry';
 import { ValidatorSelectionEnum } from '../../contexts/validator_selection_context';
 import { default as React } from 'react';
 import { PerformWriteTransactionState } from '../contexts/perform_write_states';

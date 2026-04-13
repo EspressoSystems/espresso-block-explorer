@@ -2,5 +2,5 @@
  * ParagraphTextSmall represents the standard Paragraph element to be utilized
  * within the Block Explorer.
  */
-declare const ParagraphTextSmall: import('react').FC<import('../../../../../components/higher_order').HigherOrderComponentWithClassNameProps>;
+declare const ParagraphTextSmall: import('react').FC<import('../../../../../components').HigherOrderComponentWithClassNameProps>;
 export default ParagraphTextSmall;

@@ -1,11 +1,11 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseError } from './base_error';
+import { BaseError } from './base_error';
 /**
  * QueryError represents an error due to the querying code of the HotShot
  * Query Service.  Specifically it indicates an issue with retrieving, or
  * generally interacting with the database.
  */
-export default class QueryError extends BaseError {
+export declare class QueryError extends BaseError {
     readonly error: QuerySubError;
     constructor(error: QuerySubError, message?: string);
     get code(): string;

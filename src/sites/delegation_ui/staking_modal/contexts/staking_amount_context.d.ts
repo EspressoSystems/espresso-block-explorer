@@ -1,4 +1,4 @@
-import { default as MonetaryValue } from '../../../../../../../../../../../../src/models/block_explorer/monetary_value';
+import { MonetaryValue } from '../../../../../../../../../../../../src/models/block_explorer';
 import { default as React } from 'react';
 export declare const StakingAmountContext: React.Context<MonetaryValue | null>;
 export declare const SetStakingAmountContext: React.Context<React.Dispatch<React.SetStateAction<MonetaryValue | null>>>;

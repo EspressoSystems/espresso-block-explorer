@@ -1,4 +1,4 @@
-import { NodeSetEntry } from '../../../../../../../../../../../src/service/espresso_l1_validator_service/common/node_set_entry';
+import { NodeSetEntry } from '../../../../../../../../../../../src/service/espresso_staking_api_service/common/node_set_entry';
 import { default as React } from 'react';
 /**
  * AllValidatorsContext provides a React Context

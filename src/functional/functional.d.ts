@@ -172,6 +172,11 @@ export declare function zipWithIterator<T, U, V>(itT: Iterator<T>, itU: Iterator
  */
 export declare function zipWithIterable<T, U, V>(ts: Iterable<T>, us: Iterable<U>, zipper: (t: T, u: U) => V): Generator<V>;
 /**
+ * cycleIterable is a generator function that will emit the given Iterable
+ * in a loop forever.
+ */
+export declare function cycleIterable<T>(ts: Iterable<T>): Generator<T>;
+/**
  * singletonIterable is a convenience function that creates an iterable
  * containing a single element.
  */

@@ -1,6 +1,6 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseError } from './base_error';
-export default class InvalidTypeError extends BaseError {
+import { BaseError } from './base_error';
+export declare class InvalidTypeError extends BaseError {
     readonly have: string;
     readonly want: string;
     constructor(haveType: string, wantType: string, message?: string);

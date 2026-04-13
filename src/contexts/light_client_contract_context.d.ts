@@ -9,7 +9,7 @@ export declare const LightClientContractContext: React.Context<LightClientContra
  * LightClientContractGasEstimatorContext is a React context that provides
  * the Light client contract gas estimator instance.
  */
-export declare const LightClientContractGasEstimatorContext: React.Context<import('../contracts/l1/l1_interface').GasEstimatorForContract<import('../contracts/light_client/light_client_interface').LightClientContractWriteable> | null>;
+export declare const LightClientContractGasEstimatorContext: React.Context<import('../contracts').GasEstimatorForContract<import('../contracts/light_client/light_client_interface').LightClientContractWriteable> | null>;
 /**
  * ProvideLightClientContract is a React component that provides
  * the Light client contract via LightClientContractContext.

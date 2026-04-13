@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseError } from './base_error';
+import { BaseError } from './base_error';
 /**
  * CorruptBase64InputError is an error that indicates that the input provided
  * at the given offset is invalid.

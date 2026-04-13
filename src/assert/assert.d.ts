@@ -4,8 +4,6 @@
  * asserts can run in a development / debugging environment, but *should not*
  * be run in production builds.
  */
-export declare function isProduction(): boolean;
-export declare function isDevelopment(): boolean;
 /**
  * assert is a function that will throw a FailedAssertion error when the
  * boolean expression is false.  This is meant to be used in development /

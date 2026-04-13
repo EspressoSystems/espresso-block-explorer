@@ -1,4 +1,4 @@
-import { L1BlockID } from '../../../../../../../../../../../src/service/espresso_l1_validator_service/common/l1_block_id';
+import { L1BlockID } from '../../../../../../../../../../../src/service/espresso_staking_api_service/common/l1_block_id';
 import { default as React } from 'react';
 /**
  * L1BlockIDContext defines a React Context for the current L1 Block ID.

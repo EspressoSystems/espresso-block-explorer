@@ -1,4 +1,4 @@
-export default class NoCodecFoundError extends Error {
+export declare class NoCodecFoundError extends Error {
     readonly codec: string;
     constructor(codec: string, message?: string);
     toJSON(): {

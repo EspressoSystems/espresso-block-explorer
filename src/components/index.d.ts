@@ -1,6 +1,7 @@
 export * from './config';
 export * from './data';
 export * from './error';
+export * from './higher_order';
 export * from './input';
 export * from './layout';
 export * from './loading';

@@ -1,4 +1,4 @@
-import { ActiveNodeSetSnapshot } from '../../../../../../../../../../../src/service/espresso_l1_validator_service/validators_active/active_node_set_snapshot';
+import { ActiveNodeSetSnapshot } from '../../../../../../../../../../../src/service/espresso_staking_api_service/validators_active/active_node_set_snapshot';
 import { default as React } from 'react';
 /**
  * ActiveValidatorsContext provides a React Context

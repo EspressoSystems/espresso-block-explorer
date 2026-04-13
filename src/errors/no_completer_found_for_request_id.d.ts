@@ -1,6 +1,6 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseError } from './base_error';
-export default class NoCompleterFoundForRequestID<RequestID = unknown> extends BaseError {
+import { BaseError } from './base_error';
+export declare class NoCompleterFoundForRequestID<RequestID = unknown> extends BaseError {
     readonly requestID: RequestID;
     constructor(requestID: RequestID, message?: string);
     toJSON(): unknown;

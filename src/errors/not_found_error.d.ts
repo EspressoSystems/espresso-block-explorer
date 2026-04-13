@@ -1,10 +1,10 @@
 import { Codec, Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseError } from './base_error';
+import { BaseError } from './base_error';
 /**
  * NotFoundError is an error that indicates that the resource for the specified
  * key was unable to be found.
  */
-export default class NotFoundError<Key = unknown> extends BaseError {
+export declare class NotFoundError<Key = unknown> extends BaseError {
     readonly key: Key;
     constructor(key: Key, message?: string);
     get code(): string;

@@ -9,11 +9,11 @@ export type RawValidator = readonly [bigint, ValidatorStatus];
  * Undelegation represents an undelegation entry with amount and timestamp.
  */
 export type RawUndelegation = readonly [bigint, bigint];
-export declare class Validator {
+export declare class STValidator {
     readonly stake: bigint;
     readonly status: ValidatorStatus;
     constructor(stake: bigint, status: ValidatorStatus);
-    static fromRaw(validator: RawValidator): Validator;
+    static fromRaw(validator: RawValidator): STValidator;
     toJSON(): readonly [`0x${string}`, number];
 }
 export declare class Undelegation {
@@ -31,7 +31,7 @@ export interface StakeTableContractReadOnly {
     readonly address: `0x${string}`;
     lightClient(): Promise<`0x${string}`>;
     token(): Promise<`0x${string}`>;
-    validator(account: `0x${string}`): Promise<Validator>;
+    validator(account: `0x${string}`): Promise<STValidator>;
     blsKey(blsKeyHash: `0x${string}`): Promise<boolean>;
     validatorExit(validator: `0x${string}`): Promise<bigint>;
     delegation(validator: `0x${string}`, delegator: `0x${string}`): Promise<bigint>;

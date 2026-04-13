@@ -9,7 +9,7 @@ export declare const RewardClaimContractContext: React.Context<RewardClaimContra
  * RewardClaimContractGasEstimatorContext is a React context that provides
  * the Reward Claim contract gas estimator instance.
  */
-export declare const RewardClaimContractGasEstimatorContext: React.Context<import('../contracts/l1/l1_interface').GasEstimatorForContract<import('../contracts/reward_claim/reward_claim_interface').RewardClaimContractWriteable> | null>;
+export declare const RewardClaimContractGasEstimatorContext: React.Context<import('../contracts').GasEstimatorForContract<import('../contracts/reward_claim/reward_claim_interface').RewardClaimContractWriteable> | null>;
 /**
  * ProvideRewardClaimContract is a React component that provides
  * the Reward Claim contract via RewardClaimContractContext.

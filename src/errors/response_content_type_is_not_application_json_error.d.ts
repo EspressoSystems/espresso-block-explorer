@@ -1,10 +1,10 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseBadResponseError } from './base_bad_response_error';
+import { BaseBadResponseError } from './base_bad_response_error';
 /**
  * BadResponseClientError is a more specific BadResponse error that indicates
  * the nature of the failure was due to a client submission error.
  */
-export default class ResponseContentTypeIsNotApplicationJSONError extends BaseBadResponseError {
+export declare class ResponseContentTypeIsNotApplicationJSONError extends BaseBadResponseError {
     readonly haveHeaderType: string;
     constructor(haveHeaderType: string, status: number, response: null | Response, message?: string);
     static fromResponse(response: Response, message?: string): ResponseContentTypeIsNotApplicationJSONError;

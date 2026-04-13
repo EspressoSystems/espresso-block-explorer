@@ -5,7 +5,7 @@ import { EspressoError } from './espresso_error';
  * add a toJSON method to ensure that these errors can be serialized to JSON
  * when necessary.
  */
-export default class BaseError extends Error implements EspressoError {
+export declare class BaseError extends Error implements EspressoError {
     constructor(message: string);
     get code(): string;
     toJSON(): unknown;

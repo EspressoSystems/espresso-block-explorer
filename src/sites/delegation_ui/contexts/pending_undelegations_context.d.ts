@@ -1,4 +1,4 @@
-import { PendingWithdrawal } from '../../../../../../../../../../../src/service/espresso_l1_validator_service/common/pending_withdrawal';
+import { PendingWithdrawal } from '../../../../../../../../../../../src/service/espresso_staking_api_service/common/pending_withdrawal';
 import { default as React } from 'react';
 /**
  * PendingUndelegationsContext provides a React Context

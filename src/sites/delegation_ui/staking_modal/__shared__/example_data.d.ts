@@ -1,6 +1,6 @@
-import { ActiveNodeSetSnapshot } from '../../../../../../../../../../../../src/service/espresso_l1_validator_service/validators_active/active_node_set_snapshot';
-import { FullNodeSetSnapshot } from '../../../../../../../../../../../../src/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
-import { WalletSnapshot } from '../../../../../../../../../../../../src/service/espresso_l1_validator_service/wallet/wallet_snapshot';
+import { ActiveNodeSetSnapshot } from '../../../../../../../../../../../../src/service/espresso_staking_api_service/validators_active/active_node_set_snapshot';
+import { FullNodeSetSnapshot } from '../../../../../../../../../../../../src/service/espresso_staking_api_service/validators_all/full_node_set_snapshot';
+import { WalletSnapshot } from '../../../../../../../../../../../../src/service/espresso_staking_api_service/wallet/wallet_snapshot';
 import { GetTransactionReceiptReturnType } from 'wagmi/actions';
 export declare const fullValidatorSet: FullNodeSetSnapshot;
 export declare const activeValidatorSet: ActiveNodeSetSnapshot;

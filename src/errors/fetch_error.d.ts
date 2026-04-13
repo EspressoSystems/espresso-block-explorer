@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseError } from './base_error';
+import { BaseError } from './base_error';
 /**
  * FetchError is an error that indicates that a fetch operation has failed.
  * This is notably different from an error due a Server response.  These
@@ -7,7 +7,7 @@ import { default as BaseError } from './base_error';
  * class of error accounts for io errors, bad urls, or other user submission
  * failures that prevents the server from being reached.
  */
-export default class FetchError extends BaseError {
+export declare class FetchError extends BaseError {
     cause: unknown;
     constructor(cause: unknown, message?: string);
     get code(): string;

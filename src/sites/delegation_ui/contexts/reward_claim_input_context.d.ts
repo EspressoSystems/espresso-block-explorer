@@ -1,4 +1,4 @@
-import { RewardClaimInput } from '../../../../../../../../../../../src/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
+import { RewardClaimInput } from '../../../../../../../../../../../src/service/hotshot_query_service/reward_state/reward_claim_input';
 import { default as React } from 'react';
 /**
  * EspressoRewardClaimInputContext provides a React Context

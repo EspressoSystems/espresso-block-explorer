@@ -1,11 +1,11 @@
-import { CappuccinoExplorerGetSearchResultResponse } from '../../../../../../../../../../../../../src/service/hotshot_query_service/cappuccino/explorer/get_search_result_response';
+import { ExplorerGetSearchResultResponse } from '../../../../../../../../../../../../../src/service/hotshot_query_service/explorer/get_search_result_response';
 import { default as React } from 'react';
 import { PartialLocationHref } from './__shared__/search_input_shared';
 export interface InitialSearchState {
     rawQuery?: string;
     query?: string;
     searchResultsQuery?: string;
-    searchResults?: CappuccinoExplorerGetSearchResultResponse;
+    searchResults?: ExplorerGetSearchResultResponse;
     isLoading?: boolean;
     offset?: null | number;
     location?: PartialLocationHref;

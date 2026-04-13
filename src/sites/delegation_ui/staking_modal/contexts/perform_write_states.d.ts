@@ -1,5 +1,5 @@
 import { L1Methods } from '../../../../contracts/l1/l1_interface';
-import { default as BaseError } from '../../../../../../../../../../../../src/errors/base_error';
+import { BaseError } from '../../../../../../../../../../../../src/errors/base_error';
 import { Config } from 'wagmi';
 import { GetTransactionReceiptReturnType } from 'wagmi/actions';
 /**

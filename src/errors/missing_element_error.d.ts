@@ -1,11 +1,11 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseError } from './base_error';
+import { BaseError } from './base_error';
 /**
  * MissingElementError is an error that indicates that a member of a collection
  * was not present.  This generally occurs when the collection lacks the
  * necessary number of elements.
  */
-export default class MissingElementError extends BaseError {
+export declare class MissingElementError extends BaseError {
     constructor(message?: string);
     get code(): string;
 }

@@ -22,6 +22,7 @@ export { default as Menu } from './menu';
 export { default as Money } from './money';
 export { default as Payments } from './payments';
 export { default as SearchGlass } from './search_glass';
+export * from './sharp_line';
 export { default as SVGIconBase } from './svg_icon_base';
 export { default as TwitterIcon } from './twitter_icon';
 export { default as XIcon } from './x_icon';

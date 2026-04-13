@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseError } from './base_error';
+import { BaseError } from './base_error';
 /**
  * WebSocketError is an error class that represents and wraps a general
  * WebSocketError that doesn't have a more specific error representation.

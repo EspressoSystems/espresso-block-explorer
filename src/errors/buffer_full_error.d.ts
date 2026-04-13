@@ -1,5 +1,5 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseError } from './base_error';
+import { BaseError } from './base_error';
 /**
  * BufferFullError is an error that indicates that a buffer is at capacity while
  * something was attempted to be added to the buffer.

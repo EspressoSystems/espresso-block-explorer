@@ -4,7 +4,7 @@ import { default as React } from 'react';
  * The LatestBlock type is the data type that is expected to be
  * displayed on the Latest Block Summary.
  */
-export interface LatestBlock {
+export interface LatestBlockLocal {
     height: number;
     time: Date;
     size: number;
@@ -16,13 +16,13 @@ export interface LatestBlock {
  * retrieve the data that is expected to be displayed on the Latest Block
  * Summary. It is expected to be used to retrieve the data asynchronously.
  */
-export declare const LatestBlockSummaryLoaderContext: React.Context<AsyncRetriever<void, LatestBlock>>;
+export declare const LatestBlockSummaryLoaderContext: React.Context<AsyncRetriever<void, LatestBlockLocal>>;
 /**
  * The LatestBlockSummaryProvider is a React context that is used to store the
  * LatestBlock.  This context can be used to retrieve the latest block summary.
  * It is expected to be used to retrieve the data asynchronously.
  */
-export declare const LatestBlockSummaryProvider: React.Context<LatestBlock>;
+export declare const LatestBlockSummaryProvider: React.Context<LatestBlockLocal>;
 interface LatestBlockSummaryDataLoaderProps {
     children: React.ReactNode | React.ReactNode[];
 }
@@ -38,7 +38,7 @@ export declare const LatestBlockSummaryDataLoader: React.FC<LatestBlockSummaryDa
  * The LatestBlockSummaryStreamContext is a React context that is used to store
  * the LatestBlock.  This data can be used to stream the latest block summary.
  */
-export declare const LatestBlockSummaryStreamContext: React.Context<AsyncIterable<LatestBlock>>;
+export declare const LatestBlockSummaryStreamContext: React.Context<AsyncIterable<LatestBlockLocal>>;
 interface LatestBlockSummaryStreamConsumerProps {
     children: React.ReactNode | React.ReactNode[];
 }

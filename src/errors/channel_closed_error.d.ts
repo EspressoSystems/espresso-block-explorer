@@ -1,10 +1,10 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseError } from './base_error';
+import { BaseError } from './base_error';
 /**
  * ChannelClosedError is an error that indicates that the buffered channel
  * has been closed and can no longer be read from or written to.
  */
-export default class ChannelClosedError extends BaseError {
+export declare class ChannelClosedError extends BaseError {
     constructor(message?: string);
     get code(): string;
 }

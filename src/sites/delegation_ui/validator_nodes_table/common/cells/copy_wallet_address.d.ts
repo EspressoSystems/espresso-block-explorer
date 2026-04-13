@@ -1,4 +1,4 @@
-import { default as WalletAddress } from '../../../../../../../../../../../../../src/models/wallet_address/wallet_address';
+import { WalletAddress } from '../../../../../../../../../../../../../src/models/wallet_address';
 import { default as React } from 'react';
 export interface CopyWalletAddressProps {
     className?: string;

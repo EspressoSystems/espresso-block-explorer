@@ -1,4 +1,4 @@
-import { FullNodeSetSnapshot } from '../../../../../../../../../../../src/service/espresso_l1_validator_service/validators_all/full_node_set_snapshot';
+import { FullNodeSetSnapshot } from '../../../../../../../../../../../src/service/espresso_staking_api_service/validators_all/full_node_set_snapshot';
 import { default as React } from 'react';
 /**
  * FullNodeSetSnapshotContext provides a React Context

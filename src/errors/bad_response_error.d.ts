@@ -1,10 +1,10 @@
 import { Converter, TypeCheckingCodec } from '../../../../../../../../../src/convert/codec/convert';
-import { default as BaseBadResponseError } from './base_bad_response_error';
+import { BaseBadResponseError } from './base_bad_response_error';
 /**
  * BadResponseError is a custom error that indicates that the result of a fetch
  * request was a Response that indicates a non-success.
  */
-export default class BadResponseError extends BaseBadResponseError {
+export declare class BadResponseError extends BaseBadResponseError {
     constructor(status: number, response: null | Response, message?: string);
     get code(): string;
     toJSON(): unknown;

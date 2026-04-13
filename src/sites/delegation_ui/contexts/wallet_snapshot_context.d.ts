@@ -1,4 +1,4 @@
-import { WalletSnapshot } from '../../../../../../../../../../../src/service/espresso_l1_validator_service/wallet/wallet_snapshot';
+import { WalletSnapshot } from '../../../../../../../../../../../src/service/espresso_staking_api_service/wallet/wallet_snapshot';
 import { default as React } from 'react';
 /**
  * WalletSnapshotContext provides a React Context

@@ -3,6 +3,6 @@ export interface LifeCycleEventStatusProps {
     className?: string;
 }
 /**
- * WebSocketStatus is a component that renders the WebSocket status.
+ * WebSocketStatusDisplay is a component that renders the WebSocket status.
  */
-export declare const WebSocketStatus: React.FC<LifeCycleEventStatusProps>;
+export declare const WebSocketStatusDisplay: React.FC<LifeCycleEventStatusProps>;

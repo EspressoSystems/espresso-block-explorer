@@ -42,7 +42,7 @@ export declare const nodeValidatorWebSocketURLControlArgType: {
     };
     readonly description: "Node Validator WebSocket URL (starting with ws:// or wss://, ending with the version. Eg. ws://localhost:9000/v0/)";
 };
-export declare const l1ValidatorServiceURLControlArgType: {
+export declare const stakingAPIServiceServiceURLControlArgType: {
     readonly control: {
         readonly type: "text";
     };
@@ -75,8 +75,8 @@ export declare const environmentArgTypes: {
         readonly description: "Node Validator WebSocket URL (starting with ws:// or wss://, ending with the version. Eg. ws://localhost:9000/v0/)";
     };
 };
-export declare const environmentArgsTypesL1ValidatorService: {
-    l1ValidatorServiceURL: {
+export declare const environmentArgsTypesStakingAPIService: {
+    stakingAPIServiceURL: {
         readonly control: {
             readonly type: "text";
         };

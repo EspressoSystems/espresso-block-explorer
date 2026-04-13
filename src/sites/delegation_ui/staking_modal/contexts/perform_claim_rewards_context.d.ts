@@ -1,7 +1,7 @@
 import { AsyncSnapshot } from '../../../../../../../../../../../../src/components/data/async_data/async_snapshot';
 import { L1Methods } from '../../../../contracts/l1/l1_interface';
 import { RewardClaimContract } from '../../../../contracts/reward_claim/reward_claim_interface';
-import { RewardClaimInput } from '../../../../../../../../../../../../src/service/hotshot_query_service/cappuccino/reward_state/reward_claim_input';
+import { RewardClaimInput } from '../../../../../../../../../../../../src/service/hotshot_query_service/reward_state/reward_claim_input';
 import { default as React } from 'react';
 import { Config } from 'wagmi';
 import { GetTransactionReceiptReturnType } from 'wagmi/actions';

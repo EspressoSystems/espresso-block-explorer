@@ -1,4 +1,4 @@
-import { ActiveNodeSetEntry } from '../../../../../../../../../../../src/service/espresso_l1_validator_service/common/active_node_set_entry';
+import { ActiveNodeSetEntry } from '../../../../../../../../../../../src/service/espresso_staking_api_service/common/active_node_set_entry';
 import { default as React } from 'react';
 /**
  * ConsensusMapContext provides a React Context
