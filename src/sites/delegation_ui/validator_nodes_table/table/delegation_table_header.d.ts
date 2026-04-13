@@ -1,6 +1,7 @@
 import { default as React } from 'react';
 export interface TableHeadingProps extends React.PropsWithChildren {
     sortable?: boolean;
+    align?: 'left' | 'right' | 'center';
 }
 /**
  * TableHeading is a reusable component for the common table header cell
