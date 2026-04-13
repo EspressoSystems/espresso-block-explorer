@@ -1,0 +1,35 @@
+import{j as r,R as g}from"./iframe-C0Hnu7F5.js";import{O as j}from"./path_resolver_provider-CgYmj1Q9.js";import{P as A}from"./hot_shot_query_service_api_context-DdHHoYgU.js";import{P as S}from"./relative_time_since_date_text-5Vk5RJ1c.js";import{a as y,b as k,c as D,d as E,f as b,g as M,h as C,E as L,i as f}from"./environment_banner-C1mrpHQw.js";import{S as W}from"./storybook-3MHldbx8.js";import{T as _,W as u,P as N,f as R,g as B}from"./hot_shot_query_service_adapters-Dz3pLMYy.js";import{S as F}from"./story_book_path_resolver-CmLEddue.js";import{C as H}from"./card-B5nCup9I.js";import{H as O}from"./heading1-maQ8oRwu.js";import{F as U}from"./footer-C2q_mWnb.js";import{H as V}from"./header-B_wRwgNn.js";import{a as q,T as w}from"./transaction_summary_data_table-CogQyUwE.js";import{O as G,P as I}from"./nav_bar-2l7LhFi2.js";import{E as Q}from"./promise_builder-COyjSFMy.js";import{W as z}from"./skeleton_content-BOn3R2xW.js";import{L as x,b as T}from"./loading_provider-DMNdRHHl.js";import"./byte_size_text-BSxBAPzi.js";import"./wallet_address_text-DncnO_z8.js";import"./date_time_text-BYlmSoj7.js";import"./full_hex_text-Cac73Rm0.js";import"./hex_text-Cz8JEBHx.js";import"./money_text-Sqeltofb.js";import"./money_text_full-xwpQIE19.js";import"./number_text-Cyj64pmv.js";import"./tagged_base64_text-KFPcJOl9.js";import{T as J}from"./text-CEhLEmI-.js";import"./time_text-L0LlBiF3.js";import"./preload-helper-PPVm8Dsz.js";import"./explorer-DS3qhp3q.js";import"./unimplemented_error-BNblu8WE.js";import"./string-DwcMXV6G.js";import"./assert-B11BgmXM.js";import"./blocks-BbFMk1LL.js";import"./sleep-CW-vxfof.js";import"./monetary_value-DqTXp7cz.js";import"./bigint-nvMxq-Qk.js";import"./data-DkoEaPI0.js";import"./tagged_base64-CKlPb5jQ.js";import"./base64-CIn2pRZH.js";import"./nodes-DYObZsIN.js";import"./functional-BN9f4kvo.js";import"./missing_element_error-BXDBouYu.js";import"./height_and_address-BSaR29fg.js";import"./array_buffer_hex-CckWFzk6.js";import"./array_buffer_base64-G4Wtb-y4.js";import"./wallet_address-BHYnm282.js";import"./fetch_error-D_X_Gp90.js";import"./not_found_error-BdUVpmTw.js";import"./validator-C-byOqEv.js";import"./stake_table-7i6QuRDm.js";import"./stake_table_field-C5Qabowc.js";import"./date_time_formatters_provider-CfHgi1rZ.js";import"./locale_provider-DiHDaUDA.js";import"./environment-BrP5Pm0N.js";import"./higher_order-_6gYxibe.js";import"./espresso-CByVUFzU.js";import"./en_US-Y4ZOVFV4-EmbOaFWf.js";import"./index-CSmO33r6.js";import"./index-DEeGj3Zr.js";import"./fake_data-BsaAMii2.js";import"./transaction_detail_loader-C0WQ3FMt.js";import"./async_iterable_resolver-vSmql0JM.js";import"./provide_async_states-jwCAOU-p.js";import"./data_provider-Cti-MZ1B.js";import"./promise_resolver-CG3c4lkW.js";import"./data_table-Bc2Y3FO7.js";import"./chevron_up-DNzirS0I.js";import"./block_summary-CBGYsBbN.js";import"./labeled_anchor_button-Baf8kShZ.js";import"./anchor_button-e6UwN92s.js";import"./latest_block_summary_loader-FsLpWAoO.js";import"./contexts-BzJz33a1.js";import"./transaction_summary-_-RUzodv.js";import"./typography-DLq2B12-.js";/* empty css                */import"./link-BM_K7FwM.js";import"./social_media_links-CzL4jS4m.js";import"./x_icon-f1IZuvpB.js";import"./twitter_icon-DOVsDg5z.js";import"./vertical_scroll-BD8vqH8Y.js";import"./button-hZzA3TaU.js";import"./icon_anchor_button-CZm0nGKO.js";import"./icon_button-BLPQDFbQ.js";import"./labeled_button-C0-AjaGQ.js";import"./copy_tagged_base64-ChW7G7SX.js";import"./inline-DovKwuyc.js";import"./circular_progress_indicator-C7NtlUw_.js";import"./container_loading-DfiAqqhd.js";import"./roll_up_simple-BdUoL_Qb.js";import"./espresso-CS7UlZiC.js";import"./number_formatters_provider-Cxc9ljbf.js";/* empty css               */const l=u(H),K=z(l),X=u(N),Y=u(R),Z=()=>{const t=g.useContext(x),a=g.useContext(T);return t||a?r.jsx(r.Fragment,{}):r.jsx(Y,{})},$=t=>{const a=g.useContext(x);return g.useContext(T)?r.jsx(l,{children:r.jsx(Q,{})}):a?r.jsx(K,{...t,children:r.jsx(q,{})}):r.jsx(l,{...t,children:r.jsx(w,{})})},rr=({startAtBlock:t,offset:a,...e})=>r.jsxs(G,{page:I.transactions,children:[r.jsx(V,{}),r.jsx(X,{children:r.jsx(O,{children:r.jsx(J,{text:"Transactions"})})}),r.jsxs(_,{startAtBlock:t,offset:a,children:[r.jsx(Z,{}),r.jsx($,{...e})]}),r.jsx(U,{})]});try{transactionspage.displayName="transactionspage",transactionspage.__docgenInfo={description:"TransactionsPage is a component that renders the Transactions Page.",displayName:"transactionspage",props:{startAtBlock:{defaultValue:null,description:"",name:"startAtBlock",required:!1,type:{name:"number"}},offset:{defaultValue:null,description:"",name:"offset",required:!1,type:{name:"number"}}}}}catch{}const tr=({environment:t,hotshotQueryServiceURL:a,nodeValidatorWebSocketURL:e,startAtBlock:v,offset:h,...P})=>r.jsxs(W,{environment:t,hotshotQueryServiceURL:f(a),nodeValidatorWebSocketURL:f(e),children:[r.jsx(L,{}),r.jsx(S,{children:r.jsx(j,{pathResolver:new F,children:r.jsx(A,{children:r.jsx(B,{children:r.jsx(rr,{...P,startAtBlock:v,offset:h})})})})})]}),Vt={title:"Block Explorer/Pages/Transactions",component:tr,parameters:{layout:"fullscreen"},argTypes:{...C,startAtBlock:{control:"number",description:"The block number to offset into for transactions"},offset:{control:"number",description:"The transaction offset within the block to display"}}},o={startAtBlock:void 0,offset:void 0},s={args:{...o}},n={args:{...b,...o}},i={args:{...M,...o}},m={args:{...y,...o}},p={args:{...E,...o}},c={args:{...k,...o}},d={args:{...D,...o}};s.parameters={...s.parameters,docs:{...s.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...defaultTransactionsPageArgs
+  }
+}`,...s.parameters?.docs?.source}}};n.parameters={...n.parameters,docs:{...n.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...environmentArgsMilk,
+    ...defaultTransactionsPageArgs
+  }
+}`,...n.parameters?.docs?.source}}};i.parameters={...i.parameters,docs:{...i.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...environmentArgsWater,
+    ...defaultTransactionsPageArgs
+  }
+}`,...i.parameters?.docs?.source}}};m.parameters={...m.parameters,docs:{...m.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...environmentArgsDecaf,
+    ...defaultTransactionsPageArgs
+  }
+}`,...m.parameters?.docs?.source}}};p.parameters={...p.parameters,docs:{...p.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...environmentArgsMainnet,
+    ...defaultTransactionsPageArgs
+  }
+}`,...p.parameters?.docs?.source}}};c.parameters={...c.parameters,docs:{...c.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...environmentArgsFakeData,
+    ...defaultTransactionsPageArgs
+  }
+}`,...c.parameters?.docs?.source}}};d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`{
+  args: {
+    ...environmentArgsLocalDevNet,
+    ...defaultTransactionsPageArgs
+  }
+}`,...d.parameters?.docs?.source}}};const qt=["Default","Milk","Water","Decaf","Mainnet","FakeData","LocalDevNet"];export{m as Decaf,s as Default,c as FakeData,d as LocalDevNet,p as Mainnet,n as Milk,i as Water,qt as __namedExportsOrder,Vt as default};
