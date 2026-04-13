@@ -12,12 +12,12 @@ interface DelegationPageProps {
 }
 
 /**
- * CustomizeNumerFormatters is a component that provides customized number
+ * CustomizeNumberFormatters is a component that provides customized number
  * formatters for the Delegation UI.  Specifically, it ensures that we
  * display a consistent number of decimal places for Percentage, ESP, and ETH
  * displays.
  */
-const CustomizeNumerFormatters: React.FC<React.PropsWithChildren> = ({
+const CustomizeNumberFormatters: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const numberFormatter = React.useContext(CurrentNumberFormatters);
@@ -71,13 +71,13 @@ const CustomizeNumerFormatters: React.FC<React.PropsWithChildren> = ({
 const DelegationUI: React.FC<DelegationPageProps> = () => {
   return (
     <ProvideDelegationUIContexts>
-      <CustomizeNumerFormatters>
+      <CustomizeNumberFormatters>
         <main className="delegation-ui">
           <DelegationHeader />
 
           <DelegationUIContent />
         </main>
-      </CustomizeNumerFormatters>
+      </CustomizeNumberFormatters>
     </ProvideDelegationUIContexts>
   );
 };
