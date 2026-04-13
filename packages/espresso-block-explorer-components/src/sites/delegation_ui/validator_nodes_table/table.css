@@ -76,6 +76,13 @@ table.all-validators-table th > div {
   gap: 8px;
 }
 
+table.all-validators-table th[align='right'] > div {
+  justify-content: flex-end;
+}
+table.all-validators-table th[align='center'] > div {
+  justify-content: center;
+}
+
 table.all-validators-table th > div .bmore-info-element {
   width: 20px;
   height: 20px;
@@ -146,6 +153,14 @@ table.all-validators-table td {
   text-align: start;
   box-sizing: border-box;
   white-space: nowrap;
+}
+table.all-validators-table th[align='right'],
+table.all-validators-table td[align='right'] {
+  text-align: end;
+}
+table.all-validators-table th[align='center'],
+table.all-validators-table td[align='center'] {
+  text-align: center;
 }
 table.all-validators-table td {
   height: 40px;

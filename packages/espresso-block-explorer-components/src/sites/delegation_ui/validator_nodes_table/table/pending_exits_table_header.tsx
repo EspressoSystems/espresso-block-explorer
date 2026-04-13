@@ -26,22 +26,22 @@ export const PendingExitsDelegationTableHeader: React.FC = () => {
           </TableHeading>
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.pendingClaim}>
-          <TableHeading sortable>
+          <TableHeading sortable align="right">
             <StakedHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.fee}>
-          <TableHeading sortable>
+          <TableHeading sortable align="right">
             <FeeHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.missedSlots}>
-          <TableHeading sortable>
+          <TableHeading sortable align="right">
             <MissedSlotsHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>
         <TableColumnSortByContext.Provider value={CellType.participationRate}>
-          <TableHeading sortable>
+          <TableHeading sortable align="right">
             <MyStakeHeadCell />
           </TableHeading>
         </TableColumnSortByContext.Provider>
