@@ -1,20 +1,11 @@
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
-import { Label } from '@/block_explorer/components/layout/label/label';
 import { default as ValueLabeled } from '@/block_explorer/components/layout/value_labeled/value_labeled';
 import { SkeletonContent } from '@/components/loading';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { SecondsText, Text } from '@/components/text';
-import { DataStatistics } from '@/components/visual/histogram/histogram_base/data_statistics';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
-import {
-  dropIterable,
-  filterIterable,
-  firstIterable,
-  mapIterable,
-  zipWithIterable,
-} from '@/functional/functional';
 import { HistogramEntry } from '@/models/block_explorer/explorer_summary';
 import {
   HistogramDomain,
@@ -30,7 +21,6 @@ import {
 } from '@/visual/histogram/histogram_base/simple_histogram';
 import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_title/histogram_section_title';
 import { default as React } from 'react';
-import { PrefixMoreInfoElement } from '../../hid/hover/more_info_element';
 
 const CardNoPaddingWithShimmer = WithLoadingShimmer(CardNoPadding);
 
@@ -54,37 +44,6 @@ const ValueText: React.FC = () => {
 const LabelValue: React.FC<HistogramLabelProps> = (props) => {
   return <SecondsOrUnknownText value={props.value} />;
 };
-
-/**
- * pairSizeAndTime pairs the blocks size and the block times together by
- * zipping them into a single array.
- */
-function pairSizeAndTime(
-  histogramData: HistogramEntry,
-): [HistogramEntry['blockTime'][0], HistogramEntry['blockSize'][0]][] {
-  return Array.from(
-    zipWithIterable(
-      dropIterable(histogramData.blockTime, 1),
-      histogramData.blockSize,
-      (time, size) => [time, size],
-    ),
-  );
-}
-
-/**
- * resamplePairs resamples the given pair array based on the given
- * filter condition parameter fn. For convenience it will also return an
- * array comprised of the first elements of the pair, as it is assumed that
- * the first element will be the value that is being resampled.
- */
-function resamplePairs(
-  sizeAndTimePairs: [number | null, number | null][],
-  fn: (value: [number | null, number | null]) => boolean,
-) {
-  return Array.from(
-    mapIterable(filterIterable(sizeAndTimePairs, fn), firstIterable),
-  );
-}
 
 export const BlockTimeHistogram: React.FC = () => {
   const error = React.useContext(ErrorContext);
@@ -110,14 +69,6 @@ export const BlockTimeHistogram: React.FC = () => {
     return <></>;
   }
 
-  const sizeAndTimePairs = pairSizeAndTime(histogramData);
-  const nonEmptyBlockTimesStatistics = DataStatistics.compute(
-    resamplePairs(sizeAndTimePairs, ([, size]) => (size ?? 0) > 0),
-  );
-  const emptyBlockStatistics = DataStatistics.compute(
-    resamplePairs(sizeAndTimePairs, ([, size]) => (size ?? 0) === 0),
-  );
-
   return (
     <CardNoPadding className="block-time-histogram">
       <HistogramRange.Provider value={histogramData.blockTime}>
@@ -127,38 +78,7 @@ export const BlockTimeHistogram: React.FC = () => {
               <HistogramSectionTitle>
                 <Text text="Block time" />
                 <ValueLabeled>
-                  <PrefixMoreInfoElement hoverWidth={320}>
-                    <p>
-                      <Text text="Espresso block times are adaptive. Blocks currently average ~2s under load, and ~8s when empty for efficiency." />
-                    </p>
-                    <div>
-                      <div>
-                        <Label>
-                          <Text text="Non-Empty" />
-                        </Label>
-                        &nbsp;
-                        <SecondsOrUnknownText
-                          value={nonEmptyBlockTimesStatistics.nullableMean}
-                        />
-                      </div>
-                      <div>
-                        <Label>
-                          <Text text="Empty" />
-                        </Label>
-                        &nbsp;
-                        <SecondsOrUnknownText
-                          value={emptyBlockStatistics.nullableMean}
-                        />
-                      </div>
-                      <div>
-                        <Label>
-                          <Text text="Aggregate" />
-                        </Label>
-                        &nbsp;
-                        <ValueText />
-                      </div>
-                    </div>
-                  </PrefixMoreInfoElement>
+                  <ValueText />
                   <Text text="Average" />
                 </ValueLabeled>
               </HistogramSectionTitle>
