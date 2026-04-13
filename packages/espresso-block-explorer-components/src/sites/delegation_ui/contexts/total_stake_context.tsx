@@ -43,28 +43,24 @@ const DeriveTotalStakeFromAllValidators: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const fullNodeSet = React.useContext(FullNodeSetSnapshotContext);
-  const totalStake = foldRIterable(
-    (totalStake: bigint, node) => totalStake + node.stake,
-    0n,
-    fullNodeSet?.nodes ?? emptyIterator<NodeSetEntry>(),
-  );
-  const largestStake = foldRIterable(
-    (largestStake: bigint, node) => {
-      if (largestStake < node.stake) {
-        return node.stake;
-      }
-
-      return largestStake;
-    },
-    0n,
-    fullNodeSet?.nodes ?? emptyIterator<NodeSetEntry>(),
+  const [totalStake, largestStake] = React.useMemo(
+    () =>
+      foldRIterable(
+        ([totalStakeAcc, largestStakeCurrent], node) => [
+          totalStakeAcc + node.stake,
+          node.stake > largestStakeCurrent ? node.stake : largestStakeCurrent,
+        ],
+        [0n, 0n] as [bigint, bigint],
+        fullNodeSet?.nodes ?? emptyIterator<NodeSetEntry>(),
+      ),
+    [fullNodeSet],
   );
 
   return (
     <TotalStakeContext.Provider value={totalStake}>
       <LargestNodeStakeContext.Provider value={largestStake}>
         <LargestNodeHasOver10PercentageContext.Provider
-          value={Number(largestStake) / Number(totalStake) >= 0.1}
+          value={largestStake * 10n >= totalStake}
         >
           {children}
         </LargestNodeHasOver10PercentageContext.Provider>
