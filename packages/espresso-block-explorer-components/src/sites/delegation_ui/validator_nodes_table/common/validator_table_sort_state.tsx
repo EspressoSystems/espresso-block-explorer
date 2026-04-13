@@ -9,6 +9,7 @@ import { ActiveNodeSetEntry } from '@/service/espresso_staking_api_service/commo
 import { Delegation } from '@/service/espresso_staking_api_service/common/delegation';
 import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
 import { PendingWithdrawal } from '@/service/espresso_staking_api_service/common/pending_withdrawal';
+import { RatioRational } from '@/service/espresso_staking_api_service/common/ratio';
 import {
   AllValidatorsContext,
   NodeAddressListContext,
@@ -203,14 +204,24 @@ function sortByFee(a: ValidatorSortTuple, b: ValidatorSortTuple) {
  * sortByMissedSlots sorts validators by their missed slots.
  */
 function sortByMissedSlots(a: ValidatorSortTuple, b: ValidatorSortTuple) {
-  const aMissed = valueOrFallback(
-    a[TUPLE_INDEX_ACTIVE_NODE]?.leaderParticipation?.ratio,
-    -1,
-  );
-  const bMissed = valueOrFallback(
-    b[TUPLE_INDEX_ACTIVE_NODE]?.leaderParticipation?.ratio,
-    -1,
-  );
+  const aParticipation = a[TUPLE_INDEX_ACTIVE_NODE]?.leaderParticipation;
+  const bParticipation = b[TUPLE_INDEX_ACTIVE_NODE]?.leaderParticipation;
+  const aMissed = valueOrFallback(aParticipation?.ratio, -1);
+  const bMissed = valueOrFallback(bParticipation?.ratio, -1);
+
+  if (aMissed === bMissed && aMissed !== -1) {
+    if (
+      aParticipation instanceof RatioRational &&
+      bParticipation instanceof RatioRational
+    ) {
+      // Which number "weighs" more?
+      const aDenom = aParticipation.denominator;
+      const bDenom = bParticipation.denominator;
+
+      return Number(aDenom - bDenom);
+    }
+  }
+
   return aMissed - bMissed;
 }
 
