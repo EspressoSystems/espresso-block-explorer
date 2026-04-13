@@ -1,0 +1,2 @@
+import{R as o}from"./iframe-yFC_6Lkm.js";const e=o.createContext(0),t=o.createContext(null);try{e.displayName="NamespaceContext",e.__docgenInfo={description:`NamespaceContext is a React Context that holds a reference to the
+current Namespace`,displayName:"NamespaceContext",props:{}}}catch{}try{t.displayName="RollUpEntryContext",t.__docgenInfo={description:"RollUpEntryContext is a React Context that holds a reference to the\npopulated `RollUpEntry` object.",displayName:"RollUpEntryContext",props:{}}}catch{}export{e as N,t as R};
