@@ -10,6 +10,22 @@ import { FullNodeSetSnapshotContext } from './full_node_set_snapshot_context';
 export const TotalStakeContext = React.createContext<bigint>(0n);
 
 /**
+ * LargestNodeStakeContext provides a React Context for the largest stake among
+ * all of the full node set.
+ */
+export const LargestNodeStakeContext = React.createContext<bigint>(0n);
+
+/**
+ * LargestNodeHasOver10PercentageContext is a context that is used as a quickly
+ * referencable flag, that indicates whether a single validator node controls
+ * at least 10% of the stake.
+ *
+ * This is utilized for formatting alignment purposes at the monent.
+ */
+export const LargestNodeHasOver10PercentageContext =
+  React.createContext<boolean>(false);
+
+/**
  * DeriveTotalStake is a component that Provides the TotalStakeContext
  * by calculating the total stake from the AllValidatorsContext.
  */
@@ -32,10 +48,27 @@ const DeriveTotalStakeFromAllValidators: React.FC<React.PropsWithChildren> = ({
     0n,
     fullNodeSet?.nodes ?? emptyIterator<NodeSetEntry>(),
   );
+  const largestStake = foldRIterable(
+    (largestStake: bigint, node) => {
+      if (largestStake < node.stake) {
+        return node.stake;
+      }
+
+      return largestStake;
+    },
+    0n,
+    fullNodeSet?.nodes ?? emptyIterator<NodeSetEntry>(),
+  );
 
   return (
     <TotalStakeContext.Provider value={totalStake}>
-      {children}
+      <LargestNodeStakeContext.Provider value={largestStake}>
+        <LargestNodeHasOver10PercentageContext.Provider
+          value={Number(largestStake) / Number(totalStake) >= 0.1}
+        >
+          {children}
+        </LargestNodeHasOver10PercentageContext.Provider>
+      </LargestNodeStakeContext.Provider>
     </TotalStakeContext.Provider>
   );
 };
