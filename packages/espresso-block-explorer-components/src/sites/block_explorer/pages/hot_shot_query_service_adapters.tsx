@@ -531,7 +531,10 @@ export const ProvideExplorerSummaryAsyncStream: React.FC<
   const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
   // Create a timer to refresh every two seconds.
-  const explorerSummaryStream = explorerOverviewStream(hotShotQueryService);
+  const explorerSummaryStream = React.useMemo(
+    () => explorerOverviewStream(hotShotQueryService),
+    [hotShotQueryService],
+  );
 
   return (
     <AsyncIterableResolver asyncIterable={explorerSummaryStream}>
