@@ -1,1 +1,0 @@
-import{T as t}from"./string-DwcMXV6G.js";import{s as r}from"./stake_table_field-CIreD0Dp.js";class a{constructor(e){this.entries=e,Object.freeze(this)}}class c{convert(e){return new a(r.decode(e))}}class o{convert(e){return r.encode(e.entries)}}class n extends t{encoder=new o;decoder=new c}const i=new n;export{a as S,i as s};
