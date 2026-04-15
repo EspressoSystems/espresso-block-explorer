@@ -13,10 +13,10 @@ import {
 } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { iota } from '@/functional/functional';
-import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
+import { ExplorerBlockSummary } from '@/service/hotshot_query_service/explorer/block_summary';
 import { default as React } from 'react';
 import { InternalLink } from '../../links/link/link';
-import { BlockSummary } from './block_summary_data_loader';
+import { BlockSummaryColumn } from './block_summary_data_loader';
 
 /**
  * BlockCell is a cell for containing reference information about the block
@@ -25,11 +25,18 @@ import { BlockSummary } from './block_summary_data_loader';
  */
 const BlockCell: React.FC = () => {
   const pathResolver = React.useContext(PathResolverContext);
-  const row = React.useContext(DataTableRowContext) as BlockSummary;
+  const row = React.useContext(DataTableRowContext) as
+    | undefined
+    | null
+    | ExplorerBlockSummary;
+
+  if (!row) {
+    return null;
+  }
 
   return (
-    <InternalLink href={pathResolver.block(row.block)}>
-      <NumberText number={row.block} />
+    <InternalLink href={pathResolver.block(row.height)}>
+      <NumberText number={row.height} />
     </InternalLink>
   );
 };
@@ -40,9 +47,16 @@ const BlockCell: React.FC = () => {
  * type.
  */
 const ProposerCell: React.FC = () => {
-  const row = React.useContext(DataTableRowContext) as BlockSummary;
+  const row = React.useContext(DataTableRowContext) as
+    | undefined
+    | null
+    | ExplorerBlockSummary;
 
-  return row.proposer.map((proposer, index) => (
+  if (!row) {
+    return null;
+  }
+
+  return row.proposerID.map((proposer, index) => (
     <div key={index}>
       <CopyHex value={proposer}>
         <HexText value={proposer} />
@@ -57,11 +71,17 @@ const ProposerCell: React.FC = () => {
  */
 const TransactionsCell: React.FC = () => {
   const pathResolver = React.useContext(PathResolverContext);
-  const row = React.useContext(DataTableRowContext) as BlockSummary;
+  const row = React.useContext(DataTableRowContext) as
+    | undefined
+    | null
+    | ExplorerBlockSummary;
+  if (!row) {
+    return null;
+  }
 
   return (
-    <InternalLink href={pathResolver.transactionsForBlock(row.block)}>
-      <NumberText number={row.transactions} />
+    <InternalLink href={pathResolver.transactionsForBlock(row.height)}>
+      <NumberText number={row.numTransactions} />
     </InternalLink>
   );
 };
@@ -71,7 +91,13 @@ const TransactionsCell: React.FC = () => {
  * bytes.
  */
 const SizeCell: React.FC = () => {
-  const row = React.useContext(DataTableRowContext) as BlockSummary;
+  const row = React.useContext(DataTableRowContext) as
+    | undefined
+    | null
+    | ExplorerBlockSummary;
+  if (!row) {
+    return null;
+  }
 
   return <ByteSizeText bytes={row.size} />;
 };
@@ -80,7 +106,13 @@ const SizeCell: React.FC = () => {
  * TimeCell is a cell that displays the timestamp for the blcok.
  */
 const TimeCell: React.FC = () => {
-  const row = React.useContext(DataTableRowContext) as BlockSummary;
+  const row = React.useContext(DataTableRowContext) as
+    | undefined
+    | null
+    | ExplorerBlockSummary;
+  if (!row) {
+    return null;
+  }
 
   return <DateTimeText date={row.time} />;
 };

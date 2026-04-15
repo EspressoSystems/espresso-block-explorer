@@ -1,8 +1,8 @@
 import { AsyncRetriever } from '@/async/async_retriever';
 import { DataContext } from '@/contexts/data_provider';
+import { ExplorerSummaryContext } from '@/contexts/explorer_api_contexts';
 import { UnimplementedError } from '@/errors/unimplemented_error';
 import { default as React } from 'react';
-import { ExplorerSummaryProvider } from '../explorer_summary/explorer_summary_loader';
 
 export interface ExplorerOverview {
   rollups: number;
@@ -32,16 +32,10 @@ interface ExplorerOverviewLoaderProps {
 export const ExplorerOverviewLoader: React.FC<ExplorerOverviewLoaderProps> = (
   props,
 ) => {
-  const data = React.useContext(ExplorerSummaryProvider);
-
-  if (!data) {
-    return (
-      <DataContext.Provider value={null}>{props.children}</DataContext.Provider>
-    );
-  }
+  const data = React.useContext(ExplorerSummaryContext);
 
   return (
-    <DataContext.Provider value={data.genesisOverview}>
+    <DataContext.Provider value={data?.genesisOverview ?? null}>
       {props.children}
     </DataContext.Provider>
   );

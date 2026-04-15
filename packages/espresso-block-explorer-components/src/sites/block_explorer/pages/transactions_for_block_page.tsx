@@ -21,10 +21,9 @@ import {
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { NumberText, Text } from '@/components/text';
-import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
+import { ExplorerBlockDetailContext } from '@/contexts/explorer_api_contexts';
 import { LoadingContext } from '@/contexts/loading_provider';
-import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
 import { default as React } from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
@@ -41,7 +40,7 @@ const GuardedEdgeMarginTransactionsForBlockNavigation: React.FC = () => {
   const loading = React.useContext(LoadingContext);
   const error = React.useContext(ErrorContext);
   const block = React.useContext(BlockNumberContext);
-  const data = React.useContext(DataContext) as BlockDetailEntry;
+  const data = React.useContext(ExplorerBlockDetailContext);
   if (loading || error || !data) {
     return (
       <>
@@ -59,7 +58,7 @@ const GuardedEdgeMarginTransactionsForBlockNavigation: React.FC = () => {
       <InternalLink href={pathResolver.block(block)}>
         <NumberText number={block} />
       </InternalLink>
-      <Text text={` containing ${data.transactions} transactions`} />
+      <Text text={` containing ${data.numTransactions} transactions`} />
     </>
   );
 };
@@ -107,23 +106,22 @@ const TransactionsForBlockPage: React.FC<TransactionsPageProps> = ({
   <OverridePagePath page={PageType.transactions}>
     <Header />
 
-    <EdgeMarginPageTitle>
-      <Heading1>
-        <Text text="Transactions" />
-      </Heading1>
-      <BlockNumberContext.Provider value={block}>
-        <BlockDetailsLoader>
+    <BlockNumberContext.Provider value={block}>
+      <BlockDetailsLoader>
+        <EdgeMarginPageTitle>
+          <Heading1>
+            <Text text="Transactions" />
+          </Heading1>
           <GuardedEdgeMarginTransactionsForBlockNavigation />
-        </BlockDetailsLoader>
-      </BlockNumberContext.Provider>
-    </EdgeMarginPageTitle>
+        </EdgeMarginPageTitle>
 
-    {/* For Block ${block} containing ${num_transactions} transactions */}
+        {/* For Block ${block} containing ${num_transactions} transactions */}
 
-    <TransactionSummaryDataLoader startAtBlock={block} offset={offset}>
-      <GuardedTransactionsSummaryDataTable {...rest} />
-    </TransactionSummaryDataLoader>
-
+        <TransactionSummaryDataLoader startAtBlock={block} offset={offset}>
+          <GuardedTransactionsSummaryDataTable {...rest} />
+        </TransactionSummaryDataLoader>
+      </BlockDetailsLoader>
+    </BlockNumberContext.Provider>
     <Footer />
   </OverridePagePath>
 );

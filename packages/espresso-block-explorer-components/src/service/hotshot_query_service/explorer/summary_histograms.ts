@@ -70,6 +70,14 @@ export class SummaryHistograms {
     }
     groups.sort(sortGroup);
 
+    if (groups.length <= 0) {
+      this.blockTime = [];
+      this.blockSize = [];
+      this.blockTransactions = [];
+      this.blockHeights = [];
+      return;
+    }
+
     const minBlock = groups[0].blockHeights;
     const maxBlock = groups[groups.length - 1].blockHeights;
 

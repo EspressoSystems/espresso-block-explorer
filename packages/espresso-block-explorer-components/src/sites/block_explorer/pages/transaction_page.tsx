@@ -19,9 +19,13 @@ import {
 } from '@/block_explorer/contexts/page_path_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
-import { ErrorContext } from '@/contexts/error_provider';
-import { LoadingContext } from '@/contexts/loading_provider';
 import { Text } from '@/components/text';
+import { ErrorContext } from '@/contexts/error_provider';
+import {
+  ExplorerTransactionDetailDataContext,
+  ExplorerTransactionDetailsContext,
+} from '@/contexts/explorer_api_contexts';
+import { LoadingContext } from '@/contexts/loading_provider';
 import { default as React } from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(CardNoPadding);
@@ -29,7 +33,7 @@ const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 const EdgeMarginHeading2 = WithEdgeMargin(Heading2);
 
-interface GuardedTransactionDetailsContentProps { }
+interface GuardedTransactionDetailsContentProps {}
 
 /**
  * GuardedTransactionDetailsContent is a component that guards rendering the
@@ -65,7 +69,7 @@ const GuardedTransactionDetailsContent: React.FC<
   );
 };
 
-interface GuardedTransactionDataContentsProps { }
+interface GuardedTransactionDataContentsProps {}
 
 /**
  * GuardedTransactionDataContents is a component that guards rendering the
@@ -85,14 +89,30 @@ const GuardedTransactionDataContents: React.FC<
     );
   }
 
+  return <AllTransactionDetaContent />;
+};
+
+const AllTransactionDetaContent: React.FC = () => {
+  const data = React.useContext(ExplorerTransactionDetailsContext);
+
+  if (!data) {
+    return null;
+  }
+
   return (
-    <EdgeMarginCard {...props}>
-      <TransactionDataContents />
-    </EdgeMarginCard>
+    <>
+      {data.data.map((data, index) => (
+        <ExplorerTransactionDetailDataContext.Provider key={index} value={data}>
+          <EdgeMarginCard>
+            <TransactionDataContents />
+          </EdgeMarginCard>
+        </ExplorerTransactionDetailDataContext.Provider>
+      ))}
+    </>
   );
 };
 
-interface TransactionPageProps { }
+interface TransactionPageProps {}
 
 /**
  * TransactionPage is a component that renders the Transaction Page.

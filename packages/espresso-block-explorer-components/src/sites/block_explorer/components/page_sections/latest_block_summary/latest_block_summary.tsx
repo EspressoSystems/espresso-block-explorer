@@ -10,22 +10,24 @@ import {
   NumberText,
   Text,
 } from '@/components/text';
-import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
+import {
+  ExplorerBlockDetailContext,
+  ExplorerSummaryContext,
+} from '@/contexts/explorer_api_contexts';
 import { LoadingContext } from '@/contexts/loading_provider';
-import { ExplorerSummaryEntry } from '@/models/block_explorer/explorer_summary';
+import { ExplorerSummary } from '@/service/hotshot_query_service/explorer/explorer_summary';
 import { default as React } from 'react';
 import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
-import { ExplorerSummaryProvider } from '../explorer_summary';
 import './latest_block_summary.css';
-import {
-  LatestBlockLocal,
-  LatestBlockSummaryProvider,
-} from './latest_block_summary_loader';
 
 export const LatestBlockSummaryHeading: React.FC = () => {
-  const block = React.useContext(LatestBlockSummaryProvider);
+  const block = React.useContext(ExplorerBlockDetailContext);
   const pathResolver = React.useContext(PathResolverContext);
+
+  if (!block) {
+    return null;
+  }
 
   return (
     <SummaryTableLabeledValue className="card--padding">
@@ -53,7 +55,7 @@ export const LatestBlockSummaryHeadingPlaceholder: React.FC = () => {
 };
 
 function determineTimeTakenBetweenBlocks(
-  data: null | ExplorerSummaryEntry,
+  data: null | ExplorerSummary,
 ): null | number {
   if (data === null) {
     return null;
@@ -69,9 +71,13 @@ function determineTimeTakenBetweenBlocks(
 }
 
 export const LatestBlockSummaryDetails: React.FC = () => {
-  const explorerSummary = React.useContext(ExplorerSummaryProvider);
-  const block = React.useContext(LatestBlockSummaryProvider);
+  const explorerSummary = React.useContext(ExplorerSummaryContext);
+  const block = React.useContext(ExplorerBlockDetailContext);
   const timeToCreateBlock = determineTimeTakenBetweenBlocks(explorerSummary);
+
+  if (!block) {
+    return null;
+  }
 
   return (
     <div className="card--padding">
@@ -92,7 +98,7 @@ export const LatestBlockSummaryDetails: React.FC = () => {
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
         <Text text="Transactions" />
-        <NumberText number={block.transactions} />
+        <NumberText number={block.numTransactions} />
       </SummaryTableLabeledValue>
     </div>
   );
@@ -133,28 +139,15 @@ export const LatestBlockSummaryPlaceholder: React.FC<
   );
 };
 
-interface LatestBlockSummaryContentProps {}
+interface LatestBlockSummaryContentProps {
+  className?: string;
+}
+
 export const LatestBlockSummaryContent: React.FC<
   LatestBlockSummaryContentProps
 > = (props) => {
-  return (
-    <CardNoPadding {...props}>
-      <LatestBlockSummaryHeading />
-      <hr />
-      <LatestBlockSummaryDetails />
-    </CardNoPadding>
-  );
-};
-
-interface LatestBlockSummaryProps {
-  className?: string;
-}
-export const LatestBlockSummaryAsyncHandler: React.FC<
-  LatestBlockSummaryProps
-> = (props) => {
   const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
-  const data = React.useContext(DataContext);
 
   if (error) {
     return <></>;
@@ -165,8 +158,10 @@ export const LatestBlockSummaryAsyncHandler: React.FC<
   }
 
   return (
-    <LatestBlockSummaryProvider.Provider value={data as LatestBlockLocal}>
-      <LatestBlockSummaryContent {...props} />
-    </LatestBlockSummaryProvider.Provider>
+    <CardNoPadding {...props}>
+      <LatestBlockSummaryHeading />
+      <hr />
+      <LatestBlockSummaryDetails />
+    </CardNoPadding>
   );
 };

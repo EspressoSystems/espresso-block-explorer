@@ -43,7 +43,7 @@ const GuardedEdgeMarginTransactionsNavigation: React.FC = () => {
   return <EdgeMarginTransactionsNavigation />;
 };
 
-interface GuardedTransactionsSummaryDataTableProps { }
+interface GuardedTransactionsSummaryDataTableProps {}
 
 /**
  * GuardedTransactionsSummaryDataTable is a component that guards rendering the

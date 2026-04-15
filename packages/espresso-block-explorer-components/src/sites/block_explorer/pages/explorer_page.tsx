@@ -17,10 +17,10 @@ import { ExplorerOverviewAsyncHandler } from '@/block_explorer/components/page_s
 import { ExplorerOverviewLoader } from '@/block_explorer/components/page_sections/explorer_overview/explorer_overview_loader';
 import { default as Footer } from '@/block_explorer/components/page_sections/footer/footer';
 import { default as Header } from '@/block_explorer/components/page_sections/header/header';
-import { LatestBlockSummaryAsyncHandler } from '@/block_explorer/components/page_sections/latest_block_summary/latest_block_summary';
-import { LatestBlockSummaryDataLoader } from '@/block_explorer/components/page_sections/latest_block_summary/latest_block_summary_loader';
+import { LatestBlockSummaryContent } from '@/block_explorer/components/page_sections/latest_block_summary/latest_block_summary';
+import { LatestBlockSummaryStreamConsumer } from '@/block_explorer/components/page_sections/latest_block_summary/latest_block_summary_loader';
 import { default as PageTitle } from '@/block_explorer/components/page_sections/page_title/page_title';
-import { TransactionSummaryDataFromStreamLoader } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
+import { TransactionSummaryDataFromExplorerSummary } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
 import {
   TransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
@@ -33,11 +33,12 @@ import {
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
+import { Text } from '@/components/text';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { addClassToClassName } from '@/higher_order';
-import { Text } from '@/components/text';
 import { default as React } from 'react';
+import { ExplorerSummaryLoader } from '../components/page_sections/explorer_summary/explorer_summary_loader';
 import './explorer_page.css';
 
 const Text300H2 = WithUiText300('h2');
@@ -113,63 +114,65 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
         <SearchInput />
       </EdgeMarginPageTitle>
 
-      <div
-        {...props}
-        className={addClassToClassName(
-          props.className,
-          'explorer-grid edge-margin',
-        )}
-      >
-        <LatestBlockSummaryDataLoader>
-          <LatestBlockSummaryAsyncHandler className="latest-block" />
-        </LatestBlockSummaryDataLoader>
+      <ExplorerSummaryLoader>
+        <div
+          {...props}
+          className={addClassToClassName(
+            props.className,
+            'explorer-grid edge-margin',
+          )}
+        >
+          <LatestBlockSummaryStreamConsumer>
+            <LatestBlockSummaryContent className="latest-block" />
+          </LatestBlockSummaryStreamConsumer>
 
-        <ExplorerOverviewLoader>
-          <ExplorerOverviewAsyncHandler className="overview" />
-        </ExplorerOverviewLoader>
+          <ExplorerOverviewLoader>
+            <ExplorerOverviewAsyncHandler className="overview" />
+          </ExplorerOverviewLoader>
 
-        <HistogramDataLoader>
-          <BlockTimeHistogram />
+          <HistogramDataLoader>
+            <BlockTimeHistogram />
 
-          <BlockSizeHistogram />
+            <BlockSizeHistogram />
 
-          <BlockThroughputHistogram />
-        </HistogramDataLoader>
+            <BlockThroughputHistogram />
+          </HistogramDataLoader>
 
-        <Card className="latest-blocks-summary">
-          <SummaryTableLabeledValue>
-            <Text300H2>
-              <Text text="Latest Blocks" />
-            </Text300H2>
-            <LabeledAnchorButton href={pathResolver.blocks()}>
-              <Text text="View all" />
-            </LabeledAnchorButton>
-          </SummaryTableLabeledValue>
+          <Card className="latest-blocks-summary">
+            <SummaryTableLabeledValue>
+              <Text300H2>
+                <Text text="Latest Blocks" />
+              </Text300H2>
+              <LabeledAnchorButton href={pathResolver.blocks()}>
+                <Text text="View all" />
+              </LabeledAnchorButton>
+            </SummaryTableLabeledValue>
 
-          <div className="card--padding">
-            <BlockSummaryDataFromStreamLoader>
-              <GuardedBlocksSummaryDataTable />
-            </BlockSummaryDataFromStreamLoader>
-          </div>
-        </Card>
+            <div className="card--padding">
+              <BlockSummaryDataFromStreamLoader>
+                <GuardedBlocksSummaryDataTable />
+              </BlockSummaryDataFromStreamLoader>
+            </div>
+          </Card>
 
-        <Card className="latest-transactions-summary">
-          <SummaryTableLabeledValue>
-            <Text300H2>
-              <Text text="Latest Transactions" />
-            </Text300H2>
-            <LabeledAnchorButton href={pathResolver.transactions()}>
-              <Text text="View all" />
-            </LabeledAnchorButton>
-          </SummaryTableLabeledValue>
+          <Card className="latest-transactions-summary">
+            <SummaryTableLabeledValue>
+              <Text300H2>
+                <Text text="Latest Transactions" />
+              </Text300H2>
+              <LabeledAnchorButton href={pathResolver.transactions()}>
+                <Text text="View all" />
+              </LabeledAnchorButton>
+            </SummaryTableLabeledValue>
 
-          <div className="card--padding">
-            <TransactionSummaryDataFromStreamLoader>
-              <GuardedTransactionsSummaryDataTable />
-            </TransactionSummaryDataFromStreamLoader>
-          </div>
-        </Card>
-      </div>
+            <div className="card--padding">
+              <TransactionSummaryDataFromExplorerSummary>
+                <GuardedTransactionsSummaryDataTable />
+              </TransactionSummaryDataFromExplorerSummary>
+            </div>
+          </Card>
+        </div>
+      </ExplorerSummaryLoader>
 
       <Footer />
     </OverridePagePath>

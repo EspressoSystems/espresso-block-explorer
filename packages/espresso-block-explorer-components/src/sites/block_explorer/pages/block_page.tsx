@@ -5,7 +5,6 @@ import {
   BlockDetailsContent,
   BlockDetailsContentPlaceholder,
   BlockNavigation,
-  ProvideBlockDetails,
 } from '@/block_explorer/components/page_sections/block_detail_content/block_detail_content';
 import { BlockDetailsLoader } from '@/block_explorer/components/page_sections/block_detail_content/block_detail_content_loader';
 import { default as Footer } from '@/block_explorer/components/page_sections/footer/footer';
@@ -17,16 +16,16 @@ import {
 } from '@/block_explorer/contexts/page_path_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
+import { Text } from '@/components/text';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
-import { Text } from '@/components/text';
 import { default as React } from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(CardNoPadding);
 const GuardBlockDetailsProps = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 
-interface GuardBlockDetailsProps { }
+interface GuardBlockDetailsProps {}
 
 /**
  * GuardBlockDetails is a component that guards rendering the Block Details
@@ -54,14 +53,12 @@ const GuardBlockDetails: React.FC<GuardBlockDetailsProps> = (props) => {
 
   return (
     <EdgeMarginCard {...props}>
-      <ProvideBlockDetails>
-        <BlockDetailsContent />
-      </ProvideBlockDetails>
+      <BlockDetailsContent />
     </EdgeMarginCard>
   );
 };
 
-interface BlockPageProps { }
+interface BlockPageProps {}
 
 /**
  * BlockPage is a component that renders the Block Page.

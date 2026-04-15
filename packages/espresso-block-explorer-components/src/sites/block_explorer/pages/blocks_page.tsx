@@ -18,9 +18,9 @@ import {
 } from '@/block_explorer/contexts/page_path_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
+import { Text } from '@/components/text';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
-import { Text } from '@/components/text';
 import { default as React } from 'react';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
@@ -44,7 +44,7 @@ const GuardEdgeMarginBlocksNavigation: React.FC = () => {
   return <EdgeMarginBlocksNavigation />;
 };
 
-interface GuardedBlocksSummaryDataTableProps { }
+interface GuardedBlocksSummaryDataTableProps {}
 
 const GuardedBlocksSummaryDataTable: React.FC<
   GuardedBlocksSummaryDataTableProps

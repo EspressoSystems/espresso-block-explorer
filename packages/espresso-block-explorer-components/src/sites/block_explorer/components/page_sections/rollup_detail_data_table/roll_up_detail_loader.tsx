@@ -4,58 +4,17 @@ import {
   DataTableStateContext,
 } from '@/components/data/data_table/data_table';
 import { SortDirection } from '@/components/data/types';
-import { UnimplementedError } from '@/errors/unimplemented_error';
-import { RollUpDetailAsyncRetriever } from '@/models/block_explorer/rollup_detail';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { NamespaceContext } from '@/models/block_explorer/rollup_entry/contexts';
-import { TransactionSummaryColumn } from '@/models/block_explorer/transaction_summary';
+import { ExplorerGetTransactionSummariesFilter } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_filter';
+import { ExplorerGetTransactionSummariesRequest } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_request';
+import { ExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_target';
 import { default as React } from 'react';
-import { TransactionSummary } from '../transaction_summary_data_table/transaction_summary_data_loader';
-
-/**
- * RetrieverContext is a React Context that holds a reference to a
- * RollUpDetailAsyncRetriever
- */
-export const RollUpDetailAsyncRetrieverContext =
-  React.createContext<RollUpDetailAsyncRetriever>({
-    async retrieve() {
-      throw new UnimplementedError();
-    },
-  });
+import { TransactionSummaryColumn } from '../transaction_summary_data_table/transaction_summary_data_loader';
 
 export interface RollUpDetailDataTableState extends DataTableState<TransactionSummaryColumn> {
   height?: number;
   offset?: number;
-}
-
-/**
- * createDataRetrieverFromRetriever converts a TransactionSummaryAsyncRetriever
- * into an AsyncRetriever of the correct data format.
- */
-function createDataRetrieverFromRetriever(
-  retriever: RollUpDetailAsyncRetriever,
-  namespace: number,
-) {
-  return {
-    async retrieve(state: DataTableState<unknown>) {
-      const resolvedState = state as RollUpDetailDataTableState;
-      const data = await retriever.retrieve({
-        namespace,
-        height: resolvedState.height,
-        offset: resolvedState.offset,
-      });
-
-      return data.map(
-        (data) =>
-          ({
-            hash: data.hash,
-            block: data.block,
-            offset: 0,
-            rollups: data.namespaces,
-            time: data.time,
-          }) satisfies TransactionSummary,
-      );
-    },
-  };
 }
 
 export interface RollUpDetailsDataLoaderProps {
@@ -63,6 +22,8 @@ export interface RollUpDetailsDataLoaderProps {
   offset?: number;
   children: React.ReactNode | React.ReactNode[];
 }
+
+const NUMBER_OF_TRANSACTIONS_TO_LOAD = 20;
 
 /**
  * RollUpDetailsDataLoader uses the Retriever from the
@@ -81,15 +42,26 @@ export const RollUpDetailsDataLoader: React.FC<
   });
 
   // Need to retrieve the actual data source
+  const service = React.useContext(HotShotQueryServiceAPIContext);
   const namespace = React.useContext(NamespaceContext);
-  const retriever = React.useContext(RollUpDetailAsyncRetrieverContext);
-  const dataTableState = React.useContext(DataTableStateContext);
-  const nextRetriever = createDataRetrieverFromRetriever(retriever, namespace);
+
+  const request = new ExplorerGetTransactionSummariesRequest(
+    initialState.height === null || initialState.height === undefined
+      ? ExplorerGetTransactionSummariesTarget.latest(
+          NUMBER_OF_TRANSACTIONS_TO_LOAD,
+        )
+      : ExplorerGetTransactionSummariesTarget.heightAndOffset(
+          initialState.height,
+          initialState.offset || 0,
+          NUMBER_OF_TRANSACTIONS_TO_LOAD,
+        ),
+    ExplorerGetTransactionSummariesFilter.namespace(namespace),
+  );
 
   return (
     <DataTableStateContext.Provider value={initialState}>
       <PromiseResolver
-        promise={nextRetriever.retrieve(dataTableState)}
+        promise={service.explorer.getTransactionSummaries(request)}
         {...props}
       >
         {children}

@@ -1,13 +1,14 @@
 import { DataContext } from '@/contexts/data_provider';
 import { PseudoRandomNumberGenerator } from '@/data_source/fake_data_source';
 import { iota, mapIterable } from '@/functional/functional';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
+import { ExplorerBlockSummary } from '@/service/hotshot_query_service/explorer/block_summary';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
-import { BlockSummary } from '../block_summary_data_loader';
 import { BlockSummaryDataTable as BlockSummaryDataTableComponent } from '../block_summary_data_table';
 
 interface ExampleProps {
-  blockSummaries: BlockSummary[];
+  blockSummaries: ExplorerBlockSummary[];
 }
 
 const Example: React.FC<ExampleProps> = (props) => {
@@ -34,14 +35,15 @@ type Story = StoryObj<typeof Example>;
 
 const prng = new PseudoRandomNumberGenerator();
 const blockSummaries = Array.from(
-  mapIterable(iota(20), (i): BlockSummary => {
-    return {
-      block: i,
-      proposer: [prng.fillBytes(20)],
-      transactions: i,
-      size: prng.nextRange(1000, 100000) * 10,
-      time: new Date(Date.now() + i * 1000),
-    };
+  mapIterable(iota(20), (i): ExplorerBlockSummary => {
+    return new ExplorerBlockSummary(
+      new TaggedBase64('BLOCK', prng.fillBytes(32)),
+      i,
+      [prng.fillBytes(20)],
+      i,
+      prng.nextRange(1000, 100000) * 10,
+      new Date(Date.now() + i * 1000),
+    );
   }),
 );
 

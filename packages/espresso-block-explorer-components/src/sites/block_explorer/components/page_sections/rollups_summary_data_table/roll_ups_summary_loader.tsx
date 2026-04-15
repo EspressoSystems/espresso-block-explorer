@@ -4,59 +4,23 @@ import {
   DataTableStateContext,
 } from '@/components/data/data_table/data_table';
 import { SortDirection } from '@/components/data/types';
-import { UnimplementedError } from '@/errors/unimplemented_error';
-import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
-import { RollUpSummaryAsyncRetriever } from '@/models/block_explorer/rollup_summary';
 import { default as React } from 'react';
+import { BlockSummaryColumn } from '../block_summary_data_table/block_summary_data_loader';
 
 export interface RollUpSummary {
   namespace: number;
   transactions: number;
 }
 
-function createDataRetrieverFromRetriever(
-  retriever: RollUpSummaryAsyncRetriever,
-) {
-  return async () => {
-    const data = await retriever.retrieve();
+export interface RollUpsSummaryDataTableState extends DataTableState<BlockSummaryColumn> {}
 
-    return data.map(
-      (data) =>
-        ({
-          namespace: data.namespace,
-          transactions: data.transactions,
-        }) satisfies RollUpSummary,
-    );
-  };
-}
-
-export interface RollUpsSummaryDatatTableState extends DataTableState<BlockSummaryColumn> {}
-
-/**
- * RetrieverContext represents the retriever to be utilized for retrieving
- * the BlockSummary data.
- */
-export const RollUpSummaryAsyncRetrieverContext =
-  React.createContext<RollUpSummaryAsyncRetriever>({
-    async retrieve() {
-      throw new UnimplementedError();
-    },
-  });
-
-interface LoadRollUpsSummaryDataTableData {
-  children: React.ReactNode | React.ReactNode[];
-}
-
-const LoadRollUpsSummaryDataTableData: React.FC<
-  LoadRollUpsSummaryDataTableData
-> = (props) => {
+const LoadRollUpsSummaryDataTableData: React.FC<React.PropsWithChildren> = (
+  props,
+) => {
   // Need to retrieve the actual data source
-  const retriever = React.useContext(RollUpSummaryAsyncRetrieverContext);
-
-  const nextRetriever = createDataRetrieverFromRetriever(retriever);
 
   return (
-    <PromiseResolver promise={nextRetriever()}>
+    <PromiseResolver promise={Promise.resolve([])}>
       {props.children}
     </PromiseResolver>
   );
@@ -70,10 +34,13 @@ export const RollUpsSummaryLoader: React.FC<RollUpsSummaryLoaderProps> = (
   props,
 ) => {
   // Create the Data Table State
-  const [initialState] = React.useState<RollUpsSummaryDatatTableState>({
-    sortColumn: BlockSummaryColumn.height,
-    sortDir: SortDirection.desc,
-  });
+  const initialState = React.useMemo(
+    (): RollUpsSummaryDataTableState => ({
+      sortColumn: BlockSummaryColumn.height,
+      sortDir: SortDirection.desc,
+    }),
+    [],
+  );
 
   return (
     <DataTableStateContext.Provider value={initialState}>

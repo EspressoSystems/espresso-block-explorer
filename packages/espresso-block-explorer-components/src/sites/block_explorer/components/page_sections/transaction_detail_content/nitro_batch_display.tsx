@@ -7,6 +7,7 @@ import {
   Text,
   WalletAddressText,
 } from '@/components/text';
+import { ExplorerTransactionDetailDataContext } from '@/contexts/explorer_api_contexts';
 import { uint8ArrayToArrayBufferCodec } from '@/convert/codec/uint8_array';
 import { createBufferedDataView, Endianess } from '@/convert/data_view';
 import { createRLPDeserializer } from '@/convert/rlp';
@@ -18,7 +19,6 @@ import {
 } from '@/service/abritrum_nitro/l1_incoming_message';
 import { default as React } from 'react';
 import { HexDumpAndCopyButtons } from './copy_as';
-import { TransactionDetailContext } from './transaction_detail_loader';
 
 /**
  * NitroMessageWithMetadata represents a Nitro Message with metadata
@@ -189,15 +189,18 @@ export function extractNitroBatch(payload: Uint8Array): null | NitroBatchV0 {
  * TransactionDetail.
  */
 export const NitroBatchDetectAndDisplay: React.FC = () => {
-  const details = React.useContext(TransactionDetailContext);
-  const data = details.tree;
+  const details = React.useContext(ExplorerTransactionDetailDataContext);
 
-  if (!isNitroIntegrationNamespace(data.namespace)) {
+  if (!details) {
+    return null;
+  }
+
+  if (!isNitroIntegrationNamespace(details.namespace)) {
     // Only Display information for Nitro based project namespaces.
     return <></>;
   }
 
-  const nitroBatch = extractNitroBatch(new Uint8Array(data.data));
+  const nitroBatch = extractNitroBatch(new Uint8Array(details.payload));
   if (!nitroBatch) {
     return <></>;
   }
