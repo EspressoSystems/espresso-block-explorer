@@ -97,7 +97,7 @@ export const kNumberOfSampleBlocks = 30;
  * that the explorer summary will be retrieved in if a newer entry is not
  * found in the previous attempt.
  */
-const EXPLORER_SUMMARY_POLLING_INTERVAL_MS = 500; // 500ms
+const EXPLORER_SUMMARY_POLLING_INTERVAL_MS = 1000; // 1s
 
 /**
  * explorerOverviewStream is an async generator that yields the latest
