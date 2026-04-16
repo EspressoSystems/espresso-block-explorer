@@ -209,15 +209,12 @@ type Story = StoryObj<typeof Example>;
 export const Decaf: Story = {
   args: {
     ...environmentArgsDecafWithContracts,
-    stakingAPIServiceURL:
-      'https://cache.decaf.testnet.espresso.network/v0/staking/',
   },
 };
 
 export const Mainnet: Story = {
   args: {
     ...environmentArgsMainnetWithContracts,
-    stakingAPIServiceURL: 'https://cache.main.net.espresso.network/v0/staking/',
   },
 };
 

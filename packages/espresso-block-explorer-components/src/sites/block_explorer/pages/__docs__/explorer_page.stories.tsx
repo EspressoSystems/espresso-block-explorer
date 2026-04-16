@@ -2,6 +2,7 @@ import { ExplorerSummaryLoader } from '@/block_explorer/components/page_sections
 import { OverridePathResolver } from '@/block_explorer/contexts/path_resolver_provider';
 import { ProvideHotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { ProvideTickEverySecond } from '@/contexts/now_provider';
+import { ProvideStakingAPIServiceContext } from '@/contexts/staking_api_service_context';
 import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
 import { Environment } from '@/models/config/environment/environment';
 import {
@@ -25,12 +26,14 @@ interface ExampleProps {
   environment: Environment;
   hotshotQueryServiceURL?: string;
   nodeValidatorWebSocketURL?: string;
+  stakingAPIServiceURL?: string;
 }
 
 const Example: React.FC<ExampleProps> = ({
   environment,
   hotshotQueryServiceURL,
   nodeValidatorWebSocketURL,
+  stakingAPIServiceURL,
   ...rest
 }) => (
   <StoryBookSpecifyEnvironment
@@ -41,16 +44,19 @@ const Example: React.FC<ExampleProps> = ({
     nodeValidatorWebSocketURL={extractURLWithEncodedFallback(
       nodeValidatorWebSocketURL,
     )}
+    stakingAPIServiceURL={extractURLWithEncodedFallback(stakingAPIServiceURL)}
   >
     <EnvironmentBanner />
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
         <ProvideHotShotQueryServiceAPIContext>
-          <ProvideExplorerSummaryAsyncStream>
-            <ExplorerSummaryLoader>
-              <ExplorerPage {...rest} />
-            </ExplorerSummaryLoader>
-          </ProvideExplorerSummaryAsyncStream>
+          <ProvideStakingAPIServiceContext>
+            <ProvideExplorerSummaryAsyncStream>
+              <ExplorerSummaryLoader>
+                <ExplorerPage {...rest} />
+              </ExplorerSummaryLoader>
+            </ProvideExplorerSummaryAsyncStream>
+          </ProvideStakingAPIServiceContext>
         </ProvideHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>

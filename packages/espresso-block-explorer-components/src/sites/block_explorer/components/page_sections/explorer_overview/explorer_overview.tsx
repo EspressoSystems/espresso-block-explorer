@@ -1,21 +1,27 @@
+import { sleep } from '@/async/sleep';
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { default as SummaryTableLabeledValue } from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
 import { default as SummaryValueLabeled } from '@/block_explorer/components/layout/summary_value_labeled/summary_value_labeled';
 import { EnvironmentContext } from '@/components/config/environment';
+import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
 import { SkeletonContent } from '@/components/loading';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { NumberText, Text } from '@/components/text';
+import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
 import {
   ExplorerGenesisOverviewContext,
   ExplorerSummaryContext,
 } from '@/contexts/explorer_api_contexts';
 import { LoadingContext } from '@/contexts/loading_provider';
+import { StakingAPIServiceContext } from '@/contexts/staking_api_service_context';
 import {
   curatedDecafList,
   curatedMainnetList,
 } from '@/models/block_explorer/rollup_entry/data';
 import { Environment } from '@/models/config/environment/environment';
+import { StakingAPIService } from '@/service/espresso_staking_api_service/staking_api_service';
+import { ExplorerSummary } from '@/service/hotshot_query_service/explorer/explorer_summary';
 import { default as React } from 'react';
 import './explorer_overview.css';
 
@@ -134,12 +140,75 @@ const NumberOfBlocks: React.FC = () => {
   return <NumberText number={numBlocks} />;
 };
 
+const NUMBER_OF_VALIDATORS_STREAM_POLLING_INTERVAL_MS = 200; // 200ms
+
+async function* numberOfValidatorsStream(service: StakingAPIService) {
+  let lastExplorerSummary: null | ExplorerSummary = null;
+  let nextResult: null | number = null;
+  while (true) {
+    const nextExplorerSummary: null | ExplorerSummary = yield nextResult;
+
+    if (!nextExplorerSummary) {
+      // Wait until we get the next Explorer Summary
+      await sleep(NUMBER_OF_VALIDATORS_STREAM_POLLING_INTERVAL_MS);
+      continue;
+    }
+
+    if (
+      lastExplorerSummary &&
+      nextExplorerSummary.latestBlock.height <=
+        lastExplorerSummary.latestBlock.height
+    ) {
+      // We need to wait for the next block
+      await sleep(NUMBER_OF_VALIDATORS_STREAM_POLLING_INTERVAL_MS);
+      continue;
+    }
+    lastExplorerSummary = nextExplorerSummary;
+
+    try {
+      const result = await service.validatorsActive.activeFor(
+        BigInt(nextExplorerSummary.latestBlock.height),
+      );
+      nextResult = result.nodes.length;
+    } catch (err) {
+      // Ignore the error and continue
+      console.error('attempt to retrieve the active validators failed', err);
+    }
+  }
+}
+
 /**
  * NumberOfValidatorNodes is a simple component that displays the total number
  * Validator Nodes currently participating in the network.
  */
 const NumberOfValidatorNodes: React.FC = () => {
-  return null;
+  const explorerOverview = React.useContext(ExplorerSummaryContext);
+  const service = React.useContext(StakingAPIServiceContext);
+  const stream = React.useMemo(
+    () => numberOfValidatorsStream(service),
+    [service],
+  );
+
+  return (
+    <AsyncIterableResolver asyncIterable={stream} next={explorerOverview}>
+      <NumberOfValidatorsResolver />
+    </AsyncIterableResolver>
+  );
+};
+
+const NumberOfValidatorsResolver: React.FC = () => {
+  const data = React.useContext(DataContext) as null | undefined | number;
+  const loading = React.useContext(LoadingContext);
+
+  if (loading) {
+    return <SkeletonContent />;
+  }
+
+  if (data == undefined || data === null) {
+    return <Text text="-" />;
+  }
+
+  return <NumberText number={data} />;
 };
 
 /**
