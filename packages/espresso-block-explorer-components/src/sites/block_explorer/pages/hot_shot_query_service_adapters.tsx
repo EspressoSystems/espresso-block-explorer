@@ -127,6 +127,16 @@ async function* explorerOverviewStream(service: HotShotQueryService) {
         continue;
       }
 
+      if (
+        lastExplorerOverview &&
+        next.genesisOverview.transactions <
+          lastExplorerOverview.genesisOverview.transactions
+      ) {
+        // We are being told we have fewer transactions than we previously had?
+        // Let's try fetching the result again.
+        continue;
+      }
+
       lastExplorerOverview = next;
       yield next;
     } catch (err: unknown) {
