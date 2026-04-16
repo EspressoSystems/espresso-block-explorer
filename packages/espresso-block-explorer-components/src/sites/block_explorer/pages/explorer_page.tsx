@@ -1,6 +1,6 @@
 import { default as LabeledAnchorButton } from '@/block_explorer/components/hid/buttons/labeled_anchor_button/labeled_anchor_button';
 import { SearchInput } from '@/block_explorer/components/input/search/search_input';
-import { default as Card } from '@/block_explorer/components/layout/card/card';
+import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { default as Heading1 } from '@/block_explorer/components/layout/heading/heading1';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
 import { default as SummaryTableLabeledValue } from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
@@ -138,7 +138,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
             <BlockThroughputHistogram />
           </HistogramDataLoader>
 
-          <Card className="latest-blocks-summary">
+          <CardNoPadding className="latest-blocks-summary">
             <SummaryTableLabeledValue>
               <Text300H2>
                 <Text text="Latest Blocks" />
@@ -153,9 +153,9 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
                 <GuardedBlocksSummaryDataTable />
               </BlockSummaryDataFromStreamLoader>
             </div>
-          </Card>
+          </CardNoPadding>
 
-          <Card className="latest-transactions-summary">
+          <CardNoPadding className="latest-transactions-summary">
             <SummaryTableLabeledValue>
               <Text300H2>
                 <Text text="Latest Transactions" />
@@ -170,7 +170,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
                 <GuardedTransactionsSummaryDataTable />
               </TransactionSummaryDataFromExplorerSummary>
             </div>
-          </Card>
+          </CardNoPadding>
         </div>
       </ExplorerSummaryLoader>
 
