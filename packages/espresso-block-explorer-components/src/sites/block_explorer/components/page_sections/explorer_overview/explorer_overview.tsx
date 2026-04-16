@@ -1,6 +1,7 @@
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { default as SummaryTableLabeledValue } from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
 import { default as SummaryValueLabeled } from '@/block_explorer/components/layout/summary_value_labeled/summary_value_labeled';
+import { EnvironmentContext } from '@/components/config/environment';
 import { SkeletonContent } from '@/components/loading';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { NumberText, Text } from '@/components/text';
@@ -10,6 +11,11 @@ import {
   ExplorerSummaryContext,
 } from '@/contexts/explorer_api_contexts';
 import { LoadingContext } from '@/contexts/loading_provider';
+import {
+  curatedDecafList,
+  curatedMainnetList,
+} from '@/models/block_explorer/rollup_entry/data';
+import { Environment } from '@/models/config/environment/environment';
 import { default as React } from 'react';
 import './explorer_overview.css';
 
@@ -56,10 +62,6 @@ const ExplorerOverviewLayout: React.FC<ExplorerOverviewLayoutProps> = ({
     <div className="card--padding">
       <SummaryTableLabeledValue>
         <Text text="Rollups" />
-        {/*
-        TODO: revert this back to `overview.rollups` when the server is able to
-        return the correct number of rollups.
-         */}
         {numRollUps}
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
@@ -84,13 +86,22 @@ const ExplorerOverviewLayout: React.FC<ExplorerOverviewLayoutProps> = ({
  */
 const NumberOfRollups: React.FC = () => {
   const overview = React.useContext(ExplorerGenesisOverviewContext);
-  const numRollups = overview?.rollups ?? null;
+  const numRollups = overview?.rollups ?? 0;
+  const environment = React.useContext(EnvironmentContext);
+  /*
+   * TODO: revert this back to `overview.rollups` when the server is able to
+   * return the correct number of rollups.
+   */
+  switch (environment) {
+    case Environment.mainnet:
+      return <NumberText number={curatedMainnetList.length} />;
 
-  if (numRollups === null) {
-    return null;
+    case Environment.decaf:
+      return <NumberText number={curatedDecafList.length} />;
+
+    default:
+      return <NumberText number={numRollups} />;
   }
-
-  return <NumberText number={numRollups} />;
 };
 
 /**
