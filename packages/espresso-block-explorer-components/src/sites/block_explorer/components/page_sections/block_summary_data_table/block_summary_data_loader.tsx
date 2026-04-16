@@ -156,31 +156,15 @@ export const BlockSummaryDataFromStreamLoader: React.FC<
   BlockSummaryDataLoaderProps
 > = ({ startAtBlock, ...props }) => {
   // Create the Data Table State
-  const [initialState, setState] = React.useState<BlockSummaryDataTableState>({
+  const [initialState] = React.useState<BlockSummaryDataTableState>({
     sortColumn: BlockSummaryColumn.height,
     sortDir: SortDirection.desc,
     startAtBlock: startAtBlock,
   });
 
-  if (
-    startAtBlock !== undefined &&
-    initialState.startAtBlock !== startAtBlock
-  ) {
-    setState({
-      ...initialState,
-      startAtBlock: startAtBlock,
-    });
-  }
-
   return (
     <DataTableStateContext.Provider value={initialState}>
-      <DataTableSetStateContext.Provider
-        value={
-          setState as React.Dispatch<
-            React.SetStateAction<DataTableState<unknown>>
-          >
-        }
-      >
+      <DataTableSetStateContext.Provider value={() => {}}>
         <LoadBlockSummaryDataTableDataFromStream {...props} />
       </DataTableSetStateContext.Provider>
     </DataTableStateContext.Provider>
