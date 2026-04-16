@@ -1,6 +1,7 @@
 import { ExplorerBlockDetail } from '@/service/hotshot_query_service/explorer/block_detail';
 import { ExplorerBlockSummary } from '@/service/hotshot_query_service/explorer/block_summary';
 import { ExplorerSummary } from '@/service/hotshot_query_service/explorer/explorer_summary';
+import { GenesisOverview } from '@/service/hotshot_query_service/explorer/genesis_overview';
 import { SummaryHistograms } from '@/service/hotshot_query_service/explorer/summary_histograms';
 import { ExplorerTransactionDetail } from '@/service/hotshot_query_service/explorer/transaction_detail';
 import { ExplorerTransactionDetailData } from '@/service/hotshot_query_service/explorer/transaction_detail_data';
@@ -66,5 +67,16 @@ export const ExplorerTransactionSummariesContext = React.createContext<
 export const ExplorerSummaryHistogramsContext =
   React.createContext<null | SummaryHistograms>(null);
 
+/**
+ * ExplorerTransactionDetailDataContext is a react context that provides access
+ * to a Transaction Detail from the Explorer API.
+ */
 export const ExplorerTransactionDetailDataContext =
   React.createContext<null | ExplorerTransactionDetailData>(null);
+
+/**
+ * ExplorerGenesisOverviewContext is a react context that provides access to
+ * Genesis Overview from the Explorer API.
+ */
+export const ExplorerGenesisOverviewContext =
+  React.createContext<null | GenesisOverview>(null);

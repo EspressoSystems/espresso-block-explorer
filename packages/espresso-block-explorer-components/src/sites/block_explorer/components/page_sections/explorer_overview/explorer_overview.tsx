@@ -4,17 +4,19 @@ import { default as SummaryValueLabeled } from '@/block_explorer/components/layo
 import { SkeletonContent } from '@/components/loading';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { NumberText, Text } from '@/components/text';
-import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
+import {
+  ExplorerGenesisOverviewContext,
+  ExplorerSummaryContext,
+} from '@/contexts/explorer_api_contexts';
 import { LoadingContext } from '@/contexts/loading_provider';
-import { curatedMainnetList } from '@/models/block_explorer/rollup_entry/data';
 import { default as React } from 'react';
 import './explorer_overview.css';
-import {
-  ExplorerOverview,
-  ExplorerOverviewProvider,
-} from './explorer_overview_loader';
 
+/**
+ * ExplorerOverviewHeading is a component that lists the overview of the
+ * Block Explorer.
+ */
 export const ExplorerOverviewHeading: React.FC = () => {
   return (
     <SummaryValueLabeled className="card--padding">
@@ -24,8 +26,31 @@ export const ExplorerOverviewHeading: React.FC = () => {
   );
 };
 
-export const ExplorerOverviewDetails: React.FC = () => {
-  const overview = React.useContext(ExplorerOverviewProvider);
+/**
+ * ExplorerOverviewLayoutProps is a type that specifies the shape of the
+ * Explorer Overview's Layout, to separate the layout from the contents,
+ * while preserving the shape.
+ */
+interface ExplorerOverviewLayoutProps {
+  children: [
+    React.ReactNode,
+    React.ReactNode,
+    React.ReactNode,
+    React.ReactNode,
+  ];
+}
+
+/**
+ * ExplorerOverviewLayout is a component that provides the layout for the
+ * Explorer Overview.  It exists so that the Layout's labels are consistent
+ * through its loading and display states.
+ *
+ * This separation allows for consistency, and helps to reduce repetition.
+ */
+const ExplorerOverviewLayout: React.FC<ExplorerOverviewLayoutProps> = ({
+  children,
+}) => {
+  const [numRollUps, numTransactions, numBlocks, numSequencerNodes] = children;
 
   return (
     <div className="card--padding">
@@ -35,44 +60,104 @@ export const ExplorerOverviewDetails: React.FC = () => {
         TODO: revert this back to `overview.rollups` when the server is able to
         return the correct number of rollups.
          */}
-        <NumberText number={curatedMainnetList.length} />
+        {numRollUps}
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
         <Text text="Transactions" />
-        <NumberText number={overview.transactions} />
+        {numTransactions}
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
         <Text text="Blocks" />
-        <NumberText number={overview.blocks} />
+        {numBlocks}
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
         <Text text="Validator nodes" />
-        <NumberText number={overview.sequencerNodes} />
+        {numSequencerNodes}
       </SummaryTableLabeledValue>
     </div>
   );
 };
 
+/**
+ * NumberOfRollups is a simple component that displays the total number of
+ * rollups being utilized.
+ */
+const NumberOfRollups: React.FC = () => {
+  const overview = React.useContext(ExplorerGenesisOverviewContext);
+  const numRollups = overview?.rollups ?? null;
+
+  if (numRollups === null) {
+    return null;
+  }
+
+  return <NumberText number={numRollups} />;
+};
+
+/**
+ * NumberOfTransactions is a simple component that displays the total number
+ * of transactions produced.
+ */
+const NumberOfTransactions: React.FC = () => {
+  const overview = React.useContext(ExplorerGenesisOverviewContext);
+  const numTransactions = overview?.transactions ?? null;
+
+  if (numTransactions === null) {
+    return null;
+  }
+
+  return <NumberText number={numTransactions} />;
+};
+
+/**
+ * NumberOfBlocks is a simple component that displays the total number of
+ * blocks produced.
+ */
+const NumberOfBlocks: React.FC = () => {
+  const overview = React.useContext(ExplorerGenesisOverviewContext);
+  const numBlocks = overview?.blocks ?? null;
+
+  if (numBlocks === null) {
+    return null;
+  }
+
+  return <NumberText number={numBlocks} />;
+};
+
+/**
+ * NumberOfValidatorNodes is a simple component that displays the total number
+ * Validator Nodes currently participating in the network.
+ */
+const NumberOfValidatorNodes: React.FC = () => {
+  return null;
+};
+
+/**
+ * ExplorerOverviewDetails is a component that displays the details of the
+ * Espresso Chain in terms of statistics.
+ */
+export const ExplorerOverviewDetails: React.FC = () => {
+  return (
+    <ExplorerOverviewLayout>
+      <NumberOfRollups />
+      <NumberOfTransactions />
+      <NumberOfBlocks />
+      <NumberOfValidatorNodes />
+    </ExplorerOverviewLayout>
+  );
+};
+
+/**
+ * ExplorerOverviewDetailsPlaceholder is a component that displays the loading
+ * state of the Explorer Overview.
+ */
 export const ExplorerOverviewDetailsPlaceholder: React.FC = () => {
   return (
-    <div className="card--padding">
-      <SummaryTableLabeledValue>
-        <Text text="Rollups" />
-        <SkeletonContent />
-      </SummaryTableLabeledValue>
-      <SummaryTableLabeledValue>
-        <Text text="Transactions" />
-        <SkeletonContent />
-      </SummaryTableLabeledValue>
-      <SummaryTableLabeledValue>
-        <Text text="Blocks" />
-        <SkeletonContent />
-      </SummaryTableLabeledValue>
-      <SummaryTableLabeledValue>
-        <Text text="Validator nodes" />
-        <SkeletonContent />
-      </SummaryTableLabeledValue>
-    </div>
+    <ExplorerOverviewLayout>
+      <SkeletonContent />
+      <SkeletonContent />
+      <SkeletonContent />
+      <SkeletonContent />
+    </ExplorerOverviewLayout>
   );
 };
 
@@ -108,12 +193,19 @@ export const ExplorerOverviewContent: React.FC<ExplorerOverviewContentProps> = (
 interface ExplorerOverviewProps {
   className?: string;
 }
-export const ExplorerOverviewAsyncHandler: React.FC<ExplorerOverviewProps> = (
-  props,
-) => {
+
+/**
+ * ExplorerOverviewFromExplorerSummary is a component that handles displaying
+ * the loading state of the Explorer, and the extractions of the Explorer
+ * Overview data from the Explorer API Explorer Summary.
+ *
+ */
+export const ExplorerOverviewFromExplorerSummary: React.FC<
+  ExplorerOverviewProps
+> = (props) => {
   const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
-  const data = React.useContext(DataContext);
+  const summary = React.useContext(ExplorerSummaryContext);
 
   if (error) {
     return <></>;
@@ -124,8 +216,10 @@ export const ExplorerOverviewAsyncHandler: React.FC<ExplorerOverviewProps> = (
   }
 
   return (
-    <ExplorerOverviewProvider.Provider value={data as ExplorerOverview}>
+    <ExplorerGenesisOverviewContext.Provider
+      value={summary?.genesisOverview ?? null}
+    >
       <ExplorerOverviewContent {...props} />
-    </ExplorerOverviewProvider.Provider>
+    </ExplorerGenesisOverviewContext.Provider>
   );
 };

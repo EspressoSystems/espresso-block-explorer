@@ -13,7 +13,7 @@ import {
 import { BlockThroughputHistogram } from '@/block_explorer/components/page_sections/block_throughput_histogram/block_throughput_histogram';
 import { BlockTimeHistogram } from '@/block_explorer/components/page_sections/block_time_histogram/block_time_histogram';
 import { HistogramDataLoader } from '@/block_explorer/components/page_sections/block_time_histogram/block_time_histogram_data_loader';
-import { ExplorerOverviewAsyncHandler } from '@/block_explorer/components/page_sections/explorer_overview/explorer_overview';
+import { ExplorerOverviewFromExplorerSummary } from '@/block_explorer/components/page_sections/explorer_overview/explorer_overview';
 import { ExplorerOverviewLoader } from '@/block_explorer/components/page_sections/explorer_overview/explorer_overview_loader';
 import { default as Footer } from '@/block_explorer/components/page_sections/footer/footer';
 import { default as Header } from '@/block_explorer/components/page_sections/header/header';
@@ -127,7 +127,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           </LatestBlockSummaryStreamConsumer>
 
           <ExplorerOverviewLoader>
-            <ExplorerOverviewAsyncHandler className="overview" />
+            <ExplorerOverviewFromExplorerSummary className="overview" />
           </ExplorerOverviewLoader>
 
           <HistogramDataLoader>
