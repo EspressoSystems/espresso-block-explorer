@@ -2,7 +2,6 @@ import { ExplorerSummaryLoader } from '@/block_explorer/components/page_sections
 import { OverridePathResolver } from '@/block_explorer/contexts/path_resolver_provider';
 import { ProvideHotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { ProvideTickEverySecond } from '@/contexts/now_provider';
-import { ProvideStakingAPIServiceContext } from '@/contexts/staking_api_service_context';
 import { EnvironmentBanner } from '@/layout/environment_banner/environment_banner';
 import { Environment } from '@/models/config/environment/environment';
 import {
@@ -50,13 +49,11 @@ const Example: React.FC<ExampleProps> = ({
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
         <ProvideHotShotQueryServiceAPIContext>
-          <ProvideStakingAPIServiceContext>
-            <ProvideExplorerSummaryAsyncStream>
-              <ExplorerSummaryLoader>
-                <ExplorerPage {...rest} />
-              </ExplorerSummaryLoader>
-            </ProvideExplorerSummaryAsyncStream>
-          </ProvideStakingAPIServiceContext>
+          <ProvideExplorerSummaryAsyncStream>
+            <ExplorerSummaryLoader>
+              <ExplorerPage {...rest} />
+            </ExplorerSummaryLoader>
+          </ProvideExplorerSummaryAsyncStream>
         </ProvideHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>
