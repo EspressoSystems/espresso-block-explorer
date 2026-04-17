@@ -13,15 +13,15 @@ import {
   ExplorerGenesisOverviewContext,
   ExplorerSummaryContext,
 } from '@/contexts/explorer_api_contexts';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { LoadingContext } from '@/contexts/loading_provider';
-import { StakingAPIServiceContext } from '@/contexts/staking_api_service_context';
 import {
   curatedDecafList,
   curatedMainnetList,
 } from '@/models/block_explorer/rollup_entry/data';
 import { Environment } from '@/models/config/environment/environment';
-import { StakingAPIService } from '@/service/espresso_staking_api_service/staking_api_service';
 import { ExplorerSummary } from '@/service/hotshot_query_service/explorer/explorer_summary';
+import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
 import { default as React } from 'react';
 import './explorer_overview.css';
 
@@ -142,11 +142,12 @@ const NumberOfBlocks: React.FC = () => {
 
 const NUMBER_OF_VALIDATORS_STREAM_POLLING_INTERVAL_MS = 200; // 200ms
 
-async function* numberOfValidatorsStream(service: StakingAPIService) {
-  let lastExplorerSummary: null | ExplorerSummary = null;
+async function* numberOfValidatorsStream(service: HotShotQueryService) {
+  let lastEpoch: null | number = null;
   let nextResult: null | number = null;
   while (true) {
-    const nextExplorerSummary: null | ExplorerSummary = yield nextResult;
+    const next: [null | ExplorerSummary, null | number] = yield nextResult;
+    const [nextExplorerSummary, incomingBlocksPerEpoch] = next;
 
     if (!nextExplorerSummary) {
       // Wait until we get the next Explorer Summary
@@ -154,26 +155,42 @@ async function* numberOfValidatorsStream(service: StakingAPIService) {
       continue;
     }
 
-    if (
-      lastExplorerSummary &&
-      nextExplorerSummary.latestBlock.height <=
-        lastExplorerSummary.latestBlock.height
-    ) {
-      // We need to wait for the next block
+    if (!incomingBlocksPerEpoch) {
+      console.error('we do not know the blocks per epoch');
+      return;
+    }
+
+    const blocksPerEpoch = incomingBlocksPerEpoch;
+    const epoch = Math.floor(
+      nextExplorerSummary.latestBlock.height / blocksPerEpoch,
+    );
+
+    if (lastEpoch && epoch <= lastEpoch) {
       await sleep(NUMBER_OF_VALIDATORS_STREAM_POLLING_INTERVAL_MS);
       continue;
     }
-    lastExplorerSummary = nextExplorerSummary;
 
     try {
-      const result = await service.validatorsActive.activeFor(
-        BigInt(nextExplorerSummary.latestBlock.height),
-      );
-      nextResult = result.nodes.length;
+      const stakeTable = await service.node.getStakeTableForEpoch(epoch);
+      lastEpoch = epoch;
+      nextResult = stakeTable.entries.length;
     } catch (err) {
-      // Ignore the error and continue
-      console.error('attempt to retrieve the active validators failed', err);
+      // We received an error of some sort
+      console.error('attempt to retrieve the active stake table failed', err);
     }
+  }
+}
+
+function estimateBlocksPerEpochForEnvironment(environment: Environment) {
+  switch (environment) {
+    case Environment.mainnet:
+      return 40000;
+
+    case Environment.decaf:
+      return 3000;
+
+    default:
+      return null;
   }
 }
 
@@ -183,14 +200,20 @@ async function* numberOfValidatorsStream(service: StakingAPIService) {
  */
 const NumberOfValidatorNodes: React.FC = () => {
   const explorerOverview = React.useContext(ExplorerSummaryContext);
-  const service = React.useContext(StakingAPIServiceContext);
+  const environment = React.useContext(EnvironmentContext);
+  const service = React.useContext(HotShotQueryServiceAPIContext);
+  const blocksPerEpoch = estimateBlocksPerEpochForEnvironment(environment);
+
   const stream = React.useMemo(
     () => numberOfValidatorsStream(service),
     [service],
   );
 
   return (
-    <AsyncIterableResolver asyncIterable={stream} next={explorerOverview}>
+    <AsyncIterableResolver
+      asyncIterable={stream}
+      next={[explorerOverview, blocksPerEpoch]}
+    >
       <NumberOfValidatorsResolver />
     </AsyncIterableResolver>
   );
