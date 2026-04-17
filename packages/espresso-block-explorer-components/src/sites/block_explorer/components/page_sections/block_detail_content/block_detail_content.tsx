@@ -167,7 +167,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Fee Recipients" />
-        {details.proposerID.map((recipient, index) => (
+        {details.feeRecipient.map((recipient, index) => (
           <div key={index}>
             <CopyHex value={recipient}>
               <FullHexText value={recipient} />
