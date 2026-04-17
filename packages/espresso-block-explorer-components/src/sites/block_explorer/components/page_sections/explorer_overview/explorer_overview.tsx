@@ -165,7 +165,7 @@ async function* numberOfValidatorsStream(service: HotShotQueryService) {
       nextExplorerSummary.latestBlock.height / blocksPerEpoch,
     );
 
-    if (lastEpoch && epoch <= lastEpoch) {
+    if (lastEpoch !== null && epoch <= lastEpoch) {
       await sleep(NUMBER_OF_VALIDATORS_STREAM_POLLING_INTERVAL_MS);
       continue;
     }
