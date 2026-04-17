@@ -7,9 +7,7 @@ import { default as WebSocketError } from '@/errors/web_socket_error';
 import { WebWorkerErrorResponse } from '@/errors/web_worker_error_response';
 import { default as React } from 'react';
 import { addClassToClassName } from '../higher_order';
-import { ErrorDescription } from './error_description';
 import './error_display.css';
-import { ErrorTitle } from './error_title';
 
 export interface ErrorDisplayProps {
   className?: string;
@@ -57,6 +55,21 @@ const ErrorDisplayWrapper: React.FC<ErrorDisplayWrapperProps> = ({
     {children}
   </div>
 );
+
+const PleaseReload: React.FC = () => {
+  return (
+    <a
+      href="#"
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        window.location.reload();
+      }}
+    >
+      <Text text="Please reload" />
+    </a>
+  );
+};
 
 const SpecificErrorDisplay: React.FC = () => {
   const error = React.useContext(ErrorContext);
@@ -125,6 +138,15 @@ const SpecificBaseErrorDisplay: React.FC = () => {
   return <UnhandledErrorDisplay />;
 };
 
+const ServerRetrievalErrorDisplay: React.FC = () => {
+  return (
+    <>
+      <Text text="Failed to retrieve information from the Server." />{' '}
+      <PleaseReload />
+    </>
+  );
+};
+
 /**
  * FetchErrorDisplay is an error widget that displays that the end-user had
  * trouble fetching data from the server.  This class of errors excludes
@@ -132,16 +154,7 @@ const SpecificBaseErrorDisplay: React.FC = () => {
  * going to indicate an IO error of some kind.
  */
 const FetchErrorDisplay: React.FC = () => {
-  return (
-    <>
-      <ErrorTitle>
-        <Text text="Fetch Error" />
-      </ErrorTitle>
-      <ErrorDescription>
-        <Text text="This is a class of error that indicates that the attempt to communicate with the remote server has failed.  More specifically, something is preventing us from reaching the server.  This may be due a faulty inconsistent connection, bad or outdated DNS results, a bad URL, or even the addressed server not being reachable." />
-      </ErrorDescription>
-    </>
-  );
+  return <ServerRetrievalErrorDisplay />;
 };
 
 /**
@@ -154,14 +167,13 @@ const FetchErrorDisplay: React.FC = () => {
  * can be inspected for the specific failure.
  */
 const WebSocketErrorDisplay: React.FC = () => {
+  return <ServerRetrievalErrorDisplay />;
+};
+
+const GeneralErrorDisplay: React.FC = () => {
   return (
     <>
-      <ErrorTitle>
-        <Text text="WebSocket Error" />
-      </ErrorTitle>
-      <ErrorDescription>
-        <Text text="This is a class of error that indicates that the attempt to communicate with the remote server with the intent to setup a WebSocket has failed.  More specifically, something is preventing us from reaching the server.  This may be due a faulty inconsistent connection, bad or outdated DNS results, a bad URL, or even the addressed server not being reachable." />
-      </ErrorDescription>
+      <Text text="Encountered an error displaying the page." /> <PleaseReload />
     </>
   );
 };
@@ -172,16 +184,7 @@ const WebSocketErrorDisplay: React.FC = () => {
  * never be seen outside of a Developer or in Development
  */
 const UnimplementedErrorDisplay: React.FC = () => {
-  return (
-    <>
-      <ErrorTitle>
-        <Text text="Unimplemented Error" />
-      </ErrorTitle>
-      <ErrorDescription>
-        <Text text="This error indicates that there is a case in the logic that we didn't handle, or have intentionally ignored.  In either case, this should not make it to the end user, and as such should be reported" />
-      </ErrorDescription>
-    </>
-  );
+  return <GeneralErrorDisplay />;
 };
 
 /**
@@ -203,16 +206,7 @@ const NativeErrorDisplay: React.FC = () => {
     return () => {};
   });
 
-  return (
-    <>
-      <ErrorTitle>
-        <Text text="Native JavaScript Error" />
-      </ErrorTitle>
-      <ErrorDescription>
-        <Text text="This error should only be displayed if we haven't caught an error.  This also indicates that this is going to be an unhandled error on the Developer's side" />
-      </ErrorDescription>
-    </>
-  );
+  return <GeneralErrorDisplay />;
 };
 
 /**
@@ -236,14 +230,5 @@ const UnhandledErrorDisplay: React.FC = () => {
     return () => {};
   });
 
-  return (
-    <>
-      <ErrorTitle>
-        <Text text="An Unexpected Exception has Occurred" />
-      </ErrorTitle>
-      <ErrorDescription>
-        <Text text="The Explorer is currently experiencing a technical issue that is preventing it from displaying the relevant information. We are sorry, and our team is working to resolve the issue." />
-      </ErrorDescription>
-    </>
-  );
+  return <GeneralErrorDisplay />;
 };

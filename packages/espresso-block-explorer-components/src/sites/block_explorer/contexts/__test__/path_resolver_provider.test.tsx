@@ -51,7 +51,6 @@ describe('Path Resolver Provider Context', () => {
         expect(localPathResolver.rollUp(1234, 10, 10)).equals(
           '/rollup/1234?height=10&offset=10',
         );
-        expect(localPathResolver.nodes()).equals('/nodes');
       }
     });
   });
@@ -85,9 +84,6 @@ describe('Path Resolver Provider Context', () => {
             },
             rollUp(namespace: number): string {
               return `/r/${namespace}`;
-            },
-            nodes(): string {
-              return '/n';
             },
           }}
         >

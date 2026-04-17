@@ -25,12 +25,14 @@ interface ExampleProps {
   environment: Environment;
   hotshotQueryServiceURL?: string;
   nodeValidatorWebSocketURL?: string;
+  stakingAPIServiceURL?: string;
 }
 
 const Example: React.FC<ExampleProps> = ({
   environment,
   hotshotQueryServiceURL,
   nodeValidatorWebSocketURL,
+  stakingAPIServiceURL,
   ...rest
 }) => (
   <StoryBookSpecifyEnvironment
@@ -41,6 +43,7 @@ const Example: React.FC<ExampleProps> = ({
     nodeValidatorWebSocketURL={extractURLWithEncodedFallback(
       nodeValidatorWebSocketURL,
     )}
+    stakingAPIServiceURL={extractURLWithEncodedFallback(stakingAPIServiceURL)}
   >
     <EnvironmentBanner />
     <ProvideTickEverySecond>

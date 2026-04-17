@@ -1,18 +1,15 @@
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
-import {
-  default as DataTable,
-  DataTableRowContext,
-} from '@/components/data/data_table/data_table';
+import { default as DataTable } from '@/components/data/data_table/data_table';
 import { SkeletonContent } from '@/components/loading';
 import { NumberText, Text } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { iota } from '@/functional/functional';
-import { BlockSummaryColumn } from '@/models/block_explorer/block_summary';
+import { NamespaceContext } from '@/models/block_explorer/rollup_entry/contexts';
 import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
 import { default as React } from 'react';
 import { EgressLink, InternalLink } from '../../links/link/link';
+import { BlockSummaryColumn } from '../block_summary_data_table/block_summary_data_loader';
 import { default as RollUpSimple } from '../roll_up/roll_up_simple/roll_up_simple';
-import { RollUpSummary } from './roll_ups_summary_loader';
 
 /**
  * RollupCell is a cell that displays the rollup information for the RollUp
@@ -20,9 +17,8 @@ import { RollUpSummary } from './roll_ups_summary_loader';
  * Rollup, as well as a to the page of that Rollup as well.
  */
 const RollupCell: React.FC = () => {
-  const row = React.useContext(DataTableRowContext) as RollUpSummary;
-
-  return <RollUpSimple namespace={row.namespace} />;
+  const namespace = React.useContext(NamespaceContext);
+  return <RollUpSimple namespace={namespace} />;
 };
 
 /**
@@ -31,12 +27,12 @@ const RollupCell: React.FC = () => {
  * like RollupCell.
  */
 const NamespaceCell: React.FC = () => {
+  const namespace = React.useContext(NamespaceContext);
   const pathResolver = React.useContext(PathResolverContext);
-  const row = React.useContext(DataTableRowContext) as RollUpSummary;
 
   return (
-    <InternalLink href={pathResolver.rollUp(row.namespace)}>
-      <NumberText number={row.namespace} />
+    <InternalLink href={pathResolver.rollUp(namespace)}>
+      <NumberText number={namespace} />
     </InternalLink>
   );
 };
@@ -47,9 +43,7 @@ const NamespaceCell: React.FC = () => {
  * the Block Chain.
  */
 const TransactionsCell: React.FC = () => {
-  const row = React.useContext(DataTableRowContext) as RollUpSummary;
-
-  return <NumberText number={row.transactions} />;
+  return <NumberText number={0} />;
 };
 
 /**
@@ -58,8 +52,8 @@ const TransactionsCell: React.FC = () => {
  * for easy access.
  */
 const OfficialSiteCell: React.FC = () => {
-  const row = React.useContext(DataTableRowContext) as RollUpSummary;
-  const rollUp = curatedRollupMap.get(row.namespace);
+  const namespace = React.useContext(NamespaceContext);
+  const rollUp = curatedRollupMap.get(namespace);
 
   if (!rollUp) {
     return <Text text="-" />;
@@ -78,8 +72,8 @@ const OfficialSiteCell: React.FC = () => {
  * new window for easy access.
  */
 const BlockExplorerCell: React.FC = () => {
-  const row = React.useContext(DataTableRowContext) as RollUpSummary;
-  const rollUp = curatedRollupMap.get(row.namespace);
+  const namespace = React.useContext(NamespaceContext);
+  const rollUp = curatedRollupMap.get(namespace);
 
   if (!rollUp || !rollUp.blockExplorer) {
     return <Text text="-" />;

@@ -1,5 +1,7 @@
 import { DataContext } from '@/contexts/data_provider';
+import { ExplorerSummaryHistogramsContext } from '@/contexts/explorer_api_contexts';
 import { iota } from '@/functional/functional';
+import { SummaryHistograms } from '@/service/hotshot_query_service/explorer/summary_histograms';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import {
@@ -7,17 +9,30 @@ import {
   interactionUnhoverAll,
 } from '../__shared__/block_histogram_shared';
 import { BlockSizeHistogram } from '../block_size_histogram';
-import { BlockSizeHistogramData } from '../block_size_histogram_data_loader';
 
 interface ExampleProps {
-  data: BlockSizeHistogramData;
+  data: {
+    blockHeights: (number | null)[];
+    blockSize: (number | null)[];
+  };
 }
 
-const Example: React.FC<ExampleProps> = ({ data, ...props }) => (
-  <DataContext.Provider value={data}>
-    <BlockSizeHistogram {...props} />
-  </DataContext.Provider>
-);
+const Example: React.FC<ExampleProps> = ({ data, ...props }) => {
+  const histograms = new SummaryHistograms(
+    data.blockSize.map((_, index) => index),
+    data.blockSize,
+    data.blockSize.map((_, index) => index),
+    data.blockHeights,
+  );
+
+  return (
+    <ExplorerSummaryHistogramsContext.Provider value={histograms}>
+      <DataContext.Provider value={histograms}>
+        <BlockSizeHistogram {...props} />
+      </DataContext.Provider>
+    </ExplorerSummaryHistogramsContext.Provider>
+  );
+};
 
 const meta: Meta<typeof Example> = {
   title:
@@ -31,7 +46,7 @@ type Story = StoryObj<typeof Example>;
 export const MouseOverBar: Story = {
   args: {
     data: {
-      blocks: [...iota(10)],
+      blockHeights: [...iota(10)],
       blockSize: [...iota(10)],
     },
   },

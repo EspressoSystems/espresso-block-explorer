@@ -3,6 +3,7 @@ import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_pro
 import { Text } from '@/components/text';
 import { default as React } from 'react';
 import { default as NavLink } from '../nav_link/nav_link';
+import { EgressLink } from '../link/link';
 
 /**
  * MainNavLinks is a component that contains all of the main navigation links
@@ -37,9 +38,9 @@ const MainNavLinks: React.FC = () => {
         </NavLink>
       </li> */}
       <li>
-        <NavLink pageType={PageType.nodes} href={resolver.nodes()}>
-          <Text text="Nodes" />
-        </NavLink>
+        <EgressLink href="https://stake.espresso.network/">
+          <Text text="Stake" />
+        </EgressLink>
       </li>
     </ul>
   );

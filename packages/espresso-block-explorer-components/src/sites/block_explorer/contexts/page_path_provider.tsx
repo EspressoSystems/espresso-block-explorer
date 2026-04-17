@@ -9,7 +9,6 @@ export enum PageType {
   blocks = 'blocks',
   transactions = 'transactions',
   rollups = 'rollups',
-  nodes = 'nodes',
 
   unknown = 'unknown',
 }
@@ -25,10 +24,6 @@ export function determineBasedOnPathName(pathName: string = location.pathname) {
 
   if (pathName.startsWith('/rollup')) {
     return PageType.rollups;
-  }
-
-  if (pathName.startsWith('/nodes')) {
-    return PageType.nodes;
   }
 
   if (pathName === '/') {

@@ -1,12 +1,11 @@
-import { AsyncRetriever } from '@/async/async_retriever';
-import { AsyncIterableResolver } from '@/components/data/async_data';
-import { DataContext } from '@/contexts/data_provider';
+import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
 import { ErrorCarry, ErrorJoiner } from '@/contexts/error_provider';
-import { UnimplementedError } from '@/errors/unimplemented_error';
+import {
+  ExplorerSummaryContext,
+  ExplorerSummaryHistogramsContext,
+} from '@/contexts/explorer_api_contexts';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';
-import { HistogramEntry } from '@/models/block_explorer/explorer_summary';
 import { default as React } from 'react';
-import { ExplorerSummaryProvider } from '../explorer_summary/explorer_summary_loader';
 
 /**
  * The BlockTimeHistogramData type is the data type that is expected to be
@@ -19,102 +18,36 @@ export interface BlockTimeHistogramData {
 }
 
 /**
- * The BlockTimeHistogramAsyncRetriever is an interface that is used to
- * retrieve the data that is expected to be displayed on the Block Time
- * Histogram.
- */
-export interface BlockTimeHistogramAsyncRetriever extends AsyncRetriever<
-  void,
-  HistogramEntry
-> {}
-
-/**
- * The BlockTimeHistogramAsyncRetrieverContext is a React context that is
- * used to store the BlockTimeHistogramAsyncRetriever.  This retriever can
- * be used to retrieve the time histogram data.
- */
-export const BlockTimeHistogramAsyncRetrieverContext =
-  React.createContext<BlockTimeHistogramAsyncRetriever>({
-    async retrieve() {
-      throw new UnimplementedError();
-    },
-  });
-
-export interface HistogramLoaderProps {
-  children?: React.ReactNode | React.ReactNode[];
-}
-
-/**
  *
  */
-export const HistogramDataLoader: React.FC<HistogramLoaderProps> = ({
-  ...props
+export const HistogramDataLoader: React.FC<React.PropsWithChildren> = ({
+  children,
 }) => {
-  const data = React.useContext(ExplorerSummaryProvider);
-
-  if (!data) {
-    return (
-      <DataContext.Provider value={null}>{props.children}</DataContext.Provider>
-    );
-  }
+  const data = React.useContext(ExplorerSummaryContext);
 
   return (
-    <DataContext.Provider value={data.histograms}>
-      {props.children}
-    </DataContext.Provider>
-  );
-};
-
-export interface BlockTimeHistogramLoaderProps {
-  children?: React.ReactNode | React.ReactNode[];
-}
-
-/**
- * BlockTimeHistogramLoader is a component that is used to consume any
- * data the can be retrieved from the AsyncRetriever defined by the current
- * BlockTimeHistogramAsyncRetrieverContext.  It does this via a
- * `PromiseResolver`. Any children passed into this component will be passed
- * the resolved contexts of the `PromiseResolver`.
- */
-export const BlockTimeHistogramLoader: React.FC<
-  BlockTimeHistogramLoaderProps
-> = ({ ...props }) => {
-  const data = React.useContext(ExplorerSummaryProvider);
-
-  if (!data) {
-    return (
-      <DataContext.Provider value={null}>{props.children}</DataContext.Provider>
-    );
-  }
-
-  return (
-    <DataContext.Provider value={data.histograms}>
-      {props.children}
-    </DataContext.Provider>
+    <ExplorerSummaryHistogramsContext.Provider value={data?.histograms ?? null}>
+      {children}
+    </ExplorerSummaryHistogramsContext.Provider>
   );
 };
 
 /**
- * The BlockTimeHistogramStreamContext is a React context that is used to store
- * the BlockTimeHistogramData.  This data can be used to stream the time
- * histogram data.
+ * BlockSizeHistogramStreamContext is a React context that is used to store the
+ * BlockSizeHistogramData.  This data can be used to stream the size histogram
+ * data.
  */
 export const BlockTimeHistogramStreamContext = React.createContext<
   AsyncIterable<BlockTimeHistogramData>
 >(unimplementedAsyncIterable());
 
-interface BlockTimeHistogramStreamConsumerProps {
-  children: React.ReactNode | React.ReactNode[];
-}
-
 /**
- * BlockTimeHistogramStreamConsumer is a component that is used to consume any
- * data that can be streamed from the BlockTimeHistogramStreamContext.  It does
- * this via an `AsyncIterableResolver`.  Any children passed into this component
- * will be passed the resolved contexts of the `AsyncIterableResolver`.
+ * BlockTimeHistogramStreamConsumer is a component that is used to consume the
+ * data that is stored in the BlockSizeHistogramStreamContext.  This data is
+ * expected to be streamed to the children of this component.
  */
 export const BlockTimeHistogramStreamConsumer: React.FC<
-  BlockTimeHistogramStreamConsumerProps
+  React.PropsWithChildren
 > = (props) => {
   const stream = React.useContext(BlockTimeHistogramStreamContext);
 

@@ -105,7 +105,4 @@ export class StoryBookPathResolver implements PathResolver {
       this.paramsForPage('rollup', [['namespace', namespace]]),
     );
   }
-  nodes(): string {
-    return this.stringForParams(this.paramsForPage('nodes'));
-  }
 }

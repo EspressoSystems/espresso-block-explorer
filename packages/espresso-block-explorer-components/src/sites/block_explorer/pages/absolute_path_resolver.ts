@@ -58,8 +58,4 @@ export class AbsolutePathResolver implements PathResolver {
       this.baseURL,
     ).toString();
   }
-
-  nodes(): string {
-    return new URL(`.${this.default.nodes()}`, this.baseURL).toString();
-  }
 }

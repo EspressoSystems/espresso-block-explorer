@@ -3,10 +3,9 @@ import { default as ValueLabeled } from '@/block_explorer/components/layout/valu
 import { SkeletonContent } from '@/components/loading';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { SecondsText, Text } from '@/components/text';
-import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
+import { ExplorerSummaryHistogramsContext } from '@/contexts/explorer_api_contexts';
 import { LoadingContext } from '@/contexts/loading_provider';
-import { HistogramEntry } from '@/models/block_explorer/explorer_summary';
 import {
   HistogramDomain,
   HistogramRange,
@@ -48,7 +47,7 @@ const LabelValue: React.FC<HistogramLabelProps> = (props) => {
 export const BlockTimeHistogram: React.FC = () => {
   const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
-  const histogramData = React.useContext(DataContext) as HistogramEntry;
+  const histogramData = React.useContext(ExplorerSummaryHistogramsContext);
 
   if (loading) {
     return (
@@ -65,14 +64,14 @@ export const BlockTimeHistogram: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (error || !histogramData) {
     return <></>;
   }
 
   return (
     <CardNoPadding className="block-time-histogram">
       <HistogramRange.Provider value={histogramData.blockTime}>
-        <HistogramDomain.Provider value={histogramData.blocks}>
+        <HistogramDomain.Provider value={histogramData.blockHeights}>
           <HistogramYAxisLabelComponent.Provider value={LabelValue}>
             <ProvideDataStatistics>
               <HistogramSectionTitle>

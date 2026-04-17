@@ -2,10 +2,10 @@ import { AsyncRetriever } from '@/async/async_retriever';
 import { AsyncIterableResolver } from '@/components/data/async_data';
 import { DataContext } from '@/contexts/data_provider';
 import { ErrorCarry, ErrorJoiner } from '@/contexts/error_provider';
+import { ExplorerSummaryContext } from '@/contexts/explorer_api_contexts';
 import { UnimplementedError } from '@/errors/unimplemented_error';
 import { unimplementedAsyncIterable } from '@/functional/functional_async';
 import { default as React } from 'react';
-import { ExplorerSummaryProvider } from '../explorer_summary/explorer_summary_loader';
 
 /**
  * The BlockThroughputHistogramData type is the data type that is expected to be
@@ -53,7 +53,7 @@ export interface BlockThroughputHistogramLoaderProps {
 export const BlockThroughputHistogramLoader: React.FC<
   BlockThroughputHistogramLoaderProps
 > = ({ ...props }) => {
-  const data = React.useContext(ExplorerSummaryProvider);
+  const data = React.useContext(ExplorerSummaryContext);
 
   if (!data) {
     return (

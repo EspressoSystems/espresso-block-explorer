@@ -11,10 +11,7 @@ import {
   RelativeTimeSinceDateText,
   Text,
 } from '@/components/text';
-import { DataContext } from '@/contexts/data_provider';
-import { MonetaryValue } from '@/models/block_explorer';
-import { BlockDetailEntry } from '@/models/block_explorer/block_detail';
-import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
+import { ExplorerBlockDetailContext } from '@/contexts/explorer_api_contexts';
 import { ArrowLeft, ArrowRight } from '@/visual/icons';
 import { default as React } from 'react';
 import { IconAnchorButton } from '../../hid/buttons';
@@ -88,24 +85,6 @@ export const BlockNavigation: React.FC = () => {
   );
 };
 
-/**
- * BlockDetailContext is a React Context for holding the current BlockDetail.
- * It is useful for making BlockDetail information available to descendent
- * components.
- */
-const BlockDetailContext: React.Context<BlockDetailEntry> = React.createContext(
-  {
-    hash: new TaggedBase64('BLOCK', new ArrayBuffer(0)),
-    height: 0,
-    time: new Date(),
-    transactions: 0,
-    proposer: [new ArrayBuffer(0)],
-    recipient: [new ArrayBuffer(0)],
-    size: 0,
-    rewards: new Array<MonetaryValue>(0),
-  },
-);
-
 export const BlockDetailsContentPlaceholder: React.FC<
   BlockDetailsContentProps
 > = () => {
@@ -150,8 +129,12 @@ interface BlockDetailsContentProps {}
  * information about the Block Detail.
  */
 export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
-  const details = React.useContext(BlockDetailContext);
+  const details = React.useContext(ExplorerBlockDetailContext);
   const pathResolver = React.useContext(PathResolverContext);
+
+  if (!details) {
+    return null;
+  }
 
   return (
     <>
@@ -169,12 +152,12 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
       <TableLabeledValue className="card--padding">
         <Text text="Transactions" />
         <InternalLink href={pathResolver.transactionsForBlock(details.height)}>
-          <NumberText number={details.transactions} />
+          <NumberText number={details.numTransactions} />
         </InternalLink>
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Builders" />
-        {details.proposer.map((proposer, index) => (
+        {details.proposerID.map((proposer, index) => (
           <div key={index}>
             <CopyHex value={proposer}>
               <FullHexText value={proposer} />
@@ -184,7 +167,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Fee Recipients" />
-        {details.proposer.map((recipient, index) => (
+        {details.feeRecipient.map((recipient, index) => (
           <div key={index}>
             <CopyHex value={recipient}>
               <FullHexText value={recipient} />
@@ -197,25 +180,5 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
         <ByteSizeText bytes={details.size} />
       </TableLabeledValue>
     </>
-  );
-};
-
-interface ProvideBlockDetailsProps {
-  children: React.ReactNode | React.ReactNode[];
-}
-
-/**
- * ProvideBlockDetails consumes the DataContext in order to provide the
- * BlockDetailContext.  If no data is found, it will indicate as such.
- */
-export const ProvideBlockDetails: React.FC<ProvideBlockDetailsProps> = (
-  props,
-) => {
-  const data = React.useContext(DataContext) as BlockDetailEntry;
-
-  return (
-    <BlockDetailContext.Provider value={data}>
-      {props.children}
-    </BlockDetailContext.Provider>
   );
 };

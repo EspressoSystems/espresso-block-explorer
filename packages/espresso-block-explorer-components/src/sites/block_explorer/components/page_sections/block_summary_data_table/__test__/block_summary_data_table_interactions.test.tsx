@@ -5,7 +5,7 @@ import * as stories from '../__docs__/block_summary_data_table_interactions.stor
 
 const { Interactions } = composeStories(stories);
 
-describe('bBlock Summary Data Table', () => {
+describe('Block Summary Data Table', () => {
   describe('Interactions', () => {
     it('should render Interactions', async () => {
       const renderResult = render(<Interactions />);

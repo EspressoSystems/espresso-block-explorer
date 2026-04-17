@@ -84,6 +84,7 @@ export interface EnvironmentArgs {
   environment: Environment;
   hotshotQueryServiceURL?: string;
   nodeValidatorWebSocketURL?: string;
+  stakingAPIServiceURL?: string;
 }
 
 export interface EnvironmentWithContractsArgs extends EnvironmentArgs {
@@ -97,6 +98,8 @@ export const environmentArgsMilk: EnvironmentArgs = {
   environment: Environment.milk,
   hotshotQueryServiceURL: 'https://cache.milk.devnet.espresso.network/v0/',
   nodeValidatorWebSocketURL: 'wss://nv.milk.devnet.espresso.network/v0/',
+  stakingAPIServiceURL:
+    'https://cache.milk.devnet.espresso.network/v0/staking/',
 };
 
 export const environmentArgsMilkWithContracts: EnvironmentWithContractsArgs = {
@@ -111,6 +114,8 @@ export const environmentArgsWater: EnvironmentArgs = {
   environment: Environment.water,
   hotshotQueryServiceURL: 'https://cache.water.devnet.espresso.network/v0/',
   nodeValidatorWebSocketURL: 'wss://nv.water.devnet.espresso.network/v0/',
+  stakingAPIServiceURL:
+    'https://cache.water.devnet.espresso.network/v0/staking/',
 };
 
 export const environmentArgsWaterWithContracts: EnvironmentWithContractsArgs = {
@@ -139,6 +144,7 @@ export const environmentArgsMainnet: EnvironmentArgs = {
   environment: Environment.mainnet,
   hotshotQueryServiceURL: 'https://cache.main.net.espresso.network/v0/',
   nodeValidatorWebSocketURL: 'wss://nv.main.net.espresso.network/v0/',
+  stakingAPIServiceURL: 'https://cache.main.net.espresso.network/v0/staking/',
 };
 
 export const environmentArgsMainnetWithContracts: EnvironmentWithContractsArgs =
@@ -169,6 +175,7 @@ export const environmentArgsLocalDevNet: EnvironmentArgs = {
   environment: Environment.localDevNet,
   hotshotQueryServiceURL: 'http://localhost:24000/v0/',
   nodeValidatorWebSocketURL: 'ws://localhost:9000/v0/',
+  stakingAPIServiceURL: 'http://localhost:8080/v0/staking/',
 };
 
 export const environmentArgsLocalDevNetWithContracts: EnvironmentWithContractsArgs =

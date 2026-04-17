@@ -16,7 +16,6 @@ import {
 import { StoryBookSpecifyEnvironment } from '@/models/config/storybook/storybook';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
-import { ProvideRollUpsSummaryDataSource } from '../hot_shot_query_service_adapters';
 import { default as RollUpsPage } from '../roll_ups_page';
 import { StoryBookPathResolver } from '../story_book_path_resolver';
 
@@ -45,9 +44,7 @@ const Example: React.FC<ExampleProps> = ({
     <ProvideTickEverySecond>
       <OverridePathResolver pathResolver={new StoryBookPathResolver()}>
         <ProvideHotShotQueryServiceAPIContext>
-          <ProvideRollUpsSummaryDataSource>
-            <RollUpsPage {...rest} />
-          </ProvideRollUpsSummaryDataSource>
+          <RollUpsPage {...rest} />
         </ProvideHotShotQueryServiceAPIContext>
       </OverridePathResolver>
     </ProvideTickEverySecond>

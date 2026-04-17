@@ -7,118 +7,104 @@ import {
 import { SortDirection } from '@/components/data/types';
 import { Text } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
-import { UnimplementedError } from '@/errors/unimplemented_error';
-import { addClassToClassName } from '@/higher_order';
 import {
-  TransactionSummaryAsyncRetriever,
-  TransactionSummaryColumn,
-  TransactionSummaryEntry,
-} from '@/models/block_explorer/transaction_summary';
-import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
+  ExplorerSummaryContext,
+  ExplorerTransactionSummariesContext,
+} from '@/contexts/explorer_api_contexts';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
+import { addClassToClassName } from '@/higher_order';
+import { ExplorerGetTransactionSummariesFilter } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_filter';
+import { ExplorerGetTransactionSummariesRequest } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_request';
+import { ExplorerGetTransactionSummariesResponse } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_response';
+import { ExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_target';
 import { default as React } from 'react';
 import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
-import { ExplorerSummaryProvider } from '../explorer_summary/explorer_summary_loader';
+import { BlockNumberContext } from '../block_detail_content/block_detail_content_loader';
 
-export interface TransactionSummary {
-  hash: TaggedBase64;
-  rollups: number[];
-  block: number;
-  offset: number;
-  time: Date;
+export const enum TransactionSummaryColumn {
+  hash,
+  rollup,
+  block,
+  time,
 }
-
-/**
- * RetrieverContext is a React Context that holds a reference to a
- * TransactionSummaryAsyncRetriever
- */
-export const TransactionSummaryAsyncRetrieverContext =
-  React.createContext<TransactionSummaryAsyncRetriever>({
-    async retrieve() {
-      throw new UnimplementedError();
-    },
-  });
 
 export interface TransactionSummaryDataTableState extends DataTableState<TransactionSummaryColumn> {
   height?: number;
   offset?: number;
 }
 
-function convertTransactionDataToTransactionSummary(
-  data: TransactionSummaryEntry,
-): TransactionSummary {
-  return {
-    hash: data.hash,
-    block: data.block,
-    offset: data.offset,
-    rollups: data.namespaces,
-    time: data.time,
-  };
-}
-
-/**
- * createDataRetrieverFromRetriever converts a TransactionSummaryAsyncRetriever
- * into an AsyncRetriever of the correct data format.
- */
-function createDataRetrieverFromRetriever(
-  retriever: TransactionSummaryAsyncRetriever,
-) {
-  return {
-    async retrieve(state: DataTableState<unknown>) {
-      const resolvedState = state as TransactionSummaryDataTableState;
-      const data = await retriever.retrieve({
-        startAtBlock: resolvedState.height,
-        offset: resolvedState.offset,
-      });
-
-      return data.map(convertTransactionDataToTransactionSummary);
-    },
-  };
-}
-
-interface LoadTransactionSummaryDataTableDataProps {
-  children: React.ReactNode | React.ReactNode[];
-}
+const BLOCKS_TO_SHOW = 20;
 
 /**
  * LoadTransactionSummaryDataTableData uses the Retriever from the
  * RetrieverContext and kicks off requests using the state retrieved
  * by the DataTableStateContext.
  */
-const LoadTransactionSummaryDataTableData: React.FC<
-  LoadTransactionSummaryDataTableDataProps
-> = (props) => {
+const LoadTransactionSummaryDataTableData: React.FC<React.PropsWithChildren> = (
+  props,
+) => {
   // Need to retrieve the actual data source
-  const retriever = React.useContext(TransactionSummaryAsyncRetrieverContext);
-  const dataTableState = React.useContext(DataTableStateContext);
+  const service = React.useContext(HotShotQueryServiceAPIContext);
+  const dataTableState = React.useContext(
+    DataTableStateContext,
+  ) as TransactionSummaryDataTableState;
+  const blockID = React.useContext(BlockNumberContext);
 
-  const nextRetriever = createDataRetrieverFromRetriever(retriever);
+  const request = new ExplorerGetTransactionSummariesRequest(
+    dataTableState.height == null || dataTableState.height === undefined
+      ? ExplorerGetTransactionSummariesTarget.latest(BLOCKS_TO_SHOW)
+      : ExplorerGetTransactionSummariesTarget.heightAndOffset(
+          dataTableState.height,
+          dataTableState.offset || 0,
+          BLOCKS_TO_SHOW,
+        ),
+    !blockID
+      ? ExplorerGetTransactionSummariesFilter.none()
+      : ExplorerGetTransactionSummariesFilter.block(blockID),
+  );
 
   return (
-    <PromiseResolver promise={nextRetriever.retrieve(dataTableState)}>
-      <>{props.children}</>
+    <PromiseResolver
+      promise={service.explorer.getTransactionSummaries(request)}
+    >
+      <TransactionSummariesProvider>
+        {props.children}
+      </TransactionSummariesProvider>
     </PromiseResolver>
   );
 };
 
-const LoadTransactionSummaryDataTableDataFromStream: React.FC<
-  LoadTransactionSummaryDataTableDataProps
-> = (props) => {
-  const data = React.useContext(ExplorerSummaryProvider);
+const TransactionSummariesProvider: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const data = React.useContext(DataContext) as
+    | null
+    | undefined
+    | ExplorerGetTransactionSummariesResponse;
 
-  if (!data) {
-    return (
-      <DataContext.Provider value={null}>{props.children}</DataContext.Provider>
-    );
-  }
+  const transactionSummaries = data?.transactionSummaries ?? [];
 
   return (
-    <DataContext.Provider
-      value={data.latestTransactions.map(
-        convertTransactionDataToTransactionSummary,
-      )}
-    >
-      {props.children}
-    </DataContext.Provider>
+    <ExplorerTransactionSummariesContext.Provider value={transactionSummaries}>
+      <DataContext.Provider value={transactionSummaries}>
+        {children}
+      </DataContext.Provider>
+    </ExplorerTransactionSummariesContext.Provider>
+  );
+};
+
+const LoadTransactionSummaryDataTableDataFromExplorerSummary: React.FC<
+  React.PropsWithChildren
+> = (props) => {
+  const transactionSummaries =
+    React.useContext(ExplorerTransactionSummariesContext) ?? [];
+
+  return (
+    <ExplorerTransactionSummariesContext.Provider value={transactionSummaries}>
+      <DataContext.Provider value={transactionSummaries}>
+        {props.children}
+      </DataContext.Provider>
+    </ExplorerTransactionSummariesContext.Provider>
   );
 };
 
@@ -137,36 +123,46 @@ export const TransactionSummaryDataLoader: React.FC<
 > = (props) => {
   const { startAtBlock, offset, ...rest } = props;
   // Create the Data Table State
-  const [initialState] = React.useState<TransactionSummaryDataTableState>({
-    sortColumn: TransactionSummaryColumn.block,
-    sortDir: SortDirection.desc,
-    height: startAtBlock,
-    offset: offset,
-  });
+  const initialState = React.useMemo(
+    (): TransactionSummaryDataTableState => ({
+      sortColumn: TransactionSummaryColumn.block,
+      sortDir: SortDirection.desc,
+      height: startAtBlock,
+      offset: offset,
+    }),
+    [startAtBlock, offset],
+  );
 
   return (
     <DataTableStateContext.Provider value={initialState}>
-      {React.createElement(LoadTransactionSummaryDataTableData, rest)}
+      <LoadTransactionSummaryDataTableData {...rest} />
     </DataTableStateContext.Provider>
   );
 };
 
-export const TransactionSummaryDataFromStreamLoader: React.FC<
+export const TransactionSummaryDataFromExplorerSummary: React.FC<
   TransactionsSummaryDataLoaderProps
 > = (props) => {
   const { startAtBlock, offset, ...rest } = props;
   // Create the Data Table State
-  const [initialState] = React.useState<TransactionSummaryDataTableState>({
-    sortColumn: TransactionSummaryColumn.block,
-    sortDir: SortDirection.desc,
-    height: startAtBlock,
-    offset: offset,
-  });
+  const explorerSummary = React.useContext(ExplorerSummaryContext);
+  const initialState = React.useMemo(
+    (): TransactionSummaryDataTableState => ({
+      sortColumn: TransactionSummaryColumn.block,
+      sortDir: SortDirection.desc,
+      height: startAtBlock,
+      offset: offset,
+    }),
+    [startAtBlock, offset],
+  );
+  const transactionSummaries = explorerSummary?.latestTransactions ?? [];
 
   return (
-    <DataTableStateContext.Provider value={initialState}>
-      {React.createElement(LoadTransactionSummaryDataTableDataFromStream, rest)}
-    </DataTableStateContext.Provider>
+    <ExplorerTransactionSummariesContext.Provider value={transactionSummaries}>
+      <DataTableStateContext.Provider value={initialState}>
+        <LoadTransactionSummaryDataTableDataFromExplorerSummary {...rest} />
+      </DataTableStateContext.Provider>
+    </ExplorerTransactionSummariesContext.Provider>
   );
 };
 
@@ -177,21 +173,21 @@ export interface TransactionsNavigationProps {
 export const TransactionsNavigation: React.FC<TransactionsNavigationProps> = (
   props,
 ) => {
-  const data = React.useContext(DataContext) as TransactionSummary[];
+  const data = React.useContext(ExplorerTransactionSummariesContext);
   const pathResolver = React.useContext(PathResolverContext);
 
   const previous: React.ReactNode[] = [];
   const next: React.ReactNode[] = [];
   // Do we know if we're at the top of the page?
 
-  if (data && data[data.length - 1].block > 0) {
+  if (data && data[data.length - 1].height > 0) {
     const lastTransaction = data[data.length - 1];
 
     previous.push(
       <LabeledAnchorButton
         key={1}
         href={pathResolver.transactions(
-          lastTransaction.block,
+          lastTransaction.height,
           lastTransaction.offset + 1,
         )}
       >

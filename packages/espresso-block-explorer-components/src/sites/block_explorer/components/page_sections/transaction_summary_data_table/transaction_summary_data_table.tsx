@@ -13,23 +13,30 @@ import {
 } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { iota } from '@/functional/functional';
-import { TransactionSummaryColumn } from '@/models/block_explorer/transaction_summary';
+import { ExplorerTransactionSummary } from '@/service/hotshot_query_service/explorer/transaction_summary';
 import { default as React } from 'react';
 import { InternalLink } from '../../links/link/link';
 import { default as RollUpSimple } from '../roll_up/roll_up_simple/roll_up_simple';
-import { TransactionSummary } from './transaction_summary_data_loader';
+import { TransactionSummaryColumn } from './transaction_summary_data_loader';
 
 /**
  * TransactionCells is a cell that displays the hash for the transaction,
  * and contains a link to inspect the individual transaction.
  */
 const TransactionCell: React.FC = () => {
-  const row = React.useContext(DataTableRowContext) as TransactionSummary;
+  const row = React.useContext(DataTableRowContext) as
+    | undefined
+    | null
+    | ExplorerTransactionSummary;
   const pathResolver = React.useContext(PathResolverContext);
+
+  if (!row) {
+    return null;
+  }
 
   return (
     <CopyTaggedBase64 value={row.hash}>
-      <InternalLink href={pathResolver.transaction(row.block, row.offset)}>
+      <InternalLink href={pathResolver.transaction(row.height, row.offset)}>
         <TaggedBase64Text value={row.hash} />
       </InternalLink>
     </CopyTaggedBase64>
@@ -40,15 +47,23 @@ const TransactionCell: React.FC = () => {
  * RollUpCell is a cell that displays the rollup for a given transaction.
  */
 const RollUpCell: React.FC = () => {
-  const row = React.useContext(DataTableRowContext) as TransactionSummary;
+  const row = React.useContext(DataTableRowContext) as
+    | undefined
+    | null
+    | ExplorerTransactionSummary;
 
-  const rollups = row.rollups;
-  if (rollups.length === 0) {
+  if (!row) {
+    return null;
+  }
+
+  const namespaces = row.rollups;
+
+  if (namespaces.length === 0) {
     return <Text text="No Rollups Involved" />;
   }
 
-  if (rollups.length === 1) {
-    const rollup = rollups[0];
+  if (namespaces.length === 1) {
+    const rollup = namespaces[0];
     return <RollUpSimple namespace={rollup} />;
   }
 
@@ -61,14 +76,21 @@ const RollUpCell: React.FC = () => {
  */
 const BlockCell: React.FC = () => {
   const pathResolver = React.useContext(PathResolverContext);
-  const row = React.useContext(DataTableRowContext) as TransactionSummary;
+  const row = React.useContext(DataTableRowContext) as
+    | undefined
+    | null
+    | ExplorerTransactionSummary;
+
+  if (!row) {
+    return null;
+  }
 
   return (
     <InternalLink
-      href={pathResolver.block(row.block)}
-      title={`Link to Block ${row.block}`}
+      href={pathResolver.block(row.height)}
+      title={`Link to Block ${row.height}`}
     >
-      <NumberText number={row.block} />
+      <NumberText number={row.height} />
     </InternalLink>
   );
 };
@@ -77,7 +99,14 @@ const BlockCell: React.FC = () => {
  * TimeCell represents the Timestamp of the Transaction.
  */
 const TimeCell: React.FC = () => {
-  const row = React.useContext(DataTableRowContext) as TransactionSummary;
+  const row = React.useContext(DataTableRowContext) as
+    | undefined
+    | null
+    | ExplorerTransactionSummary;
+
+  if (!row) {
+    return null;
+  }
 
   return <DateTimeText date={row.time} />;
 };

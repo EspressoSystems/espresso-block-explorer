@@ -8,6 +8,7 @@ import {
   Text,
   WalletAddressText,
 } from '@/components/text';
+import { ExplorerTransactionDetailDataContext } from '@/contexts/explorer_api_contexts';
 import { uint8ArrayToArrayBufferCodec } from '@/convert/codec/uint8_array';
 import { createBufferedDataView, Endianess } from '@/convert/data_view';
 import { createRLPDeserializer } from '@/convert/rlp';
@@ -35,7 +36,6 @@ import {
   EthTransactionDisplay,
   EthTransactionExtensionComponentContext,
 } from './ethereum_display';
-import { TransactionDetailContext } from './transaction_detail_loader';
 
 /**
  * OptimismEspressoBatchV0 represents the data that is submitted to Espresso
@@ -133,15 +133,18 @@ export function extractOptimismBatch(
  * TransactionDetail.
  */
 export const OptimismBatchDecodeAndDisplay: React.FC = () => {
-  const details = React.useContext(TransactionDetailContext);
-  const data = details.tree;
+  const details = React.useContext(ExplorerTransactionDetailDataContext);
 
-  if (!isOptimismIntegrationNamespace(data.namespace)) {
+  if (!details) {
+    return null;
+  }
+
+  if (!details || !isOptimismIntegrationNamespace(details.namespace)) {
     // Only Display information for Nitro based project namespaces.
     return <></>;
   }
 
-  const nitroBatch = extractOptimismBatch(new Uint8Array(data.data));
+  const nitroBatch = extractOptimismBatch(new Uint8Array(details.payload));
   if (!nitroBatch) {
     return <></>;
   }

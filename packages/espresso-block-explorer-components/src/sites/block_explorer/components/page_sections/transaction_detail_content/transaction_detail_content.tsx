@@ -10,6 +10,10 @@ import {
   NumberText,
   Text,
 } from '@/components/text';
+import {
+  ExplorerTransactionDetailDataContext,
+  ExplorerTransactionDetailsContext,
+} from '@/contexts/explorer_api_contexts';
 import { default as React } from 'react';
 import { InternalLink } from '../../links/link/link';
 import { BlockNumberContext } from '../block_detail_content/block_detail_content_loader';
@@ -19,10 +23,7 @@ import { InfiniteGardenDisplay } from './infinite_garden_display';
 import { NitroBatchDetectAndDisplay } from './nitro_batch_display';
 import { OptimismBatchDecodeAndDisplay } from './optimism_batch_display';
 import './transaction_detail_content.css';
-import {
-  TransactionDetailContext,
-  TransactionOffsetContext,
-} from './transaction_detail_loader';
+import { TransactionOffsetContext } from './transaction_detail_loader';
 
 /**
  * TransactionSubHeading represents a sub heading for the Transaction Detail
@@ -45,9 +46,7 @@ export const TransactionSubHeading: React.FC = () => {
  * TransactionDetailsContentPlaceholder is a placeholder for the Transaction
  * Details content.
  */
-export const TransactionDetailsContentPlaceholder: React.FC<
-  TransactionDetailsContentProps
-> = () => {
+export const TransactionDetailsContentPlaceholder: React.FC = () => {
   return (
     <>
       <TableLabeledValue className="card--padding">
@@ -78,30 +77,32 @@ export const TransactionDetailsContentPlaceholder: React.FC<
   );
 };
 
-interface TransactionDetailsContentProps {}
-
 /**
  * TransactionDetailsContent represents the Tabular data of the
  * Transaction Details itself.
  */
-export const TransactionDetailsContent: React.FC<
-  TransactionDetailsContentProps
-> = () => {
-  const details = React.useContext(TransactionDetailContext);
+export const TransactionDetailsContent: React.FC = () => {
+  const data = React.useContext(ExplorerTransactionDetailsContext);
   const pathResolver = React.useContext(PathResolverContext);
+
+  if (!data) {
+    return null;
+  }
+
+  const details = data.details;
 
   return (
     <>
       <TableLabeledValue className="card--padding">
         <Text text="Block" />
-        <InternalLink href={pathResolver.block(details.block)}>
-          <NumberText number={details.block} />
+        <InternalLink href={pathResolver.block(details.height)}>
+          <NumberText number={details.height} />
         </InternalLink>
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Transaction index in block" />
         <Text
-          text={`index ${details.index} out of ${details.total} transactions`}
+          text={`index ${details.offset} out of ${details.numTransactions} transactions`}
         />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
@@ -117,12 +118,6 @@ export const TransactionDetailsContent: React.FC<
       <TableLabeledValue className="card--padding">
         <Text text="Time" />
         <DateTimeText date={details.time} />
-      </TableLabeledValue>
-      <TableLabeledValue className="card--padding">
-        <Text text="Sender" />
-        <CopyTaggedBase64 value={details.sender}>
-          <FullTaggedBase64Text value={details.sender} />
-        </CopyTaggedBase64>
       </TableLabeledValue>
     </>
   );
@@ -148,22 +143,25 @@ export const TransactionDataContentsPlaceholder: React.FC = () => {
  * individual rollup data for a Transaction
  */
 export const TransactionDataContents: React.FC = () => {
-  const details = React.useContext(TransactionDetailContext);
+  const details = React.useContext(ExplorerTransactionDetailDataContext);
 
-  const data = details.tree;
+  if (!details) {
+    return null;
+  }
+
   return (
     <>
       <TableLabeledValue className="card--padding">
         <Text text="Rollup" />
         <>
-          <RollUpSimple namespace={data.namespace} />
+          <RollUpSimple namespace={details.namespace} />
           <br />
-          <NumberText number={data.namespace} />
+          <NumberText number={details.namespace} />
         </>
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Transaction data" />
-        <HexDumpAndCopyButtons data={data.data} />
+        <HexDumpAndCopyButtons data={details.payload} />
       </TableLabeledValue>
       <NitroBatchDetectAndDisplay />
       <OptimismBatchDecodeAndDisplay />

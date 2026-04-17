@@ -1,69 +1,22 @@
 import { sleep } from '@/async/sleep';
-import { BlockDetailAsyncRetrieverContext } from '@/block_explorer/components/page_sections/block_detail_content/block_detail_content_loader';
-import { BlockSummaryAsyncRetrieverContext } from '@/block_explorer/components/page_sections/block_summary_data_table/block_summary_data_loader';
-import { ExplorerSummaryLoaderContext } from '@/block_explorer/components/page_sections/explorer_summary/explorer_summary_loader';
-import { LatestBlockSummaryLoaderContext } from '@/block_explorer/components/page_sections/latest_block_summary/latest_block_summary_loader';
-import { RollUpDetailAsyncRetrieverContext } from '@/block_explorer/components/page_sections/rollup_detail_data_table/roll_up_detail_loader';
-import { RollUpSummaryAsyncRetrieverContext } from '@/block_explorer/components/page_sections/rollups_summary_data_table/roll_ups_summary_loader';
-import { TransactionDetailAsyncRetrieverContext } from '@/block_explorer/components/page_sections/transaction_detail_content/transaction_detail_loader';
-import { TransactionSummaryAsyncRetrieverContext } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
 import { AsyncIterableResolver } from '@/components/data/async_data';
 import { ErrorJoiner } from '@/contexts/error_provider';
 import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
-import { BlockSummaryEntry } from '@/models/block_explorer/block_summary';
-import { ExplorerSummaryEntry } from '@/models/block_explorer/explorer_summary';
-import { TransactionSummaryEntry } from '@/models/block_explorer/transaction_summary';
-import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
-import { ExplorerGetBlockDetailRequest } from '@/service/hotshot_query_service/explorer/get_block_detail_request';
-import { ExplorerGetBlockSummariesRequest } from '@/service/hotshot_query_service/explorer/get_block_summaries_request';
-import { ExplorerGetExplorerSummaryResponse } from '@/service/hotshot_query_service/explorer/get_explorer_summary_response';
-import { ExplorerGetTransactionDetailRequest } from '@/service/hotshot_query_service/explorer/get_transaction_detail_request';
-import { ExplorerGetTransactionSummariesFilter } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_filter';
-import { ExplorerGetTransactionSummariesRequest } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_request';
-import { ExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_target';
+import { ExplorerSummary } from '@/service/hotshot_query_service/explorer/explorer_summary';
 import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
 import { default as React } from 'react';
 
 // We need to create adapters between the HotShotQueryService and the
 // components that ultimately wish to consume them.
 
-export interface ProvideBlockDetailDataSourceProps {
-  children: React.ReactNode | React.ReactNode[];
-}
-
 /**
  * ProvideBlockDetailDataSource is a component that converts
  * the HotShot Query Service into a BlockDetailAsyncRetriever.
  */
 export const ProvideBlockDetailDataSource: React.FC<
-  ProvideBlockDetailDataSourceProps
-> = (props) => {
-  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
-
-  return (
-    <BlockDetailAsyncRetrieverContext.Provider
-      {...props}
-      value={{
-        async retrieve(key: number) {
-          const { blockDetail: block } =
-            await hotShotQueryService.explorer.getBlockDetail(
-              ExplorerGetBlockDetailRequest.height(key),
-            );
-
-          return {
-            hash: block.hash,
-            height: block.height,
-            time: block.time,
-            transactions: block.numTransactions,
-            proposer: block.proposerID,
-            recipient: block.feeRecipient,
-            size: block.size,
-            rewards: block.blockReward,
-          };
-        },
-      }}
-    />
-  );
+  React.PropsWithChildren
+> = ({ children }) => {
+  return children;
 };
 
 export interface ProvideBlocksSummaryDataSourceProps {
@@ -77,44 +30,8 @@ export interface ProvideBlocksSummaryDataSourceProps {
  */
 export const ProvideBlocksSummaryDataSource: React.FC<
   ProvideBlocksSummaryDataSourceProps
-> = ({ children, blocksPerPage: defaultBlocksPerPage = 20, ...rest }) => {
-  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
-
-  return (
-    <BlockSummaryAsyncRetrieverContext.Provider
-      {...rest}
-      value={{
-        async retrieve(key) {
-          const { blocksPerPage = defaultBlocksPerPage, startAtBlock = null } =
-            key;
-
-          const request =
-            startAtBlock === null
-              ? ExplorerGetBlockSummariesRequest.latest(blocksPerPage)
-              : ExplorerGetBlockSummariesRequest.from(
-                  startAtBlock,
-                  blocksPerPage,
-                );
-
-          const summaryResponse =
-            await hotShotQueryService.explorer.getBlockSummaries(request);
-          const { blockSummaries } = summaryResponse;
-
-          return blockSummaries.map((block): BlockSummaryEntry => {
-            return {
-              height: block.height,
-              proposer: block.proposerID,
-              transactions: block.numTransactions,
-              size: block.size,
-              time: block.time,
-            };
-          });
-        },
-      }}
-    >
-      {children}
-    </BlockSummaryAsyncRetrieverContext.Provider>
-  );
+> = ({ children }) => {
+  return children;
 };
 
 export interface ProvideTransactionsSummaryDataSourceProps {
@@ -129,114 +46,14 @@ export interface ProvideTransactionsSummaryDataSourceProps {
  */
 export const ProvideTransactionsSummaryDataSource: React.FC<
   ProvideTransactionsSummaryDataSourceProps
-> = ({
-  children,
-  transactionsPerPage: defaultTransactionsPerPage = 20,
-  ...rest
-}) => {
-  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
-
-  return (
-    <TransactionSummaryAsyncRetrieverContext.Provider
-      {...rest}
-      value={{
-        async retrieve(key) {
-          const {
-            startAtBlock = null,
-            offset = null,
-            transactionsPerPage = defaultTransactionsPerPage,
-          } = key;
-
-          let request: ExplorerGetTransactionSummariesRequest;
-          if (startAtBlock === null || offset === null) {
-            request = new ExplorerGetTransactionSummariesRequest(
-              ExplorerGetTransactionSummariesTarget.latest(transactionsPerPage),
-              ExplorerGetTransactionSummariesFilter.none(),
-            );
-          } else {
-            request = new ExplorerGetTransactionSummariesRequest(
-              ExplorerGetTransactionSummariesTarget.heightAndOffset(
-                startAtBlock,
-                offset,
-                transactionsPerPage,
-              ),
-              ExplorerGetTransactionSummariesFilter.none(),
-            );
-          }
-
-          const summariesResponse =
-            await hotShotQueryService.explorer.getTransactionSummaries(request);
-          const { transactionSummaries } = summariesResponse;
-
-          return transactionSummaries.map((summary) => ({
-            hash: summary.hash,
-            namespaces: summary.rollups,
-            block: summary.height,
-            offset: summary.offset,
-            time: summary.time,
-          }));
-        },
-      }}
-    >
-      {children}
-    </TransactionSummaryAsyncRetrieverContext.Provider>
-  );
+> = ({ children }) => {
+  return children;
 };
 
 export const ProvideTransactionsForBlockSummaryDataSource: React.FC<
   ProvideTransactionsSummaryDataSourceProps
-> = ({
-  children,
-  transactionsPerPage: defaultTransactionsPerPage = 20,
-  ...rest
-}) => {
-  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
-
-  return (
-    <TransactionSummaryAsyncRetrieverContext.Provider
-      {...rest}
-      value={{
-        async retrieve(key) {
-          const {
-            startAtBlock = 0,
-            offset = null,
-            transactionsPerPage = defaultTransactionsPerPage,
-          } = key;
-
-          let request: ExplorerGetTransactionSummariesRequest;
-          if (startAtBlock === null || offset === null) {
-            request = new ExplorerGetTransactionSummariesRequest(
-              ExplorerGetTransactionSummariesTarget.latest(transactionsPerPage),
-              ExplorerGetTransactionSummariesFilter.block(startAtBlock),
-            );
-          } else {
-            request = new ExplorerGetTransactionSummariesRequest(
-              ExplorerGetTransactionSummariesTarget.heightAndOffset(
-                startAtBlock,
-                offset,
-                transactionsPerPage,
-              ),
-              ExplorerGetTransactionSummariesFilter.block(startAtBlock),
-            );
-          }
-
-          const summariesResponse =
-            await hotShotQueryService.explorer.getTransactionSummaries(request);
-          const { transactionSummaries } = summariesResponse;
-
-          return transactionSummaries.map((summary) => ({
-            hash: summary.hash,
-            namespaces: summary.rollups,
-            block: summary.height,
-            offset: summary.offset,
-            time: summary.time,
-          }));
-        },
-      }}
-    >
-      {children}
-    </TransactionSummaryAsyncRetrieverContext.Provider>
-  );
+> = ({ children }) => {
+  return children;
 };
 
 export interface ProvideTransactionDetailDataSourceProps {
@@ -250,43 +67,8 @@ export interface ProvideTransactionDetailDataSourceProps {
  */
 export const ProvideTransactionDetailDataSource: React.FC<
   ProvideTransactionDetailDataSourceProps
-> = (props) => {
-  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
-
-  return (
-    <TransactionDetailAsyncRetrieverContext.Provider
-      {...props}
-      value={{
-        async retrieve(key) {
-          const { height, offset } = key;
-
-          const request = ExplorerGetTransactionDetailRequest.heightAndOffset(
-            height,
-            offset,
-          );
-
-          const detailResponse =
-            await hotShotQueryService.explorer.getTransactionDetail(request);
-
-          const { transactionDetail } = detailResponse;
-          return {
-            block: transactionDetail.details.height,
-            index: transactionDetail.details.offset,
-            total: transactionDetail.details.numTransactions,
-            size: transactionDetail.details.size,
-            hash: transactionDetail.details.hash,
-            time: transactionDetail.details.time,
-            sender: new TaggedBase64('', new ArrayBuffer(0)),
-
-            tree: {
-              namespace: transactionDetail.data[0].namespace,
-              data: transactionDetail.data[0].payload,
-            },
-          };
-        },
-      }}
-    />
-  );
+> = ({ children }) => {
+  return children;
 };
 
 export interface ProvideTransactionsSummaryDataSourceProps {
@@ -300,59 +82,8 @@ export interface ProvideTransactionsSummaryDataSourceProps {
  */
 export const ProvideRollUpDetailDataSource: React.FC<
   ProvideTransactionsSummaryDataSourceProps
-> = ({
-  children,
-  transactionsPerPage: defaultTransactionsPerPage = 20,
-  ...rest
-}) => {
-  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
-
-  return (
-    <RollUpDetailAsyncRetrieverContext.Provider
-      {...rest}
-      value={{
-        async retrieve(key) {
-          const {
-            namespace,
-            height = null,
-            offset = null,
-            transactionsPerPage = defaultTransactionsPerPage,
-          } = key;
-
-          let request: ExplorerGetTransactionSummariesRequest;
-          if (height === null || offset === null) {
-            request = new ExplorerGetTransactionSummariesRequest(
-              ExplorerGetTransactionSummariesTarget.latest(transactionsPerPage),
-              ExplorerGetTransactionSummariesFilter.namespace(namespace),
-            );
-          } else {
-            request = new ExplorerGetTransactionSummariesRequest(
-              ExplorerGetTransactionSummariesTarget.heightAndOffset(
-                height,
-                offset,
-                transactionsPerPage,
-              ),
-              ExplorerGetTransactionSummariesFilter.namespace(namespace),
-            );
-          }
-
-          const summariesResponse =
-            await hotShotQueryService.explorer.getTransactionSummaries(request);
-          const { transactionSummaries } = summariesResponse;
-
-          return transactionSummaries.map((summary) => ({
-            hash: summary.hash,
-            namespaces: summary.rollups,
-            block: summary.height,
-            offset: summary.offset,
-            time: summary.time,
-          }));
-        },
-      }}
-    >
-      {children}
-    </RollUpDetailAsyncRetrieverContext.Provider>
-  );
+> = ({ children }) => {
+  return children;
 };
 
 export interface ProvideTransactionsSummaryDataSourceProps {
@@ -362,122 +93,11 @@ export interface ProvideTransactionsSummaryDataSourceProps {
 export const kNumberOfSampleBlocks = 30;
 
 /**
- * ProvideRollUpsSummaryDataSource is a component that converts
- * the HotShot Query Service into a RollUpSummaryAsyncRetriever.
- */
-export const ProvideRollUpsSummaryDataSource: React.FC<
-  ProvideTransactionsSummaryDataSourceProps
-> = (props) => {
-  return (
-    <RollUpSummaryAsyncRetrieverContext.Provider
-      {...props}
-      value={{
-        async retrieve() {
-          // TODO: add the implementation for this when the Explorer API
-          //       supports it.
-          return [];
-        },
-      }}
-    />
-  );
-};
-
-interface ProvideLatestBlockDetailsProps {}
-
-export const ProvideLatestBlockDetails: React.FC<
-  ProvideLatestBlockDetailsProps
-> = (props) => {
-  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
-
-  return (
-    <LatestBlockSummaryLoaderContext.Provider
-      {...props}
-      value={{
-        async retrieve() {
-          const summaryResponse =
-            await hotShotQueryService.explorer.getExplorerOverview();
-          const latestBlock = summaryResponse.explorerSummary.latestBlock;
-
-          return {
-            height: latestBlock.height,
-            proposer: latestBlock.proposerID,
-            transactions: latestBlock.numTransactions,
-            size: latestBlock.size,
-            time: latestBlock.time,
-          };
-        },
-      }}
-    />
-  );
-};
-
-export function transformExplorerSummaryResponse(
-  summaryResponse: ExplorerGetExplorerSummaryResponse,
-): ExplorerSummaryEntry {
-  const { explorerSummary } = summaryResponse;
-
-  const {
-    latestBlock,
-    latestTransactions,
-    latestBlocks,
-    genesisOverview,
-    histograms,
-  } = explorerSummary;
-
-  return {
-    latestBlock: {
-      hash: latestBlock.hash,
-      height: latestBlock.height,
-      time: latestBlock.time,
-      transactions: latestBlock.numTransactions,
-      proposer: latestBlock.proposerID,
-      recipient: latestBlock.feeRecipient,
-      size: latestBlock.size,
-      rewards: latestBlock.blockReward,
-    },
-    genesisOverview: {
-      rollups: genesisOverview.rollups,
-      transactions: genesisOverview.transactions,
-      blocks: genesisOverview.blocks,
-    },
-    latestBlocks: latestBlocks.map(
-      (block): BlockSummaryEntry => ({
-        height: block.height,
-        time: block.time,
-        transactions: block.numTransactions,
-        size: block.size,
-        proposer: block.proposerID,
-      }),
-    ),
-    latestTransactions: latestTransactions.map(
-      (transaction): TransactionSummaryEntry => ({
-        hash: transaction.hash,
-        block: transaction.height,
-        time: transaction.time,
-        offset: transaction.offset,
-        namespaces: transaction.rollups,
-      }),
-    ),
-    histograms: {
-      blockTime: histograms.blockTime,
-      blockSize: histograms.blockSize,
-      blockTransactions: histograms.blockTransactions,
-      blockThroughput: [],
-      blocks: histograms.blockHeights,
-    },
-  } satisfies ExplorerSummaryEntry;
-}
-
-export interface ProvideExplorerSummaryAsyncStreamProps {
-  children: React.ReactNode | React.ReactNode[];
-}
-
-/**
  * EXPLORER_SUMMARY_POLLING_INTERVAL_MS is the internval, in milliseconds,
  * that the explorer summary will be retrieved in if a newer entry is not
  * found in the previous attempt.
  */
-const EXPLORER_SUMMARY_POLLING_INTERVAL_MS = 500; // 500ms
+const EXPLORER_SUMMARY_POLLING_INTERVAL_MS = 1000; // 1s
 
 /**
  * explorerOverviewStream is an async generator that yields the latest
@@ -493,18 +113,27 @@ const EXPLORER_SUMMARY_POLLING_INTERVAL_MS = 500; // 500ms
  * duration, it is entirely possible for us to skip blocks.
  */
 async function* explorerOverviewStream(service: HotShotQueryService) {
-  let lastExplorerOverview: null | ExplorerSummaryEntry = null;
+  let lastExplorerOverview: null | ExplorerSummary = null;
   while (true) {
     try {
-      const next = transformExplorerSummaryResponse(
-        await service.explorer.getExplorerOverview(),
-      );
+      const next = (await service.explorer.getExplorerOverview())
+        .explorerSummary;
       if (
         lastExplorerOverview &&
         next.latestBlock.height <= lastExplorerOverview.latestBlock.height
       ) {
         // This is not a block that is newer than the preivous block.
         await sleep(EXPLORER_SUMMARY_POLLING_INTERVAL_MS);
+        continue;
+      }
+
+      if (
+        lastExplorerOverview &&
+        next.genesisOverview.transactions <
+          lastExplorerOverview.genesisOverview.transactions
+      ) {
+        // We are being told we have fewer transactions than we previously had?
+        // Let's try fetching the result again.
         continue;
       }
 
@@ -526,7 +155,7 @@ async function* explorerOverviewStream(service: HotShotQueryService) {
 }
 
 export const ProvideExplorerSummaryAsyncStream: React.FC<
-  ProvideExplorerSummaryAsyncStreamProps
+  React.PropsWithChildren
 > = ({ children }) => {
   const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
 
@@ -543,23 +172,8 @@ export const ProvideExplorerSummaryAsyncStream: React.FC<
   );
 };
 
-interface ProvideExplorerSummaryProps {}
-
-export const ProvideExplorerSummary: React.FC<ProvideExplorerSummaryProps> = (
-  props,
-) => {
-  const hotShotQueryService = React.useContext(HotShotQueryServiceAPIContext);
-
-  return (
-    <ExplorerSummaryLoaderContext.Provider
-      {...props}
-      value={{
-        async retrieve() {
-          const summaryResponse =
-            await hotShotQueryService.explorer.getExplorerOverview();
-          return transformExplorerSummaryResponse(summaryResponse);
-        },
-      }}
-    />
-  );
+export const ProvideExplorerSummary: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  return children;
 };

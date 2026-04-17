@@ -3,8 +3,8 @@ import { default as ValueLabeled } from '@/block_explorer/components/layout/valu
 import { SkeletonContent } from '@/components/loading';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { Text, VariableByteSizeText } from '@/components/text';
-import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
+import { ExplorerSummaryHistogramsContext } from '@/contexts/explorer_api_contexts';
 import { LoadingContext } from '@/contexts/loading_provider';
 import {
   HistogramDomain,
@@ -20,7 +20,6 @@ import {
 } from '@/visual/histogram/histogram_base/simple_histogram';
 import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_title/histogram_section_title';
 import { default as React } from 'react';
-import { BlockSizeHistogramData } from './block_size_histogram_data_loader';
 
 const CardNoPaddingWithShimmer = WithLoadingShimmer(CardNoPadding);
 
@@ -44,7 +43,7 @@ const LabelValue: React.FC<HistogramLabelProps> = (props) => {
 export const BlockSizeHistogram: React.FC = () => {
   const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
-  const histogramData = React.useContext(DataContext) as BlockSizeHistogramData;
+  const histogramData = React.useContext(ExplorerSummaryHistogramsContext);
 
   if (loading) {
     return (
@@ -61,7 +60,7 @@ export const BlockSizeHistogram: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (error || !histogramData) {
     return <></>;
   }
 
@@ -94,7 +93,7 @@ export const BlockSizeHistogram: React.FC = () => {
   return (
     <CardNoPadding className="block-size-histogram">
       <HistogramRange.Provider value={histogramData.blockSize}>
-        <HistogramDomain.Provider value={histogramData.blocks}>
+        <HistogramDomain.Provider value={histogramData.blockHeights}>
           <HistogramYAxisLabelComponent.Provider value={LabelValue}>
             <ProvideDataStatistics>
               <HistogramSectionTitle>

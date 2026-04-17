@@ -3,9 +3,10 @@ import { default as ValueLabeled } from '@/block_explorer/components/layout/valu
 import { SkeletonContent } from '@/components/loading';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { BytesPerSecondText, Text } from '@/components/text';
-import { DataContext } from '@/contexts/data_provider';
 import { ErrorContext } from '@/contexts/error_provider';
+import { ExplorerSummaryHistogramsContext } from '@/contexts/explorer_api_contexts';
 import { LoadingContext } from '@/contexts/loading_provider';
+import { zipWithIterable } from '@/functional/functional';
 import {
   HistogramDomain,
   HistogramRange,
@@ -20,7 +21,6 @@ import {
 } from '@/visual/histogram/histogram_base/simple_histogram';
 import { HistogramSectionTitle } from '@/visual/histogram/histogram_section_title/histogram_section_title';
 import { default as React } from 'react';
-import { BlockThroughputHistogramData } from './block_throughput_histogram_data_loader';
 
 const CardNoPaddingWithShimmer = WithLoadingShimmer(CardNoPadding);
 
@@ -41,12 +41,25 @@ const LabelValue: React.FC<HistogramLabelProps> = (props) => {
   return <BytesPerSecondText bytesPerSecond={props.value} />;
 };
 
+function calculateThroughput(
+  size: null | number,
+  time: null | number,
+): null | number {
+  if (size === null || time === null) {
+    return null;
+  }
+
+  if (time === 0) {
+    return size;
+  }
+
+  return size / time;
+}
+
 export const BlockThroughputHistogram: React.FC = () => {
   const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
-  const histogramData = React.useContext(
-    DataContext,
-  ) as BlockThroughputHistogramData;
+  const histogramData = React.useContext(ExplorerSummaryHistogramsContext);
 
   if (loading) {
     return (
@@ -63,14 +76,22 @@ export const BlockThroughputHistogram: React.FC = () => {
     );
   }
 
-  if (loading || error) {
+  if (loading || error || !histogramData) {
     return <></>;
   }
 
+  const blockThroughput = Array.from(
+    zipWithIterable(
+      histogramData.blockSize,
+      histogramData.blockTime,
+      calculateThroughput,
+    ),
+  );
+
   return (
     <CardNoPadding className="throughput-histogram">
-      <HistogramRange.Provider value={histogramData.blockThroughput}>
-        <HistogramDomain.Provider value={histogramData.blocks}>
+      <HistogramRange.Provider value={blockThroughput}>
+        <HistogramDomain.Provider value={histogramData.blockHeights}>
           <HistogramYAxisLabelComponent.Provider value={LabelValue}>
             <ProvideDataStatistics>
               <HistogramSectionTitle>
