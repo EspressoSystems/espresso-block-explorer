@@ -1,21 +1,15 @@
 import { DataTableState } from '../../../../../../../../../../../../../src/components/data/data_table/data_table';
-import { BlockSummaryAsyncRetriever, BlockSummaryColumn } from '../../../../../../../../../../../../../src/models/block_explorer/block_summary';
 import { default as React } from 'react';
-export interface BlockSummary {
-    block: number;
-    proposer: ArrayBuffer[];
-    transactions: number;
-    size: number;
-    time: Date;
+export declare enum BlockSummaryColumn {
+    height = 0,
+    proposer = 1,
+    transactions = 2,
+    size = 3,
+    time = 4
 }
 export interface BlockSummaryDataTableState extends DataTableState<BlockSummaryColumn> {
     startAtBlock?: number;
 }
-/**
- * RetrieverContext represents the retriever to be utilized for retrieving
- * the BlockSummary data.
- */
-export declare const BlockSummaryAsyncRetrieverContext: React.Context<BlockSummaryAsyncRetriever>;
 export interface BlockSummaryDataLoaderProps {
     startAtBlock?: number;
     children?: React.ReactNode | React.ReactNode[];

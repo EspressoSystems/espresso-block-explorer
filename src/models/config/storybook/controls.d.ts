@@ -132,6 +132,7 @@ export interface EnvironmentArgs {
     environment: Environment;
     hotshotQueryServiceURL?: string;
     nodeValidatorWebSocketURL?: string;
+    stakingAPIServiceURL?: string;
 }
 export interface EnvironmentWithContractsArgs extends EnvironmentArgs {
     stakeTableContractAddress?: `0x${string}`;

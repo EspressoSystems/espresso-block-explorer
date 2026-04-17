@@ -8,10 +8,7 @@ interface LatestBlockSummaryPlaceholderProps {
 }
 export declare const LatestBlockSummaryPlaceholder: React.FC<LatestBlockSummaryPlaceholderProps>;
 interface LatestBlockSummaryContentProps {
-}
-export declare const LatestBlockSummaryContent: React.FC<LatestBlockSummaryContentProps>;
-interface LatestBlockSummaryProps {
     className?: string;
 }
-export declare const LatestBlockSummaryAsyncHandler: React.FC<LatestBlockSummaryProps>;
+export declare const LatestBlockSummaryContent: React.FC<LatestBlockSummaryContentProps>;
 export {};

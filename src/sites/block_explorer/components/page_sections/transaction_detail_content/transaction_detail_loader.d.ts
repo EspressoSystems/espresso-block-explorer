@@ -1,4 +1,3 @@
-import { TransactionDetailAsyncRetriever, TransactionDetailEntry } from '../../../../../../../../../../../../../src/models/block_explorer/transaction_detail';
 import { default as React } from 'react';
 /**
  * TransactionCommitContext represents the current hash for a Transaction.
@@ -9,17 +8,6 @@ export declare const TransactionCommitContext: React.Context<ArrayBuffer>;
  * within a block.
  */
 export declare const TransactionOffsetContext: React.Context<number>;
-/**
- * TransactionDetailContext is a context that indicates the current
- * TransactionDetail to make available to the descendants of the component
- * tree.
- */
-export declare const TransactionDetailContext: React.Context<TransactionDetailEntry>;
-/**
- * RetrieverContext is a context for retrieving the TransactionDetail
- * response.
- */
-export declare const TransactionDetailAsyncRetrieverContext: React.Context<TransactionDetailAsyncRetriever>;
 export interface TransactionDetailContentLoaderProps {
     children: React.ReactNode | React.ReactNode[];
 }

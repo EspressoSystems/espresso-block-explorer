@@ -1,12 +1,6 @@
 import { DataTableState } from '../../../../../../../../../../../../../src/components/data/data_table/data_table';
-import { RollUpDetailAsyncRetriever } from '../../../../../../../../../../../../../src/models/block_explorer/rollup_detail';
-import { TransactionSummaryColumn } from '../../../../../../../../../../../../../src/models/block_explorer/transaction_summary';
 import { default as React } from 'react';
-/**
- * RetrieverContext is a React Context that holds a reference to a
- * RollUpDetailAsyncRetriever
- */
-export declare const RollUpDetailAsyncRetrieverContext: React.Context<RollUpDetailAsyncRetriever>;
+import { TransactionSummaryColumn } from '../transaction_summary_data_table/transaction_summary_data_loader';
 export interface RollUpDetailDataTableState extends DataTableState<TransactionSummaryColumn> {
     height?: number;
     offset?: number;

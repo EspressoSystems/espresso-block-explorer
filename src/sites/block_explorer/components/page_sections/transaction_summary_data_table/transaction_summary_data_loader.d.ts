@@ -1,19 +1,11 @@
 import { DataTableState } from '../../../../../../../../../../../../../src/components/data/data_table/data_table';
-import { TransactionSummaryAsyncRetriever, TransactionSummaryColumn } from '../../../../../../../../../../../../../src/models/block_explorer/transaction_summary';
-import { TaggedBase64 } from '../../../../../../../../../../../../../src/models/espresso/tagged_base64/tagged_base64';
 import { default as React } from 'react';
-export interface TransactionSummary {
-    hash: TaggedBase64;
-    rollups: number[];
-    block: number;
-    offset: number;
-    time: Date;
+export declare const enum TransactionSummaryColumn {
+    hash = 0,
+    rollup = 1,
+    block = 2,
+    time = 3
 }
-/**
- * RetrieverContext is a React Context that holds a reference to a
- * TransactionSummaryAsyncRetriever
- */
-export declare const TransactionSummaryAsyncRetrieverContext: React.Context<TransactionSummaryAsyncRetriever>;
 export interface TransactionSummaryDataTableState extends DataTableState<TransactionSummaryColumn> {
     height?: number;
     offset?: number;
@@ -28,7 +20,7 @@ export interface TransactionsSummaryDataLoaderProps {
  * and kicks begins the process of retrieving the data.
  */
 export declare const TransactionSummaryDataLoader: React.FC<TransactionsSummaryDataLoaderProps>;
-export declare const TransactionSummaryDataFromStreamLoader: React.FC<TransactionsSummaryDataLoaderProps>;
+export declare const TransactionSummaryDataFromExplorerSummary: React.FC<TransactionsSummaryDataLoaderProps>;
 export interface TransactionsNavigationProps {
     className?: string;
 }
