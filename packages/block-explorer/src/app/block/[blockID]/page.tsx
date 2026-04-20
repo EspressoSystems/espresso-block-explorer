@@ -1,33 +1,34 @@
 import BlockClientComponent from '@/client_components/block';
-import { ServerComponentParamsProps } from '@/helpers/server_component_search_params_props';
-import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 /**
- * Block is a Page for an individual Block.  It's blockID is provided by
- * the path parameter in the URL.
- *
- * Using this, it will attempt to display information concerning this Block ID.
+ * generateMetadata returns a placeholder title that nginx replaces at request
+ * time via sub_filter.  The params are intentionally ignored — the same shell
+ * HTML is served for every block ID, so the placeholder is always emitted.
  */
-export default async function Block(
-  props: ServerComponentParamsProps<'blockID'>,
-) {
-  const params = await props.params;
+export function generateMetadata(): Metadata {
+  return { title: 'Block #__BLOCK_ID__' };
+}
 
-  // Let's make sure that we have our BlockID param
-  const { blockID = null } = params;
-  if (blockID === null) {
-    return notFound();
-  }
+/**
+ * generateStaticParams produces a single placeholder path so Next.js
+ * generates a static shell at build time.  At runtime, nginx serves this
+ * shell for any /block/<id> request, and the client component reads the
+ * actual blockID from useParams().
+ */
+export async function generateStaticParams() {
+  return [{ blockID: '0' }];
+}
 
-  // Let's make sure that our BlockID is a string, and is a numeric value
-  if (typeof blockID !== 'string') {
-    return notFound();
-  }
-
-  if (/[^0-9]/.test(blockID)) {
-    // This is an invalid block
-    return notFound();
-  }
-
-  return <BlockClientComponent blockID={Number(blockID)} />;
+/**
+ * Block is a Page for an individual Block.  The blockID is read client-side
+ * via useParams() after hydration so the same shell HTML can serve any block.
+ */
+export default function Block() {
+  return (
+    <Suspense fallback={<div />}>
+      <BlockClientComponent />
+    </Suspense>
+  );
 }

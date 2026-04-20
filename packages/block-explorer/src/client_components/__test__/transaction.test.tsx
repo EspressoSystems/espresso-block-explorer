@@ -1,9 +1,13 @@
 import { render } from '@testing-library/react';
-import { describe, it } from 'vitest';
+import { describe, it, vi } from 'vitest';
 import Transaction from '../transaction';
+
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/transaction/0-0',
+}));
 
 describe('Transaction', () => {
   it('should not throw', () => {
-    render(<Transaction height={0} offset={0} />);
+    render(<Transaction />);
   });
 });

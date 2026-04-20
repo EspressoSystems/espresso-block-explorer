@@ -1,27 +1,18 @@
 import TransactionsClientComponent from '@/client_components/transactions';
-import {
-  getNumberFromParams,
-  ServerComponentSearchParamsProps,
-} from '@/helpers/server_component_search_params_props';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+
+export const metadata: Metadata = { title: 'Transactions' };
 
 /**
  * Transactions is a page that lists a summary of all transactions within the
  * block chain in a paginated manner.
+ * Pagination params (height, offset, block) are read client-side via useSearchParams().
  */
-export default async function Transactions(
-  props: ServerComponentSearchParamsProps,
-) {
-  const searchParams = await props.searchParams;
-
-  const startAtBlock = getNumberFromParams(searchParams, 'height');
-  const offset = getNumberFromParams(searchParams, 'offset');
-  const block = getNumberFromParams(searchParams, 'block');
-
+export default function Transactions() {
   return (
-    <TransactionsClientComponent
-      startAtBlock={startAtBlock}
-      offset={offset}
-      block={block}
-    />
+    <Suspense fallback={<div />}>
+      <TransactionsClientComponent />
+    </Suspense>
   );
 }

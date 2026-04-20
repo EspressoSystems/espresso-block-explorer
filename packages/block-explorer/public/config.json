@@ -1,0 +1,6 @@
+{
+  "hotshot_query_service_url": "https://query.decaf.testnet.espresso.network/v0/",
+  "node_validator_service_url": "wss://nv.decaf.testnet.espresso.network/v0/",
+  "l1_validators_service_url": "https://staking-api.decaf.testnet.espresso.network/v0/staking/",
+  "ENVIRONMENT_NAME": "decaf"
+}

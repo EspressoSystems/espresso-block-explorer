@@ -8,21 +8,28 @@ import {
   ProvideRollUpDetailDataSource,
   RollUpPage,
 } from 'espresso-block-explorer-components/block-explorer';
+import { usePathname, useSearchParams } from 'next/navigation';
 
-export interface RollupClientComponentProps {
-  namespace: number;
-  startAtBlock?: number;
-  offset?: number;
-}
+// Ethereum Example Title:
 
-export default function RollupClientComponent(
-  props: RollupClientComponentProps,
-) {
+export default function RollupClientComponent() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [namespaceRaw = '0'] = pathname.split('/').reverse();
+  const namespace = Number(namespaceRaw ?? '0');
+
+  const startAtParamRaw = searchParams.get('height');
+  const startAtBlock =
+    startAtParamRaw === null ? undefined : Number(startAtParamRaw);
+
+  const offsetRaw = searchParams.get('offset');
+  const offset = offsetRaw === null ? undefined : Number(offsetRaw);
+
   return (
-    <NamespaceContext.Provider value={props.namespace}>
+    <NamespaceContext.Provider value={namespace}>
       <ProvideHotShotQueryServiceAPIContext>
         <ProvideRollUpDetailDataSource>
-          <RollUpPage startAtBlock={props.startAtBlock} offset={props.offset} />
+          <RollUpPage startAtBlock={startAtBlock} offset={offset} />
         </ProvideRollUpDetailDataSource>
       </ProvideHotShotQueryServiceAPIContext>
     </NamespaceContext.Provider>

@@ -1,9 +1,15 @@
 import { render } from '@testing-library/react';
-import { describe, it } from 'vitest';
+import { ReadonlyURLSearchParams } from 'next/navigation';
+import { describe, it, vi } from 'vitest';
 import Rollup from '../rollup';
+
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/rollup/0',
+  useSearchParams: () => new ReadonlyURLSearchParams(),
+}));
 
 describe('Rollup', () => {
   it('should not throw', () => {
-    render(<Rollup namespace={0} />);
+    render(<Rollup />);
   });
 });
