@@ -101,6 +101,7 @@ COPY docker/block-explorer-init.sh docker/block-explorer-generate-files.sh /
 RUN chmod +x /block-explorer-init.sh /block-explorer-generate-files.sh
 
 EXPOSE 3000
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["/block-explorer-init.sh"]
 
 
