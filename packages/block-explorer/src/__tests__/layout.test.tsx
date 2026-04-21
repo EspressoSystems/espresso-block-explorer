@@ -1,23 +1,19 @@
 import { render } from '@testing-library/react';
-import nextRouterMock from 'next-router-mock';
-import { describe, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import Layout from '../app/layout';
 
-vi.mock('next/router', () => nextRouterMock);
-vi.mock('next/navigation', () => {
-  return {
-    usePathName: () => {
-      return '/';
-    },
-  };
-});
-
 describe('Block Explorer/Components/Links/Layout', () => {
-  it('should not throw', () => {
-    render(
-      <Layout>
-        <div />
-      </Layout>,
-    );
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('should not throw', async () => {
+    expect(() =>
+      render(
+        <Layout>
+          <div />
+        </Layout>,
+      ),
+    ).not.toThrow();
   });
 });

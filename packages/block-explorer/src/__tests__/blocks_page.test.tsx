@@ -1,16 +1,33 @@
 import { render } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import {
+  ReadonlyURLSearchParams,
+  usePathname,
+  useSearchParams,
+} from 'next/navigation';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import Blocks from '../app/blocks/page';
 
+vi.mock('next/navigation');
+
+vi.mocked(usePathname).mockReturnValue('/blocks');
+vi.mocked(useSearchParams).mockReturnValue(
+  new URLSearchParams() as ReadonlyURLSearchParams,
+);
+
 describe('Blocks', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('should not throw', () => {
-    render(<Blocks />);
+    expect(() => render(<Blocks />)).not.toThrow();
+    expect(usePathname).not.toHaveBeenCalled();
+    expect(useSearchParams).toHaveBeenCalled();
   });
 
   it('should not throw when no params are provided', async () => {
-    await expect(
-      (async () =>
-        render(await Blocks({ searchParams: Promise.resolve({}) })))(),
-    ).resolves.toBeTruthy();
+    expect(() => render(<Blocks />)).not.toThrow();
+    expect(usePathname).not.toHaveBeenCalled();
+    expect(useSearchParams).toHaveBeenCalled();
   });
 });

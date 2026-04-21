@@ -1,17 +1,21 @@
 'use client';
 
-import { ProvideHotShotQueryServiceAPIContext } from 'espresso-block-explorer-components';
-import { EnvironmentContext } from 'espresso-block-explorer-components';
+import { getSiteTitleConfig } from '@/helpers/read_from_env';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import {
+  EnvironmentContext,
+  ProvideHotShotQueryServiceAPIContext,
+} from 'espresso-block-explorer-components';
 import {
   BlockNumberContext,
   ProvideTransactionDetailDataSource,
   TransactionOffsetContext,
   TransactionPage,
 } from 'espresso-block-explorer-components/block-explorer';
-import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-import { getSiteTitleConfig } from '@/helpers/read_from_env';
+import { notFound, usePathname } from 'next/navigation';
 import { useContext } from 'react';
-import { usePathname } from 'next/navigation';
+
+const pathRegExp = /\/transaction\/\d+\-\d+/;
 
 export default function TransactionClientComponent() {
   const pathname = usePathname();
@@ -25,6 +29,18 @@ export default function TransactionClientComponent() {
   const environment = useContext(EnvironmentContext);
   const { sitePrefix, networkSiteName } = getSiteTitleConfig(environment);
   useDocumentTitle(`${sitePrefix} Transaction ${slug} | ${networkSiteName}`);
+
+  if (
+    !pathRegExp.test(pathname) ||
+    typeof height !== 'number' ||
+    !Number.isInteger(height) ||
+    height < 0 ||
+    typeof offset !== 'number' ||
+    !Number.isInteger(offset) ||
+    offset < 0
+  ) {
+    notFound();
+  }
 
   return (
     <BlockNumberContext.Provider value={height}>

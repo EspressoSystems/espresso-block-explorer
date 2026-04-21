@@ -11,8 +11,10 @@ import {
   BlockPage,
   ProvideBlockDetailDataSource,
 } from 'espresso-block-explorer-components/block-explorer';
-import { usePathname } from 'next/navigation';
+import { usePathname, notFound } from 'next/navigation';
 import { useContext } from 'react';
+
+const pathRegExp = /\/block\/\d+/;
 
 export default function BlockClientComponent() {
   const pathname = usePathname();
@@ -22,6 +24,15 @@ export default function BlockClientComponent() {
   const environment = useContext(EnvironmentContext);
   const { sitePrefix, networkSiteName } = getSiteTitleConfig(environment);
   useDocumentTitle(`${sitePrefix} Block #${blockID} | ${networkSiteName}`);
+
+  if (
+    !pathRegExp.test(pathname) ||
+    typeof blockID !== 'number' ||
+    !Number.isInteger(blockID) ||
+    blockID < 0
+  ) {
+    notFound();
+  }
 
   return (
     <BlockNumberContext.Provider value={blockID}>

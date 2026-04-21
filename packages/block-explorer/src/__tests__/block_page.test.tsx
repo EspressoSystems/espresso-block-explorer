@@ -1,53 +1,54 @@
 import { render } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { notFound, usePathname } from 'next/navigation';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import Block from '../app/block/[blockID]/page';
-import { ReadonlyURLSearchParams } from 'next/navigation';
 
-const usePathnameMock = vi.fn();
-const useSearchParamsMock = vi.fn();
-
-// vi.mock('next/router', () => nextRouterMock);
-vi.mock('next/navigation', () => ({
-  usePathname: usePathnameMock,
-  useSearchParams: useSearchParamsMock,
-}));
+vi.mock('next/navigation');
 
 describe('Block', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('should not throw', async () => {
-    usePathnameMock.mockReturnValue('/block/0');
-    useSearchParamsMock.mockReturnValue(new ReadonlyURLSearchParams());
-    await expect(async () => render(<Block />)).resolves.not.toThrow();
+    vi.mocked(usePathname).mockReturnValue('/block/0');
+    expect(() => render(<Block />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(notFound).not.toHaveBeenCalled();
   });
 
   it('should throw when no params are provided', async () => {
-    usePathnameMock.mockReturnValue('/block/');
-    useSearchParamsMock.mockReturnValue(new ReadonlyURLSearchParams());
-    await expect(async () => render(await Block())).rejects.toThrow();
+    usePathname.mockReturnValue('/block');
+    expect(() => render(<Block />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(notFound).toHaveBeenCalled();
   });
 
   it('should throw when blockID is null', async () => {
-    usePathnameMock.mockReturnValue('/block/null');
-    useSearchParamsMock.mockReturnValue(new ReadonlyURLSearchParams());
-    await expect(async () => render(await Block())).rejects.toThrow();
+    usePathname.mockReturnValue('/block/null');
+    expect(() => render(<Block />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(notFound).toHaveBeenCalled();
   });
 
   it('should throw when blockID is not a string', async () => {
-    usePathnameMock.mockReturnValue('/block/true');
-    useSearchParamsMock.mockReturnValue(new ReadonlyURLSearchParams());
-    await expect(async () => render(await Block())).rejects.toThrow();
+    usePathname.mockReturnValue('/block/true');
+    expect(() => render(<Block />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(notFound).toHaveBeenCalled();
   });
 
   it('should throw when blockID is not numeric string', async () => {
-    usePathnameMock.mockReturnValue('/block/foo');
-    useSearchParamsMock.mockReturnValue(new ReadonlyURLSearchParams());
-
-    await expect(async () => render(await Block())).rejects.toThrow();
+    usePathname.mockReturnValue('/block/foo');
+    expect(() => render(<Block />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(notFound).toHaveBeenCalled();
   });
 
   it('renders an async component', async () => {
-    usePathnameMock.mockReturnValue('/block/0');
-    useSearchParamsMock.mockReturnValue(new ReadonlyURLSearchParams());
-
-    await expect(async () => render(await Block())).resolves.not.toThrow();
+    usePathname.mockReturnValue('/block/0');
+    expect(() => render(<Block />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(notFound).not.toHaveBeenCalled();
   });
 });
