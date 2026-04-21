@@ -17,27 +17,27 @@
 
   /* When no other state is being considered, this is the default state */
   --button--default--background-color: var(--color--white);
-  --button--default--foreground-color: var(--color--slate-700);
+  --button--default--foreground-color: var(--color--coffee);
   --button--default--border-width: 1px;
   --button--default--border-radius: 44px;
-  --button--default--border-color: var(--color--slate-200);
+  --button--default--border-color: var(--color--stroke);
   --button--default--border-style: solid;
   --button--default--outline-width: 0;
   --button--default--outline-color: var(--color--transparent);
   --button--default--outline-style: solid;
   --button--default--gap: 8px;
 
-  --button--hovered--border-color: var(--color--slate-300);
+  --button--hovered--border-color: var(--color--cookie);
 
-  --button--pressed--border-color: var(--color--slate-700);
-  --button--pressed--background-color: var(--color--slate-200);
+  --button--pressed--border-color: var(--color--coffee);
+  --button--pressed--background-color: var(--color--stroke);
 
-  --button--disabled--foreground-color: var(--color--slate-300);
-  --button--disabled--background-color: var(--color--slate-200);
-  --button--disabled--border-color: var(--color--slate-300);
+  --button--disabled--foreground-color: var(--color--cookie--alpha-24);
+  --button--disabled--background-color: var(--color--stroke);
+  --button--disabled--border-color: var(--color--stroke);
 
   --button--focused--outline-width: 4px;
-  --button--focused--outline-color: var(--color--sky-700);
+  --button--focused--outline-color: var(--color--blueberry);
 
   --button--transition--duration: 240ms;
   --button--icon-button--padding: 10px;
@@ -51,39 +51,39 @@
 
 [data-theme='light'] {
   --button--default--background-color: var(--color--white);
-  --button--default--foreground-color: var(--color--slate-700);
-  --button--default--border-color: var(--color--slate-200);
-  --button--hovered--border-color: var(--color--slate-300);
-  --button--pressed--border-color: var(--color--slate-700);
-  --button--pressed--background-color: var(--color--slate-200);
-  --button--disabled--foreground-color: var(--color--slate-300);
-  --button--disabled--background-color: var(--color--slate-200);
-  --button--disabled--border-color: var(--color--slate-300);
+  --button--default--foreground-color: var(--color--coffee);
+  --button--default--border-color: var(--color--stroke);
+  --button--hovered--border-color: var(--color--cookie);
+  --button--pressed--border-color: var(--color--coffee);
+  --button--pressed--background-color: var(--color--stroke);
+  --button--disabled--foreground-color: var(--color--cookie--alpha-24);
+  --button--disabled--background-color: var(--color--stroke);
+  --button--disabled--border-color: var(--color--stroke);
 }
 
 [data-theme='dark'] {
-  --button--default--background-color: var(--color--slate-950);
-  --button--default--foreground-color: var(--color--slate-300);
-  --button--default--border-color: var(--color--slate-700);
-  --button--hovered--border-color: var(--color--slate-500);
-  --button--pressed--border-color: var(--color--slate-300);
-  --button--pressed--background-color: var(--color--slate-800);
-  --button--disabled--foreground-color: var(--color--slate-300);
-  --button--disabled--background-color: var(--color--slate-500);
-  --button--disabled--border-color: var(--color--slate-300);
+  --button--default--background-color: var(--color--chocolate);
+  --button--default--foreground-color: var(--color--vanilla);
+  --button--default--border-color: var(--color--cookie--alpha-24);
+  --button--hovered--border-color: var(--color--cookie);
+  --button--pressed--border-color: var(--color--vanilla);
+  --button--pressed--background-color: var(--color--coffee);
+  --button--disabled--foreground-color: var(--color--cookie--alpha-24);
+  --button--disabled--background-color: var(--color--coffee);
+  --button--disabled--border-color: var(--color--cookie--alpha-24);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --button--default--background-color: var(--color--slate-950);
-    --button--default--foreground-color: var(--color--slate-300);
-    --button--default--border-color: var(--color--slate-700);
-    --button--hovered--border-color: var(--color--slate-500);
-    --button--pressed--border-color: var(--color--slate-300);
-    --button--pressed--background-color: var(--color--slate-800);
-    --button--disabled--foreground-color: var(--color--slate-300);
-    --button--disabled--background-color: var(--color--slate-500);
-    --button--disabled--border-color: var(--color--slate-300);
+    --button--default--background-color: var(--color--chocolate);
+    --button--default--foreground-color: var(--color--vanilla);
+    --button--default--border-color: var(--color--cookie--alpha-24);
+    --button--hovered--border-color: var(--color--cookie);
+    --button--pressed--border-color: var(--color--vanilla);
+    --button--pressed--background-color: var(--color--coffee);
+    --button--disabled--foreground-color: var(--color--cookie--alpha-24);
+    --button--disabled--background-color: var(--color--coffee);
+    --button--disabled--border-color: var(--color--cookie--alpha-24);
   }
 }
 

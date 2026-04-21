@@ -9,14 +9,15 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   position: relative;
-  background-color: var(--color--slate-50) !important;
-  color: var(--on-color--slate-50) !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fcebde 100%) !important;
+  background-attachment: fixed !important;
+  color: var(--color--coffee) !important;
 }
 
 @media screen and (prefers-color-scheme: dark) {
   html,
   body {
-    background-color: var(--color--slate-950) !important;
-    color: var(--on-color--slate-950) !important;
+    background: var(--color--chocolate) !important;
+    color: var(--color--vanilla) !important;
   }
 }

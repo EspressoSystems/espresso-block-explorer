@@ -1,6 +1,6 @@
 
 :root {
-  --divider--color: var(--color--slate-200);
+  --divider--color: var(--color--stroke);
   --divider--padding-vertical: 0;
   --divider--padding-horizontal: 0;
   --divider--margin-vertical: 16px;
@@ -8,16 +8,16 @@
 }
 
 [data-theme='light'] {
-  --divider--color: var(--color--slate-200);
+  --divider--color: var(--color--stroke);
 }
 
 [data-theme='dark'] {
-  --divider--color: var(--color--slate-700);
+  --divider--color: var(--color--coffee--alpha-60);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --divider--color: var(--color--slate-700);
+    --divider--color: var(--color--coffee--alpha-60);
   }
 }
 

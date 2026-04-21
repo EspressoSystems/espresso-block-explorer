@@ -27,5 +27,9 @@
   --color--citrus: #f0e89dff;
   --on-color--citrus: #605812ff;
 
-  /* Block of White */
+  /* Card and stroke tokens for block explorer theming */
+  --color--card-fill: #fff7ef;
+  --color--stroke: #f8e5d4;
+  --color--cookie--alpha-24: #b672373d;
+  --color--coffee--alpha-60: #451f1799;
 }

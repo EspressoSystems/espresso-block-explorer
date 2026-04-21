@@ -1,19 +1,19 @@
 
 :root {
-  --header--text--color: var(--color--slate-950);
+  --header--text--color: var(--color--coffee);
 }
 
 [data-theme='light'] {
-  --header--text--color: var(--color--slate-950);
+  --header--text--color: var(--color--coffee);
 }
 
 [data-theme='dark'] {
-  --header--text--color: var(--color--slate-100);
+  --header--text--color: var(--color--vanilla);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --header--text--color: var(--color--slate-100);
+    --header--text--color: var(--color--vanilla);
   }
 }
 

@@ -1,27 +1,27 @@
 
 :root {
-  --card--background-color: var(--color--white);
-  --card--on-background-color: var(--color--on-white);
-  --card--border-color: var(--color--slate-200);
+  --card--background-color: var(--color--card-fill);
+  --card--on-background-color: var(--color--coffee);
+  --card--border-color: var(--color--stroke);
 }
 
 [data-theme='light'] {
-  --card--background-color: var(--color--white);
-  --card--on-background-color: var(--color--slate-700);
-  --card--border-color: var(--color--slate-200);
+  --card--background-color: var(--color--card-fill);
+  --card--on-background-color: var(--color--coffee);
+  --card--border-color: var(--color--stroke);
 }
 
 [data-theme='dark'] {
-  --card--background-color: var(--color--slate-950);
-  --card--on-background-color: var(--color--slate-300);
-  --card--border-color: var(--color--slate-700);
+  --card--background-color: var(--color--coffee);
+  --card--on-background-color: var(--color--vanilla);
+  --card--border-color: var(--color--cookie--alpha-24);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --card--background-color: #222;
-    --card--on-background-color: #ccc;
-    --card--border-color: var(--color--slate-700);
+    --card--background-color: var(--color--coffee);
+    --card--on-background-color: var(--color--vanilla);
+    --card--border-color: var(--color--cookie--alpha-24);
   }
 }
 

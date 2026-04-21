@@ -1,18 +1,18 @@
 :root {
-  --nav-bar--link--default--color: var(--color--slate-950);
+  --nav-bar--link--default--color: var(--color--coffee);
 }
 
 [data-theme='light'] {
-  --nav-bar--link--default--color: var(--color--slate-950);
+  --nav-bar--link--default--color: var(--color--coffee);
 }
 
 [data-theme='dark'] {
-  --nav-bar--link--default--color: var(--color--slate-100);
+  --nav-bar--link--default--color: var(--color--vanilla);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --nav-bar--link--default--color: var(--color--slate-100);
+    --nav-bar--link--default--color: var(--color--vanilla);
   }
 }
 
