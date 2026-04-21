@@ -39,9 +39,28 @@ export interface SiteTitleConfig {
 export function getSiteTitleConfig(environment: string): SiteTitleConfig {
   switch (environment) {
     case 'decaf':
-      return { sitePrefix: 'TESTNET', networkSiteName: 'Espresso Decaf (ESP) Network' };
+      return {
+        sitePrefix: 'TESTNET',
+        networkSiteName: 'Espresso Decaf Block Network',
+      };
+
+    case 'milk':
+      return {
+        sitePrefix: 'DEVNET',
+        networkSiteName: 'Espresso Milk Block Network',
+      };
+
+    case 'water':
+      return {
+        sitePrefix: 'DEVNET',
+        networkSiteName: 'Espresso Water Block Network',
+      };
+
     default:
-      return { sitePrefix: 'MAINNET', networkSiteName: 'Espresso Block Explorer' };
+      return {
+        sitePrefix: 'MAINNET',
+        networkSiteName: 'Espresso Block Explorer',
+      };
   }
 }
 
