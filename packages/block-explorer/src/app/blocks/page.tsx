@@ -2,7 +2,14 @@ import BlocksClientComponent from '@/client_components/blocks';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
-export const metadata: Metadata = { title: 'Blocks' };
+export const metadata: Metadata = {
+  title: 'Blocks',
+  description:
+    'Blocks that have are included and finalized in __NETWORK_SITE_NAME__.',
+  alternates: {
+    canonical: '/blocks',
+  },
+};
 
 /**
  * Blocks represents the Blocks Summary Page.

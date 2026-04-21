@@ -7,6 +7,11 @@ import { Suspense } from 'react';
 // Emit the placeholders directly so nginx sub_filter resolves them at request time.
 export const metadata: Metadata = {
   title: '__SITE_PREFIX__ Espresso Block Explorer | __NETWORK_SITE_NAME__',
+  description:
+    '__NETWORK_SITE_NAME__ allows you to explore and search the Espresso chain for transactions, and blocks taking place on __NETWORK_NAME__',
+  alternates: {
+    canonical: '/',
+  },
 };
 
 /**

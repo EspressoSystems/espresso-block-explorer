@@ -8,7 +8,14 @@ import { Suspense } from 'react';
  * HTML is served for every block ID, so the placeholder is always emitted.
  */
 export function generateMetadata(): Metadata {
-  return { title: 'Block #__BLOCK_ID__' };
+  return {
+    title: 'Block #__BLOCK_ID__',
+    description:
+      '__NETWORK_NAME__ Block Height __BLOCK_ID__. The timestamp, number of transactions, and other details are outlined here.',
+    alternates: {
+      canonical: '/block/__BLOCK_ID__',
+    },
+  };
 }
 
 /**

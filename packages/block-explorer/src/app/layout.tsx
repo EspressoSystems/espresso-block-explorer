@@ -11,6 +11,15 @@ export const metadata: Metadata = {
     template: '__SITE_PREFIX__ %s | __NETWORK_SITE_NAME__',
     default: '__NETWORK_SITE_NAME__',
   },
+  metadataBase: new URL('https://placeholder.espresso.foundation'),
+  openGraph: {
+    type: 'website',
+    siteName: '__NETWORK_SITE_NAME__',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@EspressoSys',
+  },
 };
 
 /**

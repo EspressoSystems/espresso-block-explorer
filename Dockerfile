@@ -86,8 +86,8 @@ RUN apk add --no-cache bash tini
 
 # Block-Explorer specific environment variables
 ENV ENVIRONMENT_NAME="mainnet"
+ENV BASE_URL="https://explorer.espresso.network"
 ENV QUERY_SERVICE_URI=""
-ENV NODE_VALIDATOR_URI=""
 
 # Copy the static export into the nginx web root.
 COPY --from=block-explorer-builder /app/packages/block-explorer/out /usr/share/nginx/html
