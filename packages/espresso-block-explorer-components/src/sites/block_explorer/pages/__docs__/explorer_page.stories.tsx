@@ -20,6 +20,7 @@ import { default as React } from 'react';
 import { default as ExplorerPage } from '../explorer_page';
 import { ProvideExplorerSummaryAsyncStream } from '../hot_shot_query_service_adapters';
 import { StoryBookPathResolver } from '../story_book_path_resolver';
+import { parameters } from './meta_parameters';
 
 interface ExampleProps {
   environment: Environment;
@@ -63,9 +64,7 @@ const Example: React.FC<ExampleProps> = ({
 const meta: Meta = {
   title: 'Block Explorer/Pages/Explorer',
   component: Example,
-  parameters: {
-    layout: 'fullscreen',
-  },
+  parameters,
   argTypes: environmentArgTypes,
 };
 

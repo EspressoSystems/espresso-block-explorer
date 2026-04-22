@@ -20,6 +20,7 @@ import { default as React } from 'react';
 import { ProvideRollUpDetailDataSource } from '../hot_shot_query_service_adapters';
 import { default as RollUpPage } from '../roll_up_page';
 import { StoryBookPathResolver } from '../story_book_path_resolver';
+import { parameters } from './meta_parameters';
 
 interface ExampleProps {
   environment: Environment;
@@ -62,9 +63,7 @@ const Example: React.FC<ExampleProps> = ({
 const meta: Meta = {
   title: 'Block Explorer/Pages/Rollup',
   component: Example,
-  parameters: {
-    layout: 'fullscreen',
-  },
+  parameters,
   argTypes: {
     ...environmentArgTypes,
     namespace: {

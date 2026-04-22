@@ -1,3 +1,20 @@
+:root {
+  --summary-value-labeled--label--color: var(--color--coffee);
+}
+
+[data-theme='light'] {
+  --summary-value-labeled--label--color: var(--color--coffee);
+}
+
+[data-theme='dark'] {
+  --summary-value-labeled--label--color: var(--color--caramel);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --summary-value-labeled--label--color: var(--color--caramel);
+  }
+}
 
 .summary-value-labeled {
   display: grid;
@@ -9,8 +26,8 @@
 
 .summary-value-labeled > .label {
   grid-area: label;
-  color: var(--color--slate-500);
-  --text--color: var(--color--slate-500);
+  color: var(--summary-value-labeled--label--color);
+  --text--color: var(--summary-value-labeled--label--color);
 }
 
 .summary-value-labeled > div.value {

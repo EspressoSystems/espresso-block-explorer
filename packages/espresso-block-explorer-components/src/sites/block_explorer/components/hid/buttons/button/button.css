@@ -1,4 +1,3 @@
-
 :root {
   /*
     Buttons have reactivity states that we will need to transition between as
@@ -102,7 +101,7 @@ a.btn {
   --icon--fill-color: var(--button--default--foreground-color);
 
   box-sizing: border-box;
-  background-color: var(--button--default--background-color);
+  background-color: var(--button--default--background-color) !important;
   color: var(--button--default--foreground-color);
   border-width: var(--button--default--border-width);
   border-radius: var(--button--default--border-radius);

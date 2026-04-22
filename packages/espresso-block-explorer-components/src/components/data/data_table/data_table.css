@@ -26,11 +26,6 @@ table.data-table thead.type--ui--small th {
   font-weight: 500;
 }
 
-table.data-table th:not(:nth-last-child(1)),
-table.data-table td:not(:nth-last-child(1)) {
-  border-right: 1px solid var(--data-table--border-color);
-}
-
 table.data-table th,
 table.data-table tr:not(:nth-last-child(1)) td {
   border-bottom: 1px solid var(--data-table--border-color);

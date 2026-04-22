@@ -1,19 +1,17 @@
-
 :root {
-  --histogram-y-guide-lines--fill-color: var(--color--slate-200);
+  --histogram-y-guide-lines--fill-color: var(--color--cookie--alpha-24);
 }
 
 [data-theme='light'] {
-  --histogram-y-guide-lines--fill-color: var(--color--slate-200);
+  --histogram-y-guide-lines--fill-color: var(--color--cookie--alpha-24);
 }
 
 [data-theme='dark'] {
-  --histogram-y-guide-lines--fill-color: var(--color--slate-700);
+  --histogram-y-guide-lines--fill-color: var(--color--cookie--alpha-24);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --histogram-y-guide-lines--fill-color: var(--color--slate-700);
+    --histogram-y-guide-lines--fill-color: var(--color--cookie--alpha-24);
   }
 }
-

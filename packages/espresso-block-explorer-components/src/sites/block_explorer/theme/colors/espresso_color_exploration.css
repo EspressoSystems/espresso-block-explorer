@@ -32,6 +32,8 @@
   /* Card and stroke tokens for block explorer theming */
   --color--card-fill: #fff7ef;
   --color--stroke: #f8e5d4;
+  --color--chilli--alpha-60: #b6723799;
   --color--cookie--alpha-24: #b672373d;
+  --color--cookie--alpha-60: #b6723799;
   --color--coffee--alpha-60: #451f1799;
 }

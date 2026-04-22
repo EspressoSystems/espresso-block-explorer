@@ -1,15 +1,13 @@
-
 [data-theme='light'] {
-  --data-table--border-color: var(--color--slate-100);
+  --data-table--border-color: var(--color--cookie--alpha-24);
 }
 
 [data-theme='dark'] {
-  --data-table--border-color: var(--color--slate-700);
+  --data-table--border-color: var(--color--cookie--alpha-24);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --data-table--border-color: var(--color--slate-700);
+    --data-table--border-color: var(--color--cookie--alpha-24);
   }
 }
-
