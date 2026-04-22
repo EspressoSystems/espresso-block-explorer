@@ -15,10 +15,12 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: '__NETWORK_SITE_NAME__',
+    images: ['/esp-block-explorer.png'],
   },
   twitter: {
     card: 'summary_large_image',
     site: '@EspressoSys',
+    images: ['/esp-block-explorer.png'],
   },
 };
 
