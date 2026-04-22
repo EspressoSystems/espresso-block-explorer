@@ -1,4 +1,3 @@
-
 :root {
   --link--default--color: var(--color--coffee);
   --link--default--outline-style: solid;
@@ -15,16 +14,16 @@
 }
 
 [data-theme='dark'] {
-  --link--default--color: var(--color--chili);
+  --link--default--color: var(--color--chilli);
   --link--visited--color: var(--color--caramel);
-  --link--focused--outline-color: var(--color--chili);
+  --link--focused--outline-color: var(--color--chilli);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --link--default--color: var(--color--chili);
+    --link--default--color: var(--color--chilli);
     --link--visited--color: var(--color--caramel);
-    --link--focused--outline-color: var(--color--chili);
+    --link--focused--outline-color: var(--color--chilli);
   }
 }
 

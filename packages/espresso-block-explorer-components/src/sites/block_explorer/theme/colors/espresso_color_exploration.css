@@ -1,10 +1,12 @@
 :root {
+  --color--bronze: url(./bronze.png);
+  --on-color--bronze: var(--color--text-white);
   --color--coffee: #451f17ff;
   --on-color--coffee: #fff7efff;
   --color--chocolate: #270903ff;
   --on-color--chocolate: var(--color--text-white);
-  --color--chili: #ff792eff;
-  --on-color--chili: var(--color--text-white);
+  --color--chilli: #ff792eff;
+  --on-color--chilli: var(--color--text-white);
 
   /* Other Colors / color explorations */
   --color--caramel: #de9e67ff;
