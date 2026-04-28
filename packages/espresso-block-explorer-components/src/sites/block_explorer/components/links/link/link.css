@@ -1,30 +1,29 @@
-
 :root {
-  --link--default--color: var(--color--sky-700);
+  --link--default--color: var(--color--coffee);
   --link--default--outline-style: solid;
-  --link--visited--color: var(--color--slate-700);
-  --link--focused--outline-color: var(--color--sky-700);
+  --link--visited--color: var(--color--cookie);
+  --link--focused--outline-color: var(--color--coffee);
   --link--focused--outline-width: 4px;
   --link--transition--duration: 240ms;
 }
 
 [data-theme='light'] {
-  --link--default--color: var(--color--sky-700);
-  --link--visited--color: var(--color--slate-700);
-  --link--focused--outline-color: var(--color--sky-700);
+  --link--default--color: var(--color--coffee);
+  --link--visited--color: var(--color--cookie);
+  --link--focused--outline-color: var(--color--coffee);
 }
 
 [data-theme='dark'] {
-  --link--default--color: var(--color--sky-100);
-  --link--visited--color: var(--color--slate-300);
-  --link--focused--outline-color: var(--color--sky-100);
+  --link--default--color: var(--color--chilli);
+  --link--visited--color: var(--color--caramel);
+  --link--focused--outline-color: var(--color--chilli);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --link--default--color: var(--color--sky-100);
-    --link--visited--color: var(--color--slate-300);
-    --link--focused--outline-color: var(--color--sky-100);
+    --link--default--color: var(--color--chilli);
+    --link--visited--color: var(--color--caramel);
+    --link--focused--outline-color: var(--color--chilli);
   }
 }
 

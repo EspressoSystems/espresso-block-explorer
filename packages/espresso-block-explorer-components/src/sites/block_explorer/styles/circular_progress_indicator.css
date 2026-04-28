@@ -1,5 +1,3 @@
 :root {
-    --progress-indicator--stroke-color: var(--color--slate-500);
+  --progress-indicator--stroke-color: var(--color--cookie);
 }
-
-

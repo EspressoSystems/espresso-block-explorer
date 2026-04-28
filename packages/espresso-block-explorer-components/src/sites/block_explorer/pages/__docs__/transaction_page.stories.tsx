@@ -21,6 +21,7 @@ import { default as React } from 'react';
 import { ProvideTransactionDetailDataSource } from '../hot_shot_query_service_adapters';
 import { StoryBookPathResolver } from '../story_book_path_resolver';
 import { default as TransactionPage } from '../transaction_page';
+import { parameters } from './meta_parameters';
 
 interface ExampleProps {
   environment: Environment;
@@ -67,9 +68,7 @@ const Example: React.FC<ExampleProps> = ({
 const meta: Meta = {
   title: 'Block Explorer/Pages/Transaction',
   component: Example,
-  parameters: {
-    layout: 'fullscreen',
-  },
+  parameters,
   argTypes: {
     ...environmentArgTypes,
     height: {

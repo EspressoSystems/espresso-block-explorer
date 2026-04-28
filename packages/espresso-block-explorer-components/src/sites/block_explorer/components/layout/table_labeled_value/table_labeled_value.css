@@ -1,19 +1,18 @@
-
 :root {
-  --table-labeled-value--border-color: var(--color--slate-100);
+  --table-labeled-value--border-color: var(--color--cookie--alpha-24);
 }
 
 [data-theme='light'] {
-  --table-labeled-value--border-color: var(--color--slate-100);
+  --table-labeled-value--border-color: var(--color--cookie--alpha-24);
 }
 
 [data-theme='dark'] {
-  --table-labeled-value--border-color: var(--color--slate-700);
+  --table-labeled-value--border-color: var(--color--cookie--alpha-24);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --table-labeled-value--border-color: var(--color--slate-700);
+    --table-labeled-value--border-color: var(--color--cookie--alpha-24);
   }
 }
 

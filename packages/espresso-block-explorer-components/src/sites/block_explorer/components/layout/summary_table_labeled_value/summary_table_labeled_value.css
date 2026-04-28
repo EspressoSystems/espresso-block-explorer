@@ -1,5 +1,19 @@
 :root {
-  --summary-tabled-labeled-value--label-color: var(--color--slate-500);
+  --summary-tabled-labeled-value--label-color: var(--color--coffee);
+}
+
+[data-theme='light'] {
+  --summary-tabled-labeled-value--label-color: var(--color--coffee);
+}
+
+[data-theme='dark'] {
+  --summary-tabled-labeled-value--label-color: var(--color--caramel);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --summary-tabled-labeled-value--label-color: var(--color--caramel);
+  }
 }
 
 .summary-tabled-labeled-value {

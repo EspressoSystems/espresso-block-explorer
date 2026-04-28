@@ -18,6 +18,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { default as RollUpsPage } from '../roll_ups_page';
 import { StoryBookPathResolver } from '../story_book_path_resolver';
+import { parameters } from './meta_parameters';
 
 interface ExampleProps {
   environment: Environment;
@@ -54,9 +55,7 @@ const Example: React.FC<ExampleProps> = ({
 const meta: Meta = {
   title: 'Block Explorer/Pages/Rollups',
   component: Example,
-  parameters: {
-    layout: 'fullscreen',
-  },
+  parameters,
   argTypes: {
     ...environmentArgTypes,
   },
