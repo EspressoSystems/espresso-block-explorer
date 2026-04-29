@@ -1,5 +1,5 @@
 :root {
-  --histogram-plot--missing-background-color: var(--color-transparent);
+  --histogram-plot--missing-background-color: var(--color--transparent);
 }
 
 .histogram-plot rect.bbox {
