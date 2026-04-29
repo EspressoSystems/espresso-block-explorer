@@ -3,8 +3,7 @@ import {
   HistogramGraphWidth,
   HistogramLabelsBBox,
   HistogramPlotHeight,
-  HistogramRangeAffineTransform,
-  HistogramRangeStatistics,
+  HistogramRangeDimensionMapping,
   HistogramYAxisGuideLines,
   HistogramYAxisLabelComponent,
 } from './contexts';
@@ -28,16 +27,11 @@ export interface ProvideGuideLinesProps {
 export const ProvideGuideLines: React.FC<ProvideGuideLinesProps> = ({
   children,
 }) => {
-  const rangeStatistics = React.useContext(HistogramRangeStatistics);
-  const rangeAffineTransform = React.useContext(HistogramRangeAffineTransform);
-
+  const rangeAffineTransform = React.useContext(HistogramRangeDimensionMapping);
   const desiredGuideLineCount = 4;
-
-  const lines: number[] = [];
-  const step = rangeStatistics.max / desiredGuideLineCount;
-  for (let i = 0; i <= rangeAffineTransform.inputMax && step > 0; i += step) {
-    lines.push(i);
-  }
+  const lines = rangeAffineTransform.evenlySpacedGuideLines(
+    desiredGuideLineCount,
+  );
 
   return (
     <HistogramYAxisGuideLines.Provider value={lines}>
@@ -65,7 +59,7 @@ const yAxisLabelOffset = 60;
 export const HistogramGuideLines: React.FC = () => {
   const graphWidth = React.useContext(HistogramGraphWidth);
   const plotHeight = React.useContext(HistogramPlotHeight);
-  const rangeAffineTransform = React.useContext(HistogramRangeAffineTransform);
+  const rangeAffineTransform = React.useContext(HistogramRangeDimensionMapping);
   const lines = React.useContext(HistogramYAxisGuideLines);
   const labelsBBox = React.useContext(HistogramLabelsBBox);
 
@@ -104,7 +98,7 @@ export const HistogramYAxisLabels: React.FC<HistogramYAxisLabelsProps> = (
 ) => {
   const plotHeight = React.useContext(HistogramPlotHeight);
   const lines = React.useContext(HistogramYAxisGuideLines);
-  const rangeAffineTransform = React.useContext(HistogramRangeAffineTransform);
+  const rangeAffineTransform = React.useContext(HistogramRangeDimensionMapping);
   const comp = React.useContext(HistogramYAxisLabelComponent);
 
   return (

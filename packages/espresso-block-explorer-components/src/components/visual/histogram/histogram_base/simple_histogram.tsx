@@ -4,13 +4,13 @@ import { useSVGSize } from '../../svg/hooks';
 import { AffineTransform } from './affine_transform';
 import {
   HistogramDomain,
-  HistogramDomainAffineTransform,
+  HistogramDomainDimensionMapping,
   HistogramDomainStatistics,
   HistogramLabelsBBox,
   HistogramPlotHeight,
   HistogramPlotWidth,
   HistogramRange,
-  HistogramRangeAffineTransform,
+  HistogramRangeDimensionMapping,
   HistogramRangeStatistics,
 } from './contexts';
 import { DataStatistics } from './data_statistics';
@@ -21,6 +21,7 @@ import {
   ProvideGuideLines,
 } from './histogram_guide_lines';
 import { HistogramPlot } from './histogram_plot';
+import { LogScalingMapping } from './log_scaling';
 
 interface ProvideAffineTransformsProps {
   children: React.ReactNode | React.ReactNode[];
@@ -55,7 +56,7 @@ export const ProvideAffineTransforms: React.FC<
     plotWidth,
   );
 
-  const rangeAffineTransform = new AffineTransform(
+  const rangeAffineTransform = new LogScalingMapping(
     0,
     rangeStatistics.max,
     0,
@@ -63,11 +64,11 @@ export const ProvideAffineTransforms: React.FC<
   );
 
   return (
-    <HistogramDomainAffineTransform.Provider value={domainAffineTransform}>
-      <HistogramRangeAffineTransform.Provider value={rangeAffineTransform}>
+    <HistogramDomainDimensionMapping.Provider value={domainAffineTransform}>
+      <HistogramRangeDimensionMapping.Provider value={rangeAffineTransform}>
         {children}
-      </HistogramRangeAffineTransform.Provider>
-    </HistogramDomainAffineTransform.Provider>
+      </HistogramRangeDimensionMapping.Provider>
+    </HistogramDomainDimensionMapping.Provider>
   );
 };
 
