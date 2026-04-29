@@ -1,57 +1,69 @@
 import { render } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import {
+  notFound,
+  ReadonlyURLSearchParams,
+  usePathname,
+  useSearchParams,
+} from 'next/navigation';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import Transaction from '../app/transaction/[slug]/page';
 
+vi.mock('next/navigation');
+vi.mocked(usePathname).mockReturnValue('/transaction/');
+vi.mocked(useSearchParams).mockReturnValue(
+  new URLSearchParams() as ReadonlyURLSearchParams,
+);
+
 describe('Transaction', () => {
-  it('should not throw', () => {
-    render(<Transaction />);
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('should not throw', async () => {
+    vi.mocked(usePathname).mockReturnValue('/transaction/0-0');
+    expect(() => render(<Transaction />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(useSearchParams).not.toHaveBeenCalled();
+    expect(notFound).not.toHaveBeenCalled();
   });
 
   it('should throw when no params are provided', async () => {
-    await expect(async () =>
-      render(
-        await Transaction({
-          params: Promise.resolve({}),
-        }),
-      ),
-    ).rejects.toThrow();
+    vi.mocked(usePathname).mockReturnValue('/transaction/');
+    expect(() => render(<Transaction />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(useSearchParams).not.toHaveBeenCalled();
+    expect(notFound).toHaveBeenCalled();
   });
 
   it('should throw when slug is null', async () => {
-    await expect(async () =>
-      render(
-        await Transaction({
-          params: Promise.resolve({ slug: null }),
-        }),
-      ),
-    ).rejects.toThrow();
+    vi.mocked(usePathname).mockReturnValue('/transaction/null');
+    expect(() => render(<Transaction />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(useSearchParams).not.toHaveBeenCalled();
+    expect(notFound).toHaveBeenCalled();
   });
 
   it('should throw when slug is not a string', async () => {
-    await expect(async () =>
-      render(
-        await Transaction({
-          params: Promise.resolve({ slug: true }),
-        }),
-      ),
-    ).rejects.toThrow();
+    vi.mocked(usePathname).mockReturnValue('/transaction/true');
+    expect(() => render(<Transaction />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(useSearchParams).not.toHaveBeenCalled();
+    expect(notFound).toHaveBeenCalled();
   });
 
   it('should throw when slug is not numeric string', async () => {
-    await expect(async () =>
-      render(
-        await Transaction({
-          params: Promise.resolve({ slug: 'foo' }),
-        }),
-      ),
-    ).rejects.toThrow();
+    vi.mocked(usePathname).mockReturnValue('/transaction/foo');
+    expect(() => render(<Transaction />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(useSearchParams).not.toHaveBeenCalled();
+    expect(notFound).toHaveBeenCalled();
   });
 
   it('renders an async component', async () => {
-    render(
-      await Transaction({
-        params: Promise.resolve({ slug: '0' }),
-      }),
-    );
+    vi.mocked(usePathname).mockReturnValue('/transaction/0-0');
+    expect(() => render(<Transaction />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(useSearchParams).not.toHaveBeenCalled();
+    expect(notFound).not.toHaveBeenCalled();
   });
 });

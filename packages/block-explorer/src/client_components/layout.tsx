@@ -1,7 +1,10 @@
 'use client';
 
 import { EnvironmentProvider } from '@/helpers/environment';
-import { EnvironmentConfig } from '@/helpers/read_from_env';
+import {
+  determineEnvironmentFromVariable,
+  type EnvironmentConfig,
+} from '@/helpers/read_from_env';
 import {
   EnvironmentBanner,
   ProvideDerivedDateTimeFormatters,
@@ -13,16 +16,26 @@ import {
   InternalLinkAnchorComponentContext,
 } from 'espresso-block-explorer-components/block-explorer';
 import Link from 'next/link';
-
-export interface LayoutClientComponentProps {
-  env: EnvironmentConfig;
-  children: React.ReactNode | React.ReactNode[];
-}
+import { useEffect, useState } from 'react';
 
 export default function LayoutClientComponent({
-  env,
   children,
-}: LayoutClientComponentProps) {
+}: {
+  children: React.ReactNode | React.ReactNode[];
+}) {
+  const [env, setEnv] = useState<EnvironmentConfig>({ environment: 'mainnet' });
+
+  useEffect(() => {
+    fetch('/config.json')
+      .then((r) => r.json())
+      .then((config: { ENVIRONMENT_NAME?: string }) => {
+        setEnv({
+          environment: determineEnvironmentFromVariable(config.ENVIRONMENT_NAME),
+        });
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <EnvironmentProvider env={env}>
       <InternalLinkAnchorComponentContext.Provider value={Link as any}>

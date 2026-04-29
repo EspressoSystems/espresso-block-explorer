@@ -77,20 +77,32 @@ ENTRYPOINT ["/sbin/tini", "--"]
 # ============================================================================
 # Block Explorer Production Image
 # ============================================================================
-FROM base-production AS block-explorer
+# Uses nginx to serve the fully static export — no Node.js at runtime.
+# Runtime configuration is injected by the entrypoint before nginx starts.
+FROM nginx:1-alpine AS block-explorer
 
-# Copy standalone output (includes minimal node_modules)
-COPY --from=block-explorer-builder /app/packages/block-explorer/.next/standalone ./
+# Install bash (for the init script) and tini (for proper signal handling).
+RUN apk add --no-cache bash tini
 
-# Copy static files
-COPY --from=block-explorer-builder /app/packages/block-explorer/.next/static ./packages/block-explorer/.next/static
-COPY --from=block-explorer-builder /app/packages/block-explorer/public ./packages/block-explorer/public
+# Block-Explorer specific environment variables
+ENV ENVIRONMENT_NAME="mainnet"
+ENV BASE_URL="https://explorer.espresso.network"
+ENV QUERY_SERVICE_URI=""
+
+# Copy the static export into the nginx web root.
+COPY --from=block-explorer-builder /app/packages/block-explorer/out /usr/share/nginx/html
+
+# Replace the default nginx config with one that serves on port 3000.
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/block-explorer-nginx.conf /etc/nginx/conf.d/block-explorer-nginx.conf
 
 # Copy and setup init script
-COPY docker/block-explorer-init.sh ./block-explorer-init.sh
-RUN chmod +x ./block-explorer-init.sh
+COPY docker/block-explorer-init.sh docker/block-explorer-generate-files.sh /
+RUN chmod +x /block-explorer-init.sh /block-explorer-generate-files.sh
 
-CMD ["./block-explorer-init.sh"]
+EXPOSE 3000
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["/block-explorer-init.sh"]
 
 
 # ============================================================================

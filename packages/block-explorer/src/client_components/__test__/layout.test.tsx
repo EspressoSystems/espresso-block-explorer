@@ -5,11 +5,7 @@ import Layout from '../layout';
 describe('Block Explorer/Components/Links/Layout', () => {
   it('should not throw', () => {
     render(
-      <Layout
-        env={{
-          environment: 'fakeData',
-        }}
-      >
+      <Layout>
         <div />
       </Layout>,
     );

@@ -1,58 +1,54 @@
 import { render } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { notFound, usePathname } from 'next/navigation';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import Block from '../app/block/[blockID]/page';
 
-// vi.mock('next/router', () => nextRouterMock);
-// vi.mock('next/navigation', () => {
-//   return {
-//     usePathName: () => {
-//       return '/block/0';
-//     },
-//     useParams: () => {
-//       return {
-//         blockID: '0',
-//       };
-//     },
-//     useSearchParams: () => {
-//       return new URLSearchParams();
-//     },
-//   };
-// });
+vi.mock('next/navigation');
 
 describe('Block', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('should not throw', async () => {
-    render(<Block />);
+    vi.mocked(usePathname).mockReturnValue('/block/0');
+    expect(() => render(<Block />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(notFound).not.toHaveBeenCalled();
   });
 
   it('should throw when no params are provided', async () => {
-    await expect(async () =>
-      render(await Block({ params: Promise.resolve({}) })),
-    ).rejects.toThrow();
+    usePathname.mockReturnValue('/block');
+    expect(() => render(<Block />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(notFound).toHaveBeenCalled();
   });
 
   it('should throw when blockID is null', async () => {
-    await expect(async () =>
-      render(await Block({ params: Promise.resolve({ blockID: null }) })),
-    ).rejects.toThrow();
+    usePathname.mockReturnValue('/block/null');
+    expect(() => render(<Block />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(notFound).toHaveBeenCalled();
   });
 
   it('should throw when blockID is not a string', async () => {
-    await expect(async () =>
-      render(await Block({ params: Promise.resolve({ blockID: true }) })),
-    ).rejects.toThrow();
+    usePathname.mockReturnValue('/block/true');
+    expect(() => render(<Block />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(notFound).toHaveBeenCalled();
   });
 
   it('should throw when blockID is not numeric string', async () => {
-    await expect(async () =>
-      render(await Block({ params: Promise.resolve({ blockID: 'foo' }) })),
-    ).rejects.toThrow();
+    usePathname.mockReturnValue('/block/foo');
+    expect(() => render(<Block />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(notFound).toHaveBeenCalled();
   });
 
   it('renders an async component', async () => {
-    render(
-      await Block({
-        params: Promise.resolve({ blockID: '0' }),
-      }),
-    );
+    usePathname.mockReturnValue('/block/0');
+    expect(() => render(<Block />)).not.toThrow();
+    expect(usePathname).toHaveBeenCalled();
+    expect(notFound).not.toHaveBeenCalled();
   });
 });

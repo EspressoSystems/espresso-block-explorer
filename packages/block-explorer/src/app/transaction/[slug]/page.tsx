@@ -1,32 +1,42 @@
 import TransactionClientComponent from '@/client_components/transaction';
-import { ServerComponentParamsProps } from '@/helpers/server_component_search_params_props';
-import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+
+/**
+ * generateMetadata returns a placeholder title that nginx replaces at request
+ * time via sub_filter.  The params are intentionally ignored — the same shell
+ * HTML is served for every transaction slug, so the placeholder is always emitted.
+ */
+export function generateMetadata(): Metadata {
+  return {
+    title: 'Transaction __TX_SLUG__',
+    description:
+      'Transaction identifier __TX_SLUG__ outlines information about the transaction identified by the given block height and offset pair.',
+    alternates: {
+      canonical: '/transaction/__TX_SLUG__',
+    },
+  };
+}
+
+/**
+ * generateStaticParams produces a single placeholder path so Next.js
+ * generates a static shell at build time.  At runtime, nginx serves this
+ * shell for any /transaction/<slug> request, and the client component reads
+ * the actual slug from useParams().
+ */
+export async function generateStaticParams() {
+  return [{ slug: '0' }];
+}
 
 /**
  * Transaction is a detail page concerning an individual Transaction.
- * The transaction is identified by the Hash of the specifid Transaction.
+ * The slug is read client-side via useParams() after hydration so the same
+ * shell HTML can serve any transaction.
  */
-export default async function Transaction(
-  props: ServerComponentParamsProps<'slug'>,
-) {
-  const params = await props.params;
-
-  // Let's make sure that we have our BlockID param
-  const { slug = null } = params;
-  if (slug === null) {
-    return notFound();
-  }
-
-  // Let's make sure that our BlockID is a string, and is a numeric value
-  if (typeof slug !== 'string') {
-    return notFound();
-  }
-
-  const [height, offset = 0] = slug.split('-').map((part) => Number(part));
-
-  if (isNaN(height) || isNaN(offset)) {
-    return notFound();
-  }
-
-  return <TransactionClientComponent height={height} offset={offset} />;
+export default function Transaction() {
+  return (
+    <Suspense fallback={<div />}>
+      <TransactionClientComponent />
+    </Suspense>
+  );
 }

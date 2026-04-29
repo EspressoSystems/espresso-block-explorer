@@ -1,4 +1,3 @@
-
 :root {
   --card--background-color: var(--color--card-fill);
   --card--on-background-color: var(--color--coffee);
@@ -29,6 +28,7 @@ div.card {
   border: 1px solid var(--card--border-color);
   background-color: var(--card--background-color);
   --text--color: var(--card--on-background-color);
+  --icon--fill-color: var(--card--on-background-color);
   color: var(--card--on-background-color);
   border-radius: 8px;
   overflow-x: auto;

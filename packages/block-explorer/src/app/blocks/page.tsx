@@ -1,18 +1,26 @@
 import BlocksClientComponent from '@/client_components/blocks';
-import {
-  getNumberFromParams,
-  ServerComponentSearchParamsProps,
-} from '@/helpers/server_component_search_params_props';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+
+export const metadata: Metadata = {
+  title: 'Blocks',
+  description:
+    'Blocks that have are included and finalized in __NETWORK_SITE_NAME__.',
+  alternates: {
+    canonical: '/blocks',
+  },
+};
 
 /**
  * Blocks represents the Blocks Summary Page.
  *
  * It displays a summary of the Blocks listed in a paginated way.
+ * Pagination params (height) are read client-side via useSearchParams().
  */
-export default async function Blocks(props: ServerComponentSearchParamsProps) {
-  const searchParams = await props.searchParams;
-
-  const startAtBlock = getNumberFromParams(searchParams, 'height');
-
-  return <BlocksClientComponent startAtBlock={startAtBlock} />;
+export default function Blocks() {
+  return (
+    <Suspense fallback={<div />}>
+      <BlocksClientComponent />
+    </Suspense>
+  );
 }

@@ -26,6 +26,44 @@ export function determineEnvironmentFromVariable(
   }
 }
 
+export interface SiteTitleConfig {
+  sitePrefix: string;
+  networkSiteName: string;
+}
+
+/**
+ * getSiteTitleConfig maps a resolved environment key to the display strings
+ * used in page titles.  The same mapping is mirrored in the bash case statement
+ * in docker/block-explorer-init.sh — keep both in sync when adding environments.
+ */
+export function getSiteTitleConfig(environment: string): SiteTitleConfig {
+  switch (environment) {
+    case 'decaf':
+      return {
+        sitePrefix: 'TESTNET',
+        networkSiteName: 'Espresso Decaf Block Network',
+      };
+
+    case 'milk':
+      return {
+        sitePrefix: 'DEVNET',
+        networkSiteName: 'Espresso Milk Block Network',
+      };
+
+    case 'water':
+      return {
+        sitePrefix: 'DEVNET',
+        networkSiteName: 'Espresso Water Block Network',
+      };
+
+    default:
+      return {
+        sitePrefix: 'MAINNET',
+        networkSiteName: 'Espresso Block Explorer',
+      };
+  }
+}
+
 export function validateContractAddress(
   address: null | undefined | string,
 ): null | `0x${string}` {

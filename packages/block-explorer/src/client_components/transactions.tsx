@@ -8,18 +8,21 @@ import {
   TransactionsForBlockPage,
   TransactionsPage,
 } from 'espresso-block-explorer-components/block-explorer';
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export interface TransactionsClientComponentProps {
-  startAtBlock?: number;
-  offset?: number;
-  block?: number;
-}
+// Ethereum Example Title:
 
-export default function TransactionsClientComponent({
-  startAtBlock,
-  offset,
-  block,
-}: TransactionsClientComponentProps) {
+function TransactionsContent() {
+  const searchParams = useSearchParams();
+  const heightParam = searchParams.get('height');
+  const offsetParam = searchParams.get('offset');
+  const blockParam = searchParams.get('block');
+
+  const startAtBlock = heightParam !== null ? Number(heightParam) : undefined;
+  const offset = offsetParam !== null ? Number(offsetParam) : undefined;
+  const block = blockParam !== null ? Number(blockParam) : undefined;
+
   if (block !== undefined) {
     return (
       <ProvideHotShotQueryServiceAPIContext>
@@ -38,5 +41,13 @@ export default function TransactionsClientComponent({
         <TransactionsPage startAtBlock={startAtBlock} offset={offset} />
       </ProvideTransactionsSummaryDataSource>
     </ProvideHotShotQueryServiceAPIContext>
+  );
+}
+
+export default function TransactionsClientComponent() {
+  return (
+    <Suspense>
+      <TransactionsContent />
+    </Suspense>
   );
 }

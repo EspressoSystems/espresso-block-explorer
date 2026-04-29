@@ -1,16 +1,28 @@
 import LayoutClientComponent from '@/client_components/layout';
-import {
-  determineEnvironmentFromVariable,
-  type EnvironmentConfig,
-} from '@/helpers/read_from_env';
-import 'espresso-block-explorer-components/espresso-block-explorer-components.css';
 import 'espresso-block-explorer-components/block-explorer.css';
+import 'espresso-block-explorer-components/espresso-block-explorer-components.css';
+
+import type { Metadata } from 'next';
 import React from 'react';
 import './globals.css';
 
-// Force dynamic rendering to ensure environment variables are read at runtime
-export const dynamic = 'force-dynamic';
-export const revalidate = 86400;
+export const metadata: Metadata = {
+  title: {
+    template: '__SITE_PREFIX__ %s | __NETWORK_SITE_NAME__',
+    default: '__NETWORK_SITE_NAME__',
+  },
+  metadataBase: new URL('https://placeholder.espresso.foundation'),
+  openGraph: {
+    type: 'website',
+    siteName: '__NETWORK_SITE_NAME__',
+    images: ['/esp-block-explorer.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@EspressoSys',
+    images: ['/esp-block-explorer.png'],
+  },
+};
 
 /**
  * RootLayout is the default layout of the NextJS Application.  All Pages,
@@ -19,18 +31,11 @@ export const revalidate = 86400;
  * As such, we include a bunch of the provided Contexts at this level in
  * order to ensure that they are available consistently on every page.
  */
-export default async function RootLayout({
-  children,
-}: React.PropsWithChildren) {
-  // Read environment variables on the server at runtime
-  const env: EnvironmentConfig = {
-    environment: determineEnvironmentFromVariable(process.env.ENVIRONMENT_NAME),
-  };
-
+export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <html lang="en">
       <body>
-        <LayoutClientComponent env={env}>{children}</LayoutClientComponent>
+        <LayoutClientComponent>{children}</LayoutClientComponent>
       </body>
     </html>
   );
