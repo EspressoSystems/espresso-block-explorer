@@ -8,7 +8,7 @@ import {
   HistogramPlotHeight,
   HistogramPlotWidth,
   HistogramRange,
-  HistogramRangeAffineTransform,
+  HistogramRangeDimensionMapping,
   HistogramRangeStatistics,
 } from './contexts';
 import './histogram_plot.css';
@@ -35,7 +35,7 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
   const plotHeight = React.useContext(HistogramPlotHeight);
   const values = React.useContext(HistogramRange);
   const rangeStatistics = React.useContext(HistogramRangeStatistics);
-  const affineTransform = React.useContext(HistogramRangeAffineTransform);
+  const affineTransform = React.useContext(HistogramRangeDimensionMapping);
 
   // We have nothing to plot, so it doesn't make sense to try to calculate
   // things to plot.  We return early here to save the headache, and any
