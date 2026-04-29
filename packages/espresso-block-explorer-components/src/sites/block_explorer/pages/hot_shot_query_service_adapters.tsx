@@ -1,8 +1,12 @@
+import { assert } from '@/assert/assert';
+import { breakpoint } from '@/assert/debugger';
 import { sleep } from '@/async/sleep';
 import { AsyncIterableResolver } from '@/components/data/async_data';
 import { ErrorJoiner } from '@/contexts/error_provider';
 import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
+import { dropIterable, everyIterable } from '@/functional/functional';
 import { ExplorerSummary } from '@/service/hotshot_query_service/explorer/explorer_summary';
+import { SummaryHistograms } from '@/service/hotshot_query_service/explorer/summary_histograms';
 import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
 import { default as React } from 'react';
 
@@ -90,6 +94,129 @@ export interface ProvideTransactionsSummaryDataSourceProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * isNotNull is a helper function utilized to type check that something that
+ * can be null or something else is definitely not null.
+ */
+function isNotNull<T>(value: null | T): value is T {
+  return value !== null;
+}
+
+/**
+ * isNotUndefined is a helper function utilized to type check that something
+ * that can be undefined or something else is definitely not undefined.
+ */
+function isNotUndefined<T>(value: undefined | T): value is T {
+  return value !== undefined;
+}
+
+/**
+ * isSomething is a helper function that ensures that an an item provided
+ * is not null or undefined.
+ */
+function isSomething<T>(value: null | undefined | T): value is T {
+  return isNotNull(value) && isNotUndefined(value);
+}
+
+/**
+ * replaceArrayMissingEntriesWithFallback is a helper function to help quickly
+ * replace missing data in the new array with the corresponding value in the
+ * fallback (previous) array.
+ *
+ * All data before the given offset is "new" and not available in the previous
+ * data set.
+ */
+function replaceArrayMissingEntriesWithFallback(
+  data: (null | number)[],
+  previous: (null | number)[],
+  offset: number,
+): (null | number)[] {
+  return data.map((value, index) => {
+    if (index < offset) {
+      return value;
+    }
+
+    return value ?? previous[index - offset] ?? null;
+  });
+}
+
+/**
+ * fallbackToPreviousDataForHistogramIfMissing is a helper function that will
+ * take the two `ExplorerSummary` values, the incoming one, and the previous
+ * one, and will try to replace any potentially missing data with data
+ * available in the previous entry (if available).
+ */
+function fallbackToPreviousDataForHistogramIfMissing(
+  next: ExplorerSummary,
+  previous: null | ExplorerSummary = null,
+): ExplorerSummary {
+  if (!previous) {
+    return next;
+  }
+
+  const offset = next.latestBlock.height - previous.latestBlock.height;
+  assert(offset >= 0);
+
+  if (offset >= next.histograms.blockHeights.length) {
+    // No need to reconstruct things, we're just replacing
+    // everythning.
+    return next;
+  }
+
+  // Do we even need to perform a replacement?
+  if (
+    everyIterable(
+      dropIterable(next.histograms.blockHeights, offset),
+      isSomething,
+    ) &&
+    everyIterable(
+      dropIterable(next.histograms.blockSize, offset),
+      isSomething,
+    ) &&
+    everyIterable(
+      dropIterable(next.histograms.blockTime, offset),
+      isSomething,
+    ) &&
+    everyIterable(
+      dropIterable(next.histograms.blockTransactions, offset),
+      isSomething,
+    )
+  ) {
+    return next;
+  }
+
+  breakpoint();
+
+  return new ExplorerSummary(
+    next.latestBlock,
+    next.genesisOverview,
+    next.latestBlocks,
+    next.latestTransactions,
+    new SummaryHistograms(
+      replaceArrayMissingEntriesWithFallback(
+        next.histograms.blockTime,
+        previous.histograms.blockTime,
+        offset,
+      ),
+      replaceArrayMissingEntriesWithFallback(
+        next.histograms.blockSize,
+        previous.histograms.blockSize,
+        offset,
+      ),
+      replaceArrayMissingEntriesWithFallback(
+        next.histograms.blockTransactions,
+        previous.histograms.blockTransactions,
+        offset,
+      ),
+      replaceArrayMissingEntriesWithFallback(
+        next.histograms.blockHeights,
+        previous.histograms.blockHeights,
+        offset,
+      ),
+    ),
+  );
+}
+
 export const kNumberOfSampleBlocks = 30;
 
 /**
@@ -137,7 +264,10 @@ async function* explorerOverviewStream(service: HotShotQueryService) {
         continue;
       }
 
-      lastExplorerOverview = next;
+      lastExplorerOverview = fallbackToPreviousDataForHistogramIfMissing(
+        next,
+        lastExplorerOverview,
+      );
       yield next;
     } catch (err: unknown) {
       // We encountered an error. Depending on the error, we may want to do

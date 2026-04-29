@@ -494,3 +494,33 @@ export function* appendIterables<T>(...iterables: Iterable<T>[]): Generator<T> {
 export function* emptyIterator<T>(): Generator<T> {
   return;
 }
+
+/**
+ * everyIterator is a function that performs the given predicate check against
+ * every element contained within the given `Iterator`, only returning a
+ * positive result if the predicate passes for every element within the
+ * Iterator.
+ */
+export function everyIterator<T, S extends T = T>(
+  value: Iterator<T>,
+  predicate: (value: T) => value is S,
+): value is Iterator<S> {
+  return foldRIterator(
+    (acc: boolean, item: T): item is S => acc && predicate(item),
+    true,
+    value,
+  );
+}
+
+/**
+ * everyIterable is a function that performs the given predicate check against
+ * every element contained within teh given `Iterable`, only returning a
+ * positive result if the predicate passes for every element within the
+ * Iterable.
+ */
+export function everyIterable<T, S extends T = T>(
+  value: Iterable<T>,
+  predicate: (value: T) => value is S,
+): value is Iterable<S> {
+  return everyIterator<T, S>(value[Symbol.iterator](), predicate);
+}
