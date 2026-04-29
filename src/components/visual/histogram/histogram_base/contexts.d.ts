@@ -1,7 +1,7 @@
 import { default as React } from 'react';
-import { AffineTransform } from './affine_transform';
 import { DataStatistics } from './data_statistics';
 import { HistogramLabelProps } from './histogram_default_label';
+import { DimensionMapping } from './dimension_mapping';
 export declare const HistogramGraphWidth: React.Context<number>;
 export declare const HistogramGraphHeight: React.Context<number>;
 export declare const HistogramPlotWidth: React.Context<number>;
@@ -20,7 +20,7 @@ export declare const HistogramGraphValueRect: React.Context<{
     height: number;
 }>;
 export declare const HistogramLabelsBBox: React.Context<DOMRect | null>;
-export declare const HistogramRangeAffineTransform: React.Context<AffineTransform>;
-export declare const HistogramDomainAffineTransform: React.Context<AffineTransform>;
+export declare const HistogramRangeDimensionMapping: React.Context<DimensionMapping>;
+export declare const HistogramDomainDimensionMapping: React.Context<DimensionMapping>;
 export declare const HistogramYAxisLabelComponent: React.Context<HistogramLabel>;
 export type HistogramLabel = React.FC<HistogramLabelProps>;
