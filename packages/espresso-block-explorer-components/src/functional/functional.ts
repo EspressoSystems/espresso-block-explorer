@@ -505,11 +505,12 @@ export function everyIterator<T, S extends T = T>(
   value: Iterator<T>,
   predicate: (value: T) => value is S,
 ): value is Iterator<S> {
-  return foldRIterator(
-    (acc: boolean, item: T): item is S => acc && predicate(item),
-    true,
-    value,
-  );
+  for (let next = value.next(); !next.done; next = value.next()) {
+    if (!predicate(next.value)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
