@@ -1,5 +1,4 @@
 import { assert } from '@/assert/assert';
-import { breakpoint } from '@/assert/debugger';
 import { sleep } from '@/async/sleep';
 import { AsyncIterableResolver } from '@/components/data/async_data';
 import { ErrorJoiner } from '@/contexts/error_provider';
@@ -185,8 +184,6 @@ function fallbackToPreviousDataForHistogramIfMissing(
     return next;
   }
 
-  breakpoint();
-
   return new ExplorerSummary(
     next.latestBlock,
     next.genesisOverview,
@@ -264,11 +261,13 @@ async function* explorerOverviewStream(service: HotShotQueryService) {
         continue;
       }
 
-      lastExplorerOverview = fallbackToPreviousDataForHistogramIfMissing(
+      const nextResult = fallbackToPreviousDataForHistogramIfMissing(
         next,
         lastExplorerOverview,
       );
-      yield next;
+
+      lastExplorerOverview = nextResult;
+      yield nextResult;
     } catch (err: unknown) {
       // We encountered an error. Depending on the error, we may want to do
       // specific things for specific errors.  But in general, in order to
