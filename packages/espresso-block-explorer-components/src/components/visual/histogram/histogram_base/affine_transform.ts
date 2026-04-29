@@ -35,8 +35,8 @@ export class AffineTransform {
   evenlySpacedGuideLines(guideLineCount: number): number[] {
     const lines: number[] = [];
     const inputMax = this.inputMax;
-    const step = inputMax / guideLineCount;
-    for (let i = 0; i <= inputMax && step > 0; i += step) {
+    const step = guideLineCount > 1 ? inputMax / (guideLineCount - 1) : 0;
+    for (let i = 0; i < inputMax && step > 0; i += step) {
       lines.push(i);
     }
 

@@ -94,7 +94,7 @@ export class LogScalingMapping
 
     const lMax = this.scaling.log(inputMax);
     const lMin = this.scaling.log(inputMin);
-    const step = (lMax - lMin) / (guideLineCount - 1);
+    const step = guideLineCount > 1 ? (lMax - lMin) / (guideLineCount - 1) : 0;
 
     for (let i = 0; i < guideLineCount; i++) {
       const value = lMin + step * i;
