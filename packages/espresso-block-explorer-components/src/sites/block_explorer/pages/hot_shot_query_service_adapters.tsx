@@ -3,7 +3,7 @@ import { sleep } from '@/async/sleep';
 import { AsyncIterableResolver } from '@/components/data/async_data';
 import { ErrorJoiner } from '@/contexts/error_provider';
 import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
-import { dropIterable, everyIterable } from '@/functional/functional';
+import { everyIterable, takeIterable } from '@/functional/functional';
 import { ExplorerSummary } from '@/service/hotshot_query_service/explorer/explorer_summary';
 import { SummaryHistograms } from '@/service/hotshot_query_service/explorer/summary_histograms';
 import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
@@ -130,12 +130,13 @@ function replaceArrayMissingEntriesWithFallback(
   previous: (null | number)[],
   offset: number,
 ): (null | number)[] {
+  const overlapCount = data.length - offset;
   return data.map((value, index) => {
-    if (index < offset) {
+    if (index >= overlapCount) {
       return value;
     }
 
-    return value ?? previous[index - offset] ?? null;
+    return value ?? previous[index + offset] ?? null;
   });
 }
 
@@ -162,22 +163,24 @@ function fallbackToPreviousDataForHistogramIfMissing(
     return next;
   }
 
+  const overlapCount = next.histograms.blockHeights.length - offset;
+
   // Do we even need to perform a replacement?
   if (
     everyIterable(
-      dropIterable(next.histograms.blockHeights, offset),
+      takeIterable(next.histograms.blockHeights, overlapCount),
       isSomething,
     ) &&
     everyIterable(
-      dropIterable(next.histograms.blockSize, offset),
+      takeIterable(next.histograms.blockSize, overlapCount),
       isSomething,
     ) &&
     everyIterable(
-      dropIterable(next.histograms.blockTime, offset),
+      takeIterable(next.histograms.blockTime, overlapCount),
       isSomething,
     ) &&
     everyIterable(
-      dropIterable(next.histograms.blockTransactions, offset),
+      takeIterable(next.histograms.blockTransactions, overlapCount),
       isSomething,
     )
   ) {
@@ -261,6 +264,7 @@ async function* explorerOverviewStream(service: HotShotQueryService) {
         continue;
       }
 
+      next.histograms.blockSize[10] = null;
       const nextResult = fallbackToPreviousDataForHistogramIfMissing(
         next,
         lastExplorerOverview,
