@@ -1,0 +1,1 @@
+import{g as e}from"./typography-CqA07OnF.js";const r=e("h1");try{heading1.displayName="heading1",heading1.__docgenInfo={description:"Heading1 represents the standard h1 with the appropriate text styles.",displayName:"heading1",props:{className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}}}}}catch{}export{r as H};
