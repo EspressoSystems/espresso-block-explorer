@@ -70,15 +70,6 @@ export class LogScalingMapping
    * then perform an affine transform into the corresponding output space.
    */
   transform(input: number): number {
-    // We want to Scale from inputMin to inputMax utilizing a log based
-    // scaling factor.
-    // We also need to avoid log values less than `1`, as that would be
-    // negative.
-    // Let's perform two separate transforms.  One to map the values starting
-    // from a minimum of `1`, and then we can scale the resulting value in
-    // a logarithmic way.  This allows us to avoid the issues with displaying
-    // a logirthmic value.
-
     return super.transform(this.scaling.log(input));
   }
 
