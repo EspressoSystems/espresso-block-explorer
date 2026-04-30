@@ -189,3 +189,17 @@ export declare function appendIterables<T>(...iterables: Iterable<T>[]): Generat
  * emptyIterator is an Iterable / Iterator that yields no elements.
  */
 export declare function emptyIterator<T>(): Generator<T>;
+/**
+ * everyIterator is a function that performs the given predicate check against
+ * every element contained within the given `Iterator`, only returning a
+ * positive result if the predicate passes for every element within the
+ * Iterator.
+ */
+export declare function everyIterator<T, S extends T = T>(value: Iterator<T>, predicate: (value: T) => value is S): value is Iterator<S>;
+/**
+ * everyIterable is a function that performs the given predicate check against
+ * every element contained within teh given `Iterable`, only returning a
+ * positive result if the predicate passes for every element within the
+ * Iterable.
+ */
+export declare function everyIterable<T, S extends T = T>(value: Iterable<T>, predicate: (value: T) => value is S): value is Iterable<S>;
