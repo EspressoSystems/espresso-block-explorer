@@ -264,7 +264,6 @@ async function* explorerOverviewStream(service: HotShotQueryService) {
         continue;
       }
 
-      next.histograms.blockSize[10] = null;
       const nextResult = fallbackToPreviousDataForHistogramIfMissing(
         next,
         lastExplorerOverview,
