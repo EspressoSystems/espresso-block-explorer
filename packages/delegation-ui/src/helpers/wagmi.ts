@@ -12,7 +12,11 @@ function httpTransports(urls: readonly string[]) {
 export const mainnet: CreateConfigParameters = {
   chains: [chains.mainnet],
   transports: {
-    [chains.mainnet.id]: httpTransports(chains.mainnet.rpcUrls.default.http),
+    [chains.mainnet.id]: httpTransports([
+      'https://rpc.flashbots.net/',
+      'https://eth.drpc.org/',
+      'https://rpc.mevblocker.io/',
+    ]),
   },
 };
 
