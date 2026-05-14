@@ -5,12 +5,18 @@ import { mock } from 'wagmi/connectors';
 import { Environment } from '../environment/environment';
 import { WagmiConfig } from '../environment/wagmi';
 
+function httpTransports(urls: readonly string[]) {
+  return fallback(urls.map((url) => http(url)));
+}
+
 export const mainnet: WagmiConfig = createConfig({
   chains: [chains.mainnet],
   transports: {
-    [chains.mainnet.id]: fallback(
-      chains.mainnet.rpcUrls.default.http.map((u) => http(u)),
-    ),
+    [chains.mainnet.id]: httpTransports([
+      'https://rpc.flashbots.net/',
+      'https://eth.drpc.org/',
+      'https://rpc.mevblocker.io/',
+    ]),
   },
 });
 
