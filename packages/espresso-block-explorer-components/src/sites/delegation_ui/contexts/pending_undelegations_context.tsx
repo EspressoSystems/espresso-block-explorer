@@ -21,7 +21,7 @@ export const DerivePendingUndelegations: React.FC<React.PropsWithChildren> = ({
 }) => {
   const walletSnapshot = React.useContext(WalletSnapshotContext);
 
-  const pendingExits = new Map(
+  const pendingUndelegations = new Map(
     mapIterable(
       walletSnapshot?.pendingUndelegations ??
         emptyIterator<PendingWithdrawal>(),
@@ -30,7 +30,7 @@ export const DerivePendingUndelegations: React.FC<React.PropsWithChildren> = ({
   );
 
   return (
-    <PendingUndelegationsContext.Provider value={pendingExits}>
+    <PendingUndelegationsContext.Provider value={pendingUndelegations}>
       {children}
     </PendingUndelegationsContext.Provider>
   );

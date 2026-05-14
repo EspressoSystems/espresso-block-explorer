@@ -1,6 +1,5 @@
 import { Text } from '@/components/text';
 import { PadlockSquare2 } from '@/components/visual/icons/sharp_line';
-import { Now } from '@/contexts/now_provider';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
 import { compareIterables } from '@/functional/functional';
 import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
@@ -44,8 +43,6 @@ const FilterToAvailablePendingExits: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const pendingExits = React.useContext(PendingExitsContext);
-  const nodeAddressList = React.useContext(NodeAddressListContext);
-  const now = React.useContext(Now);
 
   const [pendingExitsList, setPendingExitsList] = React.useState<
     `0x${string}`[]
@@ -62,7 +59,7 @@ const FilterToAvailablePendingExits: React.FC<React.PropsWithChildren> = ({
     return () => {
       setNextPendingExitsList = () => {};
     };
-  }, [nodeAddressList, now, pendingExits, pendingExitsList]);
+  }, [pendingExits, pendingExitsList]);
 
   return (
     <NodeAddressListContext.Provider value={pendingExitsList}>
