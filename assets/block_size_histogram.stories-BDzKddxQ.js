@@ -1,0 +1,15 @@
+import{j as m}from"./iframe-D2UHUSw1.js";import{D as c}from"./data_provider-CqCkzHOO.js";import{E as u}from"./explorer_api_contexts-PgOtBkMv.js";import{t as a,d as p,b as s}from"./functional-DK5v8yH0.js";import{S as g}from"./summary_histograms-CBvVkNXk.js";import{B as d}from"./block_size_histogram-BpusS-IG.js";import"./preload-helper-PPVm8Dsz.js";import"./missing_element_error-CMLVwjEG.js";import"./string-DCKD4j-j.js";import"./assert-B6AoMnt_.js";import"./base64-ClQJ-u6S.js";import"./unimplemented_error-CMF8SzXs.js";import"./card-BZ_WH6Xl.js";import"./higher_order-Do31eXwD.js";import"./value_labeled-8GSCyMqQ.js";import"./typography-xRdc2P5A.js";import"./label-Ds3kgVYY.js";import"./circular_progress_indicator-DSGwwahE.js";import"./container_loading-Bh7kqIeW.js";import"./skeleton_content-PL2g6D7T.js";import"./byte_size_text-B8LVqjcy.js";import"./number_formatters_provider-deQT8NaH.js";import"./locale_provider-CB6qzanm.js";import"./wallet_address_text-o_fKNCuy.js";import"./date_time_formatters_provider-C6LPHp4i.js";/* empty css               */import"./text-CEhLEmI-.js";import"./date_time_text-UFu38czj.js";import"./full_hex_text-DIaruHQS.js";import"./array_buffer_hex-B8TZXvFc.js";import"./hex_text-qUJvM0mV.js";import"./money_text-D0xggOZ3.js";import"./money_text_full-c4Ixq9j3.js";import"./number_text-Dfa8DO6a.js";import"./percentage_text-3gwyuOf8.js";import"./relative_time_since_date_text-BlTkaE0N.js";import"./tagged_base64_text-D99lZCjx.js";import"./time_text-C0-uqWbV.js";import"./loading_provider-C-vOZWwa.js";import"./histogram_section_title-BVbh9n9C.js";import"./svg_tool_tip-C2bRf1IP.js";import"./svg_path_builder-4dyJLere.js";import"./affine_transform-CW2gj0SF.js";const k=({data:r,...l})=>{const e=new g(r.blockSize.map((n,i)=>i),r.blockSize,r.blockSize.map((n,i)=>i),r.blockHeights);return m.jsx(u.Provider,{value:e,children:m.jsx(c.Provider,{value:e,children:m.jsx(d,{...l})})})},er={title:"Block Explorer/Components/Page Sections/Histogram/Block Size",component:k},o={args:{data:{blockHeights:[...a(p(s(),1),10)],blockSize:[...a(p(s(),1),10)]}}},t={args:{data:{blockHeights:[1,2,3,null,5,6,null,8,9,10,null],blockSize:[1,2,3,null,5,6,null,8,9,10,null]}}};o.parameters={...o.parameters,docs:{...o.parameters?.docs,source:{originalSource:`{
+  args: {
+    data: {
+      blockHeights: [...takeIterator(dropIterator(inf(), 1), 10)],
+      blockSize: [...takeIterator(dropIterator(inf(), 1), 10)]
+    }
+  }
+}`,...o.parameters?.docs?.source}}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
+  args: {
+    data: {
+      blockHeights: [1, 2, 3, null, 5, 6, null, 8, 9, 10, null],
+      blockSize: [1, 2, 3, null, 5, 6, null, 8, 9, 10, null]
+    }
+  }
+}`,...t.parameters?.docs?.source}}};const ar=["Default","MissingData"];export{o as Default,t as MissingData,ar as __namedExportsOrder,er as default};
