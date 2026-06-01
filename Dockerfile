@@ -85,9 +85,54 @@ FROM nginx:1-alpine AS block-explorer
 RUN apk add --no-cache bash tini
 
 # Block-Explorer specific environment variables
-ENV ENVIRONMENT_NAME="mainnet"
-ENV BASE_URL="https://explorer.espresso.network"
+
+# Defaults to mainnet, if not set. Valid options are as follows:
+# - mainnet
+# - main (alias for mainnet)
+# - decaf
+# - water
+# - milk
+#
+# Any unrecognized value, will be treated as if they are "mainnet"
+ENV ENVIRONMENT_NAME="" 
+
+# Defaults to a value based on the ENVIRONMENT_NAME, if not set.
+# Expected to be pointed to a a value after the version.  Currently
+# expected to work with the /v0/ endpoints of the Hot Shot Query Service.
+# Example Value:
+#   https://cache.main.net.espresso.network/v0/
 ENV QUERY_SERVICE_URI=""
+
+# The following environment variables can be ovwritten to customize their
+# values.  They affect the contents SEO Contents of the page. If they are
+# omitted, then they will have their values set to a value based on the
+# ENVIORNMENT_NAME value.
+ENV BASE_URL=""
+ENV STAKING_SITE_URL=""
+
+# These values govern some prefixes and strings that appear as common
+# components in the page title.
+#
+
+# Current expected value if not set:
+# - TESTNET
+# - MAINNET
+# - DEVNET
+ENV BLOCK_EXPLORER_SITE_PREFIX=""
+
+# Current Expected Values if not set:
+# - Espresso Decaf Block Explorer
+# - Espresso Water Block Explorer
+# - Espresso Milk Block Explorer
+# - Espresso Block Explorer
+ENV BLOCK_EXPLORER_NETWORK_SITE_NAME=""
+
+# Current Expected Values if not set:
+# - Decaf
+# - Water
+# - Milk
+# - Espresso
+ENV BLOCK_EXPLORER_NETWORK_NAME=""
 
 # Copy the static export into the nginx web root.
 COPY --from=block-explorer-builder /app/packages/block-explorer/out /usr/share/nginx/html
