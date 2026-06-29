@@ -15,10 +15,8 @@ import {
   AvailabilityAPIHeader,
   availabilityAPIHeaderCodec,
 } from './block_header';
-import {
-  AvailabilityAPIPayload,
-  nullableAvailabilityAPIPayloadCodec,
-} from './payload';
+import { AvailabilityAPIPayloadBase } from './payload_base';
+import { nullableAvailabilityAPIPayloadCodec } from './payload_unknown';
 import {
   nullableQuorumCertificateV2Codec,
   QuorumCertificateV2,
@@ -45,7 +43,7 @@ export class LeafV2 {
     public readonly parent_commitment: TaggedBase64,
     public readonly block_header: AvailabilityAPIHeader,
     public readonly upgrade_certificate: null | UpgradeCertificateV1,
-    public readonly block_payload: null | AvailabilityAPIPayload,
+    public readonly block_payload: null | AvailabilityAPIPayloadBase,
     public readonly view_change_evidence: null | ViewChangeEvidenceV2,
     public readonly next_drb_result: null | Uint8Array,
     public readonly with_epoch: boolean,

@@ -3,8 +3,8 @@ import { default as Heading1 } from '@/block_explorer/components/layout/heading/
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
 import { InternalLink } from '@/block_explorer/components/links/link/link';
 import {
-  BlockDetailsLoader,
   BlockNumberContext,
+  ExplorerBlockDetailsLoader,
 } from '@/block_explorer/components/page_sections/block_detail_content/block_detail_content_loader';
 import { default as Footer } from '@/block_explorer/components/page_sections/footer/footer';
 import { default as Header } from '@/block_explorer/components/page_sections/header/header';
@@ -107,7 +107,7 @@ const TransactionsForBlockPage: React.FC<TransactionsPageProps> = ({
     <Header />
 
     <BlockNumberContext.Provider value={block}>
-      <BlockDetailsLoader>
+      <ExplorerBlockDetailsLoader>
         <EdgeMarginPageTitle>
           <Heading1>
             <Text text="Transactions" />
@@ -120,7 +120,7 @@ const TransactionsForBlockPage: React.FC<TransactionsPageProps> = ({
         <TransactionSummaryDataLoader startAtBlock={block} offset={offset}>
           <GuardedTransactionsSummaryDataTable {...rest} />
         </TransactionSummaryDataLoader>
-      </BlockDetailsLoader>
+      </ExplorerBlockDetailsLoader>
     </BlockNumberContext.Provider>
     <Footer />
   </OverridePagePath>

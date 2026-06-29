@@ -8,7 +8,7 @@ import { AvailabilityBuilderSignature } from '../builder_signature';
 import { AvailabilityFeeInfo } from '../fee_info';
 import { AvailabilityL1Finalized } from '../l1_finalized';
 import { AvailabilityNamespaceTable } from '../namespace_table';
-import { AvailabilityAPIPayload } from '../payload';
+import { AvailabilityAPIPayloadV0 } from '../payload_v0';
 import { AvailabilityAPITransactionNMTEntry } from '../transaction_nmt_entry';
 import { AvailabilityVersion, WrappedVersion } from '../version';
 
@@ -40,7 +40,7 @@ describe('CappuccinoAPIBlock', () => {
           ),
         ),
       ),
-      new AvailabilityAPIPayload([
+      new AvailabilityAPIPayloadV0([
         new AvailabilityAPITransactionNMTEntry(
           prng.nextInt(),
           Array.from(new Uint8Array(prng.fillBytes(20))),

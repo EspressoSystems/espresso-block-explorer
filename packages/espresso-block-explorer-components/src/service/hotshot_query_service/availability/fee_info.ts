@@ -1,5 +1,6 @@
 import { assertInstanceOf } from '@/assert/assert';
 import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
+import { bigintCodec } from '@/convert/codec/bigint';
 import {
   Converter,
   TypeCheckingCodec,
@@ -12,7 +13,7 @@ import {
 export class AvailabilityFeeInfo {
   constructor(
     public readonly account: ArrayBuffer,
-    public readonly amount: ArrayBuffer,
+    public readonly amount: bigint,
   ) {}
 
   toJSON() {
@@ -29,7 +30,7 @@ class AvailabilityFeeInfoDecoder implements Converter<
 
     return new AvailabilityFeeInfo(
       hexArrayBufferCodec.decode(input.account),
-      hexArrayBufferCodec.decode(input.amount),
+      bigintCodec.decode(input.amount),
     );
   }
 }
@@ -40,7 +41,7 @@ class AvailabilityFeeInfoEncoder implements Converter<AvailabilityFeeInfo> {
 
     return {
       account: hexArrayBufferCodec.encode(input.account),
-      amount: hexArrayBufferCodec.encode(input.amount),
+      amount: bigintCodec.encode(input.amount),
     };
   }
 }

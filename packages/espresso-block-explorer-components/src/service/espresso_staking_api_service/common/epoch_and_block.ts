@@ -16,7 +16,7 @@ import { numberCodec } from '@/convert/codec/number';
  * In those cases, the number of blocks per epoch cannot be determined
  * uniquely.
  */
-function computeBlocksPerEpoch(block: bigint, epoch: bigint): bigint {
+export function computeBlocksPerEpoch(block: bigint, epoch: bigint): bigint {
   if (block % epoch === 0n) {
     // epoch = blockNum / blocksPerEpoch
     return block / epoch;

@@ -15,7 +15,7 @@ import {
 } from './block_header_v0';
 import {
   AvailabilityBuilderSignature,
-  availabilityBuilderSignatureCodec,
+  nullableAvailabilityBuilderSignatureCodec,
 } from './builder_signature';
 import { AvailabilityFeeInfo, availabilityFeeInfoCodec } from './fee_info';
 import {
@@ -54,7 +54,7 @@ export class AvailabilityAPIV2HeaderFieldsImpl extends AbstractAvailabilityAPIV2
     block_merkle_tree_root: TaggedBase64,
     fee_merkle_tree_root: TaggedBase64,
     fee_info: AvailabilityFeeInfo,
-    builder_signature: AvailabilityBuilderSignature,
+    builder_signature: null | AvailabilityBuilderSignature,
   ) {
     super(
       height,
@@ -104,7 +104,7 @@ export class AvailabilityAPIV2HeaderFieldsDecoder implements Converter<
       taggedBase64Codec.decode(input.block_merkle_tree_root),
       taggedBase64Codec.decode(input.fee_merkle_tree_root),
       availabilityFeeInfoCodec.decode(input.fee_info),
-      availabilityBuilderSignatureCodec.decode(input.builder_signature),
+      nullableAvailabilityBuilderSignatureCodec.decode(input.builder_signature),
     );
   }
 }
@@ -129,7 +129,7 @@ export class AvailabilityAPIV2HeaderFieldsEncoder implements Converter<Availabil
       fee_merkle_tree_root: taggedBase64Codec.encode(
         input.fee_merkle_tree_root,
       ),
-      builder_signature: availabilityBuilderSignatureCodec.encode(
+      builder_signature: nullableAvailabilityBuilderSignatureCodec.encode(
         input.builder_signature,
       ),
       fee_info: availabilityFeeInfoCodec.encode(input.fee_info),

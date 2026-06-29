@@ -22,7 +22,7 @@ import {
   AvailabilityAPIHeaderFields,
   AvailabilityAPIHeaderImpl,
 } from '../block_header';
-import { AvailabilityAPIV4HeaderImpl } from '../block_header_v4';
+import { AvailabilityAPIV4HeaderFieldsImpl } from '../block_header_v4';
 import { AvailabilityBuilderSignature } from '../builder_signature';
 import { AvailabilityDerivedBlockSummary } from '../derived_block_summary';
 import { AvailabilityDerivedTransactionSummary } from '../derived_transaction_summary';
@@ -32,7 +32,7 @@ import { AvailabilityAPILeafResponse } from '../leaf_response';
 import { LeafV0 } from '../leaf_v0';
 import { AvailabilityAPIMerkleTreeBranchProof } from '../merkle_tree_proof';
 import { AvailabilityNamespaceTable } from '../namespace_table';
-import { AvailabilityAPIPayload } from '../payload';
+import { AvailabilityAPIPayloadV0 } from '../payload_v0';
 import { QuorumCertificateV1 } from '../quorum_certificate_v1';
 import { QuorumDataV1 } from '../quorum_data_v1';
 import { AvailabilityAPITransactionNMTEntry } from '../transaction_nmt_entry';
@@ -52,7 +52,7 @@ function headerFromBlock(
 ): AvailabilityAPIHeader<AvailabilityAPIHeaderFields> {
   return new AvailabilityAPIHeaderImpl(
     new WrappedVersion(new AvailabilityVersion(0, 4)),
-    new AvailabilityAPIV4HeaderImpl(
+    new AvailabilityAPIV4HeaderFieldsImpl(
       block.height,
       block.time.valueOf() / 1000,
       block.time.valueOf(),
@@ -81,7 +81,7 @@ async function convertBlockToCappuccinoBlock(
 ): Promise<AvailabilityAPIBlock> {
   return new AvailabilityAPIBlock(
     headerFromBlock(block),
-    new AvailabilityAPIPayload(
+    new AvailabilityAPIPayloadV0(
       await collectAsyncIterator(
         mapAsyncIterable(block.transactions, async (txn) => {
           return new AvailabilityAPITransactionNMTEntry(

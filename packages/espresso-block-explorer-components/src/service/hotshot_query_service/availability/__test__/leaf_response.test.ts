@@ -15,7 +15,7 @@ import {
 } from '../leaf_response';
 import { LeafV0 } from '../leaf_v0';
 import { AvailabilityNamespaceTable } from '../namespace_table';
-import { AvailabilityAPIPayload } from '../payload';
+import { AvailabilityAPIPayloadV0 } from '../payload_v0';
 import { QuorumCertificateV1 } from '../quorum_certificate_v1';
 import { QuorumDataV1 } from '../quorum_data_v1';
 import { SimpleCertificateSignatures } from '../simple_certificate_signatures';
@@ -68,7 +68,7 @@ describe('CappuccinoAPILeafResponse', () => {
           ),
         ),
       ),
-      new AvailabilityAPIPayload([
+      new AvailabilityAPIPayloadV0([
         new AvailabilityAPITransactionNMTEntry(
           prng.nextInt(),
           Array.from(new Uint8Array(prng.fillBytes(20))),

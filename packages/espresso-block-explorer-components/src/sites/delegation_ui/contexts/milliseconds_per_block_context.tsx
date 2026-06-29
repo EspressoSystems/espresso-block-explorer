@@ -7,7 +7,7 @@ import {
   EpochAndBlock,
 } from '@/service/espresso_staking_api_service/common/epoch_and_block';
 import { AvailabilityAPIHeader } from '@/service/hotshot_query_service';
-import { AbstractAvailabilityAPIV4Header } from '@/service/hotshot_query_service/availability/block_header_v4';
+import { AbstractAvailabilityAPIV4HeaderFields } from '@/service/hotshot_query_service/availability/block_header_v4';
 import { HotShotQueryService } from '@/service/hotshot_query_service/hot_shot_query_service_api';
 import { default as React } from 'react';
 import { ActiveValidatorsContext } from './active_validators_context';
@@ -197,8 +197,8 @@ function computeMillisecondsPerBlock(
   }
 
   if (
-    data.endHeader.fields instanceof AbstractAvailabilityAPIV4Header &&
-    data.startHeader.fields instanceof AbstractAvailabilityAPIV4Header
+    data.endHeader.fields instanceof AbstractAvailabilityAPIV4HeaderFields &&
+    data.startHeader.fields instanceof AbstractAvailabilityAPIV4HeaderFields
   ) {
     return (
       (data.endHeader.fields.timestamp_millis -

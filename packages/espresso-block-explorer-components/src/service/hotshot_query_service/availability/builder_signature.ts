@@ -5,6 +5,7 @@ import {
   TypeCheckingCodec,
   assertRecordWithKeys,
 } from '@/convert/codec/convert';
+import { NullCodec, NullDecoder, NullEncoder } from '@/convert/codec/null';
 import { numberCodec } from '@/convert/codec/number';
 
 /**
@@ -62,3 +63,7 @@ class AvailabilityBuilderSignatureCodec extends TypeCheckingCodec<
 
 export const availabilityBuilderSignatureCodec =
   new AvailabilityBuilderSignatureCodec();
+export const nullableAvailabilityBuilderSignatureCodec = new NullCodec(
+  new NullDecoder(availabilityBuilderSignatureCodec),
+  new NullEncoder(availabilityBuilderSignatureCodec),
+);

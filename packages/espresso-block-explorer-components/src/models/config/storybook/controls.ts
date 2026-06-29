@@ -96,8 +96,8 @@ export interface EnvironmentWithContractsArgs extends EnvironmentArgs {
 
 export const environmentArgsMilk: EnvironmentArgs = {
   environment: Environment.milk,
-  hotshotQueryServiceURL: 'https://cache.milk.devnet.espresso.network/v0/',
-  nodeValidatorWebSocketURL: 'wss://nv.milk.devnet.espresso.network/v0/',
+  hotshotQueryServiceURL: 'https://cache.milk.devnet.espresso.network/v1/',
+  nodeValidatorWebSocketURL: 'wss://nv.milk.devnet.espresso.network/v1/',
   stakingAPIServiceURL:
     'https://cache.milk.devnet.espresso.network/v0/staking/',
 };
@@ -112,8 +112,8 @@ export const environmentArgsMilkWithContracts: EnvironmentWithContractsArgs = {
 
 export const environmentArgsWater: EnvironmentArgs = {
   environment: Environment.water,
-  hotshotQueryServiceURL: 'https://cache.water.devnet.espresso.network/v0/',
-  nodeValidatorWebSocketURL: 'wss://nv.water.devnet.espresso.network/v0/',
+  hotshotQueryServiceURL: 'https://cache.water.devnet.espresso.network/v1/',
+  nodeValidatorWebSocketURL: 'wss://nv.water.devnet.espresso.network/v1/',
   stakingAPIServiceURL:
     'https://cache.water.devnet.espresso.network/v0/staking/',
 };
@@ -128,8 +128,8 @@ export const environmentArgsWaterWithContracts: EnvironmentWithContractsArgs = {
 
 export const environmentArgsDecaf: EnvironmentArgs = {
   environment: Environment.decaf,
-  hotshotQueryServiceURL: 'https://cache.decaf.testnet.espresso.network/v0/',
-  nodeValidatorWebSocketURL: 'wss://nv.decaf.testnet.espresso.network/v0/',
+  hotshotQueryServiceURL: 'https://cache.decaf.testnet.espresso.network/v1/',
+  nodeValidatorWebSocketURL: 'wss://nv.decaf.testnet.espresso.network/v1/',
 };
 
 export const environmentArgsDecafWithContracts: EnvironmentWithContractsArgs = {
@@ -142,8 +142,8 @@ export const environmentArgsDecafWithContracts: EnvironmentWithContractsArgs = {
 
 export const environmentArgsMainnet: EnvironmentArgs = {
   environment: Environment.mainnet,
-  hotshotQueryServiceURL: 'https://cache.main.net.espresso.network/v0/',
-  nodeValidatorWebSocketURL: 'wss://nv.main.net.espresso.network/v0/',
+  hotshotQueryServiceURL: 'https://cache.main.net.espresso.network/v1/',
+  nodeValidatorWebSocketURL: 'wss://nv.main.net.espresso.network/v1/',
   stakingAPIServiceURL: 'https://cache.main.net.espresso.network/v0/staking/',
 };
 
@@ -173,8 +173,8 @@ export const environmentArgsFakeDataWithContracts: EnvironmentWithContractsArgs 
 
 export const environmentArgsLocalDevNet: EnvironmentArgs = {
   environment: Environment.localDevNet,
-  hotshotQueryServiceURL: 'http://localhost:24000/v0/',
-  nodeValidatorWebSocketURL: 'ws://localhost:9000/v0/',
+  hotshotQueryServiceURL: 'http://localhost:24000/v1/',
+  nodeValidatorWebSocketURL: 'ws://localhost:9000/v1/',
   stakingAPIServiceURL: 'http://localhost:8080/v0/staking/',
 };
 

@@ -1,5 +1,6 @@
 import { defineChain } from 'viem';
 import { createConfig, fallback, http } from 'wagmi';
+import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import * as chains from 'wagmi/chains';
 import { mock } from 'wagmi/connectors';
 import { Environment } from '../environment/environment';
@@ -9,7 +10,9 @@ function httpTransports(urls: readonly string[]) {
   return fallback(urls.map((url) => http(url)));
 }
 
-export const mainnet: WagmiConfig = createConfig({
+export const mainnet: WagmiConfig = getDefaultConfig({
+  appName: 'Espresso Delegation UI',
+  projectId: 'b56e18d47c72ab683b10814fe9495694',
   chains: [chains.mainnet],
   transports: {
     [chains.mainnet.id]: httpTransports([

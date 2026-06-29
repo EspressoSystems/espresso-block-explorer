@@ -13,7 +13,8 @@ import {
   AvailabilityAPIHeader,
   availabilityAPIHeaderCodec,
 } from './block_header';
-import { AvailabilityAPIPayload, availabilityAPIPayloadCodec } from './payload';
+import { AvailabilityAPIPayloadBase } from './payload_base';
+import { availabilityAPIPayloadCodec } from './payload_unknown';
 
 /**
  * AvailabilityAPIBlock represents a block in the Availability API.
@@ -21,7 +22,7 @@ import { AvailabilityAPIPayload, availabilityAPIPayloadCodec } from './payload';
 export class AvailabilityAPIBlock {
   constructor(
     public readonly header: AvailabilityAPIHeader,
-    public readonly payload: AvailabilityAPIPayload,
+    public readonly payload: AvailabilityAPIPayloadBase,
     public readonly hash: TaggedBase64,
     public readonly size: number,
     public readonly numTransactions: number,

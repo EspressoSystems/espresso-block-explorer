@@ -13,7 +13,7 @@ export const BlockNumberContext = React.createContext(0);
  * BlockDetails kicks off the retrieval of the details for the individual
  * Block, and ensures that the data is available for BlockDetailsContent
  */
-export const BlockDetailsLoader: React.FC<React.PropsWithChildren> = ({
+export const ExplorerBlockDetailsLoader: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const service = React.useContext(HotShotQueryServiceAPIContext);
@@ -22,12 +22,12 @@ export const BlockDetailsLoader: React.FC<React.PropsWithChildren> = ({
   const request = ExplorerGetBlockDetailRequest.height(blockID);
   return (
     <PromiseResolver promise={service.explorer.getBlockDetail(request)}>
-      <BlockDetailResolver>{children}</BlockDetailResolver>
+      <ExplorerBlockDetailResolver>{children}</ExplorerBlockDetailResolver>
     </PromiseResolver>
   );
 };
 
-const BlockDetailResolver: React.FC<React.PropsWithChildren> = ({
+const ExplorerBlockDetailResolver: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const data = React.useContext(DataContext) as

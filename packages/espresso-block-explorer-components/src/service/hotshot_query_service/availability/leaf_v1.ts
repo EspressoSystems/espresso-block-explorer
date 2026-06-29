@@ -13,7 +13,8 @@ import {
   AvailabilityAPIHeader,
   availabilityAPIHeaderCodec,
 } from './block_header';
-import { AvailabilityAPIPayload, availabilityAPIPayloadCodec } from './payload';
+import { AvailabilityAPIPayloadBase } from './payload_base';
+import { availabilityAPIPayloadCodec } from './payload_unknown';
 import {
   QuorumCertificateV1,
   quorumCertificateV1Codec,
@@ -34,7 +35,7 @@ export class LeafV1 {
     public readonly parent_commitment: TaggedBase64,
     public readonly block_header: AvailabilityAPIHeader,
     public readonly upgrade_certificate: null | UpgradeCertificateV1,
-    public readonly block_payload: AvailabilityAPIPayload,
+    public readonly block_payload: AvailabilityAPIPayloadBase,
   ) {}
 
   toJSON() {

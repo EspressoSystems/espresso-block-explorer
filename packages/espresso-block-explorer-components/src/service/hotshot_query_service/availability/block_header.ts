@@ -7,15 +7,15 @@ import {
   availabilityAPIV0HeaderCodec,
   type AvailabilityAPIV0HeaderFields,
 } from './block_header_v0';
-import { WrappedVersion, wrappedVersionCodec } from './version';
 import {
   AbstractAvailabilityAPIV2HeaderFields,
   availabilityAPIV2HeaderFieldsCodec,
 } from './block_header_v2';
 import {
-  AbstractAvailabilityAPIV4Header,
-  availabilityAPIV4HeaderCodec,
+  AbstractAvailabilityAPIV4HeaderFields,
+  availabilityAPIV4HeaderFieldsCodec,
 } from './block_header_v4';
+import { WrappedVersion, wrappedVersionCodec } from './version';
 
 export interface AvailabilityAPIHeaderFields extends AvailabilityAPIV0HeaderFields {}
 
@@ -57,7 +57,7 @@ class AvailabilityAPIHeaderDecoder implements Converter<
     if (version.version.major === 0 && version.version.minor >= 4) {
       return new AvailabilityAPIHeaderImpl(
         version,
-        availabilityAPIV4HeaderCodec.decode(input.fields),
+        availabilityAPIV4HeaderFieldsCodec.decode(input.fields),
       );
     }
 
@@ -80,10 +80,10 @@ class AvailabilityAPIHeaderEncoder implements Converter<
   unknown
 > {
   convert(input: AvailabilityAPIHeader<AvailabilityAPIHeaderFields>): unknown {
-    if (input.fields instanceof AbstractAvailabilityAPIV4Header) {
+    if (input.fields instanceof AbstractAvailabilityAPIV4HeaderFields) {
       return {
         version: wrappedVersionCodec.encode(input.version),
-        fields: availabilityAPIV4HeaderCodec.encode(input.fields),
+        fields: availabilityAPIV4HeaderFieldsCodec.encode(input.fields),
       };
     }
 
