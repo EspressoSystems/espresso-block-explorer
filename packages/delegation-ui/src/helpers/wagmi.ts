@@ -23,7 +23,7 @@ export const decaf: CreateConfigParameters = {
   },
 };
 
-const waterChainID = 900;
+const waterChainID = 1337;
 const waterChain = defineChain({
   id: waterChainID,
   name: 'RETH (water)',
@@ -44,7 +44,7 @@ export const water: CreateConfigParameters = {
   },
 };
 
-const milkChainID = 900;
+const milkChainID = 1337;
 const milkChain = defineChain({
   id: milkChainID,
   name: 'RETH (milk)',
