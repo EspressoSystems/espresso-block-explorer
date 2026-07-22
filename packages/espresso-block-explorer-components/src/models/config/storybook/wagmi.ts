@@ -30,7 +30,7 @@ export const decaf: WagmiConfig = createConfig({
 });
 
 export const waterChain = defineChain({
-  id: 900,
+  id: 1337,
   name: 'RETH (water)',
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
   rpcUrls: {
@@ -52,7 +52,7 @@ export const water: WagmiConfig = createConfig({
 });
 
 const milkChain = defineChain({
-  id: 900,
+  id: 1337,
   name: 'RETH (milk)',
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
   rpcUrls: {

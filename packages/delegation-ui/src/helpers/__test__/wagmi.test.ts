@@ -28,7 +28,7 @@ describe('Wagmi Configuration', () => {
       expect(water).toBeDefined();
       expect(water.chains).toHaveLength(1);
       expect(water.chains[0].name).toBe('RETH (water)');
-      expect(water.chains[0].id).toBe(900);
+      expect(water.chains[0].id).toBe(1337);
       expect(water.chains[0].testnet).toBe(true);
     });
 
@@ -36,7 +36,7 @@ describe('Wagmi Configuration', () => {
       expect(milk).toBeDefined();
       expect(milk.chains).toHaveLength(1);
       expect(milk.chains[0].name).toBe('RETH (milk)');
-      expect(milk.chains[0].id).toBe(900);
+      expect(milk.chains[0].id).toBe(1337);
       expect(milk.chains[0].testnet).toBe(true);
     });
 
@@ -119,8 +119,8 @@ describe('Wagmi Configuration', () => {
     it('should have correct chain IDs', () => {
       expect(mainnet.chains[0].id).toBe(1);
       expect(decaf.chains[0].id).toBe(11155111);
-      expect(water.chains[0].id).toBe(900);
-      expect(milk.chains[0].id).toBe(900);
+      expect(water.chains[0].id).toBe(1337);
+      expect(milk.chains[0].id).toBe(1337);
       expect(localDevNet.chains[0].id).toBe(31337);
       expect(fakeData.chains[0].id).toBe(31337);
     });

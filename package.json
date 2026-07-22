@@ -19,5 +19,15 @@
     "clean:turbo": "rm -rf .turbo packages/*/.turbo",
     "clean:build": "rm -rf packages/espresso-block-explorer-components/dist packages/block-explorer/.next packages/delegation-ui/.next packages/*/storybook-static",
     "clean:all": "npm run clean:turbo && npm run clean:build && rm -rf node_modules packages/*/node_modules"
+  },
+  "allowScripts": {
+    "bufferutil@4.1.0": true,
+    "core-js@2.6.12": true,
+    "esbuild@0.27.2": true,
+    "fsevents@2.3.3": true,
+    "keccak@3.0.4": true,
+    "sharp@0.34.5": true,
+    "unrs-resolver@1.11.1": true,
+    "utf-8-validate@5.0.10": true
   }
 }
