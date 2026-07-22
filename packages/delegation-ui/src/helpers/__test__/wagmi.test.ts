@@ -28,7 +28,7 @@ describe('Wagmi Configuration', () => {
       expect(water).toBeDefined();
       expect(water.chains).toHaveLength(1);
       expect(water.chains[0].name).toBe('RETH (water)');
-      expect(water.chains[0].id).toBe(900);
+      expect(water.chains[0].id).toBe(1337);
       expect(water.chains[0].testnet).toBe(true);
     });
 
@@ -36,7 +36,7 @@ describe('Wagmi Configuration', () => {
       expect(milk).toBeDefined();
       expect(milk.chains).toHaveLength(1);
       expect(milk.chains[0].name).toBe('RETH (milk)');
-      expect(milk.chains[0].id).toBe(900);
+      expect(milk.chains[0].id).toBe(1337);
       expect(milk.chains[0].testnet).toBe(true);
     });
 
