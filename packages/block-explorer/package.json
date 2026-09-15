@@ -35,8 +35,8 @@
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
     "@vitejs/plugin-react": "^5.0.4",
-    "@vitest/coverage-istanbul": "^4.0.14",
-    "@vitest/web-worker": "^4.0.14",
+    "@vitest/coverage-istanbul": "^5",
+    "@vitest/web-worker": "^5",
     "eslint": "^9",
     "eslint-config-next": "^16.0.6",
     "espresso-block-explorer-components": "*",
@@ -44,6 +44,6 @@
     "next-router-mock": "^1",
     "typescript": "^5",
     "vite": "^7.3.2",
-    "vitest": "^4.1.11"
+    "vitest": "^5"
   }
 }
