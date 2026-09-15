@@ -9,12 +9,10 @@ const meta: Meta<typeof Example> = {
 export default meta;
 type Story = StoryObj<typeof Example>;
 
-export const ESPInput: Story = {
-};
+export const ESPInput: Story = {};
 
 export const EdgeCase: Story = {
   args: {
     initialValue: '0x152d02c7e14af6800000',
   },
 };
-

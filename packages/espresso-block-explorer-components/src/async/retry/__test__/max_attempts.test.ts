@@ -58,7 +58,9 @@ describe('MaxAttemptsRetryController', () => {
       //      attempts, confirming the parameter is wired correctly.
       let cutoff: number | null = null;
       for (let attempt = 1; attempt <= 20; attempt++) {
-        if (withDefault.shouldRetry(attempt, new Error()) === ShouldRetryResult.no) {
+        if (
+          withDefault.shouldRetry(attempt, new Error()) === ShouldRetryResult.no
+        ) {
           cutoff = attempt;
           break;
         }
@@ -109,7 +111,9 @@ describe('MaxAttemptsRetryController', () => {
       // Verify the default eventually blocks within a reasonable range.
       let blocked = false;
       for (let attempt = 1; attempt <= 50; attempt++) {
-        if (withDefault.shouldRetry(attempt, new Error()) === ShouldRetryResult.no) {
+        if (
+          withDefault.shouldRetry(attempt, new Error()) === ShouldRetryResult.no
+        ) {
           blocked = true;
           break;
         }
