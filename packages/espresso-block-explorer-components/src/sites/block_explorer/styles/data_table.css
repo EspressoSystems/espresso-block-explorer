@@ -1,13 +1,33 @@
+:root {
+  /*
+   * This file previously had no bare :root default for
+   * --data-table--border-color (only [data-theme='light']/['dark']),
+   * which only matters in Storybook -- in production no [data-theme]
+   * attribute is ever set (see PR 4/discovery notes), so this bare
+   * default is what actually governs the light-mode/no-preference case.
+   * Added here for correctness while introducing the two tokens below.
+   */
+  --data-table--border-color: var(--color--cookie--alpha-24);
+  --data-table--header-background-color: rgba(31, 25, 18, 0.06);
+  --data-table--row-hover-background-color: rgba(31, 25, 18, 0.08);
+}
+
 [data-theme='light'] {
   --data-table--border-color: var(--color--cookie--alpha-24);
+  --data-table--header-background-color: rgba(31, 25, 18, 0.06);
+  --data-table--row-hover-background-color: rgba(31, 25, 18, 0.08);
 }
 
 [data-theme='dark'] {
   --data-table--border-color: var(--color--border-dark);
+  --data-table--header-background-color: rgba(255, 235, 215, 0.08);
+  --data-table--row-hover-background-color: rgba(255, 235, 215, 0.1);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
     --data-table--border-color: var(--color--border-dark);
+    --data-table--header-background-color: rgba(255, 235, 215, 0.08);
+    --data-table--row-hover-background-color: rgba(255, 235, 215, 0.1);
   }
 }
