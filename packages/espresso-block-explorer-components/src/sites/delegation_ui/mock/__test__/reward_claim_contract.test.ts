@@ -126,12 +126,12 @@ describe('MockRewardClaimContractImpl', () => {
   describe('read', () => {
     it('should return [1, 0, 0] for getVersion', async () => {
       const contract = setupInitialContractState();
-      expect(contract.claimedRewards(ACCOUNT1)).resolves.toBe(0n);
+      await expect(contract.claimedRewards(ACCOUNT1)).resolves.toBe(0n);
     });
 
     it('should return empty for claimedRewards', async () => {
       const contract = setupInitialContractState();
-      expect(contract.getVersion()).resolves.deep.equal([1, 0, 0]);
+      await expect(contract.getVersion()).resolves.deep.equal([1, 0, 0]);
     });
   });
 

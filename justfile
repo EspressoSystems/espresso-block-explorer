@@ -9,6 +9,8 @@ build-and-test:
   npm install --workspaces
   npm run build --workspace=packages/espresso-block-explorer-components
   npm install --workspaces
+  npm run build
+  npm run lint
   npm run test --workspaces
 
 build-and-test-ci:
