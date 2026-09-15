@@ -41,14 +41,17 @@ export declare const waterChain: {
         };
     };
     sourceId?: number | undefined | undefined;
+    supportsTransactionReplacementDetection?: boolean | undefined | undefined;
     testnet: true;
     custom?: Record<string, unknown> | undefined;
     extendSchema?: Record<string, unknown> | undefined;
     fees?: import('viem').ChainFees<undefined> | undefined;
     formatters?: undefined;
     prepareTransactionRequest?: ((args: import('viem').PrepareTransactionRequestParameters, options: {
+        client: import('viem').Client;
         phase: "beforeFillTransaction" | "beforeFillParameters" | "afterFillParameters";
     }) => Promise<import('viem').PrepareTransactionRequestParameters>) | [fn: ((args: import('viem').PrepareTransactionRequestParameters, options: {
+        client: import('viem').Client;
         phase: "beforeFillTransaction" | "beforeFillParameters" | "afterFillParameters";
     }) => Promise<import('viem').PrepareTransactionRequestParameters>) | undefined, options: {
         runAt: readonly ("beforeFillTransaction" | "beforeFillParameters" | "afterFillParameters")[];
