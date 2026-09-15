@@ -266,8 +266,7 @@ export const MockLightClientV2Contract: React.FC<React.PropsWithChildren> = ({
   const l1Methods = React.useContext(L1MethodsContext);
   const contractState = useMockLightClientContractState();
   const accountAddress = React.useContext(RainbowKitAccountAddressContext) as
-    | null
-    | `0x${string}`;
+    null | `0x${string}`;
 
   // assertInstanceOf(l1Methods, MockL1MethodsImpl);
   assert(l1Methods instanceof MockL1MethodsImpl);

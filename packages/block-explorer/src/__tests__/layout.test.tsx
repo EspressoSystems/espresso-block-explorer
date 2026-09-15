@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import Layout from '../app/layout';
 
 describe('Block Explorer/Components/Links/Layout', () => {

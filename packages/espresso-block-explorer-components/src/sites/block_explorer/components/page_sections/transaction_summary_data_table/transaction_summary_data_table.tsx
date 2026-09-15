@@ -25,9 +25,7 @@ import { TransactionSummaryColumn } from './transaction_summary_data_loader';
  */
 const TransactionCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as
-    | undefined
-    | null
-    | ExplorerTransactionSummary;
+    undefined | null | ExplorerTransactionSummary;
   const pathResolver = React.useContext(PathResolverContext);
 
   if (!row) {
@@ -48,9 +46,7 @@ const TransactionCell: React.FC = () => {
  */
 const RollUpCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as
-    | undefined
-    | null
-    | ExplorerTransactionSummary;
+    undefined | null | ExplorerTransactionSummary;
 
   if (!row) {
     return null;
@@ -77,9 +73,7 @@ const RollUpCell: React.FC = () => {
 const BlockCell: React.FC = () => {
   const pathResolver = React.useContext(PathResolverContext);
   const row = React.useContext(DataTableRowContext) as
-    | undefined
-    | null
-    | ExplorerTransactionSummary;
+    undefined | null | ExplorerTransactionSummary;
 
   if (!row) {
     return null;
@@ -100,9 +94,7 @@ const BlockCell: React.FC = () => {
  */
 const TimeCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as
-    | undefined
-    | null
-    | ExplorerTransactionSummary;
+    undefined | null | ExplorerTransactionSummary;
 
   if (!row) {
     return null;
