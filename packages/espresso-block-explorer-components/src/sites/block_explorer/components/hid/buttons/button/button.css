@@ -63,26 +63,26 @@
 [data-theme='dark'] {
   --button--default--background-color: var(--color--chocolate);
   --button--default--foreground-color: var(--color--vanilla);
-  --button--default--border-color: var(--color--cookie--alpha-24);
+  --button--default--border-color: var(--color--border-dark);
   --button--hovered--border-color: var(--color--cookie);
   --button--pressed--border-color: var(--color--vanilla);
   --button--pressed--background-color: var(--color--coffee);
   --button--disabled--foreground-color: var(--color--cookie--alpha-24);
   --button--disabled--background-color: var(--color--coffee);
-  --button--disabled--border-color: var(--color--cookie--alpha-24);
+  --button--disabled--border-color: var(--color--border-dark);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
     --button--default--background-color: var(--color--chocolate);
     --button--default--foreground-color: var(--color--vanilla);
-    --button--default--border-color: var(--color--cookie--alpha-24);
+    --button--default--border-color: var(--color--border-dark);
     --button--hovered--border-color: var(--color--cookie);
     --button--pressed--border-color: var(--color--vanilla);
     --button--pressed--background-color: var(--color--coffee);
     --button--disabled--foreground-color: var(--color--cookie--alpha-24);
     --button--disabled--background-color: var(--color--coffee);
-    --button--disabled--border-color: var(--color--cookie--alpha-24);
+    --button--disabled--border-color: var(--color--border-dark);
   }
 }
 
