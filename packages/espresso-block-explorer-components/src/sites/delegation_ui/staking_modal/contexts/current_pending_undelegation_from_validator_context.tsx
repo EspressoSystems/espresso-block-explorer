@@ -23,9 +23,9 @@ export const ProvideCurrentPendingUndelegationToValidator: React.FC<
     !stakeTableContract || !accountAddress || !confirmedValidator
       ? neverPromise
       : stakeTableContract.undelegation(
-        confirmedValidator,
-        accountAddress.toLowerCase() as `0x${string}`,
-      );
+          confirmedValidator,
+          accountAddress.toLowerCase() as `0x${string}`,
+        );
 
   return (
     <PromiseResolver promise={promise}>

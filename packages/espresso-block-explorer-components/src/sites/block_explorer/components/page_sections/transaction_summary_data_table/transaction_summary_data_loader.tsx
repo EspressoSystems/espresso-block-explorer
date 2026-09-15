@@ -78,9 +78,7 @@ const TransactionSummariesProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const data = React.useContext(DataContext) as
-    | null
-    | undefined
-    | ExplorerGetTransactionSummariesResponse;
+    null | undefined | ExplorerGetTransactionSummariesResponse;
 
   const transactionSummaries = data?.transactionSummaries ?? [];
 
