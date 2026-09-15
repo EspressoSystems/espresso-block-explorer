@@ -5,6 +5,7 @@ build-docker-block-explorer-local:
   docker build --target block-explorer -t espresso-block-explorer .
 
 build-and-test:
+  npm install
   npm install --workspaces
   npm run build --workspace=packages/espresso-block-explorer-components
   npm install --workspaces
