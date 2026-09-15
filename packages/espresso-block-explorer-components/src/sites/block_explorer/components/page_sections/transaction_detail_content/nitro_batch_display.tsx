@@ -142,7 +142,7 @@ export function extractNitroBatch(payload: Uint8Array): null | NitroBatchV0 {
   i += signature.byteLength;
 
   const l = payload.byteLength;
-  for (; i < l; ) {
+  for (; i < l;) {
     const messageIndex = dv.getBigUint64(i, false);
 
     i += 8;

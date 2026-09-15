@@ -460,8 +460,7 @@ export const MockESPTokenContract: React.FC<React.PropsWithChildren> = ({
   const l1Methods = React.useContext(L1MethodsContext);
   const contractState = useMockESPContractState();
   const accountAddress = React.useContext(RainbowKitAccountAddressContext) as
-    | null
-    | `0x${string}`;
+    null | `0x${string}`;
 
   // assertInstanceOf(l1Methods, MockL1MethodsImpl);
   assert(l1Methods instanceof MockL1MethodsImpl);

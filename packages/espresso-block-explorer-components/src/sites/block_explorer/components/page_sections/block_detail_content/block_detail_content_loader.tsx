@@ -31,9 +31,7 @@ const BlockDetailResolver: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const data = React.useContext(DataContext) as
-    | null
-    | undefined
-    | ExplorerGetBlockDetailResponse;
+    null | undefined | ExplorerGetBlockDetailResponse;
 
   const blockDetail = data?.blockDetail ?? null;
 
