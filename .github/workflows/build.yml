@@ -34,6 +34,15 @@ jobs:
             turbo-${{ runner.os }}-
 
       - name: Install Dependencies
+        run: npm ci
+
+      - name: Install Dependencies
+        run: npm ci --workspaces
+
+      - name: Match what the README says
+        run: npm run build --workspace=packages/espresso-block-explorer-components
+
+      - name: Install Dependencies again
         run: npm ci --workspaces
 
       - name: Build All Packages
