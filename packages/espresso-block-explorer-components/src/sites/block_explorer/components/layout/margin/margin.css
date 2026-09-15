@@ -1,13 +1,23 @@
+:root {
+  /*
+   * The width beyond which page content stops growing and centers
+   * itself instead. Without this, content stretches edge-to-edge on
+   * wide monitors -- tables and cards end up far wider than is
+   * comfortable to scan.
+   */
+  --page-max-width: 1280px;
+}
+
 /* Mobile Size */
 .edge-margin {
-  margin-inline-start: 16px;
-  margin-inline-end: 16px;
+  margin-inline-start: max(16px, calc((100% - var(--page-max-width)) / 2));
+  margin-inline-end: max(16px, calc((100% - var(--page-max-width)) / 2));
 }
 
 /* Large */
 @media screen and (min-width: 1024px) {
   .edge-margin {
-    margin-inline-start: 24px;
-    margin-inline-end: 24px;
+    margin-inline-start: max(24px, calc((100% - var(--page-max-width)) / 2));
+    margin-inline-end: max(24px, calc((100% - var(--page-max-width)) / 2));
   }
 }
