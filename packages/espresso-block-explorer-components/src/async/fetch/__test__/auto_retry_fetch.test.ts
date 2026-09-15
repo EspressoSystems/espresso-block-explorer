@@ -31,6 +31,11 @@ function makeOkResponse(): Response {
   return new Response(null, { status: 200 });
 }
 
+// sleep is called between retries; mock it to avoid real delays.
+vi.mock('@/async/sleep', () => ({
+  sleep: vi.fn().mockResolvedValue(undefined),
+}));
+
 describe('isNotFoundError', () => {
   it('returns true for a BadResponseClientError with status 404', () => {
     expect(isNotFoundError(makeClientError(404))).toBe(true);
@@ -120,11 +125,6 @@ describe('isARetryableError', () => {
 });
 
 describe('createAutoRetryFetch', () => {
-  // sleep is called between retries; mock it to avoid real delays.
-  vi.mock('@/async/sleep', () => ({
-    sleep: vi.fn().mockResolvedValue(undefined),
-  }));
-
   it('returns the response when the fetch mock succeeds on the first attempt', async () => {
     const mockFetch = vi.fn().mockResolvedValue(makeOkResponse());
     const autoRetry = createAutoRetryFetch({}, mockFetch);

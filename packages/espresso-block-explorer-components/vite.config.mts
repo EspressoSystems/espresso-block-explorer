@@ -4,7 +4,7 @@
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import { peerDependencies } from './package.json';
+import pkg from './package.json' with { type: 'json' };
 import circularDependency from 'vite-plugin-circular-dependency';
 
 
@@ -25,7 +25,7 @@ export default defineConfig({
     cssCodeSplit: true,
     rollupOptions: {
       external: (id) =>
-        Object.keys(peerDependencies).some(
+        Object.keys(pkg.peerDependencies).some(
           (dep) => id === dep || id.startsWith(`${dep}/`),
         ),
       output: {

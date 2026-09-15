@@ -71,9 +71,7 @@ const ViewResultForCommittee: React.FC<ExampleProps> = (props) => {
 
 const LeaderResultDisplay: React.FC = () => {
   const data = React.useContext(DataContext) as
-    | null
-    | undefined
-    | StakeTableEntry;
+    null | undefined | StakeTableEntry;
   if (!data) {
     return <Text text="No Leader Selected Yet" />;
   }

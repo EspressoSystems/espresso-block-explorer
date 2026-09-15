@@ -862,8 +862,7 @@ export const MockStakeTableV2Contract: React.FC<React.PropsWithChildren> = ({
 }) => {
   const l1Methods = React.useContext(L1MethodsContext);
   const accountAddress = React.useContext(RainbowKitAccountAddressContext) as
-    | null
-    | `0x${string}`;
+    null | `0x${string}`;
   const espTokenContract = React.useContext(ESPTokenContractContext);
 
   assertNotNull(l1Methods);

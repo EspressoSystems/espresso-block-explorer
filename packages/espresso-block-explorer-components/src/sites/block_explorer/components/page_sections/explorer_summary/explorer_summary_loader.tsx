@@ -9,9 +9,7 @@ export const ExplorerSummaryLoader: React.FC<React.PropsWithChildren> = ({
 }) => {
   const error = React.useContext(ErrorContext);
   const data = React.useContext(DataContext) as
-    | null
-    | undefined
-    | ExplorerSummary;
+    null | undefined | ExplorerSummary;
 
   if (error) {
     // TODO: Handle the error state appropriately.
