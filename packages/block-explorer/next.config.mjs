@@ -1,3 +1,12 @@
+/**
+ * The @x402/{core,evm,svm,extensions} dependencies in package.json are not
+ * imported by any first-party file. @coinbase/cdp-sdk declares them as optional
+ * peers and reaches them through lazy import(); Turbopack resolves those eagerly
+ * and fails the build without them. The chain is
+ * @rainbow-me/rainbowkit -> @wagmi/connectors -> @base-org/account -> @coinbase/cdp-sdk,
+ * so their version range needs re-checking whenever cdp-sdk moves.
+ */
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Exclude pino and related packages from Turbopack bundling.

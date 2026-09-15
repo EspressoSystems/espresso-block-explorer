@@ -1,21 +1,26 @@
 import * as matchers from '@testing-library/jest-dom/matchers';
-import { expect, vi } from 'vitest';
+import { expect } from 'vitest';
 
 expect.extend(matchers);
 
-// The components package is consumed here as a built bundle, so its `?worker`
-// imports are already hashed `/assets/*.js` URLs that no module runner can
-// resolve. Loading them fails asynchronously and keeps logging after the test
-// file ends, racing vitest's worker teardown.
+// This package consumes the components package as a built bundle, so its
+// `?worker` specifiers are already hashed `/assets/*.js` URLs that no module
+// runner can resolve. Loading them fails asynchronously and keeps logging after
+// the test file ends, racing vitest's worker teardown. Worker round-trips are
+// covered in the components package, which tests against source `?worker`;
+// here every listener is inert, so a test awaiting worker-delivered data would
+// time out rather than fail.
 class InertWorker implements Worker {
   onmessage = null;
   onmessageerror = null;
   onerror = null;
-  postMessage = vi.fn();
-  terminate = vi.fn();
-  addEventListener = vi.fn();
-  removeEventListener = vi.fn();
-  dispatchEvent = vi.fn(() => false);
+  postMessage() {}
+  terminate() {}
+  addEventListener() {}
+  removeEventListener() {}
+  dispatchEvent() {
+    return true;
+  }
 }
 
-vi.stubGlobal('Worker', InertWorker);
+globalThis.Worker = InertWorker;
