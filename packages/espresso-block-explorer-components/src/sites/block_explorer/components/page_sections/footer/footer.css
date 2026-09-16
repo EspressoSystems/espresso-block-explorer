@@ -1,9 +1,46 @@
+/*
+ * The footer previously had no [data-theme] blocks at all -- it rendered
+ * an identical solid --color--coffee fill regardless of theme. Flattening
+ * it to a quiet utility bar (matching the page background, with a hairline
+ * top border) needs real light/dark tokens instead, since it's no longer
+ * a dark, self-contained block that its children can assume as a fixed
+ * backdrop -- see external_link.css / social_media_icon_link.css /
+ * news_letter_sign_up.css, which all previously assumed this dark bg too.
+ */
+:root {
+  --footer--border-color: var(--color--stroke);
+  --footer--ink-color: var(--color--coffee);
+  --footer--submit-icon-color: var(--color--vanilla);
+}
+
+[data-theme='light'] {
+  --footer--border-color: var(--color--stroke);
+  --footer--ink-color: var(--color--coffee);
+  --footer--submit-icon-color: var(--color--vanilla);
+}
+
+[data-theme='dark'] {
+  --footer--border-color: var(--color--border-dark);
+  --footer--ink-color: var(--color--vanilla);
+  --footer--submit-icon-color: var(--color--coffee);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --footer--border-color: var(--color--border-dark);
+    --footer--ink-color: var(--color--vanilla);
+    --footer--submit-icon-color: var(--color--coffee);
+  }
+}
 
 footer {
-  background-color: var(--color--coffee);
+  background-color: transparent;
+  color: var(--footer--ink-color);
+  --text--color: var(--footer--ink-color);
   --icon--fill-color: var(--color--caramel);
 
-  border-radius: 24px;
+  border-top: 1px solid var(--footer--border-color);
+  border-radius: 0;
   padding: 40px;
   display: grid;
 }
@@ -14,8 +51,7 @@ footer > hr {
   margin: 40px 0;
 
   border-style: solid;
-  border-color: var(--on-color--coffee);
-  opacity: 40%;
+  border-color: var(--footer--border-color);
   border-width: 0;
   border-bottom-width: 1px;
 }
