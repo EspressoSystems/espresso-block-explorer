@@ -54,24 +54,25 @@ jobs:
       - name: Test All Packages
         run: npx turbo test
 
-      - name: Coverage All Packages
-        run: npx turbo coverage
+      # Not running coverage constantly
+      #- name: Coverage All Packages
+      #  run: npx turbo coverage
 
-      - name: Components Coverage Main Branch
-        if: ${{ github.ref == 'refs/heads/main' }}
-        uses: davelosert/vitest-coverage-report-action@v2
-        with:
-          name: "Espresso Block Explorer Components"
-          working-directory: "./packages/espresso-block-explorer-components/"
-          file-coverage-mode: all
+      #- name: Components Coverage Main Branch
+      #  if: ${{ github.ref == 'refs/heads/main' }}
+      #  uses: davelosert/vitest-coverage-report-action@v2
+      #  with:
+      #    name: "Espresso Block Explorer Components"
+      #    working-directory: "./packages/espresso-block-explorer-components/"
+      #    file-coverage-mode: all
 
-      - name: Components Coverage Pull Request
-        if: ${{ github.ref != 'refs/heads/main' }}
-        uses: davelosert/vitest-coverage-report-action@v2
-        with:
-          name: "Espresso Block Explorer Components"
-          working-directory: "./packages/espresso-block-explorer-components/"
-          file-coverage-mode: changes
+      #- name: Components Coverage Pull Request
+      #  if: ${{ github.ref != 'refs/heads/main' }}
+      #  uses: davelosert/vitest-coverage-report-action@v2
+      #  with:
+      #    name: "Espresso Block Explorer Components"
+      #    working-directory: "./packages/espresso-block-explorer-components/"
+      #    file-coverage-mode: changes
 
       - name: Generate Storybook Static Files for Espresso Block Explorer Components
         run: |
