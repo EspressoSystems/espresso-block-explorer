@@ -10,6 +10,7 @@ export default defineConfig({
   test: {
     globals: true,
     globalSetup: './vitest.global-setup.ts',
+    pool: 'vmThreads',
     environment: 'jsdom',
     setupFiles: './setupTests.ts',
     css: true,
