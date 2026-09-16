@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";async function t(e){return new Promise(t=>{let n=setTimeout(()=>{clearTimeout(n),t()},e)})}function n(){return(n=e((()=>{})))()}export{t as n,n as t};

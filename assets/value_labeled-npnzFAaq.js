@@ -1,7 +1,0 @@
-import{j as a}from"./iframe-z4x_zXym.js";import{a as r}from"./higher_order-VFVdagsA.js";import{i as n}from"./typography-DCSeDqUO.js";import{L as t}from"./label-5fkR_OFW.js";const i=n("div"),c=e=>a.jsx(t,{children:e.children}),d=e=>a.jsx(i,{className:"value",children:e.children}),s=({className:e,children:l,...o})=>a.jsxs("div",{...o,className:r(e,"value-labeled"),children:[a.jsx(d,{className:"value",children:l[0]},0),a.jsx(c,{className:"label",children:l[1]},1)]});try{s.displayName="valuelabeled",s.__docgenInfo={description:`TabledLabeledValue is a component that is meant to display a label and
-value pair of components, and lay them out depending on the screen size
-of the device in question.
-
-If on a sufficiently large device, they should appear side by side as
-if in a full sized table element. Otherwise, they should appear as
-a single element of sufficient size.`,displayName:"valuelabeled",filePath:"/home/runner/work/espresso-block-explorer/espresso-block-explorer/packages/espresso-block-explorer-components/src/sites/block_explorer/components/layout/value_labeled/value_labeled.tsx",methods:[],props:{className:{defaultValue:null,declarations:[{fileName:"espresso-block-explorer-components/src/sites/block_explorer/components/layout/value_labeled/value_labeled.tsx",name:"LabeledValueProps"}],description:"",name:"className",parent:{fileName:"espresso-block-explorer-components/src/sites/block_explorer/components/layout/value_labeled/value_labeled.tsx",name:"LabeledValueProps"},required:!1,tags:{},type:{name:"string"}}},tags:{}}}catch{}export{s as V};

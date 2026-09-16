@@ -1,4 +1,0 @@
-import{R as e}from"./iframe-z4x_zXym.js";const o=e.createContext(null);try{o.displayName="BlockExplorerConfigContext",o.__docgenInfo={description:`BlockExplorerConfigContext provides the current Block Explorer
-configuration for the entire application. It defaults to null, and should
-be supplied in order for the interaction with the Block Explorer to work
-effectively.`,displayName:"BlockExplorerConfigContext",filePath:"/home/runner/work/espresso-block-explorer/espresso-block-explorer/packages/espresso-block-explorer-components/src/components/config/explorer.tsx",methods:[],props:{},tags:{}}}catch{}export{o as B};

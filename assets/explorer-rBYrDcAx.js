@@ -1,0 +1,4 @@
+import{a as e,n as t}from"./rolldown-runtime-DkW27tQK.js";import{r as n}from"./iframe-C3TJNA1P.js";var r,i;function a(){return(a=t((()=>{r=e(n(),1),i=r.createContext(null);try{i.displayName=`BlockExplorerConfigContext`,i.__docgenInfo={description:`BlockExplorerConfigContext provides the current Block Explorer
+configuration for the entire application. It defaults to null, and should
+be supplied in order for the interaction with the Block Explorer to work
+effectively.`,displayName:`BlockExplorerConfigContext`,filePath:`/home/runner/work/espresso-block-explorer/espresso-block-explorer/packages/espresso-block-explorer-components/src/components/config/explorer.tsx`,methods:[],props:{},tags:{}}}catch{}})))()}export{a as n,i as t};
