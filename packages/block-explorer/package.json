@@ -42,7 +42,7 @@
     "espresso-block-explorer-components": "*",
     "jsdom": "^30",
     "next-router-mock": "^1",
-    "typescript": "^7",
+    "typescript": "^6",
     "vite": "^8",
     "vitest": "^5"
   }
