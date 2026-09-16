@@ -11,15 +11,21 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@base-org/account": "^2.5.1",
+    "@coinbase/wallet-sdk": "^4.3.6",
+    "@metamask/connect-evm": "^2.1.0",
     "@rainbow-me/rainbowkit": "^2.2.5",
+    "@safe-global/safe-apps-provider": "~0.18.6",
+    "@safe-global/safe-apps-sdk": "^9.1.0",
     "@tanstack/react-query": "^5.80.2",
+    "@walletconnect/ethereum-provider": "^2.21.1",
     "next": "^16.3.5",
     "next-logger": "^5.0.2",
     "pino": "^10.3.1",
     "react": "^19",
     "react-dom": "^19",
     "viem": "^2.30.6",
-    "wagmi": "^2.19.5"
+    "wagmi": "^3.7.7"
   },
   "devDependencies": {
     "@eslint/compat": "^2.0.0",
