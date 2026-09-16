@@ -22,12 +22,17 @@ const WalletAddressText: React.FC<WalletAddressTextProps> = (props) => {
   // Now this string is too long... So we will need to truncate it
   // strategically.  Luckily this will be guaranteed to be an ascii
   // string, so we should be able to truncate it in the middle independently.
+  //
+  // This intentionally does not wrap in the "inline" (display: inline-flex)
+  // class used elsewhere for icon alignment: an inline-flex box is atomic,
+  // which blocks a wrapping <a>'s text-decoration (e.g. the underline-on-
+  // hover from link.css) from propagating into it, so this text would
+  // never visibly underline inside a link even though the anchor computes
+  // the style correctly.
   return (
-    <span className="inline">
-      <span title={string}>
-        {string.substring(0, 2 + leadingChars)}…
-        {string.substring(string.length - trailingChars, string.length)}
-      </span>
+    <span title={string}>
+      {string.substring(0, 2 + leadingChars)}…
+      {string.substring(string.length - trailingChars, string.length)}
     </span>
   );
 };
