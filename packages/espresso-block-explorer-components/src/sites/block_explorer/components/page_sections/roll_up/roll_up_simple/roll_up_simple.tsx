@@ -41,7 +41,7 @@ const RollUpSimple: React.FC<RollUpSimpleProps> = ({
 
   return (
     <div {...props} className={addClassToClassName(className, 'rollup-simple')}>
-      <Text text="Unregistered Rollup" /> (<NumberText number={namespace} />)
+      <Text text="Rollup" /> <NumberText number={namespace} />
     </div>
   );
 };
