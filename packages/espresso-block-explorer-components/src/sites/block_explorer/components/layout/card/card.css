@@ -13,14 +13,14 @@
 [data-theme='dark'] {
   --card--background-color: var(--color--coffee);
   --card--on-background-color: var(--color--vanilla);
-  --card--border-color: var(--color--cookie--alpha-24);
+  --card--border-color: var(--color--border-dark);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
     --card--background-color: var(--color--coffee);
     --card--on-background-color: var(--color--vanilla);
-    --card--border-color: var(--color--cookie--alpha-24);
+    --card--border-color: var(--color--border-dark);
   }
 }
 
