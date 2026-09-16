@@ -1,5 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{r as t}from"./iframe-C3TJNA1P.js";import{i as n,t as r}from"./number_formatters_provider-DAzhTE9C.js";var i,a;function o(){return(o=e((()=>{n(),i=t(),a=e=>(0,i.useContext)(r).bytes.format(e.bytes);try{a.displayName=`bytesizetext`,a.__docgenInfo={description:`ByteSizeText is a simple Text element for rendering the bytes given
-in a localized format.
-
-It achieves this by using the \`bytes\` formatter from the
-\`CurrencyNumberFormatters\` context.`,displayName:`bytesizetext`,filePath:`/home/runner/work/espresso-block-explorer/espresso-block-explorer/packages/espresso-block-explorer-components/src/components/text/byte_size_text.tsx`,methods:[],props:{bytes:{defaultValue:null,declarations:[{fileName:`espresso-block-explorer-components/src/components/text/byte_size_text.tsx`,name:`ByteSizeTextProps`}],description:``,name:`bytes`,parent:{fileName:`espresso-block-explorer-components/src/components/text/byte_size_text.tsx`,name:`ByteSizeTextProps`},required:!0,tags:{},type:{name:`number`}}},tags:{}}}catch{}})))()}export{o as n,a as t};

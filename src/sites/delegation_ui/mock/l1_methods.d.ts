@@ -44,7 +44,6 @@ export declare class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     setAccountAddress(accountAddress: `0x${string}` | null): void;
     getBalance(parameters: GetBalanceParameters<Config>): Promise<{
         readonly decimals: 18;
-        readonly formatted: string;
         readonly symbol: "ESP";
         readonly value: bigint;
     }>;

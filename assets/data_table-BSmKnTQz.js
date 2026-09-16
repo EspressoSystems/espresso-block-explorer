@@ -1,0 +1,28 @@
+import{a as e,n as t}from"./rolldown-runtime-DkW27tQK.js";import{n,r}from"./iframe-CxHUt90_.js";import{n as i,t as a}from"./text-SkWhozSV.js";import{r as o,t as s}from"./data_provider-7GyfkFj5.js";import{n as c,t as l}from"./chevron_up-aA-LjDy4.js";function u(e){return(t,n)=>-e(t,n)}var d;function f(){return(f=t((()=>{d=function(e){return e[e.asc=0]=`asc`,e[e.desc=1]=`desc`,e}({})})))()}var p,m,h,g,_,v,y,b,x,S,C,w,T,E,D;function O(){return(O=t((()=>{o(),i(),c(),p=e(r(),1),f(),m=n(),h=p.createContext({sortColumn:null,sortDir:d.asc}),g=p.createContext(()=>{}),_=p.createContext(()=>{}),v=p.createContext({}),y=p.createContext(-1),b=p.createContext({label:``,columnType:null,buildCell:()=>(0,m.jsx)(`div`,{})}),x=p.createContext([]),S=()=>(0,m.jsx)(l,{className:`icon--sort`}),C=()=>{let e=p.useContext(_),t=p.useContext(b),n=p.useContext(h),r=n.sortColumn===t.columnType,i=t.alignment??`start`;return(0,m.jsx)(`th`,{"data-sort-column-active":r,"data-sort-column-dir":n.sortDir,"data-alignment":i,onClick:()=>{e(t.columnType)},children:(0,m.jsxs)(`div`,{children:[(0,m.jsx)(a,{text:t.label}),(0,m.jsx)(S,{})]})})},w=()=>{let e=p.useContext(x);return(0,m.jsx)(`tr`,{children:e.map((e,t)=>{let n=e.buildCell,r=e.alignment??`start`;return(0,m.jsx)(`td`,{"data-alignment":r,children:(0,m.jsx)(n,{})},t)})})},T=()=>{let e=p.useContext(x);return(0,m.jsx)(`thead`,{children:(0,m.jsx)(`tr`,{children:e.map((e,t)=>(0,m.jsx)(b.Provider,{value:e,children:(0,m.jsx)(C,{})},t))})})},E=()=>{let e=p.useContext(s);return e instanceof Array?(0,m.jsx)(`tbody`,{children:e.map((e,t)=>(0,m.jsx)(v.Provider,{value:e,children:(0,m.jsx)(y.Provider,{value:t,children:(0,m.jsx)(w,{})})},t))}):(0,m.jsx)(`tbody`,{})},D=({columns:e,...t})=>{let n=p.useContext(h),r=p.useContext(g);return(0,m.jsx)(h.Provider,{value:n,children:(0,m.jsx)(_.Provider,{value:e=>{if(n.sortColumn===e){r({...n,sortDir:1-n.sortDir});return}r({...n,sortColumn:e})},children:(0,m.jsx)(x.Provider,{value:e,children:(0,m.jsxs)(`table`,{...t,className:`data-table`,children:[(0,m.jsx)(T,{}),(0,m.jsx)(E,{})]})})})})};try{h.displayName=`DataTableStateContext`,h.__docgenInfo={description:`DataTableStateContext is a Context for passing the DataTableState.`,displayName:`DataTableStateContext`,filePath:`/home/runner/work/espresso-block-explorer/espresso-block-explorer/packages/espresso-block-explorer-components/src/components/data/data_table/data_table.tsx`,methods:[],props:{},tags:{}}}catch{}try{g.displayName=`DataTableSetStateContext`,g.__docgenInfo={description:`DataTableSetStateContext is a Context that wraps a function for changing
+the table state.`,displayName:`DataTableSetStateContext`,filePath:`/home/runner/work/espresso-block-explorer/espresso-block-explorer/packages/espresso-block-explorer-components/src/components/data/data_table/data_table.tsx`,methods:[],props:{},tags:{}}}catch{}try{v.displayName=`DataTableRowContext`,v.__docgenInfo={description:`DataTableRowContext is a Context that provides an individual row within
+the DataTable.`,displayName:`DataTableRowContext`,filePath:`/home/runner/work/espresso-block-explorer/espresso-block-explorer/packages/espresso-block-explorer-components/src/components/data/data_table/data_table.tsx`,methods:[],props:{},tags:{}}}catch{}try{y.displayName=`DataTableIndexContext`,y.__docgenInfo={description:`DataTableIndexContext is a Context that provides the index of the current
+row within the DataTable.`,displayName:`DataTableIndexContext`,filePath:`/home/runner/work/espresso-block-explorer/espresso-block-explorer/packages/espresso-block-explorer-components/src/components/data/data_table/data_table.tsx`,methods:[],props:{},tags:{}}}catch{}try{D.displayName=`datatable`,D.__docgenInfo={description:`DataTable is a component that is meant to display data in a tabular form.
+The data layout is dictated by the columns passed to the DataTable in it's
+props.
+
+The DataTable forwards this data to the Head element, and the body element
+for display.  The DataTable is capable of handling sortable columns if
+the need should arise.
+
+It records the current page, sorted column and direction in it's local
+state for quick reference.
+
+The DataTable itself is not responsible for setting up it's own state,
+but it does consume and attempt to modify the State. As such, in order
+to effectively utilize the DataTable the DataTableStateContext.Provider,
+and DataTableSetStateContext.Provider should be set as an ancestor above
+the created DataTable.
+
+The DataTable Body gets it's data from a DataContext.  That DataContext
+is expected to be an Array of data, but no other restrictions are imposed.
+
+The Cells that get rendered within the Body are provided via the data
+passed into the column Props. These Cells are constructed with no props
+being passed, instead a DataTableRowContext.Provider is created to wrap
+every row. This should allow every cell to access any data they need for
+that individual row.`,displayName:`datatable`,filePath:`/home/runner/work/espresso-block-explorer/espresso-block-explorer/packages/espresso-block-explorer-components/src/components/data/data_table/data_table.tsx`,methods:[],props:{columns:{defaultValue:null,declarations:[{fileName:`espresso-block-explorer-components/src/components/data/data_table/data_table.tsx`,name:`DataTableProps`}],description:``,name:`columns`,parent:{fileName:`espresso-block-explorer-components/src/components/data/data_table/data_table.tsx`,name:`DataTableProps`},required:!0,tags:{},type:{name:`ColumnData<unknown>[]`}}},tags:{}}}catch{}})))()}export{O as a,u as c,h as i,v as n,d as o,g as r,f as s,D as t};

@@ -6,8 +6,8 @@ export declare class L1MethodsRemote<config extends Config, chainId extends conf
     private readonly config;
     private readonly chainID;
     constructor(config: config, chainID: chainId);
-    getBalance(parameters: GetBalanceParameters<config>): Promise<import('@wagmi/core').GetBalanceReturnType>;
-    estimateFeesPerGas<type extends FeeValuesType = 'eip1559'>(parameters: EstimateFeesPerGasParameters<FeeValuesType, config>): Promise<import('@wagmi/core').EstimateFeesPerGasReturnType<type>>;
+    getBalance(parameters: GetBalanceParameters<config>): Promise<import('wagmi/actions').GetBalanceReturnType>;
+    estimateFeesPerGas<type extends FeeValuesType = 'eip1559'>(parameters: EstimateFeesPerGasParameters<FeeValuesType, config>): Promise<import('wagmi/actions').EstimateFeesPerGasReturnType<type>>;
     estimateGas(parameters: EstimateGasParameters<config, chainId>): Promise<bigint>;
     getTransactionReceipt(parameters: GetTransactionReceiptParameters<config>): Promise<GetTransactionReceiptReturnType<config, chainId>>;
     getTransaction(parameters: GetTransactionParameters<config, chainId>): Promise<GetTransactionReturnType<config, chainId>>;

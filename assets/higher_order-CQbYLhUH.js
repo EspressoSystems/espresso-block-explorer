@@ -1,1 +1,0 @@
-import{a as e,n as t}from"./rolldown-runtime-DkW27tQK.js";import{r as n}from"./iframe-C3TJNA1P.js";function r(e,t){let n=n=>a.createElement(e,{...n,className:i(n.className,t)});return n.displayName=`WrappedClassAdded`,n}function i(e,t){return e?`${e} ${t}`:t}var a;function o(){return(o=t((()=>{a=e(n(),1)})))()}export{i as n,o as r,r as t};
