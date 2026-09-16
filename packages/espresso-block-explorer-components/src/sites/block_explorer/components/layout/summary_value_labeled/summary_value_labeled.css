@@ -35,4 +35,6 @@
   grid-area: value;
   /* color: var(--color--slate-950); */
   /* --text--color: var(--color--slate-950); */
+  font-family: var(--text--font-family-mono);
+  font-variant-numeric: tabular-nums;
 }

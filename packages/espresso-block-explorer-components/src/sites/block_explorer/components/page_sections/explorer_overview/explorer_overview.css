@@ -1,3 +1,17 @@
 .overview.card .card--padding {
   padding: 16px;
 }
+
+/*
+ * ExplorerOverviewHeading reuses SummaryValueLabeled (the same "big value +
+ * small label" component LatestBlockSummaryHeading uses for the actual
+ * block height number) to lay out a section title ("Overview") and
+ * subheading ("Since Genesis") instead -- neither is data, so the
+ * data_table/value-labeled mono treatment doesn't apply here. Scoped to
+ * .overview specifically so the legitimate numeric usage elsewhere
+ * (the "Latest Block" card's block height) keeps its mono/tabular value.
+ */
+.overview .summary-value-labeled > div.value {
+  font-family: var(--text--font-family);
+  font-variant-numeric: normal;
+}

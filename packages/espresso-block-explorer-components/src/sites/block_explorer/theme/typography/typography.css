@@ -22,13 +22,42 @@
   font-weight: 500 900;
 }
 
+/*
+ * IBM Plex Mono -- SIL Open Font License 1.1, sourced from Google Fonts
+ * (fonts.gstatic.com). Used for hashes, addresses, byte sizes, and other
+ * tabular/numeric data, matching the treatment delegation-ui already
+ * specifies for the same purpose (it just never actually loaded a font
+ * file for it). Only the two weights actually consumed elsewhere in this
+ * codebase are included.
+ */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src:
+    local('IBMPlexMono-Regular'),
+    url('./fonts/IBMPlexMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src:
+    local('IBMPlexMono-Medium'),
+    url('./fonts/IBMPlexMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
 :root {
   /* Espresso Typography */
   --espresso--text--font-family: 'Neue Montreal', sans-serif;
+  --espresso--text--font-family-mono: 'IBM Plex Mono', ui-monospace,
+    'SFMono-Regular', Menlo, Consolas, monospace;
   --espresso--text--letter-spacing: 1;
 
   /* Default Text Styles */
   --text--font-family: var(--espresso--text--font-family);
+  --text--font-family-mono: var(--espresso--text--font-family-mono);
   --text--letter-spacing: var(--espresso--text--letter-spacing);
   --text--background-color: var(--color--transparent);
   --text--color: var(--color--slate-700);

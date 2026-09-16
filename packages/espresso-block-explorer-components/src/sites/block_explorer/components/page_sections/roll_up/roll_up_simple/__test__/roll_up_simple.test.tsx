@@ -13,7 +13,7 @@ describe('RollUpSimple Component', () => {
 
       const simple = screen.getByTestId('1');
       expect(simple).toBeInTheDocument();
-      expect(simple).toHaveTextContent(`Unregistered Rollup (1)`);
+      expect(simple).toHaveTextContent(`Rollup 1`);
 
       // Test the remaining rollups
       for (const entry of curatedRollupMap.values()) {
