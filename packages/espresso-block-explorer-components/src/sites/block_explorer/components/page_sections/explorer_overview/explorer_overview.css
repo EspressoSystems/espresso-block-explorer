@@ -4,12 +4,12 @@
 
 /*
  * ExplorerOverviewHeading reuses SummaryValueLabeled (the same "big value +
- * small label" component LatestBlockSummaryHeading uses for the actual
- * block height number) to lay out a section title ("Overview") and
- * subheading ("Since Genesis") instead -- neither is data, so the
- * data_table/value-labeled mono treatment doesn't apply here. Scoped to
- * .overview specifically so the legitimate numeric usage elsewhere
- * (the "Latest Block" card's block height) keeps its mono/tabular value.
+ * small label" component LatestBlockSummaryHeading uses) to lay out a
+ * section title ("Overview") and subheading ("Since Genesis") instead --
+ * neither is data, so the mono/tabular value treatment doesn't apply here.
+ * Scoped to .overview so other legitimate numeric usages of this component
+ * (e.g. the "Latest Block" card's block height, in its own label slot) are
+ * unaffected.
  */
 .overview .summary-value-labeled > div.value {
   font-family: var(--text--font-family);
