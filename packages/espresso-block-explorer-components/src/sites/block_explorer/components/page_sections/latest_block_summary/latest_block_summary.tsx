@@ -32,8 +32,8 @@ export const LatestBlockSummaryHeading: React.FC = () => {
   return (
     <SummaryTableLabeledValue className="card--padding">
       <SummaryValueLabeled>
-        <NumberText number={block.height} />
         <Text text="Latest Block" />
+        <NumberText number={block.height} />
       </SummaryValueLabeled>
       <LabeledAnchorButton href={pathResolver.block(block.height)}>
         <Text text="Go to Block" />
