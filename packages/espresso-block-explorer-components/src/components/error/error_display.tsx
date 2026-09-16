@@ -5,6 +5,7 @@ import { FetchError } from '@/errors/fetch_error';
 import { UnimplementedError } from '@/errors/unimplemented_error';
 import { default as WebSocketError } from '@/errors/web_socket_error';
 import { WebWorkerErrorResponse } from '@/errors/web_worker_error_response';
+import { ErrorIconFilled } from '@/visual/icons';
 import { default as React } from 'react';
 import { addClassToClassName } from '../higher_order';
 import './error_display.css';
@@ -52,14 +53,22 @@ const ErrorDisplayWrapper: React.FC<ErrorDisplayWrapperProps> = ({
     className={addClassToClassName(className, 'error-display-wrapper')}
     {...props}
   >
-    {children}
+    <ErrorIconFilled className="error-display-icon" />
+    <div className="error-display-message">{children}</div>
   </div>
 );
 
 const PleaseReload: React.FC = () => {
+  // This intentionally uses the same "btn label type--ui--button" classes
+  // a LabeledButton would render, rather than importing that component --
+  // components/error is generic, site-agnostic infrastructure, and
+  // importing a component from the block_explorer-specific site tree
+  // here created a real circular-import / module-initialization-order
+  // crash ("Cannot access 'x' before initialization") when bundled.
   return (
-    <a
-      href="#"
+    <button
+      type="button"
+      className="btn label type--ui--button"
       onClick={(event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -67,7 +76,7 @@ const PleaseReload: React.FC = () => {
       }}
     >
       <Text text="Please reload" />
-    </a>
+    </button>
   );
 };
 
