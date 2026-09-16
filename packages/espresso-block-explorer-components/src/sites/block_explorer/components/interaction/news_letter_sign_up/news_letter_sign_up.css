@@ -11,7 +11,7 @@ form.form--newsletter input[type='email'] {
   background: var(--color--transparent);
   font-size: 14px;
   line-height: 24px;
-  color: var(--on-color--coffee);
+  color: var(--footer--ink-color);
   box-sizing: border-box;
 
   transition:
@@ -21,11 +21,11 @@ form.form--newsletter input[type='email'] {
 }
 
 form.form--newsletter input[type='email']:active {
-  border-color: var(--on-color--coffee);
+  border-color: var(--footer--ink-color);
 }
 
 form.form--newsletter input[type='email']:focus-visible {
-  border-color: var(--on-color--coffee);
+  border-color: var(--footer--ink-color);
   outline: none;
 }
 
@@ -33,8 +33,8 @@ form.form--newsletter button.submit {
   position: absolute;
   top: 5px;
   right: 5px;
-  background-color: var(--on-color--coffee);
-  --icon--fill-color: var(--color--coffee);
+  background-color: var(--footer--ink-color);
+  --icon--fill-color: var(--footer--submit-icon-color);
   border: 0;
 }
 

@@ -1,13 +1,13 @@
 a.link.link--external {
   font-family: 'IBM Plex Mono', monospace;
-  color: var(--on-color--coffee);
+  color: var(--footer--ink-color);
   padding: 4px 8px;
   text-decoration: none;
   white-space: nowrap;
 }
 
 a.link.link--external:visited {
-  color: var(--on-color--coffee);
+  color: var(--footer--ink-color);
 }
 
 a.link.link--external:hover {

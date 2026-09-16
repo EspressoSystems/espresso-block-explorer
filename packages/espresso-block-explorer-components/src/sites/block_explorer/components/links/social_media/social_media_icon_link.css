@@ -3,7 +3,7 @@ a.link.link--social {
 }
 
 .social-media-links a.link.link--social {
-  --icon--fill-color: var(--on-color--coffee);
+  --icon--fill-color: var(--footer--ink-color);
 }
 
 .social-media-links a.link.link--social:hover {
