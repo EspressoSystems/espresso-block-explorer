@@ -29,10 +29,10 @@ export default defineConfig({
           (dep) => id === dep || id.startsWith(`${dep}/`),
         ),
       output: {
-        // Remap CSS from manual chunks to the predictable entry-point names expected
-        // by package.json exports. Manual chunk names deliberately differ from entry
-        // names to avoid Rollup circular-chunk references (which break SSR evaluation
-        // order and cause TDZ errors at runtime).
+        // Remap each chunk's emitted CSS to the predictable file names expected by
+        // package.json exports. Chunk names deliberately differ from entry names to
+        // avoid circular-chunk references (which break SSR evaluation order and cause
+        // TDZ errors at runtime).
         assetFileNames: ({ name }: { name?: string }) => {
           if (name === 'shared-lib.css') return 'espresso-block-explorer-components.css';
           if (name === 'block-explorer-site.css') return 'block-explorer.css';
@@ -40,21 +40,38 @@ export default defineConfig({
           if (name && name.endsWith('.css')) return '[name].[ext]';
           return 'assets/[name]-[hash][extname]';
         },
-        // Use non-entry names so manual chunks don't collide with entry chunk names.
-        // Return undefined for entry files so Rollup keeps them in their own chunks;
-        // this prevents the circular chunk reference caused by entry files being
-        // pulled into shared-lib and then importing back into the site chunks.
-        manualChunks(id) {
-          if (
-            id.endsWith('/src/block-explorer.ts') ||
-            id.endsWith('/src/delegation-ui.ts') ||
-            id.endsWith('/src/espresso-block-explorer-components.ts')
-          ) {
-            return undefined;
-          }
-          if (id.includes('/sites/delegation_ui/')) return 'delegation-ui-site';
-          if (id.includes('/sites/block_explorer/')) return 'block-explorer-site';
-          return 'shared-lib';
+        // Rolldown (Vite 8) replaced Rollup's `manualChunks` with `codeSplitting.groups`;
+        // the old `manualChunks` function is silently ignored, which is why the shared
+        // CSS bundle stopped being emitted after the Vite 8 upgrade.
+        //
+        // `shared-lib` is given a higher priority so it captures the shared modules
+        // FIRST. Otherwise a site group (with the default `includeDependenciesRecursively`)
+        // pulls the shared modules into itself as transitive deps, leaving no shared
+        // chunk and folding the shared styles into a single site's CSS. Sites depend on
+        // shared code (not vice versa), so shared-lib importing nothing site-specific
+        // keeps the chunk graph acyclic.
+        codeSplitting: {
+          groups: [
+            {
+              name: 'shared-lib',
+              priority: 2,
+              test: (id: string) =>
+                !id.includes('/sites/') &&
+                !id.endsWith('/src/block-explorer.ts') &&
+                !id.endsWith('/src/delegation-ui.ts') &&
+                !id.endsWith('/src/espresso-block-explorer-components.ts'),
+            },
+            {
+              name: 'delegation-ui-site',
+              priority: 1,
+              test: (id: string) => id.includes('/sites/delegation_ui/'),
+            },
+            {
+              name: 'block-explorer-site',
+              priority: 1,
+              test: (id: string) => id.includes('/sites/block_explorer/'),
+            },
+          ],
         },
       },
     },

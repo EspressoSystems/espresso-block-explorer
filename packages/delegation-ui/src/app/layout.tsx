@@ -1,5 +1,5 @@
-//import 'espresso-block-explorer-components/espresso-block-explorer-components.css';
-//import 'espresso-block-explorer-components/delegation-ui.css';
+import 'espresso-block-explorer-components/espresso-block-explorer-components.css';
+import 'espresso-block-explorer-components/delegation-ui.css';
 import React from 'react';
 import './globals.css';
 
