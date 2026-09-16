@@ -9,15 +9,18 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   position: relative;
-  background: linear-gradient(180deg, #ffffff 0%, #fcebde 100%) !important;
-  background-attachment: fixed !important;
-  color: var(--color--coffee) !important;
+  /* Matches --color--vanilla's tone (the brand's light cream) without
+     coupling to that token's own role as dark-mode text color. Gives
+     a ~13pt luminance gap below --color--card-fill so cards visibly
+     lift off the page. */
+  background: #f5ede2;
+  color: var(--color--coffee);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   html,
   body {
-    background: var(--color--chocolate) !important;
-    color: var(--color--vanilla) !important;
+    background: var(--color--chocolate);
+    color: var(--color--vanilla);
   }
 }
