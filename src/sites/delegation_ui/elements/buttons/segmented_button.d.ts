@@ -22,4 +22,4 @@ export interface SegmentedButtonProps<T> {
  * multiple segments. Each segment is represented by a button. The selected
  * segment is highlighted.
  */
-export declare function SegmentedButton<T>(props: SegmentedButtonProps<T>): import("react/jsx-runtime").JSX.Element;
+export declare function SegmentedButton<T>(props: SegmentedButtonProps<T>): React.JSX.Element;

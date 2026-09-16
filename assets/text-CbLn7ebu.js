@@ -1,0 +1,3 @@
+const t=e=>e.text;try{t.displayName="text",t.__docgenInfo={description:`Text simply represents a Text node without any other details. The text
+passed into the Text element will be presented as is without change or
+adjustments.`,displayName:"text",filePath:"/home/runner/work/espresso-block-explorer/espresso-block-explorer/packages/espresso-block-explorer-components/src/components/text/text.tsx",methods:[],props:{text:{defaultValue:null,declarations:[{fileName:"espresso-block-explorer-components/src/components/text/text.tsx",name:"TypeLiteral"}],description:"",name:"text",required:!0,tags:{},type:{name:"string"}}},tags:{}}}catch{}export{t as T};

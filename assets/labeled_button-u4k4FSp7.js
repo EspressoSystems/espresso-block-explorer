@@ -1,0 +1,3 @@
+import{j as s}from"./iframe-z4x_zXym.js";import{a}from"./higher_order-VFVdagsA.js";import{B as n}from"./button-Kiy6jj8L.js";const t=({className:e,...o})=>s.jsx(n,{className:a(e,"label type--ui--button"),...o});try{t.displayName="labeledbutton",t.__docgenInfo={description:`LabeledButton is an extension to a normal Button, but designed to hold
+text specifically.  It has styles that provide sufficient padding and
+spacing as per the design specification.`,displayName:"labeledbutton",filePath:"/home/runner/work/espresso-block-explorer/espresso-block-explorer/packages/espresso-block-explorer-components/src/sites/block_explorer/components/hid/buttons/labeled_button/labeled_button.tsx",methods:[],props:{},tags:{}}}catch{}export{t as L};
