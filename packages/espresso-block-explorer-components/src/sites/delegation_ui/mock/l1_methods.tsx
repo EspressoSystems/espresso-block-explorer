@@ -102,7 +102,6 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     const balance = this.storage.balances.get(address) ?? 0n;
     return {
       decimals: 18,
-      formatted: String(balance),
       symbol: 'ESP',
       value: balance,
     } as const satisfies GetBalanceReturnType;
@@ -112,10 +111,6 @@ export class MockL1MethodsImpl implements L1Methods<Config, ChainID> {
     return {
       maxPriorityFeePerGas: 1_000_000_000n,
       maxFeePerGas: 15_000_000_000n,
-      formatted: {
-        maxPriorityFeePerGas: '1',
-        maxFeePerGas: '15',
-      },
     };
   }
 

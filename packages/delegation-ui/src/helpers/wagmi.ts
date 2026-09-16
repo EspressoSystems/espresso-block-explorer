@@ -1,7 +1,6 @@
-import { fallback } from '@wagmi/core';
 import { Environment } from 'espresso-block-explorer-components';
 import { defineChain } from 'viem';
-import { http, type CreateConfigParameters } from 'wagmi';
+import { fallback, http, type CreateConfigParameters } from 'wagmi';
 import * as chains from 'wagmi/chains';
 import { mock } from 'wagmi/connectors';
 
