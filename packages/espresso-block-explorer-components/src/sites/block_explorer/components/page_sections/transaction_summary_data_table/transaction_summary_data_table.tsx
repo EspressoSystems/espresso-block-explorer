@@ -163,7 +163,7 @@ const TransactionsSummaryDataTableLayout: React.FC<
           buildCell: props.components[1],
         },
         {
-          label: 'Block',
+          label: 'Block Height',
           columnType: TransactionSummaryColumn.block,
           buildCell: props.components[2],
         },

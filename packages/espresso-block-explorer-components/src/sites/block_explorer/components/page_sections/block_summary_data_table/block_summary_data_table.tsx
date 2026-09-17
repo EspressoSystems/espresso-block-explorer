@@ -125,7 +125,7 @@ const BlockSummaryDataTableLayout: React.FC<
     <DataTable
       columns={[
         {
-          label: 'Height',
+          label: 'Block Height',
           columnType: BlockSummaryColumn.height,
           buildCell: props.components[0],
         },
