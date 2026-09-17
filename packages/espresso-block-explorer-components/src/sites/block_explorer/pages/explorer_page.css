@@ -1,3 +1,8 @@
+:root {
+  /* 16px of card padding above and below a 40px action button. */
+  --explorer-card--header-height: 72px;
+}
+
 .center {
   text-align: center;
 }
@@ -44,11 +49,31 @@
   padding: 1em;
 }
 
+.latest-block > .summary-tabled-labeled-value > .label,
 .latest-blocks-summary > .summary-tabled-labeled-value > .label,
 .latest-transactions-summary > .summary-tabled-labeled-value > .label,
 .latest-rollups-summary > .summary-tabled-labeled-value > .label {
   color: var(--text--color);
   align-self: center;
+}
+
+/*
+ * The latest block and overview cards sit side by side, but their headers are
+ * built from different material: a title beside an action button on one, a
+ * title above a subheading on the other. Left alone they end up different
+ * heights, which knocks the divider and every field below it out of step
+ * between the two cards. Holding both headers to the height of the taller
+ * one -- the action button plus the card's padding -- and starting both
+ * titles at the top of it lines the two cards up all the way down.
+ */
+.latest-block > .summary-tabled-labeled-value,
+.overview > .summary-value-labeled {
+  box-sizing: border-box;
+  min-height: var(--explorer-card--header-height);
+}
+
+.latest-block > .summary-tabled-labeled-value > .label {
+  align-self: start;
 }
 
 .block-time-histogram {
