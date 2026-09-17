@@ -6,6 +6,13 @@
   text-overflow: ellipsis;
 }
 
+/* Keeps a rollup's logo on the same line, and centred against, the namespace
+   and parentheses it sits between. */
+.rollup-identity {
+  display: inline-flex;
+  align-items: center;
+}
+
 .inscription--section {
   grid-template-columns: 1fr 2fr;
 }
