@@ -14,6 +14,7 @@ import {
   ExplorerTransactionDetailDataContext,
   ExplorerTransactionDetailsContext,
 } from '@/contexts/explorer_api_contexts';
+import { curatedRollupMap } from '@/models/block_explorer/rollup_entry/data';
 import { default as React } from 'react';
 import { InternalLink } from '../../links/link/link';
 import { BlockNumberContext } from '../block_detail_content/block_detail_content_loader';
@@ -54,15 +55,15 @@ export const TransactionDetailsContentPlaceholder: React.FC = () => {
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transaction index in block" />
+        <Text text="Position in block" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transaction Size" />
+        <Text text="Size" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transaction hash" />
+        <Text text="Hash" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
@@ -100,17 +101,15 @@ export const TransactionDetailsContent: React.FC = () => {
         </InternalLink>
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transaction index in block" />
-        <Text
-          text={`index ${details.offset} out of ${details.numTransactions} transactions`}
-        />
+        <Text text="Position in block" />
+        <NumberText number={details.offset} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transaction Size" />
+        <Text text="Size" />
         <ByteSizeText bytes={details.size} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transaction hash" />
+        <Text text="Hash" />
         <CopyTaggedBase64 value={details.hash}>
           <FullTaggedBase64Text value={details.hash} />
         </CopyTaggedBase64>
@@ -138,6 +137,33 @@ export const TransactionDataContentsPlaceholder: React.FC = () => {
   );
 };
 
+interface RollUpIdentityProps {
+  namespace: number;
+}
+
+/**
+ * RollUpIdentity names the rollup a transaction was submitted to: its
+ * namespace, followed by whatever else identifies it -- the logo and name a
+ * rollup we recognise carries in the transaction tables, and otherwise a note
+ * that we do not recognise it.
+ */
+const RollUpIdentity: React.FC<RollUpIdentityProps> = ({ namespace }) => {
+  const rollUp = curatedRollupMap.get(namespace);
+
+  return (
+    <span className="rollup-identity">
+      {namespace}
+      {' ('}
+      {rollUp ? (
+        <RollUpSimple namespace={namespace} />
+      ) : (
+        <Text text="Unregistered Rollup" />
+      )}
+      {')'}
+    </span>
+  );
+};
+
 /**
  * TransactionDataContents is a component that displays details for the
  * individual rollup data for a Transaction
@@ -153,11 +179,7 @@ export const TransactionDataContents: React.FC = () => {
     <>
       <TableLabeledValue className="card--padding">
         <Text text="Rollup" />
-        <>
-          <RollUpSimple namespace={details.namespace} />
-          <br />
-          <NumberText number={details.namespace} />
-        </>
+        <RollUpIdentity namespace={details.namespace} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Transaction data" />
