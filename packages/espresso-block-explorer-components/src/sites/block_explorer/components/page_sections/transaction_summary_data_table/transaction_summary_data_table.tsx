@@ -8,6 +8,7 @@ import { SkeletonContent } from '@/components/loading';
 import {
   DateTimeText,
   NumberText,
+  RelativeDateTimeText,
   TaggedBase64Text,
   Text,
 } from '@/components/text';
@@ -111,6 +112,23 @@ const TimeCell: React.FC = () => {
   return <DateTimeText date={row.time} />;
 };
 
+/**
+ * RelativeTimeCell is a TimeCell that reports how long ago the transaction
+ * was sequenced rather than its absolute timestamp.
+ */
+const RelativeTimeCell: React.FC = () => {
+  const row = React.useContext(DataTableRowContext) as
+    | undefined
+    | null
+    | ExplorerTransactionSummary;
+
+  if (!row) {
+    return null;
+  }
+
+  return <RelativeDateTimeText date={row.time} />;
+};
+
 interface TransactionsSummaryDataTableLayoutProps {
   components: [
     React.ComponentType,
@@ -193,6 +211,19 @@ export const TransactionsSummaryDataTable: React.FC = () => {
   return (
     <TransactionsSummaryDataTableLayout
       components={[TransactionCell, RollUpCell, BlockCell, TimeCell]}
+    />
+  );
+};
+
+/**
+ * LatestTransactionsSummaryDataTable is the TransactionsSummaryDataTable as
+ * displayed in the explorer's "Latest Transactions" summary, where recency
+ * matters more than the exact timestamp and the card is too narrow to fit one.
+ */
+export const LatestTransactionsSummaryDataTable: React.FC = () => {
+  return (
+    <TransactionsSummaryDataTableLayout
+      components={[TransactionCell, RollUpCell, BlockCell, RelativeTimeCell]}
     />
   );
 };
