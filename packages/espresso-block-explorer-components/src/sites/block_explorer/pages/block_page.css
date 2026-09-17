@@ -1,0 +1,13 @@
+/*
+ * The block's transactions sit in their own card beneath the block's details,
+ * so they need the same vertical separation the explorer grid gives its cards.
+ */
+.block-transactions {
+  margin-block-start: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .block-transactions {
+    margin-block-start: 24px;
+  }
+}

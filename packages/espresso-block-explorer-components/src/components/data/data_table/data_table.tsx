@@ -84,6 +84,11 @@ const ColumnsContext: React.Context<ColumnData<unknown>[]> =
 
 export interface DataTableProps<ColumnType> {
   columns: ColumnData<ColumnType>[];
+  /**
+   * What to render in place of the rows when there is no data. When omitted
+   * an empty table body is rendered instead.
+   */
+  emptyContent?: React.ReactNode;
 }
 
 const SortDirectionComponent: React.FC = () => (
@@ -164,16 +169,31 @@ const DataTableTHead: React.FC = () => {
   );
 };
 
+interface DataTableTBodyProps {
+  emptyContent?: React.ReactNode;
+}
+
 /**
  * DataTableTBody represents a tbody element within the Data Table. It contains
  * all of the rows that occur within the Data Table. Before constructing each
  * Row, it creates a DataTableRowContext.Provider containing the relevant row
  * of data.
  */
-const DataTableTBody: React.FC = () => {
+const DataTableTBody: React.FC<DataTableTBodyProps> = ({ emptyContent }) => {
   const data = React.useContext(DataContext);
+  const columns = React.useContext(ColumnsContext);
   if (!(data instanceof Array)) {
     return <tbody></tbody>;
+  }
+
+  if (data.length === 0 && emptyContent !== undefined) {
+    return (
+      <tbody>
+        <tr>
+          <td colSpan={columns.length}>{emptyContent}</td>
+        </tr>
+      </tbody>
+    );
   }
 
   return (
@@ -219,6 +239,7 @@ const DataTableTBody: React.FC = () => {
  */
 const DataTable: React.FC<DataTableProps<unknown>> = ({
   columns,
+  emptyContent,
   ...props
 }) => {
   const state = React.useContext(DataTableStateContext);
@@ -245,7 +266,7 @@ const DataTable: React.FC<DataTableProps<unknown>> = ({
         <ColumnsContext.Provider value={columns}>
           <table {...props} className="data-table">
             <DataTableTHead />
-            <DataTableTBody />
+            <DataTableTBody emptyContent={emptyContent} />
           </table>
         </ColumnsContext.Provider>
       </DataTableSortColumnContext.Provider>

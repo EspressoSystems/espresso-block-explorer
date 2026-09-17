@@ -6,5 +6,4 @@ export * from './hot_shot_query_service_adapters';
 export { default as RollUpPage } from './roll_up_page';
 export { default as RollUpsPage } from './roll_ups_page';
 export { default as TransactionPage } from './transaction_page';
-export { default as TransactionsForBlockPage } from './transactions_for_block_page';
 export { default as TransactionsPage } from './transactions_page';
