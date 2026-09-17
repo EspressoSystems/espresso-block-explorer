@@ -1,27 +1,3 @@
 .latest-block.card .card--padding {
   padding: 16px;
 }
-
-/*
- * LatestBlockSummaryHeading reuses SummaryValueLabeled with "Latest Block"
- * in the (normally mono/tabular) value slot and the block height in the
- * (normally plain-text) label slot, so the title reads like the other card
- * titles and the height reads as a subtitle. Swap the typography back to
- * match: the title shouldn't be mono, the height should stay mono/tabular.
- *
- * Both also need an explicit color: this whole SummaryValueLabeled sits
- * inside SummaryTableLabeledValue's own label slot (a <span class="label">),
- * which otherwise tints everything inside it with the orange caption color
- * -- fine for an actual caption, wrong for a card title and its subtitle.
- */
-.latest-block .summary-value-labeled > div.value {
-  font-family: var(--text--font-family);
-  font-variant-numeric: normal;
-  color: var(--text--color);
-}
-
-.latest-block .summary-value-labeled > .label {
-  font-family: var(--text--font-family-mono);
-  font-variant-numeric: tabular-nums;
-  color: var(--text--color);
-}

@@ -1,6 +1,6 @@
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { default as SummaryTableLabeledValue } from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
-import { default as SummaryValueLabeled } from '@/block_explorer/components/layout/summary_value_labeled/summary_value_labeled';
+import { WithUiText300 } from '@/block_explorer/components/typography/typography';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import { SkeletonContent } from '@/components/loading';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
@@ -21,6 +21,8 @@ import { default as React } from 'react';
 import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
 import './latest_block_summary.css';
 
+const Text300H2 = WithUiText300('h2');
+
 export const LatestBlockSummaryHeading: React.FC = () => {
   const block = React.useContext(ExplorerBlockDetailContext);
   const pathResolver = React.useContext(PathResolverContext);
@@ -31,10 +33,9 @@ export const LatestBlockSummaryHeading: React.FC = () => {
 
   return (
     <SummaryTableLabeledValue className="card--padding">
-      <SummaryValueLabeled>
+      <Text300H2>
         <Text text="Latest Block" />
-        <NumberText number={block.height} />
-      </SummaryValueLabeled>
+      </Text300H2>
       <LabeledAnchorButton href={pathResolver.block(block.height)}>
         <Text text="Go to Block" />
       </LabeledAnchorButton>
@@ -45,10 +46,7 @@ export const LatestBlockSummaryHeading: React.FC = () => {
 export const LatestBlockSummaryHeadingPlaceholder: React.FC = () => {
   return (
     <SummaryTableLabeledValue className="card--padding">
-      <SummaryValueLabeled>
-        <SkeletonContent />
-        <SkeletonContent />
-      </SummaryValueLabeled>
+      <SkeletonContent />
       <SkeletonContent />
     </SummaryTableLabeledValue>
   );
@@ -81,15 +79,16 @@ export const LatestBlockSummaryDetails: React.FC = () => {
 
   return (
     <div className="card--padding">
+      <SummaryTableLabeledValue>
+        <Text text="Height" />
+        <NumberText number={block.height} />
+      </SummaryTableLabeledValue>
       {timeToCreateBlock === null ? (
         <></>
       ) : (
         <SummaryTableLabeledValue>
-          <Text text="Block time" />
-          <>
-            ~
-            <DurationInSecondsText durationInMilliseconds={timeToCreateBlock} />
-          </>
+          <Text text="Time" />
+          <DurationInSecondsText durationInMilliseconds={timeToCreateBlock} />
         </SummaryTableLabeledValue>
       )}
       <SummaryTableLabeledValue>
@@ -108,7 +107,11 @@ export const LatestBlockSummaryDetailsPlaceholder: React.FC = () => {
   return (
     <div className="card--padding">
       <SummaryTableLabeledValue>
-        <Text text="Block time" />
+        <Text text="Height" />
+        <SkeletonContent />
+      </SummaryTableLabeledValue>
+      <SummaryTableLabeledValue>
+        <Text text="Time" />
         <SkeletonContent />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
