@@ -10,6 +10,7 @@ import {
   DateTimeText,
   HexText,
   NumberText,
+  RelativeDateTimeText,
 } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import { iota } from '@/functional/functional';
@@ -117,6 +118,22 @@ const TimeCell: React.FC = () => {
   return <DateTimeText date={row.time} />;
 };
 
+/**
+ * RelativeTimeCell is a TimeCell that reports how long ago the block was
+ * produced rather than its absolute timestamp.
+ */
+const RelativeTimeCell: React.FC = () => {
+  const row = React.useContext(DataTableRowContext) as
+    | undefined
+    | null
+    | ExplorerBlockSummary;
+  if (!row) {
+    return null;
+  }
+
+  return <RelativeDateTimeText date={row.time} />;
+};
+
 interface BlockSummaryDataTableLayoutProps {
   components: [
     React.ComponentType,
@@ -208,6 +225,25 @@ export const BlockSummaryDataTable: React.FC = () => {
         TransactionsCell,
         SizeCell,
         TimeCell,
+      ]}
+    />
+  );
+};
+
+/**
+ * LatestBlocksSummaryDataTable is the BlockSummaryDataTable as displayed in
+ * the explorer's "Latest Blocks" summary, where recency matters more than the
+ * exact timestamp and the card is too narrow to fit one.
+ */
+export const LatestBlocksSummaryDataTable: React.FC = () => {
+  return (
+    <BlockSummaryDataTableLayout
+      components={[
+        BlockCell,
+        ProposerCell,
+        TransactionsCell,
+        SizeCell,
+        RelativeTimeCell,
       ]}
     />
   );

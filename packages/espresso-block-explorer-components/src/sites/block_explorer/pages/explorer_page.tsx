@@ -7,8 +7,8 @@ import { default as SummaryTableLabeledValue } from '@/block_explorer/components
 import { BlockSizeHistogram } from '@/block_explorer/components/page_sections/block_size_histogram/block_size_histogram';
 import { BlockSummaryDataFromStreamLoader } from '@/block_explorer/components/page_sections/block_summary_data_table/block_summary_data_loader';
 import {
-  BlockSummaryDataTable,
   BlockSummaryDataTablePlaceholder,
+  LatestBlocksSummaryDataTable,
 } from '@/block_explorer/components/page_sections/block_summary_data_table/block_summary_data_table';
 import { BlockThroughputHistogram } from '@/block_explorer/components/page_sections/block_throughput_histogram/block_throughput_histogram';
 import { BlockTimeHistogram } from '@/block_explorer/components/page_sections/block_time_histogram/block_time_histogram';
@@ -22,7 +22,7 @@ import { LatestBlockSummaryStreamConsumer } from '@/block_explorer/components/pa
 import { default as PageTitle } from '@/block_explorer/components/page_sections/page_title/page_title';
 import { TransactionSummaryDataFromExplorerSummary } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
 import {
-  TransactionsSummaryDataTable,
+  LatestTransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
 } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_table';
 import { WithUiText300 } from '@/block_explorer/components/typography/typography';
@@ -64,7 +64,7 @@ const GuardedBlocksSummaryDataTable: React.FC<
     );
   }
 
-  return <BlockSummaryDataTable />;
+  return <LatestBlocksSummaryDataTable />;
 };
 
 interface GuardedTransactionsSummaryDataTableProps {
@@ -88,7 +88,7 @@ const GuardedTransactionsSummaryDataTable: React.FC<
     );
   }
 
-  return <TransactionsSummaryDataTable />;
+  return <LatestTransactionsSummaryDataTable />;
 };
 
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
