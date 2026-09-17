@@ -13,7 +13,8 @@ describe('RollUpSimple Component', () => {
 
       const simple = screen.getByTestId('1');
       expect(simple).toBeInTheDocument();
-      expect(simple).toHaveTextContent(`Rollup 1`);
+      expect(simple).toHaveTextContent(`1`);
+      expect(simple).toHaveAttribute('title', 'Unregistered Rollup ID 1');
 
       // Test the remaining rollups
       for (const entry of curatedRollupMap.values()) {
@@ -21,6 +22,10 @@ describe('RollUpSimple Component', () => {
         const element = screen.getByTestId('1');
         expect(element).toBeInTheDocument();
         expect(element).toHaveTextContent(entry.name);
+        expect(element).toHaveAttribute(
+          'title',
+          expect.stringContaining(`${entry.name} ID `),
+        );
       }
     });
   });

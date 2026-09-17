@@ -153,12 +153,12 @@ const TransactionsSummaryDataTableLayout: React.FC<
       emptyContent={props.emptyContent}
       columns={[
         {
-          label: 'Transaction',
+          label: 'Txn ID',
           columnType: TransactionSummaryColumn.hash,
           buildCell: props.components[0],
         },
         {
-          label: 'Rollups',
+          label: 'Rollup',
           columnType: TransactionSummaryColumn.rollup,
           buildCell: props.components[1],
         },
