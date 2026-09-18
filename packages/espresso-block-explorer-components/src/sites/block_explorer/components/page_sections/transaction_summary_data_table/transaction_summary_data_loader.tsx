@@ -20,6 +20,7 @@ import { ExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_s
 import { default as React } from 'react';
 import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
 import { BlockNumberContext } from '../block_detail_content/block_detail_content_loader';
+import '../table_navigation.css';
 
 export const enum TransactionSummaryColumn {
   hash,
