@@ -1,19 +1,19 @@
 :root {
   --color--bronze: url(./bronze.png);
   --on-color--bronze: var(--color--text-white);
-  --color--coffee: #451f17ff;
+  --color--coffee: #1f1912ff;
   --on-color--coffee: #fff7efff;
-  --color--chocolate: #270903ff;
+  --color--chocolate: #17130fff;
   --on-color--chocolate: var(--color--text-white);
-  --color--chilli: #ff792eff;
+  --color--chilli: #8a3324ff;
   --on-color--chilli: var(--color--text-white);
 
   /* Other Colors / color explorations */
-  --color--caramel: #de9e67ff;
+  --color--caramel: #c79a6eff;
   --on-color--caramel: var(--color--coffee);
-  --color--cookie: #b67237ff;
+  --color--cookie: #9c7a54ff;
   --on-color--cookie: var(--color--coffee);
-  --color--vanilla: #fcebdeff;
+  --color--vanilla: #f5ede2ff;
   --on-color--vanilla: var(--color--coffee);
   --color--azure: #1eb6f8ff;
   --on-color--azure: var(--color--coffee);
@@ -29,8 +29,31 @@
   --color--citrus: #f0e89dff;
   --on-color--citrus: #605812ff;
 
-  --color--chilli--alpha-60: #b6723799;
-  --color--cookie--alpha-24: #b672373d;
-  --color--cookie--alpha-60: #b6723799;
-  --color--coffee--alpha-60: #451f1799;
+  --color--chilli--alpha-60: #e2864f99;
+  --color--cookie--alpha-24: #9c7a543d;
+  --color--cookie--alpha-60: #9c7a5499;
+  --color--coffee--alpha-60: #1f191299;
+}
+
+/*
+ * --color--chilli is the one token in this file that needs a distinct
+ * light-mode value: previously it only had a single (dark-appropriate)
+ * value and was consumed exclusively by dark-mode blocks elsewhere. It is
+ * about to become the light-mode accent too (link.css / nav_bar.css /
+ * button.css will repoint their light-mode blocks at it next), so it
+ * needs its own light/dark split like every other theme-aware token in
+ * this codebase.
+ */
+[data-theme='light'] {
+  --color--chilli: #8a3324ff;
+}
+
+[data-theme='dark'] {
+  --color--chilli: #e2864fff;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --color--chilli: #e2864fff;
+  }
 }
