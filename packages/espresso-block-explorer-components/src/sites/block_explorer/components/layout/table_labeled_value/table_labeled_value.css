@@ -7,12 +7,12 @@
 }
 
 [data-theme='dark'] {
-  --table-labeled-value--border-color: var(--color--cookie--alpha-24);
+  --table-labeled-value--border-color: var(--color--border-dark);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --table-labeled-value--border-color: var(--color--cookie--alpha-24);
+    --table-labeled-value--border-color: var(--color--border-dark);
   }
 }
 

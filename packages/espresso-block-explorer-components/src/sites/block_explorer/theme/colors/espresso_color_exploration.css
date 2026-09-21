@@ -33,6 +33,16 @@
   --color--cookie--alpha-24: #9c7a543d;
   --color--cookie--alpha-60: #9c7a5499;
   --color--coffee--alpha-60: #1f191299;
+
+  /*
+   * --color--border-dark exists because --color--cookie--alpha-24 was
+   * being reused as the dark-theme border color for cards, tables, and
+   * buttons -- the exact same value used in light mode, which is far too
+   * subtle against the darker surfaces. This is a warm-tinted, low-alpha
+   * highlight (not a flat gray) so hairlines stay visible without
+   * reintroducing a "grayed-out" look in the dark theme.
+   */
+  --color--border-dark: rgba(255, 235, 215, 0.16);
 }
 
 /*

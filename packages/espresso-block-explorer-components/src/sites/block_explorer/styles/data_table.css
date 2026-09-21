@@ -3,11 +3,11 @@
 }
 
 [data-theme='dark'] {
-  --data-table--border-color: var(--color--cookie--alpha-24);
+  --data-table--border-color: var(--color--border-dark);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --data-table--border-color: var(--color--cookie--alpha-24);
+    --data-table--border-color: var(--color--border-dark);
   }
 }
