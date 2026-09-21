@@ -1,16 +1,16 @@
 :root {
-  --link--default--color: var(--color--coffee);
+  --link--default--color: var(--color--chilli);
   --link--default--outline-style: solid;
   --link--visited--color: var(--color--cookie);
-  --link--focused--outline-color: var(--color--coffee);
+  --link--focused--outline-color: var(--color--chilli);
   --link--focused--outline-width: 4px;
   --link--transition--duration: 240ms;
 }
 
 [data-theme='light'] {
-  --link--default--color: var(--color--coffee);
+  --link--default--color: var(--color--chilli);
   --link--visited--color: var(--color--cookie);
-  --link--focused--outline-color: var(--color--coffee);
+  --link--focused--outline-color: var(--color--chilli);
 }
 
 [data-theme='dark'] {
