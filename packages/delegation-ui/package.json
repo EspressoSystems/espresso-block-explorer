@@ -11,15 +11,21 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@base-org/account": "^2.5.1",
+    "@coinbase/wallet-sdk": "^4.3.6",
+    "@metamask/connect-evm": "^2.1.0",
     "@rainbow-me/rainbowkit": "^2.2.5",
+    "@safe-global/safe-apps-provider": "~0.18.6",
+    "@safe-global/safe-apps-sdk": "^9.1.0",
     "@tanstack/react-query": "^5.80.2",
-    "next": "^16.2.3",
+    "@walletconnect/ethereum-provider": "^2.21.1",
+    "next": "^16.3.5",
     "next-logger": "^5.0.2",
     "pino": "^10.3.1",
     "react": "^19",
     "react-dom": "^19",
     "viem": "^2.30.6",
-    "wagmi": "^2.19.5"
+    "wagmi": "^3.7.7"
   },
   "devDependencies": {
     "@eslint/compat": "^2.0.0",
@@ -31,16 +37,16 @@
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
-    "@vitejs/plugin-react": "^5.0.4",
-    "@vitest/coverage-istanbul": "^4.0.14",
-    "@vitest/web-worker": "^4.0.14",
+    "@vitejs/plugin-react": "^6",
+    "@vitest/coverage-istanbul": "^5",
+    "@vitest/web-worker": "^5",
     "eslint": "^9",
     "eslint-config-next": "^16.0.6",
     "espresso-block-explorer-components": "*",
-    "jsdom": "^27.0.0",
+    "jsdom": "^30",
     "next-router-mock": "^1",
-    "typescript": "^5",
-    "vite": "^7.3.2",
-    "vitest": "^4.0.14"
+    "typescript": "^6",
+    "vite": "^8",
+    "vitest": "^5"
   }
 }

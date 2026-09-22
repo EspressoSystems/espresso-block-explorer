@@ -18,8 +18,7 @@ export const ProvideCurrentAllowanceToStakeTable: React.FC<
   const espContract = React.useContext(ESPTokenContractContext);
   const stakeTableContract = React.useContext(StakeTableContractContext);
   const accountAddress = React.useContext(RainbowKitAccountAddressContext) as
-    | null
-    | `0x${string}`;
+    null | `0x${string}`;
 
   const promise = React.useMemo(
     () =>

@@ -27,8 +27,7 @@ const ProvideTransactionDetails: React.FC<React.PropsWithChildren> = (
   props,
 ) => {
   const data = React.useContext(DataContext) as
-    | undefined
-    | ExplorerGetTransactionDetailResponse;
+    undefined | ExplorerGetTransactionDetailResponse;
 
   if (data === undefined) {
     return props.children;

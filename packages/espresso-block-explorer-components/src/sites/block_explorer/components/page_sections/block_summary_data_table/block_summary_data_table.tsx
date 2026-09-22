@@ -25,9 +25,7 @@ import { BlockSummaryColumn } from './block_summary_data_loader';
 const BlockCell: React.FC = () => {
   const pathResolver = React.useContext(PathResolverContext);
   const row = React.useContext(DataTableRowContext) as
-    | undefined
-    | null
-    | ExplorerBlockSummary;
+    undefined | null | ExplorerBlockSummary;
 
   if (!row) {
     return null;
@@ -46,9 +44,7 @@ const BlockCell: React.FC = () => {
  */
 const TransactionsCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as
-    | undefined
-    | null
-    | ExplorerBlockSummary;
+    undefined | null | ExplorerBlockSummary;
   if (!row) {
     return null;
   }
@@ -62,9 +58,7 @@ const TransactionsCell: React.FC = () => {
  */
 const SizeCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as
-    | undefined
-    | null
-    | ExplorerBlockSummary;
+    undefined | null | ExplorerBlockSummary;
   if (!row) {
     return null;
   }
@@ -77,9 +71,7 @@ const SizeCell: React.FC = () => {
  */
 const TimeCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as
-    | undefined
-    | null
-    | ExplorerBlockSummary;
+    undefined | null | ExplorerBlockSummary;
   if (!row) {
     return null;
   }

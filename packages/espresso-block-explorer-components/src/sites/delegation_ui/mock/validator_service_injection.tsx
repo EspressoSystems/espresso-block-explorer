@@ -507,13 +507,11 @@ function processStakeTableActionOnNodes(
   action: StakeTableStateActions,
 ): Delegation[] {
   // Does this delegations entry have an entry for the validator in the action?;
-  if (
-    !(
-      action instanceof Delegate ||
-      action instanceof Undelegate ||
-      action instanceof ClaimValidatorExit
-    )
-  ) {
+  if (!(
+    action instanceof Delegate ||
+    action instanceof Undelegate ||
+    action instanceof ClaimValidatorExit
+  )) {
     return delegations;
   }
 
@@ -654,9 +652,9 @@ function processStakeTableActionOnPendingExits(
   pendingExits: PendingWithdrawal[],
   action: StakeTableStateActions,
 ): PendingWithdrawal[] {
-  if (
-    !(action instanceof ValidatorExit || action instanceof ClaimValidatorExit)
-  ) {
+  if (!(
+    action instanceof ValidatorExit || action instanceof ClaimValidatorExit
+  )) {
     return pendingExits;
   }
 

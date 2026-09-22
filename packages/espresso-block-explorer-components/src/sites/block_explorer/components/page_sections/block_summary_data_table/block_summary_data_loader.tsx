@@ -71,9 +71,7 @@ const ProvideBlockSummaryData: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const data = React.useContext(DataContext) as
-    | null
-    | undefined
-    | ExplorerGetBlockSummariesResponse;
+    null | undefined | ExplorerGetBlockSummariesResponse;
 
   if (!data) {
     return null;
