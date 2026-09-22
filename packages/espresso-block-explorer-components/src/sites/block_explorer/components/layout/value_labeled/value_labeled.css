@@ -40,4 +40,6 @@
   grid-area: value;
   color: var(--value--labeled--value--color);
   --text--color: var(--value--labeled--value--color);
+  font-family: var(--text--font-family-mono);
+  font-variant-numeric: tabular-nums;
 }

@@ -31,6 +31,8 @@
   box-sizing: border-box;
   grid-area: value;
   text-align: end;
+  font-family: var(--text--font-family-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 .summary-tabled-labeled-value:not(:nth-child(1)) {

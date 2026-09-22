@@ -5,7 +5,7 @@ table.data-table {
 
 table.data-table td,
 table.data-table th {
-  padding: 16px 4px;
+  padding: 16px 2px;
   text-align: start;
   white-space: nowrap;
   /*
@@ -19,6 +19,11 @@ table.data-table th {
 
 table.data-table table {
   width: 100%;
+}
+
+table.data-table tbody td {
+  font-family: var(--text--font-family-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 table.data-table thead.type--ui--small th {

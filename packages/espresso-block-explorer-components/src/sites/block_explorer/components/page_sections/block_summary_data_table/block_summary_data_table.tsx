@@ -140,7 +140,7 @@ const BlockSummaryDataTableLayout: React.FC<
           buildCell: props.components[1],
         },
         {
-          label: 'Transaction',
+          label: 'Txns',
           columnType: BlockSummaryColumn.transactions,
           buildCell: props.components[2],
         },

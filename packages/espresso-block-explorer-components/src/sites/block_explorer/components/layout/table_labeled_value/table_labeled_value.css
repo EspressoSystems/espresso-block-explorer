@@ -32,6 +32,8 @@
 .tabled-labeled-value > div.value {
   box-sizing: border-box;
   grid-area: value;
+  font-family: var(--text--font-family-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 /* Mobile */
