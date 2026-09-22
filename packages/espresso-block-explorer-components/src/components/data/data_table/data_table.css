@@ -24,6 +24,11 @@ table.data-table table {
 table.data-table thead.type--ui--small th {
   --text--font-weight: 500;
   font-weight: 500;
+  background-color: var(--data-table--header-background-color);
+}
+
+table.data-table tbody tr:hover td {
+  background-color: var(--data-table--row-hover-background-color);
 }
 
 table.data-table th,
