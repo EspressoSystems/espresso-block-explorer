@@ -67,18 +67,13 @@ const ProposerCell: React.FC = () => {
  * are in the block in question.
  */
 const TransactionsCell: React.FC = () => {
-  const pathResolver = React.useContext(PathResolverContext);
   const row = React.useContext(DataTableRowContext) as
     undefined | null | ExplorerBlockSummary;
   if (!row) {
     return null;
   }
 
-  return (
-    <InternalLink href={pathResolver.transactionsForBlock(row.height)}>
-      <NumberText number={row.numTransactions} />
-    </InternalLink>
-  );
+  return <NumberText number={row.numTransactions} />;
 };
 
 /**

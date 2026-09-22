@@ -128,6 +128,7 @@ interface TransactionsSummaryDataTableLayoutProps {
     React.ComponentType,
     React.ComponentType,
   ];
+  emptyContent?: React.ReactNode;
 }
 
 /**
@@ -141,6 +142,7 @@ const TransactionsSummaryDataTableLayout: React.FC<
 > = (props) => {
   return (
     <DataTable
+      emptyContent={props.emptyContent}
       columns={[
         {
           label: 'Transaction',
@@ -202,6 +204,20 @@ export const TransactionsSummaryDataTable: React.FC = () => {
   // Maintain the starting arguments.
   return (
     <TransactionsSummaryDataTableLayout
+      components={[TransactionCell, RollUpCell, BlockCell, TimeCell]}
+    />
+  );
+};
+
+/**
+ * BlockTransactionsSummaryDataTable is the TransactionsSummaryDataTable as
+ * displayed underneath a block's details, where an empty result means the
+ * block simply carried no transactions rather than that nothing was found.
+ */
+export const BlockTransactionsSummaryDataTable: React.FC = () => {
+  return (
+    <TransactionsSummaryDataTableLayout
+      emptyContent={<Text text="Empty Block" />}
       components={[TransactionCell, RollUpCell, BlockCell, TimeCell]}
     />
   );

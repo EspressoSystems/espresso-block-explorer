@@ -15,7 +15,6 @@ import { ExplorerBlockDetailContext } from '@/contexts/explorer_api_contexts';
 import { ArrowLeft, ArrowRight } from '@/visual/icons';
 import { default as React } from 'react';
 import { IconAnchorButton } from '../../hid/buttons';
-import { InternalLink } from '../../links/link/link';
 import './block_detail_content.css';
 import { BlockNumberContext } from './block_detail_content_loader';
 
@@ -130,7 +129,6 @@ interface BlockDetailsContentProps {}
  */
 export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
   const details = React.useContext(ExplorerBlockDetailContext);
-  const pathResolver = React.useContext(PathResolverContext);
 
   if (!details) {
     return null;
@@ -151,9 +149,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Transactions" />
-        <InternalLink href={pathResolver.transactionsForBlock(details.height)}>
-          <NumberText number={details.numTransactions} />
-        </InternalLink>
+        <NumberText number={details.numTransactions} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Builders" />
