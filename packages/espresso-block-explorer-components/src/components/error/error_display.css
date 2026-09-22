@@ -1,2 +1,36 @@
-:root {
+/*
+ * This file was previously a literal empty rule block -- every error in
+ * the product (a dropped fetch, a lost websocket, an unhandled render
+ * error) rendered as bare inline text with a plain <a>. Reuses the same
+ * card/border tokens retoned in an earlier commit, rather than
+ * introducing a parallel set of tokens for what is, visually, a card.
+ */
+.error-display-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 420px;
+  margin-inline: auto;
+  padding: 32px 24px;
+  text-align: center;
+
+  border: 1px solid var(--card--border-color);
+  border-radius: 8px;
+  background-color: var(--card--background-color);
+  color: var(--card--on-background-color);
+}
+
+.error-display-wrapper .error-display-icon {
+  width: 28px;
+  height: 28px;
+  --icon--fill-color: var(--color--red-600);
+}
+
+.error-display-wrapper .error-display-message {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px 8px;
 }
