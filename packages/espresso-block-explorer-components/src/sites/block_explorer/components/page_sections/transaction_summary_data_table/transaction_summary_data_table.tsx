@@ -129,6 +129,12 @@ interface TransactionsSummaryDataTableLayoutProps {
     React.ComponentType,
   ];
   emptyContent?: React.ReactNode;
+  /**
+   * What to call the time column, which differs with what the column holds:
+   * an absolute timestamp on a page given over to transactions, and how long
+   * ago it was sequenced in the explorer's summary of the latest ones.
+   */
+  timeColumnLabel?: string;
 }
 
 /**
@@ -160,7 +166,7 @@ const TransactionsSummaryDataTableLayout: React.FC<
           buildCell: props.components[2],
         },
         {
-          label: 'Time',
+          label: props.timeColumnLabel ?? 'Time',
           columnType: TransactionSummaryColumn.time,
           buildCell: props.components[3],
         },
@@ -204,6 +210,7 @@ export const TransactionsSummaryDataTable: React.FC = () => {
   // Maintain the starting arguments.
   return (
     <TransactionsSummaryDataTableLayout
+      timeColumnLabel="Timestamp"
       components={[TransactionCell, RollUpCell, BlockCell, TimeCell]}
     />
   );
@@ -218,6 +225,7 @@ export const BlockTransactionsSummaryDataTable: React.FC = () => {
   return (
     <TransactionsSummaryDataTableLayout
       emptyContent={<Text text="Empty Block" />}
+      timeColumnLabel="Timestamp"
       components={[TransactionCell, RollUpCell, BlockCell, TimeCell]}
     />
   );

@@ -18,6 +18,8 @@ import { ExplorerGetBlockSummariesRequest } from '@/service/hotshot_query_servic
 import { ExplorerGetBlockSummariesResponse } from '@/service/hotshot_query_service/explorer/get_block_summaries_response';
 import { default as React } from 'react';
 import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
+import { default as LabeledButton } from '../../hid/buttons/labeled_button/labeled_button';
+import '../table_navigation.css';
 
 export enum BlockSummaryColumn {
   height,
@@ -29,9 +31,28 @@ export enum BlockSummaryColumn {
 
 export interface BlockSummaryDataTableState extends DataTableState<BlockSummaryColumn> {
   startAtBlock?: number;
+  /**
+   * When the viewer last asked for the list to be refreshed. The value is not
+   * read when building the request -- changing it is what matters, since that
+   * is what sends the loader after the current set of blocks again.
+   */
+  refreshedAt?: number;
 }
 
 const NUMBER_OF_BLOCKS_TO_SHOW = 20;
+
+/**
+ * RefreshBlockSummariesContext carries a request to go and fetch the current
+ * set of blocks again.
+ *
+ * The loader deliberately hands its children a no-op DataTableSetStateContext,
+ * so that nothing rendered below it can drive the query, which leaves the
+ * navigation no way to ask for the data again. This context is that way, and
+ * is provided above the loader so it survives.
+ */
+export const RefreshBlockSummariesContext = React.createContext<() => void>(
+  () => {},
+);
 
 /**
  * LoadBlockSummaryDataTableData kicks of the process of retrieving the
@@ -135,18 +156,25 @@ export const BlockSummaryDataLoader: React.FC<BlockSummaryDataLoaderProps> = ({
     });
   }
 
+  const refresh = React.useCallback(
+    () => setState((current) => ({ ...current, refreshedAt: Date.now() })),
+    [setState],
+  );
+
   return (
-    <DataTableStateContext.Provider value={initialState}>
-      <DataTableSetStateContext.Provider
-        value={
-          setState as React.Dispatch<
-            React.SetStateAction<DataTableState<unknown>>
-          >
-        }
-      >
-        <LoadBlockSummaryDataTableData {...props} />
-      </DataTableSetStateContext.Provider>
-    </DataTableStateContext.Provider>
+    <RefreshBlockSummariesContext.Provider value={refresh}>
+      <DataTableStateContext.Provider value={initialState}>
+        <DataTableSetStateContext.Provider
+          value={
+            setState as React.Dispatch<
+              React.SetStateAction<DataTableState<unknown>>
+            >
+          }
+        >
+          <LoadBlockSummaryDataTableData {...props} />
+        </DataTableSetStateContext.Provider>
+      </DataTableStateContext.Provider>
+    </RefreshBlockSummariesContext.Provider>
   );
 };
 
@@ -182,14 +210,32 @@ export const BlocksNavigation: React.FC<BlocksNavigationProps> = (props) => {
   const state = React.useContext(
     DataTableStateContext,
   ) as BlockSummaryDataTableState;
+  const refresh = React.useContext(RefreshBlockSummariesContext);
 
   const previous: React.ReactNode[] = [];
   const next: React.ReactNode[] = [];
-  // Do we know if we're at the top of the page?
-  if (state.startAtBlock !== undefined) {
+  /*
+   * "Latest" always means the same thing to the reader -- show me the newest
+   * blocks -- but what it takes to get there depends on where they are. At the
+   * head of the list that is the page they are already on, so it goes and
+   * fetches it again; blocks arrive every second or so, and there is nothing
+   * above the newest ones to go back to. Any page below the head is pinned to
+   * a height, so getting to the newest blocks is a trip back to the unpinned
+   * page, and "Previous" walks up one page at a time as before.
+   */
+  if (state.startAtBlock === undefined) {
     previous.push(
+      <LabeledButton key={0} onClick={refresh}>
+        <Text text="Latest" />
+      </LabeledButton>,
+    );
+  } else {
+    previous.push(
+      <LabeledAnchorButton key={0} href={pathResolver.blocks()}>
+        <Text text="Latest" />
+      </LabeledAnchorButton>,
       <LabeledAnchorButton
-        key={0}
+        key={1}
         href={pathResolver.blocks(state.startAtBlock + kBlocksPerPage)}
       >
         <Text text="Previous" />
@@ -200,7 +246,7 @@ export const BlocksNavigation: React.FC<BlocksNavigationProps> = (props) => {
   if (data && data.length > 0 && data[data.length - 1].height > 0) {
     previous.push(
       <LabeledAnchorButton
-        key={1}
+        key={2}
         href={pathResolver.blocks(data[data.length - 1].height - 1)}
       >
         <Text text="Next" />

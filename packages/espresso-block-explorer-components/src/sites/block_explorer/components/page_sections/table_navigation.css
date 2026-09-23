@@ -1,0 +1,20 @@
+/*
+ * The paging controls sit directly above the table they page through. Without
+ * a margin they rest against the table's card border, and without a gap the
+ * controls rest against each other once there is more than one of them.
+ */
+nav.blocks-navigation,
+nav.transactions-navigation {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-end: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  nav.blocks-navigation,
+  nav.transactions-navigation {
+    margin-block-end: 24px;
+  }
+}

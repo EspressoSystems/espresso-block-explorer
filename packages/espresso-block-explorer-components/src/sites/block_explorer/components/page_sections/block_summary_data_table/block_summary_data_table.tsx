@@ -102,6 +102,12 @@ interface BlockSummaryDataTableLayoutProps {
     React.ComponentType,
     React.ComponentType,
   ];
+  /**
+   * What to call the time column, which differs with what the column holds:
+   * an absolute timestamp on a page given over to blocks, and how long ago the
+   * block arrived in the explorer's summary of the latest ones.
+   */
+  timeColumnLabel?: string;
 }
 
 /**
@@ -132,7 +138,7 @@ const BlockSummaryDataTableLayout: React.FC<
           buildCell: props.components[2],
         },
         {
-          label: 'Time',
+          label: props.timeColumnLabel ?? 'Time',
           columnType: BlockSummaryColumn.time,
           buildCell: props.components[3],
         },
@@ -173,6 +179,7 @@ export const BlockSummaryDataTablePlaceholder: React.FC<
 export const BlockSummaryDataTable: React.FC = () => {
   return (
     <BlockSummaryDataTableLayout
+      timeColumnLabel="Timestamp"
       components={[BlockCell, TransactionsCell, SizeCell, TimeCell]}
     />
   );
