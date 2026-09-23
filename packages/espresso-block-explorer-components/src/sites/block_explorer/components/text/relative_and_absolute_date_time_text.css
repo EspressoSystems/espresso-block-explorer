@@ -1,0 +1,25 @@
+/*
+ * The exact timestamp is secondary to how long ago something happened, so it
+ * reads a step quieter than the age in front of it. Opacity rather than a
+ * color of its own keeps it the same hue as the text it follows, in either
+ * theme.
+ */
+.relative-and-absolute-date-time--absolute {
+  opacity: 0.7;
+}
+
+/*
+ * A table on a narrow screen already runs wider than the screen, so a table
+ * cell there keeps to the age alone -- the shorter of the two -- rather than
+ * adding the timestamp in a column the reader has to scroll sideways to. The
+ * timestamp stays in the title, and on the detail page.
+ */
+table.data-table .relative-and-absolute-date-time--absolute {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  table.data-table .relative-and-absolute-date-time--absolute {
+    display: inline;
+  }
+}

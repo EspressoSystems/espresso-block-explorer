@@ -87,7 +87,7 @@ export const LatestBlockSummaryDetails: React.FC = () => {
         <></>
       ) : (
         <SummaryTableLabeledValue>
-          <Text text="Time" />
+          <Text text="Block Time" />
           <DurationInSecondsText durationInMilliseconds={timeToCreateBlock} />
         </SummaryTableLabeledValue>
       )}
@@ -111,7 +111,7 @@ export const LatestBlockSummaryDetailsPlaceholder: React.FC = () => {
         <SkeletonContent />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
-        <Text text="Time" />
+        <Text text="Block Time" />
         <SkeletonContent />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>

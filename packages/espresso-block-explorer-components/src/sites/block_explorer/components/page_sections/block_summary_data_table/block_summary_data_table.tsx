@@ -1,3 +1,4 @@
+import { default as RelativeAndAbsoluteDateTimeText } from '@/block_explorer/components/text/relative_and_absolute_date_time_text';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import {
   default as DataTable,
@@ -6,7 +7,6 @@ import {
 import { SkeletonContent } from '@/components/loading';
 import {
   ByteSizeText,
-  DateTimeText,
   NumberText,
   RelativeDateTimeText,
 } from '@/components/text';
@@ -67,7 +67,8 @@ const SizeCell: React.FC = () => {
 };
 
 /**
- * TimeCell is a cell that displays the timestamp for the blcok.
+ * TimeCell is a cell that displays how long ago the block was produced,
+ * followed by its timestamp.
  */
 const TimeCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as
@@ -76,18 +77,16 @@ const TimeCell: React.FC = () => {
     return null;
   }
 
-  return <DateTimeText date={row.time} />;
+  return <RelativeAndAbsoluteDateTimeText date={row.time} />;
 };
 
 /**
- * RelativeTimeCell is a TimeCell that reports how long ago the block was
- * produced rather than its absolute timestamp.
+ * RelativeTimeCell is a TimeCell that reports only how long ago the block
+ * was produced, leaving out the timestamp that TimeCell gives alongside it.
  */
 const RelativeTimeCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as
-    | undefined
-    | null
-    | ExplorerBlockSummary;
+    undefined | null | ExplorerBlockSummary;
   if (!row) {
     return null;
   }

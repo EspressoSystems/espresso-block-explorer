@@ -1,11 +1,11 @@
 import { Label } from '@/block_explorer/components/layout/label/label';
 import { default as TableLabeledValue } from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
 import { default as CopyTaggedBase64 } from '@/block_explorer/components/text/copy_tagged_base64';
+import { default as RelativeAndAbsoluteDateTimeText } from '@/block_explorer/components/text/relative_and_absolute_date_time_text';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import { SkeletonContent } from '@/components/loading';
 import {
   ByteSizeText,
-  DateTimeText,
   FullTaggedBase64Text,
   NumberText,
   Text,
@@ -67,7 +67,7 @@ export const TransactionDetailsContentPlaceholder: React.FC = () => {
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Time" />
+        <Text text="Timestamp" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
@@ -115,8 +115,8 @@ export const TransactionDetailsContent: React.FC = () => {
         </CopyTaggedBase64>
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Time" />
-        <DateTimeText date={details.time} />
+        <Text text="Timestamp" />
+        <RelativeAndAbsoluteDateTimeText date={details.time} />
       </TableLabeledValue>
     </>
   );
