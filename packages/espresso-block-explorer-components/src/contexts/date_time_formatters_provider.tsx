@@ -66,8 +66,12 @@ function createDefaultDateTimeFormatters(locale: string) {
       maximumFractionDigits: 2,
     }),
 
+    // English relative times are worded by hand in RelativeTimeText; this
+    // formatter serves every other language. The short style is used as the
+    // narrow one drops the words entirely in some of them, rendering "5
+    // seconds ago" as "-5 s" in French.
     relative: new Intl.RelativeTimeFormat(locale, {
-      style: 'narrow',
+      style: 'short',
       numeric: 'always',
     }),
 

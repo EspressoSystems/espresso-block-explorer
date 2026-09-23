@@ -10,7 +10,6 @@ import {
   TransactionDataContentsPlaceholder,
   TransactionDetailsContent,
   TransactionDetailsContentPlaceholder,
-  TransactionSubHeading,
 } from '@/block_explorer/components/page_sections/transaction_detail_content/transaction_detail_content';
 import { TransactionDetailContentLoader } from '@/block_explorer/components/page_sections/transaction_detail_content/transaction_detail_loader';
 import {
@@ -125,7 +124,6 @@ const TransactionPage: React.FC<TransactionPageProps> = (props) => (
       <Heading1>
         <Text text="Transaction Details" />
       </Heading1>
-      <TransactionSubHeading />
     </EdgeMarginPageTitle>
 
     <TransactionDetailContentLoader>

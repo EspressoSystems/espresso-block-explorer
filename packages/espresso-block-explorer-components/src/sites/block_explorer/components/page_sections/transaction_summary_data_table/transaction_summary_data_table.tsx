@@ -1,4 +1,5 @@
 import { default as CopyTaggedBase64 } from '@/block_explorer/components/text/copy_tagged_base64';
+import { default as RelativeAndAbsoluteDateTimeText } from '@/block_explorer/components/text/relative_and_absolute_date_time_text';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import {
   default as DataTable,
@@ -6,7 +7,6 @@ import {
 } from '@/components/data/data_table/data_table';
 import { SkeletonContent } from '@/components/loading';
 import {
-  DateTimeText,
   NumberText,
   RelativeDateTimeText,
   TaggedBase64Text,
@@ -91,7 +91,8 @@ const BlockCell: React.FC = () => {
 };
 
 /**
- * TimeCell represents the Timestamp of the Transaction.
+ * TimeCell displays how long ago the transaction was sequenced, followed by
+ * its timestamp.
  */
 const TimeCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as
@@ -101,18 +102,16 @@ const TimeCell: React.FC = () => {
     return null;
   }
 
-  return <DateTimeText date={row.time} />;
+  return <RelativeAndAbsoluteDateTimeText date={row.time} />;
 };
 
 /**
- * RelativeTimeCell is a TimeCell that reports how long ago the transaction
- * was sequenced rather than its absolute timestamp.
+ * RelativeTimeCell is a TimeCell that reports only how long ago the transaction
+ * was sequenced, leaving out the timestamp that TimeCell gives alongside it.
  */
 const RelativeTimeCell: React.FC = () => {
   const row = React.useContext(DataTableRowContext) as
-    | undefined
-    | null
-    | ExplorerTransactionSummary;
+    undefined | null | ExplorerTransactionSummary;
 
   if (!row) {
     return null;
