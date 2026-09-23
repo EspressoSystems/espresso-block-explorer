@@ -1,0 +1,7 @@
+/*
+ * The exact byte count is secondary to the rounded size in front of it, so it
+ * reads a step quieter, the same way a timestamp follows how long ago it was.
+ */
+.compact-byte-size--exact {
+  opacity: 0.7;
+}

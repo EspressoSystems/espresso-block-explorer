@@ -1,10 +1,11 @@
 import { Label } from '@/block_explorer/components/layout/label/label';
 import { default as TableLabeledValue } from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
+import { default as CompactByteSizeText } from '@/block_explorer/components/text/compact_byte_size_text';
 import { default as CopyHex } from '@/block_explorer/components/text/copy_hex';
 import { default as RelativeAndAbsoluteDateTimeText } from '@/block_explorer/components/text/relative_and_absolute_date_time_text';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import { SkeletonContent } from '@/components/loading';
-import { ByteSizeText, FullHexText, NumberText, Text } from '@/components/text';
+import { FullHexText, NumberText, Text } from '@/components/text';
 import { ExplorerBlockDetailContext } from '@/contexts/explorer_api_contexts';
 import { ArrowLeft, ArrowRight } from '@/visual/icons';
 import { default as React } from 'react';
@@ -164,7 +165,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
         <Text text="Size" />
-        <ByteSizeText bytes={details.size} />
+        <CompactByteSizeText bytes={details.size} withExact />
       </TableLabeledValue>
     </>
   );

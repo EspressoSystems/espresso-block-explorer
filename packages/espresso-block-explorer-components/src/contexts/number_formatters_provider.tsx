@@ -38,17 +38,18 @@ export function createDefaultNumberFormatters(locale: string) {
       notation: 'standard',
       unitDisplay: 'long',
     }),
+    // Sizes and rates step through decimal units, "512 B" to "2.05 kB" to "1.5
+    // MB", to at most two decimals, so an empty block reads "0 B" rather than
+    // "0.00 B".
     variableBytes: new VariableBytesNumberFormat(locale, {
-      notation: 'compact',
-      unitDisplay: 'narrow',
+      unitDisplay: 'short',
       maximumFractionDigits: 2,
     }) as unknown as Intl.NumberFormat,
     transactionsPerSecond: new TransactionPerSecondNumberFormat(locale, {
       maximumFractionDigits: 2,
     }) as unknown as Intl.NumberFormat,
     bytesPerSecond: new BytesPerSecondNumberFormat(locale, {
-      notation: 'compact',
-      unitDisplay: 'narrow',
+      unitDisplay: 'short',
       maximumFractionDigits: 2,
     }) as unknown as Intl.NumberFormat,
 

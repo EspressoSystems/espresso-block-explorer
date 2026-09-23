@@ -7,23 +7,55 @@ describe('BytesPerSecondNumberFormat', () => {
     it('should format with basic denominations', () => {
       const formatter = new BytesPerSecondNumberFormat('en-US');
 
-      expect(formatter.format(1)).toEqual('1 byte/s');
+      expect(formatter.format(1)).toEqual('1 B/s');
       expect(formatter.format(1e3)).toEqual('1 kB/s');
       expect(formatter.format(1e6)).toEqual('1 MB/s');
       expect(formatter.format(1e9)).toEqual('1 GB/s');
-      expect(formatter.format(1e12)).toEqual('1 PB/s');
+      expect(formatter.format(1e12)).toEqual('1,000 GB/s');
 
-      expect(formatter.format(BigInt(1))).toEqual('1 byte/s');
+      expect(formatter.format(BigInt(1))).toEqual('1 B/s');
       expect(formatter.format(BigInt(1e3))).toEqual('1 kB/s');
       expect(formatter.format(BigInt(1e6))).toEqual('1 MB/s');
       expect(formatter.format(BigInt(1e9))).toEqual('1 GB/s');
-      expect(formatter.format(BigInt(1e12))).toEqual('1 PB/s');
+      expect(formatter.format(BigInt(1e12))).toEqual('1,000 GB/s');
 
-      expect(formatter.format('1')).toEqual('1 byte/s');
+      expect(formatter.format('1')).toEqual('1 B/s');
       expect(formatter.format('1000')).toEqual('1 kB/s');
       expect(formatter.format('1000000')).toEqual('1 MB/s');
       expect(formatter.format('1000000000')).toEqual('1 GB/s');
-      expect(formatter.format('1000000000000')).toEqual('1 PB/s');
+      expect(formatter.format('1000000000000')).toEqual('1,000 GB/s');
+    });
+
+    it('should read the way the explorer shows sizes', () => {
+      // The options the explorer's number formatters use.
+      const formatter = new BytesPerSecondNumberFormat('en-US', {
+        unitDisplay: 'short',
+        maximumFractionDigits: 2,
+      });
+
+      expect(formatter.format(0)).toEqual('0 B/s');
+      expect(formatter.format(512)).toEqual('512 B/s');
+      expect(formatter.format(2000)).toEqual('2 kB/s');
+      expect(formatter.format(2048)).toEqual('2.05 kB/s');
+      expect(formatter.format(995000)).toEqual('995 kB/s');
+      expect(formatter.format(1500000)).toEqual('1.5 MB/s');
+      expect(formatter.format(1536000)).toEqual('1.54 MB/s');
+    });
+
+    it('should step up rather than read as 1,000 of a unit', () => {
+      const formatter = new BytesPerSecondNumberFormat('en-US', {
+        unitDisplay: 'short',
+        maximumFractionDigits: 2,
+      });
+
+      expect(formatter.format(999999)).toEqual('1 MB/s');
+      expect(formatter.format(999999999)).toEqual('1 GB/s');
+    });
+
+    it('should format a range of plain bytes with the symbol', () => {
+      const formatter = new BytesPerSecondNumberFormat('en-US');
+
+      expect(formatter.formatRange(1, 500)).toEqual('1–500 B/s');
     });
 
     it('should format with ranges', () => {
