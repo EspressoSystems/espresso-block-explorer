@@ -11,3 +11,18 @@
     margin-block-start: 24px;
   }
 }
+
+/*
+ * The card's title gets the same header the home page gives its titled cards:
+ * a 16px inset on every side, around a row as tall as the "View all" button
+ * that sits beside their titles. This card has no button, so the row keeps
+ * that height on its own, which puts "Transactions" at the same distance from
+ * the card's edge, and from the table beneath it, as "Latest Blocks".
+ */
+.block-transactions > .block-transactions--header {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-block-size: 72px;
+  padding: 16px;
+}

@@ -78,7 +78,7 @@ const BlockTransactionsCard: React.FC<React.PropsWithChildren> = ({
   children,
 }) => (
   <EdgeMarginCard className="block-transactions">
-    <div className="card--padding">
+    <div className="block-transactions--header">
       <Text300H2>
         <Text text="Transactions" />
       </Text300H2>
