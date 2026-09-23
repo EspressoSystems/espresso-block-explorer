@@ -221,7 +221,11 @@ export const BlocksNavigation: React.FC<BlocksNavigationProps> = (props) => {
    * fetches it again; blocks arrive every second or so, and there is nothing
    * above the newest ones to go back to. Any page below the head is pinned to
    * a height, so getting to the newest blocks is a trip back to the unpinned
-   * page, and "Previous" walks up one page at a time as before.
+   * page, and "Newer" walks up one page at a time.
+   *
+   * The paging controls are named for where they lead rather than for the
+   * list's order: newest first, the page "after" this one holds older blocks,
+   * which "Next" left the reader to work out.
    */
   if (state.startAtBlock === undefined) {
     previous.push(
@@ -238,7 +242,7 @@ export const BlocksNavigation: React.FC<BlocksNavigationProps> = (props) => {
         key={1}
         href={pathResolver.blocks(state.startAtBlock + kBlocksPerPage)}
       >
-        <Text text="Previous" />
+        <Text text="Newer" />
       </LabeledAnchorButton>,
     );
   }
@@ -249,7 +253,7 @@ export const BlocksNavigation: React.FC<BlocksNavigationProps> = (props) => {
         key={2}
         href={pathResolver.blocks(data[data.length - 1].height - 1)}
       >
-        <Text text="Next" />
+        <Text text="Older" />
       </LabeledAnchorButton>,
     );
   }

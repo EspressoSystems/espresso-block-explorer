@@ -174,11 +174,30 @@ export const TransactionsNavigation: React.FC<TransactionsNavigationProps> = (
 ) => {
   const data = React.useContext(ExplorerTransactionSummariesContext);
   const pathResolver = React.useContext(PathResolverContext);
+  const state = React.useContext(
+    DataTableStateContext,
+  ) as TransactionSummaryDataTableState;
 
   const previous: React.ReactNode[] = [];
   const next: React.ReactNode[] = [];
-  // Do we know if we're at the top of the page?
 
+  /*
+   * A page below the head is pinned to a height, which leaves no way back to
+   * the newest transactions but the browser's own history; "Latest" is that
+   * way back, the unpinned page. At the head there is nowhere newer to go, so
+   * it is left out. The page above this one cannot be reached directly --
+   * transactions only page downward -- so there is no "Newer" yet.
+   */
+  if (state.height !== undefined) {
+    previous.push(
+      <LabeledAnchorButton key={0} href={pathResolver.transactions()}>
+        <Text text="Latest" />
+      </LabeledAnchorButton>,
+    );
+  }
+
+  // Named for where it leads: newest first, the page after this one holds
+  // older transactions.
   if (data && data[data.length - 1].height > 0) {
     const lastTransaction = data[data.length - 1];
 
@@ -190,7 +209,7 @@ export const TransactionsNavigation: React.FC<TransactionsNavigationProps> = (
           lastTransaction.offset + 1,
         )}
       >
-        <Text text="Next" />
+        <Text text="Older" />
       </LabeledAnchorButton>,
     );
   }

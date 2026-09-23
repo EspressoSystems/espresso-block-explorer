@@ -25,7 +25,7 @@ import {
 } from '@/block_explorer/contexts/page_path_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
-import { Text } from '@/components/text';
+import { NumberText, Text } from '@/components/text';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { default as React } from 'react';
@@ -34,6 +34,7 @@ import './block_page.css';
 const EdgeMarginCard = WithEdgeMargin(CardNoPadding);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
+const EdgeMarginBlockNavigation = WithEdgeMargin(BlockNavigation);
 const Text300H2 = WithUiText300('h2');
 
 interface GuardBlockDetailsProps {}
@@ -134,6 +135,19 @@ const BlockTransactions: React.FC = () => {
   );
 };
 
+/**
+ * BlockHeading titles the page with the block it shows -- "Block #16,055,206",
+ * as the browser tab does -- rather than as a label beside the navigation.
+ */
+const BlockHeading: React.FC = () => {
+  const blockID = React.useContext(BlockNumberContext);
+  return (
+    <Heading1>
+      <Text text="Block" /> #<NumberText number={blockID} />
+    </Heading1>
+  );
+};
+
 interface BlockPageProps {}
 
 /**
@@ -144,11 +158,9 @@ const BlockPage: React.FC<BlockPageProps> = (props) => (
     <Header />
 
     <EdgeMarginPageTitle>
-      <Heading1>
-        <Text text="Block" />
-      </Heading1>
-      <BlockNavigation />
+      <BlockHeading />
     </EdgeMarginPageTitle>
+    <EdgeMarginBlockNavigation />
     <BlockDetailsLoader>
       <GuardBlockDetails {...props} />
     </BlockDetailsLoader>
