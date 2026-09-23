@@ -3,7 +3,6 @@ import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service
 import { ExplorerGetBlockDetailRequest } from '@/service/hotshot_query_service/explorer/get_block_detail_request';
 import { ExplorerGetBlockDetailResponse } from '@/service/hotshot_query_service/explorer/get_block_detail_response';
 import { default as React } from 'react';
-import './block_detail_content.css';
 import { ExplorerBlockDetailContext } from '@/contexts/explorer_api_contexts';
 import { DataContext } from '@/contexts/data_provider';
 

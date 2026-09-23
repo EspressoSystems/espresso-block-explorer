@@ -1,4 +1,3 @@
-import { Label } from '@/block_explorer/components/layout/label/label';
 import { default as TableLabeledValue } from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
 import { default as CompactByteSizeText } from '@/block_explorer/components/text/compact_byte_size_text';
 import { default as CopyHex } from '@/block_explorer/components/text/copy_hex';
@@ -7,74 +6,103 @@ import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_pro
 import { SkeletonContent } from '@/components/loading';
 import { FullHexText, NumberText, Text } from '@/components/text';
 import { ExplorerBlockDetailContext } from '@/contexts/explorer_api_contexts';
-import { ArrowLeft, ArrowRight } from '@/visual/icons';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
+import { addClassToClassName } from '@/higher_order';
 import { default as React } from 'react';
-import { IconAnchorButton } from '../../hid/buttons';
-import './block_detail_content.css';
+import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
+import '../table_navigation.css';
 import { BlockNumberContext } from './block_detail_content_loader';
 
 /**
- * BackABlock creates a navigation item that will point to the preceding
- * block for navigation.
+ * How often the block page asks for the newest block's height. A block
+ * arrives every second or so, but the answer only decides whether there is a
+ * newer block to go to, so it need not keep pace with each one.
+ */
+const kNewestBlockRefreshMilliseconds = 5000;
+
+/**
+ * useNewestBlockHeight reports the height of the newest block, asking the
+ * query service for it now and again every few seconds while the page is
+ * open. It is null until the service has answered, and stays null if it
+ * cannot.
  *
- * If the current block is 0, then this button will be disabled, as we
- * cannot navigated to negative blocks.
+ * The service reports its block height as the number of blocks it holds, so
+ * the newest block is one below it. The height only ever moves forward: the
+ * service can sit behind a load balancer whose replicas disagree by some way,
+ * and an answer from a replica that has fallen behind is not a reason to
+ * treat a block already seen as not existing yet.
  */
-const BackABlock: React.FC = () => {
-  const currentBlockID = React.useContext(BlockNumberContext);
-  const pathResolver = React.useContext(PathResolverContext);
+function useNewestBlockHeight(): null | number {
+  const service = React.useContext(HotShotQueryServiceAPIContext);
+  const [newest, setNewest] = React.useState<null | number>(null);
 
-  if (currentBlockID <= 0) {
-    return (
-      <IconAnchorButton disabled>
-        <ArrowLeft />
-      </IconAnchorButton>
-    );
-  }
+  React.useEffect(() => {
+    let cancelled = false;
+    const refresh = () =>
+      service.status.blockHeight().then(
+        (numberOfBlocks) => {
+          if (!cancelled) {
+            setNewest((seen) => Math.max(seen ?? -1, numberOfBlocks - 1));
+          }
+        },
+        // Without an answer the navigation simply knows less; the page is
+        // otherwise unaffected, so there is nothing to report.
+        () => {},
+      );
 
-  return (
-    <IconAnchorButton
-      href={pathResolver.block(currentBlockID - 1)}
-      title="Previous Block"
-    >
-      <ArrowLeft />
-    </IconAnchorButton>
-  );
-};
+    refresh();
+    const interval = setInterval(refresh, kNewestBlockRefreshMilliseconds);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [service]);
+
+  return newest;
+}
 
 /**
- * ForwardABlock creates a navigation item that will point to the next
- * block for navigation.
+ * BlockNavigation leads from the block being shown to its neighbours and to
+ * the newest block, with the same controls the Blocks page pages with, named
+ * for where they lead: "Newer" is the block after this one, "Older" the block
+ * before it.
+ *
+ * "Older" cannot go below the first block, and "Newer" cannot go past the
+ * newest one once its height is known -- until then it is left enabled, as a
+ * failed or slow answer should not strand the reader on this block. "Latest"
+ * needs that height to lead anywhere, so it waits for it, and has nowhere to
+ * go from the newest block itself.
  */
-const ForwardABlock: React.FC = () => {
-  const currentBlockID = React.useContext(BlockNumberContext);
-  const pathResolver = React.useContext(PathResolverContext);
+export interface BlockNavigationProps {
+  className?: string;
+}
 
-  return (
-    <IconAnchorButton
-      href={pathResolver.block(currentBlockID + 1)}
-      title="Next Block"
-    >
-      <ArrowRight />
-    </IconAnchorButton>
-  );
-};
-
-/**
- * BlockNavigation is a component that displays the current BlockID
- * and provides the corresponding Previous and Next block navigation
- * components.
- */
-export const BlockNavigation: React.FC = () => {
+export const BlockNavigation: React.FC<BlockNavigationProps> = (props) => {
   const blockID = React.useContext(BlockNumberContext);
+  const pathResolver = React.useContext(PathResolverContext);
+  const newest = useNewestBlockHeight();
+  const isNewest = newest !== null && blockID >= newest;
 
   return (
-    <nav className="nav--block">
-      <Label>
-        # <NumberText number={blockID} />
-      </Label>
-      <BackABlock />
-      <ForwardABlock />
+    <nav className={addClassToClassName(props.className, 'block-navigation')}>
+      <LabeledAnchorButton
+        href={newest === null ? undefined : pathResolver.block(newest)}
+        disabled={newest === null || isNewest}
+      >
+        <Text text="Latest" />
+      </LabeledAnchorButton>
+      <LabeledAnchorButton
+        href={pathResolver.block(blockID + 1)}
+        disabled={isNewest}
+      >
+        <Text text="Newer" />
+      </LabeledAnchorButton>
+      <LabeledAnchorButton
+        href={pathResolver.block(blockID - 1)}
+        disabled={blockID <= 0}
+      >
+        <Text text="Older" />
+      </LabeledAnchorButton>
     </nav>
   );
 };
