@@ -3,10 +3,17 @@ import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service
 import { ExplorerGetBlockDetailRequest } from '@/service/hotshot_query_service/explorer/get_block_detail_request';
 import { ExplorerGetBlockDetailResponse } from '@/service/hotshot_query_service/explorer/get_block_detail_response';
 import { default as React } from 'react';
+import { KeepWhileLoading } from '../keep_while_loading';
 import { ExplorerBlockDetailContext } from '@/contexts/explorer_api_contexts';
 import { DataContext } from '@/contexts/data_provider';
 
 export const BlockNumberContext = React.createContext(0);
+
+// The block's details, and the number of the block they belong to.
+const kKeptBlockDetailContexts = [
+  DataContext,
+  BlockNumberContext,
+] as React.Context<unknown>[];
 
 /**
  * BlockDetails kicks off the retrieval of the details for the individual
@@ -21,7 +28,9 @@ export const BlockDetailsLoader: React.FC<React.PropsWithChildren> = ({
   const request = ExplorerGetBlockDetailRequest.height(blockID);
   return (
     <PromiseResolver promise={service.explorer.getBlockDetail(request)}>
-      <BlockDetailResolver>{children}</BlockDetailResolver>
+      <KeepWhileLoading contexts={kKeptBlockDetailContexts}>
+        <BlockDetailResolver>{children}</BlockDetailResolver>
+      </KeepWhileLoading>
     </PromiseResolver>
   );
 };

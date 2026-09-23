@@ -19,6 +19,7 @@ import { ExplorerGetBlockSummariesResponse } from '@/service/hotshot_query_servi
 import { default as React } from 'react';
 import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
 import { default as LabeledButton } from '../../hid/buttons/labeled_button/labeled_button';
+import { KeepWhileLoading } from '../keep_while_loading';
 import '../table_navigation.css';
 
 export enum BlockSummaryColumn {
@@ -40,6 +41,12 @@ export interface BlockSummaryDataTableState extends DataTableState<BlockSummaryC
 }
 
 const NUMBER_OF_BLOCKS_TO_SHOW = 20;
+
+// The page's blocks, and the paging state they were loaded for.
+const kKeptBlockSummaryContexts = [
+  DataContext,
+  DataTableStateContext,
+] as React.Context<unknown>[];
 
 /**
  * RefreshBlockSummariesContext carries a request to go and fetch the current
@@ -79,11 +86,13 @@ const LoadBlockSummaryDataTableData: React.FC<React.PropsWithChildren> = (
 
   return (
     <PromiseResolver promise={service.explorer.getBlockSummaries(request)}>
-      <ProvideBlockSummaryData>
-        <DataTableSetStateContext.Provider value={() => {}}>
-          <>{props.children}</>
-        </DataTableSetStateContext.Provider>
-      </ProvideBlockSummaryData>
+      <KeepWhileLoading contexts={kKeptBlockSummaryContexts}>
+        <ProvideBlockSummaryData>
+          <DataTableSetStateContext.Provider value={() => {}}>
+            <>{props.children}</>
+          </DataTableSetStateContext.Provider>
+        </ProvideBlockSummaryData>
+      </KeepWhileLoading>
     </PromiseResolver>
   );
 };
@@ -146,10 +155,8 @@ export const BlockSummaryDataLoader: React.FC<BlockSummaryDataLoaderProps> = ({
     startAtBlock: startAtBlock,
   });
 
-  if (
-    startAtBlock !== undefined &&
-    initialState.startAtBlock !== startAtBlock
-  ) {
+  // Includes a return to the unpinned head, where startAtBlock is undefined.
+  if (initialState.startAtBlock !== startAtBlock) {
     setState({
       ...initialState,
       startAtBlock: startAtBlock,

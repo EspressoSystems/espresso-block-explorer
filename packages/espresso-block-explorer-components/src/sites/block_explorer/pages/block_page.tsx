@@ -157,11 +157,12 @@ const BlockPage: React.FC<BlockPageProps> = (props) => (
   <OverridePagePath page={PageType.blocks}>
     <Header />
 
-    <EdgeMarginPageTitle>
-      <BlockHeading />
-    </EdgeMarginPageTitle>
-    <EdgeMarginBlockNavigation />
+    {/* Inside the loader, so the title and controls stay with the block shown. */}
     <BlockDetailsLoader>
+      <EdgeMarginPageTitle>
+        <BlockHeading />
+      </EdgeMarginPageTitle>
+      <EdgeMarginBlockNavigation />
       <GuardBlockDetails {...props} />
     </BlockDetailsLoader>
 

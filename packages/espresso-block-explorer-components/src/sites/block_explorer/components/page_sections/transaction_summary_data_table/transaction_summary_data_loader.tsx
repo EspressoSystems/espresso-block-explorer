@@ -20,6 +20,7 @@ import { ExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_s
 import { default as React } from 'react';
 import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
 import { BlockNumberContext } from '../block_detail_content/block_detail_content_loader';
+import { KeepWhileLoading } from '../keep_while_loading';
 import '../table_navigation.css';
 
 export const enum TransactionSummaryColumn {
@@ -35,6 +36,12 @@ export interface TransactionSummaryDataTableState extends DataTableState<Transac
 }
 
 const BLOCKS_TO_SHOW = 20;
+
+// The page's transactions, and the paging state they were loaded for.
+const kKeptTransactionSummaryContexts = [
+  DataContext,
+  DataTableStateContext,
+] as React.Context<unknown>[];
 
 /**
  * LoadTransactionSummaryDataTableData uses the Retriever from the
@@ -68,9 +75,11 @@ const LoadTransactionSummaryDataTableData: React.FC<React.PropsWithChildren> = (
     <PromiseResolver
       promise={service.explorer.getTransactionSummaries(request)}
     >
-      <TransactionSummariesProvider>
-        {props.children}
-      </TransactionSummariesProvider>
+      <KeepWhileLoading contexts={kKeptTransactionSummaryContexts}>
+        <TransactionSummariesProvider>
+          {props.children}
+        </TransactionSummariesProvider>
+      </KeepWhileLoading>
     </PromiseResolver>
   );
 };
