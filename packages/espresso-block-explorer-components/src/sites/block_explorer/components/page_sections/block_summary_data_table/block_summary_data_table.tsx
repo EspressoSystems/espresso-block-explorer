@@ -1,4 +1,3 @@
-import { default as CopyHex } from '@/block_explorer/components/text/copy_hex';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import {
   default as DataTable,
@@ -8,7 +7,6 @@ import { SkeletonContent } from '@/components/loading';
 import {
   ByteSizeText,
   DateTimeText,
-  HexText,
   NumberText,
   RelativeDateTimeText,
 } from '@/components/text';
@@ -38,28 +36,6 @@ const BlockCell: React.FC = () => {
       <NumberText number={row.height} />
     </InternalLink>
   );
-};
-
-/**
- * ProposerCell is a cell for containing reference information about the
- * proposer of the block. In this case this is expected to be a TaggedBase64
- * type.
- */
-const ProposerCell: React.FC = () => {
-  const row = React.useContext(DataTableRowContext) as
-    undefined | null | ExplorerBlockSummary;
-
-  if (!row) {
-    return null;
-  }
-
-  return row.proposerID.map((proposer, index) => (
-    <div key={index}>
-      <CopyHex value={proposer}>
-        <HexText value={proposer} />
-      </CopyHex>
-    </div>
-  ));
 };
 
 /**
@@ -125,7 +101,6 @@ interface BlockSummaryDataTableLayoutProps {
     React.ComponentType,
     React.ComponentType,
     React.ComponentType,
-    React.ComponentType,
   ];
 }
 
@@ -142,29 +117,24 @@ const BlockSummaryDataTableLayout: React.FC<
     <DataTable
       columns={[
         {
-          label: 'Blocks',
+          label: 'Block Height',
           columnType: BlockSummaryColumn.height,
           buildCell: props.components[0],
         },
         {
-          label: 'Builders',
-          columnType: BlockSummaryColumn.proposer,
-          buildCell: props.components[1],
-        },
-        {
           label: 'Txns',
           columnType: BlockSummaryColumn.transactions,
-          buildCell: props.components[2],
+          buildCell: props.components[1],
         },
         {
           label: 'Size',
           columnType: BlockSummaryColumn.size,
-          buildCell: props.components[3],
+          buildCell: props.components[2],
         },
         {
           label: 'Time',
           columnType: BlockSummaryColumn.time,
-          buildCell: props.components[4],
+          buildCell: props.components[3],
         },
       ]}
     />
@@ -191,7 +161,6 @@ export const BlockSummaryDataTablePlaceholder: React.FC<
           SkeletonContent,
           SkeletonContent,
           SkeletonContent,
-          SkeletonContent,
         ]}
       />
     </DataContext.Provider>
@@ -204,13 +173,7 @@ export const BlockSummaryDataTablePlaceholder: React.FC<
 export const BlockSummaryDataTable: React.FC = () => {
   return (
     <BlockSummaryDataTableLayout
-      components={[
-        BlockCell,
-        ProposerCell,
-        TransactionsCell,
-        SizeCell,
-        TimeCell,
-      ]}
+      components={[BlockCell, TransactionsCell, SizeCell, TimeCell]}
     />
   );
 };
@@ -223,13 +186,7 @@ export const BlockSummaryDataTable: React.FC = () => {
 export const LatestBlocksSummaryDataTable: React.FC = () => {
   return (
     <BlockSummaryDataTableLayout
-      components={[
-        BlockCell,
-        ProposerCell,
-        TransactionsCell,
-        SizeCell,
-        RelativeTimeCell,
-      ]}
+      components={[BlockCell, TransactionsCell, SizeCell, RelativeTimeCell]}
     />
   );
 };

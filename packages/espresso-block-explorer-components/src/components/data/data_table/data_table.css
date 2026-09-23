@@ -5,9 +5,16 @@ table.data-table {
 
 table.data-table td,
 table.data-table th {
-  padding: 16px 2px;
+  padding: 16px 12px;
   text-align: start;
   white-space: nowrap;
+  /*
+   * A percentage this small makes auto table layout size each column to its
+   * content instead of sharing the surplus out across every column, which
+   * left wide gaps between narrow values. The last column takes the surplus
+   * instead, so the data stays together and the slack trails behind it.
+   */
+  width: 1%;
   /*
   In order to get these tables to "line-up" on the `Explorer` page, we need
   to give these cells a consistent height, and some positioning hacks to
@@ -15,6 +22,11 @@ table.data-table th {
   are being displayed next to.
   */
   height: 28px;
+}
+
+table.data-table td:last-child,
+table.data-table th:last-child {
+  width: auto;
 }
 
 table.data-table table {
@@ -45,6 +57,12 @@ table.data-table th > div {
   display: flex;
   flex-direction: row;
   align-items: center;
+  /*
+   * The sort indicator belongs beside the label it sorts by. Without a gap it
+   * collides with the label, and if the header is spread across the column
+   * instead, a wide column strands the indicator next to the next heading.
+   */
+  gap: 4px;
   cursor: pointer;
   user-select: none;
 }
@@ -73,7 +91,7 @@ table.data-table th > div {
 }
 
 table.data-table th[data-alignment='start'] > div {
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 table.data-table th[data-alignment='end'] > div {
