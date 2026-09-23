@@ -7,23 +7,55 @@ describe('VariableBytesNumberFormat', () => {
     it('should format with basic denominations', () => {
       const formatter = new VariableBytesNumberFormat('en-US');
 
-      expect(formatter.format(1)).toEqual('1 byte');
+      expect(formatter.format(1)).toEqual('1 B');
       expect(formatter.format(1e3)).toEqual('1 kB');
       expect(formatter.format(1e6)).toEqual('1 MB');
       expect(formatter.format(1e9)).toEqual('1 GB');
-      expect(formatter.format(1e12)).toEqual('1 PB');
+      expect(formatter.format(1e12)).toEqual('1,000 GB');
 
-      expect(formatter.format(BigInt(1))).toEqual('1 byte');
+      expect(formatter.format(BigInt(1))).toEqual('1 B');
       expect(formatter.format(BigInt(1e3))).toEqual('1 kB');
       expect(formatter.format(BigInt(1e6))).toEqual('1 MB');
       expect(formatter.format(BigInt(1e9))).toEqual('1 GB');
-      expect(formatter.format(BigInt(1e12))).toEqual('1 PB');
+      expect(formatter.format(BigInt(1e12))).toEqual('1,000 GB');
 
-      expect(formatter.format('1')).toEqual('1 byte');
+      expect(formatter.format('1')).toEqual('1 B');
       expect(formatter.format('1000')).toEqual('1 kB');
       expect(formatter.format('1000000')).toEqual('1 MB');
       expect(formatter.format('1000000000')).toEqual('1 GB');
-      expect(formatter.format('1000000000000')).toEqual('1 PB');
+      expect(formatter.format('1000000000000')).toEqual('1,000 GB');
+    });
+
+    it('should read the way the explorer shows sizes', () => {
+      // The options the explorer's number formatters use.
+      const formatter = new VariableBytesNumberFormat('en-US', {
+        unitDisplay: 'short',
+        maximumFractionDigits: 2,
+      });
+
+      expect(formatter.format(0)).toEqual('0 B');
+      expect(formatter.format(512)).toEqual('512 B');
+      expect(formatter.format(2000)).toEqual('2 kB');
+      expect(formatter.format(2048)).toEqual('2.05 kB');
+      expect(formatter.format(995000)).toEqual('995 kB');
+      expect(formatter.format(1500000)).toEqual('1.5 MB');
+      expect(formatter.format(1536000)).toEqual('1.54 MB');
+    });
+
+    it('should step up rather than read as 1,000 of a unit', () => {
+      const formatter = new VariableBytesNumberFormat('en-US', {
+        unitDisplay: 'short',
+        maximumFractionDigits: 2,
+      });
+
+      expect(formatter.format(999999)).toEqual('1 MB');
+      expect(formatter.format(999999999)).toEqual('1 GB');
+    });
+
+    it('should format a range of plain bytes with the symbol', () => {
+      const formatter = new VariableBytesNumberFormat('en-US');
+
+      expect(formatter.formatRange(1, 500)).toEqual('1–500 B');
     });
 
     it('should format with ranges', () => {

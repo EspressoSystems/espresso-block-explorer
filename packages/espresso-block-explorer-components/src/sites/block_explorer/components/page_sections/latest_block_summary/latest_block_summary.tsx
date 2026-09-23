@@ -1,15 +1,11 @@
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { default as SummaryTableLabeledValue } from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
+import { default as CompactByteSizeText } from '@/block_explorer/components/text/compact_byte_size_text';
 import { WithUiText300 } from '@/block_explorer/components/typography/typography';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import { SkeletonContent } from '@/components/loading';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
-import {
-  ByteSizeText,
-  DurationInSecondsText,
-  NumberText,
-  Text,
-} from '@/components/text';
+import { DurationInSecondsText, NumberText, Text } from '@/components/text';
 import { ErrorContext } from '@/contexts/error_provider';
 import {
   ExplorerBlockDetailContext,
@@ -93,7 +89,7 @@ export const LatestBlockSummaryDetails: React.FC = () => {
       )}
       <SummaryTableLabeledValue>
         <Text text="Size" />
-        <ByteSizeText bytes={block.size} />
+        <CompactByteSizeText bytes={block.size} />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
         <Text text="Transactions" />
