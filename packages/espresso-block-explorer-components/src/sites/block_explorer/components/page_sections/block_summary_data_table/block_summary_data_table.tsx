@@ -119,12 +119,12 @@ const BlockSummaryDataTableLayout: React.FC<
     <DataTable
       columns={[
         {
-          label: 'Block Height',
+          label: 'Block',
           columnType: BlockSummaryColumn.height,
           buildCell: props.components[0],
         },
         {
-          label: 'Txns',
+          label: '# Txns',
           columnType: BlockSummaryColumn.transactions,
           buildCell: props.components[1],
         },
