@@ -20,6 +20,7 @@ import { default as React } from 'react';
 import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
 import { default as LabeledButton } from '../../hid/buttons/labeled_button/labeled_button';
 import { KeepWhileLoading } from '../keep_while_loading';
+import { useNewestBlockHeight } from '../newest_block_height';
 import '../table_navigation.css';
 
 export enum BlockSummaryColumn {
@@ -219,65 +220,40 @@ export const BlocksNavigation: React.FC<BlocksNavigationProps> = (props) => {
   ) as BlockSummaryDataTableState;
   const refresh = React.useContext(RefreshBlockSummariesContext);
 
-  const previous: React.ReactNode[] = [];
-  const next: React.ReactNode[] = [];
-  /*
-   * "Latest" always means the same thing to the reader -- show me the newest
-   * blocks -- but what it takes to get there depends on where they are. At the
-   * head of the list that is the page they are already on, so it goes and
-   * fetches it again; blocks arrive every second or so, and there is nothing
-   * above the newest ones to go back to. Any page below the head is pinned to
-   * a height, so getting to the newest blocks is a trip back to the unpinned
-   * page, and "Newer" walks up one page at a time.
-   *
-   * The paging controls are named for where they lead rather than for the
-   * list's order: newest first, the page "after" this one holds older blocks,
-   * which "Next" left the reader to work out.
-   */
-  if (state.startAtBlock === undefined) {
-    previous.push(
-      <LabeledButton key={0} onClick={refresh}>
-        <Text text="Latest" />
-      </LabeledButton>,
-    );
-  } else {
-    previous.push(
-      <LabeledAnchorButton key={0} href={pathResolver.blocks()}>
-        <Text text="Latest" />
-      </LabeledAnchorButton>,
-      <LabeledAnchorButton
-        key={1}
-        href={pathResolver.blocks(state.startAtBlock + kBlocksPerPage)}
-      >
-        <Text text="Newer" />
-      </LabeledAnchorButton>,
-    );
-  }
+  const newest = useNewestBlockHeight();
+  const top = data?.[0]?.height;
+  const bottom = data?.[data.length - 1]?.height;
 
-  if (data && data.length > 0 && data[data.length - 1].height > 0) {
-    previous.push(
-      <LabeledAnchorButton
-        key={2}
-        href={pathResolver.blocks(data[data.length - 1].height - 1)}
-      >
-        <Text text="Older" />
-      </LabeledAnchorButton>,
-    );
-  }
-
-  /**
-   * specific page
-   * back a page
-   * forward a page
-   * specific page
-   * ...
-   * first page
-   */
+  // Newer needs blocks above this page. Until the newest height is known,
+  // assume a pinned page has them and the head does not.
+  const hasNewer =
+    newest === null
+      ? state.startAtBlock !== undefined
+      : top !== undefined && newest > top;
+  const newerHref =
+    hasNewer && top !== undefined
+      ? pathResolver.blocks(Math.min(top + kBlocksPerPage, newest ?? Infinity))
+      : undefined;
 
   return (
     <nav className={addClassToClassName(props.className, 'blocks-navigation')}>
-      {previous}
-      {next}
+      {state.startAtBlock === undefined ? (
+        <LabeledButton onClick={refresh}>
+          <Text text="Latest" />
+        </LabeledButton>
+      ) : (
+        <LabeledAnchorButton href={pathResolver.blocks()}>
+          <Text text="Latest" />
+        </LabeledAnchorButton>
+      )}
+      <LabeledAnchorButton href={newerHref} disabled={newerHref === undefined}>
+        <Text text="Newer" />
+      </LabeledAnchorButton>
+      {bottom !== undefined && bottom > 0 && (
+        <LabeledAnchorButton href={pathResolver.blocks(bottom - 1)}>
+          <Text text="Older" />
+        </LabeledAnchorButton>
+      )}
     </nav>
   );
 };

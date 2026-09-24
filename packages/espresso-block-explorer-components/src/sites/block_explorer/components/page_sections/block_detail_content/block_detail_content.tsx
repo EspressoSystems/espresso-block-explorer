@@ -6,60 +6,12 @@ import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_pro
 import { SkeletonContent } from '@/components/loading';
 import { FullHexText, NumberText, Text } from '@/components/text';
 import { ExplorerBlockDetailContext } from '@/contexts/explorer_api_contexts';
-import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { addClassToClassName } from '@/higher_order';
 import { default as React } from 'react';
 import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
+import { useNewestBlockHeight } from '../newest_block_height';
 import '../table_navigation.css';
 import { BlockNumberContext } from './block_detail_content_loader';
-
-/**
- * How often the block page asks for the newest block's height. A block
- * arrives every second or so, but the answer only decides whether there is a
- * newer block to go to, so it need not keep pace with each one.
- */
-const kNewestBlockRefreshMilliseconds = 5000;
-
-/**
- * useNewestBlockHeight reports the height of the newest block, asking the
- * query service for it now and again every few seconds while the page is
- * open. It is null until the service has answered, and stays null if it
- * cannot.
- *
- * The service reports its block height as the number of blocks it holds, so
- * the newest block is one below it. The height only ever moves forward: the
- * service can sit behind a load balancer whose replicas disagree by some way,
- * and an answer from a replica that has fallen behind is not a reason to
- * treat a block already seen as not existing yet.
- */
-function useNewestBlockHeight(): null | number {
-  const service = React.useContext(HotShotQueryServiceAPIContext);
-  const [newest, setNewest] = React.useState<null | number>(null);
-
-  React.useEffect(() => {
-    let cancelled = false;
-    const refresh = () =>
-      service.status.blockHeight().then(
-        (numberOfBlocks) => {
-          if (!cancelled) {
-            setNewest((seen) => Math.max(seen ?? -1, numberOfBlocks - 1));
-          }
-        },
-        // Without an answer the navigation simply knows less; the page is
-        // otherwise unaffected, so there is nothing to report.
-        () => {},
-      );
-
-    refresh();
-    const interval = setInterval(refresh, kNewestBlockRefreshMilliseconds);
-    return () => {
-      cancelled = true;
-      clearInterval(interval);
-    };
-  }, [service]);
-
-  return newest;
-}
 
 /**
  * BlockNavigation leads from the block being shown to its neighbours and to

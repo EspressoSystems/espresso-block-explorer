@@ -19,6 +19,7 @@ import { ExplorerGetTransactionSummariesResponse } from '@/service/hotshot_query
 import { ExplorerGetTransactionSummariesTarget } from '@/service/hotshot_query_service/explorer/get_transaction_summaries_target';
 import { default as React } from 'react';
 import { default as LabeledAnchorButton } from '../../hid/buttons/labeled_anchor_button/labeled_anchor_button';
+import { default as LabeledButton } from '../../hid/buttons/labeled_button/labeled_button';
 import { BlockNumberContext } from '../block_detail_content/block_detail_content_loader';
 import { KeepWhileLoading } from '../keep_while_loading';
 import '../table_navigation.css';
@@ -30,9 +31,16 @@ export const enum TransactionSummaryColumn {
   time,
 }
 
+/** Re-fetches the current page of transactions. */
+export const RefreshTransactionSummariesContext = React.createContext<
+  () => void
+>(() => {});
+
 export interface TransactionSummaryDataTableState extends DataTableState<TransactionSummaryColumn> {
   height?: number;
   offset?: number;
+  /** Changing this re-fetches the current page. */
+  refreshedAt?: number;
 }
 
 const BLOCKS_TO_SHOW = 20;
@@ -130,21 +138,25 @@ export const TransactionSummaryDataLoader: React.FC<
   TransactionsSummaryDataLoaderProps
 > = (props) => {
   const { startAtBlock, offset, ...rest } = props;
-  // Create the Data Table State
+  const [refreshedAt, setRefreshedAt] = React.useState<number>();
+  const refresh = React.useCallback(() => setRefreshedAt(Date.now()), []);
   const initialState = React.useMemo(
     (): TransactionSummaryDataTableState => ({
       sortColumn: TransactionSummaryColumn.block,
       sortDir: SortDirection.desc,
       height: startAtBlock,
       offset: offset,
+      refreshedAt,
     }),
-    [startAtBlock, offset],
+    [startAtBlock, offset, refreshedAt],
   );
 
   return (
-    <DataTableStateContext.Provider value={initialState}>
-      <LoadTransactionSummaryDataTableData {...rest} />
-    </DataTableStateContext.Provider>
+    <RefreshTransactionSummariesContext.Provider value={refresh}>
+      <DataTableStateContext.Provider value={initialState}>
+        <LoadTransactionSummaryDataTableData {...rest} />
+      </DataTableStateContext.Provider>
+    </RefreshTransactionSummariesContext.Provider>
   );
 };
 
@@ -187,51 +199,10 @@ export const TransactionsNavigation: React.FC<TransactionsNavigationProps> = (
     DataTableStateContext,
   ) as TransactionSummaryDataTableState;
 
-  const previous: React.ReactNode[] = [];
-  const next: React.ReactNode[] = [];
+  const refresh = React.useContext(RefreshTransactionSummariesContext);
+  const last = data?.[data.length - 1];
 
-  /*
-   * A page below the head is pinned to a height, which leaves no way back to
-   * the newest transactions but the browser's own history; "Latest" is that
-   * way back, the unpinned page. At the head there is nowhere newer to go, so
-   * it is left out. The page above this one cannot be reached directly --
-   * transactions only page downward -- so there is no "Newer" yet.
-   */
-  if (state.height !== undefined) {
-    previous.push(
-      <LabeledAnchorButton key={0} href={pathResolver.transactions()}>
-        <Text text="Latest" />
-      </LabeledAnchorButton>,
-    );
-  }
-
-  // Named for where it leads: newest first, the page after this one holds
-  // older transactions.
-  if (data && data[data.length - 1].height > 0) {
-    const lastTransaction = data[data.length - 1];
-
-    previous.push(
-      <LabeledAnchorButton
-        key={1}
-        href={pathResolver.transactions(
-          lastTransaction.height,
-          lastTransaction.offset + 1,
-        )}
-      >
-        <Text text="Older" />
-      </LabeledAnchorButton>,
-    );
-  }
-
-  /**
-   * specific page
-   * back a page
-   * forward a page
-   * specific page
-   * ...
-   * first page
-   */
-
+  // There is no Newer: transactions only page downward.
   return (
     <nav
       className={addClassToClassName(
@@ -239,8 +210,22 @@ export const TransactionsNavigation: React.FC<TransactionsNavigationProps> = (
         'transactions-navigation',
       )}
     >
-      {previous}
-      {next}
+      {state.height === undefined ? (
+        <LabeledButton onClick={refresh}>
+          <Text text="Latest" />
+        </LabeledButton>
+      ) : (
+        <LabeledAnchorButton href={pathResolver.transactions()}>
+          <Text text="Latest" />
+        </LabeledAnchorButton>
+      )}
+      {last && last.height > 0 && (
+        <LabeledAnchorButton
+          href={pathResolver.transactions(last.height, last.offset + 1)}
+        >
+          <Text text="Older" />
+        </LabeledAnchorButton>
+      )}
     </nav>
   );
 };
