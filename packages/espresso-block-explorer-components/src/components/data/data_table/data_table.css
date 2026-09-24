@@ -55,38 +55,7 @@ table.data-table tr:not(:nth-last-child(1)) td {
 
 table.data-table th > div {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  /*
-   * The sort indicator belongs beside the label it sorts by. Without a gap it
-   * collides with the label, and if the header is spread across the column
-   * instead, a wide column strands the indicator next to the next heading.
-   */
-  gap: 4px;
-  cursor: pointer;
-  user-select: none;
-}
-
-table.data-table th svg.icon--sort {
-  opacity: 100%;
-  transform: rotateZ(0deg);
-  transition:
-    opacity ease-in-out 240ms,
-    transform ease-in-out 240ms;
-  will-change: opacity, transform;
-}
-
-table.data-table th[data-sort-column-active='false'] svg.icon--sort {
-  opacity: 0;
-}
-
-table.data-table th[data-sort-column-dir='1'] svg.icon--sort {
-  transform: rotateZ(180deg);
-}
-
-table.data-table th > div {
-  display: flex;
-  flex-direction: row;
   justify-content: flex-start;
 }
 

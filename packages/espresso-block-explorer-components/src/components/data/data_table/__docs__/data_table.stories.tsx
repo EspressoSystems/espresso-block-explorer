@@ -3,14 +3,7 @@ import { default as Text } from '@/text/text';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { default as React } from 'react';
 import { default as PromiseResolver } from '../../async_data/promise_resolver';
-import { SortDirection, reverseSortDir } from '../../types';
-import {
-  default as DataTableComp,
-  DataTableRowContext,
-  DataTableSetStateContext,
-  DataTableState,
-  DataTableStateContext,
-} from '../data_table';
+import { default as DataTableComp, DataTableRowContext } from '../data_table';
 
 enum ExampleColumns {
   one = 'one',
@@ -65,46 +58,7 @@ const exampleData: ExampleData[] = [
   },
 ];
 
-function sortOne(a: ExampleData, b: ExampleData) {
-  return a.one - b.one;
-}
-
-function sortTwo(a: ExampleData, b: ExampleData) {
-  return a.two.localeCompare(b.two);
-}
-
-function getSortFunctionForColumn(state: DataTableState<ExampleColumns>) {
-  switch (state.sortColumn) {
-    case ExampleColumns.one:
-      return sortOne;
-    case ExampleColumns.two:
-      return sortTwo;
-
-    default:
-      break;
-  }
-
-  return sortOne;
-}
-
-function getSortFunction(state: DataTableState<ExampleColumns>) {
-  const func = getSortFunctionForColumn(state);
-  switch (state.sortDir) {
-    case SortDirection.desc:
-      return reverseSortDir(func);
-
-    default:
-      break;
-  }
-
-  return func;
-}
-
-async function retrieveData(state: DataTableState<unknown>) {
-  return exampleData
-    .slice()
-    .sort(getSortFunction(state as DataTableState<ExampleColumns>));
-}
+const exampleDataPromise = Promise.resolve(exampleData);
 
 const OneCell: React.FC = () => {
   const data = React.useContext(DataTableRowContext) as ExampleData;
@@ -120,43 +74,11 @@ const TwoCell: React.FC = () => {
 
 interface ExampleProps {}
 
-const Example: React.FC<ExampleProps> = (props) => {
-  // Create the Data Table State
-  const [initialState, setState] = React.useState<
-    DataTableState<ExampleColumns> & { page: number }
-  >({
-    sortColumn: ExampleColumns.one,
-    sortDir: SortDirection.asc,
-    page: 0,
-  });
-
-  return (
-    <DataTableStateContext.Provider value={initialState}>
-      <DataTableSetStateContext.Provider
-        value={
-          setState as React.Dispatch<
-            React.SetStateAction<DataTableState<unknown>>
-          >
-        }
-      >
-        <LoadExampleDataTableData {...props} />
-      </DataTableSetStateContext.Provider>
-    </DataTableStateContext.Provider>
-  );
-};
-
-const LoadExampleDataTableData: React.FC = (props) => {
-  // Need to retrieve the actual data source
-  const dataTableState = React.useContext(DataTableStateContext);
-
-  const data = retrieveData(dataTableState);
-
-  return (
-    <PromiseResolver promise={data}>
-      <ExampleDataTable {...props} />
-    </PromiseResolver>
-  );
-};
+const Example: React.FC<ExampleProps> = (props) => (
+  <PromiseResolver promise={exampleDataPromise}>
+    <ExampleDataTable {...props} />
+  </PromiseResolver>
+);
 
 const ExampleDataTable: React.FC = (props) => (
   <DataTableComp
