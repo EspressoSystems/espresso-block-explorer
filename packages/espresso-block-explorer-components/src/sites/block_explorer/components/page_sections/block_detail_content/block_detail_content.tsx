@@ -125,11 +125,11 @@ export const BlockDetailsContentPlaceholder: React.FC<
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Builders" />
+        <Text text="Builder" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Fee Recipients" />
+        <Text text="Fee Recipient" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
@@ -172,7 +172,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
         <NumberText number={details.numTransactions} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Builders" />
+        <Text text="Builder" />
         {details.proposerID.map((proposer, index) => (
           <div key={index}>
             <CopyHex value={proposer}>
@@ -182,7 +182,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
         ))}
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Fee Recipients" />
+        <Text text="Fee Recipient" />
         {details.feeRecipient.map((recipient, index) => (
           <div key={index}>
             <CopyHex value={recipient}>
