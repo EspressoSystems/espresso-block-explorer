@@ -1,5 +1,9 @@
 import { addClassToClassName } from '@/higher_order';
 import { default as React } from 'react';
+import {
+  InternalLinkAnchorComponentContext,
+  LinkProps,
+} from '../../../links/link/link';
 
 export interface AnchorButtonProps extends React.DetailedHTMLProps<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -9,17 +13,18 @@ export interface AnchorButtonProps extends React.DetailedHTMLProps<
 }
 
 /**
- * AnchorButton is a simple wrapper around an Anchor tag with the purpose of
- * making the anchor visually look like a button.
+ * AnchorButton is a link styled as a button. It navigates like InternalLink
+ * (without a page reload in the app); disabled, it is a plain anchor.
  */
-const AnchorButton: React.FC<AnchorButtonProps> = (props) => (
-  <a
-    {...props}
-    className={addClassToClassName(props.className, 'btn')}
-    href={props.disabled ? undefined : props.href}
-  >
-    {props.children}
-  </a>
-);
+const AnchorButton: React.FC<AnchorButtonProps> = (props) => {
+  const link = React.useContext(InternalLinkAnchorComponentContext);
+  const enabled = !props.disabled && props.href !== undefined;
+
+  return React.createElement(enabled ? link : 'a', {
+    ...props,
+    className: addClassToClassName(props.className, 'btn'),
+    href: enabled ? props.href : undefined,
+  } as LinkProps);
+};
 
 export default AnchorButton;
