@@ -113,7 +113,7 @@ export const BlockDetailsContentPlaceholder: React.FC<
   return (
     <>
       <TableLabeledValue className="card--padding">
-        <Text text="Block Height" />
+        <Text text="Height" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
@@ -160,7 +160,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
   return (
     <>
       <TableLabeledValue className="card--padding">
-        <Text text="Block Height" />
+        <Text text="Height" />
         <NumberText number={details.height} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
