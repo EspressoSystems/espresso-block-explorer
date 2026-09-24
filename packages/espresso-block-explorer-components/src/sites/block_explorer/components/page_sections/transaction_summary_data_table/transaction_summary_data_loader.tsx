@@ -220,8 +220,12 @@ export const TransactionsNavigation: React.FC<TransactionsNavigationProps> = (
         </LabeledAnchorButton>
       )}
       {last && last.height > 0 && (
+        // The service's offset counts from the block's newest transaction.
         <LabeledAnchorButton
-          href={pathResolver.transactions(last.height, last.offset + 1)}
+          href={pathResolver.transactions(
+            last.height,
+            last.numTransactions - last.offset,
+          )}
         >
           <Text text="Older" />
         </LabeledAnchorButton>
