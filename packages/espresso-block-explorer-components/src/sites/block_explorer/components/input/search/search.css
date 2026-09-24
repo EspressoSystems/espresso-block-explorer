@@ -4,7 +4,7 @@
   --search-bar--max-width: 561px;
 
   --search-bar--default--search-icon--background-color: var(
-    --color--trasparent
+    --color--transparent
   );
   --search-bar--focused--search-icon--background-color: var(--color--coffee);
   --search-bar--default--search-icon--foreground-color: var(
@@ -17,7 +17,7 @@
 
 [data-theme='light'] {
   --search-bar--default--search-icon--background-color: var(
-    --color--trasparent
+    --color--transparent
   );
   --search-bar--focused--search-icon--background-color: var(--color--coffee);
   --search-bar--default--search-icon--foreground-color: var(
@@ -30,12 +30,10 @@
 
 [data-theme='dark'] {
   --search-bar--default--search-icon--background-color: var(
-    --color--trasparent
+    --color--transparent
   );
   --search-bar--focused--search-icon--background-color: var(--color--chilli);
-  --search-bar--default--search-icon--foreground-color: var(
-    --color--chilli--alpha-60
-  );
+  --search-bar--default--search-icon--foreground-color: var(--color--cookie);
   --search-bar--focused--search-icon--foreground-color: var(--on-color--chilli);
 
   --search-result--selected--background-color: var(--color--caramel);
@@ -43,6 +41,7 @@
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
+    --search-bar--default--search-icon--foreground-color: var(--color--cookie);
     --search-result--selected--background-color: var(--color--caramel);
   }
 }

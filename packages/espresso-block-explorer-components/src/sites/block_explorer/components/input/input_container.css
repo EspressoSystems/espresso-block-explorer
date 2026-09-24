@@ -19,17 +19,17 @@
 }
 
 [data-theme='dark'] {
-  --input--normal--border-color: var(--color--coffee);
+  --input--normal--border-color: var(--color--cookie);
   --input--active--border-color: var(--color--chilli);
-  --input--background-color: var(--color--slate-950);
+  --input--background-color: var(--color--coffee);
   --input--on-background-color: var(--color--vanilla);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    --input--normal--border-color: var(--color--coffee);
+    --input--normal--border-color: var(--color--cookie);
     --input--active--border-color: var(--color--chilli);
-    --input--background-color: var(--color--slate-950);
+    --input--background-color: var(--color--coffee);
     --input--on-background-color: var(--color--vanilla);
   }
 }
