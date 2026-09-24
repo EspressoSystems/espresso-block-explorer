@@ -98,25 +98,31 @@ at a time, give each its own local port, e.g. `-p 3001:3000`. See
 
 #### Running against your own network
 
-Point the explorer at your network's HotShot query service with
-`QUERY_SERVICE_URI`. The other variables replace the Mainnet defaults used in
-page titles, links and metadata, and are optional:
+Point the explorer at your network's HotShot query service. The URL must end
+in `/v0/`, including the trailing slash:
 
 ```sh
+QUERY_SERVICE_URI="https://query.my-network.example/v0/"
+
 docker run --rm -p 3000:3000 \
-  -e QUERY_SERVICE_URI="https://query.my-network.example/v0/" \
-  -e BLOCK_EXPLORER_SITE_PREFIX="DEVNET" \
-  -e BLOCK_EXPLORER_NETWORK_NAME="MyNet" \
-  -e BLOCK_EXPLORER_NETWORK_SITE_NAME="MyNet Block Explorer" \
-  -e BASE_URL="https://explorer.my-network.example/" \
-  -e STAKING_SITE_URL="https://stake.my-network.example/" \
+  -e QUERY_SERVICE_URI="$QUERY_SERVICE_URI" \
   espresso-block-explorer
 ```
 
-- `QUERY_SERVICE_URI` must end in `/v0/`, including the trailing slash.
-- The browser calls the query service directly, so it must be reachable by
-  your visitors, allow requests from the explorer's origin (CORS), and serve
-  the `explorer`, `status` and `availability` APIs.
+The browser calls the query service directly, so it must be reachable by your
+visitors, allow requests from the explorer's origin (CORS), and serve the
+`explorer`, `status` and `availability` APIs.
+
+Optional variables:
+
+| Variable                           | Sets                                  | Default                              |
+| ---------------------------------- | ------------------------------------- | ------------------------------------ |
+| `STAKING_SITE_URL`                 | Where the header's Stake link goes    | `https://stake.espresso.network/`    |
+| `BASE_URL`                         | The site's address in page metadata   | `https://explorer.espresso.network/` |
+| `BLOCK_EXPLORER_SITE_PREFIX`       | The prefix in the page title          | `MAINNET`                            |
+| `BLOCK_EXPLORER_NETWORK_SITE_NAME` | The site name in the page title       | `Espresso Block Explorer`            |
+| `BLOCK_EXPLORER_NETWORK_NAME`      | The network name in page descriptions | `Espresso`                           |
+
 - An `ENVIRONMENT_NAME` other than `mainnet`, `decaf`, `water` or `milk` is
   treated as `mainnet`. The home page's rollup count and the rollup names and
   logos then come from the explorer's built-in Mainnet list.
