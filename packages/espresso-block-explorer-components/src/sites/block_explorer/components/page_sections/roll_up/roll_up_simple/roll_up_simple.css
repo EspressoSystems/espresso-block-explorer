@@ -5,3 +5,15 @@
   align-items: center;
   position: relative;
 }
+
+/*
+ * In a table, the 24px logo must not make its row taller than a text-only
+ * row, or side-by-side tables drift out of line. Like the inline copy button.
+ */
+table.data-table .rollup-simple {
+  vertical-align: top;
+}
+
+table.data-table .rollup-simple > picture.avatar {
+  margin-block: -5px;
+}
