@@ -60,42 +60,66 @@ npm run coverage --workspaces
 
 ### Building
 
-To effectively build the project, a two-stage process is involved. For
-convenience, the asset files are currently committed, but this may change in
-the future.
-
-First step is to build the `espresso-block-explorer-components` package:
+Build the `espresso-block-explorer-components` package first, then the
+`block-explorer` package, which uses it:
 
 ```sh
 npm run build --workspace=packages/espresso-block-explorer-components
-```
-
-After this, the `public` folder from this package, as well as the assets folder
-from the `dist` directory need to be copied to the `block-explorer` package.
-So first, we must remove anything present first:
-
-```sh
-rm -rf packages/block-explorer/public
-cp -r packages/espresso-block-explorer-components/public packages/block-explorer/public
-cp -r packages/espresso-block-explorer-components/dist/assets packages/block-explorer/public/assets
-```
-
-Now you should be able to build the `block-explorer` package properly.
-
-```sh
 npm run build --workspace=packages/block-explorer
 ```
 
 #### Docker
 
-In order to build a `Docker` image, you should only need to run the
-`docker build` and target the included `Dockerfile`. It will build the project
-step-by-step and should result in a runnable image with whatever tag you'd
-like to give it.
+To build the `Docker` image for the Block Explorer, target the `block-explorer`
+stage of the included `Dockerfile`:
 
 ```sh
-docker build -f block-explorer.Dockerfile .
+docker build --target block-explorer -t espresso-block-explorer .
 ```
+
+The same image runs against any network, chosen with `ENVIRONMENT_NAME` when
+the container starts. The site listens on port 3000 inside the container, and
+`-p <local port>:3000` picks the port on your machine:
+
+```sh
+# Mainnet (also the default when ENVIRONMENT_NAME is not set)
+docker run --rm -p 3000:3000 -e ENVIRONMENT_NAME=mainnet espresso-block-explorer
+
+# Decaf testnet
+docker run --rm -p 3000:3000 -e ENVIRONMENT_NAME=decaf espresso-block-explorer
+
+# Milk devnet
+docker run --rm -p 3000:3000 -e ENVIRONMENT_NAME=milk espresso-block-explorer
+```
+
+Then open [http://localhost:3000](http://localhost:3000). To run more than one
+at a time, give each its own local port, e.g. `-p 3001:3000`. See
+[docker/README.md](docker/README.md) for the other environment variables.
+
+#### Running against your own network
+
+Point the explorer at your network's HotShot query service with
+`QUERY_SERVICE_URI`. The other variables replace the Mainnet defaults used in
+page titles, links and metadata, and are optional:
+
+```sh
+docker run --rm -p 3000:3000 \
+  -e QUERY_SERVICE_URI="https://query.my-network.example/v0/" \
+  -e BLOCK_EXPLORER_SITE_PREFIX="DEVNET" \
+  -e BLOCK_EXPLORER_NETWORK_NAME="MyNet" \
+  -e BLOCK_EXPLORER_NETWORK_SITE_NAME="MyNet Block Explorer" \
+  -e BASE_URL="https://explorer.my-network.example/" \
+  -e STAKING_SITE_URL="https://stake.my-network.example/" \
+  espresso-block-explorer
+```
+
+- `QUERY_SERVICE_URI` must end in `/v0/`, including the trailing slash.
+- The browser calls the query service directly, so it must be reachable by
+  your visitors, allow requests from the explorer's origin (CORS), and serve
+  the `explorer`, `status` and `availability` APIs.
+- An `ENVIRONMENT_NAME` other than `mainnet`, `decaf`, `water` or `milk` is
+  treated as `mainnet`. The home page's rollup count and the rollup names and
+  logos then come from the explorer's built-in Mainnet list.
 
 ### Developing
 
