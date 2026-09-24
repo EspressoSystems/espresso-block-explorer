@@ -34,6 +34,8 @@
   grid-area: value;
   font-family: var(--text--font-family-mono);
   font-variant-numeric: tabular-nums;
+  /* Long hashes and addresses wrap rather than run past the card. */
+  overflow-wrap: anywhere;
 }
 
 /* Mobile */
