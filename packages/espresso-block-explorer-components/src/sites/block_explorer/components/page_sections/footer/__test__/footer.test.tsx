@@ -7,9 +7,13 @@ import * as stories from '../__docs__/footer.stories';
 const { Footer } = composeStories(stories);
 
 describe('Footer component', () => {
-  it('should render the Icon Button normally', async () => {
-    render(<Footer data-testid="1" />);
-    const footer = screen.getByRole('button');
-    expect(footer).toBeInTheDocument();
+  it('links to the Espresso Foundation and Espresso Systems', () => {
+    render(<Footer />);
+    expect(
+      screen.getAllByRole('link').map((a) => a.getAttribute('href')),
+    ).toEqual([
+      'https://www.espresso.foundation/',
+      'https://www.espressosys.com/',
+    ]);
   });
 });
