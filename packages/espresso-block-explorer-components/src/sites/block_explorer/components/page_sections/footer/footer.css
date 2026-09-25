@@ -77,6 +77,16 @@ footer > hr {
   footer {
     padding: 16px;
   }
+
+  /* From here the links share a line, so separate them. */
+  footer > .external-links > a + a::before {
+    content: '•';
+    /* Inline-block keeps the link's hover underline and color off the dot. */
+    display: inline-block;
+    margin-right: 16px;
+    color: var(--footer--ink-color);
+    opacity: 0.5;
+  }
 }
 
 /* Large */
