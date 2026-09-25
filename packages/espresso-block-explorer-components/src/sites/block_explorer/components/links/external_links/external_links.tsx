@@ -14,12 +14,6 @@ const ExternalLinks: React.FC = () => (
     <ExternalLink href="https://medium.com/@espressosys">
       <Text text="News" />
     </ExternalLink>
-    <ExternalLink href="https://jobs.lever.co/Espresso">
-      <Text text="Careers" />
-    </ExternalLink>
-    <ExternalLink href="https://github.com/EspressoSystems/HotShot/blob/main/docs/espresso-sequencer-paper.pdf">
-      <Text text="HotShot Paper" />
-    </ExternalLink>
     <ExternalLink href="http://docs.espressosys.com/">
       <Text text="Espresso Docs" />
     </ExternalLink>
