@@ -43,6 +43,20 @@ const TransactionCell: React.FC = () => {
 };
 
 /**
+ * PositionCell displays the transaction's position within its block.
+ */
+const PositionCell: React.FC = () => {
+  const row = React.useContext(DataTableRowContext) as
+    undefined | null | ExplorerTransactionSummary;
+
+  if (!row) {
+    return null;
+  }
+
+  return <NumberText number={row.offset} />;
+};
+
+/**
  * RollUpCell is a cell that displays the rollup for a given transaction.
  */
 const RollUpCell: React.FC = () => {
@@ -127,6 +141,8 @@ interface TransactionsSummaryDataTableLayoutProps {
     React.ComponentType,
     React.ComponentType,
   ];
+  /** When given, a leading Position column is built with this cell. */
+  positionComponent?: React.ComponentType;
   emptyContent?: React.ReactNode;
   /**
    * What to call the time column, which differs with what the column holds:
@@ -149,8 +165,17 @@ const TransactionsSummaryDataTableLayout: React.FC<
     <DataTable
       emptyContent={props.emptyContent}
       columns={[
+        ...(props.positionComponent
+          ? [
+              {
+                label: 'Position',
+                columnType: TransactionSummaryColumn.position,
+                buildCell: props.positionComponent,
+              },
+            ]
+          : []),
         {
-          label: 'Txn ID',
+          label: 'Hash',
           columnType: TransactionSummaryColumn.hash,
           buildCell: props.components[0],
         },
@@ -176,6 +201,8 @@ const TransactionsSummaryDataTableLayout: React.FC<
 
 export interface TransactionsSummaryDataTablePlaceholderProps {
   numElements?: number;
+  /** Include the leading Position column. */
+  withPosition?: boolean;
 }
 
 /**
@@ -185,11 +212,12 @@ export interface TransactionsSummaryDataTablePlaceholderProps {
 export const TransactionsSummaryDataTablePlaceholder: React.FC<
   TransactionsSummaryDataTablePlaceholderProps
 > = (props) => {
-  const { numElements = 20 } = props;
+  const { numElements = 20, withPosition = false } = props;
   // Maintain the starting arguments.
   return (
     <DataContext.Provider value={Array.from(iota(numElements))}>
       <TransactionsSummaryDataTableLayout
+        positionComponent={withPosition ? SkeletonContent : undefined}
         components={[
           SkeletonContent,
           SkeletonContent,
@@ -221,12 +249,19 @@ export const TransactionsSummaryDataTable: React.FC = () => {
  * block simply carried no transactions rather than that nothing was found.
  */
 export const BlockTransactionsSummaryDataTable: React.FC = () => {
+  const rows = React.useContext(DataContext) as
+    undefined | null | ExplorerTransactionSummary[];
+
+  // The service returns the newest first.
   return (
-    <TransactionsSummaryDataTableLayout
-      emptyContent={<Text text="Empty Block" />}
-      timeColumnLabel="Timestamp"
-      components={[TransactionCell, RollUpCell, BlockCell, TimeCell]}
-    />
+    <DataContext.Provider value={rows && [...rows].reverse()}>
+      <TransactionsSummaryDataTableLayout
+        positionComponent={PositionCell}
+        emptyContent={<Text text="Empty Block" />}
+        timeColumnLabel="Timestamp"
+        components={[TransactionCell, RollUpCell, BlockCell, TimeCell]}
+      />
+    </DataContext.Provider>
   );
 };
 

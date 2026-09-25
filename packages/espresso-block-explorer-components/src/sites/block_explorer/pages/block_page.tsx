@@ -108,7 +108,10 @@ const GuardBlockTransactions: React.FC = () => {
     return (
       <EdgeMarginShimmerCard className="block-transactions">
         <div className="card--padding">
-          <TransactionsSummaryDataTablePlaceholder numElements={5} />
+          <TransactionsSummaryDataTablePlaceholder
+            numElements={5}
+            withPosition
+          />
         </div>
       </EdgeMarginShimmerCard>
     );

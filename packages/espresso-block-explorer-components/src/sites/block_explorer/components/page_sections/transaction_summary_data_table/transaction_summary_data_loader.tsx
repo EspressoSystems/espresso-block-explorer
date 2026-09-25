@@ -29,6 +29,7 @@ export const enum TransactionSummaryColumn {
   rollup,
   block,
   time,
+  position,
 }
 
 /** Re-fetches the current page of transactions. */
