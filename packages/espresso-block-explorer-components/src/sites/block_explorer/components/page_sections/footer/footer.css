@@ -1,35 +1,23 @@
-/*
- * The footer previously had no [data-theme] blocks at all -- it rendered
- * an identical solid --color--coffee fill regardless of theme. Flattening
- * it to a quiet utility bar (matching the page background, with a hairline
- * top border) needs real light/dark tokens instead, since it's no longer
- * a dark, self-contained block that its children can assume as a fixed
- * backdrop -- see external_link.css / social_media_icon_link.css /
- * news_letter_sign_up.css, which all previously assumed this dark bg too.
- */
+/* The footer sits on the page background, so its colors follow the theme. */
 :root {
   --footer--border-color: var(--color--stroke);
   --footer--ink-color: var(--color--coffee);
-  --footer--submit-icon-color: var(--color--vanilla);
 }
 
 [data-theme='light'] {
   --footer--border-color: var(--color--stroke);
   --footer--ink-color: var(--color--coffee);
-  --footer--submit-icon-color: var(--color--vanilla);
 }
 
 [data-theme='dark'] {
   --footer--border-color: var(--color--border-dark);
   --footer--ink-color: var(--color--vanilla);
-  --footer--submit-icon-color: var(--color--coffee);
 }
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
     --footer--border-color: var(--color--border-dark);
     --footer--ink-color: var(--color--vanilla);
-    --footer--submit-icon-color: var(--color--coffee);
   }
 }
 
@@ -62,17 +50,10 @@ footer {
   margin-block: 40px 16px;
   margin-inline: max(16px, calc((100% - var(--page-max-width)) / 2));
   grid-template-areas:
-    'newsletter'
     'espresso-logo'
-    'external-links'
-    'social-links';
-  grid-template-rows: auto auto auto auto;
+    'external-links';
   grid-template-columns: auto;
   align-items: center;
-}
-
-footer > .form--newsletter {
-  grid-area: newsletter;
 }
 
 footer > .icon--logo {
@@ -80,16 +61,11 @@ footer > .icon--logo {
   margin: 40px auto;
 }
 
-footer > .social-media-links {
-  grid-area: social-links;
-  display: flex;
-  justify-content: center;
-}
-
 footer > .external-links {
   grid-area: external-links;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 footer > hr {
@@ -101,10 +77,6 @@ footer > hr {
   footer {
     padding: 16px;
   }
-
-  footer > .social-media-links {
-    justify-content: start;
-  }
 }
 
 /* Large */
@@ -113,23 +85,14 @@ footer > hr {
     padding: 40px;
     margin-block: 40px 16px;
     margin-inline: max(24px, calc((100% - var(--page-max-width)) / 2));
-    grid-template-columns: 3fr 2fr 3fr;
-    grid-template-rows: auto auto auto auto;
     grid-template-areas:
-      'newsletter social-links external-links' 'hr hr hr'
-      'espresso-logo espresso-logo espresso-logo';
+      'external-links'
+      'hr'
+      'espresso-logo';
   }
 
   footer > hr {
     display: block;
-  }
-
-  footer > .social-media-links {
-    justify-content: center;
-  }
-
-  footer > .external-links {
-    justify-content: flex-end;
   }
 
   footer > .icon--logo {
