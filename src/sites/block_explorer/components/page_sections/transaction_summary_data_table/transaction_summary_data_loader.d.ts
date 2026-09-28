@@ -4,11 +4,16 @@ export declare const enum TransactionSummaryColumn {
     hash = 0,
     rollup = 1,
     block = 2,
-    time = 3
+    time = 3,
+    position = 4
 }
+/** Re-fetches the current page of transactions. */
+export declare const RefreshTransactionSummariesContext: React.Context<() => void>;
 export interface TransactionSummaryDataTableState extends DataTableState<TransactionSummaryColumn> {
     height?: number;
     offset?: number;
+    /** Changing this re-fetches the current page. */
+    refreshedAt?: number;
 }
 export interface TransactionsSummaryDataLoaderProps {
     startAtBlock?: number;

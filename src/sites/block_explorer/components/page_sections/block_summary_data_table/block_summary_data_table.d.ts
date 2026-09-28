@@ -11,3 +11,9 @@ export declare const BlockSummaryDataTablePlaceholder: React.FC<BlockSummaryData
  * BlockSummaryDataTable is the DataTable for the Blocks Summary display
  */
 export declare const BlockSummaryDataTable: React.FC;
+/**
+ * LatestBlocksSummaryDataTable is the BlockSummaryDataTable as displayed in
+ * the explorer's "Latest Blocks" summary, where recency matters more than the
+ * exact timestamp and the card is too narrow to fit one.
+ */
+export declare const LatestBlocksSummaryDataTable: React.FC;

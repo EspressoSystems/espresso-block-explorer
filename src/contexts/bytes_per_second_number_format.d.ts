@@ -1,26 +1,10 @@
+import { default as DecimalBytesNumberFormat } from './decimal_bytes_number_format';
 /**
- * BytesPerSecondNumberFormat is a custom number format, that formats bytes per
- * second, with the preset range of SI prefixes.
+ * BytesPerSecondNumberFormat formats a rate of bytes per second in the largest
+ * decimal unit it reaches: "512 B/s", "214.58 kB/s", "1.27 MB/s".
  *
- * See VariableBytesNumberFormat for a similar implementation.
+ * See VariableBytesNumberFormat for the same stepping applied to a size.
  */
-export default class BytesPerSecondNumberFormat implements Intl.NumberFormat {
-    private bytesPerSecondFormatter;
-    private kilobytesPerSecondFormatter;
-    private megabytesPerSecondFormatter;
-    private gigabytesPerSecondFormatter;
-    private petabytesPerSecondFormatter;
-    resolvedOptions(): Intl.ResolvedNumberFormatOptions;
+export default class BytesPerSecondNumberFormat extends DecimalBytesNumberFormat {
     constructor(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions | undefined);
-    private extractValue;
-    formatTToParts<T = number>(number: T, thresholds: [T, T, T, T]): Intl.NumberFormatPart[];
-    formatNumberToParts(number: number): Intl.NumberFormatPart[];
-    formatBigintToParts(number: bigint): Intl.NumberFormatPart[];
-    formatToParts(number?: number | bigint | Intl.StringNumericLiteral | undefined): Intl.NumberFormatPart[];
-    formatRangeTToParts<T = number>(start: T, end: T, thresholds: [T, T, T, T]): Intl.NumberRangeFormatPart[];
-    formatNumberRangeToParts(start: number, end: number): Intl.NumberRangeFormatPart[];
-    formatBigintRangeToParts(start: bigint, end: bigint): Intl.NumberRangeFormatPart[];
-    formatRangeToParts(start: number | bigint | Intl.StringNumericLiteral, end: number | bigint | Intl.StringNumericLiteral): Intl.NumberRangeFormatPart[];
-    format(number: number | bigint | Intl.StringNumericLiteral): string;
-    formatRange(start: number | bigint, end: number | bigint): string;
 }

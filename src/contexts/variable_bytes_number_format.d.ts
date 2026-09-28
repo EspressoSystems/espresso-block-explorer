@@ -1,30 +1,13 @@
+import { default as DecimalBytesNumberFormat } from './decimal_bytes_number_format';
 /**
- * VariableBytesNumberFormat is a number formatter hack that attempts to unify
- * byte formatting representation with the "correct" SI unit prefix stepping.
- * This is necessary as the current default implementation of the NumberFormat
- * doesn't actually format using SI Prefixes, but rather abbreviations for
- * number of "thousands".
+ * VariableBytesNumberFormat formats a quantity of bytes in the largest decimal
+ * unit it reaches: "512 B", "2.05 kB", "1.5 MB".
  *
- * For more detail please refer to the following:
+ * This is necessary as Intl.NumberFormat's compact notation doesn't step
+ * through SI prefixes, but abbreviates numbers of "thousands" instead. For
+ * more detail please refer to the following:
  * https://stackoverflow.com/questions/77215632/why-intl-numberformat-formats-1000000000-bytes-as-1bb-instead-of-1gb
  */
-export default class VariableBytesNumberFormat implements Intl.NumberFormat {
-    private bytesFormatter;
-    private kilobytesFormatter;
-    private megabytesFormatter;
-    private gigabytesFormatter;
-    private petabytesFormatter;
-    resolvedOptions(): Intl.ResolvedNumberFormatOptions;
+export default class VariableBytesNumberFormat extends DecimalBytesNumberFormat {
     constructor(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions | undefined);
-    private extractValue;
-    formatTToParts<T = number>(number: T, thresholds: [T, T, T, T]): Intl.NumberFormatPart[];
-    formatNumberToParts(number: number): Intl.NumberFormatPart[];
-    formatBigintToParts(number: bigint): Intl.NumberFormatPart[];
-    formatToParts(number?: number | bigint | Intl.StringNumericLiteral | undefined): Intl.NumberFormatPart[];
-    formatRangeTToParts<T = number>(start: T, end: T, thresholds: [T, T, T, T]): Intl.NumberRangeFormatPart[];
-    formatNumberRangeToParts(start: number, end: number): Intl.NumberRangeFormatPart[];
-    formatBigintRangeToParts(start: bigint, end: bigint): Intl.NumberRangeFormatPart[];
-    formatRangeToParts(start: number | bigint | Intl.StringNumericLiteral, end: number | bigint | Intl.StringNumericLiteral): Intl.NumberRangeFormatPart[];
-    format(number: number | bigint | Intl.StringNumericLiteral): string;
-    formatRange(start: number | bigint | Intl.StringNumericLiteral, end: number | bigint | Intl.StringNumericLiteral): string;
 }

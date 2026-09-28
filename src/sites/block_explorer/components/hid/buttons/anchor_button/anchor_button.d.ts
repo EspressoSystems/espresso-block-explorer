@@ -3,8 +3,8 @@ export interface AnchorButtonProps extends React.DetailedHTMLProps<React.AnchorH
     disabled?: boolean;
 }
 /**
- * AnchorButton is a simple wrapper around an Anchor tag with the purpose of
- * making the anchor visually look like a button.
+ * AnchorButton is a link styled as a button. It navigates like InternalLink
+ * (without a page reload in the app); disabled, it is a plain anchor.
  */
 declare const AnchorButton: React.FC<AnchorButtonProps>;
 export default AnchorButton;

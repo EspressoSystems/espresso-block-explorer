@@ -1,6 +1,5 @@
 export * from './hid';
 export * from './input';
-export * from './interaction';
 export * from './layout';
 export * from './links';
 export * from './page_sections';

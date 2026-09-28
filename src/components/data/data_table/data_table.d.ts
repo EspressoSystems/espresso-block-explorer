@@ -46,34 +46,16 @@ type ColumnData<ColumnType> = {
 };
 export interface DataTableProps<ColumnType> {
     columns: ColumnData<ColumnType>[];
+    /**
+     * What to render in place of the rows when there is no data. When omitted
+     * an empty table body is rendered instead.
+     */
+    emptyContent?: React.ReactNode;
 }
 /**
- * DataTable is a component that is meant to display data in a tabular form.
- * The data layout is dictated by the columns passed to the DataTable in it's
- * props.
- *
- * The DataTable forwards this data to the Head element, and the body element
- * for display.  The DataTable is capable of handling sortable columns if
- * the need should arise.
- *
- * It records the current page, sorted column and direction in it's local
- * state for quick reference.
- *
- * The DataTable itself is not responsible for setting up it's own state,
- * but it does consume and attempt to modify the State. As such, in order
- * to effectively utilize the DataTable the DataTableStateContext.Provider,
- * and DataTableSetStateContext.Provider should be set as an ancestor above
- * the created DataTable.
- *
- * The DataTable Body gets it's data from a DataContext.  That DataContext
- * is expected to be an Array of data, but no other restrictions are imposed.
- *
- * The Cells that get rendered within the Body are provided via the data
- * passed into the column Props. These Cells are constructed with no props
- * being passed, instead a DataTableRowContext.Provider is created to wrap
- * every row. This should allow every cell to access any data they need for
- * that individual row.
- *
+ * DataTable renders the rows of its DataContext, an array, under the given
+ * columns. Each cell is built with no props; it reads its row from
+ * DataTableRowContext.
  */
 declare const DataTable: React.FC<DataTableProps<unknown>>;
 export default DataTable;

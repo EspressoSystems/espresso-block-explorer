@@ -8,7 +8,12 @@ export interface RollUpSimpleProps {
  * a Registered Rollup's logo, and name.
  *
  * If the namespace given does not correspond to any known rollup, then this
- * will display the Unregistered Rollup text with the namespace for reference.
+ * will display the namespace on its own, since there is no name to show. In
+ * both cases the title spells out what the element is referring to, as
+ * neither a logo nor a bare number says so by itself.
+ *
+ * The namespace is rendered without group separators: it identifies a rollup
+ * rather than counting anything, so it reads as an identifier, not a quantity.
  * @param props
  * @returns
  */
