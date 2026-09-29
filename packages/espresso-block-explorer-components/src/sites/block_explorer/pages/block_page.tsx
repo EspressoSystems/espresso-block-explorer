@@ -30,6 +30,7 @@ import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { default as React } from 'react';
 import './block_page.css';
+import './transactions_card.css';
 
 const EdgeMarginCard = WithEdgeMargin(CardNoPadding);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
@@ -78,7 +79,7 @@ const GuardBlockDetails: React.FC<GuardBlockDetailsProps> = (props) => {
 const BlockTransactionsCard: React.FC<React.PropsWithChildren> = ({
   children,
 }) => (
-  <EdgeMarginCard className="block-transactions">
+  <EdgeMarginCard className="block-transactions transactions-card">
     <div className="block-transactions--header">
       <Text300H2>
         <Text text="Transactions" />

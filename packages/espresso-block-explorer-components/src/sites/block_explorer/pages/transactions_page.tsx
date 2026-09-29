@@ -22,6 +22,7 @@ import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { Text } from '@/components/text';
 import { default as React } from 'react';
+import './transactions_card.css';
 
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginShimmerCard = WithLoadingShimmer(EdgeMarginCard);
@@ -72,7 +73,7 @@ const GuardedTransactionsSummaryDataTable: React.FC<
   }
 
   return (
-    <EdgeMarginCard {...props}>
+    <EdgeMarginCard {...props} className="transactions-card">
       <TransactionsSummaryDataTable />
     </EdgeMarginCard>
   );

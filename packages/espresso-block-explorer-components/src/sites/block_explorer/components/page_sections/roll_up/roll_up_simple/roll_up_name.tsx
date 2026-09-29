@@ -7,7 +7,11 @@ export interface RollUpNameProps {
 }
 
 const RollUpName: React.FC<RollUpNameProps> = (props) => {
-  return <Text text={props.entry.name} />;
+  return (
+    <span className="rollup-simple--name">
+      <Text text={props.entry.name} />
+    </span>
+  );
 };
 
 export default RollUpName;
