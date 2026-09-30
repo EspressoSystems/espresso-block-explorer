@@ -1,4 +1,5 @@
 import { default as TableLabeledValue } from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
+import { default as BlobText } from '@/block_explorer/components/text/blob_text';
 import { default as CompactByteSizeText } from '@/block_explorer/components/text/compact_byte_size_text';
 import { default as CopyHex } from '@/block_explorer/components/text/copy_hex';
 import { default as RelativeAndAbsoluteDateTimeText } from '@/block_explorer/components/text/relative_and_absolute_date_time_text';
@@ -73,7 +74,7 @@ export const BlockDetailsContentPlaceholder: React.FC<
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transactions" />
+        <BlobText text="# Blobs" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
@@ -120,7 +121,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
         <RelativeAndAbsoluteDateTimeText date={details.time} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transactions" />
+        <BlobText text="# Blobs" />
         <NumberText number={details.numTransactions} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">

@@ -28,7 +28,7 @@ export default function TransactionClientComponent() {
 
   const environment = useContext(EnvironmentContext);
   const { sitePrefix, networkSiteName } = getSiteTitleConfig(environment);
-  useDocumentTitle(`${sitePrefix} Transaction ${slug} | ${networkSiteName}`);
+  useDocumentTitle(`${sitePrefix} Blob ${slug} | ${networkSiteName}`);
 
   if (
     !pathRegExp.test(pathname) ||

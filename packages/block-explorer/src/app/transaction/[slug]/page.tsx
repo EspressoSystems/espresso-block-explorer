@@ -9,9 +9,9 @@ import { Suspense } from 'react';
  */
 export function generateMetadata(): Metadata {
   return {
-    title: 'Transaction __TX_SLUG__',
+    title: 'Blob __TX_SLUG__',
     description:
-      'Transaction identifier __TX_SLUG__ outlines information about the transaction identified by the given block height and offset pair.',
+      'Blob identifier __TX_SLUG__ outlines information about the blob identified by the given block height and offset pair.',
     alternates: {
       canonical: '/transaction/__TX_SLUG__',
     },

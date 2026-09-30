@@ -18,6 +18,7 @@ import {
   BlockTransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
 } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_table';
+import { default as BlobText } from '@/block_explorer/components/text/blob_text';
 import { WithUiText300 } from '@/block_explorer/components/typography/typography';
 import {
   OverridePagePath,
@@ -82,7 +83,7 @@ const BlockTransactionsCard: React.FC<React.PropsWithChildren> = ({
   <EdgeMarginCard className="block-transactions page-table-card page-table-card--block">
     <div className="block-transactions--header">
       <Text300H2>
-        <Text text="Transactions" />
+        <BlobText text="Blobs" />
       </Text300H2>
     </div>
     <div className="card--padding">{children}</div>

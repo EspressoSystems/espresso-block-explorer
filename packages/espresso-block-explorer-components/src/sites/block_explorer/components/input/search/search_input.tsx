@@ -1,6 +1,7 @@
 import { PresentationIconButton } from '@/block_explorer/components/hid/buttons/icon_button/icon_button';
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { Label } from '@/block_explorer/components/layout/label/label';
+import { default as BlobText } from '@/block_explorer/components/text/blob_text';
 import { WithUiSmall } from '@/block_explorer/components/typography/typography';
 import { PathResolver } from '@/block_explorer/contexts/path_resolver';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
@@ -396,7 +397,7 @@ export const SearchInput: React.FC<SearchInputProps> = (props) => {
             <InputContainer className="search" role="search">
               <input
                 type="search"
-                placeholder="Search blocks, transactions, rollups or addresses..."
+                placeholder="Search blocks, blobs, rollups or addresses..."
                 value={
                   controller.offset === null
                     ? controller.rawQuery
@@ -815,7 +816,7 @@ const SearchTransactionResults: React.FC = () => {
   return (
     <section aria-label="transaction-results">
       <Label className="type--ui--small result-section-title">
-        <Text text="Transactions" />
+        <BlobText text="Blobs" />
       </Label>
       {transactions.map((txn, idx) => {
         const index = idx + transactionIndexOffset;

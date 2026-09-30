@@ -1,0 +1,13 @@
+/* A soft dotted underline hints that hovering the term explains it. */
+.defined-term,
+table.data-table th[title] > div {
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* Nav links already underline the current page. */
+a.nav-link .defined-term {
+  text-decoration: none;
+}

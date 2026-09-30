@@ -1,5 +1,6 @@
 import { Label } from '@/block_explorer/components/layout/label/label';
 import { default as TableLabeledValue } from '@/block_explorer/components/layout/table_labeled_value/table_labeled_value';
+import { default as BlobText } from '@/block_explorer/components/text/blob_text';
 import { default as CompactByteSizeText } from '@/block_explorer/components/text/compact_byte_size_text';
 import { default as CopyTaggedBase64 } from '@/block_explorer/components/text/copy_tagged_base64';
 import { default as RelativeAndAbsoluteDateTimeText } from '@/block_explorer/components/text/relative_and_absolute_date_time_text';
@@ -126,7 +127,7 @@ export const TransactionDataContentsPlaceholder: React.FC = () => {
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transaction data" />
+        <BlobText text="Blob Data" />
         <SkeletonContent />
       </TableLabeledValue>
     </>
@@ -178,7 +179,7 @@ export const TransactionDataContents: React.FC = () => {
         <RollUpIdentity namespace={details.namespace} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transaction data" />
+        <BlobText text="Blob Data" />
         <HexDumpAndCopyButtons data={details.payload} />
       </TableLabeledValue>
       <NitroBatchDetectAndDisplay />

@@ -1,3 +1,4 @@
+import { default as BlobText } from '@/block_explorer/components/text/blob_text';
 import { PageType } from '@/block_explorer/contexts/page_path_provider';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import { Text } from '@/components/text';
@@ -24,7 +25,7 @@ const MainNavLinks: React.FC = () => {
           pageType={PageType.transactions}
           href={resolver.transactions()}
         >
-          <Text text="Transactions" />
+          <BlobText text="Blobs" />
         </NavLink>
       </li>
       <li>
