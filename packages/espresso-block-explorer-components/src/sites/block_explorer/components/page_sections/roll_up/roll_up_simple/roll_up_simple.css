@@ -17,3 +17,11 @@ table.data-table .rollup-simple {
 table.data-table .rollup-simple > picture.avatar {
   margin-block: -5px;
 }
+
+/* Long names are cut short in a table; hovering shows the full name. */
+table.data-table .rollup-simple--name {
+  max-width: 16ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
