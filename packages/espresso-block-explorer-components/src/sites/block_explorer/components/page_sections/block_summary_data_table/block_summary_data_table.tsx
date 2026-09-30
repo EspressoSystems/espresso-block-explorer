@@ -2,6 +2,7 @@ import { default as CompactByteSizeText } from '@/block_explorer/components/text
 import { default as RelativeAndAbsoluteDateTimeText } from '@/block_explorer/components/text/relative_and_absolute_date_time_text';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import {
+  Alignment,
   default as DataTable,
   DataTableRowContext,
 } from '@/components/data/data_table/data_table';
@@ -104,6 +105,7 @@ interface BlockSummaryDataTableLayoutProps {
    * block arrived in the explorer's summary of the latest ones.
    */
   timeColumnLabel?: string;
+  timeColumnAlignment?: Alignment;
 }
 
 /**
@@ -136,6 +138,7 @@ const BlockSummaryDataTableLayout: React.FC<
         {
           label: props.timeColumnLabel ?? 'Time',
           columnType: BlockSummaryColumn.time,
+          alignment: props.timeColumnAlignment,
           buildCell: props.components[3],
         },
       ]}
@@ -189,6 +192,7 @@ export const BlockSummaryDataTable: React.FC = () => {
 export const LatestBlocksSummaryDataTable: React.FC = () => {
   return (
     <BlockSummaryDataTableLayout
+      timeColumnAlignment={Alignment.end}
       components={[BlockCell, TransactionsCell, SizeCell, RelativeTimeCell]}
     />
   );

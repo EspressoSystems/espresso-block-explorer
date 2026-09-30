@@ -2,6 +2,7 @@ import { default as CopyTaggedBase64 } from '@/block_explorer/components/text/co
 import { default as RelativeAndAbsoluteDateTimeText } from '@/block_explorer/components/text/relative_and_absolute_date_time_text';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import {
+  Alignment,
   default as DataTable,
   DataTableRowContext,
 } from '@/components/data/data_table/data_table';
@@ -150,6 +151,7 @@ interface TransactionsSummaryDataTableLayoutProps {
    * ago it was sequenced in the explorer's summary of the latest ones.
    */
   timeColumnLabel?: string;
+  timeColumnAlignment?: Alignment;
 }
 
 /**
@@ -192,6 +194,7 @@ const TransactionsSummaryDataTableLayout: React.FC<
         {
           label: props.timeColumnLabel ?? 'Time',
           columnType: TransactionSummaryColumn.time,
+          alignment: props.timeColumnAlignment,
           buildCell: props.components[3],
         },
       ]}
@@ -273,6 +276,7 @@ export const BlockTransactionsSummaryDataTable: React.FC = () => {
 export const LatestTransactionsSummaryDataTable: React.FC = () => {
   return (
     <TransactionsSummaryDataTableLayout
+      timeColumnAlignment={Alignment.end}
       components={[TransactionCell, RollUpCell, BlockCell, RelativeTimeCell]}
     />
   );
