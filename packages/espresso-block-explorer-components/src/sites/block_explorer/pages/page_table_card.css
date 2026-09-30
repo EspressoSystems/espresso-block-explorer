@@ -1,0 +1,40 @@
+/*
+ * The card holding a page's main table. From 1280px each page gives its
+ * columns more space and a width that its loading placeholder shares, so the
+ * card keeps one size while data loads and after.
+ */
+@media screen and (min-width: 1280px) {
+  .page-table-card table.data-table .rollup-simple--name {
+    max-width: 24ch;
+  }
+
+  /* Sized for a typical row; a longer one widens the card, never scrolls. */
+  .page-table-card--transactions {
+    min-width: 1016px;
+    max-width: fit-content;
+  }
+
+  .page-table-card--transactions table.data-table th,
+  .page-table-card--transactions table.data-table td {
+    width: auto;
+    padding-inline: 16px;
+  }
+
+  /* Fits the longest possible row. */
+  .page-table-card--blocks {
+    max-width: 936px;
+  }
+
+  .page-table-card--blocks table.data-table th,
+  .page-table-card--blocks table.data-table td {
+    padding-inline: 24px;
+  }
+}
+
+/* The block view's extra column only fits the wider spacing at full width. */
+@media screen and (min-width: 1328px) {
+  .page-table-card--block table.data-table th,
+  .page-table-card--block table.data-table td {
+    padding-inline: 16px;
+  }
+}
