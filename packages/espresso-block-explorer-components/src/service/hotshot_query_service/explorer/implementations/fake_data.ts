@@ -382,7 +382,8 @@ export class FakeDataHotShotQueryServiceExplorerAPI implements HotShotQueryServi
       }
     }
 
-    // We now have the last 10 blocks and transactions in ascending order.
+    // The buffers hold the latest blocks and transactions oldest first; the
+    // real service lists them newest first.
 
     return new ExplorerGetExplorerSummaryResponse(
       new ExplorerSummary(
@@ -392,8 +393,8 @@ export class FakeDataHotShotQueryServiceExplorerAPI implements HotShotQueryServi
           numTransactions,
           numBlocks,
         ),
-        Array.from(blockBuffer),
-        Array.from(txnBuffer),
+        Array.from(blockBuffer).reverse(),
+        Array.from(txnBuffer).reverse(),
         new SummaryHistograms(
           Array.from(timeBuffer),
           Array.from(sizeBuffer),
