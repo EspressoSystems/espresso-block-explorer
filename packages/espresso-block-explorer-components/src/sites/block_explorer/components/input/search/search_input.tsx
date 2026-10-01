@@ -396,7 +396,7 @@ export const SearchInput: React.FC<SearchInputProps> = (props) => {
             <InputContainer className="search" role="search">
               <input
                 type="search"
-                placeholder="Search blocks, transactions, rollups or addresses..."
+                placeholder="Search blocks, blobs, rollups or addresses..."
                 value={
                   controller.offset === null
                     ? controller.rawQuery
@@ -815,7 +815,7 @@ const SearchTransactionResults: React.FC = () => {
   return (
     <section aria-label="transaction-results">
       <Label className="type--ui--small result-section-title">
-        <Text text="Transactions" />
+        <Text text="Blobs" />
       </Label>
       {transactions.map((txn, idx) => {
         const index = idx + transactionIndexOffset;

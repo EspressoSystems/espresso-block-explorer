@@ -3,9 +3,9 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Transactions',
+  title: 'Blobs',
   description:
-    'Transactions that have been commited to and confirmed on __NETWORK_SITE_NAME__.',
+    'Blobs that have been committed to and confirmed on __NETWORK_SITE_NAME__.',
   alternates: {
     canonical: '/transactions',
   },

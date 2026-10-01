@@ -25,6 +25,7 @@ import {
   LatestTransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
 } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_table';
+import { default as BlobText } from '@/block_explorer/components/text/blob_text';
 import { WithUiText300 } from '@/block_explorer/components/typography/typography';
 import {
   OverridePagePath,
@@ -158,7 +159,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = (props) => {
           <CardNoPadding className="latest-transactions-summary">
             <SummaryTableLabeledValue>
               <Text300H2>
-                <Text text="Latest Transactions" />
+                <BlobText text="Latest Blobs" />
               </Text300H2>
               <LabeledAnchorButton href={pathResolver.transactions()}>
                 <Text text="View all" />

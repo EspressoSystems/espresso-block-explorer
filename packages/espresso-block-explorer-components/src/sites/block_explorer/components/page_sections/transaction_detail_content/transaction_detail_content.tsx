@@ -126,7 +126,7 @@ export const TransactionDataContentsPlaceholder: React.FC = () => {
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transaction data" />
+        <Text text="Blob Data" />
         <SkeletonContent />
       </TableLabeledValue>
     </>
@@ -178,7 +178,7 @@ export const TransactionDataContents: React.FC = () => {
         <RollUpIdentity namespace={details.namespace} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transaction data" />
+        <Text text="Blob Data" />
         <HexDumpAndCopyButtons data={details.payload} />
       </TableLabeledValue>
       <NitroBatchDetectAndDisplay />

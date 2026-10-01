@@ -12,6 +12,7 @@ import {
   TransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
 } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_table';
+import { default as BlobText } from '@/block_explorer/components/text/blob_text';
 import {
   OverridePagePath,
   PageType,
@@ -20,7 +21,6 @@ import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { ErrorContext } from '@/contexts/error_provider';
 import { LoadingContext } from '@/contexts/loading_provider';
-import { Text } from '@/components/text';
 import { default as React } from 'react';
 import './page_table_card.css';
 
@@ -103,7 +103,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({
 
     <EdgeMarginPageTitle>
       <Heading1>
-        <Text text="Transactions" />
+        <BlobText text="Blobs" />
       </Heading1>
     </EdgeMarginPageTitle>
 

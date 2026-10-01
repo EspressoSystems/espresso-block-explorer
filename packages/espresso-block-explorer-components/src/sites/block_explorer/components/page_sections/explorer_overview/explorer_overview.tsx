@@ -71,7 +71,7 @@ const ExplorerOverviewLayout: React.FC<ExplorerOverviewLayoutProps> = ({
         {numRollUps}
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
-        <Text text="Transactions" />
+        <Text text="# Blobs" />
         {numTransactions}
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>

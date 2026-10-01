@@ -126,7 +126,7 @@ const BlockSummaryDataTableLayout: React.FC<
           buildCell: props.components[0],
         },
         {
-          label: '# Txns',
+          label: '# Blobs',
           columnType: BlockSummaryColumn.transactions,
           buildCell: props.components[1],
         },

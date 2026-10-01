@@ -24,7 +24,7 @@ const MainNavLinks: React.FC = () => {
           pageType={PageType.transactions}
           href={resolver.transactions()}
         >
-          <Text text="Transactions" />
+          <Text text="Blobs" />
         </NavLink>
       </li>
       <li>

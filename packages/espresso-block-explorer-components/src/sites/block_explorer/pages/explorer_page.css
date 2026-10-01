@@ -45,7 +45,7 @@
 
 /*
  * Latest Blocks' columns are as wide as their longest values, so rows that
- * update live don't shift them: "999,999,999", a 5-character transaction
+ * update live don't shift them: "999,999,999", a 5-character blob
  * count and "999.99 kB". The headers drop the shared 1% width, which would
  * override these.
  */
@@ -164,7 +164,7 @@ nav.nav--main > button.btn.icon {
 
 /* Large */
 @media screen and (min-width: 1024px) {
-  /* Too narrow here for the latest blocks and transactions side by side. */
+  /* Too narrow here for Latest Blocks and Latest Blobs side by side. */
   .explorer-grid {
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: repeat(5, auto);

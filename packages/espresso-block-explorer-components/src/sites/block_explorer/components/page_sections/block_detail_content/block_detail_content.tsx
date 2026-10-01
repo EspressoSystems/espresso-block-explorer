@@ -73,7 +73,7 @@ export const BlockDetailsContentPlaceholder: React.FC<
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transactions" />
+        <Text text="# Blobs" />
         <SkeletonContent />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
@@ -120,7 +120,7 @@ export const BlockDetailsContent: React.FC<BlockDetailsContentProps> = () => {
         <RelativeAndAbsoluteDateTimeText date={details.time} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">
-        <Text text="Transactions" />
+        <Text text="# Blobs" />
         <NumberText number={details.numTransactions} />
       </TableLabeledValue>
       <TableLabeledValue className="card--padding">

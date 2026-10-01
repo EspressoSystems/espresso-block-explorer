@@ -92,7 +92,7 @@ export const LatestBlockSummaryDetails: React.FC = () => {
         <CompactByteSizeText bytes={block.size} />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
-        <Text text="Transactions" />
+        <Text text="# Blobs" />
         <NumberText number={block.numTransactions} />
       </SummaryTableLabeledValue>
     </div>
@@ -115,7 +115,7 @@ export const LatestBlockSummaryDetailsPlaceholder: React.FC = () => {
         <SkeletonContent />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
-        <Text text="Transactions" />
+        <Text text="# Blobs" />
         <SkeletonContent />
       </SummaryTableLabeledValue>
     </div>

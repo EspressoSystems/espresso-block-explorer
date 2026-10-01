@@ -12,6 +12,7 @@ import {
   TransactionDetailsContentPlaceholder,
 } from '@/block_explorer/components/page_sections/transaction_detail_content/transaction_detail_content';
 import { TransactionDetailContentLoader } from '@/block_explorer/components/page_sections/transaction_detail_content/transaction_detail_loader';
+import { default as BlobText } from '@/block_explorer/components/text/blob_text';
 import {
   OverridePagePath,
   PageType,
@@ -122,7 +123,7 @@ const TransactionPage: React.FC<TransactionPageProps> = (props) => (
 
     <EdgeMarginPageTitle>
       <Heading1>
-        <Text text="Transaction Details" />
+        <BlobText text="Blob Details" />
       </Heading1>
     </EdgeMarginPageTitle>
 
