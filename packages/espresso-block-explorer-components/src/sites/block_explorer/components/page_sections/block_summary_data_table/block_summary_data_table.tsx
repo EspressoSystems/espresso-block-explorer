@@ -1,4 +1,3 @@
-import { BLOB_DEFINITION } from '@/block_explorer/components/text/blob_text';
 import { default as CompactByteSizeText } from '@/block_explorer/components/text/compact_byte_size_text';
 import { default as RelativeAndAbsoluteDateTimeText } from '@/block_explorer/components/text/relative_and_absolute_date_time_text';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
@@ -128,7 +127,6 @@ const BlockSummaryDataTableLayout: React.FC<
         },
         {
           label: '# Blobs',
-          title: BLOB_DEFINITION,
           columnType: BlockSummaryColumn.transactions,
           buildCell: props.components[1],
         },

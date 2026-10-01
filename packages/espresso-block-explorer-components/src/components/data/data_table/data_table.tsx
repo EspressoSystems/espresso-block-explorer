@@ -63,8 +63,6 @@ type ColumnData<ColumnType> = {
   columnType: ColumnType;
   buildCell: React.ComponentType;
   alignment?: Alignment;
-  /** Shown on hover over the column's label. */
-  title?: string;
 };
 
 /**
@@ -96,10 +94,7 @@ const DataTableHead: React.FC = () => {
   const column = React.useContext(ColumnDataContext);
 
   return (
-    <th
-      data-alignment={column.alignment ?? Alignment.start}
-      title={column.title}
-    >
+    <th data-alignment={column.alignment ?? Alignment.start}>
       <div>
         <Text text={column.label} />
       </div>

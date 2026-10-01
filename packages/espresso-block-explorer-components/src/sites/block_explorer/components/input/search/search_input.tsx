@@ -1,7 +1,6 @@
 import { PresentationIconButton } from '@/block_explorer/components/hid/buttons/icon_button/icon_button';
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { Label } from '@/block_explorer/components/layout/label/label';
-import { default as BlobText } from '@/block_explorer/components/text/blob_text';
 import { WithUiSmall } from '@/block_explorer/components/typography/typography';
 import { PathResolver } from '@/block_explorer/contexts/path_resolver';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
@@ -816,7 +815,7 @@ const SearchTransactionResults: React.FC = () => {
   return (
     <section aria-label="transaction-results">
       <Label className="type--ui--small result-section-title">
-        <BlobText text="Blobs" />
+        <Text text="Blobs" />
       </Label>
       {transactions.map((txn, idx) => {
         const index = idx + transactionIndexOffset;

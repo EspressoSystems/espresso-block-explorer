@@ -2,7 +2,6 @@ import { sleep } from '@/async/sleep';
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { default as SummaryTableLabeledValue } from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
 import { default as SummaryValueLabeled } from '@/block_explorer/components/layout/summary_value_labeled/summary_value_labeled';
-import { default as BlobText } from '@/block_explorer/components/text/blob_text';
 import { EnvironmentContext } from '@/components/config/environment';
 import AsyncIterableResolver from '@/components/data/async_data/async_iterable_resolver';
 import { SkeletonContent } from '@/components/loading';
@@ -72,7 +71,7 @@ const ExplorerOverviewLayout: React.FC<ExplorerOverviewLayoutProps> = ({
         {numRollUps}
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
-        <BlobText text="# Blobs" />
+        <Text text="# Blobs" />
         {numTransactions}
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>

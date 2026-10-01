@@ -1,20 +1,19 @@
 import { Text } from '@/components/text';
 import { default as React } from 'react';
-import './blob_text.css';
 
-/** What the explorer calls a blob, shown on hover wherever the word appears. */
-export const BLOB_DEFINITION = 'Blob: An Espresso Transaction';
+/** What a blob is, shown on hover over the page and table titles naming them. */
+const BLOB_DEFINITION = 'Espresso Transactions';
 
 export interface BlobTextProps {
   text: string;
 }
 
 /**
- * BlobText renders a label naming blobs, such as "Latest Blobs", with the
- * term's definition on hover.
+ * BlobText renders a page or table title naming blobs, such as "Latest
+ * Blobs", with what they are on hover.
  */
 const BlobText: React.FC<BlobTextProps> = (props) => (
-  <span className="defined-term" title={BLOB_DEFINITION}>
+  <span title={BLOB_DEFINITION}>
     <Text text={props.text} />
   </span>
 );

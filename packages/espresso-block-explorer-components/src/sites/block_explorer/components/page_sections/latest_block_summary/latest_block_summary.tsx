@@ -1,6 +1,5 @@
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { default as SummaryTableLabeledValue } from '@/block_explorer/components/layout/summary_table_labeled_value/summary_table_labeled_value';
-import { default as BlobText } from '@/block_explorer/components/text/blob_text';
 import { default as CompactByteSizeText } from '@/block_explorer/components/text/compact_byte_size_text';
 import { WithUiText300 } from '@/block_explorer/components/typography/typography';
 import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
@@ -93,7 +92,7 @@ export const LatestBlockSummaryDetails: React.FC = () => {
         <CompactByteSizeText bytes={block.size} />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
-        <BlobText text="# Blobs" />
+        <Text text="# Blobs" />
         <NumberText number={block.numTransactions} />
       </SummaryTableLabeledValue>
     </div>
@@ -116,7 +115,7 @@ export const LatestBlockSummaryDetailsPlaceholder: React.FC = () => {
         <SkeletonContent />
       </SummaryTableLabeledValue>
       <SummaryTableLabeledValue>
-        <BlobText text="# Blobs" />
+        <Text text="# Blobs" />
         <SkeletonContent />
       </SummaryTableLabeledValue>
     </div>
