@@ -24,3 +24,25 @@ body {
     color: var(--color--vanilla);
   }
 }
+
+/*
+ * On wide screens the whole page scales up from the layout designed around
+ * 1512px, so text and tables grow with the screen instead of the margins.
+ */
+@media screen and (min-width: 1680px) {
+  html {
+    zoom: 1.1;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  html {
+    zoom: 1.2;
+  }
+}
+
+@media screen and (min-width: 2400px) {
+  html {
+    zoom: 1.35;
+  }
+}
