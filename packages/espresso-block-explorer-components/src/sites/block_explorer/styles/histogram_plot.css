@@ -1,7 +1,24 @@
-
+/* The bars are a deeper cookie in light mode, for contrast on the light card. */
 :root {
-  --histogram-plot--fill-color: var(--color--cookie);
-  --histogram-plot--data-point--dot-inner-color: var(--color--cookie);
-  --histogram-plot--data-point--dot-outer-color: var(--histogram-plot--missing-background-color);
+  --histogram-plot--fill-color: #7a4a2a;
+  --histogram-plot--data-point--dot-inner-color: var(
+    --histogram-plot--fill-color
+  );
+  --histogram-plot--data-point--dot-outer-color: var(
+    --histogram-plot--missing-background-color
+  );
 }
 
+[data-theme='light'] {
+  --histogram-plot--fill-color: #7a4a2a;
+}
+
+[data-theme='dark'] {
+  --histogram-plot--fill-color: var(--color--caramel);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --histogram-plot--fill-color: var(--color--caramel);
+  }
+}

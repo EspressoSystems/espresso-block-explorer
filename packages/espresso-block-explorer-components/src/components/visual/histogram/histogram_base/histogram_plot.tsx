@@ -44,10 +44,12 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
     return <></>;
   }
 
-  const rectangleWidthRaw =
+  // Each value gets an equal slot across the whole plot; the bar leaves a
+  // quarter of its slot as the gap to the next one.
+  const slotWidth =
     (plotWidth - graphInsets - graphInsets) / rangeStatistics.length;
-  const rectangleWidth = Math.floor(rectangleWidthRaw);
-  const totalRectangleWidth = rectangleWidth * rangeStatistics.length;
+  const barWidth = slotWidth - Math.max(1, slotWidth * 0.25);
+  const totalRectangleWidth = slotWidth * rangeStatistics.length;
 
   const rectangleHeights = values.map((blockTime) =>
     affineTransform.transform(Number(blockTime)),
@@ -69,9 +71,9 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
                 role="graphics-dataunit"
                 key={`missing-${i}`}
                 className="missing"
-                x={i * rectangleWidth}
+                x={i * slotWidth}
                 y={0}
-                width={rectangleWidth - 1}
+                width={barWidth}
                 height={plotHeight}
                 data-offset={i}
               />
@@ -84,10 +86,11 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
               role="graphics-dataunit"
               key={`bar-${i}`}
               className="bar"
-              x={i * rectangleWidth}
+              x={i * slotWidth}
               y={plotHeight - rectangleHeights[i]}
-              width={rectangleWidth - 1}
+              width={barWidth}
               height={rectangleHeights[i]}
+              rx={1.5}
               data-offset={i}
             />
           );
@@ -110,10 +113,10 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
           <g key={`tooltip-${i}`}>
             <rect
               className="bbox"
-              x={i * rectangleWidth}
+              x={i * slotWidth}
               y={0}
               height={plotHeight}
-              width={rectangleWidth}
+              width={slotWidth}
             ></rect>
 
             {/*This is meant to be the hover element */}
@@ -122,9 +125,9 @@ export const HistogramPlot: React.FC<HistogramPlotProps> = () => {
               <HistogramGraphValueIndex.Provider value={i}>
                 <HistogramGraphValueRect.Provider
                   value={{
-                    x: i * rectangleWidth,
+                    x: i * slotWidth,
                     y: plotHeight - rectangleHeights[i],
-                    width: rectangleWidth,
+                    width: barWidth,
                     height: rectangleHeights[i],
                   }}
                 >
