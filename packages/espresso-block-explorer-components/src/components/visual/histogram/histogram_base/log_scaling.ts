@@ -43,6 +43,27 @@ class LogScaling {
 }
 
 /**
+ * roundToNiceValue rounds a number to the closest of 1, 2 or 5 times a power
+ * of ten (0.5, 2, 10, 5000…) on a log scale, or down to one when `down` is
+ * set. Zero and negative numbers become 0.
+ */
+export function roundToNiceValue(value: number, down = false): number {
+  if (!(value > 0)) {
+    return 0;
+  }
+
+  const power = 10 ** Math.floor(Math.log10(value));
+  const fraction = value / power;
+  // The log-scale midpoints between 1, 2, 5 and 10, or the values themselves.
+  const [to2, to5, to10] = down
+    ? [2, 5, 10]
+    : [Math.SQRT2, Math.sqrt(10), Math.sqrt(50)];
+  const nice =
+    fraction < to2 ? 1 : fraction < to5 ? 2 : fraction < to10 ? 5 : 10;
+  return nice * power;
+}
+
+/**
  * LogScalingMapping represents an extension to the AffineTransform which
  * first transforms the input space into using a logarithmic base.
  */
@@ -75,8 +96,9 @@ export class LogScalingMapping
 
   /**
    * evenlySpacedGuideLines will return a list of numbers that represent an
-   * evenly split distribution of samples in the logarithmic space.  The values
-   * returned will be in the input space.
+   * evenly split distribution of samples in the logarithmic space, rounded to
+   * round values, the top one down so it stays within the input range.  The
+   * values returned will be in the input space.
    */
   evenlySpacedGuideLines(guideLineCount: number): number[] {
     const lines: number[] = [];
@@ -88,8 +110,13 @@ export class LogScalingMapping
     const step = guideLineCount > 1 ? (lMax - lMin) / (guideLineCount - 1) : 0;
 
     for (let i = 0; i < guideLineCount; i++) {
-      const value = lMin + step * i;
-      lines.push(this.scaling.exp(value));
+      const value = roundToNiceValue(
+        this.scaling.exp(lMin + step * i),
+        i === guideLineCount - 1,
+      );
+      if (!lines.includes(value)) {
+        lines.push(value);
+      }
     }
     return lines;
   }
