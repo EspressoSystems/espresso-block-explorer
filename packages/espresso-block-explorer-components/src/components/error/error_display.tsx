@@ -1,8 +1,8 @@
+import { isNotFoundError } from '@/async/fetch/auto_retry_fetch';
 import { Text } from '@/components/text';
 import { ErrorContext } from '@/contexts/error_provider';
-import { BaseError } from '@/errors/base_error';
+import { BadResponseServerError } from '@/errors/bad_response_server_error';
 import { FetchError } from '@/errors/fetch_error';
-import { UnimplementedError } from '@/errors/unimplemented_error';
 import { default as WebSocketError } from '@/errors/web_socket_error';
 import { WebWorkerErrorResponse } from '@/errors/web_worker_error_response';
 import { ErrorIconFilled } from '@/visual/icons';
@@ -58,7 +58,7 @@ const ErrorDisplayWrapper: React.FC<ErrorDisplayWrapperProps> = ({
   </div>
 );
 
-const PleaseReload: React.FC = () => {
+const TryAgain: React.FC = () => {
   // This intentionally uses the same "btn label type--ui--button" classes
   // a LabeledButton would render, rather than importing that component --
   // components/error is generic, site-agnostic infrastructure, and
@@ -75,169 +75,49 @@ const PleaseReload: React.FC = () => {
         window.location.reload();
       }}
     >
-      <Text text="Please reload" />
+      <Text text="Try again" />
     </button>
   );
 };
 
+/** The error itself, without the Web Worker's wrapping around it. */
+function unwrapError(error: unknown): unknown {
+  return error instanceof WebWorkerErrorResponse
+    ? unwrapError(error.error)
+    : error;
+}
+
+/** The message for a kind of failure we expect, or undefined for any other. */
+function expectedErrorMessage(error: unknown): undefined | string {
+  if (isNotFoundError(error)) {
+    return "This doesn't exist.";
+  }
+
+  if (error instanceof BadResponseServerError) {
+    return 'The Espresso query service is having trouble right now. Please try again in a moment.';
+  }
+
+  if (error instanceof FetchError || error instanceof WebSocketError) {
+    return "Can't reach the Espresso query service. Check your connection and try again.";
+  }
+
+  return undefined;
+}
+
 const SpecificErrorDisplay: React.FC = () => {
-  const error = React.useContext(ErrorContext);
-
-  if (error instanceof WebWorkerErrorResponse) {
-    // Alright, this is a wrapped error coming from the Web Worker.
-    // Let's annotate, and recur.
-
-    const subError = error.error;
-    return (
-      <ErrorContext.Provider value={subError}>
-        <SpecificErrorDisplay />
-      </ErrorContext.Provider>
-    );
-  }
-
-  if (error instanceof BaseError) {
-    return <SpecificBaseErrorDisplay />;
-  }
-
-  // The error at this point, is not a custom error from us that we have
-  // accounted for.  This means that the error must be a native error type.
-  // It also potentially means that we're in a bit of a pickle, as it's
-  // essentially an unhandled error.
-
-  return <NativeErrorDisplay />;
-};
-
-const SpecificBaseErrorDisplay: React.FC = () => {
-  const error = React.useContext(ErrorContext) as BaseError;
-
-  if (error instanceof FetchError) {
-    return <FetchErrorDisplay />;
-  }
-
-  if (error instanceof WebSocketError) {
-    return <WebSocketErrorDisplay />;
-  }
-
-  if (error instanceof UnimplementedError) {
-    return <UnimplementedErrorDisplay />;
-  }
-
-  // BadResponseClientError
-  // BadResponseError
-  // BadResponseServerError
-  // BufferFullError
-  // ChannelClosedError
-  // CompleterAlreadyCompletedError
-  // CorruptBase64InputError
-  // IncorrectBase64PaddingError
-  // InvalidBase64LengthError
-  // InvalidHexStringError
-  // InvalidInputError
-  // InvalidStringValueError
-  // InvalidTaggedBase64EncodingError
-  // InvalidTypeError
-  // MissingElementError
-  // NoCodecFoundError
-  // NoCompleterFoundForRequestID
-  // NotFoundError
-  // NoURLProvidedError
-  // ResponseContentTypeIsNotApplicationJSONError
-  // UnimplementedError
-
-  return <UnhandledErrorDisplay />;
-};
-
-const ServerRetrievalErrorDisplay: React.FC = () => {
-  return (
-    <>
-      <Text text="Failed to retrieve information from the Server." />{' '}
-      <PleaseReload />
-    </>
-  );
-};
-
-/**
- * FetchErrorDisplay is an error widget that displays that the end-user had
- * trouble fetching data from the server.  This class of errors excludes
- * errors returned by the server itself, and as such is almost certainly
- * going to indicate an IO error of some kind.
- */
-const FetchErrorDisplay: React.FC = () => {
-  return <ServerRetrievalErrorDisplay />;
-};
-
-/**
- * WebSocketErrorDisplay is an error widget that displays that the end-user had
- * trouble establishing a WebSocket connection with the server. This class of
- * errors excludes errors returned by the server itself, and as such is almost
- * certainly going to indicate an IO error of some kind.
- *
- * Frustratingly this error itself doesn't have an underlying cause that
- * can be inspected for the specific failure.
- */
-const WebSocketErrorDisplay: React.FC = () => {
-  return <ServerRetrievalErrorDisplay />;
-};
-
-const GeneralErrorDisplay: React.FC = () => {
-  return (
-    <>
-      <Text text="Encountered an error displaying the page." /> <PleaseReload />
-    </>
-  );
-};
-
-/**
- * UnimplementedErrorDisplay is an error widget that displays that the end-user
- * has encountered an error that is unimplemented. Ideally this error should
- * never be seen outside of a Developer or in Development
- */
-const UnimplementedErrorDisplay: React.FC = () => {
-  return <GeneralErrorDisplay />;
-};
-
-/**
- * NativeErrorDisplay is a component that represents an unhandled error that
- * is a native JavaScript error. This component logs the error to the console,
- * and displays a message indicating that the error is unhandled.
- */
-const NativeErrorDisplay: React.FC = () => {
-  const error = React.useContext(ErrorContext);
+  const error = unwrapError(React.useContext(ErrorContext));
+  const message = expectedErrorMessage(error);
 
   React.useEffect(() => {
-    // We wrap these side-effects in a React.useEffect call to ensure that
-    // they don't affect the rendered component.
-    console.error(
-      'encountered an unhandled native error in ErrorDisplay:',
-      error,
-    );
+    if (message === undefined) {
+      console.error('unexpected error in ErrorDisplay:', error);
+    }
+  }, [message, error]);
 
-    return () => {};
-  });
-
-  return <GeneralErrorDisplay />;
-};
-
-/**
- * UnhandledErrorDisplay is a component that isn't aware of a more specific
- * error display representation to return, and as such it acts as a catch-all.
- *
- * This components logs the wrapped error to console.error, and displays a
- * message indicating that the error cannot be handled more specifically.
- */
-const UnhandledErrorDisplay: React.FC = () => {
-  const error = React.useContext(ErrorContext);
-
-  React.useEffect(() => {
-    // We wrap these side-effects in a React.useEffect call to ensure that
-    // they don't affect the rendered component.
-    console.error(
-      'encountered unhandled error in component ErrorDisplay:',
-      error,
-    );
-
-    return () => {};
-  });
-
-  return <GeneralErrorDisplay />;
+  return (
+    <>
+      <Text text={message ?? 'Something went wrong while loading this data.'} />
+      {!isNotFoundError(error) && <TryAgain />}
+    </>
+  );
 };

@@ -1,6 +1,9 @@
+import { isNotFoundError } from '@/async/fetch/auto_retry_fetch';
+import { default as LabeledAnchorButton } from '@/block_explorer/components/hid/buttons/labeled_anchor_button/labeled_anchor_button';
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { default as Heading1 } from '@/block_explorer/components/layout/heading/heading1';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
+import { InternalLink } from '@/block_explorer/components/links/link/link';
 import {
   BlockDetailsContent,
   BlockDetailsContentPlaceholder,
@@ -24,13 +27,17 @@ import {
   OverridePagePath,
   PageType,
 } from '@/block_explorer/contexts/page_path_provider';
+import { PathResolverContext } from '@/block_explorer/contexts/path_resolver_provider';
 import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { NumberText, Text } from '@/components/text';
 import { ErrorContext } from '@/contexts/error_provider';
+import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { LoadingContext } from '@/contexts/loading_provider';
+import { ExplorerGetBlockSummariesRequest } from '@/service/hotshot_query_service/explorer/get_block_summaries_request';
 import { default as React } from 'react';
 import './block_page.css';
+import { MessageContent } from './message_page';
 import './page_table_card.css';
 
 const EdgeMarginCard = WithEdgeMargin(CardNoPadding);
@@ -153,6 +160,91 @@ const BlockHeading: React.FC = () => {
   );
 };
 
+/** The height of the chain's latest block, once it's known. */
+function useLatestBlockHeight(): null | number {
+  const service = React.useContext(HotShotQueryServiceAPIContext);
+  const [height, setHeight] = React.useState<null | number>(null);
+
+  React.useEffect(() => {
+    service.explorer
+      .getBlockSummaries(ExplorerGetBlockSummariesRequest.latest(1))
+      .then(
+        (response) => setHeight(response.blockSummaries[0]?.height ?? null),
+        () => setHeight(null),
+      );
+  }, [service]);
+
+  return height;
+}
+
+/** BlockNotFound takes the place of a block that the service doesn't have. */
+const BlockNotFound: React.FC = () => {
+  const blockID = React.useContext(BlockNumberContext);
+  const pathResolver = React.useContext(PathResolverContext);
+  const latest = useLatestBlockHeight();
+
+  let message: React.ReactNode = (
+    <Text text="This block doesn't exist or isn't available from this query service." />
+  );
+  if (latest !== null && blockID > latest) {
+    message = (
+      <>
+        <Text text="This block doesn't exist yet. The latest block is " />
+        <InternalLink href={pathResolver.block(latest)}>
+          #<NumberText number={latest} />
+        </InternalLink>
+        .
+      </>
+    );
+  } else if (latest !== null) {
+    message = (
+      <Text text="This block isn't available from this query service." />
+    );
+  }
+
+  return (
+    <MessageContent
+      title={
+        <>
+          <Text text="Block" /> #<NumberText number={blockID} />{' '}
+          <Text text="not found" />
+        </>
+      }
+      message={message}
+    >
+      <LabeledAnchorButton href={pathResolver.blocks()}>
+        <Text text="View all blocks" />
+      </LabeledAnchorButton>
+    </MessageContent>
+  );
+};
+
+interface BlockOrNotFoundProps {}
+
+/**
+ * BlockOrNotFound shows the block once loaded. A block that doesn't exist gets
+ * BlockNotFound instead, and when loading fails its transactions are left out,
+ * so only one error shows.
+ */
+const BlockOrNotFound: React.FC<BlockOrNotFoundProps> = (props) => {
+  const error = React.useContext(ErrorContext);
+
+  if (isNotFoundError(error)) {
+    return <BlockNotFound />;
+  }
+
+  return (
+    <>
+      <EdgeMarginPageTitle>
+        <BlockHeading />
+      </EdgeMarginPageTitle>
+      <EdgeMarginBlockNavigation />
+      <GuardBlockDetails {...props} />
+      {!error && <BlockTransactions />}
+    </>
+  );
+};
+
 interface BlockPageProps {}
 
 /**
@@ -164,14 +256,8 @@ const BlockPage: React.FC<BlockPageProps> = (props) => (
 
     {/* Inside the loader, so the title and controls stay with the block shown. */}
     <BlockDetailsLoader>
-      <EdgeMarginPageTitle>
-        <BlockHeading />
-      </EdgeMarginPageTitle>
-      <EdgeMarginBlockNavigation />
-      <GuardBlockDetails {...props} />
+      <BlockOrNotFound {...props} />
     </BlockDetailsLoader>
-
-    <BlockTransactions />
 
     <Footer />
   </OverridePagePath>

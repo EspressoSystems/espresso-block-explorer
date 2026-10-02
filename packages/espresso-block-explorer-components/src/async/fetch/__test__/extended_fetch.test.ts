@@ -52,6 +52,36 @@ describe('createExtendedFetch', () => {
     }
   });
 
+  it("treats the query service's 500 for a missing block or blob as a 404", async () => {
+    const body = JSON.stringify({
+      Custom: {
+        message:
+          "encountered error attempting to retrieve data: 'The requested resource does not exist or is not known to this query service.'",
+        status: 500,
+      },
+    });
+    const mockFetch = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(new Response(body, { status: 500 }));
+    const fetch = createExtendedFetch(mockFetch);
+
+    const error = await fetch('https://example.com/api').catch((e) => e);
+
+    expect(error).toBeInstanceOf(BadResponseClientError);
+    expect(error.status).toBe(404);
+  });
+
+  it('keeps any other 500 a BadResponseServerError', async () => {
+    const mockFetch = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(new Response('database unavailable', { status: 500 }));
+    const fetch = createExtendedFetch(mockFetch);
+
+    await expect(fetch('https://example.com/api')).rejects.toBeInstanceOf(
+      BadResponseServerError,
+    );
+  });
+
   it('throws BadResponseClientError for a 4xx status', async () => {
     const mockFetch = vi
       .fn<typeof fetch>()
