@@ -18,34 +18,35 @@ import './message_page.css';
 const EdgeMarginCard = WithEdgeMargin(Card);
 const EdgeMarginPageTitle = WithEdgeMargin(PageTitle);
 
-interface MessagePageProps {
-  title: string;
-  message: string;
+interface MessageContentProps {
+  title: React.ReactNode;
+  message: React.ReactNode;
   /** The buttons offered below the message. */
   children: React.ReactNode;
 }
 
 /**
- * MessagePage is a page of the site that, in place of content, explains
- * what happened and offers where to go next.
+ * MessageContent takes the place of a page's content to explain what happened
+ * and offer where to go next.
  */
-const MessagePage: React.FC<MessagePageProps> = (props) => (
-  <OverridePagePath page={PageType.unknown}>
-    <Header />
-
+export const MessageContent: React.FC<MessageContentProps> = (props) => (
+  <>
     <EdgeMarginPageTitle>
-      <Heading1>
-        <Text text={props.title} />
-      </Heading1>
+      <Heading1>{props.title}</Heading1>
     </EdgeMarginPageTitle>
 
     <EdgeMarginCard className="message-page">
-      <p>
-        <Text text={props.message} />
-      </p>
+      <p>{props.message}</p>
       <div className="message-page--actions">{props.children}</div>
     </EdgeMarginCard>
+  </>
+);
 
+/** MessagePage is a page of the site made of only a MessageContent. */
+const MessagePage: React.FC<MessageContentProps> = (props) => (
+  <OverridePagePath page={PageType.unknown}>
+    <Header />
+    <MessageContent {...props} />
     <Footer />
   </OverridePagePath>
 );
@@ -56,8 +57,10 @@ export const NotFoundPage: React.FC = () => {
 
   return (
     <MessagePage
-      title="Page not found"
-      message="We couldn't find the page you're looking for. Check the address, or use one of the links below."
+      title={<Text text="Page not found" />}
+      message={
+        <Text text="We couldn't find the page you're looking for. Check the address, or use one of the links below." />
+      }
     >
       <LabeledAnchorButton href={pathResolver.explorer()}>
         <Text text="Go to Explorer" />
@@ -82,8 +85,10 @@ export const ErrorPage: React.FC<ErrorPageProps> = (props) => {
 
   return (
     <MessagePage
-      title="Something went wrong"
-      message="This page ran into a problem and couldn't be shown. Try again, or go back to the Explorer."
+      title={<Text text="Something went wrong" />}
+      message={
+        <Text text="This page ran into a problem and couldn't be shown. Try again, or go back to the Explorer." />
+      }
     >
       <LabeledButton onClick={props.onRetry}>
         <Text text="Try again" />

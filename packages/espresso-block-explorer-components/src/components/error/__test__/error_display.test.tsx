@@ -1,110 +1,61 @@
 import { ErrorContext } from '@/contexts/error_provider';
-import { default as BufferFullError } from '@/errors/buffer_full_error';
+import { BadResponseClientError } from '@/errors/bad_response_client_error';
+import { BadResponseServerError } from '@/errors/bad_response_server_error';
 import { FetchError } from '@/errors/fetch_error';
-import { UnimplementedError } from '@/errors/unimplemented_error';
-import { default as WebSocketError } from '@/errors/web_socket_error';
 import { WebWorkerErrorResponse } from '@/errors/web_worker_error_response';
-import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { ErrorDisplay } from '../error_display';
 
-describe('ErrorDisplay Component', () => {
-  it('should not display anything without an active error', async () => {
-    render(
-      <ErrorContext.Provider value={null}>
-        <div data-testid="1">
-          <ErrorDisplay />
-        </div>
-      </ErrorContext.Provider>,
-    );
+function renderError(error: unknown) {
+  return render(
+    <ErrorContext.Provider value={error}>
+      <ErrorDisplay />
+    </ErrorContext.Provider>,
+  );
+}
 
-    expect(screen.getByTestId('1').children).toHaveLength(0);
+describe('ErrorDisplay', () => {
+  it('shows nothing without an error', () => {
+    const { container } = renderError(null);
+    expect(container.children).toHaveLength(0);
   });
 
-  it('should display an error when an error is present', () => {
-    render(
-      <ErrorContext.Provider value={new Error('help')}>
-        <div data-testid="1">
-          <ErrorDisplay />
-        </div>
-      </ErrorContext.Provider>,
-    );
-
-    expect(screen.getByTestId('1').children).toHaveLength(1);
+  it.each([
+    [
+      'a server error',
+      new BadResponseServerError(503, null),
+      'The Espresso query service is having trouble right now. Please try again in a moment.',
+    ],
+    [
+      'a network failure',
+      new FetchError({}),
+      "Can't reach the Espresso query service. Check your connection and try again.",
+    ],
+    [
+      'an error passed on by the web worker',
+      new WebWorkerErrorResponse(new FetchError({})),
+      "Can't reach the Espresso query service. Check your connection and try again.",
+    ],
+  ])('explains %s and offers to try again', (_, error, message) => {
+    renderError(error);
+    expect(screen.getByText(message)).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Try again' })).toBeTruthy();
   });
 
-  it('should start with text "Unimplemented Error" on unimplemented error', () => {
-    render(
-      <ErrorContext.Provider value={new UnimplementedError()}>
-        <div data-testid="1">
-          <ErrorDisplay />
-        </div>
-      </ErrorContext.Provider>,
-    );
-
-    expect(screen.getByTestId('1').children).toHaveLength(1);
+  it('says what was asked for does not exist, with nothing to retry', () => {
+    renderError(new BadResponseClientError(404, null));
+    expect(screen.getByText("This doesn't exist.")).toBeTruthy();
+    expect(screen.queryByRole('button')).toBeNull();
   });
 
-  it('should start with text "Fetch Error" on fetch error', () => {
-    render(
-      <ErrorContext.Provider value={new FetchError({}, 'fetch error')}>
-        <div data-testid="1">
-          <ErrorDisplay />
-        </div>
-      </ErrorContext.Provider>,
-    );
-
-    expect(screen.getByTestId('1').children).toHaveLength(1);
-  });
-
-  it('should start with text "WebSocket Error" on WebSocket error', () => {
-    render(
-      <ErrorContext.Provider value={new WebSocketError({}, 'websocket error')}>
-        <div data-testid="1">
-          <ErrorDisplay />
-        </div>
-      </ErrorContext.Provider>,
-    );
-
-    expect(screen.getByTestId('1').children).toHaveLength(1);
-  });
-
-  it('should start with text "Native JavaScript Error" on native error', () => {
-    render(
-      <ErrorContext.Provider value={new TypeError('type')}>
-        <div data-testid="1">
-          <ErrorDisplay />
-        </div>
-      </ErrorContext.Provider>,
-    );
-
-    expect(screen.getByTestId('1').children).toHaveLength(1);
-  });
-
-  it('should start with text "Unhandled Error" on developer error', () => {
-    render(
-      <ErrorContext.Provider value={new BufferFullError()}>
-        <div data-testid="1">
-          <ErrorDisplay />
-        </div>
-      </ErrorContext.Provider>,
-    );
-
-    expect(screen.getByTestId('1').children).toHaveLength(1);
-  });
-
-  it('should automatically unwrap proxy response error', () => {
-    render(
-      <ErrorContext.Provider
-        value={new WebWorkerErrorResponse(new FetchError({}, 'fetch error'))}
-      >
-        <div data-testid="1">
-          <ErrorDisplay />
-        </div>
-      </ErrorContext.Provider>,
-    );
-
-    expect(screen.getByTestId('1').children).toHaveLength(1);
+  it('falls back to a general message, logging the unexpected error', () => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    renderError(new Error('unexpected'));
+    expect(
+      screen.getByText('Something went wrong while loading this data.'),
+    ).toBeTruthy();
+    expect(log).toHaveBeenCalled();
+    log.mockRestore();
   });
 });

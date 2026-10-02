@@ -5,6 +5,21 @@ import { BaseError } from '@/errors/base_error';
 import { FetchError } from '@/errors/fetch_error';
 
 /**
+ * isMissingResourceResponse tells whether a server error is the query
+ * service's answer for a block or blob it doesn't have. It answers those with
+ * a 500 instead of a 404, a server bug due to be fixed; until then, such
+ * answers are treated as a 404.
+ */
+async function isMissingResourceResponse(response: Response): Promise<boolean> {
+  try {
+    const body = await response.clone().text();
+    return body.includes('does not exist or is not known');
+  } catch {
+    return false;
+  }
+}
+
+/**
  * createExtendedFetch is a function that creates a wrapper around the fetch
  * function which throws errors when the response is not `ok`.  It will also
  * wrap any error encountered while calling the given `fetchFn` with a
@@ -22,6 +37,9 @@ export const createExtendedFetch = (
       const response = await fetchFn(input, init);
 
       if (response.status >= 500 && response.status < 600) {
+        if (await isMissingResourceResponse(response)) {
+          throw new BadResponseClientError(404, response);
+        }
         throw new BadResponseServerError(response.status, response);
       }
 
