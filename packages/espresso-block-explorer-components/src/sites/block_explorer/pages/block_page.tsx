@@ -3,6 +3,7 @@ import { default as LabeledAnchorButton } from '@/block_explorer/components/hid/
 import { CardNoPadding } from '@/block_explorer/components/layout/card/card';
 import { default as Heading1 } from '@/block_explorer/components/layout/heading/heading1';
 import { WithEdgeMargin } from '@/block_explorer/components/layout/margin/margins';
+import { InternalLink } from '@/block_explorer/components/links/link/link';
 import {
   BlockDetailsContent,
   BlockDetailsContentPlaceholder,
@@ -188,8 +189,11 @@ const BlockNotFound: React.FC = () => {
   if (latest !== null && blockID > latest) {
     message = (
       <>
-        <Text text="This block doesn't exist yet. The latest block is " />#
-        <NumberText number={latest} />.
+        <Text text="This block doesn't exist yet. The latest block is " />
+        <InternalLink href={pathResolver.block(latest)}>
+          #<NumberText number={latest} />
+        </InternalLink>
+        .
       </>
     );
   } else if (latest !== null) {
@@ -208,11 +212,6 @@ const BlockNotFound: React.FC = () => {
       }
       message={message}
     >
-      {latest !== null && (
-        <LabeledAnchorButton href={pathResolver.block(latest)}>
-          <Text text="Go to latest block" />
-        </LabeledAnchorButton>
-      )}
       <LabeledAnchorButton href={pathResolver.blocks()}>
         <Text text="View all blocks" />
       </LabeledAnchorButton>
