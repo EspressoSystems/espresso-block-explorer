@@ -26,6 +26,12 @@ declare class LogScaling {
     exp(input: number): number;
 }
 /**
+ * roundToNiceValue rounds a number to the closest of 1, 2 or 5 times a power
+ * of ten (0.5, 2, 10, 5000…) on a log scale, or down to one when `down` is
+ * set. Zero and negative numbers become 0.
+ */
+export declare function roundToNiceValue(value: number, down?: boolean): number;
+/**
  * LogScalingMapping represents an extension to the AffineTransform which
  * first transforms the input space into using a logarithmic base.
  */
@@ -41,8 +47,9 @@ export declare class LogScalingMapping extends AffineTransform implements Dimens
     transform(input: number): number;
     /**
      * evenlySpacedGuideLines will return a list of numbers that represent an
-     * evenly split distribution of samples in the logarithmic space.  The values
-     * returned will be in the input space.
+     * evenly split distribution of samples in the logarithmic space, rounded to
+     * round values, the top one down so it stays within the input range.  The
+     * values returned will be in the input space.
      */
     evenlySpacedGuideLines(guideLineCount: number): number[];
 }
