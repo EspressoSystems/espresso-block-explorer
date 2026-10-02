@@ -1,0 +1,12 @@
+.message-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px;
+}
+
+.message-page--actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
