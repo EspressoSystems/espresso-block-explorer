@@ -3,17 +3,26 @@ import { ValidatorName } from '@/sites/delegation_ui/elements/validator/validato
 import { default as React } from 'react';
 import './node_name_cell.css';
 
+export interface NodeNameCellProps {
+  /**
+   * When set, the validator's name links to its detail page.
+   */
+  linkToDetails?: boolean;
+}
+
 /**
  * NameNodeCell displays the wallet address of a validator node. It is
  * actually intended to show the name, and an icon for the validator,
  * but it's currently unclear how we would source this information.
  */
-export const NodeNameCell: React.FC = () => {
+export const NodeNameCell: React.FC<NodeNameCellProps> = ({
+  linkToDetails,
+}) => {
   return (
     <div className="node-name-cell">
       <ValidatorImage14x14 />
       <div className="validator-name-shrinkable">
-        <ValidatorName />
+        <ValidatorName linkToDetails={linkToDetails} />
       </div>
     </div>
   );

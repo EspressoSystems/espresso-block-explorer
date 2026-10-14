@@ -4,5 +4,6 @@ export * from './card_extra';
 export * from './card_value';
 export * from './card';
 export * from './claimable_rewards_card';
+export * from './labeled_card_value';
 export * from './total_balance_card';
 export * from './total_staked_card';

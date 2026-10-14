@@ -15,10 +15,10 @@ export const NodeValidatorTableRow: React.FC = () => {
   return (
     <tr>
       <td className="combined-details-cell">
-        <CombinedDetailsCell />
+        <CombinedDetailsCell linkToDetails />
       </td>
       <td>
-        <NodeNameCell />
+        <NodeNameCell linkToDetails />
       </td>
       <td align="right">
         <TotalStakeCell />

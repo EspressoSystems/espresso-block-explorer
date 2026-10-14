@@ -5,17 +5,26 @@ import './combined_details_cell.css';
 import { HotShotConsensusCell } from './hot_shot_consensus_cell';
 import { RankCell } from './rank_cell';
 
+export interface CombinedDetailsCellProps {
+  /**
+   * When set, the validator's name links to its detail page.
+   */
+  linkToDetails?: boolean;
+}
+
 /**
  * CombinedDetailsCell combines multiple details about a validator node
  * into a single cell for display in the validator nodes table.
  */
-export const CombinedDetailsCell: React.FC = () => {
+export const CombinedDetailsCell: React.FC<CombinedDetailsCellProps> = ({
+  linkToDetails,
+}) => {
   return (
     <>
       #<RankCell />
       <ValidatorImage24x24 />
       <div className="validator-name-shrinkable">
-        <ValidatorName />
+        <ValidatorName linkToDetails={linkToDetails} />
       </div>
       <HotShotConsensusCell />
     </>

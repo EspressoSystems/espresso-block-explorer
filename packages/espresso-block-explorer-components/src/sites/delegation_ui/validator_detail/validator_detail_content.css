@@ -1,0 +1,104 @@
+.delegation-ui-content.validator-detail {
+  width: min(1190px, calc(100% - 32px));
+  padding-block-end: 64px;
+}
+
+.validator-detail-back {
+  display: inline-block;
+  margin-block-start: 32px;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+
+.validator-detail-message {
+  margin-block: 64px;
+}
+
+.validator-detail-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-block-start: 24px;
+}
+
+.validator-detail-header--placeholder {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.validator-detail-header--placeholder .skeleton-content:first-child {
+  width: 240px;
+  height: 24px;
+}
+
+.validator-detail-header--placeholder .skeleton-content:last-child {
+  width: 160px;
+}
+
+.validator-detail-header-actions .bbtn {
+  min-width: 160px;
+}
+
+.validator-detail-description {
+  max-width: 720px;
+  margin-block-start: 16px;
+  color: var(--color--brown--4);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.validator-detail-description p + p {
+  margin-block-start: 8px;
+}
+
+.validator-detail-company {
+  color: var(--color--brown--3);
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.delegation-ui-content.validator-detail > h2 {
+  margin-block-start: 32px;
+  margin-block-end: 16px;
+}
+
+.validator-detail-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: minmax(112px, auto);
+  gap: 8px;
+}
+
+.validator-detail-counts {
+  margin-inline-start: 8px;
+  font-size: 14px;
+  color: var(--color--brown--3);
+}
+
+@media screen and (max-width: 1280px) {
+  .validator-detail-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 834px) {
+  /* The stake and its share cannot wrap, so give them the whole row. */
+  .validator-detail-stats .validator-detail-total-stake {
+    grid-column: 1 / -1;
+  }
+
+  .validator-detail-stats .labeled-card-value .bmore-info-element {
+    display: none;
+  }
+
+  .validator-detail-header {
+    flex-direction: column;
+  }
+
+  /* Needs the card-value classes to win over the card's own value size. */
+  .validator-detail-stats .bcard.card-value .value {
+    font-size: 18px;
+    line-height: 24px;
+  }
+}

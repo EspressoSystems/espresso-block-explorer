@@ -1,6 +1,7 @@
 export * from './contexts';
 export * from './elements';
 export * from './staking_modal';
+export * from './validator_detail';
 export * from './validator_nodes_table';
 
 export * from './collapsable_section';

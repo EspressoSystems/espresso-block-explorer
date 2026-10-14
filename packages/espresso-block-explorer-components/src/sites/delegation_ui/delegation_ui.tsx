@@ -65,20 +65,35 @@ const CustomizeNumberFormatters: React.FC<React.PropsWithChildren> = ({
 };
 
 /**
- * DelegationUI is a component that represents the entire Delegation UI
- * self contained page.
+ * DelegationUIFrame provides the Contexts, number formatting, and page chrome
+ * (header) shared by every page of the Delegation UI. The page specific
+ * content is supplied as children.
  */
-const DelegationUI: React.FC<DelegationPageProps> = () => {
+export const DelegationUIFrame: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
   return (
     <ProvideDelegationUIContexts>
       <CustomizeNumberFormatters>
         <main className="delegation-ui">
           <DelegationHeader />
 
-          <DelegationUIContent />
+          {children}
         </main>
       </CustomizeNumberFormatters>
     </ProvideDelegationUIContexts>
+  );
+};
+
+/**
+ * DelegationUI is a component that represents the entire Delegation UI
+ * self contained page.
+ */
+const DelegationUI: React.FC<DelegationPageProps> = () => {
+  return (
+    <DelegationUIFrame>
+      <DelegationUIContent />
+    </DelegationUIFrame>
   );
 };
 
