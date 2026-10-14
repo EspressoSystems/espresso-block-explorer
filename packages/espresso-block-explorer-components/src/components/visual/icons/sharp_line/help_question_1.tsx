@@ -15,6 +15,10 @@ const HelpQuestion1: React.FC<React.SVGProps<SVGElement>> = (props) =>
       // https://www.streamlinehq.com/icons/sharp-line-style?search=question&icon=ico_OgrBKLUlhAJ6CGuR
       // Source retrieved from Figma design. https://www.figma.com/design/Cha4GEw7iPMfPLxYOf6L8E/Espresso-%E2%80%93-Design-Retainer-w--WE3.co?node-id=4461-16800&p=f&t=03SARu4HwuYcuci0-0
       className: addClassToClassName(props.className, 'help-question-1'),
+      // The artwork is drawn around (30, 30), not the centre of the default
+      // 64x64 box, so its stroke was cut off at the top and left. Centre the
+      // box on the artwork instead.
+      viewBox: props.viewBox ?? '-2 -2 64 64',
     },
     <g>
       <path d="M2 30C2 37.4261 4.94999 44.548 10.201 49.799C15.452 55.05 22.5739 58 30 58C37.4261 58 44.548 55.05 49.799 49.799C55.05 44.548 58 37.4261 58 30C58 22.5739 55.05 15.452 49.799 10.201C44.548 4.94999 37.4261 2 30 2C22.5739 2 15.452 4.94999 10.201 10.201C4.94999 15.452 2 22.5739 2 30Z" />
