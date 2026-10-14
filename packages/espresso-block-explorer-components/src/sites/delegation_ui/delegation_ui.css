@@ -36,6 +36,9 @@ main.delegation-ui {
   );
   color: var(--color--brown--text);
   --icon--fill-color: var(--color--brown--text);
+  --skeleton-content--background-color: var(--color--brown--3--alpha-12);
+  --loading-shimmer--dim-color: transparent;
+  --loading-shimmer--highlight-color: var(--color--brown--0--alpha-60);
   overflow: hidden;
 }
 

@@ -1,0 +1,45 @@
+import { addClassToClassName } from '@/higher_order';
+import { default as React } from 'react';
+import './link.css';
+
+type CreateElementTarget = Parameters<typeof React.createElement>[0];
+
+/**
+ * InternalLinkAnchorComponentContext is a context that is used to determine the
+ * underlying component to use for the internal link. This allows the component
+ * to be easily swapped out for a different component if needed.
+ *
+ * The primary use case for this feature is to facilitate the special Link
+ * components provided by NextJS, or other libraries as an enhancement to the
+ * standard anchor tag.
+ */
+export const InternalLinkAnchorComponentContext =
+  React.createContext<CreateElementTarget>('a');
+
+export interface LinkProps extends React.DetailedHTMLProps<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  HTMLAnchorElement
+> {}
+
+/**
+ * InternalLink component represents a simple Anchor tag link. This link is
+ * expected to navigate to a different page of the Delegation UI.
+ *
+ * This component utilizes the InternalLinkAnchorComponentContext to determine
+ * the underlying component to use for the link. The default component is an
+ * anchor tag.
+ */
+export const InternalLink: React.FC<LinkProps> = (props) => {
+  const component = React.useContext(InternalLinkAnchorComponentContext);
+
+  const { className, children, ...rest } = props;
+
+  return React.createElement(
+    component,
+    {
+      ...rest,
+      className: addClassToClassName(className, 'blink'),
+    } as LinkProps,
+    children,
+  );
+};

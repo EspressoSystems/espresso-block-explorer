@@ -17,6 +17,8 @@ import {
   ProvideTickEverySecond,
   RainbowKitContextInjector,
 } from 'espresso-block-explorer-components';
+import { InternalLinkAnchorComponentContext } from 'espresso-block-explorer-components/delegation-ui';
+import Link from 'next/link';
 
 /**
  * DelegationUIContexts is a component that provides all necessary components
@@ -31,35 +33,37 @@ export default function DelegationUIContexts({
   children,
 }: React.PropsWithChildren) {
   return (
-    <ProvideNavigatorLanguage>
-      <ProvideDerivedNumberFormatters>
-        <ProvideDerivedDateTimeFormatters>
-          <ProvideTickEverySecond>
-            <ProvideNodeValidatorServiceAPIContext>
-              <ProvideHotShotQueryServiceAPIContext>
-                <ProvideStakingAPIServiceContext>
-                  <RainbowKitProvider>
-                    <RainbowKitContextInjector>
-                      <ProvideL1Methods>
-                        <ProvideESPTokenContract>
-                          <ProvideStakeTableV2Contract>
-                            <ProvideRewardClaimContract>
-                              <ProvideLightClientV2Contract>
-                                <EnvironmentBanner />
-                                {children}
-                              </ProvideLightClientV2Contract>
-                            </ProvideRewardClaimContract>
-                          </ProvideStakeTableV2Contract>
-                        </ProvideESPTokenContract>
-                      </ProvideL1Methods>
-                    </RainbowKitContextInjector>
-                  </RainbowKitProvider>
-                </ProvideStakingAPIServiceContext>
-              </ProvideHotShotQueryServiceAPIContext>
-            </ProvideNodeValidatorServiceAPIContext>
-          </ProvideTickEverySecond>
-        </ProvideDerivedDateTimeFormatters>
-      </ProvideDerivedNumberFormatters>
-    </ProvideNavigatorLanguage>
+    <InternalLinkAnchorComponentContext.Provider value={Link as any}>
+      <ProvideNavigatorLanguage>
+        <ProvideDerivedNumberFormatters>
+          <ProvideDerivedDateTimeFormatters>
+            <ProvideTickEverySecond>
+              <ProvideNodeValidatorServiceAPIContext>
+                <ProvideHotShotQueryServiceAPIContext>
+                  <ProvideStakingAPIServiceContext>
+                    <RainbowKitProvider>
+                      <RainbowKitContextInjector>
+                        <ProvideL1Methods>
+                          <ProvideESPTokenContract>
+                            <ProvideStakeTableV2Contract>
+                              <ProvideRewardClaimContract>
+                                <ProvideLightClientV2Contract>
+                                  <EnvironmentBanner />
+                                  {children}
+                                </ProvideLightClientV2Contract>
+                              </ProvideRewardClaimContract>
+                            </ProvideStakeTableV2Contract>
+                          </ProvideESPTokenContract>
+                        </ProvideL1Methods>
+                      </RainbowKitContextInjector>
+                    </RainbowKitProvider>
+                  </ProvideStakingAPIServiceContext>
+                </ProvideHotShotQueryServiceAPIContext>
+              </ProvideNodeValidatorServiceAPIContext>
+            </ProvideTickEverySecond>
+          </ProvideDerivedDateTimeFormatters>
+        </ProvideDerivedNumberFormatters>
+      </ProvideNavigatorLanguage>
+    </InternalLinkAnchorComponentContext.Provider>
   );
 }

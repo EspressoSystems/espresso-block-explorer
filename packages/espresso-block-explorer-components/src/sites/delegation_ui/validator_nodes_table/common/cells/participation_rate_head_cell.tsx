@@ -8,9 +8,9 @@ import { MoreInfoElement } from '@/sites/delegation_ui/elements/tooltip/more_inf
 export const ParticipationRateHeadCell: React.FC = () => {
   return (
     <>
-      <Text text="Participation" />
+      <Text text="Vote Participation" />
       <MoreInfoElement>
-        <Text text="The percentage of blocks a validator has voted.  Espresso requires at least 66% of stake to participate to finalize a block." />
+        <Text text="How often a validator's vote is included in the certificate that finalizes a block. A certificate is formed as soon as votes holding over 2/3 of the stake arrive, and later votes are left out, so this reflects how quickly a validator's votes arrive rather than how often it votes. Some validators are left out of every certificate by design." />
       </MoreInfoElement>
     </>
   );

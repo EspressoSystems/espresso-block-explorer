@@ -5,6 +5,8 @@ export * from './claim_in_head_cell';
 export * from './combined_details_cell';
 export * from './copy_button';
 export * from './copy_wallet_address';
+export * from './estimated_apr_cell';
+export * from './estimated_apr_head_cell';
 export * from './fee_cell';
 export * from './fee_head_cell';
 export * from './hot_shot_consensus_cell';

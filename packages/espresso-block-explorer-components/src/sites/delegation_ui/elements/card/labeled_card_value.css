@@ -1,0 +1,10 @@
+.bcard.labeled-card-value h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.labeled-card-value h2 .bmore-info-element {
+  display: flex;
+}

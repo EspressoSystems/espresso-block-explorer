@@ -88,6 +88,11 @@ table.all-validators-table th > div .bmore-info-element {
   height: 20px;
 }
 
+table.all-validators-table th > div .bmore-info-element > svg.sharp-icon {
+  vertical-align: top;
+  margin-block-start: calc((20px - 14px) / 2);
+}
+
 table.all-validators-table th.sortable {
   cursor: pointer;
 }

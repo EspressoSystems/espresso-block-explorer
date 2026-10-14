@@ -1,0 +1,27 @@
+:root {
+  --blink--focused--outline-color: var(--color--brown--3);
+  --blink--focused--outline-width: 4px;
+  --blink--transition--duration: 240ms;
+}
+
+a.blink {
+  outline-style: solid;
+  outline-color: transparent;
+  outline-width: 0;
+  color: inherit;
+  text-decoration: none;
+
+  transition:
+    outline-color ease-in-out var(--blink--transition--duration),
+    outline-width ease-in-out var(--blink--transition--duration);
+  will-change: outline-color, outline-width;
+}
+
+a.blink:hover {
+  text-decoration: underline;
+}
+
+a.blink:focus-visible {
+  outline-color: var(--blink--focused--outline-color);
+  outline-width: var(--blink--focused--outline-width);
+}
