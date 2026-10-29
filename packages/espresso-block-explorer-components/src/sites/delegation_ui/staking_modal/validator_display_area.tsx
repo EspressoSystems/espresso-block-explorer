@@ -7,7 +7,7 @@ import { ValidatorNodeContext } from '../contexts/validator_node_context';
 import { ActiveConsensusChip } from '../elements/chips/active_consensus_chip';
 import { InactiveConsensusChip } from '../elements/chips/inactive_consensus_chip';
 import { ValidatorImage24x24 } from '../elements/validator/validator_image';
-import { ValidatorName } from '../elements/validator/validator_name';
+import { ValidatorNameLink } from '../elements/validator/validator_name';
 import { default as CopyWalletAddress } from '../validator_nodes_table/common/cells/copy_wallet_address';
 import './validator_display_area.css';
 
@@ -38,7 +38,7 @@ export const ValidatorDisplayArea: React.FC = () => {
     <div className="staking-modal-validator-display-area">
       <div className="validator-display-group">
         <ValidatorImage24x24 />
-        <ValidatorName />
+        <ValidatorNameLink />
         <CopyWalletAddress className="address" value={walletAddress}>
           <WalletAddressText value={walletAddress} />
         </CopyWalletAddress>

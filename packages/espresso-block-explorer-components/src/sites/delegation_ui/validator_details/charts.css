@@ -1,0 +1,239 @@
+:root {
+  --validator-details--chart--line: var(--color--brown--3);
+  --validator-details--chart--area: var(--color--brown--3--alpha-12);
+  --validator-details--chart--inflow: var(--color--brown--2);
+  --validator-details--chart--outflow: var(--color--brown--3);
+  --validator-details--chart--votes: var(--color--brown--3);
+  --validator-details--chart--delegators: var(--color--brown--2);
+  --validator-details--chart--validator: var(--color--brown--3);
+  /* Reliability status steps from the Espresso brand browns (Vanilla,
+     Caramel, Cookie, Coffee): one light-to-dark ramp, so severity reads as
+     darkness and stays ordered for colour-blind readers (worst pair ΔE 13.5).
+     Vanilla is the page colour, so "no misses" cells get an outline, and
+     every cell keeps its mark and every status its label. */
+  --validator-details--status--clean: var(--color--brown--1);
+  --validator-details--status--good: var(--color--brown--2);
+  --validator-details--status--fair: var(--color--brown--3);
+  --validator-details--status--poor: var(--color--brown--4);
+}
+
+.validator-details-chart {
+  position: relative;
+  width: 100%;
+}
+
+.validator-details-chart svg {
+  display: block;
+  overflow: visible;
+}
+
+.validator-details-chart .gridline {
+  stroke: var(--color--brown--3--alpha-24);
+  stroke-width: 1;
+}
+
+.validator-details-chart .baseline {
+  stroke: var(--color--brown--4--alpha-40);
+  stroke-width: 1;
+}
+
+.validator-details-chart .axis-label {
+  fill: var(--color--brown--4--alpha-60);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+}
+
+.validator-details-chart .area {
+  fill: var(--validator-details--chart--area);
+}
+
+.validator-details-chart .line {
+  fill: none;
+  stroke: var(--validator-details--chart--line);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.validator-details-chart .dot {
+  fill: var(--validator-details--chart--line);
+  stroke: var(--color--brown--0);
+  stroke-width: 2;
+}
+
+.validator-details-chart .crosshair {
+  stroke: var(--color--brown--4--alpha-40);
+  stroke-dasharray: 2 3;
+}
+
+.validator-details-chart .hit {
+  fill: transparent;
+  cursor: crosshair;
+}
+
+.validator-details-chart .bar.inflow {
+  fill: var(--validator-details--chart--inflow);
+}
+
+.validator-details-chart .bar.outflow {
+  fill: var(--validator-details--chart--outflow);
+}
+
+.validator-details-chart .epoch-cell.clean {
+  fill: var(--validator-details--status--clean);
+  stroke: var(--color--brown--4--alpha-32);
+  stroke-width: 1;
+}
+
+.validator-details-chart .epoch-cell.good {
+  fill: var(--validator-details--status--good);
+}
+
+.validator-details-chart .epoch-cell.fair {
+  fill: var(--validator-details--status--fair);
+}
+
+.validator-details-chart .epoch-cell.poor {
+  fill: var(--validator-details--status--poor);
+}
+
+/* A ring just outside the latest cell, so it shows on every status,
+   including Coffee "poor" cells. */
+.validator-details-chart .epoch-latest-ring {
+  fill: none;
+  stroke: var(--color--brown--4);
+  stroke-width: 1.5;
+}
+
+.validator-details-chart .epoch-mark {
+  fill: var(--color--brown--0);
+}
+
+.validator-details-chart .epoch-mark-dark {
+  fill: var(--color--brown--4);
+}
+
+.validator-details-chart .epoch-mark-stroke {
+  stroke: var(--color--brown--0);
+  stroke-width: 1.5;
+}
+
+.validator-details-chart-tooltip {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, calc(-100% - 12px));
+  pointer-events: none;
+  background: var(--color--brown--5);
+  color: var(--color--brown--1);
+  font-size: 11px;
+  line-height: 16px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.validator-details-chart-tooltip b {
+  color: var(--color--brown--0);
+  font-weight: 500;
+}
+
+.validator-details-chart-tooltip .row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.validator-details-legend {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-size: 11px;
+  color: var(--color--brown--4);
+  text-transform: uppercase;
+}
+
+.validator-details-legend span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  margin-inline-end: 6px;
+}
+
+.swatch.inflow {
+  background: var(--validator-details--chart--inflow);
+}
+
+.swatch.outflow {
+  background: var(--validator-details--chart--outflow);
+}
+
+.swatch.clean {
+  background: var(--validator-details--status--clean);
+  box-shadow: inset 0 0 0 1px var(--color--brown--4--alpha-32);
+}
+
+.swatch.good {
+  background: var(--validator-details--status--good);
+}
+
+.swatch.fair {
+  background: var(--validator-details--status--fair);
+}
+
+.swatch.poor {
+  background: var(--validator-details--status--poor);
+}
+
+.validator-details-chart .bar.votes {
+  fill: var(--validator-details--chart--votes);
+}
+
+.validator-details-chart .bar.not-voting {
+  fill: var(--validator-details--status--poor);
+}
+
+.validator-details-chart .network-line {
+  fill: none;
+  stroke: var(--color--brown--5);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  opacity: 0.75;
+}
+
+.validator-details-chart .bar.delegators {
+  fill: var(--validator-details--chart--delegators);
+}
+
+.validator-details-chart .bar.validator {
+  fill: var(--validator-details--chart--validator);
+}
+
+.validator-details-chart .axis-label.latest {
+  fill: var(--color--brown--4);
+  font-weight: 500;
+}
+
+.swatch.votes {
+  background: var(--validator-details--chart--votes);
+}
+
+.swatch.delegators {
+  background: var(--validator-details--chart--delegators);
+}
+
+.swatch.validator {
+  background: var(--validator-details--chart--validator);
+}
+
+.swatch.network-line {
+  height: 0;
+  width: 14px;
+  border-radius: 0;
+  border-top: 2px dashed var(--color--brown--5);
+}

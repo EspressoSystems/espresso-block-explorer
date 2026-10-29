@@ -1,6 +1,4 @@
-import DelegationUIClientComponent from '@/client_components/delegation_ui';
 import { type Metadata } from 'next';
-import { Suspense } from 'react';
 
 /**
  * generateMetadata returns static metadata with placeholder values for the
@@ -31,17 +29,10 @@ export function generateMetadata(): Metadata {
 }
 
 /**
- * Home is the root page of the Delegation UI. It is a fully static server
- * component — all dynamic behaviour is client-side, loaded after the client
- * fetches /config.json.
- *
- * The Suspense boundary is required by Next.js static export when
- * useSearchParams() is used inside a client component subtree.
+ * Home is the root page of the Delegation UI. The Delegation UI itself is
+ * rendered by the (staking) layout, so that it stays mounted, with its loaded
+ * data, when navigating between its views.
  */
 export default function Home() {
-  return (
-    <Suspense fallback={<div />}>
-      <DelegationUIClientComponent />
-    </Suspense>
-  );
+  return null;
 }
