@@ -8,16 +8,17 @@ import { CurrentDelegationsContext } from '@/sites/delegation_ui/contexts/curren
 import { ModalContext } from '@/sites/delegation_ui/contexts/modal_context';
 import { PendingExitsContext } from '@/sites/delegation_ui/contexts/pending_exits_context';
 import { PendingUndelegationsContext } from '@/sites/delegation_ui/contexts/pending_undelegations_context';
+import { ValidatorDetailsModalContext } from '@/sites/delegation_ui/contexts/validator_details_context';
 import { ValidatorNodeContext } from '@/sites/delegation_ui/contexts/validator_node_context';
 import {
   SetValidatorSelectionContext,
   ValidatorConfirmed,
+  ValidatorConfirmedExitWithdraw,
   ValidatorConfirmedStake,
+  ValidatorConfirmedUndelegateWithdraw,
 } from '@/sites/delegation_ui/contexts/validator_selection_context';
 import { default as ButtonLarge } from '@/sites/delegation_ui/elements/buttons/button_large';
-import { ExitedChip } from '@/sites/delegation_ui/elements/chips/exited_chip';
 import { ExitingChip } from '@/sites/delegation_ui/elements/chips/exiting_chip';
-import { UndelegatedChip } from '@/sites/delegation_ui/elements/chips/undelegated_chip';
 import { UndelegatingChip } from '@/sites/delegation_ui/elements/chips/undelegating_chip';
 import { default as React } from 'react';
 
@@ -35,13 +36,22 @@ export const ActionsCell: React.FC = () => {
   const pendingUndelegations = React.useContext(PendingUndelegationsContext);
   const currentDelegations = React.useContext(CurrentDelegationsContext);
   const setSelection = React.useContext(SetValidatorSelectionContext);
+  const validatorDetails = React.useContext(ValidatorDetailsModalContext);
+
+  // When the validator details modal is available, Delegate and Manage open
+  // it first so the user can review the validator before staking.
+  const openValidatorDetails = validatorDetails
+    ? () => validatorDetails.open(validator.addressText)
+    : null;
 
   if (!address || rainbowModalControls.connectModalOpen) {
     return (
       <>
         <ButtonLarge
           className="action"
-          onClick={rainbowModalControls.openConnectModal}
+          onClick={
+            openValidatorDetails ?? rainbowModalControls.openConnectModal
+          }
         >
           <Text text="Delegate" />
         </ButtonLarge>
@@ -57,7 +67,23 @@ export const ActionsCell: React.FC = () => {
   if (pendingExit) {
     // We have a pending exit
     if (pendingExit.availableTime.valueOf() < now.valueOf()) {
-      return <ExitedChip />;
+      // Ready to claim: show the validator popup, which offers the claim.
+      return (
+        <ButtonLarge
+          className="action claim"
+          onClick={
+            openValidatorDetails ??
+            (() => {
+              setSelection(
+                new ValidatorConfirmedExitWithdraw(validator.addressText),
+              );
+              modalControls.open();
+            })
+          }
+        >
+          <Text text="Claim" />
+        </ButtonLarge>
+      );
     }
 
     return <ExitingChip />;
@@ -66,7 +92,23 @@ export const ActionsCell: React.FC = () => {
   if (pendingUndelegation) {
     // We have a pending undelegation
     if (pendingUndelegation.availableTime.valueOf() < now.valueOf()) {
-      return <UndelegatedChip />;
+      // Ready to claim: show the validator popup, which offers the claim.
+      return (
+        <ButtonLarge
+          className="action claim"
+          onClick={
+            openValidatorDetails ??
+            (() => {
+              setSelection(
+                new ValidatorConfirmedUndelegateWithdraw(validator.addressText),
+              );
+              modalControls.open();
+            })
+          }
+        >
+          <Text text="Claim" />
+        </ButtonLarge>
+      );
     }
 
     return <UndelegatingChip />;
@@ -77,10 +119,13 @@ export const ActionsCell: React.FC = () => {
     return (
       <ButtonLarge
         className="action manage"
-        onClick={() => {
-          setSelection(new ValidatorConfirmed(validator.addressText));
-          modalControls.open();
-        }}
+        onClick={
+          openValidatorDetails ??
+          (() => {
+            setSelection(new ValidatorConfirmed(validator.addressText));
+            modalControls.open();
+          })
+        }
       >
         <Text text="Manage" />
       </ButtonLarge>
@@ -90,10 +135,13 @@ export const ActionsCell: React.FC = () => {
   return (
     <ButtonLarge
       className="action"
-      onClick={() => {
-        setSelection(new ValidatorConfirmedStake(validator.addressText));
-        modalControls.open();
-      }}
+      onClick={
+        openValidatorDetails ??
+        (() => {
+          setSelection(new ValidatorConfirmedStake(validator.addressText));
+          modalControls.open();
+        })
+      }
     >
       <Text text="Delegate" />
     </ButtonLarge>

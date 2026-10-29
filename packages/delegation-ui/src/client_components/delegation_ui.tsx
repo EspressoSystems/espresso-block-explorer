@@ -9,9 +9,11 @@ import {
 import {
   DelegationUI,
   deriveClaimPortalIntentFromOnlyQueryParameters,
+  NavigationContext,
   ProvideClaimPortalIntentContext,
 } from 'espresso-block-explorer-components/delegation-ui';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import React from 'react';
 
 /**
  * DelegationUIClientComponent is the root client component for the
@@ -34,27 +36,53 @@ export default function DelegationUIClientComponent() {
 }
 
 /**
+ * isValidatorPath reports whether the path is the validator details route.
+ */
+function isValidatorPath(pathName: string): boolean {
+  return pathName.replace(/\/$/, '').endsWith('/validator');
+}
+
+/**
  * DelegationUIClientContent is responsible for interpretting the query /
  * search parameters of the URL in order to derive the relevant "intent"
- * before returning the rest of the Delegation UI.
+ * and the current view before returning the rest of the Delegation UI.
  */
 function DelegationUIClientContent() {
   const router = useRouter();
   const pathName = usePathname();
   const params = useSearchParams();
   const intent = deriveClaimPortalIntentFromOnlyQueryParameters(params);
+  const validatorAddress = isValidatorPath(pathName)
+    ? params.get('address')
+    : undefined;
+
+  // Navigate between Delegation UI views client-side, so the loaded
+  // validator data is kept. Hrefs are relative to the current page.
+  const navigate = React.useCallback(
+    (href: string) => {
+      const url = new URL(href, window.location.href);
+      router.push(`${url.pathname}${url.search}`);
+    },
+    [router],
+  );
 
   return (
     <IntentCompletedCallbackContext.Provider
       value={() => {
-        router.replace(pathName);
+        router.replace(
+          validatorAddress
+            ? `${pathName}?address=${encodeURIComponent(validatorAddress)}`
+            : pathName,
+        );
       }}
     >
-      <ProvideHotShotQueryServiceAPIContext>
-        <ProvideClaimPortalIntentContext intent={intent}>
-          <DelegationUI />
-        </ProvideClaimPortalIntentContext>
-      </ProvideHotShotQueryServiceAPIContext>
+      <NavigationContext.Provider value={navigate}>
+        <ProvideHotShotQueryServiceAPIContext>
+          <ProvideClaimPortalIntentContext intent={intent}>
+            <DelegationUI validatorAddress={validatorAddress} />
+          </ProvideClaimPortalIntentContext>
+        </ProvideHotShotQueryServiceAPIContext>
+      </NavigationContext.Provider>
     </IntentCompletedCallbackContext.Provider>
   );
 }

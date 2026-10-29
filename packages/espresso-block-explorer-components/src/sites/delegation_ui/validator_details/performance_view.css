@@ -1,0 +1,19 @@
+.validator-details-panel-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 16px;
+  margin-block-start: 12px;
+  font-size: 11px;
+  color: var(--color--brown--4--alpha-60);
+}
+
+.validator-details-panel-foot .validator-details-legend {
+  font-size: 10px;
+}
+
+.validator-details-earnings .validator-details-verdict,
+.validator-details-voting .validator-details-verdict {
+  margin-block-end: 18px;
+}

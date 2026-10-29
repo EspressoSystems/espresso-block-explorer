@@ -7,3 +7,8 @@
 .company-website a {
   color: inherit;
 }
+
+/* The validator name links to the validator details page */
+.validator-display-group > .validator-details-link {
+  text-decoration-color: var(--color--brown--3--alpha-42);
+}

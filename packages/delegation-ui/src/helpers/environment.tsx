@@ -6,6 +6,7 @@ import {
   EspressoAddresses,
   EspressoConfigContext,
 } from 'espresso-block-explorer-components';
+import { ValidatorHistoryURLContext } from 'espresso-block-explorer-components/delegation-ui';
 import React from 'react';
 import { EnvironmentConfig } from './read_from_env';
 
@@ -35,7 +36,9 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
           } as EspressoAddresses
         }
       >
-        {children}
+        <ValidatorHistoryURLContext.Provider value={env.validator_history_url}>
+          {children}
+        </ValidatorHistoryURLContext.Provider>
       </EspressoConfigContext.Provider>
     </EnvironmentContext.Provider>
   );

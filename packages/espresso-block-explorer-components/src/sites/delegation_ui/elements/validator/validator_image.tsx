@@ -138,6 +138,20 @@ export const ValidatorImage24x24: React.FC = () => {
   );
 };
 
+/**
+ * ValidatorImage48x48 displays the validator's large image at 48x48, falling
+ * back to a blockies image derived from the validator address.
+ */
+export const ValidatorImage48x48: React.FC = () => {
+  return (
+    <picture className="validator-image i48x48">
+      <ValidatorSources24x24 />
+      <FallbackImageSource />
+      <FallbackBlockiesImage width="48" height="48" />
+    </picture>
+  );
+};
+
 const BlockiesCacheContext = React.createContext<Map<`0x${string}`, string>>(
   new Map<`0x${string}`, string>(),
 );

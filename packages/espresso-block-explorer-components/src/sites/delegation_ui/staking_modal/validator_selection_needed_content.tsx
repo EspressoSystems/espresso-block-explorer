@@ -14,6 +14,7 @@ import {
   AllValidatorsContext,
   NodeAddressListContext,
 } from '../contexts/all_validators_context';
+import { ModalContext } from '../contexts/modal_context';
 import { NodeAddressContext } from '../contexts/node_address_context';
 import { RankMapContext } from '../contexts/rank_map_context';
 import {
@@ -24,7 +25,10 @@ import {
   ProvideValidatorNodeContext,
   ValidatorNodeContext,
 } from '../contexts/validator_node_context';
+import { ValidatorDetailsModalContext } from '../contexts/validator_details_context';
 import {
+  NoValidatorSelected,
+  SetValidatorSelectionContext,
   ValidatorConfirmed,
   ValidatorSelected,
   ValidatorSelectionContext,
@@ -299,17 +303,27 @@ const ValidatorConfirmArea: React.FC = () => {
     ValidatorSelectionContext,
   ) as ValidatorSelected;
   const historyControls = React.useContext(StakingModalHistoryControlsContext);
+  const stakingModal = React.useContext(ModalContext);
+  const setSelection = React.useContext(SetValidatorSelectionContext);
+  const validatorDetails = React.useContext(ValidatorDetailsModalContext);
   assert(selection instanceof ValidatorSelected);
+
+  // With the validator popup available, Next shows the chosen validator
+  // there first; its Delegate button continues to the stake step.
+  const next = validatorDetails
+    ? () => {
+        stakingModal.close();
+        setSelection(new NoValidatorSelected());
+        validatorDetails.open(selection.validatorAddress);
+      }
+    : () =>
+        historyControls.push(
+          new ValidatorConfirmed(selection.validatorAddress),
+        );
 
   return (
     <div className="validator-confirm-area">
-      <ButtonLarge
-        onClick={() =>
-          historyControls.push(
-            new ValidatorConfirmed(selection.validatorAddress),
-          )
-        }
-      >
+      <ButtonLarge onClick={next}>
         <Text text="Next" />
       </ButtonLarge>
     </div>

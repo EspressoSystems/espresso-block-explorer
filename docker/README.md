@@ -51,6 +51,7 @@ docker run -p 3000:3000 \
 - `QUERY_SERVICE_URI`: HotShot query service URL
 - `NODE_VALIDATOR_URI`: Node validator WebSocket URL
 - `STAKING_UI_SERVICE_URI`: Staking API service URL
+- `VALIDATOR_HISTORY_URL`: Base URL of the validator history files (default: `https://espressonodes.com/validator-data/`, which serves mainnet and decaf)
 - `CONTRACT_ADDRESS_STAKE_TABLE`: Stake table contract address
 - `CONTRACT_ADDRESS_ESP_TOKEN`: ESP token contract address
 - `CONTRACT_ADDRESS_REWARD_CLAIM`: Reward claim contract address
