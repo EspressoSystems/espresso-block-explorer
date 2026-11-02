@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+
 @font-face {
   font-family: 'Neue Montreal';
   src:
@@ -41,6 +43,12 @@ main.delegation-ui::before {
   content: '';
   display: block;
   padding-bottom: 1px;
+}
+
+.ibm-plex-mono-regular {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* The explorer's type, in both themes. */
