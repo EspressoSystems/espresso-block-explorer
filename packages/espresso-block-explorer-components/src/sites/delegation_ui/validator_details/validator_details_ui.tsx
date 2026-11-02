@@ -3,6 +3,7 @@ import { ArrowLeft } from '@/components/visual/icons';
 import { CurrentLocale } from '@/contexts/locale_provider';
 import { default as React } from 'react';
 import { AllValidatorsContext } from '../contexts/all_validators_context';
+import { ProvideDelegateAfterConnect } from '../contexts/delegate_after_connect_context';
 import { ProvideDialogModalControls } from '../contexts/modal_context';
 import { NodeAddressContext } from '../contexts/node_address_context';
 import { ProvideValidatorNodeContext } from '../contexts/validator_node_context';
@@ -171,15 +172,17 @@ export const ValidatorDetailsView: React.FC<ValidatorDetailsViewProps> = ({
 }) => {
   return (
     <ProvideDialogModalControls>
-      <StakingModal />
-      <ValidatorDetailsErrorBoundary
-        key={address ?? ''}
-        fallback={
-          <ValidatorPageMessage message="This validator couldn't be shown right now." />
-        }
-      >
-        <ResolveValidator address={address} />
-      </ValidatorDetailsErrorBoundary>
+      <ProvideDelegateAfterConnect>
+        <StakingModal />
+        <ValidatorDetailsErrorBoundary
+          key={address ?? ''}
+          fallback={
+            <ValidatorPageMessage message="This validator couldn't be shown right now." />
+          }
+        >
+          <ResolveValidator address={address} />
+        </ValidatorDetailsErrorBoundary>
+      </ProvideDelegateAfterConnect>
     </ProvideDialogModalControls>
   );
 };

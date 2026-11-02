@@ -1,7 +1,4 @@
-import {
-  RainbowKitAccountAddressContext,
-  RainbowKitModalContext,
-} from '@/components/rainbowkit';
+import { RainbowKitAccountAddressContext } from '@/components/rainbowkit';
 import { MoneyText, Text, WalletAddressText } from '@/components/text';
 import { LinkShare2 } from '@/components/visual/icons/sharp_line';
 import { MonetaryValue } from '@/models/block_explorer';
@@ -10,6 +7,7 @@ import { CurrentLocale } from '@/contexts/locale_provider';
 import { Now } from '@/contexts/now_provider';
 import { default as React } from 'react';
 import { CurrentDelegationsContext } from '../contexts/current_delegations_context';
+import { DelegateAfterConnectContext } from '../contexts/delegate_after_connect_context';
 import { ModalContext } from '../contexts/modal_context';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
 import { PendingExitsContext } from '../contexts/pending_exits_context';
@@ -139,7 +137,8 @@ export interface ValidatorStakeActionsProps {
  * ValidatorNodeContext, and Delegate otherwise. They open the existing
  * staking modal directly on the undelegate or delegate step. With an
  * undelegation in progress, Undelegate is shown as Undelegating (disabled)
- * or, once it can be claimed, Withdraw.
+ * or, once it can be claimed, Withdraw. Without a connected wallet,
+ * Delegate asks for one and then continues to the delegate step.
  */
 export const ValidatorStakeActions: React.FC<ValidatorStakeActionsProps> = ({
   className,
@@ -147,7 +146,7 @@ export const ValidatorStakeActions: React.FC<ValidatorStakeActionsProps> = ({
 }) => {
   const validator = React.useContext(ValidatorNodeContext);
   const account = React.useContext(RainbowKitAccountAddressContext);
-  const rainbowKitModal = React.useContext(RainbowKitModalContext);
+  const delegateAfterConnect = React.useContext(DelegateAfterConnectContext);
   const stakingModal = React.useContext(ModalContext);
   const setSelection = React.useContext(SetValidatorSelectionContext);
   const delegations = React.useContext(CurrentDelegationsContext);
@@ -186,7 +185,7 @@ export const ValidatorStakeActions: React.FC<ValidatorStakeActionsProps> = ({
           className="validator-details-delegate"
           onClick={() => {
             beforeOpen?.();
-            rainbowKitModal.openConnectModal?.();
+            delegateAfterConnect(validator.addressText);
           }}
         >
           <Text text="Delegate" />

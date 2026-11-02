@@ -12,6 +12,7 @@ export * from './current_delegations_context';
 export * from './current_section_context';
 export * from './current_total_pending_undelegation_amount_context';
 export * from './current_total_staked_context';
+export * from './delegate_after_connect_context';
 export * from './esp_balance_context';
 export * from './espresso_block_height_context';
 export * from './espresso_current_epoch_context';

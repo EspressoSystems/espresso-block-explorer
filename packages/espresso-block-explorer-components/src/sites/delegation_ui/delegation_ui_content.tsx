@@ -24,6 +24,7 @@ import {
   ProvideSectionSelection,
   Sections,
 } from './contexts/current_section_context';
+import { ProvideDelegateAfterConnect } from './contexts/delegate_after_connect_context';
 import {
   ModalContext,
   ProvideDialogModalControls,
@@ -115,26 +116,28 @@ export const DelegationUIContent: React.FC = () => {
       <ProvideShowTop100Filter>
         <ProvideSearchFilter>
           <ProvideDialogModalControls>
-            <ProvideValidatorDetailsModal>
-              <StakingModal />
-              <section className="delegation-ui-content">
-                <EnableValidatorDetailsLinks>
-                  <NetworkStats />
+            <ProvideDelegateAfterConnect>
+              <ProvideValidatorDetailsModal>
+                <StakingModal />
+                <section className="delegation-ui-content">
+                  <EnableValidatorDetailsLinks>
+                    <NetworkStats />
 
-                  <MyBalance />
-                  <PendingClaims />
-                  <PendingExits />
-                  <TableControls />
+                    <MyBalance />
+                    <PendingClaims />
+                    <PendingExits />
+                    <TableControls />
 
-                  <ApplyFiltersToSnapshot>
-                    <ValidatorTableSortStateProvider>
-                      <ContentTable />
-                      <br />
-                    </ValidatorTableSortStateProvider>
-                  </ApplyFiltersToSnapshot>
-                </EnableValidatorDetailsLinks>
-              </section>
-            </ProvideValidatorDetailsModal>
+                    <ApplyFiltersToSnapshot>
+                      <ValidatorTableSortStateProvider>
+                        <ContentTable />
+                        <br />
+                      </ValidatorTableSortStateProvider>
+                    </ApplyFiltersToSnapshot>
+                  </EnableValidatorDetailsLinks>
+                </section>
+              </ProvideValidatorDetailsModal>
+            </ProvideDelegateAfterConnect>
           </ProvideDialogModalControls>
         </ProvideSearchFilter>
       </ProvideShowTop100Filter>
