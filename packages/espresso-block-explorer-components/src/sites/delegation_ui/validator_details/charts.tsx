@@ -80,6 +80,58 @@ function useAxisLabels(ticks: number[]): string[] {
   }, [locale, key]);
 }
 
+/** The space between the y-axis labels and the plot. */
+const AXIS_LABEL_GAP = 8;
+
+/** The label gutter until the labels have rendered and can be measured. */
+const AXIS_GUTTER_FALLBACK = 52;
+
+/**
+ * useAxisGutter measures the widest y-axis label, so the plot can start just
+ * past labels that sit flush with the chart's left edge.
+ */
+function useAxisGutter(
+  labels: string[],
+  rendered: boolean,
+): [React.RefObject<SVGGElement | null>, number] {
+  const ref = React.useRef<SVGGElement>(null);
+  const [widest, setWidest] = React.useState(0);
+  const key = labels.join('\n');
+
+  React.useLayoutEffect(() => {
+    const group = ref.current;
+    if (!group) {
+      return;
+    }
+
+    const measure = () => {
+      const lengths = Array.from(group.querySelectorAll('text'), (text) =>
+        typeof text.getComputedTextLength === 'function'
+          ? text.getComputedTextLength()
+          : 0,
+      );
+      setWidest(Math.max(0, ...lengths));
+    };
+
+    measure();
+    // The label font may still be loading; measure again once it has.
+    let cancelled = false;
+    document.fonts?.ready.then(() => {
+      if (!cancelled) {
+        measure();
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [key, rendered]);
+
+  return [
+    ref,
+    widest ? Math.ceil(widest) + AXIS_LABEL_GAP : AXIS_GUTTER_FALLBACK,
+  ];
+}
+
 function useFullFormatter(): Intl.NumberFormat {
   const locale = React.useContext(CurrentLocale);
   return React.useMemo(
@@ -203,16 +255,23 @@ export const StakeHistoryChart: React.FC<StakeHistoryChartProps> = ({
   const full = useFullFormatter();
   const shortDate = useShortDateFormatter();
 
-  const pad = { top: 12, right: 8, bottom: 24, left: 52 };
-  const plotWidth = Math.max(0, width - pad.left - pad.right);
-  const plotHeight = height - pad.top - pad.bottom;
-
   const values = points.map((p) => p.stake);
   const rawLow = Math.min(...values);
   const rawHigh = Math.max(...values);
   const span = rawHigh - rawLow || rawHigh * 0.01 || 1;
   const low = Math.max(0, rawLow - span * 0.15);
   const high = rawHigh + span * 0.08;
+  const ticks = [0, 1, 2, 3, 4].map((i) => low + ((high - low) * i) / 4);
+  const tickLabels = useAxisLabels(ticks);
+  const [labelsRef, gutter] = useAxisGutter(
+    tickLabels,
+    width > 0 && points.length > 1,
+  );
+
+  // The plot runs to the right edge, where the latest point's dot overhangs.
+  const pad = { top: 12, right: 0, bottom: 24, left: gutter };
+  const plotWidth = Math.max(0, width - pad.left - pad.right);
+  const plotHeight = height - pad.top - pad.bottom;
 
   const x = (i: number) =>
     pad.left + (points.length <= 1 ? 0 : (i / (points.length - 1)) * plotWidth);
@@ -224,8 +283,6 @@ export const StakeHistoryChart: React.FC<StakeHistoryChartProps> = ({
       (p, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(p.stake).toFixed(1)}`,
     )
     .join('');
-  const ticks = [0, 1, 2, 3, 4].map((i) => low + ((high - low) * i) / 4);
-  const tickLabels = useAxisLabels(ticks);
   const last = points.length - 1;
   // Roughly one date label per 90px, and never one crowding the last label.
   const labelEvery = Math.max(
@@ -252,25 +309,23 @@ export const StakeHistoryChart: React.FC<StakeHistoryChartProps> = ({
           role="img"
           aria-label="Total stake over time"
         >
-          {ticks.map((t, i) => (
-            <g key={t}>
-              <line
-                className="gridline"
-                x1={pad.left}
-                x2={width - pad.right}
-                y1={y(t)}
-                y2={y(t)}
-              />
-              <text
-                className="axis-label"
-                x={pad.left - 8}
-                y={y(t) + 3}
-                textAnchor="end"
-              >
+          {ticks.map((t) => (
+            <line
+              key={t}
+              className="gridline"
+              x1={pad.left}
+              x2={width - pad.right}
+              y1={y(t)}
+              y2={y(t)}
+            />
+          ))}
+          <g ref={labelsRef}>
+            {ticks.map((t, i) => (
+              <text key={t} className="axis-label" x={0} y={y(t) + 3}>
                 {tickLabels[i]}
               </text>
-            </g>
-          ))}
+            ))}
+          </g>
           {points.map((p, i) =>
             showLabel(i) ? (
               <text
@@ -539,6 +594,7 @@ export const EarningsChart: React.FC<EarningsChartProps> = ({
 }) => {
   const [ref, width] = useElementWidth<HTMLDivElement>();
   const [hover, setHover] = React.useState<null | number>(null);
+  const hatchId = `validator-details-hatch-${React.useId().replace(/[^\w-]/g, '')}`;
   const compact = useCompactFormatter();
   const full = useFullFormatter();
   const shortDate = useShortDateFormatter();
@@ -554,13 +610,17 @@ export const EarningsChart: React.FC<EarningsChartProps> = ({
       validator: p.validator / days,
     };
   });
-  const pad = { top: 8, right: 0, bottom: 22, left: 52 };
-  const plotWidth = Math.max(0, width - pad.left - pad.right);
-  const plotHeight = height - pad.top - pad.bottom;
-  const base = pad.top + plotHeight;
   const high = niceCeiling(
     Math.max(...rates.map((r) => r.delegators + r.validator), 1),
   );
+  const ticks = [0, high / 2, high];
+  const tickLabels = ticks.map((v) => compact.format(v));
+  const [labelsRef, gutter] = useAxisGutter(tickLabels, width > 0);
+
+  const pad = { top: 8, right: 0, bottom: 22, left: gutter };
+  const plotWidth = Math.max(0, width - pad.left - pad.right);
+  const plotHeight = height - pad.top - pad.bottom;
+  const base = pad.top + plotHeight;
   const y = (value: number) => base - (value / high) * plotHeight;
   const slot = rates.length ? plotWidth / rates.length : 0;
   const barWidth = Math.max(2, slot - (slot > 12 ? 4 : 2));
@@ -579,25 +639,36 @@ export const EarningsChart: React.FC<EarningsChartProps> = ({
           role="img"
           aria-label="Rewards per day to delegators and the validator"
         >
-          {[0, high / 2, high].map((v) => (
-            <g key={v}>
-              <line
-                className="gridline"
-                x1={pad.left}
-                x2={width - pad.right}
-                y1={y(v)}
-                y2={y(v)}
-              />
-              <text
-                className="axis-label"
-                x={pad.left - 8}
-                y={y(v) + 3}
-                textAnchor="end"
-              >
-                {compact.format(v)}
-              </text>
-            </g>
+          <defs>
+            <pattern
+              id={hatchId}
+              className="hatch"
+              patternUnits="userSpaceOnUse"
+              width={3}
+              height={3}
+              patternTransform="rotate(45)"
+            >
+              <rect width={3} height={3} />
+              <line x1={0} y1={0} x2={0} y2={3} />
+            </pattern>
+          </defs>
+          {ticks.map((v) => (
+            <line
+              key={v}
+              className="gridline"
+              x1={pad.left}
+              x2={width - pad.right}
+              y1={y(v)}
+              y2={y(v)}
+            />
           ))}
+          <g ref={labelsRef}>
+            {ticks.map((v, i) => (
+              <text key={v} className="axis-label" x={0} y={y(v) + 3}>
+                {tickLabels[i]}
+              </text>
+            ))}
+          </g>
           {rates.map((r, i) => {
             const x = pad.left + i * slot + (slot - barWidth) / 2;
             const top = y(r.delegators + r.validator);
@@ -613,6 +684,7 @@ export const EarningsChart: React.FC<EarningsChartProps> = ({
                 />
                 <path
                   className="bar validator"
+                  fill={`url(#${hatchId})`}
                   d={roundedBar(
                     x,
                     top,

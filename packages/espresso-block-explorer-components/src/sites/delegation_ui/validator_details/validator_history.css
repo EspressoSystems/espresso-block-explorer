@@ -64,7 +64,6 @@ table.validator-details-table td {
   padding: 0 16px;
   white-space: nowrap;
   color: var(--color--brown--4);
-  font-variant-numeric: tabular-nums;
 }
 
 table.validator-details-table tbody tr:not(:last-child) td {

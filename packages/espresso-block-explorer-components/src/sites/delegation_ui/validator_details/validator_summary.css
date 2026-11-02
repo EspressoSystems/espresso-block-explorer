@@ -37,10 +37,16 @@
 }
 
 .validator-details-delegate {
-  --button-base--default--background-color: var(--color--brown--2);
-  --button-base--default--foreground-color: var(--color--brown--0);
-  --button-base--hovered--background-color: var(--color--brown--3);
-  --button-base--hovered--foreground-color: var(--color--brown--0);
+  --button-base--default--background-color: var(--color--delegate);
+  --button-base--default--foreground-color: var(--color--on-delegate);
+  --button-base--hovered--background-color: var(--color--delegate--hovered);
+  --button-base--hovered--foreground-color: var(--color--on-delegate);
+}
+
+[data-theme='dark'] .validator-details-delegate {
+  --button-base--default--border-width: 1px;
+  --button-base--default--border-style: solid;
+  --button-base--default--border-color: var(--color--delegate--border);
 }
 
 /* A disabled button keeps its resting look: no hover, and the cursor says
@@ -146,4 +152,9 @@
 .validator-details-commission-up svg {
   width: 11px;
   height: 11px;
+}
+
+[data-theme='dark'] .validator-details-commission-warning svg,
+[data-theme='dark'] .validator-details-commission-up {
+  color: var(--color--brown--3);
 }
