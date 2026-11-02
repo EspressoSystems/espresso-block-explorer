@@ -98,8 +98,12 @@ export interface HistoryFileEarningsWindow {
 export interface HistoryFileEarningsInterval {
   epoch_from?: number;
   epoch_to?: number;
-  start: string;
-  end: string;
+  /**
+   * start and end are null when espressonodes doesn't know when the epoch
+   * boundary was; the site skips those intervals.
+   */
+  start: null | string;
+  end: null | string;
   source: 'measured' | 'estimated';
   validator: string;
   delegators: string;
@@ -109,9 +113,9 @@ export interface HistoryFileEarningsInterval {
  * HistoryFileEarnings is the part of the file's earnings the site reads.
  */
 export interface HistoryFileEarnings {
-  as_of?: string;
+  as_of?: null | string;
   lifetime?: HistoryFileEarningsAmounts;
-  windows?: Partial<Record<'7d' | '30d', HistoryFileEarningsWindow>>;
+  windows?: null | Partial<Record<'7d' | '30d', HistoryFileEarningsWindow>>;
   intervals?: HistoryFileEarningsInterval[];
 }
 
@@ -302,8 +306,16 @@ function isDelegationBaselines(value: unknown): boolean {
   );
 }
 
+function isTimestampOrNull(value: unknown): boolean {
+  return value === null || isTimestamp(value);
+}
+
 function isEarningsInterval(value: unknown): boolean {
-  return isShape(value) && isTimestamp(value.start) && isTimestamp(value.end);
+  return (
+    isShape(value) &&
+    isTimestampOrNull(value.start) &&
+    isTimestampOrNull(value.end)
+  );
 }
 
 function isEarnings(value: unknown): boolean {
@@ -312,11 +324,13 @@ function isEarnings(value: unknown): boolean {
   }
   return (
     isShape(value) &&
-    (value.as_of === undefined || isTimestamp(value.as_of)) &&
+    (value.as_of === undefined || isTimestampOrNull(value.as_of)) &&
     (value.intervals === undefined ||
       (Array.isArray(value.intervals) &&
         value.intervals.every(isEarningsInterval))) &&
-    (value.windows === undefined || isShape(value.windows)) &&
+    (value.windows === undefined ||
+      value.windows === null ||
+      isShape(value.windows)) &&
     (value.lifetime === undefined || isShape(value.lifetime))
   );
 }
@@ -605,6 +619,24 @@ function earningsWindow(
   };
 }
 
+type DatedEarningsInterval = HistoryFileEarningsInterval & {
+  start: string;
+  end: string;
+};
+
+/**
+ * datedIntervals are the earnings intervals with known start and end times,
+ * the only ones that can be placed in time.
+ */
+function datedIntervals(
+  earnings: undefined | null | HistoryFileEarnings,
+): DatedEarningsInterval[] {
+  return (earnings?.intervals ?? []).filter(
+    (interval): interval is DatedEarningsInterval =>
+      interval.start !== null && interval.end !== null,
+  );
+}
+
 /**
  * earningsFromFile converts the validator's rewards, or null when the file
  * has none.
@@ -626,7 +658,7 @@ export function earningsFromFile(
     },
     last7Days: earningsWindow(earnings.windows?.['7d']),
     last30Days: earningsWindow(earnings.windows?.['30d']),
-    periods: (earnings.intervals ?? [])
+    periods: datedIntervals(earnings)
       .map((interval) => ({
         start: new Date(interval.start),
         end: new Date(interval.end),
@@ -649,7 +681,7 @@ const EPOCH_LENGTH_INTERVALS = 7;
  * boundary times of the latest earnings intervals, or null without them.
  */
 export function msPerEpochFromFile(file: ValidatorHistoryFile): null | number {
-  const intervals = (file.earnings?.intervals ?? [])
+  const intervals = datedIntervals(file.earnings)
     .filter(
       (i) =>
         typeof i.epoch_from === 'number' &&

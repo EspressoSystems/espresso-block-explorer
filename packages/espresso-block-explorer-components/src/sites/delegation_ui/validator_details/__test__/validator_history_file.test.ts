@@ -437,6 +437,30 @@ describe('earningsFromFile', () => {
     ]);
   });
 
+  it('skips intervals without known start or end times', () => {
+    const dated = {
+      start: '2026-10-27T00:00:00Z',
+      end: '2026-10-28T00:00:00Z',
+      source: 'measured' as const,
+      validator: '0',
+      delegators: '2000000000000000000',
+    };
+    const earnings = earningsFromFile(
+      file({
+        earnings: {
+          as_of: '2026-10-28T12:00:00Z',
+          lifetime: { total: '0', validator: '0', delegators: '0' },
+          intervals: [
+            dated,
+            { ...dated, start: null, delegators: '7000000000000000000' },
+            { ...dated, end: null, delegators: '8000000000000000000' },
+          ],
+        },
+      }),
+    );
+    expect(earnings?.periods.map((p) => p.delegators)).toEqual([2]);
+  });
+
   it('is null without earnings', () => {
     expect(earningsFromFile(file({}))).toBeNull();
     expect(earningsFromFile(file({ earnings: null }))).toBeNull();
@@ -462,6 +486,20 @@ describe('msPerEpochFromFile', () => {
           intervals: [
             interval(5, 8, '2026-10-02T00:00:00Z', '2026-10-03T00:00:00Z'),
             interval(1, 4, '2026-10-01T00:00:00Z', '2026-10-02T00:00:00Z'),
+          ],
+        },
+      }),
+    );
+    expect(ms).toBe(6 * 60 * 60 * 1000);
+  });
+
+  it('ignores intervals without known start or end times', () => {
+    const ms = msPerEpochFromFile(
+      file({
+        earnings: {
+          intervals: [
+            interval(1, 4, '2026-10-01T00:00:00Z', '2026-10-02T00:00:00Z'),
+            { ...interval(5, 8, '', ''), start: null, end: null },
           ],
         },
       }),
@@ -602,6 +640,44 @@ describe('isValidatorHistoryFile', () => {
     ).toBe(false);
   });
 
+  it('keeps the rest of the history when an earnings interval is undated', () => {
+    const undated = file({
+      stake_history: [
+        { timestamp: '2026-10-01T00:00:00Z', block: 1, stake: `${5n * ESP}` },
+      ],
+      events: [
+        event('registered', '2026-10-01T00:00:00Z', {
+          new_commission_bps: 500,
+        }),
+        event('delegated', '2026-10-02T00:00:00Z', {
+          delegator: `0x${'cd'.repeat(20)}`,
+          amount: `${5n * ESP}`,
+        }),
+      ],
+      earnings: {
+        as_of: '2026-10-28T12:00:00Z',
+        lifetime: { total: '0', validator: '0', delegators: '0' },
+        intervals: [
+          {
+            epoch_from: 1,
+            epoch_to: 1,
+            start: null,
+            end: '2026-10-02T00:00:00Z',
+            source: 'measured',
+            validator: '0',
+            delegators: '0',
+          },
+        ],
+      },
+    });
+
+    expect(isValidatorHistoryFile(undated)).toBe(true);
+    expect(stakePointsFromFile(undated, NOW).at(-1)?.stake).toBe(5);
+    expect(activityFromFile(undated)).toHaveLength(1);
+    expect(commissionChangesFromFile(undated)).toHaveLength(1);
+    expect(earningsFromFile(undated)?.periods).toEqual([]);
+  });
+
   it('rejects values that would throw while a page renders', () => {
     const good = event('delegated', '2026-10-01T00:00:00Z');
     const withEvent = (fields: Record<string, unknown>) => ({
@@ -640,6 +716,17 @@ describe('isValidatorHistoryFile', () => {
     expect(
       isValidatorHistoryFile({ ...file({}), earnings: { as_of: 'garbage' } }),
     ).toBe(false);
+    // espressonodes writes null where it doesn't know a time.
+    expect(
+      isValidatorHistoryFile({
+        ...file({}),
+        earnings: {
+          as_of: null,
+          windows: null,
+          intervals: [{ ...interval, start: null, end: null }],
+        },
+      }),
+    ).toBe(true);
     expect(
       isValidatorHistoryFile({
         ...file({}),
