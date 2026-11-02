@@ -90,6 +90,7 @@ export interface EnvironmentConfig {
   proof_of_stake_released: boolean;
   base_url: null | string;
   base_path: null | string;
+  validator_history_url: null | string;
 }
 
 /**
@@ -152,6 +153,7 @@ export interface RawConfig {
   PROOF_OF_STAKE_RELEASED?: string;
   BASE_URL?: string;
   BASE_PATH?: string;
+  VALIDATOR_HISTORY_URL?: string;
 }
 
 /**
@@ -179,5 +181,6 @@ export function parseConfigFromJSON(raw: RawConfig): EnvironmentConfig {
     proof_of_stake_released: booleanEnv(raw.PROOF_OF_STAKE_RELEASED),
     base_url: urlEnv(raw.BASE_URL) || null,
     base_path: raw.BASE_PATH || null,
+    validator_history_url: urlEnv(raw.VALIDATOR_HISTORY_URL) || null,
   } as const satisfies EnvironmentConfig;
 }

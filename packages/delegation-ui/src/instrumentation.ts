@@ -26,6 +26,7 @@ export async function register() {
         PROOF_OF_STAKE_RELEASED: process.env.PROOF_OF_STAKE_RELEASED ?? '',
         BASE_URL: process.env.BASE_URL ?? '',
         BASE_PATH: process.env.BASE_PATH ?? '',
+        VALIDATOR_HISTORY_URL: process.env.VALIDATOR_HISTORY_URL ?? '',
       };
 
       const configPath = join(process.cwd(), 'public', 'config.json');

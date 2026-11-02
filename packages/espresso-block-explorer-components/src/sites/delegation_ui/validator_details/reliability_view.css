@@ -1,0 +1,145 @@
+.validator-details-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 12px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.validator-details-status svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.validator-details-status.fair svg {
+  fill: currentColor;
+  stroke: none;
+}
+
+/* Chip text is a darker shade of each status colour for legible contrast. */
+.validator-details-status.clean {
+  color: #7a5a45;
+  background: var(--validator-details--status--clean);
+  border-color: var(--color--brown--4--alpha-32);
+}
+
+.validator-details-status.good {
+  color: #8a5a2a;
+  background: #de9e6726;
+  border-color: var(--validator-details--status--good);
+}
+
+.validator-details-status.fair {
+  color: #8a4f1f;
+  background: var(--color--brown--3--alpha-12);
+  border-color: var(--validator-details--status--fair);
+}
+
+.validator-details-status.poor {
+  color: var(--validator-details--status--poor);
+  background: #451f1714;
+  border-color: var(--validator-details--status--poor);
+}
+
+.validator-details-verdict {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-block-end: 18px;
+}
+
+.validator-details-verdict.pending {
+  min-height: 48px;
+}
+
+.validator-details-verdict .validator-details-status {
+  margin-block-start: 3px;
+  flex: none;
+}
+
+.validator-details-verdict .text {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: -0.01em;
+  color: var(--color--brown--4);
+}
+
+.validator-details-verdict .text small {
+  display: block;
+  margin-block-start: 2px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0;
+  color: var(--color--brown--4--alpha-60);
+}
+
+.validator-details-strip .axis {
+  display: flex;
+  justify-content: space-between;
+  margin-block-start: 6px;
+  font-size: 10px;
+  color: var(--color--brown--4--alpha-60);
+}
+
+/* Before the block time is measured "Latest" is the only label: keep it
+   under the latest epoch on the right. */
+.validator-details-strip .axis .latest:only-child {
+  margin-inline-start: auto;
+}
+
+.validator-details-strip .axis .latest {
+  color: var(--color--brown--4);
+  font-weight: 500;
+}
+
+.validator-details-streak {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-block-start: 14px;
+  font-size: 12px;
+  color: var(--color--brown--4--alpha-60);
+}
+
+.validator-details-streak b {
+  font-weight: 500;
+  color: var(--color--brown--4);
+}
+
+.validator-details-reliability .validator-details-legend {
+  margin-block-start: 12px;
+}
+
+/* On narrow screens the cells wrap into two rows, so only "Latest" (under
+   the last cell) still lines up with its epoch. */
+@media screen and (max-width: 600px) {
+  .validator-details-strip .axis span:not(.latest) {
+    display: none;
+  }
+
+  .validator-details-strip .axis .latest {
+    margin-inline-start: auto;
+  }
+}
+
+@media screen and (max-width: 834px) {
+  .validator-details-verdict {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .validator-details-verdict .text {
+    font-size: 18px;
+    line-height: 24px;
+  }
+}

@@ -6,9 +6,17 @@ import { DelegationHeader } from './delegation_header';
 import './delegation_ui.css';
 import { DelegationUIContent } from './delegation_ui_content';
 import { ProvideDelegationUIContexts } from './delegation_ui_contexts';
+import { ValidatorDetailsView } from './validator_details/validator_details_ui';
 
 interface DelegationPageProps {
   className?: string;
+
+  /**
+   * validatorAddress selects the validator details view when it is not
+   * undefined (null means the URL had no address). Both views share the same
+   * contexts, so switching between them keeps the loaded validator data.
+   */
+  validatorAddress?: null | string;
 }
 
 /**
@@ -68,14 +76,31 @@ const CustomizeNumberFormatters: React.FC<React.PropsWithChildren> = ({
  * DelegationUI is a component that represents the entire Delegation UI
  * self contained page.
  */
-const DelegationUI: React.FC<DelegationPageProps> = () => {
+const DelegationUI: React.FC<DelegationPageProps> = ({ validatorAddress }) => {
+  const showValidator = validatorAddress !== undefined;
+
+  // Start each view at the top, as a separate page load would.
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [showValidator, validatorAddress]);
+
   return (
     <ProvideDelegationUIContexts>
       <CustomizeNumberFormatters>
-        <main className="delegation-ui">
+        <main
+          className={
+            showValidator
+              ? 'delegation-ui validator-details-ui'
+              : 'delegation-ui'
+          }
+        >
           <DelegationHeader />
 
-          <DelegationUIContent />
+          {showValidator ? (
+            <ValidatorDetailsView address={validatorAddress} />
+          ) : (
+            <DelegationUIContent />
+          )}
         </main>
       </CustomizeNumberFormatters>
     </ProvideDelegationUIContexts>
