@@ -136,13 +136,6 @@ describe('EpochDuration', () => {
     expect(shortEpochs.ago(1)).toBe('25m ago');
   });
 
-  it('converts hours to whole epochs', () => {
-    expect(new EpochDuration(5.5 * HOUR).epochsIn(24, 10)).toBe(4);
-    expect(new EpochDuration(25 * 60 * 1000).epochsIn(24, 10)).toBe(58);
-    expect(new EpochDuration(48 * HOUR).epochsIn(24, 10)).toBe(1);
-    expect(new EpochDuration(0).epochsIn(24, 10)).toBe(10);
-  });
-
   it('falls back to epochs when the epoch length is unknown', () => {
     const unknown = new EpochDuration(0);
     expect(unknown.span(10)).toBe('10 epochs');

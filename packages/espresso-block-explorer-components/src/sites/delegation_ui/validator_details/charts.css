@@ -1,9 +1,6 @@
 :root {
   --validator-details--chart--line: var(--color--brown--3);
   --validator-details--chart--area: var(--color--brown--3--alpha-12);
-  --validator-details--chart--inflow: var(--color--brown--2);
-  --validator-details--chart--outflow: var(--color--brown--3);
-  --validator-details--chart--votes: var(--color--brown--3);
   --validator-details--chart--delegators: var(--color--brown--2);
   --validator-details--chart--validator: var(--color--brown--3);
   /* Reliability status steps from the Espresso brand browns (Vanilla,
@@ -69,14 +66,6 @@
 .validator-details-chart .hit {
   fill: transparent;
   cursor: crosshair;
-}
-
-.validator-details-chart .bar.inflow {
-  fill: var(--validator-details--chart--inflow);
-}
-
-.validator-details-chart .bar.outflow {
-  fill: var(--validator-details--chart--outflow);
 }
 
 .validator-details-chart .epoch-cell.clean {
@@ -165,14 +154,6 @@
   margin-inline-end: 6px;
 }
 
-.swatch.inflow {
-  background: var(--validator-details--chart--inflow);
-}
-
-.swatch.outflow {
-  background: var(--validator-details--chart--outflow);
-}
-
 .swatch.clean {
   background: var(--validator-details--status--clean);
   box-shadow: inset 0 0 0 1px var(--color--brown--4--alpha-32);
@@ -190,22 +171,6 @@
   background: var(--validator-details--status--poor);
 }
 
-.validator-details-chart .bar.votes {
-  fill: var(--validator-details--chart--votes);
-}
-
-.validator-details-chart .bar.not-voting {
-  fill: var(--validator-details--status--poor);
-}
-
-.validator-details-chart .network-line {
-  fill: none;
-  stroke: var(--color--brown--5);
-  stroke-width: 1.5;
-  stroke-dasharray: 4 3;
-  opacity: 0.75;
-}
-
 .validator-details-chart .bar.delegators {
   fill: var(--validator-details--chart--delegators);
 }
@@ -219,21 +184,10 @@
   font-weight: 500;
 }
 
-.swatch.votes {
-  background: var(--validator-details--chart--votes);
-}
-
 .swatch.delegators {
   background: var(--validator-details--chart--delegators);
 }
 
 .swatch.validator {
   background: var(--validator-details--chart--validator);
-}
-
-.swatch.network-line {
-  height: 0;
-  width: 14px;
-  border-radius: 0;
-  border-top: 2px dashed var(--color--brown--5);
 }

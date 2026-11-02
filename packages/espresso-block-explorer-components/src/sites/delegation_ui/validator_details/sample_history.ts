@@ -18,16 +18,6 @@ export interface StakePoint {
   stake: number;
 }
 
-/**
- * StakeFlow is the stake delegated to and undelegated from a validator on
- * one day (UTC).
- */
-export interface StakeFlow {
-  date: Date;
-  delegated: number;
-  undelegated: number;
-}
-
 export interface EpochPerformance {
   epoch: number;
   slotsLed: number;
@@ -37,16 +27,6 @@ export interface EpochPerformance {
 export interface EpochVote {
   epoch: number;
   rate: number;
-}
-
-/**
- * EpochVotes is the share of eligible blocks the validator voted on in one
- * epoch, and the network's average for that epoch.
- */
-export interface EpochVotes {
-  epoch: number;
-  rate: number;
-  networkRate: null | number;
 }
 
 /**
@@ -138,7 +118,6 @@ export type HistorySource = 'live' | 'sample';
 
 export interface ValidatorHistorySources {
   stake: HistorySource;
-  flows: HistorySource;
   epochs: HistorySource;
   delegators: HistorySource;
   activity: HistorySource;
@@ -149,7 +128,6 @@ export interface ValidatorHistory {
   status: HistoryStatus;
   sources: ValidatorHistorySources;
   stake: StakePoint[];
-  flows: StakeFlow[];
   epochs: EpochPerformance[];
   delegatorCount: number;
   topDelegators: DelegatorShare[];
@@ -195,10 +173,6 @@ export interface ValidatorHistory {
    * the last 30 days, after commission, as measured by espressonodes.
    */
   delegatorAPR: null | number;
-  /**
-   * votes are the validator's per-epoch vote participation, in epoch order.
-   */
-  votes: EpochVotes[];
   /**
    * earnings are the staking rewards the validator generated, measured by
    * espressonodes, when known.
@@ -291,24 +265,6 @@ function sampleEpochs(
   return result;
 }
 
-function sampleFlows(
-  random: () => number,
-  input: SampleHistoryInput,
-): StakeFlow[] {
-  const count = 30;
-  const scale = input.stake * 0.002;
-  const today = Math.floor(input.now.valueOf() / MS_PER_DAY);
-  const result: StakeFlow[] = [];
-  for (let i = 0; i < count; i++) {
-    result.push({
-      date: new Date((today - (count - 1 - i)) * MS_PER_DAY),
-      delegated: random() > 0.35 ? random() * scale : 0,
-      undelegated: random() > 0.6 ? random() * scale * 0.6 : 0,
-    });
-  }
-  return result;
-}
-
 function sampleDelegators(
   random: () => number,
   input: SampleHistoryInput,
@@ -390,14 +346,12 @@ export function sampleValidatorHistory(
     status: 'sample',
     sources: {
       stake: 'sample',
-      flows: 'sample',
       epochs: 'sample',
       delegators: 'sample',
       activity: 'sample',
       commission: 'sample',
     },
     stake: sampleStake(random, input),
-    flows: sampleFlows(random, input),
     epochs: sampleEpochs(random, input),
     delegatorCount: delegators.count,
     topDelegators: delegators.top,
@@ -412,7 +366,6 @@ export function sampleValidatorHistory(
     nodeVersion: null,
     nodeVersionStatus: null,
     delegatorAPR: null,
-    votes: [],
     earnings: null,
     msPerEpoch: null,
     txExplorerURL: null,

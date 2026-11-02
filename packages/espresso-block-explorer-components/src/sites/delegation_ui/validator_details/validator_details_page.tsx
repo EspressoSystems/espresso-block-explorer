@@ -8,14 +8,14 @@ import { default as React } from 'react';
 import { SegmentedButton } from '../elements/buttons/segmented_button';
 import { InAppLink } from '../elements/link/in_app_link';
 import { ValidatorImage48x48 } from '../elements/validator/validator_image';
-import { StakeFlowChart, StakeFlowLegend, StakeHistoryChart } from './charts';
+import { StakeHistoryChart } from './charts';
 import {
   ProvideValidatorHistory,
   useValidatorFacts,
   ValidatorHistoryContext,
 } from './validator_details_contexts';
 import './validator_details_page.css';
-import { PerformanceSection } from './performance_view';
+import { EarningsSection, ReliabilitySection } from './performance_view';
 import {
   CommissionHistoryTable,
   HistoryEmpty,
@@ -235,7 +235,7 @@ const ValidatorProfileSidebar: React.FC = () => {
 type StakeRange = 30 | 90;
 
 /**
- * StakeSection shows total stake over time and stake flows per epoch.
+ * StakeSection shows total stake over time.
  */
 const StakeSection: React.FC = () => {
   const facts = useValidatorFacts();
@@ -279,9 +279,7 @@ const StakeSection: React.FC = () => {
           )}
         </div>
         <div className="section-controls">
-          {history &&
-            (history.sources.stake === 'sample' ||
-              history.sources.flows === 'sample') && <SampleDataChip />}
+          {history?.sources.stake === 'sample' && <SampleDataChip />}
           <SegmentedButton<StakeRange>
             selected={range}
             onSelectionChange={setRange}
@@ -296,21 +294,6 @@ const StakeSection: React.FC = () => {
       {history &&
         (points.length > 1 ? (
           <StakeHistoryChart points={points} height={260} />
-        ) : (
-          <HistoryEmpty history={history} nothingYet="No stake changes yet." />
-        ))}
-
-      <div className="sub-head">
-        <h3>
-          <Text
-            text={`Stake flow per day, last ${history?.flows.length || 30} days`}
-          />
-        </h3>
-        <StakeFlowLegend />
-      </div>
-      {history &&
-        (history.flows.length > 0 ? (
-          <StakeFlowChart flows={history.flows} height={150} />
         ) : (
           <HistoryEmpty history={history} nothingYet="No stake changes yet." />
         ))}
@@ -391,7 +374,8 @@ export const ValidatorDetailsPage: React.FC = () => {
         <ValidatorProfileSidebar />
         <div className="validator-details-content">
           <StakeSection />
-          <PerformanceSection />
+          <EarningsSection />
+          <ReliabilitySection />
           <DetailsSection />
         </div>
       </div>

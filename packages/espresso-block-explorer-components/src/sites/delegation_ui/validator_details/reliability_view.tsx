@@ -9,7 +9,6 @@ import { EpochReliabilityGrid, EpochReliabilityLegend } from './charts';
 import {
   compareWithNetwork,
   EpochDuration,
-  HEADLINE_HOURS,
   NetworkComparison,
   RELIABILITY_STATUS_LABEL,
   ReliabilityStatus,
@@ -178,23 +177,20 @@ const NETWORK_COMPARISON: Record<NetworkComparison, string> = {
 
 /**
  * ReliabilityHeadline says how many leader slots the validator missed in
- * the past week, and how that compares with the network average.
+ * the epochs the strip shows, and how that compares with the network
+ * average.
  */
 const ReliabilityHeadline: React.FC<{
   history: ValidatorHistory;
   duration: null | EpochDuration;
 }> = ({ history, duration }) => {
-  const count = duration
-    ? duration.epochsIn(HEADLINE_HOURS, STRIP_EPOCHS)
-    : STRIP_EPOCHS;
-  const recent = history.epochs.slice(-count);
+  const recent = history.epochs.slice(-STRIP_EPOCHS);
   const summary = summarizeWindow(recent, history.networkMissedRates);
+  // Measured to the end of the oldest epoch, like the strip's oldest label.
   const period =
-    recent.length >= count && duration && duration.msPerEpoch > 0
-      ? 'the past week'
-      : duration && duration.msPerEpoch > 0
-        ? `the past ${duration.span(recent.length)}`
-        : `the last ${recent.length} epochs`;
+    duration && duration.msPerEpoch > 0
+      ? `the past ${duration.span(Math.max(1, recent.length - 1))}`
+      : `the last ${recent.length} epochs`;
 
   const headline =
     summary.missed === 0
@@ -223,9 +219,9 @@ const ReliabilityHeadline: React.FC<{
 
 /**
  * ReliabilityOverview is the reliability view: how many slots the
- * validator missed in the past week against the network, then the latest
- * epochs as cells with the latest on the right. The compact form, for the popup, adds
- * the legend.
+ * validator missed in the latest epochs against the network, then those
+ * epochs as cells with the latest on the right. The compact form, for the
+ * popup, adds the legend.
  */
 export const ReliabilityOverview: React.FC<{
   history: ValidatorHistory;

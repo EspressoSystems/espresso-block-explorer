@@ -13,7 +13,6 @@
   font-size: 10px;
 }
 
-.validator-details-earnings .validator-details-verdict,
-.validator-details-voting .validator-details-verdict {
+.validator-details-earnings .validator-details-verdict {
   margin-block-end: 18px;
 }

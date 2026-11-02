@@ -6,8 +6,6 @@ import {
   EarningsWindow,
   EpochPerformance,
   EpochVote,
-  EpochVotes,
-  StakeFlow,
   StakePoint,
   ValidatorEarnings,
 } from './sample_history';
@@ -28,7 +26,6 @@ import {
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const WEI_PER_ESP = 1e18;
 const STAKE_DAYS = 90;
-const FLOW_DAYS = 30;
 export const VALIDATOR_HISTORY_REFRESH_MS = 5 * 60 * 1000;
 
 export const VALIDATOR_HISTORY_SCHEMA_VERSION = 1;
@@ -422,37 +419,6 @@ export function stakePointsFromFile(
 }
 
 /**
- * flowsFromFile sums stake delegated and undelegated per day for the last
- * 30 days.
- */
-export function flowsFromFile(
-  file: ValidatorHistoryFile,
-  now: Date,
-): StakeFlow[] {
-  const today = utcDay(now);
-  const firstDay = today - (FLOW_DAYS - 1);
-  const flows: StakeFlow[] = Array.from({ length: FLOW_DAYS }, (_, i) => ({
-    date: new Date((firstDay + i) * MS_PER_DAY),
-    delegated: 0,
-    undelegated: 0,
-  }));
-
-  for (const event of file.events) {
-    const day = utcDay(new Date(event.timestamp));
-    const flow = flows[day - firstDay];
-    if (!flow) {
-      continue;
-    }
-    if (event.type === 'delegated') {
-      flow.delegated += weiToESP(event.amount);
-    } else if (event.type === 'undelegated') {
-      flow.undelegated += weiToESP(event.amount);
-    }
-  }
-  return flows;
-}
-
-/**
  * epochsFromFile converts per-epoch participation into slots led and
  * missed, skipping epochs without slot data.
  */
@@ -590,24 +556,6 @@ export function delegatorAPRFromFile(
 ): null | number {
   const apr = file.earnings?.windows?.['30d']?.delegator_net_apr;
   return typeof apr === 'number' && Number.isFinite(apr) ? apr : null;
-}
-
-/**
- * votesFromFile is the validator's vote participation per epoch with the
- * network's average, skipping epochs without a vote rate.
- */
-export function votesFromFile(file: ValidatorHistoryFile): EpochVotes[] {
-  const network = new Map(
-    file.network_epochs.map((epoch) => [epoch.epoch, epoch.avg_vote_rate]),
-  );
-  return file.epochs
-    .filter((epoch) => epoch.vote_rate !== null)
-    .map((epoch) => ({
-      epoch: epoch.epoch,
-      rate: epoch.vote_rate as number,
-      networkRate: network.get(epoch.epoch) ?? null,
-    }))
-    .sort((a, b) => a.epoch - b.epoch);
 }
 
 function weiToBigInt(wei: undefined | null | string): bigint {

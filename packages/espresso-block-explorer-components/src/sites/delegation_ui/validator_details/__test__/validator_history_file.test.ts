@@ -8,7 +8,6 @@ import {
   earningsFromFile,
   epochsFromFile,
   exitedAtFromFile,
-  flowsFromFile,
   HistoryFileEvent,
   historyNetwork,
   isValidatorAddress,
@@ -22,7 +21,6 @@ import {
   stakePointsFromFile,
   ValidatorHistoryFile,
   validatorHistoryFileURL,
-  votesFromFile,
 } from '../validator_history_file';
 
 const NOW = new Date('2026-10-27T12:00:00Z');
@@ -133,33 +131,6 @@ describe('validator history files', () => {
 
     expect(points).toHaveLength(90);
     expect(points[0].stake).toBe(5);
-  });
-
-  it('sums delegations and undelegations per day for the last 30 days', () => {
-    const flows = flowsFromFile(
-      file({
-        events: [
-          event('delegated', '2026-10-27T01:00:00Z', {
-            amount: String(10n * ESP),
-          }),
-          event('delegated', '2026-10-27T05:00:00Z', {
-            amount: String(5n * ESP),
-          }),
-          event('undelegated', '2026-10-26T05:00:00Z', {
-            amount: String(3n * ESP),
-          }),
-          event('delegated', '2026-01-01T00:00:00Z', {
-            amount: String(99n * ESP),
-          }),
-        ],
-      }),
-      NOW,
-    );
-
-    expect(flows).toHaveLength(30);
-    expect(flows[29]).toMatchObject({ delegated: 15, undelegated: 0 });
-    expect(flows[28]).toMatchObject({ delegated: 0, undelegated: 3 });
-    expect(flows.reduce((sum, f) => sum + f.delegated, 0)).toBe(15);
   });
 
   it('derives missed slots per epoch and skips epochs without slot data', () => {
@@ -414,30 +385,6 @@ describe('delegatorAPRFromFile', () => {
         file({ earnings: { windows: { '30d': { delegator_net_apr: null } } } }),
       ),
     ).toBeNull();
-  });
-});
-
-describe('votesFromFile', () => {
-  it('pairs vote rates with the network average and skips missing ones', () => {
-    const history = file({
-      epochs: [
-        { epoch: 6, slots: 5, proposals: 5, vote_rate: 0.8, proposal_rate: 1 },
-        { epoch: 5, slots: 5, proposals: 5, vote_rate: 0.6, proposal_rate: 1 },
-        { epoch: 7, slots: 5, proposals: 5, vote_rate: null, proposal_rate: 1 },
-      ],
-      network_epochs: [
-        {
-          epoch: 5,
-          active_validators: 90,
-          avg_vote_rate: 0.7,
-          avg_missed_rate: 0,
-        },
-      ],
-    });
-    expect(votesFromFile(history)).toEqual([
-      { epoch: 5, rate: 0.6, networkRate: 0.7 },
-      { epoch: 6, rate: 0.8, networkRate: null },
-    ]);
   });
 });
 

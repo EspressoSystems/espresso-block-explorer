@@ -14,13 +14,6 @@ const HOUR_MS = 60 * 60 * 1000;
 export const STRIP_EPOCHS = 30;
 
 /**
- * The period the verdict covers, and the number of epochs used for it when
- * the epoch length isn't known yet.
- */
-export const VERDICT_HOURS = 24;
-export const FALLBACK_VERDICT_EPOCHS = 10;
-
-/**
  * For ongoing misses, the verdict compares with this many times the verdict
  * period before it (about the 6 days before the last 24 hours).
  */
@@ -137,11 +130,6 @@ export function summarizeWindow(
   };
 }
 
-/**
- * The period the reliability headline covers.
- */
-export const HEADLINE_HOURS = 7 * 24;
-
 export type NetworkComparison = 'above' | 'below' | 'at';
 
 /**
@@ -250,17 +238,6 @@ export function reliabilityVerdict(
  */
 export class EpochDuration {
   constructor(public readonly msPerEpoch: number) {}
-
-  /**
-   * epochsIn is the number of whole epochs closest to a number of hours, at
-   * least one, or `fallback` when the epoch length isn't known yet.
-   */
-  epochsIn(hours: number, fallback: number): number {
-    if (this.msPerEpoch <= 0) {
-      return fallback;
-    }
-    return Math.max(1, Math.round((hours * HOUR_MS) / this.msPerEpoch));
-  }
 
   /**
    * span describes a number of epochs as a duration, e.g. "2 days".

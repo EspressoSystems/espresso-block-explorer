@@ -212,23 +212,6 @@
   text-transform: uppercase;
 }
 
-.validator-details-section .sub-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-block: 24px 8px;
-}
-
-.validator-details-section .sub-head h3 {
-  color: var(--color--brown--4);
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: 400;
-  opacity: 72%;
-  font-size: 11px;
-  line-height: 16px;
-  text-transform: uppercase;
-}
-
 .validator-details-total {
   margin-block-start: 8px;
   font-family: 'Neue Montreal', sans-serif;
