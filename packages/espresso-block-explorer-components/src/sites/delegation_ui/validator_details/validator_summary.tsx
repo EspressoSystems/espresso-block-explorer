@@ -37,12 +37,15 @@ import {
 import './validator_summary.css';
 
 /**
- * ValidatorStatusChip shows whether the validator is in the active set.
+ * ValidatorStatusChip shows whether the validator is in the active set, or
+ * exiting when the staking API lists the wallet's stake in it as a pending
+ * exit.
  */
 export const ValidatorStatusChip: React.FC = () => {
+  const validator = React.useContext(ValidatorNodeContext);
   const facts = useValidatorFacts();
-  const history = React.useContext(ValidatorHistoryContext);
-  if (history?.exitedAt) {
+  const pendingExits = React.useContext(PendingExitsContext);
+  if (pendingExits.has(validator.addressText)) {
     return <ExitingChip />;
   }
   return facts.isActive ? <ActiveConsensusChip /> : <InactiveConsensusChip />;
@@ -152,7 +155,6 @@ export const ValidatorStakeActions: React.FC<ValidatorStakeActionsProps> = ({
   const delegations = React.useContext(CurrentDelegationsContext);
   const pendingUndelegations = React.useContext(PendingUndelegationsContext);
   const pendingExits = React.useContext(PendingExitsContext);
-  const history = React.useContext(ValidatorHistoryContext);
   const now = React.useContext(Now);
   const locale = React.useContext(CurrentLocale);
 
@@ -163,8 +165,11 @@ export const ValidatorStakeActions: React.FC<ValidatorStakeActionsProps> = ({
   };
 
   // An exiting validator takes no new stake, and stake in it is claimed
-  // through ExitNotice once the exit escrow ends.
-  if (history?.exitedAt || pendingExits.has(validator.addressText)) {
+  // through ExitNotice once the exit escrow ends. Whether it exited comes
+  // from the staking API only: exited validators drop out of its validator
+  // list, so a listed one can only be exiting while the wallet's exit is
+  // pending.
+  if (pendingExits.has(validator.addressText)) {
     return (
       <div className={className}>
         <ButtonLarge
@@ -336,16 +341,15 @@ export const ClaimNotice: React.FC<{
 };
 
 /**
- * ExitNotice explains that the current validator is exiting. With stake in
- * it, it says when that stake can be claimed, and offers the claim once it
- * can be.
+ * ExitNotice explains that the current validator is exiting when the
+ * connected wallet has stake in it pending exit. It says when that stake can
+ * be claimed, and offers the claim once it can be.
  */
 export const ExitNotice: React.FC<{
   className?: string;
   beforeOpen?: () => void;
 }> = ({ className, beforeOpen }) => {
   const validator = React.useContext(ValidatorNodeContext);
-  const history = React.useContext(ValidatorHistoryContext);
   const stakingModal = React.useContext(ModalContext);
   const setSelection = React.useContext(SetValidatorSelectionContext);
   const pendingExits = React.useContext(PendingExitsContext);
@@ -354,7 +358,7 @@ export const ExitNotice: React.FC<{
 
   const address = validator.addressText;
   const pending = pendingExits.get(address) ?? null;
-  if (!pending && !history?.exitedAt) {
+  if (!pending) {
     return null;
   }
 
@@ -373,7 +377,7 @@ export const ExitNotice: React.FC<{
       minute: '2-digit',
     }).format(value);
 
-  if (pending && pending.availableTime.valueOf() <= now.valueOf()) {
+  if (pending.availableTime.valueOf() <= now.valueOf()) {
     return (
       <div className={classes}>
         <span>
@@ -398,15 +402,11 @@ export const ExitNotice: React.FC<{
     <div className={classes}>
       <span>
         <Text text="This validator is exiting and no longer accepts delegations." />
-        {pending && (
-          <small>
-            <Text text="Your " />
-            <MoneyText money={MonetaryValue.ESP(pending.amount)} />
-            <Text
-              text={` can be claimed from ${date(pending.availableTime)}.`}
-            />
-          </small>
-        )}
+        <small>
+          <Text text="Your " />
+          <MoneyText money={MonetaryValue.ESP(pending.amount)} />
+          <Text text={` can be claimed from ${date(pending.availableTime)}.`} />
+        </small>
       </span>
     </div>
   );

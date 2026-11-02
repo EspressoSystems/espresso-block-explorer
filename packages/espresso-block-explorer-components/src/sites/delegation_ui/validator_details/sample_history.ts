@@ -145,10 +145,6 @@ export interface ValidatorHistory {
   delegationBaselines?: ReadonlyMap<string, DelegationBaseline>;
   registeredAt: null | Date;
   /**
-   * exitedAt is when the validator exited the stake table, if it has.
-   */
-  exitedAt: null | Date;
-  /**
    * networkMissedRates is the network's average missed slot rate for each
    * epoch, when known.
    */
@@ -360,7 +356,6 @@ export function sampleValidatorHistory(
     activity: sampleActivity(random, input),
     commissionChanges: sampleCommission(random, input),
     registeredAt: null,
-    exitedAt: null,
     networkMissedRates: new Map(),
     lastEpochVote: null,
     nodeVersion: null,
