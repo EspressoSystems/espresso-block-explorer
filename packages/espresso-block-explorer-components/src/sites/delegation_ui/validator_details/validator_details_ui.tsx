@@ -9,6 +9,7 @@ import { ProvideValidatorNodeContext } from '../contexts/validator_node_context'
 import { InAppLink } from '../elements/link/in_app_link';
 import { StakingModal } from '../staking_modal/staking_modal';
 import { useValidatorHistoryFile } from './validator_details_contexts';
+import { ValidatorDetailsErrorBoundary } from './validator_details_error_boundary';
 import { ValidatorDetailsPage } from './validator_details_page';
 import { exitedAtFromFile, isValidatorAddress } from './validator_history_file';
 import './validator_details_page.css';
@@ -171,7 +172,14 @@ export const ValidatorDetailsView: React.FC<ValidatorDetailsViewProps> = ({
   return (
     <ProvideDialogModalControls>
       <StakingModal />
-      <ResolveValidator address={address} />
+      <ValidatorDetailsErrorBoundary
+        key={address ?? ''}
+        fallback={
+          <ValidatorPageMessage message="This validator couldn't be shown right now." />
+        }
+      >
+        <ResolveValidator address={address} />
+      </ValidatorDetailsErrorBoundary>
     </ProvideDialogModalControls>
   );
 };

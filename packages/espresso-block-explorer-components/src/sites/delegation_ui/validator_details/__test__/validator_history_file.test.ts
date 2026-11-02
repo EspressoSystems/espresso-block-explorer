@@ -35,7 +35,7 @@ function event(
     type,
     timestamp,
     block: 1,
-    tx_hash: '0xabc',
+    tx_hash: `0x${'ab'.repeat(32)}`,
     log_index: 0,
     delegator: null,
     amount: null,
@@ -599,6 +599,52 @@ describe('isValidatorHistoryFile', () => {
     ).toBe(false);
     expect(
       isValidatorHistoryFile({ ...file({}), earnings: { intervals: 'x' } }),
+    ).toBe(false);
+  });
+
+  it('rejects values that would throw while a page renders', () => {
+    const good = event('delegated', '2026-10-01T00:00:00Z');
+    const withEvent = (fields: Record<string, unknown>) => ({
+      ...file({}),
+      events: [{ ...good, ...fields }],
+    });
+    expect(isValidatorHistoryFile(withEvent({}))).toBe(true);
+    expect(isValidatorHistoryFile(withEvent({ timestamp: 'garbage' }))).toBe(
+      false,
+    );
+    expect(isValidatorHistoryFile(withEvent({ tx_hash: 12345 }))).toBe(false);
+    expect(isValidatorHistoryFile(withEvent({ tx_hash: null }))).toBe(false);
+    expect(isValidatorHistoryFile(withEvent({ tx_hash: '0xabc' }))).toBe(false);
+    expect(isValidatorHistoryFile(withEvent({ block: '1' }))).toBe(false);
+    expect(isValidatorHistoryFile(withEvent({ log_index: -1 }))).toBe(false);
+    expect(
+      isValidatorHistoryFile({
+        ...file({}),
+        stake_history: [{ timestamp: 'garbage', block: 1, stake: '1000' }],
+      }),
+    ).toBe(false);
+
+    const interval = {
+      start: '2026-10-01T00:00:00Z',
+      end: '2026-10-02T00:00:00Z',
+      source: 'measured',
+      validator: '0',
+      delegators: '0',
+    };
+    expect(
+      isValidatorHistoryFile({
+        ...file({}),
+        earnings: { as_of: '2026-10-02T00:00:00Z', intervals: [interval] },
+      }),
+    ).toBe(true);
+    expect(
+      isValidatorHistoryFile({ ...file({}), earnings: { as_of: 'garbage' } }),
+    ).toBe(false);
+    expect(
+      isValidatorHistoryFile({
+        ...file({}),
+        earnings: { intervals: [{ ...interval, end: 'garbage' }] },
+      }),
     ).toBe(false);
   });
 });

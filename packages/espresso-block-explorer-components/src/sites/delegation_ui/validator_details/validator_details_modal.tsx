@@ -22,6 +22,7 @@ import {
   ValidatorHistoryContext,
 } from './validator_details_contexts';
 import { ValidatorHistorySources } from './sample_history';
+import { ValidatorDetailsErrorBoundary } from './validator_details_error_boundary';
 import { ReliabilityOverview } from './reliability_view';
 import './validator_details_modal.css';
 import { HistoryEmpty, ValidatorActivityTable } from './validator_history';
@@ -93,13 +94,18 @@ export const ProvideValidatorDetailsModal: React.FC<
         }}
       >
         {address && (
-          <NodeAddressContext.Provider value={address}>
-            <ProvideValidatorNodeContext>
-              <ProvideValidatorHistory>
-                <ValidatorDetailsModalContent />
-              </ProvideValidatorHistory>
-            </ProvideValidatorNodeContext>
-          </NodeAddressContext.Provider>
+          <ValidatorDetailsErrorBoundary
+            key={address}
+            fallback={<ValidatorDetailsModalError />}
+          >
+            <NodeAddressContext.Provider value={address}>
+              <ProvideValidatorNodeContext>
+                <ProvideValidatorHistory>
+                  <ValidatorDetailsModalContent />
+                </ProvideValidatorHistory>
+              </ProvideValidatorNodeContext>
+            </NodeAddressContext.Provider>
+          </ValidatorDetailsErrorBoundary>
         )}
       </dialog>
     </ValidatorDetailsModalContext.Provider>
@@ -120,6 +126,36 @@ const OverviewItem: React.FC<{
 );
 
 const Dash: React.FC = () => <Text text="-" />;
+
+/**
+ * ValidatorDetailsModalError replaces the modal's content when the
+ * validator fails to render, so the modal can still be closed.
+ */
+const ValidatorDetailsModalError: React.FC = () => {
+  const controls = React.useContext(ValidatorDetailsModalContext);
+  return (
+    <div className="validator-details-modal-frame">
+      <div className="validator-details-modal-header">
+        <span />
+        <h1 id="validator-details-modal-title">
+          <Text text="Validator" />
+        </h1>
+        <button
+          className="validator-details-modal-close"
+          aria-label="Close"
+          onClick={() => controls?.close()}
+        >
+          <Close />
+        </button>
+      </div>
+      <div className="validator-details-modal-body">
+        <p className="validator-details-empty">
+          <Text text="This validator couldn't be shown right now." />
+        </p>
+      </div>
+    </div>
+  );
+};
 
 const ModalOverview: React.FC = () => {
   const facts = useValidatorFacts();

@@ -211,6 +211,24 @@ function isStringOrNull(value: unknown): boolean {
   return value === null || typeof value === 'string';
 }
 
+/**
+ * isTimestamp says whether a value is a date string that parses. new Date()
+ * accepts anything, but formatting an invalid date throws while rendering.
+ */
+function isTimestamp(value: unknown): boolean {
+  return typeof value === 'string' && Number.isFinite(Date.parse(value));
+}
+
+function isIndex(value: unknown): boolean {
+  return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0;
+}
+
+const TX_HASH = /^0x[0-9a-fA-F]{64}$/;
+
+function isTxHash(value: unknown): boolean {
+  return typeof value === 'string' && TX_HASH.test(value);
+}
+
 function isEpoch(value: unknown): boolean {
   return (
     isShape(value) &&
@@ -233,7 +251,7 @@ function isNetworkEpoch(value: unknown): boolean {
 function isStakePoint(value: unknown): boolean {
   return (
     isShape(value) &&
-    typeof value.timestamp === 'string' &&
+    isTimestamp(value.timestamp) &&
     typeof value.stake === 'string'
   );
 }
@@ -242,7 +260,10 @@ function isEvent(value: unknown): boolean {
   return (
     isShape(value) &&
     typeof value.type === 'string' &&
-    typeof value.timestamp === 'string' &&
+    isTimestamp(value.timestamp) &&
+    isIndex(value.block) &&
+    isTxHash(value.tx_hash) &&
+    isIndex(value.log_index) &&
     isStringOrNull(value.delegator) &&
     isStringOrNull(value.amount) &&
     isNumberOrNull(value.old_commission_bps) &&
@@ -269,21 +290,20 @@ function isDelegationBaselines(value: unknown): boolean {
       ([wallet, baseline]) =>
         isValidatorAddress(wallet) &&
         isShape(baseline) &&
-        typeof baseline.delegated_at === 'string' &&
-        Number.isFinite(Date.parse(baseline.delegated_at)) &&
+        isTimestamp(baseline.delegated_at) &&
         (baseline.commission_bps === null ||
           (typeof baseline.commission_bps === 'number' &&
             Number.isInteger(baseline.commission_bps) &&
             baseline.commission_bps >= 0 &&
             baseline.commission_bps <= 10_000)) &&
-        typeof baseline.block === 'number' &&
-        Number.isSafeInteger(baseline.block) &&
-        baseline.block >= 0 &&
-        typeof baseline.log_index === 'number' &&
-        Number.isSafeInteger(baseline.log_index) &&
-        baseline.log_index >= 0,
+        isIndex(baseline.block) &&
+        isIndex(baseline.log_index),
     )
   );
+}
+
+function isEarningsInterval(value: unknown): boolean {
+  return isShape(value) && isTimestamp(value.start) && isTimestamp(value.end);
 }
 
 function isEarnings(value: unknown): boolean {
@@ -292,7 +312,10 @@ function isEarnings(value: unknown): boolean {
   }
   return (
     isShape(value) &&
-    (value.intervals === undefined || Array.isArray(value.intervals)) &&
+    (value.as_of === undefined || isTimestamp(value.as_of)) &&
+    (value.intervals === undefined ||
+      (Array.isArray(value.intervals) &&
+        value.intervals.every(isEarningsInterval))) &&
     (value.windows === undefined || isShape(value.windows)) &&
     (value.lifetime === undefined || isShape(value.lifetime))
   );

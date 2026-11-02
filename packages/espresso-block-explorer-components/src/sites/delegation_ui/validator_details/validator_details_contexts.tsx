@@ -213,17 +213,21 @@ function useEpochValidatorEntry(
     };
   }, [service, epoch]);
 
-  if (!loaded) {
-    return null;
-  }
-
-  const target = address.toLowerCase();
-  for (const [key, entry] of loaded.validators.validators) {
-    if (key.toLowerCase() === target) {
-      return { entry, epoch: loaded.epoch };
+  // The result is a dependency of the validator history, so it must keep its
+  // identity between renders.
+  return React.useMemo(() => {
+    if (!loaded) {
+      return null;
     }
-  }
-  return null;
+
+    const target = address.toLowerCase();
+    for (const [key, entry] of loaded.validators.validators) {
+      if (key.toLowerCase() === target) {
+        return { entry, epoch: loaded.epoch };
+      }
+    }
+    return null;
+  }, [loaded, address]);
 }
 
 /**
@@ -285,7 +289,17 @@ export function useValidatorHistoryFile(address: `0x${string}`): {
     let mounted = true;
     const refresh = () =>
       fetchValidatorHistoryFile(url).then(
-        (file) => mounted && setLoaded({ url, file: { state: 'live', file } }),
+        (file) =>
+          mounted &&
+          // Refreshing within the cache window returns the same file; keep
+          // the state so the history isn't rebuilt for nothing.
+          setLoaded((prev) =>
+            prev?.url === url &&
+            prev.file.state === 'live' &&
+            prev.file.file === file
+              ? prev
+              : { url, file: { state: 'live', file } },
+          ),
         (err) =>
           mounted &&
           setLoaded({
@@ -309,13 +323,17 @@ export function useValidatorHistoryFile(address: `0x${string}`): {
   }, [url]);
 
   if (!url) {
-    return { network, file: { state: 'none' } };
+    return { network, file: NO_HISTORY_FILE };
   }
   if (!loaded || loaded.url !== url) {
-    return { network, file: { state: 'loading' } };
+    return { network, file: LOADING_HISTORY_FILE };
   }
   return { network, file: loaded.file };
 }
+
+// Shared so the file state keeps its identity between renders.
+const NO_HISTORY_FILE: HistoryFileState = { state: 'none' };
+const LOADING_HISTORY_FILE: HistoryFileState = { state: 'loading' };
 
 const ALL_LIVE = {
   stake: 'live',
