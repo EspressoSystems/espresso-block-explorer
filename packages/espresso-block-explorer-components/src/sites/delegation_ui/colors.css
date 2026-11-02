@@ -48,6 +48,12 @@
   --color--brown--text: #b67237;
   --color--brown--text--darker: #915b2c;
 
+  /* The Delegate buttons: caramel by day, a cookie outline at night. */
+  --color--delegate: #de9e67;
+  --color--delegate--hovered: #b67237;
+  --color--delegate--border: #b67237;
+  --color--on-delegate: #ffffff;
+
   /**
    * These colors are not listed in the Style Guide but are used in the
    * delegation UI components.
@@ -72,4 +78,65 @@
   --color--undesign--green-3-alpha-24: #67b93e3d;
   --color--undesign--red--1: #f43f5e;
   --color--undesign--red--1--alpha-16: #f43f5e29;
+}
+
+/*
+ * Night theme, matched to the dark scheme of explorer.espresso.network.
+ * The theme toggle sets data-theme on <html>; until the user picks one, the
+ * inline script in the delegation-ui root layout follows the OS setting.
+ *
+ * The brown scale flips so each step keeps its role: brown--0 is still the
+ * card surface and brown--4 still the main text, now coffee and vanilla
+ * instead of white and coffee. Alpha steps of brown--3 stay cookie, which is
+ * what the explorer uses for its borders.
+ */
+:root[data-theme='dark'] {
+  --color--brown--0: #451f17;
+  --color--brown--1: #270903;
+  --color--brown--2: #b67237;
+  --color--brown--3: #de9e67;
+  --color--brown--4: #fcebde;
+  --color--brown--5: #fff7ef;
+  --color--brown--6: #fffaf5;
+  --color--brown--0--alpha-015: #451f1705;
+  --color--brown--0--alpha-32: #451f1751;
+  --color--brown--0--alpha-53: #451f1788;
+  --color--brown--0--alpha-60: #451f1799;
+  --color--brown--1--alpha-32: #27090352;
+  --color--brown--1--alpha-50: #27090380;
+  --color--brown--1--alpha-60: #27090399;
+  --color--brown--3--mix-80: #de9e67;
+  --color--brown--4--alpha-04: #fcebde0a;
+  --color--brown--4--alpha-60: #fcebde99;
+  --color--brown--4--alpha-32: #fcebde52;
+  --color--brown--4--alpha-40: #fcebde66;
+  --color--brown--4--alpha-50: #fcebde80;
+
+  --color--blue--0: #1eb6f81a;
+  --color--blue--2: #1eb6f8;
+  --color--blue--2--alpha-08: #1eb6f833;
+  --color--blue--2--alpha-53: #1eb6f888;
+  --color--blue--2--alpha-72: #1eb6f8b8;
+
+  --color--brown--text: #de9e67;
+  --color--brown--text--darker: #de9e67;
+
+  --color--undesign--black--alpha-08: #fcebde14;
+  --color--undesign--black--alpha-16: #fcebde29;
+  --color--undesign--black--alpha-24: #fcebde3d;
+  --color--undesign--black--alpha-32: #fcebde52;
+  --color--undesign--black--alpha-40: #fcebde66;
+  --color--undesign--black--alpha-60: #fcebde99;
+  --color--undesign--black--alpha-66: #fcebdeaa;
+  --color--undesign--black--alpha-72: #fcebdeb8;
+  --color--undesign--black--alpha-88: #fcebdee0;
+  --color--undesign--white-1: #fcebde0d;
+  --color--undesign--red--1: #fb7185;
+  --color--undesign--red--1--alpha-16: #fb718529;
+
+  /* A cookie outline: the explorer's chart-bar cookie as a tint and a border. */
+  --color--delegate: #b672373d;
+  --color--delegate--hovered: #b6723766;
+  --color--delegate--border: #b67237;
+  --color--on-delegate: #de9e67;
 }

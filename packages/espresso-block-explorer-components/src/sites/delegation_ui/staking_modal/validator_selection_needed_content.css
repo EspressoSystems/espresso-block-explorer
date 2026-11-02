@@ -144,7 +144,7 @@
 }
 
 .staking-modal-value a {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--delegation-ui--font-family);
   text-transform: uppercase;
   color: inherit;
   white-space: nowrap;

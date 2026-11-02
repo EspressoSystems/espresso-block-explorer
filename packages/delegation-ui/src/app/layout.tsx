@@ -18,6 +18,25 @@ if (
 }
 
 /**
+ * setColorThemeScript sets data-theme on <html> before the first paint: the
+ * theme the user picked with the theme toggle (saved under the same key as
+ * `colorThemeStorageKey`), or else the OS setting, which it keeps following
+ * until the user picks one.
+ */
+const setColorThemeScript = `(function () {
+  var root = document.documentElement;
+  var media = window.matchMedia('(prefers-color-scheme: dark)');
+  function apply() {
+    var saved = null;
+    try { saved = localStorage.getItem('esp-theme'); } catch (e) {}
+    if (saved !== 'light' && saved !== 'dark') saved = null;
+    root.dataset.theme = saved || (media.matches ? 'dark' : 'light');
+  }
+  apply();
+  media.addEventListener('change', apply);
+})();`;
+
+/**
  * RootLayout is the default layout of the NextJS Application.  All Pages,
  * by default, have this layout as their default layout.
  *
@@ -26,7 +45,10 @@ if (
  */
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="light" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: setColorThemeScript }} />
+      </head>
       <body>{children}</body>
     </html>
   );

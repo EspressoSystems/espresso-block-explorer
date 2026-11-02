@@ -25,7 +25,7 @@
 }
 
 main.delegation-ui {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--delegation-ui--font-family);
   min-width: 100vw;
   min-height: 100vh;
   width: fit-content;
@@ -51,8 +51,15 @@ main.delegation-ui::before {
   font-style: normal;
 }
 
+/* The explorer's type, in both themes. */
 :root {
+  --delegation-ui--font-family: 'Neue Montreal', sans-serif;
   --icon--fill-color: var(--color--brown--text);
   --icon--stroke-color: transparent;
   --icon--transparent-color: transparent;
+}
+
+/* The night theme sits on the explorer's flat chocolate page. */
+[data-theme='dark'] main.delegation-ui {
+  background: var(--color--brown--1);
 }
