@@ -7,7 +7,7 @@
 
 .validator-details-stats h3 {
   color: var(--color--brown--4);
-  font-family: var(--delegation-ui--font-family);
+  font-family: 'IBM Plex Sans', sans-serif;
   font-weight: 400;
   opacity: 72%;
   font-size: 11px;
