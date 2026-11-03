@@ -5,7 +5,7 @@ import {
   DataTableStateContext,
 } from '@/components/data/data_table/data_table';
 import { SortDirection } from '@/components/data/types';
-import { Text } from '@/components/text';
+import { NumberText, Text } from '@/components/text';
 import { DataContext } from '@/contexts/data_provider';
 import {
   ExplorerSummaryContext,
@@ -40,6 +40,8 @@ export const RefreshTransactionSummariesContext = React.createContext<
 export interface TransactionSummaryDataTableState extends DataTableState<TransactionSummaryColumn> {
   height?: number;
   offset?: number;
+  /** How many transactions to request. Defaults to BLOCKS_TO_SHOW. */
+  limit?: number;
   /** Changing this re-fetches the current page. */
   refreshedAt?: number;
 }
@@ -73,7 +75,7 @@ const LoadTransactionSummaryDataTableData: React.FC<React.PropsWithChildren> = (
       : ExplorerGetTransactionSummariesTarget.heightAndOffset(
           dataTableState.height,
           dataTableState.offset || 0,
-          BLOCKS_TO_SHOW,
+          dataTableState.limit ?? BLOCKS_TO_SHOW,
         ),
     !blockID
       ? ExplorerGetTransactionSummariesFilter.none()
@@ -128,6 +130,7 @@ const LoadTransactionSummaryDataTableDataFromExplorerSummary: React.FC<
 export interface TransactionsSummaryDataLoaderProps {
   startAtBlock?: number;
   offset?: number;
+  limit?: number;
   children: React.ReactNode | React.ReactNode[];
 }
 
@@ -138,7 +141,7 @@ export interface TransactionsSummaryDataLoaderProps {
 export const TransactionSummaryDataLoader: React.FC<
   TransactionsSummaryDataLoaderProps
 > = (props) => {
-  const { startAtBlock, offset, ...rest } = props;
+  const { startAtBlock, offset, limit, ...rest } = props;
   const [refreshedAt, setRefreshedAt] = React.useState<number>();
   const refresh = React.useCallback(() => setRefreshedAt(Date.now()), []);
   const initialState = React.useMemo(
@@ -147,9 +150,10 @@ export const TransactionSummaryDataLoader: React.FC<
       sortDir: SortDirection.desc,
       height: startAtBlock,
       offset: offset,
+      limit,
       refreshedAt,
     }),
-    [startAtBlock, offset, refreshedAt],
+    [startAtBlock, offset, limit, refreshedAt],
   );
 
   return (
@@ -231,6 +235,94 @@ export const TransactionsNavigation: React.FC<TransactionsNavigationProps> = (
           <Text text="Older" />
         </LabeledAnchorButton>
       )}
+    </nav>
+  );
+};
+
+/**
+ * BlockTransactionsPage is one page of a block's transactions, by position:
+ * the positions it covers, and the offset and limit to request them with.
+ */
+export interface BlockTransactionsPage {
+  /** The position of the page's first transaction. */
+  first: number;
+  /** The position of the page's last transaction. */
+  last: number;
+  /** The service's offset, which counts from the block's newest transaction. */
+  offset: number;
+  limit: number;
+  pageCount: number;
+}
+
+/**
+ * blockTransactionsPage works out which transactions the given page of a
+ * block holds. Pages run in position order, so the first page starts at
+ * position 0, and the last page may be shorter than the others.
+ */
+export function blockTransactionsPage(
+  numTransactions: number,
+  page: number,
+  pageSize: number = BLOCKS_TO_SHOW,
+): BlockTransactionsPage {
+  const pageCount = Math.max(1, Math.ceil(numTransactions / pageSize));
+  const index = Math.min(Math.max(0, page), pageCount - 1);
+  const first = index * pageSize;
+  const last = Math.max(first, Math.min(numTransactions, first + pageSize) - 1);
+
+  return {
+    first,
+    last,
+    offset: Math.max(0, numTransactions - 1 - last),
+    // A shorter limit keeps the last page from reaching back into the one
+    // before it.
+    limit: pageCount > 1 ? last - first + 1 : pageSize,
+    pageCount,
+  };
+}
+
+export interface BlockTransactionsNavigationProps {
+  className?: string;
+  numTransactions: number;
+  page: number;
+  onPageChange: (page: number) => void;
+}
+
+/**
+ * BlockTransactionsNavigation pages through the transactions of a single
+ * block, for blocks with more transactions than fit on one page.
+ */
+export const BlockTransactionsNavigation: React.FC<
+  BlockTransactionsNavigationProps
+> = ({ className, numTransactions, page, onPageChange }) => {
+  const { first, last, pageCount } = blockTransactionsPage(
+    numTransactions,
+    page,
+  );
+
+  if (pageCount <= 1) {
+    return null;
+  }
+
+  return (
+    <nav className={addClassToClassName(className, 'transactions-navigation')}>
+      {page > 0 && (
+        <LabeledButton onClick={() => onPageChange(page - 1)}>
+          <Text text="Previous" />
+        </LabeledButton>
+      )}
+      {page < pageCount - 1 && (
+        <LabeledButton onClick={() => onPageChange(page + 1)}>
+          <Text text="Next" />
+        </LabeledButton>
+      )}
+      <span>
+        <Text text="Positions " />
+        <NumberText number={first} />
+        <Text text="-" />
+        <NumberText number={last} />
+        <Text text=" of " />
+        <NumberText number={numTransactions} />
+      </span>
     </nav>
   );
 };
