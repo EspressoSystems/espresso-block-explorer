@@ -16,7 +16,11 @@ import {
 import { default as Footer } from '@/block_explorer/components/page_sections/footer/footer';
 import { default as Header } from '@/block_explorer/components/page_sections/header/header';
 import { default as PageTitle } from '@/block_explorer/components/page_sections/page_title/page_title';
-import { TransactionSummaryDataLoader } from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
+import {
+  BlockTransactionsNavigation,
+  blockTransactionsPage,
+  TransactionSummaryDataLoader,
+} from '@/block_explorer/components/page_sections/transaction_summary_data_table/transaction_summary_data_loader';
 import {
   BlockTransactionsSummaryDataTable,
   TransactionsSummaryDataTablePlaceholder,
@@ -32,6 +36,7 @@ import { ErrorDisplay } from '@/components/error/error_display';
 import { WithLoadingShimmer } from '@/components/loading/loading_shimmer';
 import { NumberText, Text } from '@/components/text';
 import { ErrorContext } from '@/contexts/error_provider';
+import { ExplorerBlockDetailContext } from '@/contexts/explorer_api_contexts';
 import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
 import { LoadingContext } from '@/contexts/loading_provider';
 import { ExplorerGetBlockSummariesRequest } from '@/service/hotshot_query_service/explorer/get_block_summaries_request';
@@ -84,16 +89,19 @@ const GuardBlockDetails: React.FC<GuardBlockDetailsProps> = (props) => {
  * titled and wrapped in a card of its own so it reads as a section beneath
  * the block's details.
  */
-const BlockTransactionsCard: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => (
+const BlockTransactionsCard: React.FC<
+  React.PropsWithChildren<{ navigation?: React.ReactNode }>
+> = ({ children, navigation }) => (
   <EdgeMarginCard className="block-transactions page-table-card page-table-card--block">
     <div className="block-transactions--header">
       <Text300H2>
         <BlobText text="Blobs" />
       </Text300H2>
     </div>
-    <div className="card--padding">{children}</div>
+    <div className="card--padding">
+      {navigation}
+      {children}
+    </div>
   </EdgeMarginCard>
 );
 
@@ -101,7 +109,9 @@ const BlockTransactionsCard: React.FC<React.PropsWithChildren> = ({
  * GuardBlockTransactions guards rendering the block's transactions so long as
  * the component is not in a loading or error state.
  */
-const GuardBlockTransactions: React.FC = () => {
+const GuardBlockTransactions: React.FC<{ navigation?: React.ReactNode }> = ({
+  navigation,
+}) => {
   const error = React.useContext(ErrorContext);
   const loading = React.useContext(LoadingContext);
 
@@ -127,7 +137,7 @@ const GuardBlockTransactions: React.FC = () => {
   }
 
   return (
-    <BlockTransactionsCard>
+    <BlockTransactionsCard navigation={navigation}>
       <BlockTransactionsSummaryDataTable />
     </BlockTransactionsCard>
   );
@@ -135,14 +145,46 @@ const GuardBlockTransactions: React.FC = () => {
 
 /**
  * BlockTransactions loads the transactions belonging to the block currently
- * being displayed.
+ * being displayed. A block with more transactions than fit on one page is
+ * paged through in position order, starting from position 0; until the
+ * block's transaction count is known, its newest transactions are loaded.
  */
 const BlockTransactions: React.FC = () => {
   const blockID = React.useContext(BlockNumberContext);
+  const blockDetail = React.useContext(ExplorerBlockDetailContext);
+  // The page belongs to the block it was chosen on, so moving to another
+  // block starts again at its first page.
+  const [paging, setPaging] = React.useState({ block: blockID, page: 0 });
+  const page = paging.block === blockID ? paging.page : 0;
+  const setPage = React.useCallback(
+    (page: number) => setPaging({ block: blockID, page }),
+    [blockID],
+  );
+
+  const numTransactions =
+    blockDetail?.height === blockID ? blockDetail.numTransactions : undefined;
+  const range =
+    numTransactions === undefined
+      ? undefined
+      : blockTransactionsPage(numTransactions, page);
 
   return (
-    <TransactionSummaryDataLoader startAtBlock={blockID}>
-      <GuardBlockTransactions />
+    <TransactionSummaryDataLoader
+      startAtBlock={blockID}
+      offset={range?.offset}
+      limit={range?.limit}
+    >
+      <GuardBlockTransactions
+        navigation={
+          numTransactions !== undefined && (
+            <BlockTransactionsNavigation
+              numTransactions={numTransactions}
+              page={page}
+              onPageChange={setPage}
+            />
+          )
+        }
+      />
     </TransactionSummaryDataLoader>
   );
 };
