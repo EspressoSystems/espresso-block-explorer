@@ -368,8 +368,8 @@ describe('delegatorAPRFromFile', () => {
         file({
           earnings: {
             windows: {
-              '7d': { delegator_net_apr: 0.0352 },
-              '30d': { delegator_net_apr: 0.0357 },
+              '7d': { delegator_net_apr: 0.0352, days_covered: 7 },
+              '30d': { delegator_net_apr: 0.0357, days_covered: 30 },
             },
           },
         }),
@@ -388,7 +388,7 @@ describe('delegatorAPRFromFile', () => {
   });
 
   it('needs a week of the window covered before annualizing it', () => {
-    const covered = (days_covered: null | number) =>
+    const covered = (days_covered: undefined | null | number) =>
       delegatorAPRFromFile(
         file({
           earnings: {
@@ -400,8 +400,28 @@ describe('delegatorAPRFromFile', () => {
     expect(covered(6.99)).toBeNull();
     expect(covered(7)).toBe(0.09);
     expect(covered(30)).toBe(0.09);
-    // Older files don't say; they are taken as they are.
-    expect(covered(null)).toBe(0.09);
+  });
+
+  it('does not take a rate on trust when the window does not say what it covers', () => {
+    const covered = (days_covered: unknown) =>
+      delegatorAPRFromFile(
+        file({
+          earnings: {
+            windows: {
+              '30d': { delegator_net_apr: 0.09, days_covered } as never,
+            },
+          },
+        }),
+      );
+    expect(covered(undefined)).toBeNull();
+    expect(covered(null)).toBeNull();
+    expect(covered('30')).toBeNull();
+    expect(covered(Number.NaN)).toBeNull();
+    expect(
+      delegatorAPRFromFile(
+        file({ earnings: { windows: { '30d': { delegator_net_apr: 0.09 } } } }),
+      ),
+    ).toBeNull();
   });
 });
 

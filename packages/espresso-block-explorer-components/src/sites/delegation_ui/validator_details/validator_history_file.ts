@@ -106,8 +106,8 @@ export interface HistoryFileEarningsWindow {
   delegator_net_apr: null | number;
   gross_apr?: null | number;
   /**
-   * days_covered is how many days of the window have data. Older files
-   * don't have it.
+   * days_covered is how many days of the window have data. The exporter
+   * always writes it with the rates; a window without it isn't trusted.
    */
   days_covered?: null | number;
 }
@@ -638,12 +638,13 @@ export function delegatorAPRFromFile(
   file: ValidatorHistoryFile,
 ): null | number {
   const window = file.earnings?.windows?.['30d'];
-  const apr = finiteOrNull(window?.delegator_net_apr);
-  const days = window?.days_covered;
-  if (typeof days === 'number' && !(days >= MIN_APR_WINDOW_DAYS)) {
+  const days = finiteOrNull(window?.days_covered);
+  // A window that doesn't say how much of it has data hasn't shown that it
+  // has enough. The exporter always writes it next to the rate.
+  if (days === null || days < MIN_APR_WINDOW_DAYS) {
     return null;
   }
-  return apr;
+  return finiteOrNull(window?.delegator_net_apr);
 }
 
 function weiToBigInt(wei: undefined | null | string): bigint {
