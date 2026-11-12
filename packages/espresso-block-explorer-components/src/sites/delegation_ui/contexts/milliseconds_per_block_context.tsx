@@ -22,6 +22,13 @@ export const MillisecondsPerBlockContext = React.createContext<number>(
   1_500,
 );
 
+/**
+ * MillisecondsPerBlockMeasuredContext is true once MillisecondsPerBlockContext
+ * holds a value measured from block headers rather than its default.
+ */
+export const MillisecondsPerBlockMeasuredContext =
+  React.createContext<boolean>(false);
+
 type MillisecondsPerBlockState = {
   epochAndBlock: null | EpochAndBlock;
   startHeader: null | AvailabilityAPIHeader;
@@ -221,12 +228,14 @@ const ResolveMillisecondsPerBlock: React.FC<React.PropsWithChildren> = ({
   const data = (React.useContext(DataContext) ??
     null) as null | MillisecondsPerBlockState;
 
-  const millisecondsPerBlockValue =
-    computeMillisecondsPerBlock(data) ?? millisecondsPerBlock;
+  const measured = computeMillisecondsPerBlock(data);
+  const millisecondsPerBlockValue = measured ?? millisecondsPerBlock;
 
   return (
     <MillisecondsPerBlockContext.Provider value={millisecondsPerBlockValue}>
-      {children}
+      <MillisecondsPerBlockMeasuredContext.Provider value={measured !== null}>
+        {children}
+      </MillisecondsPerBlockMeasuredContext.Provider>
     </MillisecondsPerBlockContext.Provider>
   );
 };

@@ -24,6 +24,7 @@ import {
   kIntentClaimAndStake,
   ProvideClaimPortalIntentContext,
 } from '../contexts/claim_portal_intent_context';
+import { SampleValidatorHistoryContext } from '../contexts/validator_details_context';
 import { default as DelegationUI } from '../delegation_ui';
 import { StakingAPIServiceMockInjection } from '../mock/validator_service_injection';
 
@@ -104,7 +105,10 @@ export const Example: React.FC<ExampleProps> = ({
               <ProvideHotShotQueryServiceAPIContext>
                 <ProvideStakingAPIServiceContext>
                   <StakingAPIServiceMockInjection>
-                    <DelegationUI {...rest} />
+                    {/* Stories have no history files to read. */}
+                    <SampleValidatorHistoryContext.Provider value={true}>
+                      <DelegationUI {...rest} />
+                    </SampleValidatorHistoryContext.Provider>
                   </StakingAPIServiceMockInjection>
                 </ProvideStakingAPIServiceContext>
               </ProvideHotShotQueryServiceAPIContext>
