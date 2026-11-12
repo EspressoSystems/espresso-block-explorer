@@ -9,5 +9,15 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   position: relative;
+  font-family: var(--delegation-ui--font-family);
 }
 
+/* Night theme: the page behind the environment banner matches the app. */
+html[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+html[data-theme='dark'],
+html[data-theme='dark'] body {
+  background: var(--color--brown--1);
+}

@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
-
 @font-face {
   font-family: 'Neue Montreal';
   src:
@@ -25,7 +23,7 @@
 }
 
 main.delegation-ui {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--delegation-ui--font-family);
   min-width: 100vw;
   min-height: 100vh;
   width: fit-content;
@@ -45,14 +43,15 @@ main.delegation-ui::before {
   padding-bottom: 1px;
 }
 
-.ibm-plex-mono-regular {
-  font-family: 'IBM Plex Mono', monospace;
-  font-weight: 400;
-  font-style: normal;
-}
-
+/* The explorer's type, in both themes. */
 :root {
+  --delegation-ui--font-family: 'Neue Montreal', sans-serif;
   --icon--fill-color: var(--color--brown--text);
   --icon--stroke-color: transparent;
   --icon--transparent-color: transparent;
+}
+
+/* The night theme sits on the explorer's flat chocolate page. */
+[data-theme='dark'] main.delegation-ui {
+  background: var(--color--brown--1);
 }

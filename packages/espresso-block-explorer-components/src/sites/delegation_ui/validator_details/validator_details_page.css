@@ -147,7 +147,6 @@
 .validator-details-facts dd {
   color: var(--color--brown--4);
   text-align: end;
-  font-variant-numeric: tabular-nums;
 }
 
 .validator-details-position {
@@ -173,7 +172,6 @@
   display: flex;
   justify-content: space-between;
   color: var(--color--brown--4);
-  font-variant-numeric: tabular-nums;
 }
 
 .validator-details-position .rows > div > span:first-child {

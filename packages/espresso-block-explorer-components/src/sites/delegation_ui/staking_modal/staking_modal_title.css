@@ -1,7 +1,7 @@
 .staking-modal-header .staking-modal-title {
   grid-area: title;
   text-align: center;
-  font-family: 'IBM Mono Plex', monospace;
+  font-family: var(--delegation-ui--font-family);
   text-transform: uppercase;
   font-style: normal;
   font-weight: 600;

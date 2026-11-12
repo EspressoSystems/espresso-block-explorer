@@ -19,4 +19,5 @@ export * from './pending_claims';
 export * from './pending_exits';
 export * from './search_term_node_filter';
 export * from './section_filter';
+export * from './theme_toggle';
 export * from './wrong_network_check';
