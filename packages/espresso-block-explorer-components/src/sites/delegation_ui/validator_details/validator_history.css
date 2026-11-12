@@ -165,6 +165,29 @@ table.validator-details-table.compact td + td {
   }
 }
 
+/* Shows the rest of a table that starts with its latest rows */
+.validator-details-show-all {
+  margin-block-start: 12px;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--color--brown--3);
+  cursor: pointer;
+}
+
+.validator-details-show-all:hover {
+  color: var(--color--brown--4);
+  text-decoration: underline;
+}
+
+.validator-details-show-all:focus-visible {
+  outline: 2px solid var(--color--brown--3);
+  outline-offset: 2px;
+}
+
 .validator-details-table-note {
   margin-block-start: 12px;
   font-size: 11px;

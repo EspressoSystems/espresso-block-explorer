@@ -1,5 +1,11 @@
 import React from 'react';
-import { act, cleanup, render, screen } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { EnvironmentContext } from '@/components/config/environment';
 import { HotShotQueryServiceAPIContext } from '@/contexts/hot_shot_query_service_api_context';
@@ -149,6 +155,58 @@ describe('the APR beside Delegate', () => {
     await renderPage(historyFile());
 
     expect(fact(ESTIMATED_APR_LABEL)).toContain('3.6');
+  });
+});
+
+describe('the validator info section', () => {
+  const wallet = `0x${'0a'.repeat(20)}` as `0x${string}`;
+  /** A file with the given number of delegations, a day apart. */
+  const withDelegations = (count: number): ValidatorHistoryFile => ({
+    ...historyFile(),
+    events: Array.from({ length: count }, (_, i) => ({
+      type: 'delegated' as const,
+      timestamp: new Date(Date.UTC(2026, 9, 1 + i)).toISOString(),
+      block: i + 1,
+      tx_hash: `0x${(i + 1).toString(16).padStart(64, '0')}` as `0x${string}`,
+      log_index: 0,
+      delegator: wallet,
+      amount: `${BigInt(i + 1) * ESP}`,
+      old_commission_bps: null,
+      new_commission_bps: null,
+    })),
+  });
+  const rows = () =>
+    document.querySelectorAll('.validator-details-table tbody tr').length;
+  const button = (name: string) => screen.queryByRole('button', { name });
+
+  it('lists the latest ten delegations and the rest on request', async () => {
+    await renderPage(withDelegations(12));
+
+    expect(rows()).toBe(10);
+    // Newest first: the twelfth delegation, of 12 ESP, leads.
+    expect(
+      document.querySelector('.validator-details-table tbody tr')?.textContent,
+    ).toContain('12.00');
+
+    fireEvent.click(button('Show all 12') as HTMLElement);
+    expect(rows()).toBe(12);
+
+    fireEvent.click(button('Show the latest 10') as HTMLElement);
+    expect(rows()).toBe(10);
+  });
+
+  it('has nothing to expand when everything fits', async () => {
+    await renderPage(withDelegations(10));
+
+    expect(rows()).toBe(10);
+    expect(button('Show all 10')).toBeNull();
+  });
+
+  it('does not offer the rest of the activity on the commission tab', async () => {
+    await renderPage(withDelegations(12));
+    fireEvent.click(button('Commission') as HTMLElement);
+
+    expect(button('Show all 12')).toBeNull();
   });
 });
 

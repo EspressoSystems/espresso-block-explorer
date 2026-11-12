@@ -336,12 +336,21 @@ enum InfoTab {
 }
 
 /**
+ * ACTIVITY_ROWS is how many of the latest delegations and undelegations
+ * are listed before the rest is asked for. A busy validator has dozens in
+ * the months the history covers, which would bury the end of the page.
+ */
+const ACTIVITY_ROWS = 10;
+
+/**
  * ValidatorInfoSection holds the tabbed tables of the validator's
  * delegation activity and commission history.
  */
 const ValidatorInfoSection: React.FC = () => {
   const history = React.useContext(ValidatorHistoryContext);
   const [tab, setTab] = React.useState(InfoTab.activity);
+  const [allActivity, setAllActivity] = React.useState(false);
+  const activityCount = history?.activity.length ?? 0;
 
   return (
     <section
@@ -370,14 +379,35 @@ const ValidatorInfoSection: React.FC = () => {
       {!history ? (
         <HistoryLoading />
       ) : (
-        <div className="validator-details-table-scroll">
-          {tab === InfoTab.activity && (
-            <ValidatorActivityTable history={history} />
+        <>
+          <div className="validator-details-table-scroll">
+            {tab === InfoTab.activity && (
+              <ValidatorActivityTable
+                history={history}
+                limit={allActivity ? undefined : ACTIVITY_ROWS}
+              />
+            )}
+            {tab === InfoTab.commission && (
+              <CommissionHistoryTable history={history} />
+            )}
+          </div>
+          {tab === InfoTab.activity && activityCount > ACTIVITY_ROWS && (
+            <button
+              type="button"
+              className="validator-details-show-all"
+              aria-expanded={allActivity}
+              onClick={() => setAllActivity((all) => !all)}
+            >
+              <Text
+                text={
+                  allActivity
+                    ? `Show the latest ${ACTIVITY_ROWS}`
+                    : `Show all ${activityCount.toLocaleString()}`
+                }
+              />
+            </button>
           )}
-          {tab === InfoTab.commission && (
-            <CommissionHistoryTable history={history} />
-          )}
-        </div>
+        </>
       )}
     </section>
   );
