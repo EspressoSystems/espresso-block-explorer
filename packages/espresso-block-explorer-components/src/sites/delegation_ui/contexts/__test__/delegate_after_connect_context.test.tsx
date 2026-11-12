@@ -25,7 +25,7 @@ interface WalletState {
   connectModalOpen: boolean;
 }
 
-function setup() {
+function setup({ connectModalAvailable = true } = {}) {
   const openConnectModal = vi.fn();
   const openStakingModal = vi.fn();
   const setSelection = vi.fn();
@@ -40,7 +40,10 @@ function setup() {
     <RainbowKitAccountAddressContext.Provider value={account}>
       <RainbowKitModalContext.Provider
         value={{
-          openConnectModal,
+          // RainbowKit leaves this undefined while a wallet is connecting.
+          openConnectModal: connectModalAvailable
+            ? openConnectModal
+            : undefined,
           openAccountModal: () => {},
           openChainModal: () => {},
           connectModalOpen,
@@ -104,5 +107,45 @@ describe('ProvideDelegateAfterConnect', () => {
 
     expect(t.setSelection).not.toHaveBeenCalled();
     expect(t.openStakingModal).not.toHaveBeenCalled();
+  });
+
+  it('forgets the request when the connect modal cannot be opened', () => {
+    const t = setup({ connectModalAvailable: false });
+    t.delegate();
+    expect(t.openConnectModal).not.toHaveBeenCalled();
+
+    // The wallet finishes connecting on its own a moment later.
+    t.update({ account: wallet, connectModalOpen: false });
+
+    expect(t.setSelection).not.toHaveBeenCalled();
+    expect(t.openStakingModal).not.toHaveBeenCalled();
+  });
+
+  it('does not open the delegate step for a later connect from the header', () => {
+    const t = setup();
+    t.delegate();
+    t.update({ account: null, connectModalOpen: true });
+    t.update({ account: null, connectModalOpen: false });
+
+    // Much later the user connects from the header instead.
+    t.update({ account: null, connectModalOpen: true });
+    t.update({ account: wallet, connectModalOpen: true });
+    t.update({ account: wallet, connectModalOpen: false });
+
+    expect(t.setSelection).not.toHaveBeenCalled();
+    expect(t.openStakingModal).not.toHaveBeenCalled();
+  });
+
+  it('opens the delegate step for the latest validator asked for', () => {
+    const t = setup();
+    t.delegate();
+    t.update({ account: null, connectModalOpen: true });
+    t.update({ account: null, connectModalOpen: false });
+    t.delegate();
+    t.update({ account: null, connectModalOpen: true });
+    t.update({ account: wallet, connectModalOpen: true });
+
+    expect(t.setSelection).toHaveBeenCalledOnce();
+    expect(t.openStakingModal).toHaveBeenCalledOnce();
   });
 });

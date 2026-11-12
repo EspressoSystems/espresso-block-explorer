@@ -6,6 +6,7 @@ import { DelegationHeader } from './delegation_header';
 import './delegation_ui.css';
 import { DelegationUIContent } from './delegation_ui_content';
 import { ProvideDelegationUIContexts } from './delegation_ui_contexts';
+import { useViewScroll } from './use_view_scroll';
 import { ValidatorDetailsView } from './validator_details/validator_details_ui';
 
 interface DelegationPageProps {
@@ -78,11 +79,7 @@ const CustomizeNumberFormatters: React.FC<React.PropsWithChildren> = ({
  */
 const DelegationUI: React.FC<DelegationPageProps> = ({ validatorAddress }) => {
   const showValidator = validatorAddress !== undefined;
-
-  // Start each view at the top, as a separate page load would.
-  React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [showValidator, validatorAddress]);
+  useViewScroll(showValidator, validatorAddress);
 
   return (
     <ProvideDelegationUIContexts>

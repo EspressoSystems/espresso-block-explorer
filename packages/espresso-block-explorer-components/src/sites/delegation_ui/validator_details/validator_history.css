@@ -112,27 +112,6 @@ table.validator-details-table.compact td + td {
   padding-inline-start: 12px;
 }
 
-.validator-details-table .share-bar {
-  display: inline-block;
-  vertical-align: middle;
-  width: 96px;
-  height: 6px;
-  border-radius: 3px;
-  overflow: hidden;
-  background: var(--color--brown--3--alpha-12);
-}
-
-.validator-details-table .share-bar > span {
-  display: block;
-  height: 100%;
-  border-radius: 3px;
-  background: var(--color--brown--3);
-}
-
-.validator-details-table .share-value {
-  margin-inline-start: 8px;
-}
-
 .bchip.validator-details-undelegate-chip {
   color: var(--color--brown--3);
   background: var(--color--brown--3--alpha-12);
@@ -156,6 +135,34 @@ table.validator-details-table.compact td + td {
   font-size: 12px;
   color: var(--color--brown--4--alpha-60);
   text-align: center;
+}
+
+/* Stands in for a history section while its data loads */
+.validator-details-history-loading {
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--color--brown--3--alpha-12) 0%,
+    var(--color--brown--1) 50%,
+    var(--color--brown--3--alpha-12) 100%
+  );
+  background-size: 200% 100%;
+  animation: validator-details-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes validator-details-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .validator-details-history-loading {
+    animation: none;
+  }
 }
 
 .validator-details-table-note {

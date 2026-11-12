@@ -61,9 +61,16 @@ export const ProvideDelegateAfterConnect: React.FC<React.PropsWithChildren> = ({
 
   const delegateAfterConnect = React.useCallback(
     (validator: `0x${string}`) => {
+      // The connect modal can't be opened while a wallet is (re)connecting.
+      // Remembering the request then would open the delegate step whenever
+      // the wallet connects later, long after the click, so drop it.
+      if (!rainbowKitModal.openConnectModal) {
+        return;
+      }
+
       sawConnectModal.current = false;
       setPending(validator);
-      rainbowKitModal.openConnectModal?.();
+      rainbowKitModal.openConnectModal();
     },
     [rainbowKitModal],
   );

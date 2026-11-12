@@ -5,12 +5,20 @@ import { ArrowLeft } from '@/components/visual/icons';
 import { CurrentLocale } from '@/contexts/locale_provider';
 import { MonetaryValue } from '@/models/block_explorer';
 import { default as React } from 'react';
+import { DelegationUIBaseHrefContext } from '../contexts/validator_details_context';
 import { SegmentedButton } from '../elements/buttons/segmented_button';
 import { InAppLink } from '../elements/link/in_app_link';
 import { ValidatorImage48x48 } from '../elements/validator/validator_image';
 import { StakeHistoryChart } from './charts';
 import {
+  ESTIMATED_APR_LABEL,
+  ESTIMATED_APR_NOTE,
+  MEASURED_APR_LABEL,
+  MEASURED_APR_NOTE,
+} from './participation';
+import {
   ProvideValidatorHistory,
+  useDelegatorAPR,
   useValidatorFacts,
   ValidatorHistoryContext,
 } from './validator_details_contexts';
@@ -18,8 +26,9 @@ import './validator_details_page.css';
 import { EarningsSection, ReliabilitySection } from './performance_view';
 import {
   CommissionHistoryTable,
+  delegatorsNote,
   HistoryEmpty,
-  TopDelegatorsTable,
+  HistoryLoading,
   ValidatorActivityTable,
 } from './validator_history';
 import {
@@ -42,10 +51,12 @@ interface FactProps {
   label: string;
   children: React.ReactNode;
   sample?: boolean;
+  /** title explains the fact on hover. */
+  title?: string;
 }
 
-const Fact: React.FC<FactProps> = ({ label, children, sample }) => (
-  <div>
+const Fact: React.FC<FactProps> = ({ label, children, sample, title }) => (
+  <div title={title}>
     <dt>
       <Text text={label} />
       {sample && (
@@ -74,23 +85,24 @@ const ValidatorFactsList: React.FC = () => {
     [locale],
   );
   const history = React.useContext(ValidatorHistoryContext);
-  // What delegators actually earned lately, when espressonodes has measured
-  // it; otherwise the network APR less this validator's commission.
-  const estimatedAPR =
-    history?.delegatorAPR ?? facts.estimatedAPRAfterCommission;
-  const missedSlotRate = history ? lastEpochMissedRate(history.epochs) : null;
+  const apr = useDelegatorAPR();
+  // Sample epochs are made up, so they don't get to be a fact.
+  const missedSlotRate =
+    history?.sources.epochs === 'live'
+      ? lastEpochMissedRate(history.epochs)
+      : null;
+  const delegators = history ? delegatorsNote(history) : null;
 
   return (
     <dl className="validator-details-facts">
       <Fact label="Commission">
         <PercentageText percentage={facts.commission} />
       </Fact>
-      <Fact label="Est. APR after commission">
-        {estimatedAPR === null ? (
-          <Dash />
-        ) : (
-          <PercentageText percentage={estimatedAPR} />
-        )}
+      <Fact
+        label={apr?.measured ? MEASURED_APR_LABEL : ESTIMATED_APR_LABEL}
+        title={apr?.measured ? MEASURED_APR_NOTE : ESTIMATED_APR_NOTE}
+      >
+        {apr === null ? <Dash /> : <PercentageText percentage={apr.rate} />}
       </Fact>
       <Fact label="Missed slots (last epoch)">
         {missedSlotRate === null ? (
@@ -106,8 +118,17 @@ const ValidatorFactsList: React.FC = () => {
           <Dash />
         )}
       </Fact>
-      <Fact label="Delegators" sample={history?.sources.delegators !== 'live'}>
-        {history ? history.delegatorCount.toLocaleString() : <Dash />}
+      <Fact
+        label="Delegators"
+        sample={history?.sources.delegators === 'sample'}
+        title={delegators ?? undefined}
+      >
+        {/* Unknown is a dash, never 0: see ValidatorHistory.delegatorCount. */}
+        {typeof history?.delegatorCount === 'number' ? (
+          <Text text={history.delegatorCount.toLocaleString()} />
+        ) : (
+          <Dash />
+        )}
       </Fact>
       {history?.registeredAt && (
         <Fact label="Registered">
@@ -184,10 +205,11 @@ const YourPosition: React.FC = () => {
  */
 const ValidatorProfileSidebar: React.FC = () => {
   const facts = useValidatorFacts();
+  const baseHref = React.useContext(DelegationUIBaseHrefContext);
 
   return (
     <aside className="validator-details-sidebar">
-      <InAppLink className="validator-details-back" href="./">
+      <InAppLink className="validator-details-back" href={baseHref}>
         <ArrowLeft />
         <Text text="All validators" />
       </InAppLink>
@@ -233,6 +255,12 @@ const ValidatorProfileSidebar: React.FC = () => {
 };
 
 type StakeRange = 30 | 90;
+
+/**
+ * STAKE_CHART_HEIGHT matches the earnings chart below it, so neither
+ * outweighs the other.
+ */
+const STAKE_CHART_HEIGHT = 180;
 
 /**
  * StakeSection shows total stake over time.
@@ -291,73 +319,66 @@ const StakeSection: React.FC = () => {
         </div>
       </div>
 
-      {history &&
-        (points.length > 1 ? (
-          <StakeHistoryChart points={points} height={260} />
-        ) : (
-          <HistoryEmpty history={history} nothingYet="No stake changes yet." />
-        ))}
+      {!history ? (
+        <HistoryLoading height={STAKE_CHART_HEIGHT} />
+      ) : points.length > 1 ? (
+        <StakeHistoryChart points={points} height={STAKE_CHART_HEIGHT} />
+      ) : (
+        <HistoryEmpty history={history} nothingYet="No stake changes yet." />
+      )}
     </section>
   );
 };
 
-enum DetailsTab {
-  delegators = 'delegators',
+enum InfoTab {
   activity = 'activity',
   commission = 'commission',
 }
 
 /**
- * DetailsSection holds the tabbed tables of delegators, activity, and
- * commission history.
+ * ValidatorInfoSection holds the tabbed tables of the validator's
+ * delegation activity and commission history.
  */
-const DetailsSection: React.FC = () => {
+const ValidatorInfoSection: React.FC = () => {
   const history = React.useContext(ValidatorHistoryContext);
-  const [tab, setTab] = React.useState(DetailsTab.delegators);
-
-  if (!history) {
-    return null;
-  }
+  const [tab, setTab] = React.useState(InfoTab.activity);
 
   return (
     <section
       className="validator-details-section"
-      aria-labelledby="validator-details-details"
+      aria-labelledby="validator-details-info"
     >
       <div className="section-head">
-        <h2 id="validator-details-details">
-          <Text text="Details" />
+        <h2 id="validator-details-info">
+          <Text text="Validator info" />
         </h2>
         <div className="section-controls">
-          {history.sources[tab] === 'sample' && <SampleDataChip />}
-          <SegmentedButton<DetailsTab>
+          {history?.sources[tab] === 'sample' && <SampleDataChip />}
+          <SegmentedButton<InfoTab>
             selected={tab}
             onSelectionChange={setTab}
             segments={[
+              { value: InfoTab.activity, label: <Text text="Activity" /> },
               {
-                value: DetailsTab.delegators,
-                label: <Text text="Delegators" />,
-              },
-              { value: DetailsTab.activity, label: <Text text="Activity" /> },
-              {
-                value: DetailsTab.commission,
+                value: InfoTab.commission,
                 label: <Text text="Commission" />,
               },
             ]}
           />
         </div>
       </div>
-      <div className="validator-details-table-scroll">
-        {tab === DetailsTab.delegators && (
-          <TopDelegatorsTable history={history} />
-        )}
-        {tab === DetailsTab.activity && (
-          <ValidatorActivityTable history={history} />
-        )}
-        {tab === DetailsTab.commission && (
-          <CommissionHistoryTable history={history} />
-        )}
-      </div>
+      {!history ? (
+        <HistoryLoading />
+      ) : (
+        <div className="validator-details-table-scroll">
+          {tab === InfoTab.activity && (
+            <ValidatorActivityTable history={history} />
+          )}
+          {tab === InfoTab.commission && (
+            <CommissionHistoryTable history={history} />
+          )}
+        </div>
+      )}
     </section>
   );
 };
@@ -376,7 +397,7 @@ export const ValidatorDetailsPage: React.FC = () => {
           <StakeSection />
           <EarningsSection />
           <ReliabilitySection />
-          <DetailsSection />
+          <ValidatorInfoSection />
         </div>
       </div>
     </ProvideValidatorHistory>

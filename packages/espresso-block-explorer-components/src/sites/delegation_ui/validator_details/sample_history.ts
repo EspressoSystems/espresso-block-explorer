@@ -3,10 +3,12 @@ import type { NodeVersionStatus } from './validator_history_file';
  * Validator history types, and sample history.
  *
  * Real history comes from the validator history files (see
- * validator_history_file.ts). When no history source is configured, for
- * example in local development or Storybook, the validator details views
- * render deterministic sample data anchored to the validator's real current
- * stake, commission, and epoch, so the charts end on the true values.
+ * validator_history_file.ts). Without a history source the history sections
+ * say that history isn't available. Only where the host turns sample history
+ * on (SampleValidatorHistoryContext: Storybook and local development) do the
+ * validator details views render deterministic sample data instead, anchored
+ * to the validator's real current stake, commission, and epoch, so the
+ * charts end on the true values.
  *
  * Every section must show the user when its `sources` entry is 'sample'.
  */
@@ -73,11 +75,6 @@ export interface ValidatorEarnings {
   periods: EarningsPeriod[];
 }
 
-export interface DelegatorShare {
-  address: `0x${string}`;
-  amount: number;
-}
-
 export type ActivityKind = 'delegate' | 'undelegate';
 
 export interface ActivityEntry {
@@ -106,9 +103,18 @@ export interface DelegationBaseline {
 
 /**
  * HistoryStatus describes where the history came from: sample data, a
- * loaded history file, no file for this validator, or a failed load.
+ * loaded history file, no file for this validator, a failed load, or no
+ * history source for this network ('unavailable').
  */
-export type HistoryStatus = 'sample' | 'live' | 'missing' | 'error';
+export type HistoryStatus =
+  'sample' | 'live' | 'missing' | 'error' | 'unavailable';
+
+/**
+ * DelegatorsUnknown says why the delegators aren't known: the stake table
+ * is still loading, it couldn't be loaded, or the validator isn't in the
+ * active set, which is all the stake table lists.
+ */
+export type DelegatorsUnknown = 'loading' | 'error' | 'inactive';
 
 /**
  * HistorySource says whether a section's data is real ('live') or sample
@@ -129,14 +135,19 @@ export interface ValidatorHistory {
   sources: ValidatorHistorySources;
   stake: StakePoint[];
   epochs: EpochPerformance[];
-  delegatorCount: number;
-  topDelegators: DelegatorShare[];
   /**
-   * delegatedTotal is the stake the delegator shares are measured against.
+   * delegatorCount is how many wallets have stake with the validator, or
+   * null when that isn't known. It is never 0 for "unknown".
    */
-  delegatedTotal: number;
+  delegatorCount: null | number;
   /**
-   * delegatorsEpoch is the epoch the delegators are from, when they are live.
+   * delegatorsUnknown says why the stake table doesn't list the validator's
+   * delegators, or null when it does.
+   */
+  delegatorsUnknown: null | DelegatorsUnknown;
+  /**
+   * delegatorsEpoch is the epoch of the stake table the delegators were
+   * looked up in, when it has loaded.
    */
   delegatorsEpoch: null | number;
   activity: ActivityEntry[];
@@ -261,21 +272,8 @@ function sampleEpochs(
   return result;
 }
 
-function sampleDelegators(
-  random: () => number,
-  input: SampleHistoryInput,
-): { count: number; top: DelegatorShare[] } {
-  const count = 40 + Math.floor(random() * 1400);
-  const top: DelegatorShare[] = [];
-  let remaining = input.stake;
-  let share = 0.3 + random() * 0.3;
-  for (let i = 0; i < 7 && remaining > 0; i++) {
-    const amount = remaining * share;
-    top.push({ address: randomAddress(random), amount });
-    remaining -= amount;
-    share = 0.15 + random() * 0.2;
-  }
-  return { count, top };
+function sampleDelegatorCount(random: () => number): number {
+  return 40 + Math.floor(random() * 1400);
 }
 
 function sampleActivity(
@@ -336,7 +334,6 @@ export function sampleValidatorHistory(
   input: SampleHistoryInput,
 ): ValidatorHistory {
   const random = seededRandom(input.address.toLowerCase());
-  const delegators = sampleDelegators(random, input);
 
   return {
     status: 'sample',
@@ -349,9 +346,8 @@ export function sampleValidatorHistory(
     },
     stake: sampleStake(random, input),
     epochs: sampleEpochs(random, input),
-    delegatorCount: delegators.count,
-    topDelegators: delegators.top,
-    delegatedTotal: input.stake,
+    delegatorCount: sampleDelegatorCount(random),
+    delegatorsUnknown: null,
     delegatorsEpoch: null,
     activity: sampleActivity(random, input),
     commissionChanges: sampleCommission(random, input),

@@ -3,6 +3,7 @@ import { addClassToClassName } from '@/higher_order';
 import { WalletAddress } from '@/models/wallet_address';
 import { default as React } from 'react';
 import {
+  DelegationUIBaseHrefContext,
   validatorDetailsPageHref,
   ValidatorDetailsLinksContext,
 } from '../../contexts/validator_details_context';
@@ -17,6 +18,7 @@ export interface ValidatorNameProps {
 export const ValidatorName: React.FC<ValidatorNameProps> = (props) => {
   const validator = React.useContext(ValidatorNodeContext);
   const linkToDetails = React.useContext(ValidatorDetailsLinksContext);
+  const baseHref = React.useContext(DelegationUIBaseHrefContext);
 
   const nodeName = validator.metadata?.content?.name ?? null;
   const walletAddress = new WalletAddress(validator.address);
@@ -37,7 +39,7 @@ export const ValidatorName: React.FC<ValidatorNameProps> = (props) => {
       {linkToDetails ? (
         <InAppLink
           className="validator-details-link"
-          href={validatorDetailsPageHref(validator.addressText)}
+          href={validatorDetailsPageHref(baseHref, validator.addressText)}
           title="View validator details"
         >
           {label}
@@ -55,6 +57,7 @@ export const ValidatorName: React.FC<ValidatorNameProps> = (props) => {
  */
 export const ValidatorNameLink: React.FC<ValidatorNameProps> = (props) => {
   const validator = React.useContext(ValidatorNodeContext);
+  const baseHref = React.useContext(DelegationUIBaseHrefContext);
 
   const nodeName = validator.metadata?.content?.name ?? null;
   const walletAddress = new WalletAddress(validator.address);
@@ -65,7 +68,7 @@ export const ValidatorNameLink: React.FC<ValidatorNameProps> = (props) => {
         props.className,
         'node-name validator-details-link',
       )}
-      href={validatorDetailsPageHref(validator.addressText)}
+      href={validatorDetailsPageHref(baseHref, validator.addressText)}
       title="View validator details"
     >
       {nodeName ? (

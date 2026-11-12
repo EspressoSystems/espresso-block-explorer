@@ -66,7 +66,8 @@ export const ActionsCell: React.FC = () => {
 
   if (pendingExit) {
     // We have a pending exit
-    if (pendingExit.availableTime.valueOf() < now.valueOf()) {
+    // Claimable from the available time on, as in the validator popup.
+    if (pendingExit.availableTime.valueOf() <= now.valueOf()) {
       // Ready to claim: show the validator popup, which offers the claim.
       return (
         <ButtonLarge
@@ -91,7 +92,7 @@ export const ActionsCell: React.FC = () => {
 
   if (pendingUndelegation) {
     // We have a pending undelegation
-    if (pendingUndelegation.availableTime.valueOf() < now.valueOf()) {
+    if (pendingUndelegation.availableTime.valueOf() <= now.valueOf()) {
       // Ready to claim: show the validator popup, which offers the claim.
       return (
         <ButtonLarge

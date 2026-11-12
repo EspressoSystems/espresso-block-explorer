@@ -7,7 +7,11 @@ import {
   EarningsLegend,
   EpochReliabilityLegend,
 } from './charts';
-import { EARNINGS_STATUS_LABEL, earningsStatus } from './participation';
+import {
+  EARNINGS_STATUS_LABEL,
+  earningsStatus,
+  plausibleAPR,
+} from './participation';
 import { joined, ReliabilityOverview, StatusVerdict } from './reliability_view';
 import './performance_view.css';
 import { ValidatorHistory } from './sample_history';
@@ -15,7 +19,7 @@ import {
   useValidatorFacts,
   ValidatorHistoryContext,
 } from './validator_details_contexts';
-import { HistoryEmpty } from './validator_history';
+import { HistoryEmpty, HistoryLoading } from './validator_history';
 import { SampleDataChip } from './validator_summary';
 
 /**
@@ -67,19 +71,24 @@ const EarningsOverview: React.FC<{ history: ValidatorHistory }> = ({
   const last7 = earnings.last7Days;
   const periods = earnings.periods.slice(-CHART_BARS);
   const esp = (wei: bigint) => `${compact.format(Number(wei) / 1e18)} ESP`;
+  // Rates from the history file are held to the same check as the APR
+  // beside Delegate, so a wrong file can't headline an arbitrary rate.
+  const checked = (apr: undefined | null | number) =>
+    plausibleAPR(apr ?? null, networkAPR) ? (apr as number) : null;
+  const delegatorAPR = checked(history.delegatorAPR);
+  const grossAPR = checked(last30?.grossAPR);
+  const last7APR = checked(last7?.delegatorNetAPR);
 
   return (
     <div className="validator-details-earnings">
-      {last30?.delegatorNetAPR != null && (
+      {delegatorAPR !== null && (
         <StatusVerdict
           status={status}
           label={status ? EARNINGS_STATUS_LABEL[status] : undefined}
-          headline={`${percent2(last30.delegatorNetAPR)} APR for delegators over the last 30 days`}
+          headline={`${percent2(delegatorAPR)} APR for delegators over the last 30 days`}
           detail={joined([
-            last30.grossAPR !== null &&
-              `${percent2(last30.grossAPR)} before commission`,
-            last7?.delegatorNetAPR != null &&
-              `last 7 days ${percent2(last7.delegatorNetAPR)}`,
+            grossAPR !== null && `${percent2(grossAPR)} before commission`,
+            last7APR !== null && `last 7 days ${percent2(last7APR)}`,
             networkAPR !== null &&
               `network ${percent2(networkAPR)} before commission`,
           ])}
@@ -137,9 +146,6 @@ const SectionHead: React.FC<{
  */
 export const ReliabilitySection: React.FC = () => {
   const history = React.useContext(ValidatorHistoryContext);
-  if (!history) {
-    return null;
-  }
 
   return (
     <section
@@ -149,9 +155,11 @@ export const ReliabilitySection: React.FC = () => {
       <SectionHead
         id="validator-details-reliability"
         title="Reliability"
-        sample={history.sources.epochs === 'sample'}
+        sample={history?.sources.epochs === 'sample'}
       />
-      {history.epochs.length > 0 ? (
+      {!history ? (
+        <HistoryLoading />
+      ) : history.epochs.length > 0 ? (
         <>
           <ReliabilityOverview history={history} />
           <PanelFoot note="Missed leader slots per epoch">
@@ -170,9 +178,6 @@ export const ReliabilitySection: React.FC = () => {
  */
 export const EarningsSection: React.FC = () => {
   const history = React.useContext(ValidatorHistoryContext);
-  if (!history) {
-    return null;
-  }
 
   return (
     <section
@@ -180,7 +185,7 @@ export const EarningsSection: React.FC = () => {
       aria-labelledby="validator-details-earnings"
     >
       <SectionHead id="validator-details-earnings" title="Earnings" />
-      <EarningsOverview history={history} />
+      {history ? <EarningsOverview history={history} /> : <HistoryLoading />}
     </section>
   );
 };

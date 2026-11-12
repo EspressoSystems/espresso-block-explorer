@@ -4,8 +4,10 @@ import { MoneyText, PercentageText, Text } from '@/components/text';
 import { Close, LinkShare2 } from '@/components/visual/icons';
 import { MonetaryValue } from '@/models/block_explorer';
 import { default as React } from 'react';
+import { AllValidatorsContext } from '../contexts/all_validators_context';
 import { NodeAddressContext } from '../contexts/node_address_context';
 import {
+  DelegationUIBaseHrefContext,
   validatorDetailsPageHref,
   ValidatorDetailsLinksContext,
   ValidatorDetailsModalContext,
@@ -17,7 +19,14 @@ import { InAppLink } from '../elements/link/in_app_link';
 import { ValidatorImage24x24 } from '../elements/validator/validator_image';
 import { StakeHistoryChart } from './charts';
 import {
+  ESTIMATED_APR_LABEL,
+  ESTIMATED_APR_NOTE,
+  MEASURED_APR_LABEL,
+  MEASURED_APR_NOTE,
+} from './participation';
+import {
   ProvideValidatorHistory,
+  useDelegatorAPR,
   useValidatorFacts,
   ValidatorHistoryContext,
 } from './validator_details_contexts';
@@ -25,7 +34,11 @@ import { ValidatorHistorySources } from './sample_history';
 import { ValidatorDetailsErrorBoundary } from './validator_details_error_boundary';
 import { ReliabilityOverview } from './reliability_view';
 import './validator_details_modal.css';
-import { HistoryEmpty, ValidatorActivityTable } from './validator_history';
+import {
+  HistoryEmpty,
+  HistoryLoading,
+  ValidatorActivityTable,
+} from './validator_history';
 import {
   SampleDataChip,
   ValidatorAddress,
@@ -98,13 +111,16 @@ export const ProvideValidatorDetailsModal: React.FC<
             key={address}
             fallback={<ValidatorDetailsModalError />}
           >
-            <NodeAddressContext.Provider value={address}>
-              <ProvideValidatorNodeContext>
-                <ProvideValidatorHistory>
-                  <ValidatorDetailsModalContent />
-                </ProvideValidatorHistory>
-              </ProvideValidatorNodeContext>
-            </NodeAddressContext.Provider>
+            <ListedValidator
+              address={address}
+              unlisted={
+                <ValidatorDetailsModalError message="This validator is no longer listed." />
+              }
+            >
+              <ProvideValidatorHistory>
+                <ValidatorDetailsModalContent />
+              </ProvideValidatorHistory>
+            </ListedValidator>
           </ValidatorDetailsErrorBoundary>
         )}
       </dialog>
@@ -112,12 +128,39 @@ export const ProvideValidatorDetailsModal: React.FC<
   );
 };
 
+/**
+ * ListedValidator provides the validator at the address to its children. A
+ * validator can leave the list while its modal is open (it deregisters, or
+ * the list reloads without it); the lookup would then fall back to an empty
+ * placeholder validator, so `unlisted` is shown instead, without any stake
+ * actions.
+ */
+const ListedValidator: React.FC<
+  React.PropsWithChildren<{
+    address: `0x${string}`;
+    unlisted: React.ReactNode;
+  }>
+> = ({ address, unlisted, children }) => {
+  const allValidators = React.useContext(AllValidatorsContext);
+  if (!allValidators.has(address)) {
+    return unlisted;
+  }
+
+  return (
+    <NodeAddressContext.Provider value={address}>
+      <ProvideValidatorNodeContext>{children}</ProvideValidatorNodeContext>
+    </NodeAddressContext.Provider>
+  );
+};
+
 const OverviewItem: React.FC<{
   label: string;
   highlight?: boolean;
+  /** title explains the value on hover. */
+  title?: string;
   children: React.ReactNode;
-}> = ({ label, highlight, children }) => (
-  <div className={highlight ? 'highlight' : undefined}>
+}> = ({ label, highlight, title, children }) => (
+  <div className={highlight ? 'highlight' : undefined} title={title}>
     <span>
       <Text text={label} />
     </span>
@@ -129,9 +172,11 @@ const Dash: React.FC = () => <Text text="-" />;
 
 /**
  * ValidatorDetailsModalError replaces the modal's content when the
- * validator fails to render, so the modal can still be closed.
+ * validator can't be shown, so the modal can still be closed.
  */
-const ValidatorDetailsModalError: React.FC = () => {
+const ValidatorDetailsModalError: React.FC<{ message?: string }> = ({
+  message = "This validator couldn't be shown right now.",
+}) => {
   const controls = React.useContext(ValidatorDetailsModalContext);
   return (
     <div className="validator-details-modal-frame">
@@ -150,7 +195,7 @@ const ValidatorDetailsModalError: React.FC = () => {
       </div>
       <div className="validator-details-modal-body">
         <p className="validator-details-empty">
-          <Text text="This validator couldn't be shown right now." />
+          <Text text={message} />
         </p>
       </div>
     </div>
@@ -160,9 +205,12 @@ const ValidatorDetailsModalError: React.FC = () => {
 const ModalOverview: React.FC = () => {
   const facts = useValidatorFacts();
   const history = React.useContext(ValidatorHistoryContext);
-  const estimatedAPR =
-    history?.delegatorAPR ?? facts.estimatedAPRAfterCommission;
-  const missedSlotRate = history ? lastEpochMissedRate(history.epochs) : null;
+  const apr = useDelegatorAPR();
+  // Sample epochs are made up, so they don't get to be a fact.
+  const missedSlotRate =
+    history?.sources.epochs === 'live'
+      ? lastEpochMissedRate(history.epochs)
+      : null;
   const account = React.useContext(RainbowKitAccountAddressContext);
 
   return (
@@ -180,12 +228,11 @@ const ModalOverview: React.FC = () => {
       <OverviewItem label="Commission">
         <PercentageText percentage={facts.commission} />
       </OverviewItem>
-      <OverviewItem label="Est. APR after commission">
-        {estimatedAPR === null ? (
-          <Dash />
-        ) : (
-          <PercentageText percentage={estimatedAPR} />
-        )}
+      <OverviewItem
+        label={apr?.measured ? MEASURED_APR_LABEL : ESTIMATED_APR_LABEL}
+        title={apr?.measured ? MEASURED_APR_NOTE : ESTIMATED_APR_NOTE}
+      >
+        {apr === null ? <Dash /> : <PercentageText percentage={apr.rate} />}
       </OverviewItem>
       <OverviewItem label="Missed slots (last epoch)">
         {missedSlotRate === null ? (
@@ -235,7 +282,18 @@ const ModalHistory: React.FC = () => {
   const [tab, setTab] = React.useState(HistoryTab.stake);
 
   if (!history) {
-    return null;
+    return (
+      <div className="validator-details-modal-history">
+        <div className="head">
+          <div className="title">
+            <h2>
+              <Text text="History" />
+            </h2>
+          </div>
+        </div>
+        <HistoryLoading height={170} />
+      </div>
+    );
   }
 
   return (
@@ -299,6 +357,7 @@ const ValidatorDetailsModalContent: React.FC = () => {
   const facts = useValidatorFacts();
   const history = React.useContext(ValidatorHistoryContext);
   const controls = React.useContext(ValidatorDetailsModalContext);
+  const baseHref = React.useContext(DelegationUIBaseHrefContext);
   const close = () => controls?.close();
   const name = facts.name ?? 'Unnamed validator';
 
@@ -371,7 +430,7 @@ const ValidatorDetailsModalContent: React.FC = () => {
       <div className="validator-details-modal-footer">
         <InAppLink
           className="validator-details-modal-full-link"
-          href={validatorDetailsPageHref(facts.address)}
+          href={validatorDetailsPageHref(baseHref, facts.address)}
           onClick={close}
         >
           <Text text="Full validator page" />

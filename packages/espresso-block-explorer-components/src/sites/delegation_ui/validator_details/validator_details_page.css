@@ -315,7 +315,14 @@ main.delegation-ui.validator-details-ui::after {
   color: var(--color--brown--4);
 }
 
-/* Loading skeleton, laid out like the page so nothing shifts on load */
+/* The wallet's claim from an exited validator, under the message */
+.validator-details-page-exit {
+  max-width: 480px;
+  margin-block-start: 24px;
+}
+
+/* Loading skeleton, laid out like the page so nothing shifts on load. The
+   shimmer animation is defined in validator_history.css. */
 .validator-details-skeleton .bone {
   display: block;
   border-radius: 6px;
@@ -413,15 +420,6 @@ main.delegation-ui.validator-details-ui::after {
 .validator-details-skeleton .grid {
   height: 120px;
   border-radius: 8px;
-}
-
-@keyframes validator-details-shimmer {
-  from {
-    background-position: 100% 0;
-  }
-  to {
-    background-position: -100% 0;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

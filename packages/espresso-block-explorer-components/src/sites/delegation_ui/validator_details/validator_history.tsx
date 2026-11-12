@@ -39,97 +39,30 @@ function percent(value: number): string {
 }
 
 /**
- * TopDelegatorsTable lists the largest delegators and their share of the
- * validator's stake.
+ * delegatorsNote explains the validator's number of delegators where it
+ * isn't simply the count from the stake table: why it is unknown, or where
+ * it comes from for a validator outside the active set. It is null when
+ * there is nothing to add.
  */
-export const TopDelegatorsTable: React.FC<{
-  history: ValidatorHistory;
-}> = ({ history }) => {
-  const formatESP = useESPFormatter();
-
-  if (history.delegatorsEpoch !== null && history.topDelegators.length === 0) {
-    return (
-      <p className="validator-details-empty">
-        <Text
-          text={`No delegators in the stake table for epoch ${history.delegatorsEpoch}.`}
-        />
-      </p>
-    );
+export function delegatorsNote(history: ValidatorHistory): null | string {
+  switch (history.delegatorsUnknown) {
+    case 'loading':
+      return 'Loading delegators…';
+    case 'error':
+      return "Delegators couldn't be loaded right now.";
+    case 'inactive': {
+      const epoch =
+        history.delegatorsEpoch === null
+          ? ''
+          : ` for epoch ${history.delegatorsEpoch}`;
+      return history.delegatorCount === null
+        ? `This validator isn't in the active set${epoch}, so its delegators aren't known.`
+        : `This validator isn't in the active set${epoch}. These are the wallets with stake in it, from its history.`;
+    }
+    default:
+      return null;
   }
-
-  const totalStake = history.delegatedTotal;
-  const listed = history.topDelegators.reduce((sum, d) => sum + d.amount, 0);
-  const others = Math.max(0, totalStake - listed);
-  const otherCount = Math.max(
-    0,
-    history.delegatorCount - history.topDelegators.length,
-  );
-
-  const rows = [
-    ...history.topDelegators.map((d) => ({
-      key: d.address,
-      label: shortAddress(d.address),
-      isAddress: true,
-      amount: d.amount,
-    })),
-    ...(otherCount > 0
-      ? [
-          {
-            key: 'others',
-            label: `${otherCount.toLocaleString()} others`,
-            isAddress: false,
-            amount: others,
-          },
-        ]
-      : []),
-  ];
-
-  return (
-    <>
-      <table className="validator-details-table">
-        <thead>
-          <tr>
-            <th>
-              <Text text="Delegator" />
-            </th>
-            <th className="end">
-              <Text text="Amount" />
-            </th>
-            <th>
-              <Text text="Share of stake" />
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => {
-            const share = totalStake > 0 ? row.amount / totalStake : 0;
-            return (
-              <tr key={row.key}>
-                <td className={row.isAddress ? 'address' : 'muted'}>
-                  {row.label}
-                </td>
-                <td className="end">{formatESP(row.amount)}</td>
-                <td>
-                  <span className="share-bar">
-                    <span style={{ width: `${Math.max(1, share * 100)}%` }} />
-                  </span>
-                  <span className="share-value">{percent(share)}</span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      {history.delegatorsEpoch !== null && (
-        <p className="validator-details-table-note">
-          <Text
-            text={`Delegators in the stake table for epoch ${history.delegatorsEpoch}.`}
-          />
-        </p>
-      )}
-    </>
-  );
-};
+}
 
 const ActivityKindChip: React.FC<{ entry: ActivityEntry }> = ({ entry }) =>
   entry.kind === 'delegate' ? (
@@ -156,10 +89,27 @@ export const HistoryEmpty: React.FC<{
           ? "Validator history couldn't be loaded right now."
           : history.status === 'missing'
             ? 'No history for this validator yet.'
-            : nothingYet
+            : history.status === 'unavailable'
+              ? "Validator history isn't available on this network."
+              : nothingYet
       }
     />
   </p>
+);
+
+/**
+ * HistoryLoading stands in for a history section while the validator's
+ * history file is loading.
+ */
+export const HistoryLoading: React.FC<{ height?: number }> = ({
+  height = 120,
+}) => (
+  <div
+    className="validator-details-history-loading"
+    role="status"
+    aria-label="Loading validator history"
+    style={{ height }}
+  />
 );
 
 /**

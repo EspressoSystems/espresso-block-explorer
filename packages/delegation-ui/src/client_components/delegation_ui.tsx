@@ -7,7 +7,14 @@ import {
   ProvideHotShotQueryServiceAPIContext,
 } from 'espresso-block-explorer-components';
 import {
+  baseHref,
+  inAppPath,
+  pathWithoutIntent,
+  validatorAddressFromRoute,
+} from '@/helpers/routes';
+import {
   DelegationUI,
+  DelegationUIBaseHrefContext,
   deriveClaimPortalIntentFromOnlyQueryParameters,
   NavigationContext,
   ProvideClaimPortalIntentContext,
@@ -36,13 +43,6 @@ export default function DelegationUIClientComponent() {
 }
 
 /**
- * isValidatorPath reports whether the path is the validator details route.
- */
-function isValidatorPath(pathName: string): boolean {
-  return pathName.replace(/\/$/, '').endsWith('/validator');
-}
-
-/**
  * DelegationUIClientContent is responsible for interpretting the query /
  * search parameters of the URL in order to derive the relevant "intent"
  * and the current view before returning the rest of the Delegation UI.
@@ -52,36 +52,29 @@ function DelegationUIClientContent() {
   const pathName = usePathname();
   const params = useSearchParams();
   const intent = deriveClaimPortalIntentFromOnlyQueryParameters(params);
-  const validatorAddress = isValidatorPath(pathName)
-    ? params.get('address')
-    : undefined;
+  const validatorAddress = validatorAddressFromRoute(pathName, params);
 
   // Navigate between Delegation UI views client-side, so the loaded
-  // validator data is kept. Hrefs are relative to the current page.
+  // validator data is kept.
   const navigate = React.useCallback(
-    (href: string) => {
-      const url = new URL(href, window.location.href);
-      router.push(`${url.pathname}${url.search}`);
-    },
+    (href: string) => router.push(inAppPath(href, window.location.href)),
     [router],
   );
 
   return (
     <IntentCompletedCallbackContext.Provider
       value={() => {
-        router.replace(
-          validatorAddress
-            ? `${pathName}?address=${encodeURIComponent(validatorAddress)}`
-            : pathName,
-        );
+        router.replace(pathWithoutIntent(pathName, validatorAddress));
       }}
     >
       <NavigationContext.Provider value={navigate}>
-        <ProvideHotShotQueryServiceAPIContext>
-          <ProvideClaimPortalIntentContext intent={intent}>
-            <DelegationUI validatorAddress={validatorAddress} />
-          </ProvideClaimPortalIntentContext>
-        </ProvideHotShotQueryServiceAPIContext>
+        <DelegationUIBaseHrefContext.Provider value={baseHref(pathName)}>
+          <ProvideHotShotQueryServiceAPIContext>
+            <ProvideClaimPortalIntentContext intent={intent}>
+              <DelegationUI validatorAddress={validatorAddress} />
+            </ProvideClaimPortalIntentContext>
+          </ProvideHotShotQueryServiceAPIContext>
+        </DelegationUIBaseHrefContext.Provider>
       </NavigationContext.Provider>
     </IntentCompletedCallbackContext.Provider>
   );

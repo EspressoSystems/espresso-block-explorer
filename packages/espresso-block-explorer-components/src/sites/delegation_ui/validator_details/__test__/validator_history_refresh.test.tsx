@@ -12,10 +12,13 @@ import {
 
 const address = `0x${'aa'.repeat(20)}` as `0x${string}`;
 const other = `0x${'bb'.repeat(20)}` as `0x${string}`;
-const fixture = (latest_epoch: number): ValidatorHistoryFile => ({
+const fixture = (
+  latest_epoch: number,
+  validator: `0x${string}` = address,
+): ValidatorHistoryFile => ({
   schema_version: 1,
   network: 'mainnet',
-  address,
+  address: validator,
   generated_at: '2026-10-29T00:00:00Z',
   latest_epoch,
   epochs: [],
@@ -24,10 +27,10 @@ const fixture = (latest_epoch: number): ValidatorHistoryFile => ({
   events: [],
   delegation_baselines: {},
 });
-const response = (latest: number) => ({
+const response = (latest: number, validator: `0x${string}` = address) => ({
   ok: true,
   status: 200,
-  json: async () => fixture(latest),
+  json: async () => fixture(latest, validator),
 });
 let testId = 0;
 
@@ -153,7 +156,7 @@ describe('validator history refresh', () => {
           resolveFirst = resolve;
         }),
       )
-      .mockResolvedValue(response(2));
+      .mockResolvedValue(response(2, other));
     vi.stubGlobal('fetch', fetch);
     const { result, rerender } = renderHook(
       ({ wallet }) => useValidatorHistoryFile(wallet),
@@ -175,5 +178,110 @@ describe('validator history refresh', () => {
       state: 'live',
       file: { latest_epoch: 2 },
     });
+  });
+
+  it.each([
+    ['a server error', { ok: false, status: 503 }],
+    ['a missing file', { ok: false, status: 404 }],
+  ])('keeps the loaded file when a refresh hits %s', async (_, failure) => {
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(response(1))
+      .mockResolvedValueOnce(failure)
+      .mockResolvedValue(response(3));
+    vi.stubGlobal('fetch', fetch);
+    const { result } = renderHook(() => useValidatorHistoryFile(address), {
+      wrapper: wrapperForTest(),
+    });
+    await act(async () => {});
+    const loaded = result.current.file;
+    expect(loaded).toMatchObject({ state: 'live', file: { latest_epoch: 1 } });
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(VALIDATOR_HISTORY_REFRESH_MS);
+    });
+    expect(fetch).toHaveBeenCalledTimes(2);
+    // The very same state: nothing downstream is rebuilt either.
+    expect(result.current.file).toBe(loaded);
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(VALIDATOR_HISTORY_REFRESH_MS);
+    });
+    expect(result.current.file).toMatchObject({
+      state: 'live',
+      file: { latest_epoch: 3 },
+    });
+  });
+
+  it('keeps the loaded file when a refresh rejects, as a timeout does', async () => {
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(response(1))
+      .mockRejectedValue(new DOMException('timed out', 'TimeoutError'));
+    vi.stubGlobal('fetch', fetch);
+    const { result } = renderHook(() => useValidatorHistoryFile(address), {
+      wrapper: wrapperForTest(),
+    });
+    await act(async () => {});
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(VALIDATOR_HISTORY_REFRESH_MS);
+    });
+    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(result.current.file).toMatchObject({
+      state: 'live',
+      file: { latest_epoch: 1 },
+    });
+  });
+
+  it('shows a first load that never answers as an error, with a timeout', async () => {
+    const fetch = vi
+      .fn()
+      .mockRejectedValue(new DOMException('timed out', 'TimeoutError'));
+    vi.stubGlobal('fetch', fetch);
+    const { result } = renderHook(() => useValidatorHistoryFile(address), {
+      wrapper: wrapperForTest(),
+    });
+    expect(result.current.file.state).toBe('loading');
+    await act(async () => {});
+    expect(result.current.file.state).toBe('error');
+    expect(fetch.mock.calls[0][1].signal).toBeInstanceOf(AbortSignal);
+  });
+
+  it.each([
+    ['another validator', { address: other }],
+    ['another network', { network: 'decaf' }],
+  ])('rejects a file published for %s', async (_, wrong) => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({ ...fixture(1), ...wrong }),
+      }),
+    );
+    const { result } = renderHook(() => useValidatorHistoryFile(address), {
+      wrapper: wrapperForTest(),
+    });
+    await act(async () => {});
+    expect(result.current.file.state).toBe('error');
+  });
+
+  it('accepts a file whose address differs only in case', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          ...fixture(1),
+          address: address.toUpperCase().replace('0X', '0x'),
+        }),
+      }),
+    );
+    const { result } = renderHook(() => useValidatorHistoryFile(address), {
+      wrapper: wrapperForTest(),
+    });
+    await act(async () => {});
+    expect(result.current.file.state).toBe('live');
   });
 });

@@ -185,6 +185,58 @@ const TooltipRow: React.FC<{
   </div>
 );
 
+/**
+ * STAKE_AXIS_MARGIN is how far the stake chart's axis reaches past the
+ * lowest and highest stake in view at most, as a share of each. It is also
+ * the margin around a stake that didn't change.
+ */
+export const STAKE_AXIS_MARGIN = 0.03;
+
+/**
+ * STAKE_AXIS_MIN_MARGIN is the smallest margin, so that a change of a few
+ * ESP on a large stake isn't blown up to fill the chart.
+ */
+export const STAKE_AXIS_MIN_MARGIN = 0.001;
+
+/**
+ * STAKE_AXIS_CHANGE_MARGINS is the margin as a multiple of the change in
+ * view: at 2, the change takes up a fifth of the chart's height.
+ */
+export const STAKE_AXIS_CHANGE_MARGINS = 2;
+
+/**
+ * stakeAxisDomain is the range of the stake chart's axis. It reaches a
+ * margin below the lowest stake in view and above the highest, and never
+ * below zero.
+ *
+ * The margin follows the changes in view. A stake that didn't change gets
+ * a few percent either side and is drawn as a level line in the middle. A
+ * small change narrows the margin to twice its size, so it still shows as
+ * a step, a fifth of the chart high, instead of vanishing into a level
+ * line; fitting the axis tightly to it would instead make a 0.02% dip look
+ * like a cliff. The margin stays between STAKE_AXIS_MIN_MARGIN and
+ * STAKE_AXIS_MARGIN, so a large delegation or undelegation shows the stake
+ * before and after it with a few percent beyond each.
+ */
+export function stakeAxisDomain(values: number[]): [number, number] {
+  const lowest = Math.max(0, Math.min(...values));
+  const highest = Math.max(0, ...values);
+  if (highest <= 0) {
+    // No stake at all: any positive range draws the line along the bottom.
+    return [0, 1];
+  }
+
+  const change = (highest - lowest) / highest;
+  const margin =
+    change > 0
+      ? Math.min(
+          STAKE_AXIS_MARGIN,
+          Math.max(STAKE_AXIS_MIN_MARGIN, change * STAKE_AXIS_CHANGE_MARGINS),
+        )
+      : STAKE_AXIS_MARGIN;
+  return [Math.max(0, lowest * (1 - margin)), highest * (1 + margin)];
+}
+
 export interface StakeHistoryChartProps {
   points: StakePoint[];
   height?: number;
@@ -207,12 +259,7 @@ export const StakeHistoryChart: React.FC<StakeHistoryChartProps> = ({
   const plotWidth = Math.max(0, width - pad.left - pad.right);
   const plotHeight = height - pad.top - pad.bottom;
 
-  const values = points.map((p) => p.stake);
-  const rawLow = Math.min(...values);
-  const rawHigh = Math.max(...values);
-  const span = rawHigh - rawLow || rawHigh * 0.01 || 1;
-  const low = Math.max(0, rawLow - span * 0.15);
-  const high = rawHigh + span * 0.08;
+  const [low, high] = stakeAxisDomain(points.map((p) => p.stake));
 
   const x = (i: number) =>
     pad.left + (points.length <= 1 ? 0 : (i / (points.length - 1)) * plotWidth);

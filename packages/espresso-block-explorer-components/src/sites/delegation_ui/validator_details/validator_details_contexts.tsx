@@ -13,7 +13,15 @@ import { PendingUndelegationsContext } from '../contexts/pending_undelegations_c
 import { RankMapContext } from '../contexts/rank_map_context';
 import { TotalStakeContext } from '../contexts/total_stake_context';
 import { ValidatorNodeContext } from '../contexts/validator_node_context';
-import { ValidatorHistoryURLContext } from '../contexts/validator_details_context';
+import {
+  SampleValidatorHistoryContext,
+  ValidatorHistoryURLContext,
+} from '../contexts/validator_details_context';
+import {
+  commissionRaisedSince,
+  DelegatorAPR,
+  delegatorAPRToShow,
+} from './participation';
 import { sampleValidatorHistory, ValidatorHistory } from './sample_history';
 import {
   activityFromFile,
@@ -143,8 +151,6 @@ export function useValidatorFacts(): ValidatorFacts {
 export const ValidatorHistoryContext =
   React.createContext<null | ValidatorHistory>(null);
 
-const TOP_DELEGATOR_COUNT = 7;
-
 type EpochValidatorsCache = Map<number, Promise<ActiveValidators>>;
 const epochValidatorsCaches = new WeakMap<object, EpochValidatorsCache>();
 
@@ -175,27 +181,47 @@ function fetchEpochValidators(
   return request;
 }
 
-interface EpochValidatorEntry {
-  entry: ValidatorEntry;
-  /** epoch is the epoch the entry was fetched for. */
-  epoch: number;
-}
+/**
+ * EpochDelegators is what the query service's stake table says about a
+ * validator's delegators. The stake table only lists the active set, so a
+ * validator outside of it ('inactive') has delegators that aren't listed,
+ * and a failed request ('error') says nothing about them either. Neither
+ * may be shown as "no delegators".
+ */
+type EpochDelegators =
+  | { state: 'loading' }
+  | { state: 'error' }
+  | { state: 'inactive'; epoch: number }
+  | { state: 'live'; entry: ValidatorEntry; epoch: number };
+
+// Shared so the state keeps its identity between renders.
+const DELEGATORS_LOADING: EpochDelegators = { state: 'loading' };
+const DELEGATORS_ERROR: EpochDelegators = { state: 'error' };
 
 /**
- * useEpochValidatorEntry returns the query service's entry for a validator,
- * with the epoch it belongs to, or null until one has loaded. When the
- * epoch moves on, the previous epoch's entry is kept until the new one
- * arrives, so it is always labelled with its own epoch.
+ * EPOCH_VALIDATORS_RETRY_MS is how long to wait before asking for the stake
+ * table again after a failed request.
  */
-function useEpochValidatorEntry(
+export const EPOCH_VALIDATORS_RETRY_MS = 30_000;
+
+/**
+ * useEpochDelegators looks the validator up in the query service's stake
+ * table for the epoch. When the epoch moves on, or a later request fails,
+ * the last loaded stake table is kept until a new one arrives, so the
+ * delegators are always labelled with their own epoch. Failed requests are
+ * retried.
+ */
+function useEpochDelegators(
   address: `0x${string}`,
   epoch: number,
-): null | EpochValidatorEntry {
+): EpochDelegators {
   const service = React.useContext(HotShotQueryServiceAPIContext);
   const [loaded, setLoaded] = React.useState<null | {
     epoch: number;
     validators: ActiveValidators;
   }>(null);
+  const [failed, setFailed] = React.useState(false);
+  const [attempt, setAttempt] = React.useState(0);
 
   React.useEffect(() => {
     if (!service || epoch <= 0) {
@@ -203,53 +229,80 @@ function useEpochValidatorEntry(
     }
 
     let mounted = true;
+    let retry: undefined | number;
     fetchEpochValidators(service, epoch).then(
-      (validators) => mounted && setLoaded({ epoch, validators }),
-      () => {},
+      (validators) => {
+        if (mounted) {
+          setLoaded({ epoch, validators });
+          setFailed(false);
+        }
+      },
+      () => {
+        if (mounted) {
+          setFailed(true);
+          retry = window.setTimeout(
+            () => setAttempt((count) => count + 1),
+            EPOCH_VALIDATORS_RETRY_MS,
+          );
+        }
+      },
     );
     return () => {
       mounted = false;
+      window.clearTimeout(retry);
     };
-  }, [service, epoch]);
+  }, [service, epoch, attempt]);
 
   // The result is a dependency of the validator history, so it must keep its
   // identity between renders.
   return React.useMemo(() => {
     if (!loaded) {
-      return null;
+      return failed ? DELEGATORS_ERROR : DELEGATORS_LOADING;
     }
 
     const target = address.toLowerCase();
     for (const [key, entry] of loaded.validators.validators) {
       if (key.toLowerCase() === target) {
-        return { entry, epoch: loaded.epoch };
+        return { state: 'live', entry, epoch: loaded.epoch };
       }
     }
-    return null;
-  }, [loaded, address]);
+    return { state: 'inactive', epoch: loaded.epoch };
+  }, [loaded, failed, address]);
 }
 
 /**
- * withLiveDelegators replaces the sample delegators with the validator's
- * real delegators from the query service.
+ * withDelegators sets the history's number of delegators from the stake
+ * table when it lists the validator, and otherwise why it isn't known. A
+ * validator outside the active set still gets its number of delegators
+ * from the history file, which counts every wallet with stake.
  */
-function withLiveDelegators(
+function withDelegators(
   history: ValidatorHistory,
-  entry: ValidatorEntry,
-  epoch: number,
+  delegators: EpochDelegators,
 ): ValidatorHistory {
-  const delegators = Array.from(entry.delegators, ([address, amount]) => ({
-    address,
-    amount: espToNumber(amount),
-  })).sort((a, b) => b.amount - a.amount);
+  if (delegators.state === 'live') {
+    return {
+      ...history,
+      sources: { ...history.sources, delegators: 'live' },
+      delegatorCount: delegators.entry.delegators.size,
+      delegatorsUnknown: null,
+      delegatorsEpoch: delegators.epoch,
+    };
+  }
 
+  // Sample history brings its own sample number of delegators.
+  if (history.status === 'sample') {
+    return history;
+  }
+
+  const inactive = delegators.state === 'inactive';
   return {
     ...history,
-    sources: { ...history.sources, delegators: 'live' },
-    delegatorCount: delegators.length,
-    topDelegators: delegators.slice(0, TOP_DELEGATOR_COUNT),
-    delegatedTotal: espToNumber(entry.stake),
-    delegatorsEpoch: epoch,
+    delegatorCount: inactive
+      ? (history.delegationBaselines?.size ?? null)
+      : null,
+    delegatorsUnknown: delegators.state,
+    delegatorsEpoch: inactive ? delegators.epoch : null,
   };
 }
 
@@ -281,13 +334,13 @@ export function useValidatorHistoryFile(address: `0x${string}`): {
   } | null>(null);
 
   React.useEffect(() => {
-    if (!url) {
+    if (!url || !network) {
       return;
     }
 
     let mounted = true;
     const refresh = () =>
-      fetchValidatorHistoryFile(url).then(
+      fetchValidatorHistoryFile(url, network, address).then(
         (file) =>
           mounted &&
           // Refreshing within the cache window returns the same file; keep
@@ -299,17 +352,23 @@ export function useValidatorHistoryFile(address: `0x${string}`): {
               ? prev
               : { url, file: { state: 'live', file } },
           ),
-        (err) =>
-          mounted &&
-          setLoaded({
-            url,
-            file: {
-              state:
-                err instanceof ValidatorHistoryFileMissing
-                  ? 'missing'
-                  : 'error',
-            },
-          }),
+        (err) => {
+          const file =
+            err instanceof ValidatorHistoryFileMissing
+              ? MISSING_HISTORY_FILE
+              : FAILED_HISTORY_FILE;
+          return (
+            mounted &&
+            // A refresh that fails keeps the file that is already showing:
+            // history from a few minutes ago beats an error message.
+            setLoaded((prev) =>
+              prev?.url === url &&
+              (prev.file.state === 'live' || prev.file === file)
+                ? prev
+                : { url, file },
+            )
+          );
+        },
       );
     void refresh();
     const interval = window.setInterval(refresh, VALIDATOR_HISTORY_REFRESH_MS);
@@ -319,7 +378,7 @@ export function useValidatorHistoryFile(address: `0x${string}`): {
       window.clearInterval(interval);
       window.removeEventListener('focus', refresh);
     };
-  }, [url]);
+  }, [url, network, address]);
 
   if (!url) {
     return { network, file: NO_HISTORY_FILE };
@@ -333,6 +392,8 @@ export function useValidatorHistoryFile(address: `0x${string}`): {
 // Shared so the file state keeps its identity between renders.
 const NO_HISTORY_FILE: HistoryFileState = { state: 'none' };
 const LOADING_HISTORY_FILE: HistoryFileState = { state: 'loading' };
+const MISSING_HISTORY_FILE: HistoryFileState = { state: 'missing' };
+const FAILED_HISTORY_FILE: HistoryFileState = { state: 'error' };
 
 const ALL_LIVE = {
   stake: 'live',
@@ -344,22 +405,26 @@ const ALL_LIVE = {
 
 /**
  * historyFromFile builds the validator history from its history file, or
- * an empty history when the validator has no file or it failed to load.
+ * an empty history when the validator has no file, it failed to load, or
+ * the network has no history source.
  */
 function historyFromFile(
   file: HistoryFileState,
   network: null | string,
-  stake: number,
   now: Date,
 ): ValidatorHistory {
   const empty: ValidatorHistory = {
-    status: file.state === 'error' ? 'error' : 'missing',
+    status:
+      file.state === 'error'
+        ? 'error'
+        : file.state === 'none'
+          ? 'unavailable'
+          : 'missing',
     sources: ALL_LIVE,
     stake: [],
     epochs: [],
-    delegatorCount: 0,
-    topDelegators: [],
-    delegatedTotal: stake,
+    delegatorCount: null,
+    delegatorsUnknown: 'loading',
     delegatorsEpoch: null,
     activity: [],
     commissionChanges: [],
@@ -399,19 +464,22 @@ function historyFromFile(
 }
 
 /**
- * ProvideValidatorHistory provides the ValidatorHistoryContext.
+ * ProvideValidatorHistory provides the ValidatorHistoryContext. It is null
+ * while the history file is loading.
  *
  * Delegators are live, from the query service. Everything else comes from
- * the validator history files when a source is configured; without one
- * (local development, Storybook) it falls back to deterministic sample data
- * anchored to the validator's real current values, and `sources` records
- * which sections are samples.
+ * the validator history files. Without a history source for the network the
+ * history is empty and marked 'unavailable'; only where the host turns on
+ * SampleValidatorHistoryContext (Storybook, local development) is it
+ * replaced by deterministic sample data anchored to the validator's real
+ * current values, with `sources` recording which sections are samples.
  */
 export const ProvideValidatorHistory: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const validator = React.useContext(ValidatorNodeContext);
   const currentEpoch = React.useContext(EspressoCurrentEpochContext);
+  const sampleHistory = React.useContext(SampleValidatorHistoryContext);
   const now = React.useContext(Now);
 
   const address = validator.addressText;
@@ -420,42 +488,47 @@ export const ProvideValidatorHistory: React.FC<React.PropsWithChildren> = ({
   const epoch = Number(currentEpoch);
   // Only rebuild when the day changes, not on every tick of Now.
   const day = Math.floor(now.valueOf() / 86_400_000);
-  const delegatorsEntry = useEpochValidatorEntry(address, epoch);
+  const delegators = useEpochDelegators(address, epoch);
   const { network, file } = useValidatorHistoryFile(address);
 
   const history = React.useMemo(() => {
-    if (epoch <= 0 || file.state === 'loading') {
-      return null;
-    }
-    // Sample data is scaled to the stake, so it needs some.
-    if (file.state === 'none' && stake <= 0) {
+    if (file.state === 'loading') {
       return null;
     }
 
-    const today = new Date(day * 86_400_000);
     let base: ValidatorHistory;
-    if (file.state === 'none') {
+    // Sample data is scaled to the stake and ends on the epoch, so it needs
+    // both.
+    if (file.state === 'none' && sampleHistory && stake > 0 && epoch > 0) {
       base = sampleValidatorHistory({
         address,
         stake,
         commission,
         currentEpoch: epoch,
-        now: today,
+        now: new Date(day * 86_400_000),
       });
     } else {
       try {
-        base = historyFromFile(file, network, stake, new Date());
+        base = historyFromFile(file, network, new Date());
       } catch {
         // A file that passed validation but still trips a reader is shown
         // like a file that failed to load.
-        base = historyFromFile({ state: 'error' }, network, stake, new Date());
+        base = historyFromFile(FAILED_HISTORY_FILE, network, new Date());
       }
     }
 
-    return delegatorsEntry
-      ? withLiveDelegators(base, delegatorsEntry.entry, delegatorsEntry.epoch)
-      : base;
-  }, [address, stake, commission, epoch, day, delegatorsEntry, file, network]);
+    return withDelegators(base, delegators);
+  }, [
+    address,
+    stake,
+    commission,
+    epoch,
+    day,
+    delegators,
+    file,
+    network,
+    sampleHistory,
+  ]);
 
   return (
     <ValidatorHistoryContext.Provider value={history}>
@@ -463,3 +536,29 @@ export const ProvideValidatorHistory: React.FC<React.PropsWithChildren> = ({
     </ValidatorHistoryContext.Provider>
   );
 };
+
+/**
+ * useDelegatorAPR is the APR to show for the current validator: what its
+ * delegators earned over the last 30 days when espressonodes measured a
+ * believable figure, and otherwise the estimate from the network APR and
+ * the validator's commission. It is null when neither is known.
+ */
+export function useDelegatorAPR(): null | DelegatorAPR {
+  const facts = useValidatorFacts();
+  const history = React.useContext(ValidatorHistoryContext);
+  const activeValidators = React.useContext(ActiveValidatorsContext);
+  const earnings = history?.earnings ?? null;
+
+  return delegatorAPRToShow({
+    measured: history?.delegatorAPR ?? null,
+    networkAPR: activeValidators?.apr.ratio ?? null,
+    commission: facts.commission,
+    commissionRaised:
+      history !== null &&
+      earnings !== null &&
+      commissionRaisedSince(
+        history.commissionChanges,
+        new Date(earnings.asOf.valueOf() - 30 * 86_400_000),
+      ),
+  });
+}

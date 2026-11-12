@@ -28,6 +28,18 @@ const WEI_PER_ESP = 1e18;
 const STAKE_DAYS = 90;
 export const VALIDATOR_HISTORY_REFRESH_MS = 5 * 60 * 1000;
 
+/**
+ * VALIDATOR_HISTORY_TIMEOUT_MS is how long a history file may take to load
+ * before the request is given up on and shown as failed.
+ */
+export const VALIDATOR_HISTORY_TIMEOUT_MS = 15_000;
+
+/**
+ * MIN_APR_WINDOW_DAYS is how much of the 30 day earnings window needs data
+ * before its annualized rate is shown; a few days annualized is mostly noise.
+ */
+export const MIN_APR_WINDOW_DAYS = 7;
+
 export const VALIDATOR_HISTORY_SCHEMA_VERSION = 1;
 
 export interface HistoryFileEpoch {
@@ -93,6 +105,11 @@ export interface HistoryFileEarningsAmounts {
 export interface HistoryFileEarningsWindow {
   delegator_net_apr: null | number;
   gross_apr?: null | number;
+  /**
+   * days_covered is how many days of the window have data. Older files
+   * don't have it.
+   */
+  days_covered?: null | number;
 }
 
 export interface HistoryFileEarningsInterval {
@@ -349,6 +366,8 @@ export function isValidatorHistoryFile(
 
   return (
     value.schema_version === VALIDATOR_HISTORY_SCHEMA_VERSION &&
+    typeof value.network === 'string' &&
+    typeof value.address === 'string' &&
     Array.isArray(value.epochs) &&
     value.epochs.every(isEpoch) &&
     Array.isArray(value.network_epochs) &&
@@ -369,31 +388,57 @@ const cache = new Map<
 >();
 
 /**
- * fetchValidatorHistoryFile fetches and validates a history file. Files
- * only change once per epoch, so responses are reused for a few minutes.
+ * timeoutSignal aborts a request that takes longer than the timeout, where
+ * the browser supports it.
+ */
+function timeoutSignal(): undefined | AbortSignal {
+  return typeof AbortSignal !== 'undefined' &&
+    typeof AbortSignal.timeout === 'function'
+    ? AbortSignal.timeout(VALIDATOR_HISTORY_TIMEOUT_MS)
+    : undefined;
+}
+
+/**
+ * fetchValidatorHistoryFile fetches and validates the history file of a
+ * validator on a network. A file that says it is for another validator or
+ * network is rejected, so a mis-published file can't show someone else's
+ * history. Files only change once per epoch, so responses are reused for a
+ * few minutes.
  */
 export function fetchValidatorHistoryFile(
   url: string,
+  network: string,
+  address: `0x${string}`,
 ): Promise<ValidatorHistoryFile> {
   const cached = cache.get(url);
   if (cached && Date.now() - cached.fetchedAt < VALIDATOR_HISTORY_REFRESH_MS) {
     return cached.request;
   }
 
-  const request = fetch(url).then(async (response) => {
-    if (response.status === 404) {
-      throw new ValidatorHistoryFileMissing(url);
-    }
-    if (!response.ok) {
-      throw new Error(`validator history ${response.status}: ${url}`);
-    }
+  const request = fetch(url, { signal: timeoutSignal() }).then(
+    async (response) => {
+      if (response.status === 404) {
+        throw new ValidatorHistoryFileMissing(url);
+      }
+      if (!response.ok) {
+        throw new Error(`validator history ${response.status}: ${url}`);
+      }
 
-    const body: unknown = await response.json();
-    if (!isValidatorHistoryFile(body)) {
-      throw new Error(`unsupported validator history file: ${url}`);
-    }
-    return body;
-  });
+      const body: unknown = await response.json();
+      if (!isValidatorHistoryFile(body)) {
+        throw new Error(`unsupported validator history file: ${url}`);
+      }
+      if (
+        body.network !== network ||
+        body.address.toLowerCase() !== address.toLowerCase()
+      ) {
+        throw new Error(
+          `validator history file is for another validator: ${url}`,
+        );
+      }
+      return body;
+    },
+  );
 
   cache.set(url, { fetchedAt: Date.now(), request });
   request.catch((err) => {
@@ -586,13 +631,19 @@ export function nodeVersionFromFile(file: ValidatorHistoryFile): null | string {
 
 /**
  * delegatorAPRFromFile is the APR delegators earned over the last 30 days,
- * after commission, or null when espressonodes hasn't measured it.
+ * after commission, or null when espressonodes hasn't measured it over
+ * enough of those days to annualize.
  */
 export function delegatorAPRFromFile(
   file: ValidatorHistoryFile,
 ): null | number {
-  const apr = file.earnings?.windows?.['30d']?.delegator_net_apr;
-  return typeof apr === 'number' && Number.isFinite(apr) ? apr : null;
+  const window = file.earnings?.windows?.['30d'];
+  const apr = finiteOrNull(window?.delegator_net_apr);
+  const days = window?.days_covered;
+  if (typeof days === 'number' && !(days >= MIN_APR_WINDOW_DAYS)) {
+    return null;
+  }
+  return apr;
 }
 
 function weiToBigInt(wei: undefined | null | string): bigint {

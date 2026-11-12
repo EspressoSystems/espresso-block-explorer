@@ -386,6 +386,23 @@ describe('delegatorAPRFromFile', () => {
       ),
     ).toBeNull();
   });
+
+  it('needs a week of the window covered before annualizing it', () => {
+    const covered = (days_covered: null | number) =>
+      delegatorAPRFromFile(
+        file({
+          earnings: {
+            windows: { '30d': { delegator_net_apr: 0.09, days_covered } },
+          },
+        }),
+      );
+    expect(covered(2)).toBeNull();
+    expect(covered(6.99)).toBeNull();
+    expect(covered(7)).toBe(0.09);
+    expect(covered(30)).toBe(0.09);
+    // Older files don't say; they are taken as they are.
+    expect(covered(null)).toBe(0.09);
+  });
 });
 
 describe('earningsFromFile', () => {
@@ -617,6 +634,16 @@ describe('isValidatorHistoryFile', () => {
         }),
       ),
     ).toBe(true);
+  });
+
+  it('rejects files that do not say which validator and network they are for', () => {
+    expect(isValidatorHistoryFile({ ...file({}), address: undefined })).toBe(
+      false,
+    );
+    expect(isValidatorHistoryFile({ ...file({}), network: undefined })).toBe(
+      false,
+    );
+    expect(isValidatorHistoryFile({ ...file({}), address: 42 })).toBe(false);
   });
 
   it('rejects files whose entries would throw in a reader', () => {

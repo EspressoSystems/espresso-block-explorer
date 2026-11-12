@@ -118,7 +118,7 @@ export const SampleDataChip: React.FC = () => (
     <Text text="Sample data" />
     <MoreInfoElement>
       <p>
-        <Text text="Validator history is not available from the staking API yet. These values are placeholders that end on the validator's real current stake and commission." />
+        <Text text="No validator history source is set up here, so these values are generated placeholders that end on the validator's real current stake and commission. They only appear in development builds." />
       </p>
     </MoreInfoElement>
   </span>
@@ -348,7 +348,12 @@ export const ClaimNotice: React.FC<{
 export const ExitNotice: React.FC<{
   className?: string;
   beforeOpen?: () => void;
-}> = ({ className, beforeOpen }) => {
+  /**
+   * claimOnly leaves out the sentence saying that the validator is exiting,
+   * for a page that already says it exited.
+   */
+  claimOnly?: boolean;
+}> = ({ className, beforeOpen, claimOnly }) => {
   const validator = React.useContext(ValidatorNodeContext);
   const stakingModal = React.useContext(ModalContext);
   const setSelection = React.useContext(SetValidatorSelectionContext);
@@ -398,16 +403,24 @@ export const ExitNotice: React.FC<{
     );
   }
 
+  const claimableFrom = (
+    <>
+      <Text text="Your " />
+      <MoneyText money={MonetaryValue.ESP(pending.amount)} />
+      <Text text={` can be claimed from ${date(pending.availableTime)}.`} />
+    </>
+  );
+
   return (
     <div className={classes}>
-      <span>
-        <Text text="This validator is exiting and no longer accepts delegations." />
-        <small>
-          <Text text="Your " />
-          <MoneyText money={MonetaryValue.ESP(pending.amount)} />
-          <Text text={` can be claimed from ${date(pending.availableTime)}.`} />
-        </small>
-      </span>
+      {claimOnly ? (
+        <span>{claimableFrom}</span>
+      ) : (
+        <span>
+          <Text text="This validator is exiting and no longer accepts delegations." />
+          <small>{claimableFrom}</small>
+        </span>
+      )}
     </div>
   );
 };

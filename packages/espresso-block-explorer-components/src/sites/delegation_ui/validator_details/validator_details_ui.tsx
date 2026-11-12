@@ -1,12 +1,21 @@
 import { Text } from '@/components/text';
 import { ArrowLeft } from '@/components/visual/icons';
 import { CurrentLocale } from '@/contexts/locale_provider';
+import { hexArrayBufferCodec } from '@/convert/codec/array_buffer_hex';
+import { TaggedBase64 } from '@/models/espresso/tagged_base64/tagged_base64';
+import { NodeSetEntry } from '@/service/espresso_staking_api_service/common/node_set_entry';
+import { RatioRational } from '@/service/espresso_staking_api_service/common/ratio';
 import { default as React } from 'react';
 import { AllValidatorsContext } from '../contexts/all_validators_context';
 import { ProvideDelegateAfterConnect } from '../contexts/delegate_after_connect_context';
 import { ProvideDialogModalControls } from '../contexts/modal_context';
+import { DelegationUIBaseHrefContext } from '../contexts/validator_details_context';
 import { NodeAddressContext } from '../contexts/node_address_context';
-import { ProvideValidatorNodeContext } from '../contexts/validator_node_context';
+import { PendingExitsContext } from '../contexts/pending_exits_context';
+import {
+  ProvideValidatorNodeContext,
+  ValidatorNodeContext,
+} from '../contexts/validator_node_context';
 import { InAppLink } from '../elements/link/in_app_link';
 import { StakingModal } from '../staking_modal/staking_modal';
 import { useValidatorHistoryFile } from './validator_details_contexts';
@@ -14,6 +23,7 @@ import { ValidatorDetailsErrorBoundary } from './validator_details_error_boundar
 import { ValidatorDetailsPage } from './validator_details_page';
 import { exitedAtFromFile, isValidatorAddress } from './validator_history_file';
 import './validator_details_page.css';
+import { ExitNotice } from './validator_summary';
 
 export interface ValidatorDetailsViewProps {
   /**
@@ -22,23 +32,29 @@ export interface ValidatorDetailsViewProps {
   address: null | string;
 }
 
-const BackLink: React.FC = () => (
-  <InAppLink className="validator-details-back" href="./">
-    <ArrowLeft />
-    <Text text="All validators" />
-  </InAppLink>
-);
+const BackLink: React.FC = () => {
+  const baseHref = React.useContext(DelegationUIBaseHrefContext);
+  return (
+    <InAppLink className="validator-details-back" href={baseHref}>
+      <ArrowLeft />
+      <Text text="All validators" />
+    </InAppLink>
+  );
+};
 
 /**
  * ValidatorPageMessage is shown in place of the page when the validator
- * cannot be shown.
+ * cannot be shown. Its children follow the message.
  */
-const ValidatorPageMessage: React.FC<{ message: string }> = ({ message }) => (
+const ValidatorPageMessage: React.FC<
+  React.PropsWithChildren<{ message: string }>
+> = ({ message, children }) => (
   <div className="validator-details-page-message">
     <BackLink />
     <p>
       <Text text={message} />
     </p>
+    {children}
   </div>
 );
 
@@ -91,40 +107,103 @@ const ValidatorDetailsSkeleton: React.FC = () => (
 );
 
 /**
- * ResolveValidator matches the address from the URL against the known
- * validators, ignoring case, and provides it to the page.
+ * ExitedValidatorClaim shows the connected wallet's stake that is pending
+ * exit from a validator that is no longer listed: when it can be claimed,
+ * and the claim itself once it can be.
  */
+const ExitedValidatorClaim: React.FC<{ address: `0x${string}` }> = ({
+  address,
+}) => {
+  // ExitNotice reads the validator from the ValidatorNodeContext, and an
+  // exited validator has no entry left to provide. Only the address of this
+  // stand-in is real, as for the Pending Exits table.
+  const validator = React.useMemo(
+    () =>
+      new NodeSetEntry(
+        hexArrayBufferCodec.decode(address),
+        new TaggedBase64('', new ArrayBuffer(0)),
+        0n,
+        new RatioRational(0n, 1n),
+        null,
+      ),
+    [address],
+  );
+
+  return (
+    <ValidatorNodeContext.Provider value={validator}>
+      <ExitNotice className="validator-details-page-exit" claimOnly />
+    </ValidatorNodeContext.Provider>
+  );
+};
+
 /**
  * UnlistedValidatorMessage explains an address that isn't in the validator
- * list: an exited validator (from its history file) or not a validator.
+ * list, which exited validators aren't either.
+ *
+ * The connected wallet's pending exits come first: they are certain, from
+ * the staking API, and the wallet's stake can be claimed from here. Without
+ * one, the validator's history file says whether it exited. Only a history
+ * that loaded can say the address is not a validator; when it couldn't be
+ * loaded, nothing was checked, and the message says so.
  */
 const UnlistedValidatorMessage: React.FC<{ address: `0x${string}` }> = ({
   address,
 }) => {
   const locale = React.useContext(CurrentLocale);
+  const pendingExits = React.useContext(PendingExitsContext);
   const { file } = useValidatorHistoryFile(address);
-  if (file.state === 'loading') {
-    return <ValidatorDetailsSkeleton />;
-  }
 
   const exitedAt = file.state === 'live' ? exitedAtFromFile(file.file) : null;
-  if (exitedAt) {
-    const date = new Intl.DateTimeFormat(locale, {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }).format(exitedAt);
+  const exitedOn = exitedAt
+    ? `This validator exited on ${new Intl.DateTimeFormat(locale, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      }).format(exitedAt)} and no longer accepts delegations.`
+    : null;
+
+  const pendingExit =
+    Array.from(pendingExits.keys()).find(
+      (key) => key.toLowerCase() === address.toLowerCase(),
+    ) ?? null;
+  if (pendingExit) {
     return (
       <ValidatorPageMessage
-        message={`This validator exited on ${date} and no longer accepts delegations.`}
-      />
+        message={
+          exitedOn ??
+          'This validator has exited and no longer accepts delegations.'
+        }
+      >
+        <ExitedValidatorClaim address={pendingExit} />
+      </ValidatorPageMessage>
     );
   }
-  return (
-    <ValidatorPageMessage message="This address is not a registered validator." />
-  );
+
+  switch (file.state) {
+    case 'loading':
+      return <ValidatorDetailsSkeleton />;
+    case 'error':
+      return (
+        <ValidatorPageMessage message="This address isn't in the validator list. Its history couldn't be loaded right now, so it may be a validator that has exited." />
+      );
+    case 'none':
+      // No history for this network: all that is known is the list.
+      return (
+        <ValidatorPageMessage message="This address isn't in the validator list." />
+      );
+    default:
+      return (
+        <ValidatorPageMessage
+          message={exitedOn ?? 'This address is not a registered validator.'}
+        />
+      );
+  }
 };
 
+/**
+ * ResolveValidator matches the address from the URL against the known
+ * validators, ignoring case, and provides it to the page.
+ */
 const ResolveValidator: React.FC<ValidatorDetailsViewProps> = ({ address }) => {
   const allValidators = React.useContext(AllValidatorsContext);
 
