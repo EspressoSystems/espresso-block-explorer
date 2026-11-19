@@ -15,14 +15,43 @@
 /*
  * The card's title gets the same header the home page gives its titled cards:
  * a 16px inset on every side, around a row as tall as the "View all" button
- * that sits beside their titles. This card has no button, so the row keeps
- * that height on its own, which puts "Transactions" at the same distance from
+ * that sits beside their titles. Without a pager beside the title, the row
+ * keeps that height on its own, which puts "Blobs" at the same distance from
  * the card's edge, and from the table beneath it, as "Latest Blocks".
  */
 .block-transactions > .block-transactions--header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
   box-sizing: border-box;
   min-block-size: 72px;
   padding: 16px;
+}
+
+/*
+ * A block with more than one page of transactions gets a pager on the
+ * title row, and the same pager beneath the table so a 50-row page can be
+ * left from either end. Its range reads as secondary text beside the
+ * buttons.
+ */
+.block-transactions > .block-transactions--footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 16px 16px;
+}
+
+nav.block-transactions-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.block-transactions-pager--range {
+  margin-inline-end: 8px;
+  color: var(--color--slate-500);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
 }

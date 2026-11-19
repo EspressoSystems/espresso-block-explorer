@@ -1,9 +1,17 @@
 import { render } from '@testing-library/react';
-import { notFound, usePathname } from 'next/navigation';
+import {
+  notFound,
+  ReadonlyURLSearchParams,
+  usePathname,
+  useSearchParams,
+} from 'next/navigation';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import BlockLayout from '../app/block/layout';
 
 vi.mock('next/navigation');
+vi.mocked(useSearchParams).mockReturnValue(
+  new URLSearchParams() as ReadonlyURLSearchParams,
+);
 
 describe('Block', () => {
   afterEach(() => {

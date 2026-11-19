@@ -27,6 +27,7 @@ interface ExampleProps {
   hotshotQueryServiceURL?: string;
   nodeValidatorWebSocketURL?: string;
   block: number;
+  transactionsPosition?: number;
 }
 
 const Example: React.FC<ExampleProps> = ({
@@ -69,6 +70,10 @@ const meta: Meta = {
     block: {
       control: 'number',
       description: 'The block number to show details for',
+    },
+    transactionsPosition: {
+      control: 'number',
+      description: 'A position in the block; its page of transactions is shown',
     },
   },
 };

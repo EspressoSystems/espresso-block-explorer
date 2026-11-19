@@ -57,10 +57,12 @@ export class StoryBookPathResolver implements PathResolver {
     }
     return this.stringForParams(this.paramsForPage('blocks'));
   }
-  block(height: number): string {
-    return this.stringForParams(
-      this.paramsForPage('block', [['block', height]]),
-    );
+  block(height: number, position?: number): string {
+    const args: [string, unknown][] = [['block', height]];
+    if (position !== undefined && position > 0) {
+      args.push(['transactionsPosition', position]);
+    }
+    return this.stringForParams(this.paramsForPage('block', args));
   }
   transactions(startAtBlock?: number, offset?: number): string {
     if (startAtBlock !== undefined) {
