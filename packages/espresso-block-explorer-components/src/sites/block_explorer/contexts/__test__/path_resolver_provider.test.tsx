@@ -29,6 +29,9 @@ describe('Path Resolver Provider Context', () => {
         expect(localPathResolver.explorer()).equals('/');
         expect(localPathResolver.blocks()).equals('/blocks');
         expect(localPathResolver.block(0)).equals('/block/0');
+        // The first page of a block's transactions needs no position.
+        expect(localPathResolver.block(10, 0)).equals('/block/10');
+        expect(localPathResolver.block(10, 50)).equals('/block/10?position=50');
         expect(localPathResolver.blocks(10)).equals('/blocks?height=10');
         expect(localPathResolver.transactions()).equals('/transactions');
         expect(localPathResolver.transactions(10)).equals(

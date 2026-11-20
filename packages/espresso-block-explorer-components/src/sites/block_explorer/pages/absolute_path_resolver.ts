@@ -23,8 +23,11 @@ export class AbsolutePathResolver implements PathResolver {
     ).toString();
   }
 
-  block(height: number): string {
-    return new URL(`.${this.default.block(height)}`, this.baseURL).toString();
+  block(height: number, position?: number): string {
+    return new URL(
+      `.${this.default.block(height, position)}`,
+      this.baseURL,
+    ).toString();
   }
 
   transactions(startAtBlock?: number, offset?: number): string {

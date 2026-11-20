@@ -9,14 +9,35 @@ import {
 import {
   BlockNumberContext,
   BlockPage,
+  parseBlockTransactionsPosition,
   ProvideBlockDetailDataSource,
 } from 'espresso-block-explorer-components/block-explorer';
-import { usePathname, notFound } from 'next/navigation';
-import { useContext } from 'react';
+import { usePathname, notFound, useSearchParams } from 'next/navigation';
+import { Suspense, useContext } from 'react';
 
 const pathRegExp = /\/block\/\d+/;
 
+/**
+ * BlockClientComponent shows the block, with the page of its transactions
+ * picked by `?position=`. Next renders whatever reads the query string only
+ * in the browser, so the block at its first page is prerendered instead.
+ */
 export default function BlockClientComponent() {
+  return (
+    <Suspense fallback={<Block transactionsPosition={0} />}>
+      <BlockAtPosition />
+    </Suspense>
+  );
+}
+
+function BlockAtPosition() {
+  const position = useSearchParams().get('position');
+  return (
+    <Block transactionsPosition={parseBlockTransactionsPosition(position)} />
+  );
+}
+
+function Block({ transactionsPosition }: { transactionsPosition: number }) {
   const pathname = usePathname();
   const [blockIDRaw = '0'] = pathname.split('/').reverse();
   const blockID = Number(blockIDRaw ?? '0');
@@ -38,7 +59,7 @@ export default function BlockClientComponent() {
     <BlockNumberContext.Provider value={blockID}>
       <ProvideHotShotQueryServiceAPIContext>
         <ProvideBlockDetailDataSource>
-          <BlockPage />
+          <BlockPage transactionsPosition={transactionsPosition} />
         </ProvideBlockDetailDataSource>
       </ProvideHotShotQueryServiceAPIContext>
     </BlockNumberContext.Provider>

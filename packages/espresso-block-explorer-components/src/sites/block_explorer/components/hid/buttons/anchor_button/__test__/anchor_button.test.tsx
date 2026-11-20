@@ -38,6 +38,7 @@ describe('Anchor Button Component', () => {
     expect(anchor).toBeInTheDocument();
     expect(anchor).toHaveTextContent('Click Me');
     expect(anchor).not.toHaveAttribute('href', 'https://example.com/');
+    expect(anchor).toHaveAttribute('aria-disabled', 'true');
   });
 
   it('should navigate with the provided link component', () => {

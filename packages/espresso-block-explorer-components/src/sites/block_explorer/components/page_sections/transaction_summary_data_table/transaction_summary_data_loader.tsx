@@ -40,6 +40,8 @@ export const RefreshTransactionSummariesContext = React.createContext<
 export interface TransactionSummaryDataTableState extends DataTableState<TransactionSummaryColumn> {
   height?: number;
   offset?: number;
+  /** The number of transactions to load; 20 when not given. */
+  limit?: number;
   /** Changing this re-fetches the current page. */
   refreshedAt?: number;
 }
@@ -66,24 +68,33 @@ const LoadTransactionSummaryDataTableData: React.FC<React.PropsWithChildren> = (
     DataTableStateContext,
   ) as TransactionSummaryDataTableState;
   const blockID = React.useContext(BlockNumberContext);
+  const { height, offset, limit, refreshedAt } = dataTableState;
 
-  const request = new ExplorerGetTransactionSummariesRequest(
-    dataTableState.height == null || dataTableState.height === undefined
-      ? ExplorerGetTransactionSummariesTarget.latest(BLOCKS_TO_SHOW)
-      : ExplorerGetTransactionSummariesTarget.heightAndOffset(
-          dataTableState.height,
-          dataTableState.offset || 0,
-          BLOCKS_TO_SHOW,
+  // Sending the request is part of creating the promise, so it is created
+  // once per page: a re-render of this loader must not send it again.
+  const promise = React.useMemo(
+    () =>
+      service.explorer.getTransactionSummaries(
+        new ExplorerGetTransactionSummariesRequest(
+          height == null
+            ? ExplorerGetTransactionSummariesTarget.latest(BLOCKS_TO_SHOW)
+            : ExplorerGetTransactionSummariesTarget.heightAndOffset(
+                height,
+                offset || 0,
+                limit ?? BLOCKS_TO_SHOW,
+              ),
+          !blockID
+            ? ExplorerGetTransactionSummariesFilter.none()
+            : ExplorerGetTransactionSummariesFilter.block(blockID),
         ),
-    !blockID
-      ? ExplorerGetTransactionSummariesFilter.none()
-      : ExplorerGetTransactionSummariesFilter.block(blockID),
+      ),
+    // refreshedAt is only there to send the request again.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [service, height, offset, limit, blockID, refreshedAt],
   );
 
   return (
-    <PromiseResolver
-      promise={service.explorer.getTransactionSummaries(request)}
-    >
+    <PromiseResolver promise={promise}>
       <KeepWhileLoading contexts={kKeptTransactionSummaryContexts}>
         <TransactionSummariesProvider>
           {props.children}
@@ -128,6 +139,7 @@ const LoadTransactionSummaryDataTableDataFromExplorerSummary: React.FC<
 export interface TransactionsSummaryDataLoaderProps {
   startAtBlock?: number;
   offset?: number;
+  limit?: number;
   children: React.ReactNode | React.ReactNode[];
 }
 
@@ -138,7 +150,7 @@ export interface TransactionsSummaryDataLoaderProps {
 export const TransactionSummaryDataLoader: React.FC<
   TransactionsSummaryDataLoaderProps
 > = (props) => {
-  const { startAtBlock, offset, ...rest } = props;
+  const { startAtBlock, offset, limit, ...rest } = props;
   const [refreshedAt, setRefreshedAt] = React.useState<number>();
   const refresh = React.useCallback(() => setRefreshedAt(Date.now()), []);
   const initialState = React.useMemo(
@@ -147,9 +159,10 @@ export const TransactionSummaryDataLoader: React.FC<
       sortDir: SortDirection.desc,
       height: startAtBlock,
       offset: offset,
+      limit,
       refreshedAt,
     }),
-    [startAtBlock, offset, refreshedAt],
+    [startAtBlock, offset, limit, refreshedAt],
   );
 
   return (

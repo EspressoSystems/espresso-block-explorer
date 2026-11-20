@@ -5,7 +5,8 @@
 export interface PathResolver {
   explorer(): string;
   blocks(startAtBlock?: number): string;
-  block(height: number): string;
+  /** position picks the page of the block's transactions to show. */
+  block(height: number, position?: number): string;
   transactions(startAtBlock?: number, offset?: number): string;
   transactionsForBlock(block: number): string;
   transaction(height: number, offset: number): string;
@@ -30,7 +31,11 @@ export class DefaultPathResolver implements PathResolver {
     return '/blocks';
   }
 
-  block(height: number): string {
+  block(height: number, position?: number): string {
+    if (position !== undefined && position > 0) {
+      return `/block/${height}?position=${position}`;
+    }
+
     return `/block/${height}`;
   }
 
