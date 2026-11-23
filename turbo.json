@@ -6,6 +6,7 @@
       "outputs": [
         "dist/**",
         ".next/**",
+        "out/**",
         "!.next/cache/**",
         "storybook-static/**",
         "public/**/*.js"

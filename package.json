@@ -10,6 +10,7 @@
     "packages/delegation-ui"
   ],
   "devDependencies": {
+    "@playwright/test": "1.65.0",
     "turbo": "^2.10.13"
   },
   "overrides": {
@@ -25,6 +26,7 @@
     "lint:check": "turbo lint:check",
     "typecheck": "turbo typecheck",
     "test": "turbo test",
+    "e2e": "playwright test --config e2e/playwright.config.ts",
     "coverage": "turbo coverage",
     "clean": "npm run clean:turbo && npm run clean:build",
     "clean:turbo": "rm -rf .turbo packages/*/.turbo",
