@@ -19,6 +19,8 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
+    "lint:check": "turbo lint:check",
+    "typecheck": "turbo typecheck",
     "test": "turbo test",
     "coverage": "turbo coverage",
     "clean": "npm run clean:turbo && npm run clean:build",

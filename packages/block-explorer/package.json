@@ -8,6 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint src --fix",
+    "lint:check": "eslint src",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "coverage": "vitest run --coverage"
   },
