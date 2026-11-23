@@ -14,6 +14,7 @@ Guidance for coding agents (Claude Code, Codex and others) working in this repos
 - **Never invent or edit chain data.** Contract ABIs (`src/contracts/*/*_abi.ts`), contract addresses, chain IDs and RPC or service URLs change only with a cited source, such as a contracts-repo commit or a deployment record.
 - **No secrets in git.** Never commit a real WalletConnect project ID, RPC key or `.env` file. The staking app's dev server rewrites `packages/delegation-ui/public/config.json` from environment variables when it starts, so don't commit the change that leaves behind.
 - **Don't push or open PRs unless a human asks.** Commit only when asked.
+- **Keep `docs/architecture.md` current.** It is the human-facing reference for this repo. If a change makes anything in it wrong (a command, path, flow, config, version or risk), update it in the same PR.
 - **Leave `package-lock.json` alone** unless the task is a dependency change. Check that the diff contains only the intended packages: newer npm versions silently drop the `libc` fields that pick the right native binaries on Alpine.
 
 ## Before saying a change is done
@@ -26,7 +27,7 @@ npm run lint         # runs eslint --fix: review any files it changed
 npm run test
 ```
 
-UI changes also need before/after screenshots in light and dark mode.
+UI changes also need before/after screenshots in light and dark mode. Check that `docs/architecture.md` still matches the change.
 
 ## Repository layout
 
@@ -113,6 +114,7 @@ These Next.js versions may differ from what you know. Before writing Next-specif
 - **Files.** snake_case `.ts`/`.tsx` files. Plain CSS sits next to each component.
 - **CSS variables.** Word groups use one hyphen and categories use two: `--color--slate-950`, `--card--background-color`, `type--paragraph--text-100`. Every palette color `--color--X` has a contrasting `--on-color--X`.
 - **Comments.** JSDoc blocks that open with "funcName does X". Keep comments short and only where they add something.
+- **Dependency versions.** wagmi is pinned by `overrides` in the root `package.json`: change it there, not in a package. Each package uses TypeScript 6, but `npx tsc` from the root runs an older TypeScript 5, so run TypeScript through a package's scripts or from its folder.
 - **Commits.** Sentence-case imperative subjects with no conventional-commit prefix. Branches are named `feat/`, `fix/`, `design/`, `chore/` or `docs/`, and PRs merge with merge commits.
 
 ## CI

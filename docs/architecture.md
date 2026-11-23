@@ -1,6 +1,6 @@
 # Architecture
 
-How this repository is built, configured, tested and shipped, written from a read-only inspection of the code on 2026-11-20 (branch `chore/ai-agent-setup`, based on `main` at `1241c1bd`).
+How this repository is built, configured, tested and shipped. It started as a read-only inspection of the code on 2026-11-20. Agents keep it current: a change that makes something here wrong updates it in the same PR (see `AGENTS.md`).
 
 **How to read this document**
 
@@ -13,27 +13,27 @@ How this repository is built, configured, tested and shipped, written from a rea
 - Nothing in this document was executed against a live network.
 - Open questions are collected in [Unresolved questions](#unresolved-questions) at the end.
 
-**Since the inspection.** `CODEOWNERS` now makes fkrell the default owner and names the staking reviewers, which answers question 13.
-
 ---
 
 ## 1. Stack
 
-| Area | What | Source |
+Major versions only. The root `package.json`, each package's `package.json` and `package-lock.json` hold the exact versions.
+
+| Area | What | Configured in |
 |---|---|---|
-| Languages | TypeScript (`.ts`/`.tsx`), plain CSS, Bash (container scripts), nginx config | repo tree |
-| Package manager | npm workspaces, `packageManager: npm@10.9.2`, `package-lock.json` (lockfileVersion 3) | `package.json` |
-| Task runner | Turborepo 2.10.13; `build`/`test`/`lint`/`dev` depend on `^build` | `turbo.json` |
-| Library build | Vite 8.3 (Rolldown), `vite-plugin-dts`, `vite-plugin-circular-dependency` | `packages/espresso-block-explorer-components/vite.config.mts` |
-| Apps | Next.js 16.3.5, App Router, static export (`output: 'export'`) | `EXP/next.config.mjs:11`, `DUI/next.config.mjs` |
-| UI | React 19.3 | lockfile |
-| Wallet / chain | wagmi 3.7.7 (pinned by a root `overrides` entry), viem 2.56.6, RainbowKit 2.2.11, @tanstack/react-query 5 | `package.json` overrides; lockfile |
-| Component workbench | Storybook 10.6 | library `package.json` |
-| Tests | Vitest 5.0.1 + jsdom 30 + Testing Library, `@vitest/web-worker`, `vitest-canvas-mock` | per-package `vitest.config.ts` / `vite.config.mts` |
-| Lint / format | ESLint 9.39 (flat config), Prettier 3.9 | per-package `eslint.config.mjs`, `.prettierrc` |
-| TypeScript | `^6` declared (6.0.3 installed in each package); 5.9.3 hoisted at the root | lockfile |
-| Runtime | nginx (`nginx:1-alpine`) serving static files; build image `node:22-alpine` | `Dockerfile:10` |
-| Node version | No `engines` field and no `.nvmrc`. CI uses Node 24 (`.github/workflows/build.yml:25`); Docker builds on Node 22. | — |
+| Languages | TypeScript (`.ts`/`.tsx`), plain CSS, Bash (container scripts), nginx config | — |
+| Package manager | npm 10 with workspaces | root `package.json` (`packageManager`, `workspaces`) |
+| Task runner | Turborepo 2 | `turbo.json` |
+| Library build | Vite 8 | `packages/espresso-block-explorer-components/vite.config.mts` |
+| Apps | Next.js 16, App Router, static export (`output: 'export'`) | `EXP/next.config.mjs`, `DUI/next.config.mjs` |
+| UI | React 19 | — |
+| Wallet / chain | wagmi 3 (pinned by `overrides` in the root `package.json`), viem 2, RainbowKit 2, TanStack Query 5 | `LIB/models/config/environment/wagmi.ts` |
+| Component workbench | Storybook 10 | library `.storybook/` |
+| Tests | Vitest 5, jsdom, Testing Library | each package's `vitest.config.ts` or `vite.config.mts` |
+| Lint / format | ESLint 9, Prettier 3 | each package's `eslint.config.mjs` and `.prettierrc` |
+| TypeScript | 6 in each package; an older TypeScript 5 is hoisted to the root `node_modules` by ESLint's dependencies | each package's `tsconfig.json` |
+| Runtime | nginx serving the static exports | `Dockerfile`, `docker/*-nginx.conf` |
+| Node version | Not pinned: no `engines` field or `.nvmrc`. CI uses Node 24, Docker builds on Node 22. | `.github/workflows/build.yml`, `Dockerfile` |
 
 ## 2. Directory structure and key components
 
@@ -300,7 +300,7 @@ These are taken from `package.json` scripts, `turbo.json`, `justfile` and `READM
 
 **Repository automation**
 - Dependabot updates GitHub Actions daily. Its npm entry points at `/espresso-block-explorer-components`, which doesn't exist (the package is under `packages/`), so npm updates **never run** *(inferred)*.
-- CODEOWNERS assigns no owners: its only entry, `@ayiga`, has no file pattern in front of it.
+- `CODEOWNERS`: `fkrell` is the default owner. `fkrell`, `jbearer` and `Ancient123` own the staking paths: contracts, wallet flows, staking and reward services, the staking app, `docker/` and `Dockerfile`. Owners are only required reviewers if branch protection has "Require review from Code Owners" on.
 
 **Deployment**
 - **No deploy step exists in this repo.** Images are published to GHCR; how they reach running environments is outside the repo.
@@ -386,4 +386,4 @@ Severity is my judgement. Each item cites its evidence.
 10. **Storybook on GitHub Pages.** Storybook is published from `main`. Is that intended to stay public?
 11. **Node version.** Which Node version is canonical, 22 (Docker) or 24 (CI)?
 12. **Unrouted pages.** Is the hidden Rollups section planned, or dead code to remove?
-13. **Who owns the staking UI?** Ownership and review responsibility for staking code. CODEOWNERS assigns no owners.
+13. **Who owns the staking UI?** *Answered:* `fkrell`, `jbearer` and `Ancient123` (see `CODEOWNERS`).
