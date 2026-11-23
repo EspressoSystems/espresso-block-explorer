@@ -12,7 +12,7 @@ Guidance for coding agents (Claude Code, Codex and others) working in this repos
   - `packages/delegation-ui/`
   - `docker/`
 - **Never invent or edit chain data.** Contract ABIs (`src/contracts/*/*_abi.ts`), contract addresses, chain IDs and RPC or service URLs change only with a cited source, such as a contracts-repo commit or a deployment record.
-- **No secrets in git.** Never commit a real WalletConnect project ID, RPC key or `.env` file. The staking app's dev server rewrites `packages/delegation-ui/public/config.json` from environment variables when it starts, so don't commit the change that leaves behind.
+- **No secrets in git.** Each app's `public/config.json` is local and gitignored. Change `public/config.example.json` instead, and never commit a real WalletConnect project ID, RPC key or `.env` file.
 - **Don't push or open PRs unless a human asks.** Commit only when asked.
 - **Keep `docs/architecture.md` current.** It is the human-facing reference for this repo. If a change makes anything in it wrong (a command, path, flow, config, version or risk), update it in the same PR.
 - **Leave `package-lock.json` alone** unless the task is a dependency change. Check that the diff contains only the intended packages. npm 11 drops the `libc` fields from native-binary entries: that is expected and harmless (Alpine then installs both glibc and musl binaries), so don't restore them by hand.
@@ -22,9 +22,11 @@ Guidance for coding agents (Claude Code, Codex and others) working in this repos
 Run from the repo root and report the results:
 
 ```sh
-npm run build        # also typechecks the apps (next build)
-npm run lint         # runs eslint --fix: review any files it changed
+npm run build        # also produces the static exports the smoke tests use
+npm run lint:check
+npm run typecheck
 npm run test
+npm run e2e          # Playwright smoke tests against the production builds
 ```
 
 UI changes also need before/after screenshots in light and dark mode. Check that `docs/architecture.md` still matches the change.
@@ -55,7 +57,8 @@ npm run build
 
 | Command | Notes |
 |---|---|
-| `npm run lint` | Runs `eslint src --fix`, so it rewrites files. CI runs the same command, so fixable lint errors never fail CI. |
+| `npm run lint` | Runs `eslint src --fix`, so it rewrites files. CI runs `lint:check`, which only reports. |
+| `npm run typecheck` | `tsc --noEmit`. The library checks its shipped source only (`tsconfig.build.json`). Its test files still have type errors and aren't checked yet. |
 | `npx turbo build --force` | Bypasses Turbo's cache when a stale library build is suspected. |
 | `npm run dev --workspace=packages/block-explorer` | Next dev server on :3000. |
 | `npm run storybook --workspace=packages/espresso-block-explorer-components` | Storybook on port 6006. |
@@ -72,7 +75,7 @@ npx vitest run -t "name of test"
 
 Unit tests use Vitest + jsdom + Testing Library, with `TZ=UTC`. They live in `__test__/` next to the code; the apps keep theirs in `src/__tests__/`. Stories live in `__docs__/`.
 
-There is no typecheck script and there are no end-to-end tests. `next build` typechecks the apps, but the library build does not fail on type errors.
+**Smoke tests** live in `e2e/`. `e2e/serve.mjs` serves each app's `out/` with the same routing as the nginx configs and a fake-data `config.json`, so no network is used. Locally they run in the system Chrome; CI installs Playwright's Chromium.
 
 **Docker:** `docker build --target block-explorer .` (or `--target delegation-ui`). The network is chosen at runtime with `-e ENVIRONMENT_NAME=mainnet|decaf|water|milk`.
 
@@ -100,7 +103,7 @@ The library exports three entry points, each with a CSS file:
 
 - **Static export.** Both apps use `output: 'export'`, and nginx serves the files (`docker/*-nginx.conf`).
 - **Runtime config.** Nothing is baked in at build time. The container's init scripts write `/config.json` and replace placeholders such as `__SITE_PREFIX__` in the exported HTML.
-- **Local config.** Each app's committed `public/config.json` points at Decaf. The staking app's dev server overwrites its copy without the service URLs, so local staking dev shows fake data. To use fake data in the explorer, remove the service URLs from its copy and don't commit that.
+- **Local config.** For local dev, `public/config.json` is created from `public/config.example.json`, which points at Decaf. To use fake data locally, remove the service URLs from that local copy.
 - **Dynamic routes.** `/block/[id]` and `/transaction/[slug]` export one static shell each, and the client reads the real ID from the URL.
 - **Title strings kept in sync.** `getSiteTitleConfig()` (`packages/block-explorer/src/helpers/read_from_env.ts`) and the bash `case` statement in `docker/block-explorer-generate-files.sh` hold the same per-environment title strings. Keep the two in sync.
 - **Check error handling against a production build.** The dev server shows error overlays that production doesn't.
@@ -124,8 +127,10 @@ These Next.js versions may differ from what you know. Before writing Next-specif
 1. Install
 2. Build the library
 3. `turbo build`
-4. `turbo lint` (with `--fix`)
-5. `turbo test`
-6. Storybook build
+4. `turbo lint:check`
+5. `turbo typecheck`
+6. `turbo test`
+7. Playwright smoke tests
+8. Storybook build
 
 `docker.yml` builds both images and pushes them to GHCR on non-PR events.

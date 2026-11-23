@@ -29,11 +29,11 @@ Major versions only. The root `package.json`, each package's `package.json` and 
 | UI | React 19 | — |
 | Wallet / chain | wagmi 3 (pinned by `overrides` in the root `package.json`), viem 2, RainbowKit 2, TanStack Query 5 | `LIB/models/config/environment/wagmi.ts` |
 | Component workbench | Storybook 10 | library `.storybook/` |
-| Tests | Vitest 5, jsdom, Testing Library | each package's `vitest.config.ts` or `vite.config.mts` |
+| Tests | Vitest 5, jsdom, Testing Library; Playwright 1 for smoke tests | each package's `vitest.config.ts` or `vite.config.mts`; `e2e/playwright.config.ts` |
 | Lint / format | ESLint 9, Prettier 3 | each package's `eslint.config.mjs` and `.prettierrc` |
 | TypeScript | 6 in each package; an older TypeScript 5 is hoisted to the root `node_modules` by ESLint's dependencies | each package's `tsconfig.json` |
 | Runtime | nginx serving the static exports | `Dockerfile`, `docker/*-nginx.conf` |
-| Node version | Not pinned: no `engines` field or `.nvmrc`. CI uses Node 24, Docker builds on Node 22. | `.github/workflows/build.yml`, `Dockerfile` |
+| Node version | 24, pinned by `.nvmrc` and `engines` (`>=24`) in the root `package.json`. CI reads `.nvmrc`; Docker builds on `node:24-alpine`. | `.nvmrc`, `.github/workflows/build.yml`, `Dockerfile` |
 
 ## 2. Directory structure and key components
 
@@ -56,10 +56,11 @@ packages/
       sites/block_explorer/   explorer pages, sections, theme
       sites/delegation_ui/    staking dashboard UI, staking modal, mocks
   block-explorer/    Next app: routes only (src/app) + thin client components (src/client_components)
-  delegation-ui/     Next app: one page, wagmi setup (src/helpers/wagmi.ts), config loading
+  delegation-ui/     Next app: the validator list and a validator page (`/validator?address=`), wagmi setup (src/helpers/wagmi.ts), config loading
 docker/              container init scripts + nginx configs
+e2e/                 Playwright smoke tests against the apps' static exports
 Dockerfile           multi-stage; final targets `block-explorer` and `delegation-ui`
-.github/workflows/   build.yml (build/lint/test/storybook), docker.yml (images)
+.github/workflows/   build.yml (build/lint/typecheck/test/smoke tests/storybook), docker.yml (images)
 ```
 
 **Verified structural facts**
@@ -93,7 +94,7 @@ Dockerfile           multi-stage; final targets `block-explorer` and `delegation
 1. At container start, `docker/block-explorer-generate-files.sh:12-55` writes `/config.json` with `ENVIRONMENT_NAME` and `hotshot_query_service_url`. The URL defaults per environment to `https://cache.{main.net|decaf.testnet|water.devnet|milk.devnet}.espresso.network/v0/`.
 2. The **web worker** fetches `/config.json` itself and builds a fetch-based service from `hotshot_query_service_url` (`LIB/service/hotshot_query_service/hotshot_query_service_web_worker_proxy.ts:30-48`).
 3. The main thread fetches `/config.json` separately to learn `ENVIRONMENT_NAME` (`EXP/src/client_components/layout.tsx:28-37`). Unknown or missing values become `mainnet` (`EXP/src/helpers/read_from_env.ts:8-27`).
-4. In `next dev`, `EXP/public/config.json` (tracked in git) points at the Decaf query service.
+4. In `next dev`, `EXP/public/config.json` points at the Decaf query service. It is gitignored; the `predev` script copies it from the tracked `EXP/public/config.example.json` when it is missing (`EXP/package.json`).
 
 ### 3.3 The web-worker pipeline (verified)
 
@@ -174,10 +175,12 @@ Dockerfile           multi-stage; final targets `block-explorer` and `delegation
 - **Contract addresses**: `CONTRACT_ADDRESS_STAKE_TABLE`, `_ESP_TOKEN`, `_REWARD_CLAIM` and `_LIGHT_CLIENT`.
   - They are validated **only for a `0x` prefix**, with no length or checksum check (`DUI/src/helpers/read_from_env.ts:29-41`).
   - If one is missing, that contract's context is `null` and its buttons are disabled.
-  - The production image has **no default addresses**. The Docker defaults are empty (`docker/delegation-ui-init.sh:15-18`, `Dockerfile:166-169`).
+  - The production image has **no default addresses**. The Docker defaults are empty (`docker/delegation-ui-init.sh:25-28`, `Dockerfile:166-169`).
   - Per-environment address sets exist only for Storybook (`LIB/models/config/storybook/controls.ts:97-190`). The Decaf set is also written out in `docker/README.md:42-45`.
-- **Service URLs** are read by the workers from the lowercase keys `hotshot_query_service_url`, `staking_api_service_url` and `node_validator_service_url`. Their Docker defaults are **mainnet URLs whatever `ENVIRONMENT_NAME` is** (`docker/delegation-ui-init.sh:12-14`).
-- **Dev config.** In `next dev`, `DUI/src/instrumentation.ts:10-32` **rewrites the tracked `DUI/public/config.json`** from `process.env`. It writes only the uppercase keys and **drops the three service-URL keys**.
+- **Service URLs** are read by the workers from the lowercase keys `hotshot_query_service_url`, `staking_api_service_url` and `node_validator_service_url`. Their Docker defaults are **mainnet URLs whatever `ENVIRONMENT_NAME` is** (`docker/delegation-ui-init.sh:22-24`).
+- **Dev config.** `DUI/public/config.json` is gitignored. In `next dev`, `DUI/src/instrumentation.ts:10-48` handles it:
+  - Without `ENVIRONMENT_NAME`, it keeps the local file, copying it from the tracked `DUI/public/config.example.json` (Decaf) when it is missing.
+  - With `ENVIRONMENT_NAME`, it rewrites the file from `process.env`, including the three service-URL keys. A service URL that isn't set is written empty, so that worker falls back to fake data.
 
 ### 4.3 Contracts and ABIs (verified)
 
@@ -239,7 +242,8 @@ None of these are compiled into the bundle. Container init scripts write `/confi
 | `WALLETCONNECT_PROJECT_ID` | delegation | `config.json` | empty, which falls back to injected wallets only |
 | `RPC_URLS` | delegation | `config.json` | empty, which uses viem's public RPC |
 | `PROOF_OF_STAKE_RELEASED` | delegation | `config.json` | empty, which counts as false. **No `ENV` line in the Dockerfile.** |
-| `BASE_URL`, `BASE_PATH` | delegation | `config.json` + `sed` over the HTML | `config.json` gets `https://claim.espresso.foundation` and `/stake/`; the `sed` defaults differ (`delegation-ui-init.sh:22-37`) |
+| `BASE_URL`, `BASE_PATH` | delegation | `config.json` + `sed` over the HTML | `config.json` gets `https://claim.espresso.foundation` and `/stake/`; the `sed` defaults differ (`delegation-ui-init.sh:32-33,41-49`) |
+| `VALIDATOR_HISTORY_URL` | delegation | `config.json` | `https://espressonodes.com/validator-data/`, which serves mainnet and decaf (`docker/README.md:54`). Empty shows validator history as unavailable. |
 | `BASE_URL`, `STAKING_SITE_URL`, `BLOCK_EXPLORER_SITE_PREFIX`, `_NETWORK_SITE_NAME`, `_NETWORK_NAME` | explorer | `sed` over the exported HTML/JS + the nginx conf | per environment (`docker/block-explorer-generate-files.sh:12-45`) |
 | `NODE_ENV` | explorer build | — | static export only when `production` (`EXP/next.config.mjs:11`) |
 
@@ -266,17 +270,17 @@ These are taken from `package.json` scripts, `turbo.json`, `justfile` and `READM
 
 | Purpose | Command |
 |---|---|
-| First install | `npm ci --workspaces && npm run build --workspace=packages/espresso-block-explorer-components && npm ci --workspaces` |
+| First install | `npm ci && npm run build --workspace=packages/espresso-block-explorer-components && npm run build` |
 | Build all | `npm run build` (`turbo build`) |
-| Lint | `npm run lint`. Every package runs **`eslint src --fix`**, so it rewrites files. |
+| Lint | `npm run lint`. Every package runs **`eslint src --fix`**, so it rewrites files. `npm run lint:check` runs `eslint src`, which only reports; CI uses it. |
 | Format | `npm run format --workspace=packages/espresso-block-explorer-components`. The library is the only package with a `format` script. The library's ESLint also enforces Prettier; the apps' ESLint does not. |
-| Typecheck | **No dedicated script.** `next build` typechecks the apps. *(inferred)* `vite build` does not fail on type errors, so library type errors only surface when an app is built. |
+| Typecheck | `npm run typecheck` (`turbo typecheck`). The apps run `tsc --noEmit`. The library runs `tsc --noEmit -p tsconfig.build.json`, which excludes `__test__/` and `__docs__/`, so test and story files are not typechecked. |
 | Unit / component tests | `npm run test` (Vitest + jsdom). About 269 test files: the library's in `__test__/`, the apps' in `src/__tests__/`. |
 | Single test file | `cd packages/<pkg> && npx vitest run <path>` |
 | Coverage | `npm run coverage`. Uses istanbul, has **no thresholds**, and is commented out in CI. |
 | Storybook | `npm run storybook --workspace=packages/espresso-block-explorer-components` (port 6006) |
 | Storybook test-runner | `test-storybook` is defined, but `@storybook/test-runner` and `axe-playwright` are **not in the lockfile**, so it can't run. |
-| Integration / E2E | **None.** No Playwright or Cypress. The app-level tests render pages in jsdom against fake data. |
+| Smoke tests (E2E) | `npm run e2e` after `npm run build`. Playwright runs `e2e/*.spec.ts` against each app's `out/`, served by `e2e/serve.mjs` with nginx-like routing and a `fakeData` `config.json`, so no network is used. Locally it uses the system Chrome; CI installs Playwright's Chromium (`e2e/playwright.config.ts`). |
 | Docker | `docker build --target block-explorer .` / `--target delegation-ui .` |
 
 ## 7. CI/CD and deployment
@@ -284,13 +288,13 @@ These are taken from `package.json` scripts, `turbo.json`, `justfile` and `READM
 **`build.yml`**
 - Runs on push to `main` and `release-*`, on PRs, and by manual dispatch. In-progress runs are cancelled.
 - Steps:
-  1. `npm ci`
-  2. `npm ci --workspaces`
-  3. Build the library
-  4. `npm ci --workspaces` again
-  5. `turbo build`
-  6. `turbo lint` (with `--fix`)
-  7. `turbo test`
+  1. Set up Node from `.nvmrc`, then `npm ci`
+  2. Build the library (run directly, because a Turbo cache hit skips copying the workers into the apps)
+  3. `turbo build`
+  4. `turbo lint:check`
+  5. `turbo typecheck`
+  6. `turbo test`
+  7. `npx playwright install --with-deps chromium`, then `npm run e2e`
   8. `build-storybook`
 - On `main` only, `peaceiris/actions-gh-pages` publishes Storybook to GitHub Pages.
 
@@ -299,7 +303,7 @@ These are taken from `package.json` scripts, `turbo.json`, `justfile` and `READM
 - Pushes to `ghcr.io/espressosystems/espresso-block-explorer` and `ghcr.io/espressosystems/espresso-delegation-ui` on every event except pull requests. Tags come from `docker/metadata-action` defaults.
 
 **Repository automation**
-- Dependabot updates GitHub Actions daily. Its npm entry points at `/espresso-block-explorer-components`, which doesn't exist (the package is under `packages/`), so npm updates **never run** *(inferred)*.
+- Dependabot updates GitHub Actions and npm dependencies daily, both from the repo root (`.github/dependabot.yml`).
 - `CODEOWNERS`: `fkrell` is the default owner. `fkrell`, `jbearer` and `Ancient123` own the staking paths: contracts, wallet flows, staking and reward services, the staking app, `docker/` and `Dockerfile`. Owners are only required reviewers if branch protection has "Require review from Code Owners" on.
 
 **Deployment**
@@ -332,7 +336,7 @@ Severity is my judgement. Each item cites its evidence.
 1. **Silent fallback to fake data in production.**
    - What happens: if a worker can't fetch or parse `/config.json`, or the URL key is missing, it uses `FakeData*` services with no log and no banner. Affected files: `hotshot_query_service_web_worker_proxy.ts:42-47`, `staking_api_service_web_worker_proxy.ts:55-59`, `node_validator_web_worker_proxy.ts:136`.
    - Consequences: the explorer would show fabricated blocks. The staking UI would list fake validators, and real `delegate` transactions could target their addresses. *(inferred)* Those would revert or fail at a cost of gas, or, if the fake address happened to be a valid validator, succeed against the wrong one.
-   - It also happens routinely in `next dev` for the delegation UI, because of the config writer in §4.2.
+   - In `next dev` for the delegation UI, it happens when `ENVIRONMENT_NAME` is set without the service-URL variables (see §4.2).
 2. **Mainnet defaults behind non-mainnet labels.**
    - The delegation container's service URLs default to mainnet whatever `ENVIRONMENT_NAME` is.
    - Any unknown `ENVIRONMENT_NAME` is treated as mainnet.
@@ -354,20 +358,17 @@ Severity is my judgement. Each item cites its evidence.
 
 **Low / hygiene**
 
-11. **Tracked dev config.**
-    - `DUI/public/config.json` is tracked and includes a WalletConnect project ID and a non-empty `PROOF_OF_STAKE_RELEASED`. A WalletConnect project ID is a client-side identifier served to every browser in production, so this is drift rather than a leaked credential.
-    - `next dev` rewrites that file, which dirties the working tree.
-12. **`.dockerignore` ignores nothing.** Line 3 is `-` where `*` was intended, so local Docker builds send `node_modules`, `dist`, `.next` and similar into the build context.
-13. **Stale worker bundles** are tracked in both apps' `public/assets/`, even though that path is gitignored.
+11. ~~**Tracked dev config.**~~ *Fixed:* each app's `public/config.json` is now gitignored and created from a tracked `public/config.example.json` with an empty WalletConnect project ID. The project ID that was tracked before is still in git history.
+12. ~~**`.dockerignore` ignores nothing.**~~ *Fixed:* line 3 is now `*`.
+13. ~~**Stale worker bundles**~~ *Fixed:* they are no longer tracked in the apps' `public/assets/`.
 14. **Title strings disagree.**
     - `getSiteTitleConfig()` says "… Block **Network**" (`EXP/src/helpers/read_from_env.ts:44-56`); the Docker script says "… Block **Explorer**".
     - The TS comment points at the wrong script.
 15. **Tooling drift:**
-    - Node 22 in Docker vs 24 in CI, with no `engines` field.
     - TypeScript 5.9 at the root vs 6.0 in the packages.
     - A dead `test-storybook` script.
-    - Dependabot's npm entry points at the wrong directory.
-    - CI's `lint --fix` hides fixable lint failures.
+    - The library's test files have type errors, so `typecheck` skips them.
+    - *Fixed:* Node is pinned to 24 everywhere, Dependabot's npm entry points at the root, and CI runs `lint:check` instead of `lint --fix`.
 16. **`.claude/settings.json`** (untracked) has about 100 accumulated allow-rules. Some are broad: `git push *`, `gh repo *`, `gh auth *`, `security find-generic-password *`, `env`, and reading `~/.config/**`.
 
 ---
@@ -382,8 +383,8 @@ Severity is my judgement. Each item cites its evidence.
 6. **ABI source.** Which contracts repo and commit are the ABIs copied from, and how is drift against deployed contracts detected?
 7. **Staking API trust.** Is the staking API run by Espresso and considered trusted? Should validator addresses be checked on-chain before `delegate`?
 8. **Water and Milk.** Are these still live, and is sharing chain id 1337 intended?
-9. **WalletConnect project.** Is the project ID in the tracked dev config the production project? Is it domain-restricted in the WalletConnect dashboard?
+9. **WalletConnect project.** Is the project ID that the dev config used to track (still in git history) the production project? Is it domain-restricted in the WalletConnect dashboard?
 10. **Storybook on GitHub Pages.** Storybook is published from `main`. Is that intended to stay public?
-11. **Node version.** Which Node version is canonical, 22 (Docker) or 24 (CI)?
+11. **Node version.** Which Node version is canonical, 22 (Docker) or 24 (CI)? *Answered:* 24, pinned by `.nvmrc` and `engines`, and used by CI and Docker.
 12. **Unrouted pages.** Is the hidden Rollups section planned, or dead code to remove?
 13. **Who owns the staking UI?** *Answered:* `fkrell`, `jbearer` and `Ancient123` (see `CODEOWNERS`).
