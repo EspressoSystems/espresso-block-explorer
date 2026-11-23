@@ -7,7 +7,7 @@
 # ============================================================================
 # Base builder stage - Common setup for all apps
 # ============================================================================
-FROM node:22-alpine AS base-builder
+FROM node:24-alpine AS base-builder
 
 WORKDIR /app
 
@@ -57,7 +57,7 @@ RUN npx turbo build --filter=delegation-ui...
 # ============================================================================
 # Base production image - Common runtime setup
 # ============================================================================
-FROM node:22-alpine AS base-production
+FROM node:24-alpine AS base-production
 
 WORKDIR /app
 
