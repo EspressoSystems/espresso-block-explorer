@@ -1,18 +1,33 @@
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
-    // During development, write public/config.json from the current environment
-    // variables so the client can fetch it as a static file. This runs once
-    // when the dev server starts, before any requests are served.
+    // During development, provide public/config.json so the client can fetch
+    // it as a static file. This runs once when the dev server starts, before
+    // any requests are served.
     //
     // In production the container entrypoint writes this file instead, so we
     // skip it here to avoid overwriting the correct runtime values with the
     // empty build-time environment.
     if (process.env.NEXT_PHASE === 'phase-development-server') {
-      const { writeFileSync } = await import('fs');
+      const { copyFileSync, existsSync, writeFileSync } = await import('fs');
       const { join } = await import('path');
 
+      const publicDir = join(process.cwd(), 'public');
+      const configPath = join(publicDir, 'config.json');
+
+      // Without ENVIRONMENT_NAME, keep the local config.json, creating it
+      // from the Decaf example the first time.
+      if (!process.env.ENVIRONMENT_NAME) {
+        if (!existsSync(configPath)) {
+          copyFileSync(join(publicDir, 'config.example.json'), configPath);
+        }
+        return;
+      }
+
       const config = {
-        ENVIRONMENT_NAME: process.env.ENVIRONMENT_NAME ?? '',
+        ENVIRONMENT_NAME: process.env.ENVIRONMENT_NAME,
+        hotshot_query_service_url: process.env.QUERY_SERVICE_URI ?? '',
+        node_validator_service_url: process.env.NODE_VALIDATOR_URI ?? '',
+        staking_api_service_url: process.env.STAKING_UI_SERVICE_URI ?? '',
         CONTRACT_ADDRESS_STAKE_TABLE:
           process.env.CONTRACT_ADDRESS_STAKE_TABLE ?? '',
         CONTRACT_ADDRESS_ESP_TOKEN:
@@ -29,7 +44,6 @@ export async function register() {
         VALIDATOR_HISTORY_URL: process.env.VALIDATOR_HISTORY_URL ?? '',
       };
 
-      const configPath = join(process.cwd(), 'public', 'config.json');
       writeFileSync(configPath, JSON.stringify(config, null, 2));
     }
   }

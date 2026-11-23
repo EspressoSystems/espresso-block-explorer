@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "node -e \"const fs=require('fs');fs.existsSync('public/config.json')||fs.copyFileSync('public/config.example.json','public/config.json')\"",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
