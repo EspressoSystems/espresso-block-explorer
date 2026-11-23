@@ -40,15 +40,14 @@ Both apps consume the library through its **built `dist/`**, not its source. Aft
 
 ## Commands
 
-The library must be built before the apps' install can resolve it, so the first setup is:
+First setup:
 
 ```sh
 npm ci --workspaces
-npm run build --workspace=packages/espresso-block-explorer-components
-npm ci --workspaces
+npm run build
 ```
 
-Turbo builds the library first (`dependsOn: ["^build"]`).
+The apps reach the library through a workspace symlink, so no reinstall is needed after building it. Turbo builds the library before the apps (`dependsOn: ["^build"]`).
 
 | Command | Notes |
 |---|---|
