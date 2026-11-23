@@ -36,14 +36,10 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Install Dependencies
-        run: npm ci --workspaces
-
-      - name: Match what the README says
+      # The library build copies its worker bundles into the apps, but a
+      # Turbo cache hit skips that copy, so run the script directly.
+      - name: Build the Library
         run: npm run build --workspace=packages/espresso-block-explorer-components
-
-      - name: Install Dependencies again
-        run: npm ci --workspaces
 
       - name: Build All Packages
         run: npx turbo build
