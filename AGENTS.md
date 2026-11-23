@@ -43,11 +43,14 @@ Both apps consume the library through its **built `dist/`**, not its source. Aft
 First setup:
 
 ```sh
-npm ci --workspaces
+npm ci
+npm run build --workspace=packages/espresso-block-explorer-components   # copies the workers into the apps
 npm run build
 ```
 
-The apps reach the library through a workspace symlink, so no reinstall is needed after building it. Turbo builds the library before the apps (`dependsOn: ["^build"]`).
+- Use plain `npm ci`: `--workspaces` skips the root's own dev tools, including turbo.
+- The middle step builds the library without Turbo. On a Turbo cache hit (CI, or a new git worktree, which shares the cache), Turbo restores the library's `dist/` but skips copying its workers into the apps ([#470](https://github.com/EspressoSystems/espresso-block-explorer/issues/470)).
+- The apps reach the library through a workspace symlink, so no reinstall is needed after building it.
 
 | Command | Notes |
 |---|---|
@@ -89,7 +92,7 @@ The library exports three entry points, each with a CSS file:
 - Pages read data from React contexts, not from props.
 - The service contexts (HotShot query service, staking API, node validator) run their requests in **web workers**.
 - Each worker fetches `/config.json` itself to learn its service URL. **If that fails or the URL is missing, the worker silently falls back to fake data.** A page showing fake data usually means a config problem.
-- The library build copies the worker bundles into each app's `public/assets/` (the `copy-assets` script). If an app shows stale worker behavior, rebuild the library.
+- The library build copies the worker bundles into each app's `public/assets/` (the `copy-assets` script). That copy happens only when the library really builds, so a Turbo cache hit skips it (#470). If an app has missing or stale workers, run `npm run build --workspace=packages/espresso-block-explorer-components`, then `npx turbo build --force`.
 - `EnvironmentContext` (`mainnet`, `decaf`, `water`, `milk`, `fakeData`) selects network-specific behavior.
 
 ### Apps are static exports configured at runtime

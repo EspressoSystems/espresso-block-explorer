@@ -30,7 +30,8 @@ package, which is linked as an npm workspace. Turbo builds it before the apps.
 For the initial setup, run:
 
 ```sh
-npm ci --workspaces
+npm ci
+npm run build --workspace=packages/espresso-block-explorer-components   # copies the workers into the apps
 npm run build
 ```
 
