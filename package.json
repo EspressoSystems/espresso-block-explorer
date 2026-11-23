@@ -1,6 +1,9 @@
 {
   "name": "espresso-block-explorer",
   "packageManager": "npm@10.9.2",
+  "engines": {
+    "node": ">=24"
+  },
   "workspaces": [
     "packages/espresso-block-explorer-components",
     "packages/block-explorer",
