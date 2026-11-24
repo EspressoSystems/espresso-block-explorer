@@ -12,12 +12,15 @@ export declare const RefreshTransactionSummariesContext: React.Context<() => voi
 export interface TransactionSummaryDataTableState extends DataTableState<TransactionSummaryColumn> {
     height?: number;
     offset?: number;
+    /** The number of transactions to load; 20 when not given. */
+    limit?: number;
     /** Changing this re-fetches the current page. */
     refreshedAt?: number;
 }
 export interface TransactionsSummaryDataLoaderProps {
     startAtBlock?: number;
     offset?: number;
+    limit?: number;
     children: React.ReactNode | React.ReactNode[];
 }
 /**

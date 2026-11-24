@@ -10,7 +10,7 @@ export declare class AbsolutePathResolver implements PathResolver {
     constructor(baseURL: URL);
     explorer(): string;
     blocks(startAtBlock?: number): string;
-    block(height: number): string;
+    block(height: number, position?: number): string;
     transactions(startAtBlock?: number, offset?: number): string;
     transactionsForBlock(block: number): string;
     transaction(height: number, offset: number): string;

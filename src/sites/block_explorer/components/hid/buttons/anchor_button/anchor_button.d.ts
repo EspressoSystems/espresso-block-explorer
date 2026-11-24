@@ -4,7 +4,8 @@ export interface AnchorButtonProps extends React.DetailedHTMLProps<React.AnchorH
 }
 /**
  * AnchorButton is a link styled as a button. It navigates like InternalLink
- * (without a page reload in the app); disabled, it is a plain anchor.
+ * (without a page reload in the app); disabled, it is a plain anchor that
+ * says so to assistive technology.
  */
 declare const AnchorButton: React.FC<AnchorButtonProps>;
 export default AnchorButton;
