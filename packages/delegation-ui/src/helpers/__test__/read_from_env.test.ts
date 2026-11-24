@@ -15,6 +15,7 @@ describe('parseConfigFromJSON', () => {
       proof_of_stake_released: false,
       base_url: null,
       base_path: null,
+      validator_history_url: null,
     });
 
     expect(parseConfigFromJSON({ ENVIRONMENT_NAME: 'milk' })).to.deep.equal({
@@ -28,6 +29,7 @@ describe('parseConfigFromJSON', () => {
       proof_of_stake_released: false,
       base_url: null,
       base_path: null,
+      validator_history_url: null,
     });
 
     expect(parseConfigFromJSON({ ENVIRONMENT_NAME: 'water' })).to.deep.equal({
@@ -41,6 +43,7 @@ describe('parseConfigFromJSON', () => {
       proof_of_stake_released: false,
       base_url: null,
       base_path: null,
+      validator_history_url: null,
     });
 
     expect(parseConfigFromJSON({ ENVIRONMENT_NAME: 'mainnet' })).to.deep.equal(
@@ -55,6 +58,7 @@ describe('parseConfigFromJSON', () => {
         proof_of_stake_released: false,
         base_url: null,
         base_path: null,
+        validator_history_url: null,
       },
     );
 
@@ -77,6 +81,7 @@ describe('parseConfigFromJSON', () => {
       proof_of_stake_released: false,
       base_url: null,
       base_path: null,
+      validator_history_url: null,
     });
 
     expect(
@@ -98,6 +103,7 @@ describe('parseConfigFromJSON', () => {
       proof_of_stake_released: false,
       base_url: null,
       base_path: null,
+      validator_history_url: null,
     });
   });
 
@@ -136,6 +142,18 @@ describe('parseConfigFromJSON', () => {
     });
     expect(result.base_url).toBe('https://staking.main.net.espresso.network');
     expect(result.base_path).toBe('/staking/');
+  });
+
+  it('should parse VALIDATOR_HISTORY_URL', () => {
+    expect(
+      parseConfigFromJSON({
+        VALIDATOR_HISTORY_URL: 'https://espressonodes.com/validator-data/',
+      }).validator_history_url,
+    ).toBe('https://espressonodes.com/validator-data/');
+    expect(
+      parseConfigFromJSON({ VALIDATOR_HISTORY_URL: 'not a url' })
+        .validator_history_url,
+    ).toBeNull();
   });
 
   it('should reject invalid BASE_URL', () => {

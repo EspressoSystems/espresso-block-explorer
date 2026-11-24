@@ -7,11 +7,20 @@ import {
   ProvideHotShotQueryServiceAPIContext,
 } from 'espresso-block-explorer-components';
 import {
+  baseHref,
+  inAppPath,
+  pathWithoutIntent,
+  validatorAddressFromRoute,
+} from '@/helpers/routes';
+import {
   DelegationUI,
+  DelegationUIBaseHrefContext,
   deriveClaimPortalIntentFromOnlyQueryParameters,
+  NavigationContext,
   ProvideClaimPortalIntentContext,
 } from 'espresso-block-explorer-components/delegation-ui';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import React from 'react';
 
 /**
  * DelegationUIClientComponent is the root client component for the
@@ -36,25 +45,37 @@ export default function DelegationUIClientComponent() {
 /**
  * DelegationUIClientContent is responsible for interpretting the query /
  * search parameters of the URL in order to derive the relevant "intent"
- * before returning the rest of the Delegation UI.
+ * and the current view before returning the rest of the Delegation UI.
  */
 function DelegationUIClientContent() {
   const router = useRouter();
   const pathName = usePathname();
   const params = useSearchParams();
   const intent = deriveClaimPortalIntentFromOnlyQueryParameters(params);
+  const validatorAddress = validatorAddressFromRoute(pathName, params);
+
+  // Navigate between Delegation UI views client-side, so the loaded
+  // validator data is kept.
+  const navigate = React.useCallback(
+    (href: string) => router.push(inAppPath(href, window.location.href)),
+    [router],
+  );
 
   return (
     <IntentCompletedCallbackContext.Provider
       value={() => {
-        router.replace(pathName);
+        router.replace(pathWithoutIntent(pathName, validatorAddress));
       }}
     >
-      <ProvideHotShotQueryServiceAPIContext>
-        <ProvideClaimPortalIntentContext intent={intent}>
-          <DelegationUI />
-        </ProvideClaimPortalIntentContext>
-      </ProvideHotShotQueryServiceAPIContext>
+      <NavigationContext.Provider value={navigate}>
+        <DelegationUIBaseHrefContext.Provider value={baseHref(pathName)}>
+          <ProvideHotShotQueryServiceAPIContext>
+            <ProvideClaimPortalIntentContext intent={intent}>
+              <DelegationUI validatorAddress={validatorAddress} />
+            </ProvideClaimPortalIntentContext>
+          </ProvideHotShotQueryServiceAPIContext>
+        </DelegationUIBaseHrefContext.Provider>
+      </NavigationContext.Provider>
     </IntentCompletedCallbackContext.Provider>
   );
 }

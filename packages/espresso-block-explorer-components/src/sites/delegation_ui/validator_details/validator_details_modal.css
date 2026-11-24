@@ -1,0 +1,401 @@
+/* Visual match for dialog.staking-modal, widened to fit the history charts. */
+dialog.validator-details-modal {
+  border: 1px solid var(--color--brown--3--alpha-24);
+  border-radius: 12px;
+  padding: 0;
+  width: min(680px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  overflow: hidden;
+  margin: auto;
+  background: var(--color--brown--0);
+  color: var(--color--brown--text);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+dialog.validator-details-modal::backdrop {
+  background: var(--color--brown--4--alpha-04);
+  backdrop-filter: blur(16px);
+}
+
+:where(dialog.validator-details-modal) :where(h1, h2, h3, p) {
+  margin: 0;
+}
+
+.validator-details-modal-frame {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 50px);
+}
+
+.validator-details-modal-header {
+  flex: none;
+  display: grid;
+  grid-template-columns: 53px 1fr 53px;
+  height: 44px;
+  align-items: center;
+  border-bottom: 1px solid var(--color--brown--3--alpha-24);
+  background:
+    linear-gradient(
+      0deg,
+      var(--color--brown--1--alpha-50),
+      var(--color--brown--1--alpha-50)
+    ),
+    var(--color--brown--0);
+}
+
+.validator-details-modal-header h1 {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color--brown--4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.validator-details-modal-header h1 .accent {
+  color: var(--color--brown--4--alpha-60);
+}
+
+.validator-details-modal-close {
+  justify-self: center;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+  --icon--fill-color: var(--color--brown--4);
+}
+
+.validator-details-modal-close:hover {
+  --icon--fill-color: var(--color--brown--2);
+}
+
+.validator-details-modal-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.validator-details-modal-body {
+  flex: 1 1 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.validator-details-modal-summary {
+  display: grid;
+  grid-template-columns: 3fr 4fr;
+  gap: 24px;
+  padding: 24px;
+}
+
+.validator-details-modal-summary .identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.validator-details-modal-summary .name-group {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  row-gap: 2px;
+  align-items: center;
+}
+
+.validator-details-modal-summary .name-group picture {
+  grid-row: span 2;
+}
+
+.validator-details-modal-summary .name {
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--color--brown--4);
+}
+
+.validator-details-modal-summary .address {
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--color--brown--3--mix-80);
+  --icon--fill-color: var(--color--brown--3--mix-80);
+}
+
+.validator-details-modal-summary .website {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--color--brown--4);
+  --icon--fill-color: var(--color--brown--3);
+}
+
+.validator-details-modal-summary .website svg {
+  width: 12px;
+  height: 12px;
+}
+
+.validator-details-modal-summary .chips {
+  display: flex;
+  gap: 6px;
+}
+
+.validator-details-modal-summary .about p {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color--brown--4);
+  opacity: 0.8;
+}
+
+.validator-details-modal-summary .about p.empty {
+  opacity: 0.5;
+  font-style: italic;
+}
+
+.validator-details-modal-summary .about p.note {
+  margin-block-start: 10px;
+  font-size: 10px;
+  line-height: 16px;
+  text-transform: uppercase;
+  opacity: 1;
+  color: var(--color--brown--4--alpha-50);
+}
+
+/* Visual match for .staking-modal-staking-overview-area */
+.validator-details-modal-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  color: var(--color--brown--text--darker);
+}
+
+.validator-details-modal-overview > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 11px 24px;
+  border-bottom: 1px solid var(--color--brown--3--alpha-24);
+}
+
+.validator-details-modal-overview > div:nth-child(-n + 2) {
+  border-top: 1px solid var(--color--brown--3--alpha-24);
+}
+
+.validator-details-modal-overview > div:nth-child(odd) {
+  border-inline-end: 1px solid var(--color--brown--3--alpha-24);
+}
+
+.validator-details-modal-overview .value {
+  color: var(--color--brown--4);
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.validator-details-modal-overview .highlight {
+  background: var(--color--brown--1--alpha-32);
+}
+
+.validator-details-modal-history {
+  padding: 20px 24px 8px;
+}
+
+.validator-details-modal-history .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-block-end: 14px;
+}
+
+.validator-details-modal-history .head .title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.validator-details-modal-history h2 {
+  color: var(--color--brown--4);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.validator-details-modal-history h3 {
+  margin-block-end: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color--brown--4--alpha-60);
+}
+
+.validator-details-modal-history .panel {
+  min-height: 210px;
+}
+
+.validator-details-modal-history .validator-details-legend {
+  margin-block: 12px 8px;
+}
+
+.validator-details-modal-history .validator-details-stats .value {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.validator-details-modal-footer {
+  flex: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px 24px;
+  border-top: 1px solid var(--color--brown--3--alpha-24);
+}
+
+.validator-details-modal-full-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color--brown--3);
+  --icon--fill-color: var(--color--brown--3);
+}
+
+.validator-details-modal-full-link:hover {
+  color: var(--color--brown--4);
+  text-decoration: underline;
+}
+
+.validator-details-modal-full-link svg {
+  width: 12px;
+  height: 12px;
+}
+
+.validator-details-modal-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.validator-details-modal-actions .bbtn {
+  --button-base--default--height: 43px;
+  --button-base--default--font-size: 16px;
+  --button-base--default--border-radius: 4px;
+  --button-base--default--padding-inline: 22px;
+}
+
+/* Validator names in the validator table link to the details page */
+.validator-details-link {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition:
+    color 160ms cubic-bezier(0.22, 1, 0.36, 1),
+    text-decoration-color 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hint that the name is a link while its row is hovered */
+table.all-validators-table tbody tr:hover .validator-details-link {
+  text-decoration-color: var(--color--brown--3--alpha-42);
+}
+
+.validator-details-link:hover,
+.validator-details-link:focus-visible,
+table.all-validators-table tbody tr:hover .validator-details-link:hover {
+  color: var(--color--brown--3);
+  text-decoration-color: currentColor;
+}
+
+/* Highlight the hovered row in the validator table */
+@media screen and (min-width: 835px) {
+  table.all-validators-table tbody tr td {
+    transition: background-color 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  table.all-validators-table tbody tr:hover td:not(.no-data) {
+    background-color: var(--color--brown--1);
+  }
+
+  /* Leave room for the underline inside the clipped name cell */
+  table.all-validators-table .validator-name-shrinkable {
+    padding-block-end: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .validator-details-link,
+  table.all-validators-table tbody tr td {
+    transition: none;
+  }
+}
+
+@media screen and (max-width: 834px) {
+  .validator-details-modal-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .validator-details-modal-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .validator-details-modal-overview > div:nth-child(odd) {
+    border-inline-end: none;
+  }
+
+  .validator-details-modal-overview > div:nth-child(2) {
+    border-top: none;
+  }
+
+  .validator-details-modal-history .head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .validator-details-modal-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .validator-details-modal-actions .bbtn {
+    flex: 1;
+    --button-base--default--font-size: 14px;
+    --button-base--default--padding-inline: 12px;
+    white-space: nowrap;
+  }
+
+  /* Keep the validator's name, dropping the "Validator /" prefix, so the
+     title ellipsizes instead of being clipped on both sides. */
+  .validator-details-modal-header h1 {
+    display: block;
+    text-align: center;
+  }
+
+  .validator-details-modal-header h1 .accent {
+    display: none;
+  }
+}
+
+.validator-details-modal-claim {
+  margin: 16px 24px;
+}
+
+.validator-details-modal-warning {
+  margin: 0 24px 16px;
+}

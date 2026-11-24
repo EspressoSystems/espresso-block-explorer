@@ -63,6 +63,14 @@ const CurrentButtonSegmentValueContext = React.createContext<null | unknown>(
 export function SegmentedButton<T>(props: SegmentedButtonProps<T>) {
   const [state, setState] = useSegmentedButtonState(props.selected);
 
+  // Follow `selected` when the parent changes it, e.g. from a keyboard
+  // shortcut, not only when a segment is clicked.
+  const [lastSelected, setLastSelected] = React.useState(props.selected);
+  if (props.selected !== lastSelected) {
+    setLastSelected(props.selected);
+    setState(props.selected);
+  }
+
   return (
     <CurrentButtonSegmentValueContext.Provider value={state}>
       <CurrentButtonSegmentSetterContext.Provider

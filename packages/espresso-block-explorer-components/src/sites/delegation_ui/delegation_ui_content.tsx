@@ -24,6 +24,7 @@ import {
   ProvideSectionSelection,
   Sections,
 } from './contexts/current_section_context';
+import { ProvideDelegateAfterConnect } from './contexts/delegate_after_connect_context';
 import {
   ModalContext,
   ProvideDialogModalControls,
@@ -53,6 +54,10 @@ import { applySearchTermNodeFilter } from './search_term_node_filter';
 import { SearchValidator } from './search_validator';
 import { SectionFilter } from './section_filter';
 import { StakingModal } from './staking_modal/staking_modal';
+import {
+  EnableValidatorDetailsLinks,
+  ProvideValidatorDetailsModal,
+} from './validator_details/validator_details_modal';
 import { ValidatorTableSortStateProvider } from './validator_nodes_table/common/validator_table_sort_state';
 import { DelegationTable } from './validator_nodes_table/table/delegation_table';
 import { DelegationTableHeader } from './validator_nodes_table/table/delegation_table_header';
@@ -111,22 +116,28 @@ export const DelegationUIContent: React.FC = () => {
       <ProvideShowTop100Filter>
         <ProvideSearchFilter>
           <ProvideDialogModalControls>
-            <StakingModal />
-            <section className="delegation-ui-content">
-              <NetworkStats />
+            <ProvideDelegateAfterConnect>
+              <ProvideValidatorDetailsModal>
+                <StakingModal />
+                <section className="delegation-ui-content">
+                  <EnableValidatorDetailsLinks>
+                    <NetworkStats />
 
-              <MyBalance />
-              <PendingClaims />
-              <PendingExits />
-              <TableControls />
+                    <MyBalance />
+                    <PendingClaims />
+                    <PendingExits />
+                    <TableControls />
 
-              <ApplyFiltersToSnapshot>
-                <ValidatorTableSortStateProvider>
-                  <ContentTable />
-                  <br />
-                </ValidatorTableSortStateProvider>
-              </ApplyFiltersToSnapshot>
-            </section>
+                    <ApplyFiltersToSnapshot>
+                      <ValidatorTableSortStateProvider>
+                        <ContentTable />
+                        <br />
+                      </ValidatorTableSortStateProvider>
+                    </ApplyFiltersToSnapshot>
+                  </EnableValidatorDetailsLinks>
+                </section>
+              </ProvideValidatorDetailsModal>
+            </ProvideDelegateAfterConnect>
           </ProvideDialogModalControls>
         </ProvideSearchFilter>
       </ProvideShowTop100Filter>
