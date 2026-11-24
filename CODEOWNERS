@@ -1,3 +1,16 @@
-# Default owners and repository maintainer:
+# Default owner:
 
-@ayiga
+* @fkrell
+
+# Staking: contracts, wallet flows, staking and reward-claim services,
+# the staking app, and the container that serves it.
+/packages/espresso-block-explorer-components/src/contracts/ @fkrell @jbearer @Ancient123
+/packages/espresso-block-explorer-components/src/contexts/*contract* @fkrell @jbearer @Ancient123
+/packages/espresso-block-explorer-components/src/contexts/l1_methods_context.tsx @fkrell @jbearer @Ancient123
+/packages/espresso-block-explorer-components/src/contexts/staking_api_service_context.tsx @fkrell @jbearer @Ancient123
+/packages/espresso-block-explorer-components/src/service/espresso_staking_api_service/ @fkrell @jbearer @Ancient123
+/packages/espresso-block-explorer-components/src/service/hotshot_query_service/reward_state/ @fkrell @jbearer @Ancient123
+/packages/espresso-block-explorer-components/src/sites/delegation_ui/ @fkrell @jbearer @Ancient123
+/packages/delegation-ui/ @fkrell @jbearer @Ancient123
+/docker/ @fkrell @jbearer @Ancient123
+/Dockerfile @fkrell @jbearer @Ancient123

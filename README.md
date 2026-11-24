@@ -23,18 +23,16 @@ There are currently two packages in this project:
 
 The [Block Explorer](packages/block-explorer/README.md) is dependant on the
 [Espresso Block Explorer Components](packages/espresso-block-explorer-components/README.md)
-repository, which is referenced as a local file based dependency, which makes
-the project a little difficult to setup initially.
+package, which is linked as an npm workspace. Turbo builds it before the apps.
 
 ### Setup
 
-For the initial setup the easiest thing to do in order to get going is to
-run the following commands:
+For the initial setup, run:
 
 ```sh
-npm ci --workspaces
-npm run build --workspace=packages/espresso-block-explorer-components
-npm ci --workspaces
+npm ci
+npm run build --workspace=packages/espresso-block-explorer-components   # copies the workers into the apps
+npm run build
 ```
 
 In order to test that everything installed successfully and works without issue
