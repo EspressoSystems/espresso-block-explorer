@@ -1,1 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./text-SkWhozSV.js";var r,i,a;function o(){return(o=e((()=>{t(),r={title:`Components/Text`,component:n},i={args:{text:`Hello, World!`}},a=[`Text`]})))()}o();export{i as Text,a as __namedExportsOrder,r as default};
