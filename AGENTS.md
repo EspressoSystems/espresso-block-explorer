@@ -15,7 +15,7 @@ Guidance for coding agents (Claude Code, Codex and others) working in this repos
 - **No secrets in git.** Never commit a real WalletConnect project ID, RPC key or `.env` file. The staking app's dev server rewrites `packages/delegation-ui/public/config.json` from environment variables when it starts, so don't commit the change that leaves behind.
 - **Don't push or open PRs unless a human asks.** Commit only when asked.
 - **Keep `docs/architecture.md` current.** It is the human-facing reference for this repo. If a change makes anything in it wrong (a command, path, flow, config, version or risk), update it in the same PR.
-- **Leave `package-lock.json` alone** unless the task is a dependency change. Check that the diff contains only the intended packages: newer npm versions silently drop the `libc` fields that pick the right native binaries on Alpine.
+- **Leave `package-lock.json` alone** unless the task is a dependency change. Check that the diff contains only the intended packages. npm 11 drops the `libc` fields from native-binary entries: that is expected and harmless (Alpine then installs both glibc and musl binaries), so don't restore them by hand.
 
 ## Before saying a change is done
 
