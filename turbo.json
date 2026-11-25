@@ -7,6 +7,7 @@
         "dist/**",
         ".next/**",
         "out/**",
+        "!out/config.json",
         "!.next/cache/**",
         "storybook-static/**",
         "public/**/*.js"
