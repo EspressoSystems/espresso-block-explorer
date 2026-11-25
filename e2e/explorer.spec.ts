@@ -1,4 +1,14 @@
+import { type Page } from '@playwright/test';
 import { expect, test } from './fixtures';
+
+// field is the value of a labeled detail on a block or blob page. The labels
+// render before the data loads, so tests check values, not labels.
+function field(page: Page, label: string) {
+  return page
+    .locator('.tabled-labeled-value')
+    .filter({ has: page.getByText(label, { exact: true }) })
+    .locator('.value');
+}
 
 test('home shows the latest blocks and blobs', async ({ page }) => {
   await page.goto('/');
@@ -47,7 +57,8 @@ test('block page shows the requested block', async ({ page }) => {
   await page.goto('/block/5');
   await expect(page.getByRole('heading', { name: 'Block #5' })).toBeVisible();
   await expect(page).toHaveTitle(/Block #5/);
-  await expect(page.getByText('Fee Recipient')).toBeVisible();
+  // The heading and title come from the URL; Height comes from the block.
+  await expect(field(page, 'Height')).toHaveText('5');
 });
 
 test('blob page shows the requested blob', async ({ page }) => {
@@ -55,14 +66,8 @@ test('blob page shows the requested blob', async ({ page }) => {
   await expect(
     page.getByRole('heading', { name: 'Blob Details' }),
   ).toBeVisible();
-  // The labels render before the data, so check the values.
-  const field = (label: string) =>
-    page
-      .locator('.tabled-labeled-value')
-      .filter({ has: page.getByText(label, { exact: true }) })
-      .locator('.value');
-  await expect(field('Block')).toHaveText('5');
-  await expect(field('Position in block')).toHaveText('0');
+  await expect(field(page, 'Block')).toHaveText('5');
+  await expect(field(page, 'Position in block')).toHaveText('0');
 });
 
 test('unknown address shows the not-found page', async ({ page }) => {
