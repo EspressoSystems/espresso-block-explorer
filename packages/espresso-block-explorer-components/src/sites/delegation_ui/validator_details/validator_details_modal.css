@@ -9,7 +9,13 @@ dialog.validator-details-modal {
   margin: auto;
   background: var(--color--brown--0);
   color: var(--color--brown--text);
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--delegation-ui--font-family);
+}
+
+/* The popup is coffee, so at night "no misses" steps up to a cookie-tinted
+   coffee, the same lift the blocks get against the chocolate page. */
+[data-theme='dark'] dialog.validator-details-modal {
+  --validator-details--status--clean: #5c301d;
 }
 
 dialog.validator-details-modal::backdrop {
@@ -199,7 +205,6 @@ dialog.validator-details-modal::backdrop {
 .validator-details-modal-overview .value {
   color: var(--color--brown--4);
   text-align: end;
-  font-variant-numeric: tabular-nums;
 }
 
 .validator-details-modal-overview .highlight {
