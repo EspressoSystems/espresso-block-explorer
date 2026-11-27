@@ -6,6 +6,6 @@ updates:
       interval: "daily"
 
   - package-ecosystem: "npm"
-    directory: "/espresso-block-explorer-components"
+    directory: "/"
     schedule:
       interval: "daily"

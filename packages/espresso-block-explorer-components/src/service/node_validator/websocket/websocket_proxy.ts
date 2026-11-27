@@ -50,7 +50,7 @@ class ProxyWebSocketImpl {
     this.webSocket = webSocket;
   }
 
-  send(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
+  send(data: Parameters<WebSocket['send']>[0]) {
     if (this.webSocket === null) {
       throw new Error('WebSocket is not connected');
     }

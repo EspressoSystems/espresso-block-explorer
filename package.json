@@ -1,12 +1,16 @@
 {
   "name": "espresso-block-explorer",
   "packageManager": "npm@10.9.2",
+  "engines": {
+    "node": ">=24"
+  },
   "workspaces": [
     "packages/espresso-block-explorer-components",
     "packages/block-explorer",
     "packages/delegation-ui"
   ],
   "devDependencies": {
+    "@playwright/test": "1.65.0",
     "turbo": "^2.10.13"
   },
   "overrides": {
@@ -19,7 +23,10 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
+    "lint:check": "turbo lint:check",
+    "typecheck": "turbo typecheck",
     "test": "turbo test",
+    "e2e": "playwright test --config e2e/playwright.config.ts",
     "coverage": "turbo coverage",
     "clean": "npm run clean:turbo && npm run clean:build",
     "clean:turbo": "rm -rf .turbo packages/*/.turbo",

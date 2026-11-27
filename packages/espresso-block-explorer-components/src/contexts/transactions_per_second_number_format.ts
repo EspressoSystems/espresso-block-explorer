@@ -1,3 +1,6 @@
+// Both Intl.NumberFormatPart and Intl.NumberRangeFormatPart have this shape.
+type FormatPart = { type: string; value: string };
+
 /**
  * TransactionPerSecondNumberFormat is a custom number formatter that will
  * format a number as a quantity of transactions per second.
@@ -42,13 +45,13 @@ export default class TransactionPerSecondNumberFormat
     });
   }
 
-  private findUnitInFormatParts<P extends Intl.NumberFormatPart>(
+  private findUnitInFormatParts<P extends FormatPart>(
     part: P,
   ): part is P & { type: 'unit' } {
     return part.type === 'unit';
   }
 
-  private replaceUnitInFormatParts<P extends Intl.NumberFormatPart>(
+  private replaceUnitInFormatParts<P extends FormatPart>(
     compoundParts: P[],
     unitUnit: undefined | P,
   ): P[] {
@@ -76,7 +79,7 @@ export default class TransactionPerSecondNumberFormat
     });
   }
 
-  private extractValue<P extends Intl.NumberFormatPart>(part: P): string {
+  private extractValue<P extends FormatPart>(part: P): string {
     return part.value;
   }
 

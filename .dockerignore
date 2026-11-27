@@ -1,6 +1,6 @@
 # Ignore Everything by default
 
--
+*
 
 # Add in specific Exceptions
 
@@ -40,3 +40,10 @@
 !packages/delegation-ui/package.json
 !packages/delegation-ui/tsconfig.json
 !packages/delegation-ui/next.config.mjs
+
+# Keep local runtime config out of images: it can hold personal values, such
+# as an RPC key, and the init scripts write config.json at startup anyway.
+# These must come after the public/ exceptions above, since the last match wins.
+
+packages/block-explorer/public/config.json
+packages/delegation-ui/public/config.json

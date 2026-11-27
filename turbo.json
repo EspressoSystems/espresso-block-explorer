@@ -6,6 +6,8 @@
       "outputs": [
         "dist/**",
         ".next/**",
+        "out/**",
+        "!out/config.json",
         "!.next/cache/**",
         "storybook-static/**",
         "public/**/*.js"
@@ -28,6 +30,12 @@
       "outputs": ["storybook-static/**"]
     },
     "lint": {
+      "dependsOn": ["^build"]
+    },
+    "lint:check": {
+      "dependsOn": ["^build"]
+    },
+    "typecheck": {
       "dependsOn": ["^build"]
     },
     "test": {

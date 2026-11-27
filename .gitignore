@@ -2,3 +2,7 @@ node_modules
 
 # turborepo
 .turbo
+
+# playwright
+test-results
+e2e/playwright-report

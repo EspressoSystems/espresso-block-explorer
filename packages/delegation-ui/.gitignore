@@ -40,3 +40,7 @@ next-env.d.ts
 
 # turborepo
 .turbo
+
+# local runtime config: saved settings, and the copy the dev server writes
+/config.local.json
+/public/config.json

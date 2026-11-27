@@ -40,3 +40,6 @@ next-env.d.ts
 
 # turborepo
 .turbo
+
+# local runtime config (copy of public/config.example.json)
+/public/config.json
