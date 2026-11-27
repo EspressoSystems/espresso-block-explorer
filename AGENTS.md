@@ -75,7 +75,7 @@ npx vitest run -t "name of test"
 
 Unit tests use Vitest + jsdom + Testing Library, with `TZ=UTC`. They live in `__test__/` next to the code; the apps keep theirs in `src/__tests__/`. Stories live in `__docs__/`.
 
-**Smoke tests** live in `e2e/`. `e2e/serve.mjs` serves each app's `out/` with the same routing as the nginx configs and a fake-data `config.json`, so no network is used. Locally they run in the system Chrome; CI installs Playwright's Chromium.
+**Smoke tests** live in `e2e/`. `e2e/serve.mjs` serves each app's `out/` with the same routing as the nginx configs and a fake-data `config.json`, so no live Espresso services are needed. Locally they run in the system Chrome; CI installs Playwright's Chromium.
 
 **Docker:** `docker build --target block-explorer .` (or `--target delegation-ui`). The network is chosen at runtime with `-e ENVIRONMENT_NAME=mainnet|decaf|water|milk`.
 

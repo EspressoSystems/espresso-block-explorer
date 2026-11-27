@@ -281,7 +281,7 @@ These are taken from `package.json` scripts, `turbo.json`, `justfile` and `READM
 | Coverage | `npm run coverage`. Uses istanbul, has **no thresholds**, and is commented out in CI. |
 | Storybook | `npm run storybook --workspace=packages/espresso-block-explorer-components` (port 6006) |
 | Storybook test-runner | `test-storybook` is defined, but `@storybook/test-runner` and `axe-playwright` are **not in the lockfile**, so it can't run. |
-| Smoke tests (E2E) | `npm run e2e` after `npm run build`. Playwright runs `e2e/*.spec.ts` against each app's `out/`, served by `e2e/serve.mjs` with nginx-like routing and a `fakeData` `config.json`, so no network is used. Locally it uses the system Chrome; CI installs Playwright's Chromium (`e2e/playwright.config.ts`). |
+| Smoke tests (E2E) | `npm run e2e` after `npm run build`. Playwright runs `e2e/*.spec.ts` against each app's `out/`, served by `e2e/serve.mjs` with nginx-like routing and a `fakeData` `config.json`, so no live Espresso services are needed. Locally it uses the system Chrome; CI installs Playwright's Chromium (`e2e/playwright.config.ts`). |
 | Docker | `docker build --target block-explorer .` / `--target delegation-ui .` |
 
 ## 7. CI/CD and deployment
@@ -326,7 +326,7 @@ These are taken from `package.json` scripts, `turbo.json`, `justfile` and `READM
 - **CSS.** Plain CSS files next to components. Custom properties use `--group--sub-name` naming, and every palette colour has a matching `--on-color--*`.
 - **Comments.** JSDoc blocks that open with "funcName does X".
 - **Commits.** Sentence-case imperative subjects with no conventional-commit prefix. Branches use `feat/`, `fix/`, `design/`, `chore/` or `docs/`, and PRs merge with GitHub merge commits.
-- **Next.js 16 guidance.** `packages/block-explorer/AGENTS.md` (written by `next dev`, untracked) says to read the bundled Next docs before writing Next-specific code.
+- **Next.js 16 guidance.** The root `AGENTS.md` says to read the bundled Next docs before writing Next-specific code. `next dev` no longer writes per-app copies (`agentRules: false` in each `next.config.mjs`).
 
 ### Risks
 
