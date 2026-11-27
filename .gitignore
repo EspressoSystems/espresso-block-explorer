@@ -4,5 +4,5 @@ node_modules
 .turbo
 
 # playwright
-e2e/test-results
+test-results
 e2e/playwright-report
