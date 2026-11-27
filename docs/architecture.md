@@ -178,9 +178,10 @@ Dockerfile           multi-stage; final targets `block-explorer` and `delegation
   - The production image has **no default addresses**. The Docker defaults are empty (`docker/delegation-ui-init.sh:25-28`, `Dockerfile:166-169`).
   - Per-environment address sets exist only for Storybook (`LIB/models/config/storybook/controls.ts:97-190`). The Decaf set is also written out in `docker/README.md:42-45`.
 - **Service URLs** are read by the workers from the lowercase keys `hotshot_query_service_url`, `staking_api_service_url` and `node_validator_service_url`. Their Docker defaults are **mainnet URLs whatever `ENVIRONMENT_NAME` is** (`docker/delegation-ui-init.sh:22-24`).
-- **Dev config.** `DUI/public/config.json` is gitignored. In `next dev`, `DUI/src/instrumentation.ts:10-48` handles it:
-  - Without `ENVIRONMENT_NAME`, it keeps the local file, copying it from the tracked `DUI/public/config.example.json` (Decaf) when it is missing.
-  - With `ENVIRONMENT_NAME`, it rewrites the file from `process.env`, including the three service-URL keys. A service URL that isn't set is written empty, so that worker falls back to fake data.
+- **Dev config.** In `next dev`, `DUI/src/instrumentation.ts:33-90` writes the gitignored `DUI/public/config.json` on every start:
+  - It starts from the developer's saved settings in the gitignored `DUI/config.local.json`, copied from the tracked `DUI/public/config.example.json` (Decaf) when missing. It never writes to that file again.
+  - Any environment variable from the Docker table below overrides its key for that run only.
+  - An `ENVIRONMENT_NAME` that differs from the saved one empties the network's service URLs, contract addresses, `RPC_URLS`, `PROOF_OF_STAKE_RELEASED` and `BASE_URL` first, so two networks never mix. Values not set in the environment stay empty, so those workers fall back to fake data and those actions are disabled.
 
 ### 4.3 Contracts and ABIs (verified)
 
@@ -358,7 +359,7 @@ Severity is my judgement. Each item cites its evidence.
 
 **Low / hygiene**
 
-11. ~~**Tracked dev config.**~~ *Fixed:* each app's `public/config.json` is now gitignored and created from a tracked `public/config.example.json` with an empty WalletConnect project ID. The project ID that was tracked before is still in git history.
+11. ~~**Tracked dev config.**~~ *Fixed:* local config is now gitignored and created from each app's tracked `public/config.example.json` with an empty WalletConnect project ID. The project ID that was tracked before is still in git history.
 12. ~~**`.dockerignore` ignores nothing.**~~ *Fixed:* line 3 is now `*`.
 13. ~~**Stale worker bundles**~~ *Fixed:* they are no longer tracked in the apps' `public/assets/`.
 14. **Title strings disagree.**

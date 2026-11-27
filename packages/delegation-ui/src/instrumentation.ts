@@ -1,50 +1,90 @@
+// Config keys and the environment variables that override them in dev.
+const envVars: Record<string, string> = {
+  ENVIRONMENT_NAME: 'ENVIRONMENT_NAME',
+  hotshot_query_service_url: 'QUERY_SERVICE_URI',
+  node_validator_service_url: 'NODE_VALIDATOR_URI',
+  staking_api_service_url: 'STAKING_UI_SERVICE_URI',
+  CONTRACT_ADDRESS_STAKE_TABLE: 'CONTRACT_ADDRESS_STAKE_TABLE',
+  CONTRACT_ADDRESS_ESP_TOKEN: 'CONTRACT_ADDRESS_ESP_TOKEN',
+  CONTRACT_ADDRESS_REWARD_CLAIM: 'CONTRACT_ADDRESS_REWARD_CLAIM',
+  CONTRACT_ADDRESS_LIGHT_CLIENT: 'CONTRACT_ADDRESS_LIGHT_CLIENT',
+  WALLETCONNECT_PROJECT_ID: 'WALLETCONNECT_PROJECT_ID',
+  RPC_URLS: 'RPC_URLS',
+  PROOF_OF_STAKE_RELEASED: 'PROOF_OF_STAKE_RELEASED',
+  BASE_URL: 'BASE_URL',
+  BASE_PATH: 'BASE_PATH',
+  VALIDATOR_HISTORY_URL: 'VALIDATOR_HISTORY_URL',
+};
+
+// Keys that belong to one network, so they are never carried to another.
+const networkKeys = [
+  'hotshot_query_service_url',
+  'node_validator_service_url',
+  'staking_api_service_url',
+  'CONTRACT_ADDRESS_STAKE_TABLE',
+  'CONTRACT_ADDRESS_ESP_TOKEN',
+  'CONTRACT_ADDRESS_REWARD_CLAIM',
+  'CONTRACT_ADDRESS_LIGHT_CLIENT',
+  'RPC_URLS',
+  'PROOF_OF_STAKE_RELEASED',
+  'BASE_URL',
+];
+
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
-    // During development, provide public/config.json so the client can fetch
-    // it as a static file. This runs once when the dev server starts, before
-    // any requests are served.
+    // During development, write public/config.json so the client can fetch it
+    // as a static file. This runs once when the dev server starts, before any
+    // requests are served.
     //
     // In production the container entrypoint writes this file instead, so we
     // skip it here to avoid overwriting the correct runtime values with the
-    // empty build-time environment.
-    if (process.env.NEXT_PHASE === 'phase-development-server') {
-      const { copyFileSync, existsSync, writeFileSync } = await import('fs');
+    // empty build-time environment. (Next 16 doesn't set NEXT_PHASE here.)
+    if (process.env.NODE_ENV === 'development') {
+      const { copyFileSync, existsSync, readFileSync, writeFileSync } =
+        await import('fs');
       const { join } = await import('path');
 
-      const publicDir = join(process.cwd(), 'public');
-      const configPath = join(publicDir, 'config.json');
+      // The developer's saved settings live outside public/, so they are never
+      // served or exported, and this code never writes to them after creating
+      // them from the Decaf example.
+      const localPath = join(process.cwd(), 'config.local.json');
+      if (!existsSync(localPath)) {
+        copyFileSync(
+          join(process.cwd(), 'public', 'config.example.json'),
+          localPath,
+        );
+      }
+      const saved = JSON.parse(readFileSync(localPath, 'utf8'));
+      const config: Record<string, string> = { ...saved };
 
-      // Without ENVIRONMENT_NAME, keep the local config.json, creating it
-      // from the Decaf example the first time.
-      if (!process.env.ENVIRONMENT_NAME) {
-        if (!existsSync(configPath)) {
-          copyFileSync(join(publicDir, 'config.example.json'), configPath);
+      // Switching networks drops the saved network's values, so the two
+      // networks never mix. Anything not set below stays empty (fake data or
+      // disabled actions).
+      const network = process.env.ENVIRONMENT_NAME;
+      if (network && network !== saved.ENVIRONMENT_NAME) {
+        for (const key of networkKeys) {
+          config[key] = '';
         }
-        return;
       }
 
-      const config = {
-        ENVIRONMENT_NAME: process.env.ENVIRONMENT_NAME,
-        hotshot_query_service_url: process.env.QUERY_SERVICE_URI ?? '',
-        node_validator_service_url: process.env.NODE_VALIDATOR_URI ?? '',
-        staking_api_service_url: process.env.STAKING_UI_SERVICE_URI ?? '',
-        CONTRACT_ADDRESS_STAKE_TABLE:
-          process.env.CONTRACT_ADDRESS_STAKE_TABLE ?? '',
-        CONTRACT_ADDRESS_ESP_TOKEN:
-          process.env.CONTRACT_ADDRESS_ESP_TOKEN ?? '',
-        CONTRACT_ADDRESS_REWARD_CLAIM:
-          process.env.CONTRACT_ADDRESS_REWARD_CLAIM ?? '',
-        CONTRACT_ADDRESS_LIGHT_CLIENT:
-          process.env.CONTRACT_ADDRESS_LIGHT_CLIENT ?? '',
-        WALLETCONNECT_PROJECT_ID: process.env.WALLETCONNECT_PROJECT_ID ?? '',
-        RPC_URLS: process.env.RPC_URLS ?? '',
-        PROOF_OF_STAKE_RELEASED: process.env.PROOF_OF_STAKE_RELEASED ?? '',
-        BASE_URL: process.env.BASE_URL ?? '',
-        BASE_PATH: process.env.BASE_PATH ?? '',
-        VALIDATOR_HISTORY_URL: process.env.VALIDATOR_HISTORY_URL ?? '',
-      };
+      // Environment variables override the saved settings for this run only.
+      const overridden: string[] = [];
+      for (const [key, envVar] of Object.entries(envVars)) {
+        const value = process.env[envVar];
+        if (value !== undefined) {
+          config[key] = value;
+          overridden.push(envVar);
+        }
+      }
 
-      writeFileSync(configPath, JSON.stringify(config, null, 2));
+      writeFileSync(
+        join(process.cwd(), 'public', 'config.json'),
+        JSON.stringify(config, null, 2),
+      );
+      console.log(
+        `config.json: ${config.ENVIRONMENT_NAME} from config.local.json` +
+          (overridden.length ? `, overridden by ${overridden.join(', ')}` : ''),
+      );
     }
   }
 }

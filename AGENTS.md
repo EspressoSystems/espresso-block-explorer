@@ -12,7 +12,7 @@ Guidance for coding agents (Claude Code, Codex and others) working in this repos
   - `packages/delegation-ui/`
   - `docker/`
 - **Never invent or edit chain data.** Contract ABIs (`src/contracts/*/*_abi.ts`), contract addresses, chain IDs and RPC or service URLs change only with a cited source, such as a contracts-repo commit or a deployment record.
-- **No secrets in git.** Each app's `public/config.json` is local and gitignored. Change `public/config.example.json` instead, and never commit a real WalletConnect project ID, RPC key or `.env` file.
+- **No secrets in git.** Local config (each app's `public/config.json`, and the staking app's `config.local.json`) is gitignored. Change `public/config.example.json` instead, and never commit a real WalletConnect project ID, RPC key or `.env` file.
 - **Don't push or open PRs unless a human asks.** Commit only when asked.
 - **Keep `docs/architecture.md` current.** It is the human-facing reference for this repo. If a change makes anything in it wrong (a command, path, flow, config, version or risk), update it in the same PR.
 - **Leave `package-lock.json` alone** unless the task is a dependency change. Check that the diff contains only the intended packages. npm 11 drops the `libc` fields from native-binary entries: that is expected and harmless (Alpine then installs both glibc and musl binaries), so don't restore them by hand.
@@ -103,7 +103,7 @@ The library exports three entry points, each with a CSS file:
 
 - **Static export.** Both apps use `output: 'export'`, and nginx serves the files (`docker/*-nginx.conf`).
 - **Runtime config.** Nothing is baked in at build time. The container's init scripts write `/config.json` and replace placeholders such as `__SITE_PREFIX__` in the exported HTML.
-- **Local config.** For local dev, `public/config.json` is created from `public/config.example.json`, which points at Decaf. To use fake data locally, remove the service URLs from that local copy.
+- **Local config.** For local dev, each app's config starts as a copy of its `public/config.example.json`, which points at Decaf. The explorer's copy is `public/config.json`. The staking app's is `config.local.json`: its dev server writes `public/config.json` from it on every start, applying any matching environment variables for that run only. To use fake data locally, remove the service URLs from the local copy.
 - **Dynamic routes.** `/block/[id]` and `/transaction/[slug]` export one static shell each, and the client reads the real ID from the URL.
 - **Title strings kept in sync.** `getSiteTitleConfig()` (`packages/block-explorer/src/helpers/read_from_env.ts`) and the bash `case` statement in `docker/block-explorer-generate-files.sh` hold the same per-environment title strings. Keep the two in sync.
 - **Check error handling against a production build.** The dev server shows error overlays that production doesn't.
