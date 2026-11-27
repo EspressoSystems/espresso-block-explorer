@@ -20,6 +20,17 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Local configuration
+
+The app reads its network, service URLs and contract addresses from `/config.json`. In development, `npm run dev` writes `public/config.json` on every start:
+
+1. It starts from your saved settings in `config.local.json`. The first start creates that file from `public/config.example.json` (Decaf). Edit it to change your setup; the dev server never writes to it again. `config.local.json` and `public/config.json` are gitignored: don't commit them.
+2. Environment variables, from the shell or a `.env.local` file, override your saved settings **for that run only**. The next start without them returns to your saved setup. The variable names are listed in the environment table in [docs/architecture.md](../../docs/architecture.md).
+3. An empty variable, such as a blank `ENVIRONMENT_NAME=` line, counts as unset and keeps your saved value.
+4. Setting `ENVIRONMENT_NAME` to a different network than the saved one doesn't reuse the saved network's service URLs, contract addresses, `RPC_URLS`, `PROOF_OF_STAKE_RELEASED` or `BASE_URL`. Set the ones you need for that network too: any left out stay empty, so that data falls back to fake data and those actions are disabled.
+
+At startup the dev server logs a `config.json:` line saying which network it used and which variables it applied.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

@@ -68,10 +68,12 @@ export async function register() {
       }
 
       // Environment variables override the saved settings for this run only.
+      // An empty variable, such as a blank ENVIRONMENT_NAME= line in an env
+      // file, counts as unset and keeps the saved value.
       const overridden: string[] = [];
       for (const [key, envVar] of Object.entries(envVars)) {
         const value = process.env[envVar];
-        if (value !== undefined) {
+        if (value) {
           config[key] = value;
           overridden.push(envVar);
         }

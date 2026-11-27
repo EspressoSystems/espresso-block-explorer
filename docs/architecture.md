@@ -178,9 +178,9 @@ Dockerfile           multi-stage; final targets `block-explorer` and `delegation
   - The production image has **no default addresses**. The Docker defaults are empty (`docker/delegation-ui-init.sh:25-28`, `Dockerfile:166-169`).
   - Per-environment address sets exist only for Storybook (`LIB/models/config/storybook/controls.ts:97-190`). The Decaf set is also written out in `docker/README.md:42-45`.
 - **Service URLs** are read by the workers from the lowercase keys `hotshot_query_service_url`, `staking_api_service_url` and `node_validator_service_url`. Their Docker defaults are **mainnet URLs whatever `ENVIRONMENT_NAME` is** (`docker/delegation-ui-init.sh:22-24`).
-- **Dev config.** In `next dev`, `DUI/src/instrumentation.ts:33-90` writes the gitignored `DUI/public/config.json` on every start:
+- **Dev config.** In `next dev`, `DUI/src/instrumentation.ts:33-92` writes the gitignored `DUI/public/config.json` on every start:
   - It starts from the developer's saved settings in the gitignored `DUI/config.local.json`, copied from the tracked `DUI/public/config.example.json` (Decaf) when missing. It never writes to that file again.
-  - Any environment variable from the Docker table below overrides its key for that run only.
+  - Any non-empty environment variable from the Docker table below overrides its key for that run only. An empty one, such as a blank line in an env file, keeps the saved value.
   - An `ENVIRONMENT_NAME` that differs from the saved one empties the network's service URLs, contract addresses, `RPC_URLS`, `PROOF_OF_STAKE_RELEASED` and `BASE_URL` first, so two networks never mix. Values not set in the environment stay empty, so those workers fall back to fake data and those actions are disabled.
 
 ### 4.3 Contracts and ABIs (verified)
